@@ -563,7 +563,13 @@
 	background-image:url(../imgs/btnBackup.gif);
 	width: 85px !important;
 }
+.btnVoltarInicial
+{
+	background-image:url(../imgs/btnVoltarInicial.gif);
+	width: 169px !important;
+}
 
+.btnVoltarInicial,
 .btnExcluir,
 .btnExcluirDesabilitado,
 .btnProxima,

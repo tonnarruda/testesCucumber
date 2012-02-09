@@ -46,12 +46,11 @@
 					<font face=verdana size=2 color=black>
 					<br>
 					<br>Você não tem autorização para acessar esta página.
-					<br>Dúvidas entre em contato com 
-					<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
+					<br>Entre em contato com o responsável pelo cadastro de perfis do sistema na sua empresa.
 					</p>
 				</font>
 			
-				<a href="<ww:url value='/'/>" style="color:blue;font-size:13px !important;">Voltar</a>
+				<input type="button" class="btnVoltarInicial" onclick="location.href='<ww:url value='/'/>'"/>
 			</center>
 		</div>
 		

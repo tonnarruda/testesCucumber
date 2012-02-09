@@ -16,14 +16,9 @@
 		@import url('<ww:url includeParams="none" value="/css/menu.css"/>');
 		@import url('<ww:url includeParams="none" value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
-		#envioErro { display: none; }
-		#envioErro p { text-align: justify }
-		#detalhesException {
-			display: none;
-			height: 300px;
-			overflow: auto;
-		}
-		.errorMessage td { color: red; }
+		#detalhesException { display: none; width: 720px; height: 300px; overflow: auto; }
+		.waDivFormulario table td { font-size: 12px; }
+		.msgEnvio { text-align: justify; }
 	</style>
 	
 	<script type='text/javascript' src='<ww:url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
@@ -36,39 +31,14 @@
 	<script type="text/javascript">
 		var mensagem = '<ww:property value="%{exception.message}" default="Erro interno do servidor"/>';
 		
-		$(function() {
-			$('#envioErro').dialog({title: 'Fortes RH',
-									width: 600,
-									height: 300,
-									buttons: [
-										    {
-										        text: "Enviar",
-										        click: function() {
-										        	MorroDWR.enviar(mensagem, location.href, function(dados) { jAlert(dados); });
-										        }
-										    },
-										    {
-										        text: "Não enviar",
-										        click: function() { $(this).dialog("close"); }
-										    }
-										] 
-									});
-		});
-		
-		function exibirOcultarDetalhes(link)
+		function enviar()
 		{
-			if ($(link).text() == 'Ver Detalhes')
-			{
-				$('#detalhesException').show();
-				$('#envioErro').dialog( "option", "height", 600 );
-				$(link).text('Ocultar Detalhes');
-			} 
-			else
-			{
-				$('#detalhesException').hide();
-				$('#envioErro').dialog( "option", "height", 300 );
-				$(link).text('Ver Detalhes');
-			}
+			jAlert("Enviado com sucesso.");//TESTE do layout da tela
+		}
+		
+		function exibirDetalhes()
+		{
+			$('#detalhesException').dialog({ modal: true, title: 'Detalhes do Erro', width: 740, height: 340  });
 		}
 	</script>
 </head>
@@ -98,37 +68,44 @@
 		<div id="waDivTitulo">Erro Interno do Servidor</div>
 		
 		<div class="waDivFormulario">
-			<div class="errorMessage">
-				<table>
-					<tr>
-						<td>
-							<img src="<ww:url includeParams="none" value="/imgs/erro_msg.gif"/>">
-						</td>
-						<td>
-							<ww:property value="%{exception.message}" default="Erro interno do servidor"/>
-						</td>
-					</tr>
-				</table>
-			</div>
-			
-			<center>
-				<a href="<ww:url value='/'/>" style="color:blue;font-size:13px !important;">Voltar</a>
-			</center>
-			
-			<div id="envioErro">
-				<p>Ocorreu um erro inesperado.</p>
-				<br />
-				<strong>Envie este problema para a Fortes</strong>
-				<p>Contribua para o aprimoramento deste "software" enviando o problema para a Fortes. O relatório que é enviado contém dados detalhados a respeito do problema e do ambiente (sistema operacional, processos, memória, processador, circunstância, etc.), facilitando assim o trabalho de nossos engenheiros em encontrar e corrigir o problema.</p>
-				
-				<a href="javascript:;" onclick="exibirOcultarDetalhes(this)">Ver Detalhes</a>
-				<div id="detalhesException">
-					<pre id="log" class="brush:plain; wrap-lines:true"><ww:property value="%{exceptionStack}"/></pre>
-				</div>
-			</div>
+			<table width="100%">
+				<tr>
+					<td valign="top">
+						<center>
+							<font face=verdana size=2 color=black>
+								<p>
+								ERRO 500 - ERRO INTERNO DO SERVIDOR
+								<font face=verdana size=2 color=black>
+								<br>
+								<br>A requisição não pode ser completada.
+								<br>Dúvidas entre em contato com 
+								<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
+								</p>
+							</font>
+						</center>
+					</td>
+					<td width="40%" valign="top">
+						<strong>Deseja enviar este problema para a Fortes?</strong>
+						<p class="msgEnvio">Contribua para o aprimoramento deste "software" enviando o problema para a Fortes. O relatório que é enviado contém dados detalhados a respeito do problema e do ambiente (sistema operacional, processos, memória, processador, circunstância, etc.), facilitando assim o trabalho de nossa equipe para encontrar e corrigir o problema.</p>
+						<a href="javascript:;" onclick="exibirDetalhes()">Ver Detalhes do Erro</a>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<input type="button" class="btnVoltarInicial" onclick="location.href='<ww:url value='/'/>'"/>
+					</td>
+					<td align="center">
+						<input type="button" class="btnEnviar" onclick="enviar();"/>
+					</td>
+				</tr>
+			</table>
 		</div>
 		
 		<br /><br />
+	</div>
+	
+	<div id="detalhesException">
+		<pre id="log" class="brush:plain; wrap-lines:true"><ww:property value="%{exceptionStack}"/></pre>
 	</div>
 	
 	<script type="text/javascript">

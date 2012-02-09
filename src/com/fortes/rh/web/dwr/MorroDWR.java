@@ -23,7 +23,7 @@ public class MorroDWR
 	private MorroManager morroManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	public String enviar(String mensagem, String url) 
+	public String enviar(String mensagem, String url, String usuario, String browser) 
 	{
 		PostMethod filePost = new PostMethod("http://www.fortesinformatica.com.br/cgi-bin/filebox/send");
 //		PostMethod filePost = new PostMethod("http://localhost/morro.php");
@@ -45,7 +45,7 @@ public class MorroDWR
 			printErro = morroManager.getPrintScreen();
 	
 			// geracao do arquivo texto	
-			logErro = morroManager.getErrorFile(mensagem, url, params.getAppVersao(), client.getCustomerId(), client.getCustomerName());
+			logErro = morroManager.getErrorFile(mensagem, url, params.getAppVersao(), client.getCustomerId(), client.getCustomerName(), usuario, browser);
 			
 			// cria o zip
 			ZipOutputStream zipOS = new Zip().compress(new File[] { printErro, logErro }, nomeArquivo, ".zip", false);
@@ -53,9 +53,7 @@ public class MorroDWR
 			zip = new File(nomeArquivo + ".zip");
 			
 			// envia
-			int status = morroManager.enviar(filePost, zip, client.getCustomerName());
-	
-			retorno = (status == HttpStatus.SC_OK) ? "Enviado com sucesso" : "Falha no envio";
+			retorno = morroManager.enviar(filePost, zip, client.getCustomerId(), client.getCustomerName(), usuario);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,8 +68,8 @@ public class MorroDWR
 			if (logErro != null && logErro.exists())
 				logErro.delete();
 			
-			if (zip != null && zip.exists())
-				zip.delete();
+//			if (zip != null && zip.exists())
+//				zip.delete();
 		}
 		
 		return retorno;

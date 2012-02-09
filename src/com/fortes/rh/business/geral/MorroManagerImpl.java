@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -40,7 +41,7 @@ public class MorroManagerImpl implements MorroManager
 		return printErro;
 	}
 
-	public File getErrorFile(String mensagem, String url, String versao, String clienteCnpj, String clienteNome) throws Exception 
+	public File getErrorFile(String mensagem, String url, String versao, String clienteCnpj, String clienteNome, String usuario, String browser) throws Exception 
 	{
 		File logErro = new File(PATH + "Erro.txt");  
 		FileOutputStream fos = new FileOutputStream(logErro);  
@@ -52,16 +53,13 @@ public class MorroManagerImpl implements MorroManager
 		texto.append("Versao=" + versao + "\n");
 		texto.append("LicenciadoCNPJ=" + clienteCnpj + "\n");
 		texto.append("LicenciadoNome=" + clienteNome + "\n");
+		texto.append("Usuario=" + usuario + "\n");
+		texto.append("Browser=" + browser + "\n");
 		texto.append("VersaoJava=" + System.getProperty("java.version", "Não identificado") + "\n");
 		texto.append("Especificacao=" + System.getProperty("java.vm.specification.vendor", "Não identificado") + "\n");
 		texto.append("SistemaOperacional=" + System.getProperty("os.name", "Não identificado") + "\n");
 		texto.append("MemoriaLivre=" + Runtime.getRuntime().freeMemory() + "\n");
 		texto.append("MemoriaTotal=" + Runtime.getRuntime().totalMemory() + "\n");
-		
-//	    File[] roots = File.listRoots();
-//	    int i = 1;
-//	    for (File root : roots) 
-//	    	texto.append("Disco" + i++ + "=Raiz: " + root.getAbsolutePath() + ", Espaco Total: " + root.getTotalSpace() + " bytes, Espaco Livre: " + root.getFreeSpace() + " bytes, Espaco Utilizavel: " + root.getUsableSpace() + " bytes\n");
 		
 		fos.write(texto.toString().getBytes());  
 		fos.close();
@@ -69,12 +67,12 @@ public class MorroManagerImpl implements MorroManager
 		return logErro;
 	}
 	
-	public int enviar(PostMethod filePost, File zip, String clienteNome) throws Exception 
+	public String enviar(PostMethod filePost, File zip, String clienteCnpj, String clienteNome, String usuario) throws Exception 
 	{
 		Part[] parts = { 	
-				new FilePart(zip.getName(), zip), 
+				new FilePart("File", zip), 
 				new StringPart("FileName", zip.getName()), 
-				new StringPart("Description", "Erro identificado no cliente " + clienteNome), 
+				new StringPart("Description", clienteCnpj + " " + clienteNome + " - " + usuario), 
 				new StringPart("Att", "suporte.rh@grupofortes.com.br"), 
 				new StringPart("ReplyTo", "")
 			};
@@ -84,9 +82,6 @@ public class MorroManagerImpl implements MorroManager
 		HttpClient httpClient = new HttpClient();
 		int status = httpClient.executeMethod(filePost);
 		
-//		String retorno = filePost.getResponseBodyAsString();
-//		String msgStatus = HttpStatus.getStatusText(status);
-		
-		return status;
+		return (status == HttpStatus.SC_OK) ? filePost.getResponseBodyAsString() : "Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status);
 	}
 }

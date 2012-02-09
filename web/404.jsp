@@ -51,7 +51,7 @@
 					</p>
 				</font>
 				
-				<a href="<ww:url value='/'/>" style="color:blue;font-size:13px !important;">Voltar</a>
+				<input type="button" class="btnVoltarInicial" onclick="location.href='<ww:url value='/'/>'"/>
 			</center>
 		</div>
 		
