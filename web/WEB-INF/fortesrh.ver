@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.69.63" data="09/02/2012"><![CDATA[
+        - C&S > Relatórios > Realinhamentos: Nova opção para Exibir observação.
+        - C&S > Cadastros > Conhecimentos, Habilidade, Atitude (CHA): Validação para não permitir a mesma descrição entre ambos.
+        - T&D > Cadastro > Cursos > Turmas: Nova funcionalidade para liberar ou bloquear a possibilidade dos colaboradores responderem a avaliação da turma.
+    ]]></Versao>
 	<Versao id="1.1.68.62" data="02/02/2012"><![CDATA[
 		- R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova legenda para informar quais candidatos participam ou participaram de um processo seletivo.
 		- R&S > Movimentações > Solicitação de Pessoal: Descrição da solicitação como campo obrigatório.

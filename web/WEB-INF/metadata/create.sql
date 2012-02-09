@@ -40,7 +40,7 @@ CREATE TABLE empresa (
     id bigint NOT NULL,
     nome character varying(15),
     cnpj character varying(20),
-    razaosocial character varying(60),
+    razaosocial character varying(100),
     codigoac character varying(12),
     emailremetente character varying(120),
     emailrespsetorpessoal character varying(120),
@@ -1371,7 +1371,8 @@ CREATE TABLE turma (
 	horario character varying(20),
 	realizada boolean,
 	qtdparticipantesprevistos Integer,
-    curso_id bigint
+    curso_id bigint,
+    liberada boolean default false
 );
 ALTER TABLE turma ADD CONSTRAINT turma_pkey PRIMARY KEY (id);
 ALTER TABLE turma ADD CONSTRAINT turma_curso_fk FOREIGN KEY (curso_id) REFERENCES curso(id);
@@ -2547,3 +2548,22 @@ ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turmaTipoDespesa_pkey PRIMARY KEY(id
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma__tipodespesa_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
 ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);
 CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE TABLE gerenciadorComunicacao (
+id bigint NOT NULL,
+operacao int,
+meioComunicacao int,
+enviarPara int,
+destinatario character varying(200),
+empresa_id bigint
+);
+
+ALTER TABLE gerenciadorComunicacao ADD CONSTRAINT gerenciadorComunicacao_pkey PRIMARY KEY(id);
+ALTER TABLE gerenciadorComunicacao ADD CONSTRAINT gerenciadorComunicacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+CREATE SEQUENCE gerenciadorComunicacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+create view competencia as 
+select id, nome, empresa_id, observacao, 'C' as tipo from conhecimento union 
+select id, nome, empresa_id, observacao, 'H' as tipo from habilidade union 
+select id, nome, empresa_id, observacao, 'A' as tipo from atitude 
+order by id;

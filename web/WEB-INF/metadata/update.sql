@@ -18544,3 +18544,34 @@ update parametrosdosistema set acversaowebservicecompativel='1.1.49.1';--.go
 insert into migrations values('20120202081232');--.go
 
 update parametrosdosistema set appversao = '1.1.68.62';--.go
+-- versao 1.1.69.63
+
+create view competencia as 
+select id, nome, empresa_id, observacao, 'C' as tipo from conhecimento union 
+select id, nome, empresa_id, observacao, 'H' as tipo from habilidade union 
+select id, nome, empresa_id, observacao, 'A' as tipo from atitude 
+order by id;--.go
+insert into migrations values('20120201105054');--.go
+
+CREATE TABLE gerenciadorComunicacao (
+id bigint NOT NULL,
+operacao int,
+meioComunicacao int,
+enviarPara int,
+destinatario character varying(200),
+empresa_id bigint
+);--.go
+
+ALTER TABLE gerenciadorComunicacao ADD CONSTRAINT gerenciadorComunicacao_pkey PRIMARY KEY(id);--.go
+ALTER TABLE gerenciadorComunicacao ADD CONSTRAINT gerenciadorComunicacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE gerenciadorComunicacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20120207112138');--.go
+
+alter table turma add column liberada boolean default false;--.go
+update turma set liberada = true where realizada = true;--.go 
+insert into migrations values('20120206111606');--.go
+
+alter table empresa alter column razaosocial type character varying(100);--.go
+insert into migrations values('20120202163751');--.go
+
+update parametrosdosistema set appversao = '1.1.69.63';--.go

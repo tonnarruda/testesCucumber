@@ -11,13 +11,13 @@ import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.BaseDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 
-public class CompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Competencia>
+public class CompetenciaDaoHibernateTest extends BaseDaoHibernateTest
 {
 	private CompetenciaDao competenciaDao;
 	private ConhecimentoDao conhecimentoDao;
