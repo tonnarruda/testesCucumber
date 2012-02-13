@@ -142,6 +142,9 @@
     <action name="browsersCompativeis" class="com.fortes.rh.web.action.Index" method="browsersCompativeis">
       <result name="success" type="freemarker">/WEB-INF/pages/browsersCompativeis.ftl</result>
     </action>
+    <action name="videoteca" class="com.fortes.rh.web.action.Index" method="videoteca">
+      <result name="success" type="freemarker">/WEB-INF/pages/videoteca.ftl</result>
+    </action>
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>

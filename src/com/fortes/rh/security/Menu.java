@@ -60,12 +60,16 @@ public abstract class Menu
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter Fortes RH'>" +
+				"<a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter RH'>" +
 				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://sistemaderh.blogspot.com' target='_blank' title='Blog Fortes RH'>" +
+				"<a href='http://sistemaderh.blogspot.com' target='_blank' title='Blog RH'>" +
 				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
+		
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='" + contexto + "/videoteca.action' title='Videoteca RH'>" +
+				"<img src='"+ contexto + "/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
 		
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
