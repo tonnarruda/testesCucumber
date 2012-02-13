@@ -16,9 +16,11 @@ import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.TurmaTipoDespesaFactory;
@@ -251,4 +253,30 @@ public class TurmaDWRTest extends MockObjectTestCase
 
 		assertEquals(1, retorno.size());
 	}
+	
+
+    public void testLiberar() 
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	Turma turma = TurmaFactory.getEntity(1L);
+    	turma.setEmpresa(empresa);
+    	
+    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING);
+    	
+    	assertEquals("Turma liberada com sucesso.", turmaDWR.liberar(turma.getId(), empresa.getId()));
+	}
+    
+    public void testBloquear() 
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	Turma turma = TurmaFactory.getEntity(1L);
+    	turma.setEmpresa(empresa);
+    	
+    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING);
+    	
+    	assertEquals("Turma bloqueada com sucesso.", turmaDWR.bloquear(turma.getId(), empresa.getId()));
+    }
+	
 }

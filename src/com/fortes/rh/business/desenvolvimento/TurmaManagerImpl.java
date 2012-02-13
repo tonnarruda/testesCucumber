@@ -317,7 +317,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return percentual;
 	}
 	
-	public void updateLiberada(Long turmaId, Boolean liberada) {
+	public void updateLiberada(Long turmaId, Boolean liberada, Long empresaId) {
+		if (liberada) {
+			Turma turma = findByIdProjection(turmaId);
+			colaboradorTurmaManager.enviarAvisoEmail(turma, empresaId);
+		}
 		getDao().updateLiberada(turmaId, liberada);		
 	}
 

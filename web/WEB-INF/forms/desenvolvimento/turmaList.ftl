@@ -29,13 +29,38 @@
 
 		function enviarAviso(data)
 		{
-			alert(data);
+			jAlert(data);
 		}
 
 		function errorMsg(msg)
 		{
 			jAlert("Envio de email falhou.");
 		}
+		
+		function liberarTurma(turmaId)
+		{
+			DWRUtil.useLoadingMessage('Liberando...');
+			TurmaDWR.liberar(liberar, turmaId, <@authz.authentication operation="empresaId"/>);
+		}
+
+		function liberar(data)
+		{
+			jAlert(data);
+			window.location.reload();
+		}
+
+		function bloquearTurma(turmaId)
+		{
+			DWRUtil.useLoadingMessage('Bloqueando...');
+			TurmaDWR.bloquear(bloquear, turmaId, <@authz.authentication operation="empresaId"/>);
+		}
+
+		function bloquear(data)
+		{
+			jAlert(data);
+			window.location.reload();
+		}
+
 		
 		function getMenuAvaliacoes(event, turmaId, cursoId, acao)
 		{
@@ -98,9 +123,9 @@
 			<@ww.hidden name="turma.id" value="" />
 			
 			<#if turma.liberada>
-				<a href="javascript:newConfirm('Deseja bloquear esta turma?', function(){window.location='bloquear.action?turma.id=${turma.id}&curso.id=${curso.id}&page=${page}'});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja bloquear esta turma?', function(){bloquearTurma(${turma.id});});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
 			<#else>
-				<a href="javascript:newConfirm('Deseja liberar esta turma?', function(){window.location='liberar.action?turma.id=${turma.id}&curso.id=${curso.id}&page=${page}'});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja liberar esta turma?', function(){liberarTurma(${turma.id});});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
 			</#if>
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>

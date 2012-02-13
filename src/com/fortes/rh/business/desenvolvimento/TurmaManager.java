@@ -39,5 +39,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId);
 	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long empresaId);
-	public void updateLiberada(Long turmaId, Boolean liberada);
+	public void updateLiberada(Long turmaId, Boolean liberada, Long empresaId);
 }

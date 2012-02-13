@@ -16,6 +16,9 @@ import com.fortes.rh.util.DateUtil;
 
 public class TurmaDWR
 {
+	private final Boolean LIBERADA = true;
+	private final Boolean BLOQUEADA = false;
+	
 	private TurmaManager turmaManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
@@ -107,6 +110,28 @@ public class TurmaDWR
 		}
 
 		return realizada;
+	}
+	
+	public String liberar(Long turmaId, Long empresaId)  
+	{
+		try {
+			turmaManager.updateLiberada(turmaId, LIBERADA, empresaId);
+			
+		} catch (Exception e) {
+			return "Erro ao liberar turma .";
+		}
+		return "Turma liberada com sucesso.";
+	}
+	
+	public String bloquear(Long turmaId, Long empresaId) 
+	{
+		try {
+			turmaManager.updateLiberada(turmaId, BLOQUEADA, empresaId);
+			
+		} catch (Exception e) {
+			return "Erro ao bloquear turma .";
+		}
+		return "Turma bloqueada com sucesso.";
 	}
 	
 	public Collection<TurmaTipoDespesa> getDespesas(Long turmaId)
