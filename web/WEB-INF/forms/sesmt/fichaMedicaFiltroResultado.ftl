@@ -1,5 +1,6 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -75,7 +76,10 @@
 
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos};" accesskey="I"></button>
-			<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+			
+			<@authz.authorize ifAllGranted="ROLE_CAD_FICHAMEDICA">
+				<button class="btnVoltar" onclick="window.location='${urlVoltar}'"></button>
+			</@authz.authorize>
 		</div>
 </body>
 </html>
