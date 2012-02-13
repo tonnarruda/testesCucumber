@@ -212,6 +212,11 @@ public class Index extends ActionSupport
 	{
 		return Action.SUCCESS;
 	}
+	
+	public String videoteca()
+	{
+		return Action.SUCCESS;
+	}
 
 	public void setCandidatoSolicitacaoManager(
 			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
