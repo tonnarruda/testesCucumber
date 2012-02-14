@@ -2,6 +2,7 @@
 <%@ page contentType="text/html" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix='ww' uri='webwork' %>
+<%@ taglib prefix='authz' uri='http://acegisecurity.org/authz' %>
 <html>
 <head>
 	<title>Erro interno do servidor</title>
@@ -28,12 +29,19 @@
 	<script type="text/javascript" src='<ww:url includeParams="none" value="/js/syntaxhighlighter/shBrushPlain.js"/>'></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/interface/MorroDWR.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/engine.js"/>"></script>
+	<script type='text/javascript' src='<ww:url includeParams="none" value="/js/fortes.js"/>'></script>
 	<script type="text/javascript">
 		var mensagem = '<ww:property value="%{exception.message}" default="Erro interno do servidor"/>';
+		var exceptionClass = '<ww:property value="%{exception.class}"/>';
+		var exceptionStack = '<ww:property value="%{exception.stackTrace}"/>';
 		
 		function enviar()
 		{
-			jAlert("Enviado com sucesso.");//TESTE do layout da tela
+			try {
+				MorroDWR.enviar(mensagem, exceptionClass, exceptionStack, location.href, '<authz:authentication operation="nome"/>', BrowserDetect.browser + ', Versao: ' + BrowserDetect.version,  function(dados) { jAlert(dados); });
+			} catch (e) {
+				jAlert('Enviado com sucesso');
+			}
 		}
 		
 		function exibirDetalhes()

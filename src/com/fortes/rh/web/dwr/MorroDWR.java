@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.Date;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import remprot.RPClient;
 
 import com.fortes.rh.business.geral.MorroManager;
@@ -23,13 +20,9 @@ public class MorroDWR
 	private MorroManager morroManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	public String enviar(String mensagem, String url, String usuario, String browser) 
+	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String usuario, String browser) 
 	{
-		PostMethod filePost = new PostMethod("http://www.fortesinformatica.com.br/cgi-bin/filebox/send");
-//		PostMethod filePost = new PostMethod("http://localhost/morro.php");
-		
-		File printErro = null, logErro = null, zip = null;
-		String retorno = "";
+		File logErro = null, zip = null;
 		
 		try {
 			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
@@ -41,38 +34,29 @@ public class MorroDWR
 			String data = DateUtil.formataDate(new Date(), "yyyyMMdd_HHmm");
 			String nomeArquivo = path + "ERRO_RH_RH_" + data + "_" + StringUtil.retiraAcento(client.getCustomerName()).replace(" ", "_");
 			
-			// geracao do print
-			printErro = morroManager.getPrintScreen();
-	
 			// geracao do arquivo texto	
-			logErro = morroManager.getErrorFile(mensagem, url, params.getAppVersao(), client.getCustomerId(), client.getCustomerName(), usuario, browser);
+			logErro = morroManager.getErrorFile(mensagem, classeExcecao, stackTrace, url, params.getAppVersao(), client.getCustomerId(), client.getCustomerName(), usuario, browser);
 			
 			// cria o zip
-			ZipOutputStream zipOS = new Zip().compress(new File[] { printErro, logErro }, nomeArquivo, ".zip", false);
+			ZipOutputStream zipOS = new Zip().compress(new File[] { logErro }, nomeArquivo, ".zip", false);
 			zipOS.close();
 			zip = new File(nomeArquivo + ".zip");
 			
 			// envia
-			retorno = morroManager.enviar(filePost, zip, client.getCustomerId(), client.getCustomerName(), usuario);
+			morroManager.enviar(zip, client.getCustomerId(), client.getCustomerName(), usuario);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			retorno = "Falha no envio";
 		
 		} finally {
-			filePost.releaseConnection();
-			
-			if (printErro != null && printErro.exists())
-				printErro.delete();
-			
 			if (logErro != null && logErro.exists())
 				logErro.delete();
 			
-//			if (zip != null && zip.exists())
-//				zip.delete();
+			if (zip != null && zip.exists())
+				zip.delete();
 		}
 		
-		return retorno;
+		return "Enviado com sucesso";
 	}
 	
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {

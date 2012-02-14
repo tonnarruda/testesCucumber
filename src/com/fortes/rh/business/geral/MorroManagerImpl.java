@@ -12,11 +12,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 import com.fortes.rh.util.ArquivoUtil;
 
@@ -41,13 +38,15 @@ public class MorroManagerImpl implements MorroManager
 		return printErro;
 	}
 
-	public File getErrorFile(String mensagem, String url, String versao, String clienteCnpj, String clienteNome, String usuario, String browser) throws Exception 
+	public File getErrorFile(String mensagem, String classeExcecao, String stackTrace, String url, String versao, String clienteCnpj, String clienteNome, String usuario, String browser) throws Exception 
 	{
 		File logErro = new File(PATH + "Erro.txt");  
 		FileOutputStream fos = new FileOutputStream(logErro);  
 		StringBuffer texto = new StringBuffer();
 		
 		texto.append("Mensagem=" + mensagem + "\n");
+		texto.append("ClasseExcecao=" + classeExcecao + "\n");
+		texto.append("StackTrace=" + stackTrace + "\n");
 		texto.append("URL=" + url + "\n");
 		texto.append("Produto=RH" + "\n");
 		texto.append("Versao=" + versao + "\n");
@@ -67,21 +66,24 @@ public class MorroManagerImpl implements MorroManager
 		return logErro;
 	}
 	
-	public String enviar(PostMethod filePost, File zip, String clienteCnpj, String clienteNome, String usuario) throws Exception 
+	public String enviar(File zip, String clienteCnpj, String clienteNome, String usuario) throws Exception 
 	{
-		Part[] parts = { 	
-				new FilePart("File", zip), 
-				new StringPart("FileName", zip.getName()), 
-				new StringPart("Description", clienteCnpj + " " + clienteNome + " - " + usuario), 
-				new StringPart("Att", "suporte.rh@grupofortes.com.br"), 
-				new StringPart("ReplyTo", "")
-			};
-
-		filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+		HttpClient client = new HttpClient( );
+        
+        String weblintURL = "http://www.fortesinformatica.com.br/cgi-bin/filebox/send";
+        
+        MultipartPostMethod method = new MultipartPostMethod( weblintURL );
+        
+        method.addParameter("FileName", "ERRO_RH_20100525_1656_Fortes_Informatica_LTDA" );
+        method.addParameter("Description", clienteCnpj + "_" + clienteNome + "_" + usuario );
+        method.addParameter("Att", "suporte.rh@grupofortes.com.br" );
+        method.addParameter("ReplyTo", "" );
+        method.addPart( new FilePart( "File", zip, "multipart/form-data", "ISO-8859-1" ) );
+        
+        int status = client.executeMethod( method );
+        String response = method.getResponseBodyAsString( );
+        method.releaseConnection();
 		
-		HttpClient httpClient = new HttpClient();
-		int status = httpClient.executeMethod(filePost);
-		
-		return (status == HttpStatus.SC_OK) ? filePost.getResponseBodyAsString() : "Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status);
+        return (status == HttpStatus.SC_OK) ? response : "Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status);
 	}
 }
