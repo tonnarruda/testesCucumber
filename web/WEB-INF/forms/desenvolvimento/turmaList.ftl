@@ -8,6 +8,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
+		#alert { display: none; }
 		.popup { display: none; }
 		.popup ul { list-style: none; }
 		.popup ul li { margin: 5px; }
@@ -40,28 +41,20 @@
 		function liberarTurma(turmaId)
 		{
 			DWRUtil.useLoadingMessage('Liberando...');
-			TurmaDWR.liberar(liberar, turmaId, <@authz.authentication operation="empresaId"/>);
-		}
-
-		function liberar(data)
-		{
-			jAlert(data);
-			window.location.reload();
+			TurmaDWR.liberar(retorno, turmaId, <@authz.authentication operation="empresaId"/>);
 		}
 
 		function bloquearTurma(turmaId)
 		{
 			DWRUtil.useLoadingMessage('Bloqueando...');
-			TurmaDWR.bloquear(bloquear, turmaId, <@authz.authentication operation="empresaId"/>);
+			TurmaDWR.bloquear(retorno, turmaId, <@authz.authentication operation="empresaId"/>);
 		}
-
-		function bloquear(data)
-		{
-			jAlert(data);
-			window.location.reload();
-		}
-
 		
+		function retorno(data)
+		{
+			jAlert(data, 'Fortes RH', function() { window.location.reload(); });
+		}
+
 		function getMenuAvaliacoes(event, turmaId, cursoId, acao)
 		{
 			TurmaDWR.getAvaliacaoTurmas(turmaId, {
@@ -176,6 +169,9 @@
 		</button>
 	</div>
 
-	<div class='popup' title='Avaliações'>></div>
+	<div class='popup' title='Avaliações'></div>
+	<div id='alert'>
+		<span id="texto"></span>
+	</div>
 </body>
 </html>

@@ -23,6 +23,8 @@
 
 	<@ww.actionmessage />
 	<@ww.actionerror />	
-	Videoteca
+	<div>
+		<iframe src="http://www.fortesinformatica.com.br/portal_videoteca.php?categoria=16&hash=${hash}" width="1000" height="500" frameBorder="0"></iframe>
+	</div>
 </body>
 </html>
