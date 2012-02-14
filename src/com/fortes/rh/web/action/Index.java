@@ -1,8 +1,10 @@
 
 package com.fortes.rh.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,6 +37,7 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -45,7 +48,6 @@ import com.opensymphony.xwork.ActionSupport;
 public class Index extends ActionSupport
 {
 	private static final long serialVersionUID = 1L;
-	
 	private ColaboradorManager colaboradorManager = null;
 	private QuestionarioManager questionarioManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
@@ -85,6 +87,8 @@ public class Index extends ActionSupport
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 
+	private String hash;
+	
 	public String index()
 	{
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -215,6 +219,12 @@ public class Index extends ActionSupport
 	
 	public String videoteca()
 	{
+		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
+		
+		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
+		
+		hash = StringUtil.encodeString(calculoHash.toString());
+		
 		return Action.SUCCESS;
 	}
 
@@ -424,4 +434,9 @@ public class Index extends ActionSupport
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionariosTeD() {
 		return colaboradorQuestionariosTeD;
 	}
+	
+	public String getHash() {
+		return hash;
+	}
+
 }
