@@ -28,7 +28,7 @@
 		<tr>
 			<td class="corpo" colspan="3" style="padding-left:10px" height="71px" colspan="3" align="center">
 			<font style="font-weight:bold; color:yellow;">Verifique a licença do sistema</font><br><br>
-			Entre em contato com a Fortes Informática pelo telefone (85)4005.1111 ou acesse o <a href=http://www.fortesinformatica.com.br/portaldocliente target=_blank><font style="color:yellow;">Portal do Cliente</font></a> para obter mais informações.<br><br>
+			Entre em contato com a Fortes pelo telefone (85)4005.1114 ou acesse o <a href=http://www.fortesinformatica.com.br/portaldocliente target=_blank><font style="color:yellow;">Portal do Cliente</font></a> para obter mais informações.<br><br>
 			</td>
 		</tr>
 		<tr>
