@@ -1,13 +1,16 @@
 package com.fortes.rh.security;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.axis.utils.StringUtils;
 
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.StringUtil;
 
 public abstract class Menu 
 {
@@ -68,9 +71,8 @@ public abstract class Menu
 				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='" + contexto + "/videoteca.action' title='Videoteca RH'>" +
+				"<a href='http://www.fortesinformatica.com.br/portal_videoteca.php?categoria=16&hash=+" + getHash() + "' target='_blank' title='Videoteca RH'>" +
 				"<img src='"+ contexto + "/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
-		
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
@@ -106,6 +108,15 @@ public abstract class Menu
 		}
 
 		return menuFilho.toString();
+	}
+	
+	private static String getHash()
+	{
+		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
+		
+		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
+		
+		return StringUtil.encodeString(calculoHash.toString());
 	}
 
 }
