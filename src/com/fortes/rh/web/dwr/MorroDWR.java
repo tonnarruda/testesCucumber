@@ -1,60 +1,46 @@
 package com.fortes.rh.web.dwr;
 
-import java.io.File;
-import java.util.Date;
-import java.util.zip.ZipOutputStream;
+import org.apache.commons.lang.StringUtils;
 
 import remprot.RPClient;
+import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.geral.MorroManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.StringUtil;
-import com.fortes.rh.util.Zip;
 
 public class MorroDWR
 {
 	private MorroManager morroManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String usuario, String browser) 
+	public String enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser) 
 	{
-		File logErro = null, zip = null;
+		String usuarioLogado = "";
+		String idCliente = "00000000000000";
+		String nomeCliente = "Cliente sem remprot";
+		ParametrosDoSistema params = null;
+
+		try {
+			usuarioLogado = SecurityUtil.getNomeUsuarioLogedByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
+		} catch (Exception e) {e.printStackTrace();}
 		
 		try {
-			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
-			String path = ArquivoUtil.getRhHome() + File.separatorChar;
-			
-			// monta nome do arquivo (remprot)
+			params = parametrosDoSistemaManager.findById(1L);
 			RPClient client = Autenticador.getRemprot(params.getServidorRemprot());
 			
-			String data = DateUtil.formataDate(new Date(), "yyyyMMdd_HHmm");
-			String nomeArquivo = path + "ERRO_RH_RH_" + data + "_" + StringUtil.retiraAcento(client.getCustomerName()).replace(" ", "_");
-			
-			// geracao do arquivo texto	
-			logErro = morroManager.getErrorFile(mensagem, classeExcecao, stackTrace, url, params.getAppVersao(), client.getCustomerId(), client.getCustomerName(), usuario, browser);
-			
-			// cria o zip
-			ZipOutputStream zipOS = new Zip().compress(new File[] { logErro }, nomeArquivo, ".zip", false);
-			zipOS.close();
-			zip = new File(nomeArquivo + ".zip");
-			
-			// envia
-			morroManager.enviar(zip, client.getCustomerId(), client.getCustomerName(), usuario);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+			if(client != null && StringUtils.isNotEmpty(client.getCustomerId()))
+			{
+				idCliente = client.getCustomerId();
+				nomeCliente = client.getCustomerName();
+			}
+		} catch (Exception e) {e.printStackTrace();}
 		
-		} finally {
-			if (logErro != null && logErro.exists())
-				logErro.delete();
-			
-			if (zip != null && zip.exists())
-				zip.delete();
-		}
+		try {
+			morroManager.enviar(mensagem, classeExcecao, stackTrace, url, browser, params.getAppVersao(), idCliente, nomeCliente, usuarioLogado);
+		} catch (Exception e) {e.printStackTrace();}
 		
 		return "Enviado com sucesso";
 	}

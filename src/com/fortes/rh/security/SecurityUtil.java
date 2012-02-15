@@ -2,6 +2,8 @@ package com.fortes.rh.security;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.UserDetails;
@@ -124,5 +126,14 @@ public class SecurityUtil
 	public static boolean hasLoggedUser() {
 		Usuario user = getUsuarioLoged(ActionContext.getContext().getSession());
 		return user != null;
+	}
+
+	public static String getNomeUsuarioLogedByDWR(HttpSession session) {
+		SecurityContext sc = (SecurityContext) session.getAttribute("ACEGI_SECURITY_CONTEXT");
+		
+		if(sc == null)
+			return null;
+
+		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getUsername();
 	}
 }

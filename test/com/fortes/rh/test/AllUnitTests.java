@@ -578,6 +578,7 @@ import com.fortes.rh.test.web.dwr.FuncaoDWRTest;
 import com.fortes.rh.test.web.dwr.GrupoOcupacionalDWRTest;
 import com.fortes.rh.test.web.dwr.HistoricoCandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
+import com.fortes.rh.test.web.dwr.MorroDWRTest;
 import com.fortes.rh.test.web.dwr.OcorrenciaDWRTest;
 import com.fortes.rh.test.web.dwr.PerguntaDWRTest;
 import com.fortes.rh.test.web.dwr.ReajusteDWRTest;
@@ -1257,6 +1258,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(SolicitacaoDWRTest.class);
         suite.addTestSuite(OcorrenciaDWRTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoDWRTest.class);
+        suite.addTestSuite(MorroDWRTest.class);
 
         //MODEL
         suite.addTestSuite(HistoricoColaboradorTest.class);

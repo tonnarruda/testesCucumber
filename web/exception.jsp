@@ -24,24 +24,18 @@
 		.msgEnvio { text-align: justify; }
 	</style>
 	
+	<script type="text/javascript" src="<ww:url includeParams="none" value="/js/morro.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>"></script>
 	<script type="text/javascript" src='<ww:url includeParams="none" value="/js/syntaxhighlighter/shCore.js"/>'></script>
 	<script type="text/javascript" src='<ww:url includeParams="none" value="/js/syntaxhighlighter/shBrushPlain.js"/>'></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/interface/MorroDWR.js"/>"></script>
 	<script type="text/javascript" src="<ww:url includeParams="none" value="/dwr/engine.js"/>"></script>
 	<script type="text/javascript">
-		var mensagem = '<ww:property value="%{exception.message}" default="Erro inesperado"/>';
-		var exceptionClass = '<ww:property value="%{exception.class}"/>';
-		var exceptionStack = '<ww:property value="%{exception.stackTrace}"/>';
 		
-		function enviar()
-		{
-			try {
-				MorroDWR.enviar(mensagem, exceptionClass, exceptionStack, location.href, '<authz:authentication operation="nome"/>', BrowserDetect.browser + ', Versao: ' + BrowserDetect.version,  function(dados) { jAlert(dados); });
-			} catch (e) {
-				jAlert('Enviado com sucesso');
-			}
-		}
+		$(function(){
+			SyntaxHighlighter.config.clipboardSwf = '<ww:url includeParams="none" value="/js/syntaxhighlighter/clipboard.swf"/>';
+			SyntaxHighlighter.all();		
+		});
 		
 		function exibirDetalhes()
 		{
@@ -78,7 +72,7 @@
 				<input type="button" class="btnVoltarInicial" onclick="location.href='<ww:url value='/'/>'"/>
 			</td>
 			<td align="center">
-				<input type="button" class="btnEnviar" onclick="enviar();"/>
+				<input type="button" class="btnEnviar" onclick="enviar('<ww:property value="%{exception.message}" default="Erro inesperado"/>', '<ww:property value="%{exception.class}"/>');"/>
 			</td>
 		</tr>
 	</table>
@@ -86,10 +80,5 @@
 	<div id="detalhesException">
 		<pre id="log" class="brush:plain; wrap-lines:true"><ww:property value="%{exceptionStack}"/></pre>
 	</div>
-	
-	<script type="text/javascript">
-		SyntaxHighlighter.config.clipboardSwf = '<ww:url includeParams="none" value="/js/syntaxhighlighter/clipboard.swf"/>';
-		SyntaxHighlighter.all();
-	</script>
 </body>
 </html>
