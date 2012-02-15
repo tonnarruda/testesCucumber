@@ -1,6 +1,13 @@
 
 package com.fortes.rh.web.action;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,11 +37,13 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.model.geral.Video;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -83,7 +92,7 @@ public class Index extends ActionSupport
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
-	
+	private Collection<Video> listaVideos = new ArrayList<Video>();
 
 	public String index()
 	{
@@ -169,11 +178,36 @@ public class Index extends ActionSupport
 	}
 	
 	
-	public String videoteca(){
+	public String videoteca() throws Exception
+	{
+		pgInicial = false;
+		
+		try {
+			InputStream is = new URL("http://www.fortesinformatica.com.br/portal_videoteca_rh.php").openStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+			
+			String jsonText = readAll(rd);
+			
+			listaVideos = (Collection<Video>) StringUtil.simpleJSONtoArrayJava(jsonText, Video.class);
+		
+		} catch (Exception e) 
+		{
+			addActionError("A lista de vídeos não pôde ser carregada. Verifique a sua conexão com a internet.");
+		}
 		
 		return Action.SUCCESS;
 	}
 	
+	private static String readAll(Reader rd) throws IOException 
+	{
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		
+		while ((cp = rd.read()) != -1)
+			sb.append((char) cp);
+		
+		return sb.toString();
+	}
 	
 	private void validaIntegracaoAC() throws Exception 
 	{
@@ -221,10 +255,7 @@ public class Index extends ActionSupport
 		return Action.SUCCESS;
 	}
 	
-	
-
-	public void setCandidatoSolicitacaoManager(
-			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
@@ -428,6 +459,10 @@ public class Index extends ActionSupport
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionariosTeD() {
 		return colaboradorQuestionariosTeD;
+	}
+
+	public Collection<Video> getListaVideos() {
+		return listaVideos;
 	}
 	
 	
