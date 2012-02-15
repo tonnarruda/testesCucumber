@@ -181,7 +181,7 @@
 		<@display.column title="Ações" media="html" class="acao" style="width: 170px; text-align:left;">
 			<a href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-				<#if solicitacao.status=='R' && !solicitacao.encerrada>
+				<#if solicitacao.status!='A' && !solicitacao.encerrada>
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 				<#else>
