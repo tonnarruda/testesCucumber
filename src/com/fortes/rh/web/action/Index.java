@@ -83,6 +83,7 @@ public class Index extends ActionSupport
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
+	
 
 	public String index()
 	{
@@ -166,7 +167,14 @@ public class Index extends ActionSupport
 			}
 		}
 	}
-
+	
+	
+	public String videoteca(){
+		
+		return Action.SUCCESS;
+	}
+	
+	
 	private void validaIntegracaoAC() throws Exception 
 	{
 		integradoAC = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).isAcIntegra();

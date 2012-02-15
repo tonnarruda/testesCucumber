@@ -71,7 +71,7 @@ public abstract class Menu
 				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://www.fortesinformatica.com.br/portal_videoteca.php?categoria=16&hash=+" + getHash() + "' target='_blank' title='Videoteca RH'>" +
+				"<a href='videoteca.action'>" +
 				"<img src='"+ contexto + "/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
