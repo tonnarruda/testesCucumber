@@ -40,6 +40,9 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private String[] diasCheck;
 	private Collection<CheckBox> diasCheckList = new ArrayList<CheckBox>();
 	private int qtdLinhas = 20;
+	private boolean exibirCnpj;
+	private boolean exibirRazaoSocial;
+	private boolean exibirEndereco;
 	private boolean exibirNomeComercial;
 	private boolean exibirCargo;
 	private boolean exibirEstabelecimento;
@@ -48,6 +51,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private boolean exibirNota;
 	private boolean exibirConteudoProgramatico;
 	private boolean exibirCriteriosAvaliacao;
+	private boolean quebraPaginaEstabelecimento;
 
 	@SuppressWarnings("unchecked")
 	public String execute()
@@ -103,6 +107,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		parametros.put("exibirNota", exibirNota);
 		parametros.put("exibirCriteriosAvaliacao", exibirCriteriosAvaliacao);
 		parametros.put("exibirConteudoProgramatico", exibirConteudoProgramatico);
+		parametros.put("quebraPaginaEstabelecimento", quebraPaginaEstabelecimento);
 		
 		
 		if(exibirConteudoProgramatico)
@@ -360,5 +365,37 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public void setExibirArea(boolean exibirArea) {
 		this.exibirArea = exibirArea;
+	}
+
+	public boolean isExibirCnpj() {
+		return exibirCnpj;
+	}
+
+	public void setExibirCnpj(boolean exibirCnpj) {
+		this.exibirCnpj = exibirCnpj;
+	}
+
+	public boolean isExibirRazaoSocial() {
+		return exibirRazaoSocial;
+	}
+
+	public void setExibirRazaoSocial(boolean exibirRazaoSocial) {
+		this.exibirRazaoSocial = exibirRazaoSocial;
+	}
+
+	public boolean isExibirEndereco() {
+		return exibirEndereco;
+	}
+
+	public void setExibirEndereco(boolean exibirEndereco) {
+		this.exibirEndereco = exibirEndereco;
+	}
+
+	public boolean isQuebraPaginaEstabelecimento() {
+		return quebraPaginaEstabelecimento;
+	}
+
+	public void setQuebraPaginaEstabelecimento(boolean quebraPaginaEstabelecimento) {
+		this.quebraPaginaEstabelecimento = quebraPaginaEstabelecimento;
 	}
 }
