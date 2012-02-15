@@ -89,6 +89,16 @@ public class MorroManagerImpl implements MorroManager
 		texto.append("SistemaOperacional=" + System.getProperty("os.name", "Não identificado") + "\n");
 		texto.append("MemoriaLivre=" + Runtime.getRuntime().freeMemory() + "\n");
 		texto.append("MemoriaTotal=" + Runtime.getRuntime().totalMemory() + "\n");
+		
+		try {
+			File systemConf = new File(PATH + "system.conf");
+			texto.append("------------------ system.conf ------------------\n");
+			texto.append("RH_HOME=" + PATH + "\n");
+			texto.append(ArquivoUtil.getContents(systemConf));
+			systemConf = null;
+		} catch (Exception e) {}
+		
+		
 		texto.append("------------------ Erro ------------------\n");
 		texto.append("ClasseExcecao=" + classeExcecao + "\n");
 		texto.append("StackTrace=" + stackTrace + "\n");
