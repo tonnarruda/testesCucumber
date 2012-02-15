@@ -116,6 +116,7 @@
 		<@ww.select label="Curso" cssStyle="width:180px" name="colaboradorTurma.curso.id" id="cursos" list="cursos" listKey="id" listValue="nome" headerValue="" headerKey="" liClass="liLeft" onchange="listaTurma();"  required="true"/>
 	  	<@ww.select label="Turma" cssStyle="width:200px" name="colaboradorTurma.turma.id" id="turma"  list="turmas" listKey="id" listValue="descricao" headerValue="" headerKey="" liClass="liLeft"  onchange="populaDias(document.forms[0]);"  required="true"/>
 		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
+		<@ww.checkbox label="Quebrar página por estabelecimento" name="quebraPaginaEstabelecimento" labelPosition="left"/>
 
 		<@ww.label value="Configuração" />
 		<li>
@@ -125,6 +126,9 @@
 					<@ww.checkbox label="Exibir conteúdo programático" name="exibirConteudoProgramatico" labelPosition="left"/>
 					<@ww.checkbox label="Exibir critérios de avaliação" name="exibirCriteriosAvaliacao" labelPosition="left"/>
 					<br/>
+					<@ww.checkbox label="Exibir CNPJ" name="exibirCnpj" labelPosition="left"/>
+					<@ww.checkbox label="Exibir razão social" name="exibirRazaoSocial" labelPosition="left"/>
+					<@ww.checkbox label="Exibir endereço" name="exibirEndereco" labelPosition="left"/>
 					<@ww.checkbox label="Exibir nome comercial" name="exibirNomeComercial" labelPosition="left"/>
 					<@ww.checkbox label="Exibir espaço para nota" name="exibirNota" labelPosition="left"/>
 					<@ww.textfield label="Qtd. Linhas" id="qtdLinhas" name="qtdLinhas" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width:30px; text-align:right;"/>
