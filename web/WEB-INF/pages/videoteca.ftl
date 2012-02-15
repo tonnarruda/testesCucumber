@@ -19,9 +19,9 @@
 		$(function(){
 			var url = 'http://www.fortesinformatica.com.br/portal_videoteca_rh.php';
 			
-			var imgExibir = '<@ww.url includeParams="none" value="/imgs/videoExibir.gif"/>';
-			var imgDownload = '<@ww.url includeParams="none" value="/imgs/videoDownload.gif"/>';
-			var imgDetalhe = '<@ww.url includeParams="none" value="/imgs/videoDetalhe.gif"/>';
+			var imgExibir = '<@ww.url includeParams="none" value="/imgs/video.png"/>';
+			var imgDownload = '<@ww.url includeParams="none" value="/imgs/icon_download.gif"/>';
+			var imgDetalhe = '<@ww.url includeParams="none" value="/imgs/log.png"/>';
 			
 			$.getJSON(url, {},function(response){
 				var html = "";
@@ -34,12 +34,11 @@
 						classe = 'odd';
 					html += '<tr class="' + classe + '">';
 					html += '<td width="100" align="center">';
-					html += '<a href="javascript:popupVideo(\''+urlVideo+'\');"><img src="' + imgExibir + '"/></a>';	
-					html += '<a href="' +urlDownload+ '"><img src="' + imgDownload + '"/></a>';	
+					html += '<a href="javascript:popupVideo(\''+urlVideo+'\');"><img src="' + imgExibir + '"/></a> ';	
+					html += '<a href="' +urlDownload+ '"><img src="' + imgDownload + '"/></a> ';	
 					html += '<a href="javascript:popupDetalhes(\''+urlDetalhe+'\');"><img src="' + imgDetalhe + '"/></a>';	
 					html += '</td>';
 					html += '<td><a href="javascript:popupVideo(\''+urlVideo+'\');">'+valor.titulo+'</a></td>';
-					html += '<td>'+valor.descricao+'</td>';
 					html += '</tr>'; 
 					
 	  			});
@@ -69,7 +68,6 @@
 			<tr>
 				<th>Ações</th>
 				<th>Título</th>
-				<th>Descrição</th>
 			</tr>
 		</thead>
 		<tbody id="listaVideos">
