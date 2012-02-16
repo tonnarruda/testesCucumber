@@ -109,7 +109,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		
-		Collection<ColaboradorTurma> retorno = colaboradorPresencaManager.preparaLinhaEmBranco(colaboradorTurmas, 30);
+		Collection<ColaboradorTurma> retorno = colaboradorPresencaManager.preparaLinhaEmBranco(colaboradorTurmas, 30, null);
 		
 		assertEquals(30, retorno.size());
 	}

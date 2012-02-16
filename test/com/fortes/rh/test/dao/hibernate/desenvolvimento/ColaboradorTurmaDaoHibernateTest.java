@@ -435,18 +435,24 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         turma.setCurso(curso);
         turma = turmaDao.save(turma);
 
+        Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+        estabelecimentoDao.save(estabelecimento);
+        
         AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
         areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
         Colaborador colaborador = ColaboradorFactory.getEntity();
-        colaborador = colaboradorDao.save(colaborador);
 
         HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
         historicoColaborador.setColaborador(colaborador);
+        historicoColaborador.setEstabelecimento(estabelecimento);
         historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
         historicoColaborador.setAreaOrganizacional(areaOrganizacional);
         historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
+        colaborador.setHistoricoColaborador(historicoColaborador);
+        colaborador = colaboradorDao.save(colaborador);
+        
         PrioridadeTreinamento prioridadeTreinamento = new PrioridadeTreinamento();
         prioridadeTreinamento = prioridadeTreinamentoDao.save(prioridadeTreinamento);
 
@@ -461,6 +467,39 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
         assertEquals(colaboradorTurma.getId(), colaboradorTurmaRetorno.getId());
         assertEquals(areaOrganizacional.getNome(), colaboradorTurmaRetorno.getColaborador().getAreaOrganizacional().getNome());
+    }
+
+    public void testFindIdEstabelecimentosByTurma()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+    	
+    	Curso curso = CursoFactory.getEntity();
+    	cursoDao.save(curso);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setCurso(curso);
+    	turmaDao.save(turma);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setEmpresa(empresa);
+    	colaboradorDao.save(colaborador);
+    	
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador.setColaborador(colaborador);
+    	historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+    	historicoColaborador.setEstabelecimento(estabelecimento);
+    	historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
+    	
+    	ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	assertEquals(1, colaboradorTurmaDao.findIdEstabelecimentosByTurma(turma.getId(),empresa.getId()).size());
     }
 
     public void testFindRelatorioSemIndicacaoDeTreinamento()

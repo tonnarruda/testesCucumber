@@ -9,6 +9,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
@@ -87,7 +88,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		return formata.format(resultado * 100);
 	}
 
-	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha)
+	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha, Long estabelecimentoId)
 	{
 		if(colaboradorTurmas.size() < qtdMaxLinha)
 		{
@@ -95,7 +96,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 
 			for(int i = 0; i < linhasEmBranco; i++)
 			{
-				colaboradorTurmas.add(null);
+				ColaboradorTurma colaboradorTurmaAux = new ColaboradorTurma();
+				colaboradorTurmaAux.setProjectionEstabelecimentoId(estabelecimentoId);
+				colaboradorTurmas.add(colaboradorTurmaAux);
 			}
 		}
 		

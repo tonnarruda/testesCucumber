@@ -3,9 +3,15 @@
 
 <xwork>
 	<package name="relatorioPresenca" extends="default" namespace="/desenvolvimento/relatorioPresenca">
-		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.RelatorioPresencaAction">
+		<action name="imprimirRelatorio" class="com.fortes.rh.web.action.desenvolvimento.RelatorioPresencaAction" method="imprimirRelatorio">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/relatorioPresenca.jasper</param>
+				<param name="location">WEB-INF/report/relatorio_presenca_data.jasper</param>
+				<param name="dataSource">listaDePresencas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">presenca.pdf</param>
+			</result>
+			<result name="relatorioPorEstabelecimento" type="jasper">
+				<param name="location">WEB-INF/report/relatorio_presenca_estabelecimento.jasper</param>
 				<param name="dataSource">listaDePresencas</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">presenca.pdf</param>
