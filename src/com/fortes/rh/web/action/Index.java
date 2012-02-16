@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -93,6 +95,7 @@ public class Index extends ActionSupport
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 	private Collection<Video> listaVideos = new ArrayList<Video>();
+	
 
 	public String index()
 	{
@@ -183,19 +186,29 @@ public class Index extends ActionSupport
 		pgInicial = false;
 		
 		try {
-			InputStream is = new URL("http://www.fortesinformatica.com.br/portal_videoteca_rh.php").openStream();
+			InputStream is = new URL("http://www.fortesinformatica.com.br/portal_videoteca_rh.php?hash="+getCalculoHash()).openStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			
 			String jsonText = readAll(rd);
 			
 			listaVideos = (Collection<Video>) StringUtil.simpleJSONtoArrayJava(jsonText, Video.class);
+			
 		
 		} catch (Exception e) 
 		{
-			addActionError("A lista de vídeos não pôde ser carregada. Verifique a sua conexão com a internet.");
+			addActionError("A lista de vídeos não pôde ser carregada. Verifique a conexão do servidor com a internet.");
 		}
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getCalculoHash()
+	{
+		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
+		
+		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
+		
+		return StringUtil.encodeString(calculoHash.toString());
 	}
 	
 	private static String readAll(Reader rd) throws IOException 
@@ -249,6 +262,9 @@ public class Index extends ActionSupport
 			}
 		}
 	}
+	
+	
+	
 	
 	public String browsersCompativeis()
 	{

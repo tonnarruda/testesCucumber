@@ -110,13 +110,6 @@ public abstract class Menu
 		return menuFilho.toString();
 	}
 	
-	private static String getHash()
-	{
-		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
-		
-		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
-		
-		return StringUtil.encodeString(calculoHash.toString());
-	}
+	
 
 }
