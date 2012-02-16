@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.TipoComissaoReuniao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -123,9 +124,12 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 		return comissaoMembros;
 	}
 
-	public Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId)
+	public Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId) throws FortesException
 	{
 		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByComissao(comissaoId, false);
+		if (presencas == null || presencas.isEmpty())
+			throw new FortesException("Não existem registros de membros em reuniões desta comissão");
+		
 		Collection<Colaborador> colaboradores = getColaboradores(presencas);
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
 				

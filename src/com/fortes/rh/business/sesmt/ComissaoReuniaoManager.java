@@ -6,6 +6,7 @@ import javax.persistence.PersistenceException;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoReuniao;
@@ -17,7 +18,7 @@ public interface ComissaoReuniaoManager extends GenericManager<ComissaoReuniao>
 	Collection<ComissaoReuniao> findByComissao(Long comissaoId);
 	Collection<ComissaoReuniao> findImprimirCalendario(Long comissaoId) throws ColecaoVaziaException;
 	Collection<ComissaoMembro> findImprimirAta(ComissaoReuniao comissaoReuniao, Long comissaoId);
-	Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId);
+	Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId) throws FortesException;
 	void removeByComissao(Long id);
 	ComissaoReuniao saveOrUpdate(ComissaoReuniao comissaoReuniao, String[] colaboradorChecks, String[] colaboradorIds, String[] justificativas) throws PersistenceException, Exception;
 	void sugerirReuniao(Comissao comissao);

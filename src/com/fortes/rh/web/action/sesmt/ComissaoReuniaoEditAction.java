@@ -11,6 +11,7 @@ import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
@@ -160,9 +161,16 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 
 	public String relatorioPresenca()
 	{
-		comissaoReuniaoPresencaMatrizes = comissaoReuniaoManager.findRelatorioPresenca(comissao.getId());
-		comissaoReuniaos = comissaoReuniaoManager.findByComissao(comissao.getId());
-		comissaoReuniaos = collectionUtil.sortCollectionDate(comissaoReuniaos, "data", "asc");
+		try {
+			comissaoReuniaoPresencaMatrizes = comissaoReuniaoManager.findRelatorioPresenca(comissao.getId());
+			comissaoReuniaos = comissaoReuniaoManager.findByComissao(comissao.getId());
+			comissaoReuniaos = collectionUtil.sortCollectionDate(comissaoReuniaos, "data", "asc");
+		
+		} catch (FortesException e) 
+		{
+			addActionMessage(e.getMessage());
+		}
+		
 		return SUCCESS;
 	}
 
