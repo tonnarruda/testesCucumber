@@ -19,6 +19,7 @@ import com.fortes.rh.business.sesmt.ComissaoReuniaoManagerImpl;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.TipoComissaoReuniao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -201,7 +202,16 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		comissaoReuniaoPresencaManager.expects(once()).method("findByComissao").with(eq(1L), eq(false)).will(returnValue(presencas));
 		comissaoMembroManager.expects(once()).method("findColaboradoresNaComissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 
-		Collection<ComissaoReuniaoPresencaMatriz> resultado = comissaoReuniaoManager.findRelatorioPresenca(1L);
+		Collection<ComissaoReuniaoPresencaMatriz> resultado = null;
+		Exception exception = null;
+
+		try {
+			resultado = comissaoReuniaoManager.findRelatorioPresenca(1L);
+		} catch (FortesException e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 		assertEquals(2,resultado.size());
 	}
 
