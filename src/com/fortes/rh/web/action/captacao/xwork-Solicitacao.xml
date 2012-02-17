@@ -131,8 +131,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/insereSolicitacaoCandidato.ftl</result>
 		</action>
 		<action name="gravarSolicitacoesCandidato" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="gravarSolicitacoesCandidato">
-			<result name="success" type="redirect">list.action</result>
-			<result name="successSolicitacao" type="redirect">../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/insereSolicitacaoCandidato.ftl</result>
 		</action>
 
 		<action name="agenda" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="agenda">

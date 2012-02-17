@@ -49,7 +49,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
-    private HashMap status;
+    private HashMap<Character, String> status;
 
 	private Collection<Solicitacao> solicitacaos;
 	private Collection<HistoricoCandidato> historicoCandidatos;	
@@ -57,7 +57,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Solicitacao solicitacao;
     private char visualizar = 'A';
     private Candidato candidato;
-    private Long[] solicitacaosCheckIds;
+    private String[] solicitacaosCheckIds;
     private String dataEncerramento;
     private Empresa empresa;
     private Collection<Empresa> empresas;
@@ -74,6 +74,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 	
 	private Date dataIni;
 	private Date dataFim;
+
+	private String voltarPara;
 
 	public String list() throws Exception
     {
@@ -134,7 +136,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public String verSolicitacoes() throws Exception
     {
-		empresa = getEmpresaSistema();
+		if (empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
 		
 		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_MOV_SOLICITACAO");
@@ -149,18 +152,21 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String gravarSolicitacoesCandidato() throws Exception
     {
-    	for(Long id : solicitacaosCheckIds)
+    	for(String id : solicitacaosCheckIds)
     	{
     		solicitacao = new Solicitacao();
-	    	solicitacao.setId(id);
+	    	solicitacao.setId(Long.parseLong(id));
 
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
     	}
     	
-    	if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1)
-    		return "successSolicitacao";
-    	else
-    		return Action.SUCCESS;
+    	verSolicitacoes();
+    	
+    	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
+    	
+    	addActionMessage("Candidato incluído com sucesso");
+    	
+		return Action.SUCCESS;
     }
 
     public String delete() throws Exception
@@ -169,6 +175,7 @@ public class SolicitacaoListAction extends MyActionSupportList
         	addActionError("Não é possível excluir a Solicitação, pois existem candidatos para esta.");
         else
         	addActionMessage("Solicitação excluída com sucesso.");
+        
         return list();
     }
 
@@ -278,12 +285,12 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.solicitacaosCheck = solicitacaosCheck;
 	}
 
-	public Long[] getSolicitacaosCheckIds()
+	public String[] getSolicitacaosCheckIds()
 	{
 		return solicitacaosCheckIds;
 	}
 
-	public void setSolicitacaosCheckIds(Long[] solicitacaosCheckIds)
+	public void setSolicitacaosCheckIds(String[] solicitacaosCheckIds)
 	{
 		this.solicitacaosCheckIds = solicitacaosCheckIds;
 	}
@@ -413,5 +420,17 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setStatusSolicitacaoAnterior(char statusSolicitacaoAnterior) {
 		this.statusSolicitacaoAnterior = statusSolicitacaoAnterior;
+	}
+
+	public String getVoltarPara() {
+		return voltarPara;
+	}
+
+	public void setVoltarPara(String voltarPara) {
+		this.voltarPara = voltarPara;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

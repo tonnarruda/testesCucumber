@@ -156,6 +156,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("						solicitacao.quantidade, ");
 		hql.append("						solicitacao.data,  ");
 		hql.append("						solicitacao.encerrada,  ");
+		hql.append("						solicitacao.empresa.id,  ");
 		hql.append("						historicoFaixaSalarial.valor, ");
 		hql.append("						solicitacao.avaliacao.id, ");
 		hql.append("						faixaSalarial.id, ");

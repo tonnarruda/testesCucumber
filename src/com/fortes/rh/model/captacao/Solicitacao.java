@@ -106,13 +106,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
 	{
 		setId(id);
 		setQuantidade(quantidade);
 		setData(data);
 		setNomeArea(nomeAreaOrganizacional);
 		setSolicitanteNome(nomeSolicitante);
+		setProjectionEmpresaId(empresaId);
 		this.encerrada = encerrada;
 
 		setAvaliacao(new Avaliacao());

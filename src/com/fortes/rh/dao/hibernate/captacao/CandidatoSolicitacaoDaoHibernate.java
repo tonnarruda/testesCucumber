@@ -139,10 +139,12 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
     //TODO BACALHAU, ajustar parametros. Ex.: o contratado passa true e usa false
     public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca)
     {
+    	//cuidado com a ordem das joins, tem um sql amarrado...h2_ IMUNDO
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
         criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
         criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
         criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
+        criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("cs.id"), "id");
@@ -158,6 +160,8 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("h.apto"), "projectionApto");
         p.add(Projections.property("e.id"), "projectionEtapaId");
         p.add(Projections.property("e.nome"), "projectionEtapaNome");
+        p.add(Projections.property("emp.id"), "projectionCandidatoEmpresaId");
+        p.add(Projections.property("emp.nome"), "projectionCandidatoEmpresaNome");
         criteria.setProjection(p);
 
         criteria.add(Expression.eq("cs.triagem", false));

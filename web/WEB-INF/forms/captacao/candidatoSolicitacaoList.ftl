@@ -76,6 +76,7 @@
 				<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 			</#if>
 		</#if>
+		<#assign actionContrataCandidatoOutraEmpresa="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 		
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'C'>
 			<#assign titleAceito="Candidato já contratado"/>
@@ -108,9 +109,17 @@
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 				
 				<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
-					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+					<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 				<#else>
-					<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+					<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>
+						<#if candidatoSolicitacao.candidato.disponivel>
+							<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrataCandidatoOutraEmpresa}"/>'});"><img border="0" title="Contratar o Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+						<#else>
+							<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="Colaborador contratado na empresa ${candidatoSolicitacao.candidato.empresa.nome}. Desligue-o para continuar o processo de transferência." src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>">
+						</#if>
+					<#else>
+						<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+					</#if>
 				</#if>
 				
 				<#if (!candidatoSolicitacao.etapaSeletiva?exists || !candidatoSolicitacao.etapaSeletiva.id?exists) && (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && !candidatoSolicitacao.candidato.contratado)>

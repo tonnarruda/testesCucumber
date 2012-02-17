@@ -179,6 +179,20 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		candidato.setOrigem(projectionCandidatoOrigem);
 	}
+
+	public void setProjectionCandidatoEmpresaId(Long candidatoEmpresaId)
+	{
+		inicializaCandidato();
+		
+		candidato.setEmpresaId(candidatoEmpresaId);
+	}
+
+	public void setProjectionCandidatoEmpresaNome(String candidatoEmpresaNome)
+	{
+		inicializaCandidato();
+		
+		candidato.setEmpresaNome(candidatoEmpresaNome);
+	}
 	
 	public void setProjectionEtapaId(Long projectionEtapaId)
 	{

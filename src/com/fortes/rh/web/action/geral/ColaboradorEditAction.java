@@ -240,6 +240,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private boolean vincularCandidatoMesmoCpf;
 	
 	private int pontuacao = 0;
+
+	private String voltarPara;
 	
 	private void prepare() throws Exception
 	{
@@ -1680,5 +1682,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public int getPontuacao() {
 		return pontuacao;
+	}
+
+	public String getVoltarPara() {
+		return voltarPara;
+	}
+
+	public void setVoltarPara(String voltarPara) {
+		this.voltarPara = voltarPara;
 	}
 }

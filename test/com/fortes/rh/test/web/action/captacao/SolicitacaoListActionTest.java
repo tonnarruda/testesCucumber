@@ -170,26 +170,27 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     
     public void testGravarSolicitacoesCandidato() throws Exception
     {
-    	Long[] solicitacaosCheckIds = new Long[]{20L,100L};
+    	Candidato candidato = CandidatoFactory.getCandidato(2L);
+    	action.setCandidato(candidato);
+    	
+    	String[] solicitacaosCheckIds = new String[]{"20","100"};
 		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
-		action.setCandidato(CandidatoFactory.getCandidato(2L));
+		action.setCandidato(candidato);
+		action.setStatusCandSol('A');
+		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
 		
-		candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(eq(new String[]{"2"}), ANYTHING, ANYTHING).isVoid();
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharCandidatos(true);
+		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+
+		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(2L)).will(returnValue(candidato));
+		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(StatusAprovacaoSolicitacao.APROVADO),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
+		
 		
 		assertEquals("success",action.gravarSolicitacoesCandidato());
     }
-    
-    public void testGravarUmaSolicitacaoCandidato() throws Exception
-    {
-    	Long[] solicitacaosCheckIds = new Long[]{100L};
-		action.setSolicitacaosCheckIds(solicitacaosCheckIds);
-		action.setCandidato(CandidatoFactory.getCandidato(2L));
-		
-		candidatoSolicitacaoManager.expects(once()).method("insertCandidatos").with(eq(new String[]{"2"}), ANYTHING, ANYTHING).isVoid();
-		
-		assertEquals("successSolicitacao", action.gravarSolicitacoesCandidato());
-    }
-    
+
     
     public void testEncerrarSolicitacao() throws Exception
     {

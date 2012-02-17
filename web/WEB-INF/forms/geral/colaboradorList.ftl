@@ -118,9 +118,9 @@
 			<#--<a href="../historicoColaboradorBeneficio/list.action?colaborador.id=${colaborador.id}"><img border="0" title="Benefícios" src="<@ww.url includeParams="none" value="/imgs/table.gif"/>"></a>-->
 
 			<#if !colaborador.desligado>
-				<a href="javascript:window.location='prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=A'"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+				<a href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=A&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 			<#else>
-				<a href="javascript:window.location='prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=I'"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+				<a href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=I&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
 			</#if>
 
 			<a href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}"><img border="0" title="Documentos do Colaborador" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
