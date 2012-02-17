@@ -12,6 +12,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
@@ -19,16 +20,22 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
@@ -83,7 +90,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
         super.tearDown();
     }
 
-    public void testExecuteEmpresaErrada() throws Exception
+    public void testimprimirRelatorioEmpresaErrada() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(2L);
     	
@@ -102,11 +109,11 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
     	cursoManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
     	
-    	assertEquals("acessonegado", action.execute());
+    	assertEquals("acessonegado", action.imprimirRelatorio());
     	assertEquals(cursos, action.getCursos());
     }
     
-    public void testExecute() throws Exception
+    public void testImprimirRelatorioPorData() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
@@ -126,25 +133,76 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
+    	
     	action.setDiasCheck(new String[]{"1"});
+    	action.setQuebraPaginaEstabelecimento(false);
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), eq(null), ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
-    	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+    	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setAppVersao("1.01.1");
 
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		
-    	assertEquals("success", action.execute());
+    	assertEquals("success", action.imprimirRelatorio());
+    	assertEquals(colaboradorTurma, action.getColaboradorTurma());
+    	assertEquals(colaboradorTurmas, action.getColaboradorTurmas());
+    	assertNotNull(action.getListaDePresencas());
+    }
+    public void testImprimirRelatorioPorEstabelecimento() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	Curso curso = CursoFactory.getEntity(1L);
+    	curso.setEmpresa(empresa);
+    	
+    	Date data = new Date();
+    	Turma turma = TurmaFactory.getEntity(1L);
+    	turma.setCurso(curso);
+    	turma.setDataPrevFim(data);
+    	turma.setDataPrevIni(data);
+    	
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador.setEstabelecimento(estabelecimento);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setHistoricoColaborador(historicoColaborador);
+    	
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma.setTurma(turma);
+    	
+    	action.setColaboradorTurma(colaboradorTurma);
+    	
+    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+    	colaboradorTurmas.add(colaboradorTurma);
+    	
+    	action.setDiasCheck(new String[]{"1"});
+    	action.setQuebraPaginaEstabelecimento(true);
+    	
+    	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
+    	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
+    	colaboradorTurmaManager.expects(once()).method("findIdEstabelecimentosByTurma").with(eq(colaboradorTurma.getTurma().getId()), eq(empresa.getId())).will(returnValue(Arrays.asList(new Long[]{1L})));    	
+    	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+    	
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+		parametrosDoSistema.setAppVersao("1.01.1");
+
+		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
+		
+    	assertEquals("relatorioPorEstabelecimento", action.imprimirRelatorio());
     	assertEquals(colaboradorTurma, action.getColaboradorTurma());
     	assertEquals(colaboradorTurmas, action.getColaboradorTurmas());
     	assertNotNull(action.getListaDePresencas());
     }
     
-    public void testExecuteException() throws Exception
+    public void testimprimirRelatorioException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
@@ -166,7 +224,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
     	colaboradorTurmaManager.expects(once()).method("findByTurma").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(turma.getId(),""))));
 
-    	assertEquals("error", action.execute());
+    	assertEquals("error", action.imprimirRelatorio());
     }
           
     public void testGets() throws Exception

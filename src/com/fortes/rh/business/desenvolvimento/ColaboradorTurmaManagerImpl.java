@@ -389,7 +389,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 		return parametros;
 	}
-
+	
+	public Collection<Long> findIdEstabelecimentosByTurma(Long turmaid, Long empresaId) 
+	{
+		return getDao().findIdEstabelecimentosByTurma(turmaid, empresaId);
+	}
+	
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize)
 	{
 		return getDao().findByTurma(turmaId, empresaId, page, pagingSize);
@@ -1107,7 +1112,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 	
-	public void setMail(Mail mail) {
+	public void setMail(Mail mail) 
+	{
 		this.mail = mail;
 	}
 	

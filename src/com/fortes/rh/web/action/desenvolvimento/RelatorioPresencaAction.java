@@ -31,7 +31,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private Collection<Curso> cursos;
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Turma> turmas;
-	private Collection<ListaDePresenca> listaDePresencas;
+	private Collection<ListaDePresenca> listaDePresencas = new ArrayList<ListaDePresenca>();;
 
 	private ColaboradorTurma colaboradorTurma;
 
@@ -54,7 +54,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private boolean quebraPaginaEstabelecimento;
 
 	@SuppressWarnings("unchecked")
-	public String execute()
+	public String imprimirRelatorio()
 	{
 		Turma turma = turmaManager.findById(colaboradorTurma.getTurma().getId());
 		if(!getEmpresaSistema().getId().equals(turma.getCurso().getEmpresa().getId()))
@@ -69,25 +69,54 @@ public class RelatorioPresencaAction extends MyActionSupport
 			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null, null, null);
 			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea);
 
-			listaDePresencas = new ArrayList<ListaDePresenca>();
-			for (String dia : diasCheck)
-			{
-				colaboradorTurmas = colaboradorPresencaManager.preparaLinhaEmBranco(colaboradorTurmas, qtdLinhas);
-				ListaDePresenca listaDePresenca = new ListaDePresenca(dia, colaboradorTurmas);
-				listaDePresencas.add(listaDePresenca);
-			}
+			if(quebraPaginaEstabelecimento)
+				montaListaDePresencaPorEstabelecimento();
+			else
+				montaListaDePresenca(null, (ArrayList<ColaboradorTurma> )colaboradorTurmas);
 
 			parametros = RelatorioUtil.getParametrosRelatorio("Lista de Frequência", getEmpresaSistema(), "");
 			parametros = montaParametros(turma);
-
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-
+			addActionError("Não foi possível gerar o relatório");
 			return Action.ERROR;
 		}
+		
+		if(quebraPaginaEstabelecimento)
+			return "relatorioPorEstabelecimento";
+		 
 		return Action.SUCCESS;
+	}
+
+	private void montaListaDePresencaPorEstabelecimento() 
+	{
+		Collection<Long> estabelecimentoIds = colaboradorTurmaManager.findIdEstabelecimentosByTurma(colaboradorTurma.getTurma().getId(), getEmpresaSistema().getId());
+		
+		for (Long estabelecimentoId : estabelecimentoIds) 
+		{
+			ArrayList<ColaboradorTurma> listaColaboradorTurmaPorEstabelecimento = new ArrayList<ColaboradorTurma>();
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+				if (estabelecimentoId.equals(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getId())) {
+					listaColaboradorTurmaPorEstabelecimento.add(colaboradorTurma);
+				}
+			}
+			
+			montaListaDePresenca(estabelecimentoId, listaColaboradorTurmaPorEstabelecimento);
+		}
+	}
+
+	private void montaListaDePresenca(Long estabelecimentoId, ArrayList<ColaboradorTurma> listaColaboradorTurmaPorEstabelecimento) 
+	{
+		Collection<ColaboradorTurma> colaboradorTurmasTemp;
+	
+		for (String dia : diasCheck)
+		{
+			colaboradorTurmasTemp = colaboradorPresencaManager.preparaLinhaEmBranco(listaColaboradorTurmaPorEstabelecimento, qtdLinhas, estabelecimentoId);
+			ListaDePresenca listaDePresenca = new ListaDePresenca(dia, colaboradorTurmasTemp);
+			listaDePresencas.add(listaDePresenca);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,6 +134,9 @@ public class RelatorioPresencaAction extends MyActionSupport
 		parametros.put("dataPrevFim", DateUtil.formataDiaMesAno(turma.getDataPrevFim()));
 		parametros.put("SUBREPORT_DIR", path);
 		parametros.put("exibirNota", exibirNota);
+		parametros.put("exibirCnpj", exibirCnpj);
+		parametros.put("exibirRazaoSocial", exibirRazaoSocial);
+		parametros.put("exibirEndereco", exibirEndereco);
 		parametros.put("exibirCriteriosAvaliacao", exibirCriteriosAvaliacao);
 		parametros.put("exibirConteudoProgramatico", exibirConteudoProgramatico);
 		parametros.put("quebraPaginaEstabelecimento", quebraPaginaEstabelecimento);
@@ -197,7 +229,6 @@ public class RelatorioPresencaAction extends MyActionSupport
 		{
 			this.data = data;
 		}
-
 	}
 	public ColaboradorTurma getColaboradorTurma()
 	{

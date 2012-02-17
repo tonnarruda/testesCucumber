@@ -88,6 +88,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L))
 		{
+			//TODO remprot msgAC
+			//modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
 			String papeis = StringUtil.converteArrayToString(permissoes);
 			parametrosDoSistemaManager.updateModulos(papeis);
 

@@ -74,46 +74,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	@Transient
 	private Double nota;
 	
-	
-
-
-	public String getColuna01RelatorioPresenca()
-	{
-		return coluna01RelatorioPresenca;
-	}
-
-	public void setColuna01RelatorioPresenca(String coluna01RelatorioPresenca)
-	{
-		this.coluna01RelatorioPresenca = coluna01RelatorioPresenca;
-	}
-
-	public String getColuna02RelatorioPresenca()
-	{
-		return coluna02RelatorioPresenca;
-	}
-
-	public void setColuna02RelatorioPresenca(String coluna02RelatorioPresenca)
-	{
-		this.coluna02RelatorioPresenca = coluna02RelatorioPresenca;
-	}
-
-	public String getColuna03RelatorioPresenca()
-	{
-		return coluna03RelatorioPresenca;
-	}
-
-	public void setColuna03RelatorioPresenca(String coluna03RelatorioPresenca)
-	{
-		this.coluna03RelatorioPresenca = coluna03RelatorioPresenca;
-	}
-
 	public ColaboradorTurma() {	}
 
 	public ColaboradorTurma(Long id)
 	{
 		setId(id);
 	}
- 	
+	
 	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula)
 	{
 		this.setId(id);
@@ -190,7 +157,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
 	}
 
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, String estabelecimentoNome, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome)
+	// findByTurma
+	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj)
 	{
 		this.setId(id);
 
@@ -214,6 +182,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		
 		this.colaborador.getEmpresa().setId(empresaId);
 		this.colaborador.getEmpresa().setNome(empresaNome);
+		this.colaborador.getEmpresa().setRazaoSocial(empresaRazaoSocial);
+		this.colaborador.getEmpresa().setCnpj(empresaCnpj);
 		
 		if(this.colaborador.getHistoricoColaborador() == null)
 			this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
@@ -222,9 +192,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 			this.colaborador.getHistoricoColaborador().setAreaOrganizacional(new AreaOrganizacional());
 		this.colaborador.getHistoricoColaborador().getAreaOrganizacional().setNome(areaOrganizacionalNome);
 		
-		if(this.colaborador.getHistoricoColaborador().getEstabelecimento() == null)
-			this.colaborador.getHistoricoColaborador().setEstabelecimento(new Estabelecimento());
-		this.colaborador.getHistoricoColaborador().getEstabelecimento().setNome(estabelecimentoNome);
+		estabelecimento.setEmpresa(colaborador.getEmpresa());
+		this.colaborador.getHistoricoColaborador().setEstabelecimento(estabelecimento);
 
 		if(this.colaborador.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.colaborador.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -639,6 +608,14 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		return false;
 	}
 
+	public void setProjectionEstabelecimentoId(Long estabelecimentoId) 
+	{
+		this.colaborador = new Colaborador();
+		this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
+		this.colaborador.getHistoricoColaborador().setEstabelecimento(new Estabelecimento());
+		this.colaborador.getHistoricoColaborador().getEstabelecimento().setId(estabelecimentoId);
+	}
+	
 	public Collection<AproveitamentoAvaliacaoCurso> getAproveitamentoAvaliacaoCursos()
 	{
 		return aproveitamentoAvaliacaoCursos;
@@ -723,5 +700,35 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setQtdAvaliacoesCurso(Integer qtdAvaliacoesCurso) {
 		this.qtdAvaliacoesCurso = qtdAvaliacoesCurso;
+	}
+	
+	public String getColuna01RelatorioPresenca()
+	{
+		return coluna01RelatorioPresenca;
+	}
+
+	public void setColuna01RelatorioPresenca(String coluna01RelatorioPresenca)
+	{
+		this.coluna01RelatorioPresenca = coluna01RelatorioPresenca;
+	}
+
+	public String getColuna02RelatorioPresenca()
+	{
+		return coluna02RelatorioPresenca;
+	}
+
+	public void setColuna02RelatorioPresenca(String coluna02RelatorioPresenca)
+	{
+		this.coluna02RelatorioPresenca = coluna02RelatorioPresenca;
+	}
+
+	public String getColuna03RelatorioPresenca()
+	{
+		return coluna03RelatorioPresenca;
+	}
+
+	public void setColuna03RelatorioPresenca(String coluna03RelatorioPresenca)
+	{
+		this.coluna03RelatorioPresenca = coluna03RelatorioPresenca;
 	}
 }
