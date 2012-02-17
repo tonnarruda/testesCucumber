@@ -243,6 +243,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private String voltarPara;
 	
+	Collection<Colaborador> colaboradoresMesmoCpf = new ArrayList<Colaborador>();
+	
 	private void prepare() throws Exception
 	{
 		try
@@ -851,6 +853,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					catsColaborador, participacoesNaCipaColaborador, areaOrganizacionals);
 			
 			configPerformanceBoxes = StringUtil.toJSON(configuracaoPerformanceManager.findByUsuario(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession())), new String[]{"usuario"}); 
+			
+			colaboradoresMesmoCpf = colaboradorManager.findByCpf(colaborador.getPessoal().getCpf(), null);
 			
 			return Action.SUCCESS;
 
@@ -1690,5 +1694,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setVoltarPara(String voltarPara) {
 		this.voltarPara = voltarPara;
+	}
+
+	public Collection<Colaborador> getColaboradoresMesmoCpf() {
+		return colaboradoresMesmoCpf;
 	}
 }

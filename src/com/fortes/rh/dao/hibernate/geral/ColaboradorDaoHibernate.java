@@ -2283,6 +2283,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByCpf(String cpf, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -2291,11 +2292,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.matricula"), "matricula");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.nome"), "empresaNome");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if (empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
-		if(StringUtils.isNotBlank(cpf))
+		if (StringUtils.isNotBlank(cpf))
 			criteria.add(Expression.eq("c.pessoal.cpf", cpf));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

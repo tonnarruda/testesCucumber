@@ -102,6 +102,16 @@
 <body>
 
 <br>
+
+<#if colaboradoresMesmoCpf?exists>
+	<ul>
+	<#list colaboradoresMesmoCpf as colab>
+		<li><a href="preparePerformanceFuncional.action?colaborador.id=${colab.id}">${colab.nome} na empresa ${colab.empresa.nome}</a></li>
+	</#list>
+	</ul>
+</#if>
+
+<br>
 <span id="exibir">
 	<strong>Identificação do Colaborador</strong>
 </span>
