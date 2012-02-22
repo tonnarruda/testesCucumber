@@ -10,6 +10,10 @@
 	{
 		color: #F00 !important;
 	}
+	.indiferente
+	{
+		color: #0000FF !important;
+	}
 	.contratado
 	{
 		color: #008000 !important;
@@ -57,9 +61,12 @@
 	<#assign jaResponderam = false/>
 
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
-	
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.aptoBoolean>
-			<#assign classe=""/>
+			<#if candidatoSolicitacao.apto == 'I'>
+				<#assign classe="indiferente"/>
+			<#else>
+				<#assign classe=""/>
+			</#if>			
 		<#else>
 			<#assign classe="apto"/>
 		</#if>
@@ -203,7 +210,8 @@
 
 	<script>
 		var obj = document.getElementById("legendas");
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos/Indiferente";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos";
 	</script>
