@@ -12,4 +12,6 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void executeEncerrarSolicitacao(Empresa empresa, Long solicitacaoId) throws Exception;
 	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
+	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception;
+	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa);
 }

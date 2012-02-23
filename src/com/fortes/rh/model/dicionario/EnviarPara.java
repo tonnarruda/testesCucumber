@@ -8,6 +8,9 @@ public enum EnviarPara
 	USUARIO (1, "Usuário"),
 	GESTOR_AREA (2, "Gestor da área organizacional"),
 	CANDIDATO_NAO_APTO (3, "Candidatos não aptos"),
+	SOLICITANTE_SOLICITACAO (4, "Solicitante"),
+	LIBERADOR_SOLICITACAO (5, "Liberador"),
+	AVALIADOR_AVALIACAO_DESEMPENHO (6, "Avaliador"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)
@@ -49,5 +52,16 @@ public enum EnviarPara
 	
 	public static void setAvulso(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
+	}
+
+	public static void setLiberador(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.LIBERADOR_SOLICITACAO.getId(), EnviarPara.LIBERADOR_SOLICITACAO.getDescricao());
+	}
+	public static void setSolicitante(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.SOLICITANTE_SOLICITACAO.getId(), EnviarPara.SOLICITANTE_SOLICITACAO.getDescricao());
+	}
+	
+	public static void setAvaliadorAvaliacaoDesempenho(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId(), EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getDescricao());
 	}
 }

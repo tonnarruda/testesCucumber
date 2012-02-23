@@ -7,8 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -21,7 +20,6 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -29,7 +27,6 @@ import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.web.tags.CheckBox;
 
 public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<AvaliacaoDesempenho, AvaliacaoDesempenhoDao> implements AvaliacaoDesempenhoManager
@@ -39,10 +36,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private RespostaManager respostaManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private QuestionarioManager questionarioManager;
-	private ColaboradorManager colaboradorManager;
 	private AvaliacaoManager avaliacaoManager;
-	private Mail mail;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -181,26 +176,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		this.questionarioManager = questionarioManager;
 	}
 
-	public void enviarLembrete(Long id, Empresa empresa)
+	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa)
 	{
-		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(id, false, false);
-    	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-		
-        for (Colaborador avaliador : avaliadores)
-        {
-            try
-            {
-                StringBuilder corpo = new StringBuilder();
-                corpo.append("ATENÇÃO:<br>");
-                corpo.append("Existe Avaliação de Desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">RH</a>") ;
-
-                mail.send(empresa, parametros, "[RH] Lembrete responder Avaliação de Desempenho", corpo.toString(), avaliador.getContato().getEmail());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+		gerenciadorComunicacaoManager.enviarLembrete(avaliacaoDesempenhoId, empresa);
 	}
 	
 	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
@@ -210,21 +188,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
 	{
 		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId, liberada);
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao) {
@@ -262,4 +225,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			}
 		}
 	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+
 }

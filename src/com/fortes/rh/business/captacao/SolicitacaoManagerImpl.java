@@ -10,8 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
+import com.fortes.ant.task.emma.manager.Gerenciador;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -31,7 +30,6 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -257,22 +255,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
 		gerenciadorComunicacaoManager.emailSolicitante(solicitacao, empresa, usuario);
 	}
-	
-	private void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
-	{
-		body.append("<br>Descrição: " + solicitacao.getDescricao());
-		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
-		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
-		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
-		body.append("<br>Solicitante: " + nomeSolicitante);
-		body.append("<br>Status: " + solicitacao.getStatusFormatado());
-		body.append("<br>Liberador: " + nomeLiberador);
-		body.append("<br>Observação do Liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
-		
-		body.append("<br><br>Acesse o RH para mais detalhes:<br>");
-		body.append("<a href='" + link + "'>RH</a>");
-	}
-	
+
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao)
 	{
 		return getDao().getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao);

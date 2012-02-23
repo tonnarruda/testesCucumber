@@ -878,6 +878,9 @@
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
+    <property name="perfilManager">
+      <ref bean="perfilManager" />
+    </property>
     <property name="mail">
       <ref bean="mail" />
     </property>

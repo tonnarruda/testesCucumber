@@ -63,6 +63,9 @@
     <property name="colaboradorQuestionarioManager">
       <ref bean="colaboradorQuestionarioManager" />
     </property>
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
     <property name="perguntaManager">
       <ref bean="perguntaManager" />
     </property>
@@ -75,17 +78,8 @@
     <property name="questionarioManager">
       <ref bean="questionarioManager" />
     </property>
-    <property name="colaboradorManager">
-      <ref bean="colaboradorManager" />
-    </property>
     <property name="avaliacaoManager">
       <ref bean="avaliacaoManager" />
-    </property>
-    <property name="mail">
-      <ref bean="mail" />
-    </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
     </property>
   </bean>
   <bean id="avaliacaoDesempenhoManager" parent="parentManager">

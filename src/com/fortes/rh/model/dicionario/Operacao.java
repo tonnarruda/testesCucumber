@@ -30,7 +30,51 @@ public enum Operacao
 			return enviarPara;
 		}
 	},
-	LIBERAR_SOLICITACAO (2, "Liberar Solicitação");
+	LIBERAR_SOLICITACAO (2, "Liberar solicitação"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setLiberador(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	ALTEREAR_STATUS_SOLICITACAO(3, "Ateração no status da solicitação de pessoal"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setSolicitante(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(4, "Enviar lembrete avaliação desempenho"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setAvaliadorAvaliacaoDesempenho(enviarPara);
+			
+			return enviarPara;
+		}
+	};
 
 	private int id;
 	private String descricao;
@@ -51,7 +95,6 @@ public enum Operacao
 		HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
 		EnviarPara.setUsuario(enviarPara);
 		EnviarPara.setAvulso(enviarPara);
-		
 		return enviarPara;
 	}
 	
