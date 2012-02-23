@@ -103,17 +103,11 @@
 
 <br>
 
-<#if colaboradoresMesmoCpf?exists>
-	<ul>
-	<#list colaboradoresMesmoCpf as colab>
-		<li><a href="preparePerformanceFuncional.action?colaborador.id=${colab.id}">${colab.nome} na empresa ${colab.empresa.nome}</a></li>
-	</#list>
-	</ul>
-</#if>
-
-<br>
 <span id="exibir">
-	<strong>Identificação do Colaborador</strong>
+	<strong>
+		Identificação do Colaborador
+		(Empresa ${colaborador.empresa.nome})
+	</strong>
 </span>
 <div class='grade'>
 	<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
@@ -127,11 +121,12 @@
 			
 	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
 	
-	<#if colaborador.contato?exists && colaborador.contato.email?exists>
-		<div class='grade_field'><strong>Email:</strong> <a title="enviar email" href="mailto:${colaborador.contato.email}">${colaborador.contato.email}</a></div>
-	<#else>
-		<div class='grade_field'><strong>Email:</strong></div>
-	</#if>
+	<div class='grade_field'>
+		<strong>Email:</strong>
+		<#if colaborador.contato?exists && colaborador.contato.email?exists>
+			<a title="enviar email" href="mailto:${colaborador.contato.email}">${colaborador.contato.email}</a>
+		</#if>
+	</div>
 	
 	<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
 	<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>
@@ -231,6 +226,30 @@
 	
 	<br style='clear: both'>
 </div>
+
+<#if colaboradoresMesmoCpf?exists && 1 < colaboradoresMesmoCpf?size>
+	<br>
+	<span id="exibir">
+		<strong>
+			Registros de colaboradores com mesmo CPF em outras empresas
+		</strong>
+	</span>
+	<div class='grade'>
+		<div style="padding:10px">
+			<ul>
+				<#list colaboradoresMesmoCpf as colab>
+					<#if colab.id != colaborador.id>
+						<li>
+							<a href="preparePerformanceFuncional.action?colaborador.id=${colab.id}">
+								${colab.nome} na empresa ${colab.empresa.nome}
+							</a>
+						</li>
+					</#if>
+				</#list>
+			</ul>
+		</div>
+	</div>
+</#if>
 
 <br>
 <div class="painelConfiguracao">
