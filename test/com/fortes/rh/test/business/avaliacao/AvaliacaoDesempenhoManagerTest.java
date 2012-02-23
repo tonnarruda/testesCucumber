@@ -13,6 +13,7 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -52,7 +53,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	private Mock respostaManager;
 	private Mock colaboradorRespostaManager;
 	private Mock questionarioManager;
-
+	private Mock gerenciadorComunicacaoManager;
+	
 	protected void setUp() throws Exception
     {
         super.setUp();
@@ -68,6 +70,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
         avaliacaoDesempenhoManager.setColaboradorRespostaManager((ColaboradorRespostaManager) colaboradorRespostaManager.proxy());
         questionarioManager = mock(QuestionarioManager.class);
         avaliacaoDesempenhoManager.setQuestionarioManager((QuestionarioManager) questionarioManager.proxy());
+        gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+        avaliacaoDesempenhoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
     }
 
 	public void testFindAllSelect()
@@ -167,6 +171,10 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 //		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 //		
 //		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		gerenciadorComunicacaoManager.expects(once()).method("enviarLembrete").with(ANYTHING,ANYTHING);
+		
+		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
 	}
 	
 	public void testMontaResultado() throws Exception

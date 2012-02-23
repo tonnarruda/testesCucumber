@@ -11,7 +11,6 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
-import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -19,8 +18,6 @@ import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
@@ -70,9 +67,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
 		solicitacaoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
-		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-		solicitacaoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-		
 		usuarioManager = new Mock(UsuarioManager.class);
 
 		candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
