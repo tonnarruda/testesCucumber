@@ -101,41 +101,28 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         return getDao().findHistoricoAptoByEtapaSolicitacao(empresaId, LongUtil.arrayStringToArrayLong(etapaCheck));
     }
 
-    private boolean isEtapaFiltro(HistoricoCandidato historico, String[] etapaCheck)
-    {
-        for (String id : etapaCheck)
-        {
-            if(historico.getEtapaSeletiva().getId().equals(Long.parseLong(id)))
-                return true;
-        }
-
-        return false;
-    }
-
     public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos)
     {
         return getDao().getCandidatosBySolicitacao(solicitacao, idCandidatosComHistoricos);
     }
-
-    public void enviarEmailNaoApto(Long solicitacaoId, Empresa empresa) throws Exception
+    
+    public String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception
     {
-        Collection<CandidatoSolicitacao> candidatoSolicitacoes = new ArrayList<CandidatoSolicitacao>();
-        candidatoSolicitacoes = getDao().findNaoAptos(solicitacaoId);
+    	ArrayList<String> emailNaoAptos = new ArrayList<String>();
 
-        String subject = "Solicitação de Candidatos";
-        String body = empresa.getMailNaoAptos();
+    	Collection<CandidatoSolicitacao> candidatoSolicitacoes = getDao().findNaoAptos(solicitacaoId);
+
+    	if (candidatoSolicitacoes != null  && !candidatoSolicitacoes.isEmpty())
+    	{
+    		for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacoes)
+    		{
+    			if (StringUtils.isNotBlank(candidatoSolicitacao.getCandidato().getContato().getEmail()))
+    				emailNaoAptos.add(candidatoSolicitacao.getCandidato().getContato().getEmail());
+    		}
+
+    	}
         
-        if (empresa.getEmailCandidatoNaoApto())
-        {
-	        if (candidatoSolicitacoes != null  && StringUtils.isNotBlank(body))
-	        {
-	        	for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacoes)
-		        {
-	    			if (StringUtils.isNotBlank(candidatoSolicitacao.getCandidato().getContato().getEmail()))
-	    				mail.send(empresa, subject, body, null, candidatoSolicitacao.getCandidato().getContato().getEmail());
-		        }
-	        }
-        }
+		return emailNaoAptos.toArray(new String[]{});
     }
 
     public void setMail(Mail mail)

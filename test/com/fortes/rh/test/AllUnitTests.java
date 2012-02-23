@@ -308,13 +308,16 @@ import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dicionario.AptoTest;
 import com.fortes.rh.test.dicionario.AreasFormacaoTest;
 import com.fortes.rh.test.dicionario.DeficienciaTest;
+import com.fortes.rh.test.dicionario.EnviarParaTest;
 import com.fortes.rh.test.dicionario.EstadoTest;
 import com.fortes.rh.test.dicionario.FiltrosRelatorioTest;
+import com.fortes.rh.test.dicionario.MeioComunicacaoTest;
 import com.fortes.rh.test.dicionario.MesTest;
 import com.fortes.rh.test.dicionario.MotivoExtintorManutencaoTest;
 import com.fortes.rh.test.dicionario.MotivoHistoricoColaboradorTest;
 import com.fortes.rh.test.dicionario.MotivoSolicitacaoExameTest;
 import com.fortes.rh.test.dicionario.NivelIdiomaTest;
+import com.fortes.rh.test.dicionario.OperacaoTest;
 import com.fortes.rh.test.dicionario.OrigemCandidatoTest;
 import com.fortes.rh.test.dicionario.SexoTest;
 import com.fortes.rh.test.dicionario.SituacaoColaboradorTest;
@@ -1219,6 +1222,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TipoAcidenteTest.class);
         suite.addTestSuite(TipoAvaliacaoCursoTest.class);
         suite.addTestSuite(StatusCandidatoSolicitacaoTest.class);
+        suite.addTestSuite(OperacaoTest.class);
+        suite.addTestSuite(MeioComunicacaoTest.class);
+        suite.addTestSuite(EnviarParaTest.class);
 
         //EXCEPTIONS
         suite.addTestSuite(ColecaoVaziaExceptionTest.class);

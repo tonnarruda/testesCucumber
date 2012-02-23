@@ -127,6 +127,9 @@
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
   </bean>
   <bean id="solicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

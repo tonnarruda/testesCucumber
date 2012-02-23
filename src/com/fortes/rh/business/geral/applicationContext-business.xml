@@ -872,6 +872,15 @@
     <property name="dao">
       <ref bean="gerenciadorComunicacaoDao" />
     </property>
+    <property name="candidatoSolicitacaoManager">
+      <ref bean="candidatoSolicitacaoManager" />
+    </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
+    <property name="mail">
+      <ref bean="mail" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

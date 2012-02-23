@@ -1,8 +1,6 @@
 package com.fortes.rh.model.dicionario;
 
 import java.util.HashMap;
-
-
 public enum MeioComunicacao
 {
 	CAIXA_MENSAGEM(1, "Caixa de mensagem"),
@@ -36,5 +34,15 @@ public enum MeioComunicacao
 		}
 		
 		return "";
+	}
+
+	public static void setEmail(HashMap<Integer, String> meioComunicação) 
+	{
+		meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
+	}
+
+	public static void setMeiosDeComunicacoes(HashMap<Integer, String> meioComunicação) {
+		for (MeioComunicacao meioComunicacao : values()) 
+			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 }

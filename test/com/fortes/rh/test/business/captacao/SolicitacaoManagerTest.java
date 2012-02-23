@@ -18,6 +18,8 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -53,6 +55,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager = null;
 	private Mock parametrosDoSistemaManager;
 	private Mock colaboradorManager;
+	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -63,6 +66,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		solicitacaoDao = new Mock(SolicitacaoDao.class);
 		solicitacaoManager.setDao((SolicitacaoDao) solicitacaoDao.proxy());
+
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+		solicitacaoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 		solicitacaoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
@@ -236,7 +242,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = new Empresa();
 		empresa.setId(1L);
 
-		candidatoSolicitacaoManager.expects(once()).method("enviarEmailNaoApto").with(eq(solicitacao.getId()), eq(empresa));
+		gerenciadorComunicacaoManager.expects(once()).method("executeEncerrarSolicitacao").with(eq(empresa), eq(solicitacao.getId()));
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()));
 
 		solicitacaoManager.encerraSolicitacao(solicitacao, empresa);

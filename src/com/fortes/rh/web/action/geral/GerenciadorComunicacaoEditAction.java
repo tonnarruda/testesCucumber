@@ -48,13 +48,25 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		gerenciadorComunicacao.setEmpresa(getEmpresaSistema());
+		
+		if (gerenciadorComunicacaoManager.verifyExists(gerenciadorComunicacao)){
+			addActionMessage("Já existe uma configuração cadastrada com os dados informados");
+			prepareInsert();
+			return Action.INPUT;
+		}
+		
 		gerenciadorComunicacaoManager.save(gerenciadorComunicacao);
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		gerenciadorComunicacao.setEmpresa(getEmpresaSistema());
+		if (gerenciadorComunicacaoManager.verifyExists(gerenciadorComunicacao)){
+			addActionMessage("Já existe uma configuração cadastrada com os dados informados");
+			prepareUpdate();
+			return Action.INPUT;
+		}
+
 		gerenciadorComunicacaoManager.update(gerenciadorComunicacao);
 		return Action.SUCCESS;
 	}

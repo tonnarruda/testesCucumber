@@ -48,5 +48,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim);
-	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
+	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception;
 }

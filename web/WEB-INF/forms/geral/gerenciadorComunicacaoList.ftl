@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Gerenciador de Comunicação</title>
+	<title>Configurações de Comunicação</title>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -19,8 +19,8 @@
 		</@display.column>
 		<@display.column property="operacaoDescricao" title="Operação"/>
 		<@display.column property="meioComunicacaoDescricao" title="Meio de Comunicação"/>
-		<@display.column property="enviarParaDescricao" title="Enviar Para"/>
-		<@display.column property="destinatarioFormatado" title="Destinatário"/>
+		<@display.column property="enviarParaDescricao" title="Enviar para"/>
+		<@display.column property="destinatarioFormatado" title="Destinatário(s)"/>
 	</@display.table>
 	
 	<div class="buttonGroup">

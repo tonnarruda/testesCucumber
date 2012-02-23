@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -43,6 +44,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private Mail mail;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId)
 	{
@@ -125,8 +127,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception
 	{
-    	candidatoSolicitacaoManager.enviarEmailNaoApto(solicitacao.getId(), empresa);
     	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());
+    	gerenciadorComunicacaoManager.executeEncerrarSolicitacao(empresa, solicitacao.getId());
 	}
 
 	public Solicitacao findByIdProjection(Long solicitacaoId)
@@ -154,7 +156,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().updateSuspendeSolicitacao(suspender, obsSuspensao, solicitacaoId);
 	}
 	
-	public void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) 
+	public void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception 
 	{
 		Solicitacao solicitacaoAux = findByIdProjectionForUpdate(solicitacao.getId());
 
@@ -187,7 +189,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
         	if(solicitacao.getStatus() != solicitacaoAux.getStatus())
         	{
         		solicitacao.setLiberador(usuario);
-       			emailSolicitante(solicitacao, empresa, usuario);
+        		emailSolicitante(solicitacao, empresa, usuario);
         	}
         }
 	}
@@ -252,32 +254,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
-		try {
-			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
-
-			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
-			String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
-
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			Colaborador colaboradorSolicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
-			Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(usuario.getId());
-			
-			String nomeSolicitante = colaboradorSolicitante !=null ? colaboradorSolicitante.getNomeMaisNomeComercial():"";
-			String nomeLiberador = colaboradorSolicitante !=null ? colaboradorLiberador.getNomeMaisNomeComercial():usuario.getNome();
-			
-			String subject = "Status da solicitação de pessoal";
-			StringBuilder body = new StringBuilder("<span style='font-weight:bold'>O usuário "+ nomeLiberador + " alterou o status da solicitação " + solicitacao.getDescricao() + " da empresa " + empresa.getNome() + " para " + solicitacao.getStatusFormatado().toLowerCase()  +".</span><br>");
-			
-			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
-			
-			String emailSolicitante = null;
-			if(colaboradorSolicitante != null && colaboradorSolicitante.getContato() != null)
-				emailSolicitante = colaboradorSolicitante.getContato().getEmail();
-			
-			mail.send(empresa, parametrosDoSistema, subject, body.toString(), new String[]{emailSolicitante, empresa.getEmailRespRH()});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
+		gerenciadorComunicacaoManager.emailSolicitante(solicitacao, empresa, usuario);
 	}
 	
 	private void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
@@ -362,5 +340,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
 }

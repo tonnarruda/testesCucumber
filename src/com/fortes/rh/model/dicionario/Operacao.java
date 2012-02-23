@@ -2,10 +2,9 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.HashMap;
 
-
 public enum Operacao
 {
-	NAO_INFORMADO(0, "Não Informado"){
+	SELECIONAR_OPERACAO(0, "Selecione..."){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			return meioComunicação;
@@ -19,41 +18,39 @@ public enum Operacao
 	ENCERRAMENTO_SOLICITACAO(1, "Encerramento da solicitação de pessoal"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-			meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
+			MeioComunicacao.setEmail(meioComunicação);
+			
 			return meioComunicação;
 		}
 
 		public HashMap<Integer, String> enviarPara(){
 			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-			enviarPara.put(EnviarPara.CANDIDATO_NAO_APTO.getId(), EnviarPara.CANDIDATO_NAO_APTO.getDescricao());
-			enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
+			EnviarPara.setCandidatoNaoApto(enviarPara);
+			
 			return enviarPara;
 		}
 	},
-	LIBERAR_SOLICITACAO (2, "Liberar Solicictação");
+	LIBERAR_SOLICITACAO (2, "Liberar Solicitação");
 
 	private int id;
 	private String descricao;
 
 	Operacao(int id, String descricao){
-		this.id=id;
+		this.id = id;
 		this.descricao = descricao;
 	}
 
 	public HashMap<Integer, String> meioComunicação(){
 		HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-		
-		for (MeioComunicacao mc : MeioComunicacao.values()) 
-			meioComunicação.put(mc.getId(), mc.getDescricao());
+		MeioComunicacao.setMeiosDeComunicacoes(meioComunicação);
 		
 		return meioComunicação;
 	}
 	
 	public HashMap<Integer, String> enviarPara(){
 		HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-		
-		enviarPara.put(EnviarPara.USUARIO.getId(), EnviarPara.USUARIO.getDescricao());
-		enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
+		EnviarPara.setUsuario(enviarPara);
+		EnviarPara.setAvulso(enviarPara);
 		
 		return enviarPara;
 	}

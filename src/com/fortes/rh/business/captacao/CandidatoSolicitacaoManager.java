@@ -17,7 +17,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
 	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacaoAberta(String[] etapaCheck, Long empresaId);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
-	public void enviarEmailNaoApto(Long id, Empresa empresa) throws Exception;
+	public String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception;
 	public Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos,Long empresaId);
 	CandidatoSolicitacao findCandidatoSolicitacaoById(Long candidatoSolicitacaoId);
 	Collection<CandidatoSolicitacao> findCandidatoSolicitacaoById(Long[] candidatoSolicitacaoIds);
@@ -26,7 +26,6 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	Collection<CandidatoSolicitacao> findByFiltroSolicitacaoTriagem(Boolean triagem);
 	void updateTriagem(Long candidatoSolicitacaoid, boolean triagem);
 	public Boolean isCandidatoSolicitacaoByCandidato(Long candidatoId);
-
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
 	void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao, Long solicitacaoId);

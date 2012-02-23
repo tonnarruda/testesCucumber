@@ -77,9 +77,22 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
 
+		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(false));
 		manager.expects(once()).method("save").with(eq(gerenciadorComunicacao)).will(returnValue(gerenciadorComunicacao));
 
 		assertEquals("success", action.insert());
+	}
+	
+	public void testInsertExists() throws Exception
+	{
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
+		gerenciadorComunicacao.setOperacao(1);
+		action.setGerenciadorComunicacao(gerenciadorComunicacao);
+		
+		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(gerenciadorComunicacao));
+		
+		assertEquals("input", action.insert());
 	}
 
 	public void testUpdate() throws Exception
@@ -87,9 +100,22 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
 
+		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(false));
 		manager.expects(once()).method("update").with(eq(gerenciadorComunicacao)).isVoid();
 
 		assertEquals("success", action.update());
+	}
+	
+	public void testUpdateExists() throws Exception
+	{
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
+		gerenciadorComunicacao.setOperacao(1);
+		action.setGerenciadorComunicacao(gerenciadorComunicacao);
+		
+		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(gerenciadorComunicacao));
+		
+		assertEquals("input", action.update());
 	}
 
 	public void testGetSet() throws Exception

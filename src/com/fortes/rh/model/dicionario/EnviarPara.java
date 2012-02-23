@@ -1,5 +1,7 @@
 package com.fortes.rh.model.dicionario;
 
+import java.util.HashMap;
+
 public enum EnviarPara
 {
 
@@ -35,5 +37,17 @@ public enum EnviarPara
 		}
 		
 		return "";
+	}
+	
+	public static void setCandidatoNaoApto(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.CANDIDATO_NAO_APTO.getId(), EnviarPara.CANDIDATO_NAO_APTO.getDescricao());
+	}
+	
+	public static void setUsuario(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.USUARIO.getId(), EnviarPara.USUARIO.getDescricao());
+	}
+	
+	public static void setAvulso(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
 	}
 }

@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if gerenciadorComunicacao.id?exists>
-			<title>Editar GerenciadorComunicacao</title>
+			<title>Editar Configuração de Comunicação</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir GerenciadorComunicacao</title>
+			<title>Inserir Configuração de Comunicação</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
@@ -81,6 +81,7 @@
 				}
 			});
 			
+			$('#operacao').change();
 			$('#enviarPara').change();
 		});
 	</script>
@@ -89,15 +90,17 @@
 	<body>
 		<#assign validarCampos="return validaFormulario('form', new Array('destinatario'))"/>
 		<@ww.actionerror />
+		<@ww.actionmessage />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.select label="Operação" name="gerenciadorComunicacao.operacao" id="operacao" list="operacoes" cssStyle="width: 310px;" liClass="liLeft" onchange="populaMeioComunicacao(this.value);" />
-			<@ww.select label="Meio Comunicacao" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" list="meioComunicacoes" cssStyle="width: 310px;" liClass="liLeft"/>
+			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" list="meioComunicacoes" cssStyle="width: 310px;" liClass="liLeft"/>
 			<@ww.select label="Enviar Para" id="enviarPara" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 310px;" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vígula para inserir mais de um email. 
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
+			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />
 			<@ww.token/>
 		</@ww.form>
 	
