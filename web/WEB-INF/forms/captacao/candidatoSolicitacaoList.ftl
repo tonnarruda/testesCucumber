@@ -6,9 +6,21 @@
 <@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-	.apto
+	.naoApto
 	{
 		color: #F00 !important;
+	}
+	.apto
+	{
+		color: #0000FF !important;
+	}
+	.indiferente
+	{
+		color: #555 !important;
+	}
+	.indiferente
+	{
+		color: #555 !important;
 	}
 	.contratado
 	{
@@ -57,11 +69,14 @@
 	<#assign jaResponderam = false/>
 
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
-	
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.aptoBoolean>
-			<#assign classe=""/>
+			<#if candidatoSolicitacao.apto == 'I'>
+				<#assign classe="indiferente"/>
+			<#else>
+				<#assign classe="apto"/>
+			</#if>			
 		<#else>
-			<#assign classe="apto"/>
+			<#assign classe="naoApto"/>
 		</#if>
 
 		<#-- decide contratação (se é só candidato) ou promoção (se candidato já é colaborador) -->
@@ -203,7 +218,8 @@
 
 	<script>
 		var obj = document.getElementById("legendas");
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos/Indiferente";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos";
+		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
 		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos";
 	</script>
