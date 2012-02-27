@@ -172,7 +172,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 //		
 //		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		gerenciadorComunicacaoManager.expects(once()).method("enviarLembrete").with(ANYTHING,ANYTHING);
+		gerenciadorComunicacaoManager.expects(once()).method("enviarLembreteAvaliacaoDesempenho").with(ANYTHING,ANYTHING);
 		
 		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
 	}

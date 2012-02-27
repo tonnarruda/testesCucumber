@@ -14,10 +14,13 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -30,7 +33,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	private PerfilManager perfilManager;
 	Mail mail;
 	
-	public void executeEncerrarSolicitacao(Empresa empresa, Long solicitacaoId) throws Exception {
+	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
 		if (empresa.getEmailCandidatoNaoApto() && StringUtils.isNotBlank(empresa.getMailNaoAptos())){
 			
@@ -52,7 +55,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
+	public void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		try {
 			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
@@ -105,7 +108,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		body.append("<a href='" + link + "'>RH</a>");
 	}
 	
-	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception
+	public void enviarEmailLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
@@ -157,7 +160,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa) {
+	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa) {
 		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenhoId, false, false);
@@ -186,6 +189,53 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+    public void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios)
+    {
+        enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios, Operacao.LIBERAR_QUESTIONARIO);
+    }
+    
+    public void enviaEmailQuestionarioNaoRespondido(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios) 
+    {
+    	enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO);
+    }
+
+	private void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios, Operacao operacao) 
+	{
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+    	
+        if (colaboradorQuestionarios != null && !colaboradorQuestionarios.isEmpty())
+        {
+            String label = TipoQuestionario.getDescricao(questionario.getTipo());
+
+    		StringBuilder corpo = new StringBuilder();
+    		corpo.append("Existe uma nova " + label + " para ser respondida por você.<br><br>");
+    		corpo.append("Titulo: " + questionario.getTitulo() + "<br>");
+    		corpo.append("Período: "+ DateUtil.formataDiaMesAno(questionario.getDataInicio()) + " a " + DateUtil.formataDiaMesAno(questionario.getDataFim()) + "<br><br>");
+    		corpo.append("Acesse o Fortes RH em: <br>");
+    		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">Fortes RH</a><br><br>");
+    		corpo.append("Copyright© by Fortes Informática LTDA<br>");
+    		corpo.append("http://www.fortesinformatica.com.br");
+
+            for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
+            {
+                try
+                {
+                	Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(operacao.getId(), empresa.getId());
+            		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+    					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+    						mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
+    					} 		
+    				}
+                	
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+	}
+
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao) {
 		return getDao().verifyExists(gerenciadorComunicacao);
 	}
@@ -205,5 +255,4 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void setPerfilManager(PerfilManager perfilManager) {
 		this.perfilManager = perfilManager;
 	}
-
 }

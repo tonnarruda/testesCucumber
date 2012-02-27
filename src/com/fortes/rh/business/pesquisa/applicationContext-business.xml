@@ -131,6 +131,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
   </bean>
   <bean id="questionarioManager" parent="parentManager">
     <property name="proxyInterfaces">

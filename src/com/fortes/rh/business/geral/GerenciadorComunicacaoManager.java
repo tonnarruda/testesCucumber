@@ -1,17 +1,23 @@
 package com.fortes.rh.business.geral;
 
 
+import java.util.Collection;
+
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 
 public interface GerenciadorComunicacaoManager extends GenericManager<GerenciadorComunicacao>
 {
-	void executeEncerrarSolicitacao(Empresa empresa, Long solicitacaoId) throws Exception;
-	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
+	void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception;
+	void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
-	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception;
-	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa);
+	public void enviarEmailLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception;
+	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
+	void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
+	void enviaEmailQuestionarioNaoRespondido(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 }

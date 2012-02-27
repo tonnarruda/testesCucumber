@@ -74,6 +74,36 @@ public enum Operacao
 			
 			return enviarPara;
 		}
+	},
+	LIBERAR_QUESTIONARIO(5, "Liberar questionário"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setColaborador(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO(6, "Lembrete de pesquisa não respondida"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+
+			return meioComunicação;
+		}
+
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setColaborador(enviarPara);
+
+			return enviarPara;
+		}
 	};
 
 	private int id;

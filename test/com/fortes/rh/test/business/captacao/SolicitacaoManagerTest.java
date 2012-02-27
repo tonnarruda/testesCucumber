@@ -236,7 +236,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = new Empresa();
 		empresa.setId(1L);
 
-		gerenciadorComunicacaoManager.expects(once()).method("executeEncerrarSolicitacao").with(eq(empresa), eq(solicitacao.getId()));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailCandidatosNaoAptos").with(eq(empresa), eq(solicitacao.getId()));
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()));
 
 		solicitacaoManager.encerraSolicitacao(solicitacao, empresa);

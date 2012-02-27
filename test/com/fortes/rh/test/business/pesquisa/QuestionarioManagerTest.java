@@ -15,6 +15,7 @@ import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -80,6 +81,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 	private Mock aspectoManager;
 	private Mock colaboradorRespostaManager;
 	private Mock colaboradorManager;
+	private Mock gerenciadorComunicacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -97,6 +99,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
         respostaManager = new Mock(RespostaManager.class);
         aspectoManager = new Mock(AspectoManager.class);
         colaboradorManager = mock(ColaboradorManager.class);
+        gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 
         questionarioManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
         questionarioManager.setMail((Mail)mail.proxy());
@@ -105,6 +108,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
         questionarioManager.setAspectoManager((AspectoManager)aspectoManager.proxy());
         questionarioManager.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
         questionarioManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        questionarioManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
 
@@ -265,23 +269,12 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     public void testLiberarQuestionario() throws Exception
     {
-    	ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametros.setAppUrl("url");
-    	parametros.setEmailSmtp("email");
-    	parametros.setEmailPass("pass");
-    	parametros.setEmailPort(21);
-    	parametros.setEmailUser("user");
-
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	questionario.setEmpresa(empresa);
     	questionario.setDataInicio(new Date());
     	questionario.setDataFim(new Date());
-
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
-
-    	questionarioDao.expects(once()).method("liberarQuestionario").with(eq(questionario.getId()));
 
     	Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
     	colaborador1.setEmailColaborador("teste1@fortesinformatica.com.br");
@@ -299,54 +292,13 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorQuestionarios.add(colaboradorQuestionario1);
     	colaboradorQuestionarios.add(colaboradorQuestionario2);
 
+    	questionarioDao.expects(once()).method("liberarQuestionario").with(eq(questionario.getId()));
     	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(ANYTHING).will(returnValue(colaboradorQuestionarios));
-
     	MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
-
     	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
-
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+    	gerenciadorComunicacaoManager.expects(once()).method("enviaEmailQuestionarioLiberado").with(eq(empresa), eq(questionario), eq(colaboradorQuestionarios)).isVoid();
 
     	questionarioManager.liberarQuestionario(questionario.getId(), empresa);
-
-    }
-
-    public void testEnviaEmailQuestionarioLiberado() throws Exception
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-    	ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-
-    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
-    	Questionario questionario = QuestionarioFactory.getEntity(1L);
-    	questionario.setDataInicio(new Date());
-    	questionario.setDataFim(new Date());
-
-    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
-    	colaboradorQuestionario.setColaborador(colaborador);
-    	colaboradorQuestionario.setQuestionario(questionario);
-
-    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
-    	colaboradorQuestionarios.add(colaboradorQuestionario);
-
-    	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
-
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro")));
-
-    	Exception exception = null;
-
-    	try
-		{
-    		questionarioManager.enviaEmailQuestionarioLiberado(empresa, parametros, questionario.getId(), colaboradorQuestionarios);
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-
-		assertNull(exception);
-
     }
 
     public void testAplicarPorAspecto() throws Exception
@@ -364,8 +316,6 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
@@ -379,12 +329,11 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarios.add(colaboradorQuestionario);
 
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
     	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), eq(false), eq(empresa.getId())).will(returnValue(colaboradorQuestionarios));
     	MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
     	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
-    	mail.expects(once()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
-
+    	gerenciadorComunicacaoManager.expects(once()).method("enviaEmailQuestionarioNaoRespondido").with(eq(empresa), eq(questionario), eq(colaboradorQuestionarios)).isVoid();
+    	
     	Exception exception = null;
 
     	try

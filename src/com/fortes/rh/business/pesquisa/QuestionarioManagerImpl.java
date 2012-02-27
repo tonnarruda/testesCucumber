@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -22,7 +23,6 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -49,6 +49,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     private Mail mail;
     private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
     private ColaboradorManager colaboradorManager;
+    private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
     public Questionario findByIdProjection(Long questionarioId)
     {
@@ -96,52 +97,20 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
     public void liberarQuestionario(Long questionarioId, Empresa empresa) throws Exception
     {
-        ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
         getDao().liberarQuestionario(questionarioId);
-
         ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
         Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionario(questionarioId);
 
-        enviaEmailQuestionarioLiberado(empresa, parametros, questionarioId, colaboradorQuestionarios);
-    }
-
-    public void enviaEmailQuestionarioLiberado(Empresa empresa, ParametrosDoSistema parametros, Long questionarioId, Collection<ColaboradorQuestionario> colaboradorQuestionarios) throws Exception
-    {
-        if (colaboradorQuestionarios != null && !colaboradorQuestionarios.isEmpty())
-        {
-            Questionario questionario = getDao().findByIdProjection(questionarioId);
-            String label = TipoQuestionario.getDescricao(questionario.getTipo());
-
-            StringBuilder corpo = new StringBuilder();
-            corpo.append("Existe uma nova " + label + " para ser respondida por você.<br><br>");
-            corpo.append("Titulo: " + questionario.getTitulo() + "<br>");
-            corpo.append("Período: "+ DateUtil.formataDiaMesAno(questionario.getDataInicio()) + " a " + DateUtil.formataDiaMesAno(questionario.getDataFim()) + "<br><br>");
-            corpo.append("Acesse o Fortes RH em: <br>");
-            corpo.append("<a href=\"" + parametros.getAppUrl() + "\">Fortes RH</a><br><br>");
-            corpo.append("Copyright© by Fortes Informática LTDA<br>");
-            corpo.append("http://www.fortesinformatica.com.br");
-
-            for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
-            {
-                try
-                {
-                    mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
+        Questionario questionario = getDao().findByIdProjection(questionarioId);
+        gerenciadorComunicacaoManager.enviaEmailQuestionarioLiberado(empresa, questionario, colaboradorQuestionarios);
     }
 
 	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception 
 	{
-		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
         ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionarioId, false, empresa.getId());
-
-		enviaEmailQuestionarioLiberado(empresa, parametros, questionarioId, colaboradorQuestionarios);
+		Questionario questionario = getDao().findByIdProjection(questionarioId);
+		gerenciadorComunicacaoManager.enviaEmailQuestionarioNaoRespondido(empresa, questionario, colaboradorQuestionarios);
 	}
 
     public void aplicarPorAspecto(Long questionarioId, boolean aplicarPorAspecto) throws Exception
@@ -657,5 +626,9 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 	public Collection<Questionario> findQuestionario(Long colaboradorId) 
 	{
 		return getDao().findQuestionario(colaboradorId);
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

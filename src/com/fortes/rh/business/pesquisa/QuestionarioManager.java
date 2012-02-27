@@ -8,8 +8,6 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -42,7 +40,6 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	//@Audita(operacao="Liberação de Pesquisa", fetchEntity=true)
 	void liberarQuestionario(Long questionarioId, Empresa empresa) throws Exception;
 	
-	void enviaEmailQuestionarioLiberado(Empresa empresa, ParametrosDoSistema parametros, Long questionarioId, Collection<ColaboradorQuestionario> colaboradorQuestionarios) throws Exception;
 	Questionario findResponderQuestionario(Questionario questionario);
 	void enviaLembreteDeQuestionarioNaoLiberada();
 	Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId);

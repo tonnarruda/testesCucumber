@@ -11,11 +11,15 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(4, EnviarPara.values().length);
+		assertEquals(8, EnviarPara.values().length);
 		
 		assertEquals(new Integer(1), EnviarPara.USUARIO.getId());
 		assertEquals(new Integer(2), EnviarPara.GESTOR_AREA.getId());
 		assertEquals(new Integer(3), EnviarPara.CANDIDATO_NAO_APTO.getId());
+		assertEquals(new Integer(4), EnviarPara.SOLICITANTE_SOLICITACAO.getId());
+		assertEquals(new Integer(5), EnviarPara.LIBERADOR_SOLICITACAO.getId());
+		assertEquals(new Integer(6), EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId());
+		assertEquals(new Integer(7), EnviarPara.COLABORADOR.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 

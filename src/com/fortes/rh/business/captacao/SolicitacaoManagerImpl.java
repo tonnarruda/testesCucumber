@@ -126,7 +126,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception
 	{
     	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());
-    	gerenciadorComunicacaoManager.executeEncerrarSolicitacao(empresa, solicitacao.getId());
+    	gerenciadorComunicacaoManager.enviaEmailCandidatosNaoAptos(empresa, solicitacao.getId());
 	}
 
 	public Solicitacao findByIdProjection(Long solicitacaoId)
@@ -248,12 +248,16 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			
 			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 		}
+//=======
+//		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
+//		gerenciadorComunicacaoManager.enviarEmailLiberadorSolicitacao(solicitacao, empresa, emailsAvulsos);
+//>>>>>>> Gerenciador de Comunicacao: Avaliacao desempenho e pesquisa.
 	}
 
 	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
-		gerenciadorComunicacaoManager.emailSolicitante(solicitacao, empresa, usuario);
+		gerenciadorComunicacaoManager.enviaEmailSolicitanteSolicitacao(solicitacao, empresa, usuario);
 	}
 
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao)

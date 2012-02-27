@@ -178,7 +178,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa)
 	{
-		gerenciadorComunicacaoManager.enviarLembrete(avaliacaoDesempenhoId, empresa);
+		gerenciadorComunicacaoManager.enviarLembreteAvaliacaoDesempenho(avaliacaoDesempenhoId, empresa);
 	}
 	
 	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
