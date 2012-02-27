@@ -1,12 +1,15 @@
 package com.fortes.rh.business.geral;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -30,6 +33,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 {
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	EmpresaManager empresaManager;
 	private PerfilManager perfilManager;
 	Mail mail;
 	
@@ -235,9 +239,78 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
             }
         }
 	}
+	
+	public void enviaLembreteDeQuestionarioNaoLiberado() 
+	{
+    	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
 
-	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao) {
+		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
+
+        for (Integer diaLembretePesquisa : diasLembretePesquisa)
+        {
+        	Calendar data = Calendar.getInstance();
+        	data.setTime(new Date());
+        	data.add(Calendar.DAY_OF_MONTH, +diaLembretePesquisa);
+
+	        Collection<Questionario> questionarios = questionarioManager.findQuestionarioNaoLiberados(data.getTime());
+
+	        for (Questionario questionario : questionarios)
+	        {
+	        	try
+	        	{
+	        		String label = TipoQuestionario.getDescricao(questionario.getTipo());
+
+	        		StringBuilder corpo = new StringBuilder();
+	        		corpo.append("ATENÇÃO:<br>");
+	        		corpo.append("a " + label + questionario.getTitulo() + " está prevista para iniciar no dia " + DateUtil.formataDiaMesAno(questionario.getDataInicio())+".<br>") ;
+	        		corpo.append("Você ainda precisa liberá-la para que os colaboradores possam respondê-la.") ;
+
+	        		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId(), questionario.getEmpresa().getId());
+	        		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+	        			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+	        				mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, questionario.getEmpresa().getEmailRespRH());
+	        			} 		
+	        		}
+
+	        	}
+	        	catch (Exception e)
+	        	{
+	        		e.printStackTrace();
+	        	}
+	        }
+        }
+		
+	}
+
+	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao) 
+	{
 		return getDao().verifyExists(gerenciadorComunicacao);
+	}
+	
+	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId) 
+	{
+		String subject = "Novo candidato (" + nomeCandidato +")";
+
+		Empresa empresa = empresaManager.findById(empresaId);
+		StringBuilder body = new StringBuilder();
+		body.append("O candidato " + nomeCandidato + ", <br>");
+		body.append("se cadastrou na empresa " + empresa.getNome() );
+
+		try
+		{
+    		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId(), empresaId);
+    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+    				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+    			} 		
+    		}
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
@@ -254,5 +327,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setPerfilManager(PerfilManager perfilManager) {
 		this.perfilManager = perfilManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

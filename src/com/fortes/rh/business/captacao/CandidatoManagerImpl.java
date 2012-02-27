@@ -32,11 +32,10 @@ import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -101,6 +100,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private EstadoManager estadoManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private int totalSize;
 
 	public int getTotalSize()
@@ -1068,22 +1068,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId)
 	{
-		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
-		String subject = "Novo candidato (" + nomeCandidato +")";
-
-		Empresa empresa = empresaManager.findById(empresaId);
-		StringBuilder body = new StringBuilder();
-		body.append("O candidato " + nomeCandidato + ", <br>");
-		body.append("se cadastrou na empresa " + empresa.getNome() );
-
-		try
-		{
-			mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		gerenciadorComunicacaoManager.enviaEmailResponsavelRh(nomeCandidato, empresaId);
 	}
 	
 	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
@@ -1406,6 +1391,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 }

@@ -13,8 +13,10 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
@@ -52,6 +54,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager;
 	private Mock parametrosDoSistemaManager;
 	private Mock colaboradorManager;
+	private Mock questionarioManager;
+	private Mock empresaManager;
 	private Mock mail;
 	
 	protected void setUp() throws Exception
@@ -68,6 +72,12 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		questionarioManager = new Mock(QuestionarioManager.class);
+		MockSpringUtil.mocks.put("questionarioManager", questionarioManager);
+		
+		empresaManager = new Mock(EmpresaManager.class);
+		gerenciadorComunicacaoManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
@@ -217,6 +227,72 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 
+	 public void testEnviaLembreteDeQuestionarioNaoLiberado() throws Exception
+	 {
+		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
+		 parametros.setAppUrl("url");
+		 
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 Questionario questionario = QuestionarioFactory.getEntity(1L);
+		 questionario.setEmpresa(empresa);
+		 questionario.setDataInicio(new Date());
+		 questionario.setDataFim(new Date());
+		 questionario.setTipo(1);
+		 questionario.setTitulo("Questionário I");
+		 
+		 Collection<Questionario> questionarios = Arrays.asList(questionario);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 parametrosDoSistemaManager.expects(once()).method("getDiasLembretePesquisa").will(returnValue(Arrays.asList(1,2)));
+		 questionarioManager.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(ANYTHING).will(returnValue(questionarios));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaLembreteDeQuestionarioNaoLiberado();
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
+	 
+	 public void testEnviaEmailResponsavelRh() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 empresaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(empresa));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaEmailResponsavelRh("Chico", empresa.getId());
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
 	 public void testEnviaEmailQuestionarioNaoRespondido() throws Exception
 	 {
 		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);

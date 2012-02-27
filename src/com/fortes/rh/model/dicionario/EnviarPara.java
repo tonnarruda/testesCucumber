@@ -12,6 +12,7 @@ public enum EnviarPara
 	LIBERADOR_SOLICITACAO (5, "Liberador"),
 	AVALIADOR_AVALIACAO_DESEMPENHO (6, "Avaliador"),
 	COLABORADOR (7, "Colaborador"),
+	RESPONSAVEL_RH (8, "Responsável do RH"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)
@@ -68,5 +69,9 @@ public enum EnviarPara
 
 	public static void setColaborador(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.COLABORADOR.getId(), EnviarPara.COLABORADOR.getDescricao());
+	}
+	
+	public static void setResponsavelRH(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.RESPONSAVEL_RH.getId(), EnviarPara.RESPONSAVEL_RH.getDescricao());
 	}
 }

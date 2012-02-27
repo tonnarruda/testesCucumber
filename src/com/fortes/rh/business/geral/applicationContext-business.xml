@@ -881,6 +881,9 @@
     <property name="perfilManager">
       <ref bean="perfilManager" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
     <property name="mail">
       <ref bean="mail" />
     </property>

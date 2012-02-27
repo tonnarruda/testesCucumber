@@ -1,7 +1,6 @@
 package com.fortes.rh.business.pesquisa;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.TipoPergunta;
-import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Aspecto;
@@ -238,35 +236,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
     public void enviaLembreteDeQuestionarioNaoLiberada()
     {
-    	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
-
-        for (Integer diaLembretePesquisa : diasLembretePesquisa)
-        {
-        	Calendar data = Calendar.getInstance();
-        	data.setTime(new Date());
-        	data.add(Calendar.DAY_OF_MONTH, +diaLembretePesquisa);
-
-	        Collection<Questionario> questionarios = getDao().findQuestionarioNaoLiberados(data.getTime());
-
-	        for (Questionario questionario : questionarios)
-	        {
-	            try
-	            {
-	                String label = TipoQuestionario.getDescricao(questionario.getTipo());
-
-	                StringBuilder corpo = new StringBuilder();
-	                corpo.append("ATENÇÃO:<br>");
-	                corpo.append("a " + label + questionario.getTitulo() + " está prevista para iniciar no dia " + DateUtil.formataDiaMesAno(questionario.getDataInicio())+".<br>") ;
-	                corpo.append("Você ainda precisa liberá-la para que os colaboradores possam respondê-la.") ;
-
-	                mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, questionario.getEmpresa().getEmailRespRH());
-	            }
-	            catch (Exception e)
-	            {
-	                e.printStackTrace();
-	            }
-	        }
-        }
+    	gerenciadorComunicacaoManager.enviaLembreteDeQuestionarioNaoLiberado();
     }
 
     public Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId)
@@ -612,6 +582,10 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
             parametros.put("CARGO", colaboradorHistorico.getHistoricoColaborador().getFaixaSalarial().getDescricao());
         }
     }
+
+	public Collection<Questionario> findQuestionarioNaoLiberados(Date time) {
+		return getDao().findQuestionarioNaoLiberados(time);
+	}
 
     public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
     {

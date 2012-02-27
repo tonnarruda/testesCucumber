@@ -1,17 +1,18 @@
 package com.fortes.rh.business.pesquisa;
 
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.util.SpringUtil;
 
 
 public class LembretePesquisa
 {
-	private QuestionarioManager questionarioManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	@SuppressWarnings("deprecation")
 	public void execute()
 	{
-		questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
-		questionarioManager.enviaLembreteDeQuestionarioNaoLiberada();
+		gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBeanOld("gerenciadorComunicacaoManager");
+		gerenciadorComunicacaoManager.enviaLembreteDeQuestionarioNaoLiberado();
 	}
 
 }

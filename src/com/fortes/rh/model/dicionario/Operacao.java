@@ -104,6 +104,36 @@ public enum Operacao
 
 			return enviarPara;
 		}
+	},
+	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(7, "Lembrete automático de pesquisa não liberada"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setResponsavelRH(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	CADASTRO_CANDIDATO_MODULO_EXTERNO(8, "Aviso de cadastro de candidato pelo módulo externo"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setResponsavelRH(enviarPara);
+			
+			return enviarPara;
+		}
 	};
 
 	private int id;
