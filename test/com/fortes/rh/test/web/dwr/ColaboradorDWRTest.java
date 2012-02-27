@@ -290,5 +290,4 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		assertEquals(1, retorno.size());
 	}
-
 }

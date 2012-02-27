@@ -4,42 +4,47 @@
 <html>
 <head>
 <@ww.head/>
-	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-	.naoApto
-	{
-		color: #F00 !important;
-	}
-	.apto
-	{
-		color: #0000FF !important;
-	}
-	.indiferente
-	{
-		color: #555 !important;
-	}
-	.indiferente
-	{
-		color: #555 !important;
-	}
-	.contratado
-	{
-		color: #008000 !important;
-	}
-	.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar{
-		margin: 5px 5px 0px 0px;
-	}
-	</style>
-
 	<title>Candidatos da Seleção</title>
 
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		
+		.naoApto { color: #F00 !important; }
+		.apto { color: #0000FF !important; }
+		.indiferente { color: #555 !important; }
+		.indiferente { color: #555 !important; }
+		.contratado { color: #008000 !important; }
+		.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar { margin: 5px 5px 0px 0px; }
+	</style>
+	
+	<#assign baseUrl><@ww.url includeParams="none" value="/"/></#assign>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type="text/javascript">
+	
+		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)
+		{
+			var link = "${baseUrl}geral/colaborador/prepareContrata.action?candidato.id=" + candidatoId + "&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=" + candidatoSolicitacaoId;
+			
+			ColaboradorDWR.verificaDesligadoByCandidato(candidatoId, function(retorno) {  
+				if(retorno.desligado)
+					newConfirm('Deseja realmente contratar o candidato ' + nomeCandidato + '?', function(){ window.location=link });			
+				else
+					jAlert("Colaborador contratado na empresa " + retorno.empresa + ".\nDesligue-o para continuar o processo de transferência.");
+			});
+			
+		}
+	</script>
+	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<#include "../ftl/showFilterImports.ftl" />
 </head>
 
 <body>
-	<@ww.actionmessage />
+	<@ww.actionmessage /> 
 	<@ww.actionerror />
 	<table width="100%">
 		<tr>
@@ -91,7 +96,6 @@
 				<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 			</#if>
 		</#if>
-		<#assign actionContrataCandidatoOutraEmpresa="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 		
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'C'>
 			<#assign titleAceito="Candidato já contratado"/>
@@ -127,11 +131,9 @@
 					<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 				<#else>
 					<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>
-						<#if candidatoSolicitacao.candidato.disponivel>
-							<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrataCandidatoOutraEmpresa}"/>'});"><img border="0" title="Contratar o Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
-						<#else>
-							<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="Colaborador contratado na empresa ${candidatoSolicitacao.candidato.empresa.nome}. Desligue-o para continuar o processo de transferência." src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>">
-						</#if>
+						<a href="javascript:contrataCandOutraEmpresa(${candidatoSolicitacao.candidato.id}, ${candidatoSolicitacao.id}, '${nomeFormatado}');">
+							<img border="0" title="Contratar candidato de outra empresa?" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+						</a>
 					<#else>
 						<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 					</#if>

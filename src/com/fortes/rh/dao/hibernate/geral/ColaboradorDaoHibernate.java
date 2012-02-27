@@ -700,17 +700,20 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findbyCandidato(Long candidatoId, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-
+		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
+		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.candidato.id", candidatoId));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if(empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
@@ -3860,4 +3863,5 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
+
 }

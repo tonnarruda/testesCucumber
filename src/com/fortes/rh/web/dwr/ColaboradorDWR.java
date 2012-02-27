@@ -235,6 +235,24 @@ public class ColaboradorDWR
     	
     	return retorno;
     }
+    
+    public Map<String, Object> verificaDesligadoByCandidato(Long candidatoId)
+    {
+    	Map<String, Object> dados = new HashMap<String, Object>();
+    	dados.put("desligado", true);
+    	dados.put("empresa", "");
+    	
+    	Collection<Colaborador> colaboradores = colaboradorManager.findBycandidato(candidatoId, null);
+    	
+    	if(!colaboradores.isEmpty())
+    	{
+    		Colaborador colab = (Colaborador) colaboradores.toArray()[0];
+    		dados.put("desligado", colab.isDesligado());
+    		dados.put("empresa", colab.getEmpresaNome());
+    	}
+    	
+    	return dados;
+    }
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
