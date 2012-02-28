@@ -34,7 +34,7 @@ public class LembretePesquisaTest extends MockObjectTestCase
     {
     	Exception exception = null;
 
-		questionarioManager.expects(once()).method("enviaLembreteDeQuestionarioNaoLiberada");
+		questionarioManager.expects(once()).method("enviaLembreteDeQuestionarioNaoLiberado");
 		lembretePesquisa.execute();
 
 

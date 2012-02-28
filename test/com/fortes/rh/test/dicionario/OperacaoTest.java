@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(10, Operacao.getHashMap().size());
+		assertEquals(11, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()
@@ -27,6 +27,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(7));
 		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(8));
 		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(9));
+		assertEquals("Aviso automático das avaliações do perído de experiência a vencer", Operacao.getDescricaoById(10));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -42,6 +43,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(1, Operacao.getMeioComunicacaoById(7).size());
 		assertEquals(1, Operacao.getMeioComunicacaoById(8).size());
 		assertEquals(1, Operacao.getMeioComunicacaoById(9).size());
+		assertEquals(1, Operacao.getMeioComunicacaoById(10).size());
 	}
 	
 	public void testGetEnviarParaById()
@@ -57,6 +59,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(1, Operacao.getEnviarParaById(7).size());
 		assertEquals(1, Operacao.getEnviarParaById(8).size());
 		assertEquals(1, Operacao.getEnviarParaById(9).size());
+		assertEquals(1, Operacao.getEnviarParaById(10).size());
 	}
 	
 	public void testChave()
@@ -71,6 +74,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(7, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
 		assertEquals(8, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
 		assertEquals(9, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
+		assertEquals(10, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -167,6 +171,17 @@ public class OperacaoTest extends TestCase
 	public void testAvisoQtdCurriculosCadastrados()
 	{
 		Operacao operacao = Operacao.QTD_CURRICULOS_CADASTRADOS;
+		
+		assertEquals(1, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		
+		assertEquals(1, operacao.enviarPara().size());
+		assertEquals(EnviarPara.RESPONSAVEL_RH.getDescricao(), operacao.enviarPara().values().toArray()[0]);
+	}
+	
+	public void testAvaliacaoPeriodoExperienciaVencendo()
+	{
+		Operacao operacao = Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO;
 		
 		assertEquals(1, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);

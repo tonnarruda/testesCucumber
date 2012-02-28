@@ -74,8 +74,6 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 	private Mock entrevistaManager;
 	private Mock fichaMedicaManager;
 	private Mock colaboradorQuestionarioManager;
-	private Mock mail;
-	private Mock parametrosDoSistemaManager;
 	private Mock perguntaManager;
 	private Mock respostaManager;
 	private Mock aspectoManager;
@@ -93,24 +91,18 @@ public class QuestionarioManagerTest extends MockObjectTestCase
         entrevistaManager = new Mock(EntrevistaManager.class);
         fichaMedicaManager = new Mock(FichaMedicaManager.class);
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
-        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
-        mail = mock(Mail.class);
         perguntaManager = new Mock(PerguntaManager.class);
         respostaManager = new Mock(RespostaManager.class);
         aspectoManager = new Mock(AspectoManager.class);
         colaboradorManager = mock(ColaboradorManager.class);
         gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 
-        questionarioManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
-        questionarioManager.setMail((Mail)mail.proxy());
         questionarioManager.setPerguntaManager((PerguntaManager)perguntaManager.proxy());
         questionarioManager.setRespostaManager((RespostaManager)respostaManager.proxy());
         questionarioManager.setAspectoManager((AspectoManager)aspectoManager.proxy());
         questionarioManager.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
         questionarioManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         questionarioManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
-
-		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
 
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -643,63 +635,9 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	assertEquals(4, resultados.size());
     }
 
-    public void testEnviaLembreteDeQuestionarioNaoLiberado()
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	empresa.setEmailRespRH("teste@grupofortes.com.br");
-
-    	ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametros.setAppVersao("1.01.1");
-    	parametros.setDiasLembretePesquisa("3&2");
-
-    	Collection<Integer> diasLembrete = new ArrayList<Integer>();
-    	diasLembrete.add(3);
-    	diasLembrete.add(2);
-
-    	parametrosDoSistemaManager.expects(once()).method("getDiasLembretePesquisa").will(returnValue(diasLembrete));
-
-    	Questionario questionario = QuestionarioFactory.getEntity(1L);
-    	questionario.setDataInicio(new Date());
-    	questionario.setLiberado(false);
-    	questionario.setTipo(1);
-    	questionario.setEmpresa(empresa);
-
-    	Collection<Questionario> questionarios = new ArrayList<Questionario>();
-    	questionarios.add(questionario);
-
-    	questionarioDao.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(new Constraint [] {ANYTHING}).will(returnValue(questionarios));
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
-
-    	questionarioManager.enviaLembreteDeQuestionarioNaoLiberado();
-    }
-
     public void testEnviaLembreteDeQuestionarioNaoLiberadaComException()
     {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	empresa.setEmailRespRH("teste@grupofortes.com.br");
-
-    	ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametros.setAppVersao("1.01.1");
-    	parametros.setDiasLembretePesquisa("3&2");
-
-    	Collection<Integer> diasLembrete = new ArrayList<Integer>();
-    	diasLembrete.add(3);
-    	diasLembrete.add(2);
-
-    	parametrosDoSistemaManager.expects(once()).method("getDiasLembretePesquisa").will(returnValue(diasLembrete));
-
-    	Questionario questionario = QuestionarioFactory.getEntity(1L);
-    	questionario.setDataInicio(new Date());
-    	questionario.setLiberado(false);
-    	questionario.setTipo(1);
-    	questionario.setEmpresa(empresa);
-
-    	Collection<Questionario> questionarios = new ArrayList<Questionario>();
-    	questionarios.add(questionario);
-
-    	questionarioDao.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(new Constraint [] {ANYTHING}).will(returnValue(questionarios));
-    	mail.expects(atLeastOnce()).method("send").with(new Constraint [] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException("Erro")));
-
+    	gerenciadorComunicacaoManager.expects(atLeastOnce()).method("enviaLembreteDeQuestionarioNaoLiberado");
     	questionarioManager.enviaLembreteDeQuestionarioNaoLiberado();
     }
     

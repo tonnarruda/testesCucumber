@@ -246,7 +246,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaLembreteDeQuestionarioNaoLiberado() 
 	{
     	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
-
 		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
 
         for (Integer diaLembretePesquisa : diasLembretePesquisa)

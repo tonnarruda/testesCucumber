@@ -19,6 +19,8 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -27,6 +29,7 @@ import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -35,6 +38,8 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -371,6 +376,67 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaEmailQtdCurriculosCadastrados(empresas, inicioMes, fimMes, candidatos);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
+	 public void testEnviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo() throws Exception
+	 {
+		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
+		 parametros.setAppUrl("url");
+		 
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 Contato contato = new Contato();
+		 contato.setEmail("email@email.com");
+		 
+		 Colaborador teo = ColaboradorFactory.getEntity(1L);
+		 teo.setNome("Teo");
+		 teo.setEmpresa(empresa);
+		 teo.setContato(contato);
+		 
+		 Colaborador leo = ColaboradorFactory.getEntity(2L);
+		 leo.setNome("Leo");
+		 leo.setEmpresa(empresa);
+		 leo.setContato(contato);
+		 
+		 PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
+		 periodoExperiencia.setDias(10);
+		 
+		 Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		 avaliacao.setTitulo("avaliacao");
+		 
+		 ColaboradorPeriodoExperienciaAvaliacao teoPeriodoExperiencia = new ColaboradorPeriodoExperienciaAvaliacao();
+		 teoPeriodoExperiencia.setColaborador(teo);
+		 teoPeriodoExperiencia.setPeriodoExperiencia(periodoExperiencia);
+		 teoPeriodoExperiencia.setAvaliacao(avaliacao);
+
+		 ColaboradorPeriodoExperienciaAvaliacao leoPeriodoExperiencia = new ColaboradorPeriodoExperienciaAvaliacao();
+		 leoPeriodoExperiencia.setColaborador(leo);
+		 leoPeriodoExperiencia.setPeriodoExperiencia(periodoExperiencia);
+		 leoPeriodoExperiencia.setAvaliacao(avaliacao);
+		 
+		 Collection<ColaboradorPeriodoExperienciaAvaliacao > colaboradores = Arrays.asList(teoPeriodoExperiencia, leoPeriodoExperiencia);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+
+		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(colaboradores);
 		 } catch (Exception e) {
 			 exception = e;
 		 }

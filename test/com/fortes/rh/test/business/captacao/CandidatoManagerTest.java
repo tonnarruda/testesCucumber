@@ -1519,10 +1519,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		empresa.setNome("empresa");
 		empresa.setEmailRespRH("x@x.com");
 
-		MockSpringUtil.mocks.put("empresaManager", empresaManager);
-		empresaManager.expects(once()).method("findById").with(eq(empresa.getId())).will(returnValue(empresa));
-		
-		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailResponsavelRh").with(ANYTHING, ANYTHING).isVoid();
 		candidatoManager.enviaEmailResponsavelRh(nomeCandidato, empresa.getId());
 	}
 	
