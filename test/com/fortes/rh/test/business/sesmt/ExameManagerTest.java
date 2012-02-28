@@ -14,6 +14,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
@@ -36,6 +37,7 @@ public class ExameManagerTest extends MockObjectTestCase
 	private Mock parametrosDoSistemaManager;
 	private Mock areaOrganizacionalManager;
 	private Mock colaboradorManager;
+	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
     {
@@ -51,6 +53,9 @@ public class ExameManagerTest extends MockObjectTestCase
 
         colaboradorManager = mock(ColaboradorManager.class);
         exameManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        
+        gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+        exameManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
     }
 
 	public void testFindByIdProjection() throws Exception
@@ -294,7 +299,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	empresas.add(empresa);
     	
     	Collection<String> emails = new ArrayList<String>();
-    	colaboradorManager.expects(once()).method("findEmailsByPapel").with(ANYTHING, ANYTHING).will(returnValue(emails));
+    	gerenciadorComunicacaoManager.expects(once()).method("enviaLembreteExamesPrevistos").with(ANYTHING).isVoid();
     	
     	Exception exception = null;
 		try

@@ -200,7 +200,7 @@
   </bean>
   <bean id="cronTriggerLembreteExamesPrevistos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteExamesPrevistos" />
-	<property name="cronExpression" value="0 0 3 25 * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
+	<property name="cronExpression" value="0 50 13 28 * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
   </bean>
   <bean id="cronTriggerLembretePeriodoExperiencia" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembretePeriodoExperiencia" />

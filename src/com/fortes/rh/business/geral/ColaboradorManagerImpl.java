@@ -166,7 +166,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					try
 					{
 				    	Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
-						ArquivoUtil.montaRelatorio(empresa, subject, body, Arrays.asList(aniversariante.getContato().getEmail()), parametros, colaboradores, mail, "cartaoAniversariante.jasper");
+						ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
 					} 
 					catch (Exception e) 
 					{

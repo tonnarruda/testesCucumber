@@ -15,6 +15,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -42,6 +43,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorManager colaboradorManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private Mail mail;
 	Map<String,Object> parametros = new HashMap<String, Object>();
 	
@@ -249,50 +251,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) 
 	{
-		try	
-		{
-			for (Empresa empresa : empresas) 
-			{
-				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
-				if (!emailsCollection.isEmpty())
-				{
-					Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
-					Date ultimoDiaDoMesPosterior = DateUtil.getUltimoDiaMes(DateUtil.incrementaMes(new Date(), 1));
-					String dataString = DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior);
-					String subject = "(" + empresa.getNome()+ ")" + "Exames previstos até " + dataString;
-					String body = "<B>" + empresa.getNome() + "<B><br><br>" + "Segue em anexo Relatório de Exames Previstos até " + dataString;
-					
-					try 
-					{
-						char barra = File.separatorChar;
-						String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-						path = path + barra + "WEB-INF" + barra +"report" + barra; 
-						ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
-						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-						String msgRegistro = Autenticador.getMsgAutenticado("");
-						String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
-				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
-				    	cabecalho.setLicenciadoPara(empresa.getNome());
-				    	parametros.put("CABECALHO", cabecalho);
-				    	parametros.put("SUBREPORT_DIR", path);
-				    	
-				    	colecaoExamesPrevistos = findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
-
-						if (!colecaoExamesPrevistos.isEmpty())
-							ArquivoUtil.montaRelatorio(empresa, subject, body, emailsCollection, parametros, colecaoExamesPrevistos, mail, "exames_previstos.jasper");
-						
-					} 
-					catch (ColecaoVaziaException e) 
-					{
-						throw new Exception(e.getMessage(), e);
-					}
-				}
-			}
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
+		gerenciadorComunicacaoManager.enviaLembreteExamesPrevistos(empresas);
 	}
 
 	public void setMail(Mail mail)
@@ -303,8 +262,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
 	}
-
-
 	
 	private JasperReport compileReport(String reportPath, InputStream reportInputStream) throws JRException {
 		JasperReport jasperReport;// = JasperCompileManager.compileReport(systemId.replaceAll("jasper", "jrxml"));
@@ -326,6 +283,10 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame) 
 	{
 		return getDao().find(page, pagingSize, empresaId, exame);
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 	
 }

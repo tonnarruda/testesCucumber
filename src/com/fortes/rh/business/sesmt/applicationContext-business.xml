@@ -220,6 +220,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>    
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>    
   </bean>
   <bean id="exameManager" parent="parentManager">
     <property name="proxyInterfaces">

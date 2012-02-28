@@ -150,7 +150,7 @@ public enum Operacao
 			return enviarPara;
 		}
 	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do perído de experiência a vencer"){
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do período de experiência a vencer"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setEmail(meioComunicação);
@@ -161,6 +161,21 @@ public enum Operacao
 		public HashMap<Integer, String> enviarPara(){
 			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
 			EnviarPara.setResponsavelRH(enviarPara);
+			
+			return enviarPara;
+		}
+	},
+	EXAMES_PREVISTOS(11, "Aviso automático de exames previstos"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+		
+		public HashMap<Integer, String> enviarPara(){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			EnviarPara.setPerfilAutorizadoExamesPrevistos(enviarPara);
 			
 			return enviarPara;
 		}

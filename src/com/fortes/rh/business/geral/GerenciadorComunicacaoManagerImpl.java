@@ -1,8 +1,13 @@
 package com.fortes.rh.business.geral;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.activation.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -10,7 +15,9 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -27,6 +34,10 @@ import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.relatorio.Cabecalho;
+import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
+import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -394,6 +405,72 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) {
+		try	
+		{
+			ExameManager exameManager = (ExameManager) SpringUtil.getBeanOld("exameManager");
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+			
+			Map<String,Object> parametros = new HashMap<String, Object>();
+			
+			for (Empresa empresa : empresas) 
+			{
+				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
+				if (!emailsCollection.isEmpty())
+				{
+					Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
+					Date ultimoDiaDoMesPosterior = DateUtil.getUltimoDiaMes(DateUtil.incrementaMes(new Date(), 1));
+					String dataString = DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior);
+					String subject = "(" + empresa.getNome()+ ")" + "Exames previstos até " + dataString;
+					String body = "<B>" + empresa.getNome() + "<B><br><br>" + "Segue em anexo Relatório de Exames Previstos até " + dataString;
+					
+					try 
+					{
+						char barra = File.separatorChar;
+						String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+						path = path + barra + "WEB-INF" + barra +"report" + barra; 
+						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+						String msgRegistro = Autenticador.getMsgAutenticado("");
+						String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+				    	cabecalho.setLicenciadoPara(empresa.getNome());
+				    	parametros.put("CABECALHO", cabecalho);
+				    	parametros.put("SUBREPORT_DIR", path);
+				    	
+				    	colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
+
+						if (!colecaoExamesPrevistos.isEmpty()){
+							DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colecaoExamesPrevistos, "exames_previstos.jasper");
+							
+							String[] emails = new String[emailsCollection.size()];
+							emails = emailsCollection.toArray(emails);
+							
+							Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.EXAMES_PREVISTOS.getId(), empresa.getId());
+				    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+				    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId())){
+				    				mail.send(empresa, subject, files, body, emails);		
+				    			} 		
+				    		}
+
+
+						}
+						
+					} 
+					catch (ColecaoVaziaException e) 
+					{
+						throw new Exception(e.getMessage(), e);
+					}
+				}
+			}
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

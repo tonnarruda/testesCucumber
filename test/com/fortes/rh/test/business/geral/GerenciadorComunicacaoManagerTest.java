@@ -17,6 +17,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -37,10 +38,10 @@ import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
-import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
@@ -50,7 +51,10 @@ import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.test.factory.sesmt.ExameFactory;
+import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -64,6 +68,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock questionarioManager;
 	private Mock empresaManager;
+	private Mock exameManager;
 	private Mock mail;
 	
 	protected void setUp() throws Exception
@@ -86,11 +91,15 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		empresaManager = new Mock(EmpresaManager.class);
 		gerenciadorComunicacaoManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+		
+		exameManager = new Mock(ExameManager.class);
+		MockSpringUtil.mocks.put("exameManager", exameManager);
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
 
 	public void testExecuteEncerrarSolicitacao()
@@ -437,6 +446,45 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(colaboradores);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+
+	 public void testEnviaLembreteExamesPrevistos() throws Exception
+	 {
+		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
+		 parametros.setAppUrl("url");
+		 parametros.setAppVersao("1");
+		 
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 Collection<Empresa> empresas = Arrays.asList(empresa);
+		 
+		 Collection<String> emails = Arrays.asList("email@email.com");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 Collection<Exame> examesPrevistos = Arrays.asList(ExameFactory.getEntity()); 
+		 
+		 colaboradorManager.expects(once()).method("findEmailsByPapel").with(eq(empresa.getId()),eq("ROLE_RECEBE_EXAMES_PREVISTOS")).will(returnValue(emails));
+		 parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametros));
+		 exameManager.expects(once()).method("findRelatorioExamesPrevistos").with(new Constraint[] {eq(empresa.getId()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(examesPrevistos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.EXAMES_PREVISTOS.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaLembreteExamesPrevistos(empresas);
 		 } catch (Exception e) {
 			 exception = e;
 		 }

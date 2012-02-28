@@ -11,7 +11,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(9, EnviarPara.values().length);
+		assertEquals(10, EnviarPara.values().length);
 		
 		assertEquals(new Integer(1), EnviarPara.USUARIO.getId());
 		assertEquals(new Integer(2), EnviarPara.GESTOR_AREA.getId());
@@ -21,6 +21,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals(new Integer(6), EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId());
 		assertEquals(new Integer(7), EnviarPara.COLABORADOR.getId());
 		assertEquals(new Integer(8), EnviarPara.RESPONSAVEL_RH.getId());
+		assertEquals(new Integer(9), EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 
@@ -34,6 +35,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Avaliador", EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getDescricao());
 		assertEquals("Colaborador", EnviarPara.COLABORADOR.getDescricao());
 		assertEquals("Responsável do RH", EnviarPara.RESPONSAVEL_RH.getDescricao());
+		assertEquals("Usuários com perfil de receber emails de exames previstos", EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getDescricao());
 		assertEquals("Avulso", EnviarPara.AVULSO.getDescricao());
 	}
 
@@ -47,6 +49,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Avaliador", EnviarPara.getDescricaoById(6));
 		assertEquals("Colaborador", EnviarPara.getDescricaoById(7));
 		assertEquals("Responsável do RH", EnviarPara.getDescricaoById(8));
+		assertEquals("Usuários com perfil de receber emails de exames previstos", EnviarPara.getDescricaoById(9));
 		assertEquals("Avulso", EnviarPara.getDescricaoById(99));
 	}
 
@@ -120,6 +123,15 @@ public class EnviarParaTest extends TestCase
 		
 		assertEquals(1, meioComunicacao.size());
 		assertEquals(EnviarPara.RESPONSAVEL_RH.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_RH.getId()));
+	}
+	
+	public void testSetPerfilAutorizadoExamesPrevistos()
+	{
+		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
+		EnviarPara.setPerfilAutorizadoExamesPrevistos(meioComunicacao);
+		
+		assertEquals(1, meioComunicacao.size());
+		assertEquals(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getDescricao(), meioComunicacao.get(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId()));
 	}
 	
 }

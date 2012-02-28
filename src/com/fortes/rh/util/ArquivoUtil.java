@@ -33,7 +33,6 @@ import org.mozilla.universalchardet.UniversalDetector;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
-import com.fortes.rh.model.geral.Empresa;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 import com.opensymphony.webwork.ServletActionContext;
@@ -359,7 +358,7 @@ public class ArquivoUtil
 		}
 	}
 
-    public static void montaRelatorio(Empresa empresa, String subject, String body, Collection<String> emailsCollection, Map<String,Object> parametros, Collection dataSource, Mail mail, String jasperName) throws Exception 
+    public static DataSource[] montaRelatorio(Map<String,Object> parametros, Collection dataSource, String jasperName) throws Exception 
 	{
 		try
 		{
@@ -375,10 +374,7 @@ public class ArquivoUtil
 				}
 			};
 			
-			DataSource[] files = new DataSource[]{file};
-			String[] emails = new String[emailsCollection.size()];
-			emails = emailsCollection.toArray(emails);
-			mail.send(empresa, subject, files, body, emails);		
+			return new DataSource[]{file};
 		}
 		catch (JRException e)
 		{

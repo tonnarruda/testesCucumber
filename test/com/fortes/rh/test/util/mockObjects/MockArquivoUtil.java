@@ -1,5 +1,11 @@
 package com.fortes.rh.test.util.mockObjects;
 
+import java.util.Collection;
+import java.util.Map;
+
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
+
 import com.fortes.model.type.File;
 
 public class MockArquivoUtil
@@ -29,5 +35,10 @@ public class MockArquivoUtil
 	public static String getLoggingPath() {
 		return DIRETORIO_DE_LOGS_DO_FORTESRH;
 	}
-	
+
+    public static DataSource[] montaRelatorio(Map<String,Object> parametros, Collection dataSource, String jasperName) throws Exception
+    {
+    	return new DataSource[]{new ByteArrayDataSource("", "application/pdf")};
+    }
+
 }

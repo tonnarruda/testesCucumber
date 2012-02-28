@@ -13,6 +13,7 @@ public enum EnviarPara
 	AVALIADOR_AVALIACAO_DESEMPENHO (6, "Avaliador"),
 	COLABORADOR (7, "Colaborador"),
 	RESPONSAVEL_RH (8, "Responsável do RH"),
+	PERFIL_AUTORIZADO_EXAMES_PREVISTOS (9, "Usuários com perfil de receber emails de exames previstos"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)
@@ -73,5 +74,9 @@ public enum EnviarPara
 	
 	public static void setResponsavelRH(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.RESPONSAVEL_RH.getId(), EnviarPara.RESPONSAVEL_RH.getDescricao());
+	}
+	
+	public static void setPerfilAutorizadoExamesPrevistos(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId(), EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getDescricao());
 	}
 }
