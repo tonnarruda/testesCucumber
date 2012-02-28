@@ -13,7 +13,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -29,6 +29,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
@@ -40,7 +41,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private AnuncioManager anuncioManager;
 	private Mail mail;
-	private PerfilManager perfilManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId)
@@ -201,12 +202,12 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().migrarBairro(bairroId, bairroDestinoId);
 	}
 	
-	public Solicitacao save(Solicitacao solicitacao, String[] emailsAvulsos)
+	public Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados)
 	{
 		super.save(solicitacao);
 		
 		try {
-			enviarEmailParaLiberadorSolicitacao(solicitacao, solicitacao.getEmpresa(), emailsAvulsos);
+			enviarEmailParaResponsaveis(solicitacao, solicitacao.getEmpresa(), emailsMarcados);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -214,14 +215,12 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return solicitacao;
 	}
 
-	public void enviarEmailParaLiberadorSolicitacao(Solicitacao solicitacao, Empresa empresa, String[] emailsAvulsos) throws Exception
+	public void enviarEmailParaResponsaveis(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
 		
-		Collection<String> emails = perfilManager.getEmailsByRoleLiberaSolicitacao(empresa.getId());
-		incluiEmails(emails, emailsAvulsos);
-		
+		Collection<String> emails = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
 		emails.add(empresa.getEmailRespRH());
 		
 		if (emails != null && !emails.isEmpty())
@@ -248,17 +247,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
 			
 			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
-		}
-	}
-	
-	private void incluiEmails(Collection<String> emails, String[] emailsAvulsos) 
-	{
-		if(emailsAvulsos != null)
-		{
-			for (String emailAvulso : emailsAvulsos) 
-			{
-				emails.add(emailAvulso);
-			}
 		}
 	}
 
@@ -315,10 +303,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void setMail(Mail mail) {
 		this.mail = mail;
 	}
-	
-	public void setPerfilManager(PerfilManager perfilManager) {
-		this.perfilManager = perfilManager;
-	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
@@ -372,6 +356,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			graficoContratadosMotivo.add(new DataGrafico(null, motivo.getDescricao(), motivo.getQtdContratados(), ""));
 		
 		return graficoContratadosMotivo;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 

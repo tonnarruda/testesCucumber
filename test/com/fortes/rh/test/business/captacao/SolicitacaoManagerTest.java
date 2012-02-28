@@ -16,6 +16,7 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -26,24 +27,18 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 @SuppressWarnings("deprecation")
@@ -55,7 +50,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock anuncioManager = null;
 	//private Mock mail = null;
-	private Mock perfilManager = null;
+	private Mock areaOrganizacionalManager = null;
 	private Mock parametrosDoSistemaManager;
 	private Mock colaboradorManager;
 
@@ -80,8 +75,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		anuncioManager = new Mock(AnuncioManager.class);
 		solicitacaoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
 		
-		perfilManager = mock(PerfilManager.class);
-		solicitacaoManager.setPerfilManager((PerfilManager) perfilManager.proxy());
+		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		solicitacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		
