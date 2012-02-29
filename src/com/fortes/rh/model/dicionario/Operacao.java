@@ -4,7 +4,13 @@ import java.util.HashMap;
 
 public enum Operacao
 {
-	SELECIONAR_OPERACAO(0, "Selecione..."),
+	SELECIONAR_OPERACAO(0, "Selecione..."){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			
+			return meioComunicação;
+		}
+	},
 	ENCERRAMENTO_SOLICITACAO(1, "Encerramento da solicitação de pessoal"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
@@ -86,16 +92,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do período de experiência a vencer"){
-		public HashMap<Integer, String> meioComunicação(){
-
-			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
-			MeioComunicacao.setMeiosDeComunicacoes(meioComunicação);
-			
-			return meioComunicação;
-		}
-	},
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do período de experiência a vencer"),
 	EXAMES_PREVISTOS(11, "Aviso automático de exames previstos"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();

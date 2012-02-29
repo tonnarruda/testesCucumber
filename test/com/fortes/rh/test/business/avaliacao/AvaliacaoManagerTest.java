@@ -46,11 +46,6 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 	private Mock avaliacaoDao;
 	private Mock perguntaManager;
 	
-	private Mock periodoExperienciaManager;
-	private Mock parametrosDoSistemaManager;
-	private Mock colaboradorManager;
-	private Mock usuarioEmpresaManager;
-	private Mock usuarioMensagemManager;
 	private Mock respostaManager;
 	private Mock colaboradorRespostaManager;
 	private Mock questionarioManager;
@@ -62,18 +57,6 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
         avaliacaoManager.setDao((AvaliacaoDao) avaliacaoDao.proxy());
         perguntaManager = new Mock(PerguntaManager.class);
         avaliacaoManager.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
-        
-        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
-        avaliacaoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-        periodoExperienciaManager = new Mock(PeriodoExperienciaManager.class);
-        avaliacaoManager.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
-        colaboradorManager = mock(ColaboradorManager.class);
-        avaliacaoManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-        usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
-        avaliacaoManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
-        usuarioMensagemManager = mock(UsuarioMensagemManager.class);
-        avaliacaoManager.setUsuarioMensagemManager((UsuarioMensagemManager) usuarioMensagemManager.proxy());
-        
         respostaManager = mock(RespostaManager.class);
         avaliacaoManager.setRespostaManager((RespostaManager) respostaManager.proxy());
         colaboradorRespostaManager = mock (ColaboradorRespostaManager.class);
@@ -121,42 +104,6 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 
     	avaliacaoManager.getQuestionarioRelatorio(avaliacao);
     }
-	
-	public void testEnviaLembrete()
-	{
-		Calendar cincoDiasPraFrente = Calendar.getInstance();
-		cincoDiasPraFrente.add(Calendar.DAY_OF_YEAR, +5);
-		
-		Collection<PeriodoExperiencia> periodos = new ArrayList<PeriodoExperiencia>();
-		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(2L);
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		periodoExperiencia.setEmpresa(empresa);
-		periodoExperiencia.setDias(45);
-		periodos.add(periodoExperiencia);
-		
-		Collection<Integer> dias = new ArrayList<Integer>();
-		dias.add(5);
-		
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Colaborador colaborador = new Colaborador(1000L, "José Germano", "Zé Mano", "Tabelião", "I", 2L, "Área", 1L, "Mãe", empresa.getId());
-		colaboradores.add(colaborador);
-		
-		String mensagem = "Período de Experiência: 5 dias para a Avaliação de 45 dias de José Germano.\n\n"
-			+ "Lembrete de Avaliação de 45 dias do Período de Experiência.\n\n"
-			+ "Colaborador: José Germano (Zé Mano) \n"
-			+ "Cargo: Tabelião I\n"
-			+ "Área: Mãe > Área\n"
-			+ "Data da avaliação: " + DateUtil.formataDiaMesAno(cincoDiasPraFrente.getTime());
-		
-		periodoExperienciaManager.expects(once()).method("findAll").withNoArguments().will(returnValue(periodos));
-		parametrosDoSistemaManager.expects(once()).method("getDiasLembretePeriodoExperiencia").withNoArguments().will(returnValue(dias));
-		colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(eq(40),eq(empresa)).will(returnValue(colaboradores));
-		usuarioEmpresaManager.expects(atLeastOnce()).method("findUsuariosByEmpresaRoleAvaliacaoExperiencia").will(returnValue(new ArrayList<UsuarioEmpresa>()));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments();
-		
-		avaliacaoManager.enviaLembrete();
-	}
 	
 	public void testgetPontuacaoMaximaDaPerformance()
 	{

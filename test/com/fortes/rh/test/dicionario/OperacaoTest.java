@@ -35,17 +35,17 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(null, Operacao.getMeioComunicacaoById(1212122121));
 		assertEquals(0, Operacao.getMeioComunicacaoById(0).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(1).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(2).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(3).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(4).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(5).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(6).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(7).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(8).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(9).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(10).size());
-		assertEquals(1, Operacao.getMeioComunicacaoById(11).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(1).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(2).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(3).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(4).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(5).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(6).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(7).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(8).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(9).size());
+		assertEquals(3, Operacao.getMeioComunicacaoById(10).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
 	}
 
 	
@@ -72,83 +72,82 @@ public class OperacaoTest extends TestCase
 	
 	public void testEncerrarSolicitacao()
 	{
-		assertEquals(1, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().size());
-		assertEquals(1, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().values().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testAlterarStatusSolicitacao()
 	{
-		assertEquals(1, Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLiberadorSolicitacao()
 	{
-		assertEquals(1, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLembreteAvaliacaoDesempenho()
 	{
-		assertEquals(1, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLiberarQuestionario()
 	{
-		assertEquals(1, Operacao.LIBERAR_QUESTIONARIO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_QUESTIONARIO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.LIBERAR_QUESTIONARIO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_QUESTIONARIO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLembreteQuestionarioNaoRespondida()
 	{
-		assertEquals(1, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLiberarSolicitacao()
 	{
-		assertEquals(1, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLembreteAutomaticoPesquisaNaoLiberada()
 	{
-		assertEquals(1, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().values().toArray()[0]);
+		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testCadastroCandidatoModuloExterno()
 	{
 		Operacao operacao = Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO;
 		
-		assertEquals(1, operacao.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testAvisoQtdCurriculosCadastrados()
 	{
 		Operacao operacao = Operacao.QTD_CURRICULOS_CADASTRADOS;
 		
-		assertEquals(1, operacao.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testAvaliacaoPeriodoExperienciaVencendo()
 	{
 		Operacao operacao = Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO;
 		
-		assertEquals(1, operacao.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		assertEquals(3, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 	}
 	
 	public void testExamesPrevistos()
 	{
 		Operacao operacao = Operacao.EXAMES_PREVISTOS;
 		
-		assertEquals(1, operacao.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[0]);
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 	}
 	
 }
