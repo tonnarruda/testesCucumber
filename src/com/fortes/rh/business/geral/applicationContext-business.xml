@@ -884,6 +884,15 @@
     <property name="mail">
       <ref bean="mail" />
     </property>
+    <property name="periodoExperienciaManager">
+      <ref bean="periodoExperienciaManager" />
+    </property>
+    <property name="usuarioEmpresaManager">
+      <ref bean="usuarioEmpresaManager" />
+    </property>
+    <property name="usuarioMensagemManager">
+      <ref bean="usuarioMensagemManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

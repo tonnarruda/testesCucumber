@@ -16,7 +16,7 @@
 	<script type="text/javascript">
 		function validacoes()
 		{
-		 	if($('#operacao').val() == 0)//Operacao.NAO_INFORMADO
+		 	if($('#operacao').val() == 0)//0(zero) = Operacao.NAO_INFORMADO
 			{
 				$('#operacao').css("background-color", "#FFEEC2");
 				jAlert("Preencha o campo indicado.");
@@ -53,14 +53,20 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			GerenciadorComunicacaoDWR.getMeioComunicacao(createListMeioComunicacao, operacaoId);
-			GerenciadorComunicacaoDWR.getEnviarPara(createListEnviarPara, operacaoId);
 		}
-		
+
 		function createListMeioComunicacao(data)
 		{
 			DWRUtil.removeAllOptions("meioComunicacoes");
+			DWRUtil.removeAllOptions("enviarPara");
 			DWRUtil.addOptions("meioComunicacoes", data);
 		}
+
+		function populaEnviarPara(meioComunicacaoId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			GerenciadorComunicacaoDWR.getEnviarPara(createListEnviarPara, $('#operacao').val(), meioComunicacaoId);
+		}		
 
 		function createListEnviarPara(data)
 		{
@@ -93,7 +99,7 @@
 		<@ww.actionmessage />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.select label="Operação" name="gerenciadorComunicacao.operacao" id="operacao" list="operacoes" cssStyle="width: 310px;" liClass="liLeft" onchange="populaMeioComunicacao(this.value);" />
-			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" list="meioComunicacoes" cssStyle="width: 310px;" liClass="liLeft"/>
+			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" list="meioComunicacoes" cssStyle="width: 310px;" liClass="liLeft" onchange="populaEnviarPara(this.value);"/>
 			<@ww.select label="Enviar Para" id="enviarPara" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 310px;" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />

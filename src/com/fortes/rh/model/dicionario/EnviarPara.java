@@ -53,6 +53,10 @@ public enum EnviarPara
 		enviarPara.put(EnviarPara.USUARIO.getId(), EnviarPara.USUARIO.getDescricao());
 	}
 	
+	public static void setGestorArea(HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.GESTOR_AREA.getId(), EnviarPara.GESTOR_AREA.getDescricao());
+	}
+	
 	public static void setAvulso(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
 	}

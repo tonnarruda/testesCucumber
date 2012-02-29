@@ -28,4 +28,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);
 	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores);
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
+	void enviaMensagemLembretePeriodoExperiencia();
 }

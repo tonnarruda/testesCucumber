@@ -23,29 +23,8 @@
     <property name="perguntaManager">
       <ref bean="perguntaManager" />
     </property>
-    <property name="periodoExperienciaManager">
-      <ref bean="periodoExperienciaManager" />
-    </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
-    </property>
-    <property name="colaboradorManager">
-      <ref bean="colaboradorManager" />
-    </property>
-    <property name="usuarioEmpresaManager">
-      <ref bean="usuarioEmpresaManager" />
-    </property>
-    <property name="usuarioMensagemManager">
-      <ref bean="usuarioMensagemManager" />
-    </property>
-    <property name="colaboradorRespostaManager">
-      <ref bean="colaboradorRespostaManager" />
-    </property>
-    <property name="respostaManager">
-      <ref bean="respostaManager" />
-    </property>
-    <property name="questionarioManager">
-      <ref bean="questionarioManager" />
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
     </property>
   </bean>
   <bean id="avaliacaoManager" parent="parentManager">

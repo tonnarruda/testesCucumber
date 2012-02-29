@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -25,7 +26,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		{
 			gerenciadorComunicacao = (GerenciadorComunicacao) gerenciadorComunicacaoManager.findById(gerenciadorComunicacao.getId());
 			meioComunicacoes = Operacao.getMeioComunicacaoById(gerenciadorComunicacao.getOperacao());
-			enviarParas = Operacao.getEnviarParaById(gerenciadorComunicacao.getOperacao());
+			enviarParas = MeioComunicacao.getEnviarParaById(gerenciadorComunicacao.getOperacao());
 		}else
 		{
 			meioComunicacoes = new HashMap<Integer, String>();

@@ -2,6 +2,7 @@ package com.fortes.rh.web.dwr;
 
 import java.util.HashMap;
 
+import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 
 public class GerenciadorComunicacaoDWR
@@ -11,8 +12,9 @@ public class GerenciadorComunicacaoDWR
 		return Operacao.getMeioComunicacaoById(operacaoId);
 	}
 
-	public  HashMap<Integer,String> getEnviarPara(int operacaoId)
+	public  HashMap<Integer,String> getEnviarPara(int operacaoId, int meioComunicacaoId)
 	{
-		return Operacao.getEnviarParaById(operacaoId);
+		MeioComunicacao meiocomunicacao = MeioComunicacao.getMeioComunicacaoById(meioComunicacaoId);
+		return meiocomunicacao.getEnviarPara(operacaoId);
 	}
 }
