@@ -5,8 +5,27 @@ import java.util.Collection;
 import java.util.HashMap;
 public enum MeioComunicacao
 {
-	SELECIONAR_MEIO_COMUNICACAO(0, "Selecione..."),
-	CAIXA_MENSAGEM(1, "Caixa de mensagem"),
+	SELECIONAR_MEIO_COMUNICACAO(0, "Selecione..."){
+		public HashMap<Integer, String> getEnviarPara(int operacaoId){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			return enviarPara;
+		}
+		
+	},
+	CAIXA_MENSAGEM(1, "Caixa de mensagem"){
+		public HashMap<Integer, String> getEnviarPara(int operacaoId){
+			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+			
+			if 	(possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(operacaoId))
+				EnviarPara.setGerenciadorDeMensagemPeriodoExperiencia(enviarPara);
+
+			if 	(possuiRecebeMensagemPeriodoExperiencia(operacaoId))
+				EnviarPara.setRecebeMensagemPeriodoExperiencia(enviarPara);
+			
+			return enviarPara;
+		}
+		
+	},
 	EMAIL(2, "Email"){
 		public HashMap<Integer, String> getEnviarPara(int operacaoId){
 			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
@@ -158,6 +177,20 @@ public enum MeioComunicacao
 	private static boolean possuiPerfilAutorizadoExamesPrevistosEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.EXAMES_PREVISTOS.getId());
+		
+		return operacoes.contains(operacaoId);
+	}
+	
+	private static boolean possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(Integer operacaoId){
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
+		
+		return operacoes.contains(operacaoId);
+	}
+	
+	private static boolean possuiRecebeMensagemPeriodoExperiencia(Integer operacaoId){
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}

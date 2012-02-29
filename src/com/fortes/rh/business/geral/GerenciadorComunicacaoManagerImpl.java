@@ -495,7 +495,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Calendar dataAvaliacao = Calendar.getInstance();
 				dataAvaliacao.add(Calendar.DAY_OF_YEAR, +diaLembrete);
 				
-				Collection<Colaborador> colaboradores = null;
+ 				Collection<Colaborador> colaboradores = null;
 				
 				try {
 					colaboradores = colaboradorManager.findAdmitidosHaDias(dias, periodoExperiencia.getEmpresa());
@@ -540,18 +540,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), empresa.getId());
 		    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		    		{
-		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getId())){
 		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperienciaGerencial, colaborador, TipoMensagem.PERIODOEXPERIENCIA);
 		    			} 		
-		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())){
+		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getId())){
 		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperiencia, colaborador.getAreaOrganizacional().getDescricaoIds());
 		    			} 		
 		    		}
-					
-					
-					
-					
-					
 				}
 			}
 		}
