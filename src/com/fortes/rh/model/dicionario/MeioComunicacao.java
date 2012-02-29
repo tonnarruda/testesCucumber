@@ -11,25 +11,25 @@ public enum MeioComunicacao
 		public HashMap<Integer, String> getEnviarPara(int operacaoId){
 			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
 			
-			if 	(possuiCandidatoNaoApto(operacaoId))
+			if 	(possuiCandidatoNaoAptoEmail(operacaoId))
 				EnviarPara.setCandidatoNaoApto(enviarPara);
 			
-			if 	(possuiLiberador(operacaoId))
+			if 	(possuiLiberadorEmail(operacaoId))
 				EnviarPara.setLiberador(enviarPara);
 			
-			if 	(possuiSolicitante(operacaoId))
+			if 	(possuiSolicitanteEmail(operacaoId))
 				EnviarPara.setSolicitante(enviarPara);
 			
-			if 	(possuiAvaliadorAvaliacaoDesempenho(operacaoId))
+			if 	(possuiAvaliadorAvaliacaoDesempenhoEmail(operacaoId))
 				EnviarPara.setAvaliadorAvaliacaoDesempenho(enviarPara);
 			
-			if 	(possuiColaborador(operacaoId))
+			if 	(possuiColaboradorEmail(operacaoId))
 				EnviarPara.setColaborador(enviarPara);			
 			
-			if 	(possuiResponsavelRH(operacaoId))
+			if 	(possuiResponsavelRHEmail(operacaoId))
 				EnviarPara.setResponsavelRH(enviarPara);
 			
-			if 	(possuiPerfilAutorizadoExamesPrevistos(operacaoId))
+			if 	(possuiPerfilAutorizadoExamesPrevistosEmail(operacaoId))
 				EnviarPara.setPerfilAutorizadoExamesPrevistos(enviarPara);
 
 			return enviarPara;
@@ -109,7 +109,7 @@ public enum MeioComunicacao
 			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 	
-	private static boolean possuiResponsavelRH(Integer operacaoId){
+	private static boolean possuiResponsavelRHEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 		operacoes.add(Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
@@ -119,35 +119,35 @@ public enum MeioComunicacao
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiCandidatoNaoApto(Integer operacaoId){
+	private static boolean possuiCandidatoNaoAptoEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiLiberador(Integer operacaoId){
+	private static boolean possuiLiberadorEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.LIBERAR_SOLICITACAO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiSolicitante(Integer operacaoId){
+	private static boolean possuiSolicitanteEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiAvaliadorAvaliacaoDesempenho(Integer operacaoId){
+	private static boolean possuiAvaliadorAvaliacaoDesempenhoEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiColaborador(Integer operacaoId){
+	private static boolean possuiColaboradorEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
 		operacoes.add(Operacao.LIBERAR_QUESTIONARIO.getId());
@@ -155,7 +155,7 @@ public enum MeioComunicacao
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiPerfilAutorizadoExamesPrevistos(Integer operacaoId){
+	private static boolean possuiPerfilAutorizadoExamesPrevistosEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.EXAMES_PREVISTOS.getId());
 		
