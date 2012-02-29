@@ -170,7 +170,6 @@ public enum MeioComunicacao
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
 		operacoes.add(Operacao.LIBERAR_QUESTIONARIO.getId());
-		operacoes.add(Operacao.MENSAGEM_ANIVERSARIANTE.getId());
 		
 		return operacoes.contains(operacaoId);
 	}

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -84,6 +85,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -125,11 +127,52 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
-		gerenciadorComunicacaoManager.enviaEmailAniversariantes();
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		if(parametrosDoSistema.getEnviarEmail())
+		{
+			Collection<Empresa> empresas = empresaManager.findByCartaoAniversario();
+			Date data = new Date();
+			int dia = DateUtil.getDia(data);
+			int mes = DateUtil.getMes(data);
+			
+			char barra = java.io.File.separatorChar;
+			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+			path = path + barra + "WEB-INF" + barra + "report" + barra; 
+
+			Map<String,Object> parametros = new HashMap<String, Object>();
+	    	parametros.put("SUBREPORT_DIR", path);
+	    	
+			for (Empresa empresa : empresas) 
+			{
+		    	String pathBackGroundRelatorio = "";
+		    	
+		    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+		    	java.io.File logo = new java.io.File(pathLogo);
+		    	if(logo.exists())
+		    		pathBackGroundRelatorio = pathLogo;
+		    	
+				parametros.put("BACKGROUND", pathBackGroundRelatorio);
+				
+				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
+				for (Colaborador aniversariante : aniversariantes)
+				{
+					parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
+					String subject = "Feliz Aniversário " + aniversariante.getNome();
+					String body = "Cartão em anexo, feliz aniversário.";
+
+					Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
+					DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
+
+					if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
+						mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
+					}
+
+				}
+			}			
+		}
 	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
@@ -2125,10 +2168,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
 	}
 	
-	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes) {
-		return getDao().findAniversariantesByEmpresa(empresaId, dia, mes);
-	}
-
 	public void setCandidatoNull(Long candidatoId) 
 	{
 		getDao().setCandidatoNull(candidatoId);
@@ -2144,7 +2183,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
 }
