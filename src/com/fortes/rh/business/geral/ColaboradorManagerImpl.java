@@ -84,7 +84,6 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -126,55 +125,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		if(parametrosDoSistema.getEnviarEmail())
-		{
-			Collection<Empresa> empresas = empresaManager.findByCartaoAniversario();
-			Date data = new Date();
-			int dia = DateUtil.getDia(data);
-			int mes = DateUtil.getMes(data);
-			
-			char barra = java.io.File.separatorChar;
-			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-			path = path + barra + "WEB-INF" + barra + "report" + barra; 
-
-			Map<String,Object> parametros = new HashMap<String, Object>();
-	    	parametros.put("SUBREPORT_DIR", path);
-	    	
-			for (Empresa empresa : empresas) 
-			{
-		    	String pathBackGroundRelatorio = "";
-		    	
-		    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
-		    	java.io.File logo = new java.io.File(pathLogo);
-		    	if(logo.exists())
-		    		pathBackGroundRelatorio = pathLogo;
-		    	
-				parametros.put("BACKGROUND", pathBackGroundRelatorio);
-				
-				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
-				for (Colaborador aniversariante : aniversariantes)
-				{
-					parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
-					//empresaManager.montaEnviaCartaoAniversariante(aniversariante.getNome(), aniversariante.getContato().getEmail(), empresa, parametrosDoSistema, parametros);
-					String subject = "Feliz Aniversário " + aniversariante.getNome();
-					String body = "Cartão em anexo, feliz aniversário.";
-					
-					try
-					{
-				    	Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
-						ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
-					} 
-					catch (Exception e) 
-					{
-						throw e;
-					}
-				}
-			}			
-		}
+		gerenciadorComunicacaoManager.enviaEmailAniversariantes();
 	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
@@ -2169,6 +2124,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado) {
 		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
 	}
+	
+	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes) {
+		return getDao().findAniversariantesByEmpresa(empresaId, dia, mes);
+	}
 
 	public void setCandidatoNull(Long candidatoId) 
 	{
@@ -2183,5 +2142,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

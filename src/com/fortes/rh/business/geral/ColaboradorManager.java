@@ -180,5 +180,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public String findCodigoACDuplicado(Long empresaId);
 	public void setCandidatoNull(Long candidatoId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
-	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
+	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);
 }

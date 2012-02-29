@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -549,6 +550,66 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    		}
 				}
 			}
+		}
+	}
+	
+	public void enviaEmailAniversariantes() {
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		if(parametrosDoSistema.getEnviarEmail())
+		{
+			Collection<Empresa> empresas = empresaManager.findByCartaoAniversario();
+			Date data = new Date();
+			int dia = DateUtil.getDia(data);
+			int mes = DateUtil.getMes(data);
+			
+			char barra = java.io.File.separatorChar;
+			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+			path = path + barra + "WEB-INF" + barra + "report" + barra; 
+
+			Map<String,Object> parametros = new HashMap<String, Object>();
+	    	parametros.put("SUBREPORT_DIR", path);
+	    	
+			for (Empresa empresa : empresas) 
+			{
+		    	String pathBackGroundRelatorio = "";
+		    	
+		    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+		    	java.io.File logo = new java.io.File(pathLogo);
+		    	if(logo.exists())
+		    		pathBackGroundRelatorio = pathLogo;
+		    	
+				parametros.put("BACKGROUND", pathBackGroundRelatorio);
+				
+				Collection<Colaborador> aniversariantes = colaboradorManager.findAniversariantesByEmpresa(empresa.getId(), dia, mes);
+				for (Colaborador aniversariante : aniversariantes)
+				{
+					parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
+					String subject = "Feliz Aniversário " + aniversariante.getNome();
+					String body = "Cartão em anexo, feliz aniversário.";
+					
+					try
+					{
+				    	Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
+				    	DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
+				    	
+				    	if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
+				    		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.MENSAGEM_ANIVERSARIANTE.getId(), empresa.getId());
+				    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+				    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+				    				mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
+				    			} 		
+				    		}
+				    	}
+
+					} 
+					catch (Exception e) 
+					{
+						e.printStackTrace();
+					}
+				}
+			}			
 		}
 	}
 	
