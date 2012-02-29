@@ -4,8 +4,6 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.quartz.JobExecutionException;
 
-import com.fortes.rh.config.backup.notificador.NotificadorDeBackup;
-
 public class BackupServiceImplTest extends MockObjectTestCase {
 
 	BackupServiceImpl service;
@@ -16,7 +14,6 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 	public void setUp() {
 		service = new BackupServiceImpl();
 		service.setRunAntScript(mockRunAntScript());
-		service.setNotificadorDeBackup(mockNotificadorDeBackup());
 	}
 
 	public void testDeveriaGerarBackup_e_EnviarEmail() throws JobExecutionException {
@@ -68,11 +65,6 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 	private RunAntScript mockRunAntScript() {
 		runAntScriptMock = mock(RunAntScript.class);
 		return (RunAntScript) runAntScriptMock.proxy();
-	}
-	
-	private NotificadorDeBackup mockNotificadorDeBackup() {
-		notificadorDeBackupMock = mock(NotificadorDeBackup.class);
-		return (NotificadorDeBackup) notificadorDeBackupMock.proxy();
 	}
 
 }

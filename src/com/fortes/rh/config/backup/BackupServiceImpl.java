@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import com.fortes.rh.config.backup.notificador.NotificadorDeBackup;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.util.ArquivoUtil;
 
 public class BackupServiceImpl implements BackupService {
@@ -14,7 +14,7 @@ public class BackupServiceImpl implements BackupService {
 	
 	private static Logger logger = Logger.getLogger(BackupServiceImpl.class);
 
-	NotificadorDeBackup notificadorDeBackup;
+	GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private RunAntScript runAntScript;
 	
@@ -27,7 +27,7 @@ public class BackupServiceImpl implements BackupService {
 	{
 		init();
 		String backupFile = backup();
-		sendMail(backupFile);
+		gerenciadorComunicacaoManager.notificaBackup(backupFile);
 	}
 
 	/**
@@ -59,15 +59,7 @@ public class BackupServiceImpl implements BackupService {
 		
 		return runAntScript.getProperty(BACKUP_FILE) + today + ".backup";
 	}
-	/**
-	 * Envia e-mail para o responsável sobre backup do banco de dados.
-	 */
-	private void sendMail(String arquivoDeBackup) {
-		notificadorDeBackup.notifica(arquivoDeBackup);
-	}
-	/**
-	 * Retorna o caminho completo do script.
-	 */
+
 	private String getScriptPath(String scriptName){
 		return this.getClass()
 			.getResource(scriptName)
@@ -78,7 +70,9 @@ public class BackupServiceImpl implements BackupService {
 	public void setRunAntScript(RunAntScript runAntScript) {
 		this.runAntScript = runAntScript;
 	}
-	public void setNotificadorDeBackup(NotificadorDeBackup notificadorDeBackup) {
-		this.notificadorDeBackup = notificadorDeBackup;
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

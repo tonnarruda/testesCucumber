@@ -101,6 +101,24 @@ public enum Operacao
 			
 			return meioComunicação;
 		}
+	},
+	BACKUP_AUTOMATICO(12, "Avido automático de Backup"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
+	},
+	MENSAGEM_ANIVERSARIANTE(13, "Mensagem para aniversariantes"){
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setEmail(meioComunicação);
+			
+			return meioComunicação;
+		}
 	};
 
 	private int id;

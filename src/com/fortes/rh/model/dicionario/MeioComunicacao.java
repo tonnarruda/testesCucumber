@@ -50,6 +50,9 @@ public enum MeioComunicacao
 			
 			if 	(possuiPerfilAutorizadoExamesPrevistosEmail(operacaoId))
 				EnviarPara.setPerfilAutorizadoExamesPrevistos(enviarPara);
+			
+			if (possuiResponsavelTecnico(operacaoId))
+				EnviarPara.setResponsavelTecnico(enviarPara);
 
 			return enviarPara;
 		}
@@ -135,6 +138,12 @@ public enum MeioComunicacao
 		operacoes.add(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
 		operacoes.add(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
 		
+		return operacoes.contains(operacaoId);
+	}
+	
+	private static boolean possuiResponsavelTecnico(Integer operacaoId){
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.BACKUP_AUTOMATICO.getId());
 		return operacoes.contains(operacaoId);
 	}
 	

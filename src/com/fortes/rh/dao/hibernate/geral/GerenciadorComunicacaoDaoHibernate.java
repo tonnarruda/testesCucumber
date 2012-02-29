@@ -17,7 +17,8 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
 		
 		criteria.add(Expression.eq("gc.operacao", operacaoId));
-		criteria.add(Expression.eq("gc.empresa.id", empresaId));
+		if (empresaId != null)
+			criteria.add(Expression.eq("gc.empresa.id", empresaId));
 		
 		return criteria.list();	
 	}

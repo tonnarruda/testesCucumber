@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.activation.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
@@ -50,6 +51,8 @@ import com.fortes.rh.util.StringUtil;
 
 public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<GerenciadorComunicacao, GerenciadorComunicacaoDao> implements GerenciadorComunicacaoManager
 {
+	private static Logger logger = Logger.getLogger(GerenciadorComunicacaoManagerImpl.class);
+	
 	Mail mail; 
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -551,6 +554,49 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				}
 			}
 		}
+	}
+	
+	public void notificaBackup(String arquivoDeBackup){
+		
+		String titulo = "Backup do Banco";
+		String corpo = getCorpo(arquivoDeBackup,  parametrosDoSistemaManager.getUrlDaAplicacao());
+		String email = parametrosDoSistemaManager.getEmailDoSuporteTecnico();
+		
+		try {
+			logger.info("Enviando e-mail para responsável (" + email + ") sobre backup do banco de dados.");
+			
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.MENSAGEM_ANIVERSARIANTE.getId(), null);
+    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+    				mail.send(null, titulo, corpo, null, email);
+    			} 
+    			break;
+    		}
+		
+		
+		} catch (Exception e) {
+			logger.error("Erro ao enviar e-mail ao responsável (" + email + ")  sobre backup do banco de dados", e);
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private String getCorpo(String backupFile, String appUrl) {
+		String link = getLink(appUrl, backupFile.substring(backupFile.lastIndexOf("/") + 1)); 
+		return new StringBuilder()
+				.append("O RH fez um backup automático do banco de dados.")
+				.append("<br /><br />")
+				.append("O arquivo foi salvo no diretório ")
+				.append("<b>'").append(backupFile).append("'</b>.")
+				.append("<br /><br />")
+				.append("Você pode baixar o backup a partir do link abaixo,<br />")
+				.append("<a href='" + link + "'>" + link + "</a>")
+				.toString();
+	}
+	
+	private String getLink(String appUrl, String backupFile) {
+		String link = appUrl + "/backup/show.action?filename=" + backupFile; 
+		return link;
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

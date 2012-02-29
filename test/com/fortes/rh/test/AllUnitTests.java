@@ -10,7 +10,6 @@ import com.fortes.rh.config.ScriptReaderTest;
 import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
-import com.fortes.rh.config.backup.NotificadoDeBackupViaEmailImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
@@ -1309,7 +1308,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(BackupCleanerJobTest.class);
         suite.addTestSuite(BackupJobTest.class);
         suite.addTestSuite(BackupServiceImplTest.class);
-        suite.addTestSuite(NotificadoDeBackupViaEmailImplTest.class);
         suite.addTestSuite(RunAntScriptTest.class);
 
         // AUDITORIA
