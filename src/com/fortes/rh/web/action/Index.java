@@ -25,6 +25,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -95,6 +96,7 @@ public class Index extends ActionSupport
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 	private Collection<Video> listaVideos = new ArrayList<Video>();
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 
 	public String index()
@@ -142,7 +144,9 @@ public class Index extends ActionSupport
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
 			{
 				solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.ANALISE, null);
-				candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
+				
+				if (gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(getEmpresaId()))
+					candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
 			}
 			
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
@@ -479,6 +483,10 @@ public class Index extends ActionSupport
 
 	public Collection<Video> getListaVideos() {
 		return listaVideos;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 	
 	

@@ -514,7 +514,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 		String link = "cargosalario/historicoColaborador/prepareUpdate.action?historicoColaborador.id="+ historicoColaborador.getId() +"&colaborador.id=" + historicoColaborador.getColaborador().getId();
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_SITUACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_SITUACAO_AC.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
@@ -548,7 +548,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		
 	}
 	
-	private String getCorpo(String backupFile, String appUrl) {
+	private String getCorpo(String backupFile, String appUrl) 
+	{
 		String link = getLink(appUrl, backupFile.substring(backupFile.lastIndexOf("/") + 1)); 
 		return new StringBuilder()
 				.append("O RH fez um backup automático do banco de dados.")
@@ -561,11 +562,19 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				.toString();
 	}
 	
-	private String getLink(String appUrl, String backupFile) {
+	private String getLink(String appUrl, String backupFile) 
+	{
 		String link = appUrl + "/backup/show.action?filename=" + backupFile; 
 		return link;
 	}
 	
+	public boolean existeConfiguracaoParaCandidatosModuloExterno(Long empresaId) 
+	{
+		Object[] valores = new Object[] {Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresaId};
+
+		return getDao().verifyExists(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}, valores);
+	}
+
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

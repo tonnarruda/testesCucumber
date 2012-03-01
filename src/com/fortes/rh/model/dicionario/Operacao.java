@@ -110,7 +110,16 @@ public enum Operacao
 			return meioComunicação;
 		}
 	}, 
-	CANCELAR_SITUACAO(13, "Cancelamento de Situação") {
+	CANCELAR_SITUACAO_AC(13, "Cancelamento de Situação no AC Pessoal") {
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setCaixaMensagem(meioComunicação);
+			
+			return meioComunicação;
+		}
+	},
+	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(14, "Exibir solicitações com canditados do modulo externo") {
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);

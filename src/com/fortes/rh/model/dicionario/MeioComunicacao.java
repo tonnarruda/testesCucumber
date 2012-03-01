@@ -25,6 +25,9 @@ public enum MeioComunicacao
 			if 	(possuiRecebeMensagemACPessoal(operacaoId))
 				EnviarPara.setRecebeMensagemACPessoal(enviarPara);
 			
+			if 	(possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(operacaoId))
+				EnviarPara.setPerfilAutorizadoVisualizarSolicitacaoPessoal(enviarPara);
+			
 			return enviarPara;
 		}
 	},
@@ -123,6 +126,11 @@ public enum MeioComunicacao
 		meioComunicação.put(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getId(), MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getDescricao());
 	}
 	
+	public static void setCaixaMensagem(HashMap<Integer, String> meioComunicação)
+	{
+		meioComunicação.put(MeioComunicacao.CAIXA_MENSAGEM.getId(), MeioComunicacao.CAIXA_MENSAGEM.getDescricao());
+	}
+	
 	public static void setEmail(HashMap<Integer, String> meioComunicação) 
 	{
 		meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
@@ -214,7 +222,14 @@ public enum MeioComunicacao
 	
 	private static boolean possuiRecebeMensagemACPessoal(int operacaoId) {
 		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.CANCELAR_SITUACAO.getId());
+		operacoes.add(Operacao.CANCELAR_SITUACAO_AC.getId());
+		
+		return operacoes.contains(operacaoId);
+	}
+	
+	private static boolean possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(Integer operacaoId){
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}

@@ -33,4 +33,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void notificaBackup(String arquivoDeBackup);
 	void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception;
 	void enviaMensagemCancelamentoSituacao(TSituacao situacao, String mensagem, HistoricoColaborador historicoColaborador);
+	boolean existeConfiguracaoParaCandidatosModuloExterno(Long emrpesaId);
 }

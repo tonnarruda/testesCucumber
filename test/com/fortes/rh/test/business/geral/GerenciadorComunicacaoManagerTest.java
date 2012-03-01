@@ -684,5 +684,17 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 }
 		 
 		 assertNull(exception);
+	 
+	 }
+	 public void testExisteConfiguracaoParaCandidatosModuloExterno()
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 Object[] valores = new Object[] {Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresa.getId()};
+		 gerenciadorComunicacaoDao.expects(once())
+		 									.method("verifyExists")
+		 									.with(eq(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}),eq(valores))
+		 									.will(returnValue(true));
+		 assertTrue(gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresa.getId()));
 	 }
 }

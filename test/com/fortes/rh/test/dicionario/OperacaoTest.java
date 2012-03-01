@@ -28,6 +28,8 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(9));
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(10));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(11));
+		assertEquals("Contratação de Colaborador", Operacao.getDescricaoById(12));
+		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(13));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -44,6 +46,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaoById(9).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(10).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(12).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(13).size());
 	}
 
 	
@@ -61,11 +65,19 @@ public class OperacaoTest extends TestCase
 		assertEquals(9, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 		assertEquals(10, Operacao.EXAMES_PREVISTOS.getId());
 		assertEquals(11, Operacao.BACKUP_AUTOMATICO.getId());
+		assertEquals(12, Operacao.CONTRATAR_COLABORADOR.getId());
+		assertEquals(13, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
 	}
 
 	public void testSelecionarOperacao()
 	{
 		assertEquals(0, Operacao.SELECIONAR_OPERACAO.meioComunicação().size());
+	}
+	
+	public void testCandidatosModuloExterno()
+	{
+		assertEquals(2, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testEncerrarSolicitacao()
