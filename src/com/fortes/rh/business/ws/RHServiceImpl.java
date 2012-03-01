@@ -8,7 +8,6 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -24,6 +23,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
@@ -80,7 +80,6 @@ public class RHServiceImpl implements RHService
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private PlatformTransactionManager transactionManager;
 	private MensagemManager mensagemManager;
 	private CargoManager cargoManager;
 	private CandidatoManager candidatoManager;
@@ -90,6 +89,7 @@ public class RHServiceImpl implements RHService
 	private FaixaSalarialManager faixaSalarialManager;
 	private GrupoACManager grupoACManager;
 	private UsuarioManager usuarioManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -284,10 +284,8 @@ public class RHServiceImpl implements RHService
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresa);
-
-			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo, grupoAC);
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(getMensagem(colaborador.getNomeComercial()), "AC Pessoal", getLink(colaborador.getId()), usuarioEmpresas, colaborador, TipoMensagem.DESLIGAMENTO);
+			
+			gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
 
 			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
 				return new FeedbackWebService(true);
@@ -299,16 +297,6 @@ public class RHServiceImpl implements RHService
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
 		}
-	}
-
-	private String getLink(Long id)
-	{
-		return "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + id + "&voltarPara=../../index.action";
-	}
-
-	private String getMensagem(String nomeComercial) 
-	{
-		return "O Colaborador " + nomeComercial + " foi desligado no AC Pessoal.\n\n Para preencher a Entrevista de Desligamento, acesse a listagem de Colaboradores.";
 	}
 
 	public FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC)
@@ -1277,11 +1265,6 @@ public class RHServiceImpl implements RHService
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public void setMensagemManager(MensagemManager mensagemManager)
 	{
 		this.mensagemManager = mensagemManager;
@@ -1323,6 +1306,10 @@ public class RHServiceImpl implements RHService
 
 	public void setUsuarioManager(UsuarioManager usuarioManager) {
 		this.usuarioManager = usuarioManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 }

@@ -697,4 +697,40 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 									.will(returnValue(true));
 		 assertTrue(gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresa.getId()));
 	 }
+
+	 public void testEnviaMensagemDesligamentoColaboradorAC() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setEmpresa(empresa);
+		 
+		 TSituacao situacao = new TSituacao();
+		 situacao.setEmpresaCodigoAC("0010");
+		 situacao.setGrupoAC("005");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, eq(empresa)).will(returnValue(colaborador));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.DESLIGAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
 }

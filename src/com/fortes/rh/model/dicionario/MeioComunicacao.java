@@ -225,6 +225,8 @@ public enum MeioComunicacao
 	private static boolean possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
+		operacoes.add(Operacao.CANCELAR_SITUACAO_AC.getId());
+		operacoes.add(Operacao.DESLIGAR_COLABORADOR_AC.getId());
 		
 		return operacoes.contains(operacaoId);
 	}

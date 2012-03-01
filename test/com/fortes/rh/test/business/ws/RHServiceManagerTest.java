@@ -8,7 +8,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -24,6 +23,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
@@ -74,7 +74,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private RHServiceImpl rHServiceManager = new RHServiceImpl();
 	private Mock historicoColaboradorManager;
 	private Mock colaboradorManager;
-	private Mock transactionManager;
 	private Mock empresaManager;
 	private Mock usuarioEmpresaManager;
 	private Mock usuarioMensagemManager;
@@ -92,6 +91,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock grupoACManager;
 	private Mock usuarioManager;
+	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -101,8 +101,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		rHServiceManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-		transactionManager = new Mock(PlatformTransactionManager.class);
-		rHServiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		empresaManager = new Mock(EmpresaManager.class);
 		rHServiceManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 		usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
@@ -137,6 +135,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setGrupoACManager((GrupoACManager) grupoACManager.proxy());
 		usuarioManager = new Mock(UsuarioManager.class);
 		rHServiceManager.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+		rHServiceManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 	}
 	
 	public void testBindColaboradorOcorrencias() throws Exception
@@ -254,10 +254,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaborador.setNomeComercial("nomeComercial");
 
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
-		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresa)).will(returnValue(colaborador));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(empresaCodigoAC), eq("XXX")).will(returnValue(new ArrayList<UsuarioEmpresa>()));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemDesligamentoColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
 
 		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}

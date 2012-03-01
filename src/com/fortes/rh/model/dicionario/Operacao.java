@@ -127,6 +127,15 @@ public enum Operacao
 
 			return meioComunicação;
 		}
+	}, 
+	DESLIGAR_COLABORADOR_AC(15, "Desligar colaborador no AC") {
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setCaixaMensagem(meioComunicação);
+
+			return meioComunicação;
+		}
 	};
 
 	private int id;

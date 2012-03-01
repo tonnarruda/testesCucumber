@@ -522,6 +522,25 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	public void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa) 
+	{
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+		Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresa);
+
+		String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
+		String mensagem = "O Colaborador " + colaborador.getNomeComercial() + " foi desligado no AC Pessoal.\n\n Para preencher a Entrevista de Desligamento, acesse a listagem de Colaboradores.";
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empCodigo, grupoAC);
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.DESLIGAR_COLABORADOR_AC.getId(), empresa.getId());
+		
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "AC Pessoal", link, usuarioEmpresas, colaborador, TipoMensagem.DESLIGAMENTO);
+		}
+	}
+	
 	public void notificaBackup(String arquivoDeBackup){
 		
 		String titulo = "Backup do Banco";

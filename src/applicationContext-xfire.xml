@@ -14,7 +14,6 @@
     <property name="historicoColaboradorManager" ref="historicoColaboradorManager" />
     <property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
     <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
-    <property name="transactionManager" ref="transactionManager" />
     <property name="mensagemManager" ref="mensagemManager" />
     <property name="cargoManager" ref="cargoManager" />
     <property name="candidatoManager" ref="candidatoManager" />
@@ -24,6 +23,7 @@
     <property name="faixaSalarialManager" ref="faixaSalarialManager" />
     <property name="grupoACManager" ref="grupoACManager" />
     <property name="usuarioManager" ref="usuarioManager" />
+    <property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager" />
   </bean>
 
   <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">
