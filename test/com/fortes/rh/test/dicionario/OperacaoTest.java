@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(14, Operacao.getHashMap().size());
+		assertEquals(15, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()
@@ -29,7 +29,8 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(10));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(11));
 		assertEquals("Contratação de Colaborador", Operacao.getDescricaoById(12));
-		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(13));
+		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(13));
+		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(14));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -48,6 +49,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(12).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(13).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(14).size());
 	}
 
 	
@@ -66,7 +68,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(10, Operacao.EXAMES_PREVISTOS.getId());
 		assertEquals(11, Operacao.BACKUP_AUTOMATICO.getId());
 		assertEquals(12, Operacao.CONTRATAR_COLABORADOR.getId());
-		assertEquals(13, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
+		assertEquals(13, Operacao.CANCELAR_SITUACAO_AC.getId());
+		assertEquals(14, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -149,6 +152,22 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+	}
+	
+	public void testCancelarSituacaoAC()
+	{
+		Operacao operacao = Operacao.CANCELAR_SITUACAO_AC;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+	}
+	
+	public void testSolicitacaoCandidatoModuloExterno()
+	{
+		Operacao operacao = Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 	}
 	
 }

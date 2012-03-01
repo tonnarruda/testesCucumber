@@ -673,7 +673,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue("Teste"));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_SITUACAO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_SITUACAO_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;

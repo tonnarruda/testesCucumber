@@ -136,11 +136,6 @@ public enum MeioComunicacao
 		meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
 	}
 	
-	public static void setCaixaMensagem(HashMap<Integer, String> meioComunicação) 
-	{
-		meioComunicação.put(MeioComunicacao.CAIXA_MENSAGEM.getId(), MeioComunicacao.CAIXA_MENSAGEM.getDescricao());
-	}
-
 	public static void setMeiosDeComunicacoes(HashMap<Integer, String> meioComunicação) {
 		for (MeioComunicacao meioComunicacao : values()) 
 			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
