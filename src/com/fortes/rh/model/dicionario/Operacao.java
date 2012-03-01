@@ -20,7 +20,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	ALTERAR_STATUS_SOLICITACAO(3, "Ateração no status da solicitação de pessoal"){
+	ALTERAR_STATUS_SOLICITACAO(2, "Ateração no status da solicitação de pessoal"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -29,7 +29,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(4, "Enviar lembrete avaliação desempenho"){
+	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(3, "Enviar lembrete avaliação desempenho"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -38,7 +38,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	LIBERAR_QUESTIONARIO(5, "Liberar questionário"){
+	LIBERAR_QUESTIONARIO(4, "Liberar questionário"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -47,7 +47,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO(6, "Lembrete de pesquisa não respondida"){
+	LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO(5, "Lembrete de pesquisa não respondida"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -56,7 +56,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(7, "Lembrete automático de pesquisa não liberada"){
+	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(6, "Lembrete automático de pesquisa não liberada"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -65,7 +65,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	CADASTRO_CANDIDATO_MODULO_EXTERNO(8, "Aviso de cadastro de candidato pelo módulo externo"){
+	CADASTRO_CANDIDATO_MODULO_EXTERNO(7, "Aviso de cadastro de candidato pelo módulo externo"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -74,7 +74,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	QTD_CURRICULOS_CADASTRADOS(9, "Aviso automático da quantidade de currículos cadastros por mês"){
+	QTD_CURRICULOS_CADASTRADOS(8, "Aviso automático da quantidade de currículos cadastros por mês"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -83,8 +83,8 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(10, "Aviso automático das avaliações do período de experiência a vencer"),
-	EXAMES_PREVISTOS(11, "Aviso automático de exames previstos"){
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer"),
+	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -93,7 +93,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	BACKUP_AUTOMATICO(12, "Aviso automático de backup"){
+	BACKUP_AUTOMATICO(11, "Aviso automático de backup"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -102,7 +102,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	CONTRATAR_COLABORADOR(13, "Contratação de Colaborador") {
+	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador") {
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);

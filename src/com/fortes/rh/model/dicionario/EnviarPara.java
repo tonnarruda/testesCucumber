@@ -9,15 +9,14 @@ public enum EnviarPara
 	GESTOR_AREA (2, "Gestor da área organizacional"),
 	CANDIDATO_NAO_APTO (3, "Candidatos não aptos"),
 	SOLICITANTE_SOLICITACAO (4, "Solicitante"),
-	LIBERADOR_SOLICITACAO (5, "Liberador"),
-	AVALIADOR_AVALIACAO_DESEMPENHO (6, "Avaliador"),
-	COLABORADOR (7, "Colaborador"),
-	RESPONSAVEL_RH (8, "Responsável do RH"),
+	AVALIADOR_AVALIACAO_DESEMPENHO (5, "Avaliador"),
+	COLABORADOR (6, "Colaborador"),
+	RESPONSAVEL_RH (7, "Responsável do RH"),
+	RESPONSAVEL_SETOR_PESSOAL (8, "Responsável do setor pessoal"),
 	PERFIL_AUTORIZADO_EXAMES_PREVISTOS (9, "Usuários com perfil de receber emails de exames previstos"),
 	GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA (10, "Usuários com perfil de gerenciador de mensagem por perído de experiência"),
 	RECEBE_MENSAGEM_PERIODO_EXPERIENCIA (11, "Usuários com perfil de receber mensagem por perído de experiência"),
 	RESPONSAVEL_TECNICO (12, "Responsável Tecnico"),
-	RESPONSAVEL_SETOR_PESSOAL (13, "Responsável do setor pessoal"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)
@@ -65,9 +64,6 @@ public enum EnviarPara
 		enviarPara.put(EnviarPara.AVULSO.getId(), EnviarPara.AVULSO.getDescricao());
 	}
 
-	public static void setLiberador(HashMap<Integer, String> enviarPara) {
-		enviarPara.put(EnviarPara.LIBERADOR_SOLICITACAO.getId(), EnviarPara.LIBERADOR_SOLICITACAO.getDescricao());
-	}
 	public static void setSolicitante(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.SOLICITANTE_SOLICITACAO.getId(), EnviarPara.SOLICITANTE_SOLICITACAO.getDescricao());
 	}

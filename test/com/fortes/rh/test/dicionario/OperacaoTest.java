@@ -18,16 +18,16 @@ public class OperacaoTest extends TestCase
 		assertEquals("", Operacao.getDescricaoById(1212122121));
 		assertEquals("Selecione...", Operacao.getDescricaoById(0));
 		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(1));
-		assertEquals("Ateração no status da solicitação de pessoal", Operacao.getDescricaoById(3));
-		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(4));
-		assertEquals("Liberar questionário", Operacao.getDescricaoById(5));
-		assertEquals("Lembrete de pesquisa não respondida", Operacao.getDescricaoById(6));
-		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(7));
-		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(8));
-		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(9));
-		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(10));
-		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(11));
-		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(12));
+		assertEquals("Ateração no status da solicitação de pessoal", Operacao.getDescricaoById(2));
+		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(3));
+		assertEquals("Liberar questionário", Operacao.getDescricaoById(4));
+		assertEquals("Lembrete de pesquisa não respondida", Operacao.getDescricaoById(5));
+		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(6));
+		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(7));
+		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(8));
+		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(9));
+		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(10));
+		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(11));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -41,10 +41,9 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaoById(6).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(7).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(8).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(9).size());
-		assertEquals(3, Operacao.getMeioComunicacaoById(10).size());
+		assertEquals(3, Operacao.getMeioComunicacaoById(9).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(10).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(12).size());
 	}
 
 	
@@ -52,16 +51,16 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(0, Operacao.SELECIONAR_OPERACAO.getId());
 		assertEquals(1, Operacao.ENCERRAMENTO_SOLICITACAO.getId());
-		assertEquals(3, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
-		assertEquals(4, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
-		assertEquals(5, Operacao.LIBERAR_QUESTIONARIO.getId());
-		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
-		assertEquals(7, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
-		assertEquals(8, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
-		assertEquals(9, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
-		assertEquals(10, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
-		assertEquals(11, Operacao.EXAMES_PREVISTOS.getId());
-		assertEquals(12, Operacao.BACKUP_AUTOMATICO.getId());
+		assertEquals(2, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
+		assertEquals(3, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
+		assertEquals(4, Operacao.LIBERAR_QUESTIONARIO.getId());
+		assertEquals(5, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
+		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
+		assertEquals(7, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
+		assertEquals(8, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
+		assertEquals(9, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
+		assertEquals(10, Operacao.EXAMES_PREVISTOS.getId());
+		assertEquals(11, Operacao.BACKUP_AUTOMATICO.getId());
 	}
 
 	public void testSelecionarOperacao()
