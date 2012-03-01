@@ -128,15 +128,15 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public String insert() throws Exception
 	{
+		if (faixaSalarialHistoricoManager.verifyData(faixaSalarialHistorico.getId(), faixaSalarialHistorico.getData(), faixaSalarialAux.getId()))
+		{
+			addActionMessage("Já existe um histórico com essa data.");
+			prepareInsert();
+			return Action.INPUT;
+		}
+
 		if (faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.getIndice())
 		{
-			if (faixaSalarialHistoricoManager.verifyData(faixaSalarialHistorico.getId(), faixaSalarialHistorico.getData(), faixaSalarialAux.getId()))
-			{
-				addActionMessage("Já existe um histórico com essa data.");
-				prepareInsert();
-				return Action.INPUT;
-			}
-
 			if (!faixaSalarialHistoricoManager.verifyHistoricoIndiceNaData(faixaSalarialHistorico.getData(), faixaSalarialHistorico.getIndice().getId()))
 			{
 				addActionMessage("Não existe histórico para o índice selecionado nesta data.");
@@ -162,15 +162,15 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public String update() throws Exception
 	{
+		if (faixaSalarialHistoricoManager.verifyData(faixaSalarialHistorico.getId(), faixaSalarialHistorico.getData(), faixaSalarialAux.getId()))
+		{
+			addActionMessage("Já existe um histórico com essa data.");
+			prepareUpdate();
+			return Action.INPUT;
+		}
+
 		if (faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.getIndice())
 		{
-			if (faixaSalarialHistoricoManager.verifyData(faixaSalarialHistorico.getId(), faixaSalarialHistorico.getData(), faixaSalarialAux.getId()))
-			{
-				addActionMessage("Já existe um histórico com essa data.");
-				prepareUpdate();
-				return Action.INPUT;
-			}
-
 			if (!faixaSalarialHistoricoManager.verifyHistoricoIndiceNaData(faixaSalarialHistorico.getData(), faixaSalarialHistorico.getIndice().getId()))
 			{
 				addActionMessage("Não existe histórico para o índice selecionado nesta data.");
