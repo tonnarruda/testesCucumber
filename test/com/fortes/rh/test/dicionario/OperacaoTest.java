@@ -18,7 +18,6 @@ public class OperacaoTest extends TestCase
 		assertEquals("", Operacao.getDescricaoById(1212122121));
 		assertEquals("Selecione...", Operacao.getDescricaoById(0));
 		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(1));
-		assertEquals("Liberar solicitação", Operacao.getDescricaoById(2));
 		assertEquals("Ateração no status da solicitação de pessoal", Operacao.getDescricaoById(3));
 		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(4));
 		assertEquals("Liberar questionário", Operacao.getDescricaoById(5));
@@ -37,7 +36,6 @@ public class OperacaoTest extends TestCase
 		assertEquals(0, Operacao.getMeioComunicacaoById(0).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(1).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(2).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(3).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(4).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(5).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(6).size());

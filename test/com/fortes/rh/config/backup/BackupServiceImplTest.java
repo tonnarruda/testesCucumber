@@ -4,16 +4,21 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.quartz.JobExecutionException;
 
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+
 public class BackupServiceImplTest extends MockObjectTestCase {
 
 	BackupServiceImpl service;
 	
 	Mock runAntScriptMock;
-	Mock notificadorDeBackupMock;
+	Mock gerenciadorComunicacaoManager;
 	
 	public void setUp() {
 		service = new BackupServiceImpl();
 		service.setRunAntScript(mockRunAntScript());
+
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+		service.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
 	}
 
 	public void testDeveriaGerarBackup_e_EnviarEmail() throws JobExecutionException {
@@ -24,11 +29,10 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 		runAntScriptMock.expects(once()).method("launch").withNoArguments();
 		runAntScriptMock.expects(once()).method("getProperty");
 
-		notificadorDeBackupMock.expects(once()).method("notifica");
+		gerenciadorComunicacaoManager.expects(once()).method("notificaBackup");
 		service.backupAndSendMail();
 		
 		runAntScriptMock.verify();
-		notificadorDeBackupMock.verify();
 	}
 
 	public void testNaoDeveriaEnviarEmailSeHouveErroDuranteBackup() {
@@ -46,7 +50,7 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 	}
 	
 	private void assertQueEmailNaoFoiEnviadoAoSuporteTecnico() {
-		notificadorDeBackupMock.verify();
+		gerenciadorComunicacaoManager.verify();
 	}
 
 	private void seOcorrerAlgumErroDuranteBackup() {
@@ -55,9 +59,9 @@ public class BackupServiceImplTest extends MockObjectTestCase {
 			.expects(once()).method("launch")
 				.will(throwException(new RuntimeException("Disco cheio.")));
 		// notificador
-		notificadorDeBackupMock
+		gerenciadorComunicacaoManager
 			.expects(never())
-				.method("notifica")
+				.method("notificaBackup")
 					.with(ANYTHING);
 	}
 
