@@ -102,7 +102,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	BACKUP_AUTOMATICO(12, "Aviso automático de Backup"){
+	BACKUP_AUTOMATICO(12, "Aviso automático de backup"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);

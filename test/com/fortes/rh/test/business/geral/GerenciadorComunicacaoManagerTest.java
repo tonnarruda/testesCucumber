@@ -578,4 +578,31 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 assertNull(exception);
 	 }
+	 
+	 public void testNotificaBackup()
+	 {
+		 ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		 parametroSistema.setAppUrl("url");
+		 parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_TECNICO.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.BACKUP_AUTOMATICO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.notificaBackup("dump.sql");
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+
+		 assertNull(exception);
+		 
+	 }
 }

@@ -2,7 +2,6 @@ package com.fortes.rh.test.dicionario;
 
 import junit.framework.TestCase;
 
-import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 
@@ -11,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(12, Operacao.getHashMap().size());
+		assertEquals(13, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()
@@ -29,6 +28,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(9));
 		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(10));
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(11));
+		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(12));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -46,6 +46,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaoById(9).size());
 		assertEquals(3, Operacao.getMeioComunicacaoById(10).size());
 		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
+		assertEquals(2, Operacao.getMeioComunicacaoById(12).size());
 	}
 
 	
@@ -63,6 +64,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(9, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
 		assertEquals(10, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 		assertEquals(11, Operacao.EXAMES_PREVISTOS.getId());
+		assertEquals(12, Operacao.BACKUP_AUTOMATICO.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -145,6 +147,14 @@ public class OperacaoTest extends TestCase
 	public void testExamesPrevistos()
 	{
 		Operacao operacao = Operacao.EXAMES_PREVISTOS;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+	}
+	
+	public void testBackupAutomatico()
+	{
+		Operacao operacao = Operacao.BACKUP_AUTOMATICO;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);

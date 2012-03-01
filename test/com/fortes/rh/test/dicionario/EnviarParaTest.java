@@ -134,6 +134,15 @@ public class EnviarParaTest extends TestCase
 		assertEquals(EnviarPara.RESPONSAVEL_RH.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_RH.getId()));
 	}
 	
+	public void testSetResponsavelTecnico()
+	{
+		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
+		EnviarPara.setResponsavelTecnico(meioComunicacao);
+		
+		assertEquals(1, meioComunicacao.size());
+		assertEquals(EnviarPara.RESPONSAVEL_TECNICO.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_TECNICO.getId()));
+	}
+	
 	public void testSetPerfilAutorizadoExamesPrevistos()
 	{
 		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();

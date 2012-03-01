@@ -492,8 +492,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void notificaBackup(String arquivoDeBackup){
 		
 		String titulo = "Backup do Banco";
-		String corpo = getCorpo(arquivoDeBackup,  parametrosDoSistemaManager.getUrlDaAplicacao());
-		String email = parametrosDoSistemaManager.getEmailDoSuporteTecnico();
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		String corpo = getCorpo(arquivoDeBackup,  parametrosDoSistema.getAppUrl());
+		String email = parametrosDoSistema.getEmailDoSuporteTecnico();
 		
 		try {
 			logger.info("Enviando e-mail para responsável (" + email + ") sobre backup do banco de dados.");
