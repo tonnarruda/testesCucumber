@@ -478,6 +478,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enviaMensagemLembretePeriodoExperiencia() 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");

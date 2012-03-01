@@ -14,8 +14,8 @@ public enum EnviarPara
 	COLABORADOR (7, "Colaborador"),
 	RESPONSAVEL_RH (8, "Responsável do RH"),
 	PERFIL_AUTORIZADO_EXAMES_PREVISTOS (9, "Usuários com perfil de receber emails de exames previstos"),
-	GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA (10, "Usuários com perfil de gerenciador de mensagem por perído de experiência"),
-	RECEBE_MENSAGEM_PERIODO_EXPERIENCIA (11, "Usuários com perfil de receber mensagem por perído de experiência"),
+	GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA (10, "Usuários com perfil de gerenciador de mensagem por período de experiência"),
+	RECEBE_MENSAGEM_PERIODO_EXPERIENCIA (11, "Usuários com perfil de receber mensagem por período de experiência"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)

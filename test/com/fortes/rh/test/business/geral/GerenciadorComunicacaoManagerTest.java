@@ -11,24 +11,30 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Contato;
@@ -42,13 +48,17 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -65,6 +75,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock gerenciadorComunicacaoDao;
 	private Mock candidatoSolicitacaoManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock periodoExperienciaManager;
+	private Mock usuarioEmpresaManager;
+	private Mock usuarioMensagemManager;
 	private Mock colaboradorManager;
 	private Mock questionarioManager;
 	private Mock empresaManager;
@@ -83,20 +96,29 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
         gerenciadorComunicacaoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
         
-		colaboradorManager = new Mock(ColaboradorManager.class);
+        periodoExperienciaManager = new Mock(PeriodoExperienciaManager.class);
+        gerenciadorComunicacaoManager.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
+        
+        empresaManager = new Mock(EmpresaManager.class);
+        gerenciadorComunicacaoManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
+        
+        usuarioMensagemManager = new Mock(UsuarioMensagemManager.class);
+        gerenciadorComunicacaoManager.setUsuarioMensagemManager((UsuarioMensagemManager) usuarioMensagemManager.proxy());
+
+        usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
+        gerenciadorComunicacaoManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
+
+        mail = mock(Mail.class);
+        gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
+
+        colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
 		
 		questionarioManager = new Mock(QuestionarioManager.class);
 		MockSpringUtil.mocks.put("questionarioManager", questionarioManager);
 		
-		empresaManager = new Mock(EmpresaManager.class);
-		gerenciadorComunicacaoManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
-		
 		exameManager = new Mock(ExameManager.class);
 		MockSpringUtil.mocks.put("exameManager", exameManager);
-
-        mail = mock(Mail.class);
-        gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
@@ -485,6 +507,65 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaLembreteExamesPrevistos(empresas);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 public void testEnviaMensagemLembretePeriodoExperiencia() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+
+		 PeriodoExperiencia periodoexperiencia = PeriodoExperienciaFactory.getEntity();
+		 periodoexperiencia.setDias(30);
+		 periodoexperiencia.setEmpresa(empresa);
+		 Collection<PeriodoExperiencia> periodoExperiencias = Arrays.asList(periodoexperiencia);
+		 
+		 FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity(1L);
+		 faixa1.setCargo(CargoFactory.getEntity());
+		 faixa1.setDescricao("Faixa1");
+
+		 AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		 area.setDescricao("Area");
+		 
+		 Colaborador teo = ColaboradorFactory.getEntity(1L);
+		 teo.setNome("Teo");
+		 teo.setNomeComercial("Teo");
+		 teo.setAreaOrganizacional(area);
+		 teo.setFaixaSalarial(faixa1);
+		 teo.setEmpresa(empresa);
+		 Collection<Colaborador> colaboradors = Arrays.asList(teo);
+		 
+		 UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		 Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = Arrays.asList(usuarioEmpresa);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao1.setEmpresa(empresa);
+		 gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao1.setEnviarPara(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getId());
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao2.setEmpresa(empresa);
+		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2);
+		 
+		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
+		 parametrosDoSistemaManager.expects(once()).method("getDiasLembretePeriodoExperiencia").will(returnValue(Arrays.asList(1)));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleAvaliacaoExperiencia").with(eq(empresa.getId()),eq("GERENCIA_MSG_PERIODOEXPERIENCIA")).will(returnValue(usuarioEmpresasPeriodoExperienciaGerencial));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleAvaliacaoExperiencia").with(eq(empresa.getId()),eq("RECEBE_MSG_PERIODOEXPERIENCIA")).will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaMensagemLembretePeriodoExperiencia();
 		 } catch (Exception e) {
 			 exception = e;
 		 }
