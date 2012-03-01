@@ -33,9 +33,6 @@ public enum MeioComunicacao
 			if 	(possuiCandidatoNaoAptoEmail(operacaoId))
 				EnviarPara.setCandidatoNaoApto(enviarPara);
 			
-			if 	(possuiLiberadorEmail(operacaoId))
-				EnviarPara.setLiberador(enviarPara);
-			
 			if 	(possuiSolicitanteEmail(operacaoId))
 				EnviarPara.setSolicitante(enviarPara);
 			
@@ -47,6 +44,9 @@ public enum MeioComunicacao
 			
 			if 	(possuiResponsavelRHEmail(operacaoId))
 				EnviarPara.setResponsavelRH(enviarPara);
+
+			if 	(possuiResponsavelSetorPessoalEmail(operacaoId))
+				EnviarPara.setResponsavelSetorPessoal(enviarPara);
 			
 			if 	(possuiPerfilAutorizadoExamesPrevistosEmail(operacaoId))
 				EnviarPara.setPerfilAutorizadoExamesPrevistos(enviarPara);
@@ -144,6 +144,14 @@ public enum MeioComunicacao
 	private static boolean possuiResponsavelTecnico(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.BACKUP_AUTOMATICO.getId());
+		
+		return operacoes.contains(operacaoId);
+	}
+
+	private static boolean possuiResponsavelSetorPessoalEmail(Integer operacaoId){
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.CONTRATAR_COLABORADOR.getId());
+		
 		return operacoes.contains(operacaoId);
 	}
 	
@@ -154,16 +162,9 @@ public enum MeioComunicacao
 		return operacoes.contains(operacaoId);
 	}
 	
-	private static boolean possuiLiberadorEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.LIBERAR_SOLICITACAO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
 	private static boolean possuiSolicitanteEmail(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId());
+		operacoes.add(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}

@@ -209,7 +209,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(solicitante));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId())).will(returnValue(liberador));
 		solicitacaoManager.expects(atLeastOnce()).method("montaCorpoEmailSolicitacao").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
-		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTERAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
 		Exception exception = null;
@@ -590,19 +590,50 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_TECNICO.getId());
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-		 
+
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.BACKUP_AUTOMATICO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-		 
+
 		 Exception exception = null;
 		 try {
+
 			 gerenciadorComunicacaoManager.notificaBackup("dump.sql");
 		 } catch (Exception e) {
 			 exception = e;
 		 }
 
 		 assertNull(exception);
+	 }
+	
+	 public void testEnviarEmailContratacaoColaborador() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
 		 
+		 Colaborador teo = ColaboradorFactory.getEntity(1L);
+		 teo.setNome("Teo");
+		 teo.setEmpresa(empresa);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CONTRATAR_COLABORADOR.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviarEmailContratacaoColaborador(teo.getNome(), empresa);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
 	 }
 }

@@ -127,6 +127,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
@@ -404,10 +405,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			try
 			{
-				String body = "<br>O candidato <b>" + colaborador.getNome() + "</b> foi contratado e seus dados "
-						+ "estão disponíveis no <b>AC Pessoal</b> para complemento de suas informações.<br><br>";
-
-				mail.send(empresa, "[RH] Contratação de candidato", body, null, empresa.getEmailRespSetorPessoal());
+				gerenciadorComunicacaoManager.enviarEmailContratacaoColaborador(colaborador.getNome(), empresa);
 			}
 			catch (Exception e)
 			{
@@ -2181,6 +2179,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 }

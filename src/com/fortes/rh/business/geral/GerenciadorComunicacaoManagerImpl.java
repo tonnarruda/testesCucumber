@@ -109,7 +109,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 			if (emailSolicitante != null) 
 			{
-				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId(), empresa.getId());
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ALTERAR_STATUS_SOLICITACAO.getId(), empresa.getId());
 	
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.SOLICITANTE_SOLICITACAO.getId())){
@@ -489,6 +489,20 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	public void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception 
+	{
+		String body = "<br>O candidato <b>" + colaboradorNome + "</b> foi contratado e seus dados "
+		+ "estão disponíveis no <b>AC Pessoal</b> para complemento de suas informações.<br><br>";
+
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR.getId(), empresa.getId());
+		
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getId()))
+				mail.send(empresa, "[RH] Contratação de candidato", body, null, empresa.getEmailRespSetorPessoal());
+		}
+	}
+	
 	public void notificaBackup(String arquivoDeBackup){
 		
 		String titulo = "Backup do Banco";
@@ -564,5 +578,4 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
 		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
-
 }

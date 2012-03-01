@@ -20,16 +20,7 @@ public enum Operacao
 			return meioComunicação;
 		}
 	},
-	LIBERAR_SOLICITACAO (2, "Liberar solicitação"){
-		public HashMap<Integer, String> meioComunicação(){
-			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
-			MeioComunicacao.setEmail(meioComunicação);
-			
-			return meioComunicação;
-		}
-	},
-	ALTEREAR_STATUS_SOLICITACAO(3, "Ateração no status da solicitação de pessoal"){
+	ALTERAR_STATUS_SOLICITACAO(3, "Ateração no status da solicitação de pessoal"){
 		public HashMap<Integer, String> meioComunicação(){
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
@@ -108,6 +99,15 @@ public enum Operacao
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
 			MeioComunicacao.setEmail(meioComunicação);
 			
+			return meioComunicação;
+		}
+	},
+	CONTRATAR_COLABORADOR(13, "Contratação de Colaborador") {
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setEmail(meioComunicação);
+
 			return meioComunicação;
 		}
 	};

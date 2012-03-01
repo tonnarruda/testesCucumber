@@ -58,7 +58,7 @@ public class MeioComunicacaoTest extends TestCase
 		
 		assertEquals(null, MeioComunicacao.getEnviarParaById(1212122121));
 		assertEquals(0, email.getEnviarPara(Operacao.SELECIONAR_OPERACAO.getId()).size());
-		assertEquals(1, email.getEnviarPara(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId()).size());
+		assertEquals(1, email.getEnviarPara(Operacao.ALTERAR_STATUS_SOLICITACAO.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.ENCERRAMENTO_SOLICITACAO.getId()).size());
@@ -66,7 +66,6 @@ public class MeioComunicacaoTest extends TestCase
 		assertEquals(1, email.getEnviarPara(Operacao.EXAMES_PREVISTOS.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId()).size());
-		assertEquals(1, email.getEnviarPara(Operacao.LIBERAR_SOLICITACAO.getId()).size());
 		assertEquals(1, email.getEnviarPara(Operacao.QTD_CURRICULOS_CADASTRADOS.getId()).size());
 	}
 }

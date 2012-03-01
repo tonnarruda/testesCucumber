@@ -155,6 +155,9 @@
     <property name="colaboradorPeriodoExperienciaAvaliacaoManager">
       <ref bean="colaboradorPeriodoExperienciaAvaliacaoManager" />
     </property>
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -29,4 +29,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
 	void enviaMensagemLembretePeriodoExperiencia();
 	void notificaBackup(String arquivoDeBackup);
+	void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception;
 }

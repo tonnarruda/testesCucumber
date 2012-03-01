@@ -54,8 +54,7 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(0, Operacao.SELECIONAR_OPERACAO.getId());
 		assertEquals(1, Operacao.ENCERRAMENTO_SOLICITACAO.getId());
-		assertEquals(2, Operacao.LIBERAR_SOLICITACAO.getId());
-		assertEquals(3, Operacao.ALTEREAR_STATUS_SOLICITACAO.getId());
+		assertEquals(3, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
 		assertEquals(4, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
 		assertEquals(5, Operacao.LIBERAR_QUESTIONARIO.getId());
 		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
@@ -80,21 +79,10 @@ public class OperacaoTest extends TestCase
 	
 	public void testAlterarStatusSolicitacao()
 	{
-		assertEquals(2, Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ALTEREAR_STATUS_SOLICITACAO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.ALTERAR_STATUS_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ALTERAR_STATUS_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
-	public void testLiberadorSolicitacao()
-	{
-		assertEquals(2, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[1]);
-	}
-	
-	public void testLembreteAvaliacaoDesempenho()
-	{
-		assertEquals(2, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[1]);
-	}
 	
 	public void testLiberarQuestionario()
 	{
@@ -106,12 +94,6 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().values().toArray()[1]);
-	}
-	
-	public void testLiberarSolicitacao()
-	{
-		assertEquals(2, Operacao.LIBERAR_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_SOLICITACAO.meioComunicação().values().toArray()[1]);
 	}
 	
 	public void testLembreteAutomaticoPesquisaNaoLiberada()
