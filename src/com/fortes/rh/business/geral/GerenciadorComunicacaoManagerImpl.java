@@ -565,9 +565,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try {
 			logger.info("Enviando e-mail para responsável (" + email + ") sobre backup do banco de dados.");
 			
-			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.MENSAGEM_ANIVERSARIANTE.getId(), null);
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.BACKUP_AUTOMATICO.getId(), null);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_TECNICO.getId())){
     				mail.send(null, titulo, corpo, null, email);
     			} 
     			break;

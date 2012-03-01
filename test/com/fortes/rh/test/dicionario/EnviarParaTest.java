@@ -11,7 +11,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(10, EnviarPara.values().length);
+		assertEquals(13, EnviarPara.values().length);
 		
 		assertEquals(new Integer(1), EnviarPara.USUARIO.getId());
 		assertEquals(new Integer(2), EnviarPara.GESTOR_AREA.getId());
@@ -24,6 +24,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals(new Integer(9), EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId());
 		assertEquals(new Integer(10), EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getId());
 		assertEquals(new Integer(11), EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getId());
+		assertEquals(new Integer(12), EnviarPara.RESPONSAVEL_TECNICO.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 
@@ -40,6 +41,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Usuários com perfil de receber emails de exames previstos", EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getDescricao());
 		assertEquals("Usuários com perfil de gerenciador de mensagem por perído de experiência", EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getDescricao());
 		assertEquals("Usuários com perfil de receber mensagem por perído de experiência", EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getDescricao());
+		assertEquals("Responsável Tecnico", EnviarPara.RESPONSAVEL_TECNICO.getDescricao());
 		assertEquals("Avulso", EnviarPara.AVULSO.getDescricao());
 	}
 
@@ -56,6 +58,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Usuários com perfil de receber emails de exames previstos", EnviarPara.getDescricaoById(9));
 		assertEquals("Usuários com perfil de gerenciador de mensagem por perído de experiência", EnviarPara.getDescricaoById(10));
 		assertEquals("Usuários com perfil de receber mensagem por perído de experiência", EnviarPara.getDescricaoById(11));
+		assertEquals("Responsável Tecnico", EnviarPara.getDescricaoById(12));
 		assertEquals("Avulso", EnviarPara.getDescricaoById(99));
 	}
 
