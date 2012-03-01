@@ -18,7 +18,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("", Operacao.getDescricaoById(1212122121));
 		assertEquals("Selecione...", Operacao.getDescricaoById(0));
 		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(1));
-		assertEquals("Ateração no status da solicitação de pessoal", Operacao.getDescricaoById(2));
+		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(2));
 		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(3));
 		assertEquals("Liberar questionário", Operacao.getDescricaoById(4));
 		assertEquals("Lembrete de pesquisa não respondida", Operacao.getDescricaoById(5));
