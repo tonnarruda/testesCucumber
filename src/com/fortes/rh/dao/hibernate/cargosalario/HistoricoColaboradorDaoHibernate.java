@@ -693,6 +693,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("hc.colaborador", "c");
 		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo","ca", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("hc.id"), "id");
@@ -714,6 +715,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nomeMercado"), "cargoNomeMercado");

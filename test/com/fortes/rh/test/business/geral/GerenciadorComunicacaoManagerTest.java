@@ -17,6 +17,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
+import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -31,6 +32,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
@@ -46,6 +48,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
@@ -56,6 +59,7 @@ import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -84,6 +88,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock solicitacaoManager;
 	private Mock empresaManager;
 	private Mock exameManager;
+	private Mock mensagemManager;
 	private Mock mail;
 	
 	protected void setUp() throws Exception
@@ -109,6 +114,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
         gerenciadorComunicacaoManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
+
+        mensagemManager = new Mock(MensagemManager.class);
+        gerenciadorComunicacaoManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
@@ -630,6 +638,47 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviarEmailContratacaoColaborador(teo.getNome(), empresa);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+
+	 public void testEnviaMensagemCancelamentoSituacao() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 empresa.setEmailRespRH("email@email.com");
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setEmpresa(empresa);
+
+		 HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		 historicoColaborador.setColaborador(colaborador);
+		 
+		 String mensagem = "Teste";
+		 
+		 TSituacao situacao = new TSituacao();
+		 situacao.setEmpresaCodigoAC("0010");
+		 situacao.setGrupoAC("005");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue("Teste"));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_SITUACAO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaMensagemCancelamentoSituacao(situacao, mensagem, historicoColaborador);
 		 } catch (Exception e) {
 			 exception = e;
 		 }

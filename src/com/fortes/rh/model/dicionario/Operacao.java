@@ -98,7 +98,6 @@ public enum Operacao
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
 			MeioComunicacao.setEmail(meioComunicação);
-			
 			return meioComunicação;
 		}
 	},
@@ -107,6 +106,15 @@ public enum Operacao
 			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
 			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
 			MeioComunicacao.setEmail(meioComunicação);
+
+			return meioComunicação;
+		}
+	}, 
+	CANCELAR_SITUACAO(13, "Cancelamento de Situação") {
+		public HashMap<Integer, String> meioComunicação(){
+			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
+			MeioComunicacao.setCaixaMensagem(meioComunicação);
 
 			return meioComunicação;
 		}

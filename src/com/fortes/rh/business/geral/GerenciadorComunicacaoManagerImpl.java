@@ -27,6 +27,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
@@ -42,6 +43,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
@@ -60,6 +62,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	PeriodoExperienciaManager periodoExperienciaManager;
 	UsuarioEmpresaManager usuarioEmpresaManager;
 	UsuarioMensagemManager usuarioMensagemManager;
+	MensagemManager mensagemManager;
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
@@ -503,6 +506,22 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	public void enviaMensagemCancelamentoSituacao(TSituacao situacao, String mensagem, HistoricoColaborador historicoColaborador) 
+	{
+		String mensagemFinal = mensagemManager.formataMensagemCancelamentoHistoricoColaborador(mensagem, historicoColaborador);
+
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+
+		String link = "cargosalario/historicoColaborador/prepareUpdate.action?historicoColaborador.id="+ historicoColaborador.getId() +"&colaborador.id=" + historicoColaborador.getColaborador().getId();
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_SITUACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", link, usuarioEmpresas, null, TipoMensagem.HISTORICOCOLABORADOR);
+		}
+	}
+	
 	public void notificaBackup(String arquivoDeBackup){
 		
 		String titulo = "Backup do Banco";
@@ -577,5 +596,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
 		this.usuarioMensagemManager = usuarioMensagemManager;
+	}
+
+	public void setMensagemManager(MensagemManager mensagemManager) {
+		this.mensagemManager = mensagemManager;
 	}
 }

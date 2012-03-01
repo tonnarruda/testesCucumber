@@ -25,13 +25,13 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -44,7 +44,6 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -80,6 +79,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private MensagemManager mensagemManager;
 	private EmpresaManager empresaManager;
+	
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	public Collection<HistoricoColaborador> getByColaboradorId(Long colaboradorId)
 	{
@@ -932,12 +933,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		else
 			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 
-		String mensagemFinal = mensagemManager.formataMensagemCancelamentoHistoricoColaborador(mensagem, historicoColaborador);
-
-		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-
-		String link = "cargosalario/historicoColaborador/prepareUpdate.action?historicoColaborador.id="+ historicoColaborador.getId() +"&colaborador.id=" + historicoColaborador.getColaborador().getId();
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", link, usuarioEmpresas, null, TipoMensagem.HISTORICOCOLABORADOR);
+		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSituacao(situacao, mensagem, historicoColaborador);
 
 		//Cancelamento de um insert (RH_SEP)
 		if(cancelaSituacaoRhSep)
@@ -1514,5 +1510,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception {
 		getDao().deleteHistoricoColaborador(colaboradorIds);
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

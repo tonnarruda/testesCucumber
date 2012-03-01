@@ -8,11 +8,13 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.ws.TSituacao;
 
 public interface GerenciadorComunicacaoManager extends GenericManager<GerenciadorComunicacao>
 {
@@ -30,4 +32,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemLembretePeriodoExperiencia();
 	void notificaBackup(String arquivoDeBackup);
 	void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception;
+	void enviaMensagemCancelamentoSituacao(TSituacao situacao, String mensagem, HistoricoColaborador historicoColaborador);
 }

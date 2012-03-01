@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(13, Operacao.getHashMap().size());
+		assertEquals(14, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()

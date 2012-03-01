@@ -25,6 +25,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -100,6 +101,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock ambienteManager;
 	Mock funcaoManager;
 	Mock empresaManager;
+	Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -147,6 +149,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
 		historicoColaboradorManager.setAcPessoalClientColaborador((AcPessoalClientColaborador) acPessoalClientColaborador.proxy());
+
+		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+		historicoColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
@@ -1423,11 +1428,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		String mensagem = "Teste";
 
 		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
-		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(false)).will(returnValue(true));
-
+		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
+		
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
@@ -1462,13 +1465,11 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		String mensagem = "Teste";
 
 		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
-		mensagemManager.expects(once()).method("formataMensagemCancelamentoHistoricoColaborador").with(eq(mensagem), eq(historicoColaborador)).will(returnValue(mensagem));
-		usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(ANYTHING, ANYTHING).will(returnValue(usuarioEmpresas));
-		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(estabelecimento));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
+		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
 
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 

@@ -11,7 +11,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(13, EnviarPara.values().length);
+		assertEquals(14, EnviarPara.values().length);
 		
 		assertEquals(new Integer(1), EnviarPara.USUARIO.getId());
 		assertEquals(new Integer(2), EnviarPara.GESTOR_AREA.getId());

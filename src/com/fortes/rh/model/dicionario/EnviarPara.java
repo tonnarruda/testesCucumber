@@ -17,6 +17,7 @@ public enum EnviarPara
 	GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA (10, "Usuários com perfil de gerenciador de mensagem por perído de experiência"),
 	RECEBE_MENSAGEM_PERIODO_EXPERIENCIA (11, "Usuários com perfil de receber mensagem por perído de experiência"),
 	RESPONSAVEL_TECNICO (12, "Responsável Tecnico"),
+	RECEBE_MENSAGEM_AC_PESSOAL (13, "Usuários com perfil de receber mensagem do AC Pessoal"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)
@@ -95,7 +96,12 @@ public enum EnviarPara
 	public static void setRecebeMensagemPeriodoExperiencia (HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getId(), EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getDescricao());
 	}
+	
 	public static void setResponsavelSetorPessoal(HashMap<Integer, String> enviarPara) {
 		enviarPara.put(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getId(), EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getDescricao());
+	}
+
+	public static void setRecebeMensagemACPessoal (HashMap<Integer, String> enviarPara) {
+		enviarPara.put(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId(), EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getDescricao());
 	}
 }

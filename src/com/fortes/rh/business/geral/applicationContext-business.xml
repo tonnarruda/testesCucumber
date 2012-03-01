@@ -896,6 +896,9 @@
     <property name="usuarioMensagemManager">
       <ref bean="usuarioMensagemManager" />
     </property>
+    <property name="mensagemManager">
+      <ref bean="mensagemManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

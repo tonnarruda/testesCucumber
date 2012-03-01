@@ -21,10 +21,12 @@ public enum MeioComunicacao
 
 			if 	(possuiRecebeMensagemPeriodoExperiencia(operacaoId))
 				EnviarPara.setRecebeMensagemPeriodoExperiencia(enviarPara);
+
+			if 	(possuiRecebeMensagemACPessoal(operacaoId))
+				EnviarPara.setRecebeMensagemACPessoal(enviarPara);
 			
 			return enviarPara;
 		}
-		
 	},
 	EMAIL(2, "Email"){
 		public HashMap<Integer, String> getEnviarPara(int operacaoId){
@@ -125,6 +127,11 @@ public enum MeioComunicacao
 	{
 		meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
 	}
+	
+	public static void setCaixaMensagem(HashMap<Integer, String> meioComunicação) 
+	{
+		meioComunicação.put(MeioComunicacao.CAIXA_MENSAGEM.getId(), MeioComunicacao.CAIXA_MENSAGEM.getDescricao());
+	}
 
 	public static void setMeiosDeComunicacoes(HashMap<Integer, String> meioComunicação) {
 		for (MeioComunicacao meioComunicacao : values()) 
@@ -201,6 +208,13 @@ public enum MeioComunicacao
 	private static boolean possuiRecebeMensagemPeriodoExperiencia(Integer operacaoId){
 		Collection<Integer> operacoes = new ArrayList<Integer>();
 		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
+		
+		return operacoes.contains(operacaoId);
+	}
+	
+	private static boolean possuiRecebeMensagemACPessoal(int operacaoId) {
+		Collection<Integer> operacoes = new ArrayList<Integer>();
+		operacoes.add(Operacao.CANCELAR_SITUACAO.getId());
 		
 		return operacoes.contains(operacaoId);
 	}
