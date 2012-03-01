@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.fortes.ant.task.emma.manager.Gerenciador;
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -30,6 +30,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
@@ -40,7 +41,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private AnuncioManager anuncioManager;
 	private Mail mail;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
@@ -215,7 +215,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return solicitacao;
 	}
 
-	public void enviarEmailParaResponsaveis(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception
+	private void enviarEmailParaResponsaveis(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception
 	{
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
@@ -248,12 +248,21 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			
 			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 		}
-//=======
-//		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
-//		gerenciadorComunicacaoManager.enviarEmailLiberadorSolicitacao(solicitacao, empresa, emailsAvulsos);
-//>>>>>>> Gerenciador de Comunicacao: Avaliacao desempenho e pesquisa.
 	}
-
+	public void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
+	{
+		body.append("<br>Descrição: " + solicitacao.getDescricao());
+		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
+		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
+		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+		body.append("<br>Solicitante: " + nomeSolicitante);
+		body.append("<br>Status: " + solicitacao.getStatusFormatado());
+		body.append("<br>Liberador: " + nomeLiberador);
+		body.append("<br>Observação do Liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
+		
+		body.append("<br><br>Acesse o RH para mais detalhes:<br>");
+		body.append("<a href='" + link + "'>RH</a>");
+	}
 	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
@@ -321,10 +330,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			graficoContratadosMotivo.add(new DataGrafico(null, motivo.getDescricao(), motivo.getQtdContratados(), ""));
 		
 		return graficoContratadosMotivo;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {

@@ -49,7 +49,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock anuncioManager = null;
 	//private Mock mail = null;
-	private Mock areaOrganizacionalManager = null;
 	private Mock parametrosDoSistemaManager;
 	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
@@ -75,9 +74,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		anuncioManager = new Mock(AnuncioManager.class);
 		solicitacaoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
 		
-		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-		solicitacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
-
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);

@@ -25,6 +25,7 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
+	void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body);
 	void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
@@ -36,7 +37,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	void updateSuspendeSolicitacao(boolean suspender, String obsSuspensao, Long solicitacaoId);
 	void migrarBairro(Long bairroId, Long bairroDestinoId);
-	void enviarEmailParaResponsaveis(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception;
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);

@@ -13,6 +13,7 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
@@ -76,10 +77,11 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager;
 	private Mock parametrosDoSistemaManager;
 	private Mock periodoExperienciaManager;
-	private Mock usuarioEmpresaManager;
 	private Mock usuarioMensagemManager;
-	private Mock colaboradorManager;
+	private Mock usuarioEmpresaManager;
 	private Mock questionarioManager;
+	private Mock colaboradorManager;
+	private Mock solicitacaoManager;
 	private Mock empresaManager;
 	private Mock exameManager;
 	private Mock mail;
@@ -111,7 +113,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
 
-        colaboradorManager = new Mock(ColaboradorManager.class);
+        solicitacaoManager = new Mock(SolicitacaoManager.class);
+		MockSpringUtil.mocks.put("solicitacaoManager", solicitacaoManager);
+
+		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
 		
 		questionarioManager = new Mock(QuestionarioManager.class);
@@ -203,6 +208,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(solicitante));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId())).will(returnValue(liberador));
+		solicitacaoManager.expects(atLeastOnce()).method("montaCorpoEmailSolicitacao").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTEREAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 

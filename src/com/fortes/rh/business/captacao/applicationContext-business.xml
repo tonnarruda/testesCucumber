@@ -121,18 +121,12 @@
     <property name="anuncioManager">
       <ref bean="anuncioManager" />
     </property>
-<<<<<<< HEAD
     <property name="mail">
       <ref bean="mail" />
-    </property>
-    <property name="areaOrganizacionalManager">
-      <ref bean="areaOrganizacionalManager" />
     </property>
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
-=======
->>>>>>> Gerenciador de Comunicacao - Solicitaca e avaliacaodesempenho
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
