@@ -15,6 +15,6 @@ public class GerenciadorComunicacaoDWR
 	public  HashMap<Integer,String> getEnviarPara(Integer operacaoId, Integer meioComunicacaoId)
 	{
 		MeioComunicacao meiocomunicacao = MeioComunicacao.getMeioComunicacaoById(meioComunicacaoId);
-		return meiocomunicacao.getEnviarPara(operacaoId);
+		return meiocomunicacao.getListEnviarPara();
 	}
 }

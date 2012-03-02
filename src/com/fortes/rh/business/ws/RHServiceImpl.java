@@ -284,11 +284,11 @@ public class RHServiceImpl implements RHService
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			
-			gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
-
 			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
+			{				
+				gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
 				return new FeedbackWebService(true);
+			}
 			else
 				return new FeedbackWebService(false, "Erro: Empregado não encontrado no Fortes RH", formataException(parametros, null));
 		}

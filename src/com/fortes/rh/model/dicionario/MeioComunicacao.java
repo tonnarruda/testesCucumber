@@ -13,23 +13,24 @@ public enum MeioComunicacao
 		
 	},
 	CAIXA_MENSAGEM(1, "Caixa de mensagem"){
-		public HashMap<Integer, String> getEnviarPara(int operacaoId){
-			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-			
-			if 	(possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(operacaoId))
-				EnviarPara.setGerenciadorDeMensagemPeriodoExperiencia(enviarPara);
-
-			if 	(possuiRecebeMensagemPeriodoExperiencia(operacaoId))
-				EnviarPara.setRecebeMensagemPeriodoExperiencia(enviarPara);
-
-			if 	(possuiRecebeMensagemACPessoal(operacaoId))
-				EnviarPara.setRecebeMensagemACPessoal(enviarPara);
-			
-			if 	(possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(operacaoId))
-				EnviarPara.setPerfilAutorizadoVisualizarSolicitacaoPessoal(enviarPara);
-			
-			return enviarPara;
-		}
+		
+//		public HashMap<Integer, String> getEnviarPara(int operacaoId){
+////			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
+////			
+////			if 	(possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(operacaoId))
+////				EnviarPara.setGerenciadorDeMensagemPeriodoExperiencia(enviarPara);
+////
+////			if 	(possuiRecebeMensagemPeriodoExperiencia(operacaoId))
+////				EnviarPara.setRecebeMensagemPeriodoExperiencia(enviarPara);
+////
+////			if 	(possuiRecebeMensagemACPessoal(operacaoId))
+////				EnviarPara.setRecebeMensagemACPessoal(enviarPara);
+////			
+////			if 	(possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(operacaoId))
+////				EnviarPara.setPerfilAutorizadoVisualizarSolicitacaoPessoal(enviarPara);
+//			
+//			return CAIXA_MENSAGEM.listEnviarPara;
+//		}
 	},
 	EMAIL(2, "Email"){
 		public HashMap<Integer, String> getEnviarPara(int operacaoId){
@@ -71,6 +72,15 @@ public enum MeioComunicacao
 	
 	private Integer id;
 	private String descricao;
+	private HashMap<Integer, String> listEnviarPara = new HashMap<Integer, String>();
+	
+	public void add(EnviarPara enviarPara)
+	{
+		if(listEnviarPara == null)
+			listEnviarPara = new HashMap<Integer, String>();
+		
+		listEnviarPara.put(enviarPara.getId(), enviarPara.getDescricao());
+	}
 	
 	public Integer getId() 
 	{
@@ -229,5 +239,16 @@ public enum MeioComunicacao
 		operacoes.add(Operacao.DESLIGAR_COLABORADOR_AC.getId());
 		
 		return operacoes.contains(operacaoId);
+	}
+
+	public static HashMap<Integer, String> inicializaComSelecione() {
+		HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
+		meioComunicação.put(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getId(), MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getDescricao());
+		return meioComunicação;
+	}
+	
+
+	public HashMap<Integer, String> getListEnviarPara() {
+		return listEnviarPara;
 	}
 }

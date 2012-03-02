@@ -130,20 +130,30 @@ public enum Operacao
 	}, 
 	DESLIGAR_COLABORADOR_AC(15, "Desligar colaborador no AC") {
 		public HashMap<Integer, String> meioComunicação(){
-			HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-			MeioComunicacao.setSelecionarMeioComunicacao(meioComunicação);
-			MeioComunicacao.setCaixaMensagem(meioComunicação);
+			
+			this.add(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO);
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL);
 
-			return meioComunicação;
+			return this.getListMeioComunicacao();
 		}
 	};
 
 	private int id;
 	private String descricao;
-
+	private HashMap<Integer, String> listMeioComunicacao = new HashMap<Integer, String>();
+	
 	Operacao(int id, String descricao){
 		this.id = id;
 		this.descricao = descricao;
+	}
+	
+	public void add(MeioComunicacao meioComunicacao)
+	{
+		if(listMeioComunicacao == null)
+			listMeioComunicacao = new HashMap<Integer, String>();
+		
+		listMeioComunicacao.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 
 	public HashMap<Integer, String> meioComunicação(){
@@ -185,5 +195,9 @@ public enum Operacao
 				return o.meioComunicação();
 	
 		return null;
+	}
+
+	public HashMap<Integer, String> getListMeioComunicacao() {
+		return listMeioComunicacao;
 	}
 }
