@@ -1,68 +1,11 @@
 package com.fortes.rh.model.dicionario;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 public enum MeioComunicacao
 {
-	SELECIONAR_MEIO_COMUNICACAO(0, "Selecione..."){
-		public HashMap<Integer, String> getEnviarPara(int operacaoId){
-			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-			return enviarPara;
-		}
-		
-	},
-	CAIXA_MENSAGEM(1, "Caixa de mensagem"){
-		
-//		public HashMap<Integer, String> getEnviarPara(int operacaoId){
-////			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-////			
-////			if 	(possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(operacaoId))
-////				EnviarPara.setGerenciadorDeMensagemPeriodoExperiencia(enviarPara);
-////
-////			if 	(possuiRecebeMensagemPeriodoExperiencia(operacaoId))
-////				EnviarPara.setRecebeMensagemPeriodoExperiencia(enviarPara);
-////
-////			if 	(possuiRecebeMensagemACPessoal(operacaoId))
-////				EnviarPara.setRecebeMensagemACPessoal(enviarPara);
-////			
-////			if 	(possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(operacaoId))
-////				EnviarPara.setPerfilAutorizadoVisualizarSolicitacaoPessoal(enviarPara);
-//			
-//			return CAIXA_MENSAGEM.listEnviarPara;
-//		}
-	},
-	EMAIL(2, "Email"){
-		public HashMap<Integer, String> getEnviarPara(int operacaoId){
-			HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-			
-			if 	(possuiCandidatoNaoAptoEmail(operacaoId))
-				EnviarPara.setCandidatoNaoApto(enviarPara);
-			
-			if 	(possuiSolicitanteEmail(operacaoId))
-				EnviarPara.setSolicitante(enviarPara);
-			
-			if 	(possuiAvaliadorAvaliacaoDesempenhoEmail(operacaoId))
-				EnviarPara.setAvaliadorAvaliacaoDesempenho(enviarPara);
-			
-			if 	(possuiColaboradorEmail(operacaoId))
-				EnviarPara.setColaborador(enviarPara);			
-			
-			if 	(possuiResponsavelRHEmail(operacaoId))
-				EnviarPara.setResponsavelRH(enviarPara);
-
-			if 	(possuiResponsavelSetorPessoalEmail(operacaoId))
-				EnviarPara.setResponsavelSetorPessoal(enviarPara);
-			
-			if 	(possuiPerfilAutorizadoExamesPrevistosEmail(operacaoId))
-				EnviarPara.setPerfilAutorizadoExamesPrevistos(enviarPara);
-			
-			if (possuiResponsavelTecnico(operacaoId))
-				EnviarPara.setResponsavelTecnico(enviarPara);
-
-			return enviarPara;
-		}
-	};
+	SELECIONAR_MEIO_COMUNICACAO(0, "Selecione..."),
+	CAIXA_MENSAGEM(1, "Caixa de mensagem"),
+	EMAIL(2, "Email");
 
 	MeioComunicacao(Integer id, String descricao)
 	{
@@ -151,103 +94,6 @@ public enum MeioComunicacao
 			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 	
-	private static boolean possuiResponsavelRHEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
-		operacoes.add(Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
-		operacoes.add(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
-		operacoes.add(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiResponsavelTecnico(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.BACKUP_AUTOMATICO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-
-	private static boolean possuiResponsavelSetorPessoalEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.CONTRATAR_COLABORADOR.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiCandidatoNaoAptoEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiSolicitanteEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiAvaliadorAvaliacaoDesempenhoEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiColaboradorEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
-		operacoes.add(Operacao.LIBERAR_QUESTIONARIO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiPerfilAutorizadoExamesPrevistosEmail(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.EXAMES_PREVISTOS.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiGerenciadorDeMensagemPeriodoExperienciaMensagem(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiRecebeMensagemPeriodoExperiencia(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiRecebeMensagemACPessoal(int operacaoId) {
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.CANCELAR_SITUACAO_AC.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-	
-	private static boolean possuiPerfilAutorizadoVisualizarSolicitacaoPessoal(Integer operacaoId){
-		Collection<Integer> operacoes = new ArrayList<Integer>();
-		operacoes.add(Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
-		operacoes.add(Operacao.CANCELAR_SITUACAO_AC.getId());
-		operacoes.add(Operacao.DESLIGAR_COLABORADOR_AC.getId());
-		
-		return operacoes.contains(operacaoId);
-	}
-
-	public static HashMap<Integer, String> inicializaComSelecione() {
-		HashMap<Integer, String> meioComunicação = new HashMap<Integer, String>();
-		meioComunicação.put(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getId(), MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getDescricao());
-		return meioComunicação;
-	}
-	
-
 	public HashMap<Integer, String> getListEnviarPara() {
 		return listEnviarPara;
 	}
