@@ -115,9 +115,6 @@
 			</result>					
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/projecaoSalarialRelatorioFiltro.ftl</result>
 		</action>
-		<action name="emailColaboradorSemUsuario" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="emailColaboradorSemUsuario">
-			<result name="success" type="redirect">list.action</result>
-		</action>
 		<action name="prepareColaboradorSolicitacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareColaboradorSolicitacao">
 			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=${statusCandSol}&voltarPara=${voltarPara}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/vincularCandidatoColaborador.ftl</result>

@@ -624,18 +624,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		session.put("SESSION_EXPERIENCIA", null);
 	}
 
-	public String emailColaboradorSemUsuario() throws Exception
-	{
-		Collection<Colaborador> colaboradoresSemUsuario = colaboradorManager.findSemUsuarios(getEmpresaSistema().getId(), null);
-
-		for(Colaborador colaborador : colaboradoresSemUsuario)
-		{
-			colaboradorManager.enviarEmailCadastro(colaborador, getEmpresaSistema());
-		}
-
-		return Action.SUCCESS;
-	}
-
 	public String update() throws Exception
 	{
 		try

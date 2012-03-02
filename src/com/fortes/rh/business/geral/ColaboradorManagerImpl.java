@@ -560,22 +560,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
-	public void enviarEmailCadastro(Colaborador colaborador, Empresa empresa) throws AddressException, MessagingException
-	{
-		if (colaborador.getContato() != null && colaborador.getContato().getEmail() != null)
-		{
-			ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-
-			String link = parametros.getAppUrl() + "/acesso/usuario/prepareCriarUsuario.action";
-
-			String corpo = "Bem Vindo!<br>Você foi cadastrado no RH com sucesso.<br>";
-			corpo += "Segue abaixo link para criação da conta de usuário para acesso ao sistema.<br><br>";
-			corpo += "<a href='" + link + "?colaborador.id=" + colaborador.getId() + "'>Clique aqui para ser direcionado para a tela de criação do usuário</a>";
-
-			mail.send(empresa, "[RH] Criar Conta de Usuário", corpo, null, colaborador.getContato().getEmail());
-		}
-	}
-
 	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
 	{
 		this.colaboradorIdiomaManager = colaboradorIdiomaManager;
