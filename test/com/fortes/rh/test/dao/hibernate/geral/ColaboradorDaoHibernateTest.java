@@ -4093,6 +4093,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradorDao.findParentesByNome("geraldo rodrigues", empresa.getId()).size());
 		assertEquals(2, colaboradorDao.findParentesByNome("pedro rodrigues", empresa.getId()).size());
 		assertEquals(3, colaboradorDao.findParentesByNome("maria rodrigues", empresa.getId()).size());
+		assertEquals(3, colaboradorDao.findParentesByNome("maria rodrigues", null).size());
 	}
 
 	public void testFindColabPeriodoExperiencia() 

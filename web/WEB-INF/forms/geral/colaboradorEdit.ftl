@@ -267,7 +267,7 @@
 
 		function sugerirNomeComercial()
 		{
-			document.getElementById('nomeComercial').value = document.getElementById('nomeColab').value.substr(0,30).trim();
+			document.getElementById('nomeComercial').value = document.getElementById('nome').value.substr(0,30).trim();
 		}
 		
 		function sugerirDataHistorico()
@@ -286,69 +286,24 @@
 	    }
 	    
 	    function verificaParentes(nome)
-	    {
-	    	if (nome && nome.length >= 4)
-	    	{
+		{
+			if (nome && nome.length >= 4)
+			{
 		    	$('#parentesDialog').empty();
 		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome); });
 		    }
-	    }
-	    
-	    function listaParentes(dados, nome)
-	    {
-	    
-	    	if ($(dados).size() > 0)
-	    	{
-		    	var lista = "<strong>Dados do colaborador</strong>";
-		    	lista += "<div class='divInfoColabDestaque'>";
-		    	lista += montaTabelaDados($('#nomeColab').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#compl').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val());
-		    	lista += "</div>";
-		    	
-		    	lista += "<strong>Possíveis parentes</strong>";
-		    	
-		    	$(dados).each(function(i, colaborador) {
-		    		 lista += '<div class="divInfoColab">';
-		    		 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone);
-		    		 lista += '</div>';
-		    	});
-	    	
-		    	$('#parentesDialog').html(lista)
-		    						.dialog({	title: 'Verificação de Parentesco',
-		    									modal: true,
-		    									width: 700,
-		    									height: 360,
-		    									buttons: [ { text: "Fechar", click: function() { $(this).dialog("close"); } } ] 
-											});
-	    	}
-	    }
-	    
-	    function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone)
-	    {
-			var dados = '<strong>' + nome + '</strong><br />';
-	    	dados += "<table>";
-	    	dados += '<tr><td>';
-			dados += 'Nome do Cônjuge: ' + conjuge + '<br />';
-			dados += 'Nome do Pai: ' + pai + '<br />';
-			dados += 'Nome da Mãe: ' + mae + '<br />';
-			dados += '</td><td>';
-			dados += 'Endereço: ' + endereco + ' ' + cidade + ' ' + uf +  '<br />';
-			dados += 'Fone: ' + fone;
-			dados += '</td></tr>';
-			dados += '</table>';
-			
-			return dados;
-	    }
+		}
 
-		var arrayValidacao = new Array('nomeColab','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
+		var arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
 
 		function alteraArrayValidacao(tipo)
 		{
 			if(tipo == ${tipoSalario.getIndice()})
-				arrayValidacao = new Array('nomeColab','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario','indice','quantidade');
+				arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario','indice','quantidade');
 			else if(tipo == ${tipoSalario.getValor()})
-				arrayValidacao = new Array('nomeColab','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario','salarioProposto');
+				arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario','salarioProposto');
 			else
-				arrayValidacao = new Array('nomeColab','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
+				arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
 		}
 
 		function validaFormularioDinamico()
@@ -440,7 +395,7 @@
 	        </#if>
 
 
-			<@ww.textfield label="Nome" name="colaborador.nome" id="nomeColab" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome}"/>
+			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome}"/>
 
 			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial" id="nomeComercial" required="true" cssStyle="width: 300px;" maxLength="30"/>
 
@@ -452,7 +407,7 @@
 			<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
 			<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
 			<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" required="true" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>
-			<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="compl" cssStyle="width: 205px;" maxLength="20"/>
+			<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" cssStyle="width: 205px;" maxLength="20"/>
 			<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
 			<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" required="true" />
 				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" cssStyle="width: 325px;" maxLength="85"/>

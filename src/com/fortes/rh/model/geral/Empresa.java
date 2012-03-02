@@ -59,6 +59,8 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncaoColaborador;
+    private boolean nomeHomonimoEmpresa;
+    private boolean nomeHomonimo;
     @Column(length=400)
 	private String mensagemModuloExterno;
     private int maxCandidataCargo;
@@ -455,4 +457,21 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setObrigarAmbienteFuncaoColaborador(boolean obrigarAmbienteFuncaoColaborador) {
 		this.obrigarAmbienteFuncaoColaborador = obrigarAmbienteFuncaoColaborador;
 	}
+
+	public boolean isNomeHomonimoEmpresa() {
+		return nomeHomonimoEmpresa;
+	}
+
+	public void setNomeHomonimoEmpresa(boolean nomeHomonimoEmpresa) {
+		this.nomeHomonimoEmpresa = nomeHomonimoEmpresa;
+	}
+
+	public boolean isNomeHomonimo() {
+		return nomeHomonimo;
+	}
+
+	public void setNomeHomonimo(boolean nomeHomonimo) {
+		this.nomeHomonimo = nomeHomonimo;
+	}
+
 }

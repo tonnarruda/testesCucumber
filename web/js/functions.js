@@ -1139,4 +1139,51 @@ function liberaCampo(checkbox) {
 function desabilita(campo) {
 	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
 }
-	   
+
+function listaParentes(dados, nome)
+{
+
+	if ($(dados).size() > 0)
+	{
+    	var lista = "<strong>Dados do colaborador</strong>";
+    	lista += "<div class='divInfoColabDestaque'>";
+    	lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), @authz.authentication operation="empresaNome"/>);
+    	lista += "</div>";
+    	
+    	lista += "<strong>Possíveis parentes</strong>";
+    	
+    	$(dados).each(function(i, colaborador) {
+    		 lista += '<div class="divInfoColab">';
+    		 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone, colaborador.empresaNome );
+    		 lista += '</div>';
+    	});
+	
+    	$('#parentesDialog').html(lista)
+    						.dialog({	title: 'Verificação de Parentesco',
+    									modal: true,
+    									width: 700,
+    									height: 360,
+    									buttons: [ { text: "Fechar", click: function() { $(this).dialog("close"); } } ] 
+									});
+	}
+}
+
+function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone, empresaNome)
+{
+	var dados = '<strong>' + nome + '</strong><br />';
+	dados += "<table>";
+	dados += '<tr><td>';
+	dados += 'Nome do Cônjuge: ' + conjuge + '<br />';
+	dados += 'Nome do Pai: ' + pai + '<br />';
+	dados += 'Nome da Mãe: ' + mae + '<br />';
+	dados += '</td><td>';
+	dados += 'Endereço: ' + endereco + ' ' + cidade + ' ' + uf +  '<br />';
+	dados += 'Fone: ' + fone +  '<br />';
+	dados += 'Empresa: ' + empresaNome;
+	dados += '</td></tr>';
+	dados += '</table>';
+	
+	return dados;
+}
+
+

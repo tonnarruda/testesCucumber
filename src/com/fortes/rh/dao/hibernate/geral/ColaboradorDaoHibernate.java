@@ -3827,6 +3827,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.uf", "u", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -3844,10 +3845,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
 		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
+		p.add(Projections.property("e.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.desligado", false));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		if(nome != null && StringUtils.isNotBlank(nome))
 			criteria.add(Expression.or(

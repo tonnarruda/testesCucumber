@@ -22,6 +22,28 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type="text/javascript">
+		
+		$(function() {
+			
+			$('#nomeHomonimoEmpresa').change(function() {
+				if ($(this).is(":checked"))
+					$('#nomeHomonimo').attr("disabled", true);
+				else
+					$('#nomeHomonimo').removeAttr('disabled');
+			});
+			
+			$('#nomeHomonimo').change(function() {
+				if ($(this).is(":checked"))
+					$('#nomeHomonimoEmpresa').attr("disabled", true);
+				else
+					$('#nomeHomonimoEmpresa').removeAttr('disabled');
+			});
+			
+			$('#nomeHomonimoEmpresa').change();
+			$('#nomeHomonimo').change();
+			
+		});
+		
 		function testaConexaoAC()
 		{
 			if(document.getElementById("integra").checked)
@@ -130,6 +152,8 @@
 		<@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
 		<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o colaborador" name="empresa.obrigarAmbienteFuncaoColaborador" id="obrigarAmbienteFuncaoColaborador" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
+		<@ww.checkbox label="Considerar nomes homônimos no cadastro de candidato da empresa corrente" id="nomeHomonimoEmpresa" name="empresa.nomeHomonimoEmpresa" liClass="liLeft" labelPosition="left"/><br>
+		<@ww.checkbox label="Considerar nomes homônimos no cadastro de candidato considerando todas as empresas" id="nomeHomonimo" name="empresa.nomeHomonimo" liClass="liLeft" labelPosition="left"/><br>
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
 		<li>&nbsp;</li>

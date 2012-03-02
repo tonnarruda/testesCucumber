@@ -5,8 +5,24 @@
 <head>
   <#include "../ftl/mascarasImports.ftl" />
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	
  <style type="text/css">
-
+ 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		
+		#parentesDialog { display: none; }
+		#parentesDialog li { margin: 5px 0px; }
+		#parentesDialog .divInfoColab, #parentesDialog .divInfoColabDestaque { padding: 5px; margin: 5px 0px; border: 1px solid #7E9DB9; font-size: 10px; }
+		#parentesDialog .divInfoColab { background-color: #E9E9E9; }
+		#parentesDialog .divInfoColabDestaque { margin-bottom: 10px; }
+		#parentesDialog .xz { background-color:#fbfa99; color:red; }
+		#parentesDialog table { width: 100%; }
+		#parentesDialog td { width: 50%; vertical-align: top; }
 	<#if moduloExterno>
 		@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
 	<#else>
@@ -17,6 +33,7 @@
 
   <link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css"/>" media="screen" type="text/css">
   <link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css"/>" media="screen" type="text/css">
+  
 
   <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Language" content="pt-br" />
@@ -56,6 +73,17 @@
     @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
   </style>
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
+	
+	
+	<#if moduloExterno?exists && moduloExterno>
+			<#assign edicao="false"/>
+	<#else>
+		<#if candidato.id?exists>
+			<#assign edicao="false"/>
+		<#else>
+			<#assign edicao="true"/>
+		</#if>
+	</#if>
 	
 	<#if empresaId?exists>
 		<#assign idDaEmpresa=empresaId/>
@@ -106,8 +134,24 @@
 			
 			if(qtdAbas == 1)
 				ajustaBotoes(1, 1);
+				
+			<#if edicao == "true">
+				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
+					verificaParentes(this.value);
+				});
+			</#if>
 			
 		});
+		
+		function verificaParentes(nome)
+		{
+			if (nome && nome.length >= 4)
+			{
+		    	$('#parentesDialog').empty();
+		    	CandidatoDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome); });
+		    }
+		}
+
 
 		function populaConhecimento(frm, nameCheck)
 		{
@@ -316,8 +360,8 @@
 </script>
 
   <@ww.head />
-
-	<#if moduloExterno?exists && moduloExterno>
+  
+  	<#if moduloExterno?exists && moduloExterno>
 		<#if upperCase?exists && upperCase>
 			<#assign capitalizar = "this.value = this.value.toUpperCase();" />
 		<#else>
@@ -339,6 +383,7 @@
 			<#assign formAction="update.action"/>
 		<#else>
 			<#assign formAction="insert.action"/>
+			<#assign edicao="true"/>
 		</#if>
 	</#if>
 	
@@ -781,5 +826,6 @@
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js"/>'></script>
+	<div id="parentesDialog"></div>
 </body>
 </html>

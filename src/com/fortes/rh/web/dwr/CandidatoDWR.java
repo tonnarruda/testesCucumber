@@ -1,18 +1,23 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.NonUniqueResultException;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
@@ -24,6 +29,7 @@ public class CandidatoDWR
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
 	private SolicitacaoManager solicitacaoManager;
+	private EmpresaManager empresaManager;
 
 	public Map getConhecimentos(String[] areaIntereseIds, Long empresaId)
 	{
@@ -126,7 +132,22 @@ public class CandidatoDWR
 		
 		return retorno.toString();
 	}
-	
+    
+    public Collection<Object> findParentesByNome(String nome, Long empresaId)
+    {
+    	Empresa empresa = empresaManager.findById(empresaId);
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+
+    	if(empresa.isNomeHomonimo())
+    		colaboradores = colaboradorManager.findParentesByNome(nome, null);
+    	else if(empresa.isNomeHomonimoEmpresa())
+    		colaboradores = colaboradorManager.findParentesByNome(nome, empresaId);
+    	else
+    		return null;
+    	
+    	return colaboradorManager.montaParentesByNome(colaboradores);
+    }
+
 	public void setCandidatoManager(CandidatoManager candidatoManager)
 	{
 		this.candidatoManager = candidatoManager;
@@ -143,6 +164,10 @@ public class CandidatoDWR
 
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }
 

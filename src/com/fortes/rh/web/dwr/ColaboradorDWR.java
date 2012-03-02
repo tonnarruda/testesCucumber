@@ -213,27 +213,8 @@ public class ColaboradorDWR
     
     public Collection<Object> findParentesByNome(String nome, Long empresaId)
     {
-    	Collection<Object> retorno = new ArrayList<Object>();
-    	Map<String, Object> dados;
-    	
     	Collection<Colaborador> colaboradores = colaboradorManager.findParentesByNome(nome, empresaId);
-    	for (Colaborador colaborador : colaboradores)
-    	{
-    		dados = new HashMap<String, Object>();
-	    	dados.put("id", 		colaborador.getId());
-    		dados.put("nome", 		colaborador.getNome());
-    		dados.put("pai", 		StringUtils.defaultIfEmpty(colaborador.getPessoal().getPai(), ""));
-    		dados.put("mae", 		StringUtils.defaultIfEmpty(colaborador.getPessoal().getMae(), ""));
-    		dados.put("conjuge",	StringUtils.defaultIfEmpty(colaborador.getPessoal().getConjuge(), ""));
-    		dados.put("endereco",	StringUtils.defaultIfEmpty(colaborador.getEndereco().getEnderecoFormatado(), ""));
-    		dados.put("cidade",		StringUtils.defaultIfEmpty(colaborador.getEndereco().getCidade().getNome(), ""));
-    		dados.put("uf",			StringUtils.defaultIfEmpty(colaborador.getEndereco().getUf().getSigla(), ""));
-    		dados.put("fone",		StringUtils.defaultIfEmpty(colaborador.getContato().getFoneContatoFormatado(), ""));
-    		
-    		retorno.add(dados);
-    	}
-    	
-    	return retorno;
+    	return colaboradorManager.montaParentesByNome(colaboradores);
     }
     
     public Map<String, Object> verificaDesligadoByCandidato(Long candidatoId)
