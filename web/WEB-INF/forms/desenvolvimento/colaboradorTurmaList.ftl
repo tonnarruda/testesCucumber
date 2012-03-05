@@ -77,21 +77,23 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	
-	<#if compartilharColaboradores>
-		<#include "../util/topFiltro.ftl" />
-	        <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+    <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
+		<#if compartilharColaboradores>
+			<#include "../util/topFiltro.ftl" />
 	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>
-	            <@ww.hidden name="turma.id"/>
-	            <@ww.hidden id="pagina" name="page"/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
-	        </@ww.form>
-	    <#include "../util/bottomFiltro.ftl" />
-	    <br>
-	</#if>
+	    	<#include "../util/bottomFiltro.ftl" />
+	    	<br>
+    	<#else>
+        	<@ww.hidden id="empresaId" name="empresaId"/>
+		</#if>
+    	
+    	<@ww.hidden name="turma.id"/>
+    	<@ww.hidden id="pagina" name="page"/>
+    </@ww.form>
 	
-	<#if colaboradorTurmas.size()?exists>
-		<b>${colaboradorTurmas.size()} Colaboradores Inscritos</b>
+	<#if totalSize?exists>
+		<b>${totalSize} Colaboradores Inscritos</b>
 	</#if>
 
 	<#if turma?exists && turma.id?exists>
