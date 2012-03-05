@@ -290,7 +290,7 @@
 			if (nome && nome.length >= 4)
 			{
 		    	$('#parentesDialog').empty();
-		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome); });
+		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>'); });
 		    }
 		}
 

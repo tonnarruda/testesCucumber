@@ -57,7 +57,7 @@
   <![endif]-->
 
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -148,7 +148,7 @@
 			if (nome && nome.length >= 4)
 			{
 		    	$('#parentesDialog').empty();
-		    	CandidatoDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome); });
+		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>'); });
 		    }
 		}
 

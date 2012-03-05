@@ -11,7 +11,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
@@ -21,6 +24,7 @@ import com.fortes.rh.util.StringUtil;
 public class ColaboradorDWR
 {
     private ColaboradorManager colaboradorManager;
+    private EmpresaManager empresaManager;
 //    private HistoricoColaboradorManager historicoColaboradorManager;
 
 	public Map getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
@@ -213,7 +217,16 @@ public class ColaboradorDWR
     
     public Collection<Object> findParentesByNome(String nome, Long empresaId)
     {
-    	Collection<Colaborador> colaboradores = colaboradorManager.findParentesByNome(nome, empresaId);
+    	Empresa empresa = empresaManager.findById(empresaId);
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+
+    	if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_TODAS_AS_EMPRESAS)
+    		colaboradores = colaboradorManager.findParentesByNome(nome, null);
+    	else if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_MESMA_EMPRESA)
+    		colaboradores = colaboradorManager.findParentesByNome(nome, empresaId);
+    	else
+    		return null;
+    	
     	return colaboradorManager.montaParentesByNome(colaboradores);
     }
     
@@ -238,5 +251,9 @@ public class ColaboradorDWR
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

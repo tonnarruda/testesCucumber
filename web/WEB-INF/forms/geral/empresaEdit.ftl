@@ -20,10 +20,15 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<script type="text/javascript">
 		
 		$(function() {
+			$('#verificaParentescoHelp').qtip({
+				content: '<div style="text-align:justify">Nos cadastros de candidato e colaborador, após preencher os campos Nome do Cônjuge, Nome do Pai ou Nome da Mãe, é realizada uma checagem se há colaboradores com os nomes informados, exibindo um popup com a lista caso seja encontrado.</div>',
+				style: { width: 400 }
+			});
 			
 			$('#nomeHomonimoEmpresa').change(function() {
 				if ($(this).is(":checked"))
@@ -152,8 +157,16 @@
 		<@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
 		<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o colaborador" name="empresa.obrigarAmbienteFuncaoColaborador" id="obrigarAmbienteFuncaoColaborador" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
-		<@ww.checkbox label="Considerar nomes homônimos no cadastro de candidato da empresa corrente" id="nomeHomonimoEmpresa" name="empresa.nomeHomonimoEmpresa" liClass="liLeft" labelPosition="left"/><br>
-		<@ww.checkbox label="Considerar nomes homônimos no cadastro de candidato considerando todas as empresas" id="nomeHomonimo" name="empresa.nomeHomonimo" liClass="liLeft" labelPosition="left"/><br>
+		
+		<li>
+			<label>Busca de possíveis parentes nos cadastros de candidatos e colaboradores:</label>
+			<img id="verificaParentescoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
+			<br />
+			<@ww.select theme="simple" name="empresa.verificaParentesco" id="verificaParentesco" list=r"#{'N':'Desabilitada','E':'Busca nesta empresa', 'T':'Busca em todas as empresas'}" disabled="${somenteLeitura}"  cssStyle="width: 300px;" />
+		<li>
+
+		<li>&nbsp;</li>
+		
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
 		<li>&nbsp;</li>

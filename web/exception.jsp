@@ -51,7 +51,7 @@
 				<center>
 					<font face=verdana size=2 color=black>
 						<p>
-						<ww:property value="%{exception.message}" default="ERRO INESPERADO"/>
+						ERRO INESPERADO
 						<font face=verdana size=2 color=black>
 						<br>
 						<br>A requisição não pode ser completada.

@@ -1140,14 +1140,14 @@ function desabilita(campo) {
 	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
 }
 
-function listaParentes(dados, nome)
+function listaParentes(dados, nome, empresaNome)
 {
 
 	if ($(dados).size() > 0)
 	{
     	var lista = "<strong>Dados do colaborador</strong>";
     	lista += "<div class='divInfoColabDestaque'>";
-    	lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), @authz.authentication operation="empresaNome"/>);
+    	lista += montaTabelaDados($('#nome').val(), $('#nomeConjuge').val(), $('#nomePai').val(), $('#nomeMae').val(), $('#ende').val() + ' ' + $('#num').val() + ' ' + $('#complemento').val(), $('#cidade option:selected').text(), $('#uf option:selected').text(), $('#ddd').val() + ' ' + $('#fone').val() + ' ' + $('#celular').val(), empresaNome);
     	lista += "</div>";
     	
     	lista += "<strong>Possíveis parentes</strong>";
