@@ -1,0 +1,1 @@
+update papel set nome='Gerenciador de Comunicação', papelmae_id=41, ordem=5 where id=540;--.go

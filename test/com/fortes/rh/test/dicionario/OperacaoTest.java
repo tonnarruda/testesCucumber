@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testGetHashMap()
 	{
-		assertEquals(16, Operacao.getHashMap().size());
+		assertEquals(17, Operacao.getHashMap().size());
 	}
 	
 	public void testGetDescricaoById()
@@ -32,6 +32,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(13));
 		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(14));
 		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(15));
+		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(16));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -52,6 +53,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(13).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(14).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(16).size());
 	}
 
 	
@@ -73,6 +75,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(13, Operacao.CANCELAR_SITUACAO_AC.getId());
 		assertEquals(14, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
 		assertEquals(15, Operacao.DESLIGAR_COLABORADOR_AC.getId());
+		assertEquals(16, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -80,22 +83,18 @@ public class OperacaoTest extends TestCase
 		assertEquals(1, Operacao.SELECIONAR_OPERACAO.meioComunicação().size());
 	}
 	
-	public void testCandidatosModuloExterno()
-	{
-		assertEquals(2, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().size());
-		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().values().toArray()[1]);
-	}
-	
 	public void testEncerrarSolicitacao()
 	{
 		assertEquals(2, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testAlterarStatusSolicitacao()
 	{
 		assertEquals(2, Operacao.ALTERAR_STATUS_SOLICITACAO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ALTERAR_STATUS_SOLICITACAO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	
@@ -103,18 +102,22 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(2, Operacao.LIBERAR_QUESTIONARIO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_QUESTIONARIO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testLembreteQuestionarioNaoRespondida()
 	{
 		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testLembreteAutomaticoPesquisaNaoLiberada()
 	{
 		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testCadastroCandidatoModuloExterno()
@@ -123,6 +126,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testAvisoQtdCurriculosCadastrados()
@@ -131,6 +135,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testAvaliacaoPeriodoExperienciaVencendo()
@@ -139,6 +144,9 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(3,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
 	public void testExamesPrevistos()
@@ -147,6 +155,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testBackupAutomatico()
@@ -155,6 +164,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testCancelarSituacaoAC()
@@ -162,13 +172,22 @@ public class OperacaoTest extends TestCase
 		Operacao operacao = Operacao.CANCELAR_SITUACAO_AC;
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(3,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 
+	public void testCandidatosModuloExterno()
+	{
+		assertEquals(2, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
 	public void testDesligaColaboradorAC()
 	{
 		Operacao operacao = Operacao.DESLIGAR_COLABORADOR_AC;
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
 	public void testSolicitacaoCandidatoModuloExterno()
@@ -177,5 +196,15 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	public void testConfiguracaoLimiteColaborador()
+	{
+		Operacao operacao = Operacao.CONFIGURACAO_LIMITE_COLABORADOR;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 }

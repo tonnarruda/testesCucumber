@@ -754,17 +754,8 @@
     <property name="dao">
       <ref bean="configuracaoLimiteColaboradorDao" />
     </property>
-    <property name="mail">
-      <ref bean="mail" />
-    </property>
-    <property name="empresaManager">
-      <ref bean="empresaManager" />
-    </property>
-    <property name="cargoManager">
-      <ref bean="cargoManager" />
-    </property>
-    <property name="areaOrganizacionalManager">
-      <ref bean="areaOrganizacionalManager" />
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
     </property>
   </bean>
   <bean id="configuracaoLimiteColaboradorManager" parent="parentManager">
@@ -898,6 +889,12 @@
     </property>
     <property name="mensagemManager">
       <ref bean="mensagemManager" />
+    </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
+    <property name="cargoManager">
+      <ref bean="cargoManager" />
     </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">

@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Configurações de Comunicação</title>
+	<title>Gerenciador de Comunicação</title>
 </head>
 <body>
 	<@ww.actionmessage />

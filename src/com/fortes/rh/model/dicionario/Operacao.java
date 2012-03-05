@@ -148,6 +148,15 @@ public enum Operacao
 
 			return this.getListMeioComunicacao();
 		}
+	}, 
+	CONFIGURACAO_LIMITE_COLABORADOR(16, "Configuração do limite de colaboradores por cargo") {
+		public HashMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_LIMITE_CONTRATO);
+
+			return this.getListMeioComunicacao();
+		}
 	};
 
 	private int id;

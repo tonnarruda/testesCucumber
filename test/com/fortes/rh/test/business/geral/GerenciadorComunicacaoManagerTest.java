@@ -14,6 +14,8 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
@@ -31,6 +33,7 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.EnviarPara;
@@ -40,11 +43,13 @@ import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
+import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.sesmt.Exame;
@@ -60,6 +65,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -81,14 +87,16 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager;
 	private Mock parametrosDoSistemaManager;
 	private Mock periodoExperienciaManager;
+	private Mock areaOrganizacionalManager;
 	private Mock usuarioMensagemManager;
 	private Mock usuarioEmpresaManager;
 	private Mock questionarioManager;
 	private Mock colaboradorManager;
 	private Mock solicitacaoManager;
+	private Mock mensagemManager;
 	private Mock empresaManager;
 	private Mock exameManager;
-	private Mock mensagemManager;
+	private Mock cargoManager;
 	private Mock mail;
 	
 	protected void setUp() throws Exception
@@ -117,6 +125,12 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
         mensagemManager = new Mock(MensagemManager.class);
         gerenciadorComunicacaoManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
+        
+        areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+        gerenciadorComunicacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        cargoManager = new Mock(CargoManager.class);
+        gerenciadorComunicacaoManager.setCargoManager((CargoManager) cargoManager.proxy());
 
         mail = mock(Mail.class);
         gerenciadorComunicacaoManager.setMail((Mail) mail.proxy());
@@ -727,6 +741,50 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
+	 public void testEnviaEmailConfiguracaoLimiteColaborador() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setEmailRespLimiteContrato("email@email.com");
+		 
+		 AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		 
+		 ConfiguracaoLimiteColaborador configuracaoLimiteColaborador = ConfiguracaoLimiteColaboradorFactory.getEntity();
+		 configuracaoLimiteColaborador.setDescricao("Configuracao Limite Colaborador");
+		 configuracaoLimiteColaborador.setAreaOrganizacional(areaOrganizacional);
+		 
+		 Cargo cargo = CargoFactory.getEntity(1L);
+		 cargo.setNomeMercado("Cargo");
+		 
+		 QuantidadeLimiteColaboradoresPorCargo quantidadeLimiteColaboradoresPorCargo = new QuantidadeLimiteColaboradoresPorCargo();
+		 quantidadeLimiteColaboradoresPorCargo.setCargo(cargo);
+		 quantidadeLimiteColaboradoresPorCargo.setLimite(10);
+		 
+		 Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos = new ArrayList<QuantidadeLimiteColaboradoresPorCargo>();
+		 quantidadeLimiteColaboradoresPorCargos.add(quantidadeLimiteColaboradoresPorCargo);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		 areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(configuracaoLimiteColaborador.getAreaOrganizacional().getId())).will(returnValue(areaOrganizacional));
+		 cargoManager.expects(once()).method("findByIdProjection").with(eq(configuracaoLimiteColaborador.getAreaOrganizacional().getId())).will(returnValue(cargo));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaEmailConfiguracaoLimiteColaborador(configuracaoLimiteColaborador, quantidadeLimiteColaboradoresPorCargos, empresa);
 		 } catch (Exception e) {
 			 exception = e;
 		 }

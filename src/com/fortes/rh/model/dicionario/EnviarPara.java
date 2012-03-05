@@ -19,6 +19,7 @@ public enum EnviarPara
 	RESPONSAVEL_TECNICO (12, "Responsável Tecnico"),
 	RECEBE_MENSAGEM_AC_PESSOAL (13, "Usuários com perfil de receber mensagem do AC Pessoal"),
 	PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL (14, "Usuários com permissão de visualizar solicitação pessoal"),
+	RESPONSAVEL_LIMITE_CONTRATO (15, "Responsável pelo limite de colaboradores por cargo"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)

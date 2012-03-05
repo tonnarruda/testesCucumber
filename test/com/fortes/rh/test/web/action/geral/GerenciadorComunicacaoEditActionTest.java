@@ -8,6 +8,8 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.model.dicionario.MeioComunicacao;
+import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -86,7 +88,8 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 	public void testInsertExists() throws Exception
 	{
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
-		gerenciadorComunicacao.setOperacao(1);
+		gerenciadorComunicacao.setOperacao(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
 		
 		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
@@ -109,7 +112,8 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 	public void testUpdateExists() throws Exception
 	{
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(1L);
-		gerenciadorComunicacao.setOperacao(1);
+		gerenciadorComunicacao.setOperacao(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
 		
 		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
