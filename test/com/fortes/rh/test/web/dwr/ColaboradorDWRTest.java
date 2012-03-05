@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -9,7 +10,9 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -25,11 +28,11 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.web.dwr.ColaboradorDWR;
 
-@SuppressWarnings("unchecked")
 public class ColaboradorDWRTest extends MockObjectTestCase
 {
 	private ColaboradorDWR colaboradorDWR;
 	private Mock colaboradorManager;
+	private Mock empresaManager;
 //	private Mock historicoColaboradorManager;
 
 	protected void setUp() throws Exception
@@ -38,9 +41,11 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		colaboradorDWR = new ColaboradorDWR();
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
+		empresaManager = new Mock(EmpresaManager.class);
 //		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
 
 		colaboradorDWR.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		colaboradorDWR.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 //		colaboradorDWR.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
 	}
 
@@ -289,5 +294,36 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Map retorno = colaboradorDWR.getByFuncaoAmbiente(funcao.getId(), ambiente.getId());
 
 		assertEquals(1, retorno.size());
+	}
+
+	public void testFindParentesByNome()
+	{
+		Empresa empresaBuscaMesmaEmpresa = EmpresaFactory.getEmpresa(1L);
+		empresaBuscaMesmaEmpresa.setVerificaParentesco(VerificacaoParentesco.BUSCA_MESMA_EMPRESA);
+		
+		Empresa empresaBuscaTodasAsEmpresas = EmpresaFactory.getEmpresa(2L);
+		empresaBuscaTodasAsEmpresas.setVerificaParentesco(VerificacaoParentesco.BUSCA_TODAS_AS_EMPRESAS);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity(1L);
+		colab1.setNome("joao");
+		colab1.setEmpresa(empresaBuscaMesmaEmpresa);
+
+		Colaborador colab2 = ColaboradorFactory.getEntity(2L);
+		colab2.setNome("joao");
+		colab2.setEmpresa(empresaBuscaTodasAsEmpresas);
+		
+		Collection<Colaborador> colaboradoresMesmaEmpresa = Arrays.asList(colab1);
+		Collection<Colaborador> colaboradoresTodasEmpresas = Arrays.asList(colab1, colab2);
+		
+		empresaManager.expects(once()).method("findById").with(eq(empresaBuscaMesmaEmpresa.getId())).will(returnValue(empresaBuscaMesmaEmpresa));
+		colaboradorManager.expects(once()).method("findParentesByNome").with(eq("joao"), eq(empresaBuscaMesmaEmpresa.getId())).will(returnValue(colaboradoresMesmaEmpresa));
+		colaboradorManager.expects(once()).method("montaParentesByNome").with(eq(colaboradoresMesmaEmpresa)).will(returnValue(colaboradoresMesmaEmpresa));
+		
+		empresaManager.expects(once()).method("findById").with(eq(empresaBuscaTodasAsEmpresas.getId())).will(returnValue(empresaBuscaTodasAsEmpresas));
+		colaboradorManager.expects(once()).method("findParentesByNome").with(eq("joao"), eq(null)).will(returnValue(colaboradoresTodasEmpresas));
+		colaboradorManager.expects(once()).method("montaParentesByNome").with(eq(colaboradoresTodasEmpresas)).will(returnValue(colaboradoresTodasEmpresas));
+		
+		assertEquals(1, colaboradorDWR.findParentesByNome("joao", empresaBuscaMesmaEmpresa.getId()).size());
+		assertEquals(2, colaboradorDWR.findParentesByNome("joao", empresaBuscaTodasAsEmpresas.getId()).size());
 	}
 }
