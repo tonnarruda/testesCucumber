@@ -36,22 +36,22 @@ public class OperacaoTest extends TestCase
 
 	public void testGetMeioComunicacaoById()
 	{
-		assertEquals(null, Operacao.getMeioComunicacaoById(1212122121));
-		assertEquals(0, Operacao.getMeioComunicacaoById(0).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(1).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(2).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(4).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(5).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(6).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(7).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(8).size());
-		assertEquals(3, Operacao.getMeioComunicacaoById(9).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(10).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(11).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(12).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(13).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(14).size());
-		assertEquals(2, Operacao.getMeioComunicacaoById(15).size());
+		assertEquals(null, Operacao.getMeioComunicacaosById(1212122121));
+		assertEquals(1, Operacao.getMeioComunicacaosById(0).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(1).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(2).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(4).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(5).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(6).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(7).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(8).size());
+		assertEquals(3, Operacao.getMeioComunicacaosById(9).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(10).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(11).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(12).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(13).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(14).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
 	}
 
 	
@@ -77,7 +77,7 @@ public class OperacaoTest extends TestCase
 
 	public void testSelecionarOperacao()
 	{
-		assertEquals(0, Operacao.SELECIONAR_OPERACAO.meioComunicação().size());
+		assertEquals(1, Operacao.SELECIONAR_OPERACAO.meioComunicação().size());
 	}
 	
 	public void testCandidatosModuloExterno()

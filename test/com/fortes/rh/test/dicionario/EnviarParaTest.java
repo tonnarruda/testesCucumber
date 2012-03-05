@@ -1,7 +1,5 @@
 package com.fortes.rh.test.dicionario;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.dicionario.EnviarPara;
@@ -11,8 +9,9 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(15, EnviarPara.values().length);
+		assertEquals(16, EnviarPara.values().length);
 		
+		assertEquals(new Integer(0), EnviarPara.SELECIONAR_ENVIAR_PARA.getId());
 		assertEquals(new Integer(1), EnviarPara.USUARIO.getId());
 		assertEquals(new Integer(2), EnviarPara.GESTOR_AREA.getId());
 		assertEquals(new Integer(3), EnviarPara.CANDIDATO_NAO_APTO.getId());
@@ -32,6 +31,7 @@ public class EnviarParaTest extends TestCase
 
 	public void testDescricao()
 	{
+		assertEquals("Selecione...", EnviarPara.SELECIONAR_ENVIAR_PARA.getDescricao());
 		assertEquals("Usuário", EnviarPara.USUARIO.getDescricao());
 		assertEquals("Gestor da área organizacional", EnviarPara.GESTOR_AREA.getDescricao());
 		assertEquals("Candidatos não aptos", EnviarPara.CANDIDATO_NAO_APTO.getDescricao());
@@ -51,6 +51,7 @@ public class EnviarParaTest extends TestCase
 
 	public void testGetDescricaoById()
 	{
+		assertEquals("Selecione...", EnviarPara.getDescricaoById(0));
 		assertEquals("Usuário", EnviarPara.getDescricaoById(1));
 		assertEquals("Gestor da área organizacional", EnviarPara.getDescricaoById(2));
 		assertEquals("Candidatos não aptos", EnviarPara.getDescricaoById(3));
@@ -68,130 +69,5 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Avulso", EnviarPara.getDescricaoById(99));
 	}
 
-	public void testSetAvulso()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setAvulso(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.AVULSO.getDescricao(), meioComunicacao.get(EnviarPara.AVULSO.getId()));
-	}
-	
-	public void testSetUsuario()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setUsuario(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.USUARIO.getDescricao(), meioComunicacao.get(EnviarPara.USUARIO.getId()));
-	}
-	
-	public void testSetCandidatoNaoApto()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setCandidatoNaoApto(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.CANDIDATO_NAO_APTO.getDescricao(), meioComunicacao.get(EnviarPara.CANDIDATO_NAO_APTO.getId()));
-	}
-	
-	public void testSetSolicitante()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setSolicitante(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.SOLICITANTE_SOLICITACAO.getDescricao(), meioComunicacao.get(EnviarPara.SOLICITANTE_SOLICITACAO.getId()));
-	}
-	
-	public void testSetLiberador()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setResponsavelSetorPessoal(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getId()));
-	}
-	
-	public void testSetAvaliador()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setAvaliadorAvaliacaoDesempenho(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getDescricao(), meioComunicacao.get(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId()));
-	}
-	
-	public void testSetColaborador()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setColaborador(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.COLABORADOR.getDescricao(), meioComunicacao.get(EnviarPara.COLABORADOR.getId()));
-	}
-
-	public void testSetResponsavelRH()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setResponsavelRH(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.RESPONSAVEL_RH.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_RH.getId()));
-	}
-	
-	public void testSetResponsavelTecnico()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setResponsavelTecnico(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.RESPONSAVEL_TECNICO.getDescricao(), meioComunicacao.get(EnviarPara.RESPONSAVEL_TECNICO.getId()));
-	}
-	
-	public void testSetPerfilAutorizadoExamesPrevistos()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setPerfilAutorizadoExamesPrevistos(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getDescricao(), meioComunicacao.get(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId()));
-	}
-
-	public void testSetGerenciadorMensagemPeriodoExpericencia()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setGerenciadorDeMensagemPeriodoExperiencia(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getDescricao(), meioComunicacao.get(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getId()));
-	}
-	
-	public void testSetRecebeMensagemPeriodoExperiencia()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setRecebeMensagemPeriodoExperiencia(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getDescricao(), meioComunicacao.get(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA.getId()));
-	}
-
-	public void testSetRecebeMensagemAcPessoal()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setRecebeMensagemACPessoal(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getDescricao(), meioComunicacao.get(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()));
-	}
-	
-	public void testSetPerfilAutorizadoVisualizarSolicitacaoPessoal()
-	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
-		EnviarPara.setPerfilAutorizadoVisualizarSolicitacaoPessoal(meioComunicacao);
-		
-		assertEquals(1, meioComunicacao.size());
-		assertEquals(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getDescricao(), meioComunicacao.get(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId()));
-	}
 	
 }

@@ -86,9 +86,10 @@ public enum Operacao
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA);
+			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
-			MeioComunicacao.EMAIL.add(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA);
-			MeioComunicacao.EMAIL.add(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -163,6 +164,7 @@ public enum Operacao
 		if(listMeioComunicacao == null)
 			listMeioComunicacao = new HashMap<Integer, String>();
 		
+		meioComunicacao.inicializaListaEnviarPara();
 		listMeioComunicacao.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 
@@ -199,14 +201,22 @@ public enum Operacao
 		return "";
 	}
 
-	public static HashMap<Integer,String> getMeioComunicacaoById(Integer id){
+	public static Operacao getById(Integer operacaoId){
 		for (Operacao o : Operacao.values()) 
-			if(o.getId() == id)
-				return o.meioComunicação();
+			if(o.getId() == operacaoId)
+				return o;
 	
 		return null;
 	}
 
+	public static HashMap<Integer,String> getMeioComunicacaosById(Integer id){
+		for (Operacao o : Operacao.values()) 
+			if(o.getId() == id)
+				return o.meioComunicação();
+		
+		return null;
+	}
+	
 	public HashMap<Integer, String> getListMeioComunicacao() 
 	{
 		this.add(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO);

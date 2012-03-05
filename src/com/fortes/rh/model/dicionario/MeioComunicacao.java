@@ -25,6 +25,11 @@ public enum MeioComunicacao
 		listEnviarPara.put(enviarPara.getId(), enviarPara.getDescricao());
 	}
 	
+	public void inicializaListaEnviarPara(){
+		listEnviarPara = new HashMap<Integer, String>();
+		listEnviarPara.put(EnviarPara.SELECIONAR_ENVIAR_PARA.getId(), EnviarPara.SELECIONAR_ENVIAR_PARA.getDescricao());
+	}
+	
 	public Integer getId() 
 	{
 		return id;
@@ -57,38 +62,6 @@ public enum MeioComunicacao
 		return "";
 	}
 
-	public HashMap<Integer, String> getEnviarPara(int operacaoId){
-		HashMap<Integer, String> enviarPara = new HashMap<Integer, String>();
-		
-		EnviarPara.setUsuario(enviarPara);
-		EnviarPara.setAvulso(enviarPara);
-
-		return enviarPara;
-	}
-
-	public static HashMap<Integer,String> getEnviarParaById(Integer id){
-		for (MeioComunicacao o : MeioComunicacao.values()) 
-			if(o.getId() == id)
-				return o.getEnviarPara(id);
-
-		return null;
-	}
-	
-	public static void setSelecionarMeioComunicacao(HashMap<Integer, String> meioComunicação) 
-	{
-		meioComunicação.put(MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getId(), MeioComunicacao.SELECIONAR_MEIO_COMUNICACAO.getDescricao());
-	}
-	
-	public static void setCaixaMensagem(HashMap<Integer, String> meioComunicação)
-	{
-		meioComunicação.put(MeioComunicacao.CAIXA_MENSAGEM.getId(), MeioComunicacao.CAIXA_MENSAGEM.getDescricao());
-	}
-	
-	public static void setEmail(HashMap<Integer, String> meioComunicação) 
-	{
-		meioComunicação.put(MeioComunicacao.EMAIL.getId(), MeioComunicacao.EMAIL.getDescricao());
-	}
-	
 	public static void setMeiosDeComunicacoes(HashMap<Integer, String> meioComunicação) {
 		for (MeioComunicacao meioComunicacao : values()) 
 			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());

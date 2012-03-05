@@ -22,11 +22,13 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	
 	private void prepare() throws Exception
 	{
-		if(gerenciadorComunicacao != null && gerenciadorComunicacao.getId() != null)
+		if(gerenciadorComunicacao != null )
 		{
-			gerenciadorComunicacao = (GerenciadorComunicacao) gerenciadorComunicacaoManager.findById(gerenciadorComunicacao.getId());
-			meioComunicacoes = Operacao.getMeioComunicacaoById(gerenciadorComunicacao.getOperacao());
-			enviarParas = MeioComunicacao.getEnviarParaById(gerenciadorComunicacao.getOperacao());
+			if (gerenciadorComunicacao.getId() != null)
+				gerenciadorComunicacao = (GerenciadorComunicacao) gerenciadorComunicacaoManager.findById(gerenciadorComunicacao.getId());
+			
+			meioComunicacoes = Operacao.getMeioComunicacaosById(gerenciadorComunicacao.getOperacao());
+			enviarParas = (MeioComunicacao.getMeioComunicacaoById(gerenciadorComunicacao.getMeioComunicacao())).getListEnviarPara();   
 		}else
 		{
 			meioComunicacoes = new HashMap<Integer, String>();

@@ -9,10 +9,10 @@ public class GerenciadorComunicacaoDWR
 {
 	public  HashMap<Integer,String> getMeioComunicacao(Integer operacaoId)
 	{
-		return Operacao.getMeioComunicacaoById(operacaoId);
+		return Operacao.getMeioComunicacaosById(operacaoId);
 	}
 
-	public  HashMap<Integer,String> getEnviarPara(Integer operacaoId, Integer meioComunicacaoId)
+	public  HashMap<Integer,String> getEnviarPara(Integer meioComunicacaoId)
 	{
 		MeioComunicacao meiocomunicacao = MeioComunicacao.getMeioComunicacaoById(meioComunicacaoId);
 		return meiocomunicacao.getListEnviarPara();

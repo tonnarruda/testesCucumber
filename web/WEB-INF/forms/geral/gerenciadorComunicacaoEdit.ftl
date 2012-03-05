@@ -34,9 +34,9 @@
 				valido = false;
 			}
 			
-		 	if($('#enviarPara').val() == 0)
+		 	if($('#enviarParas').val() == 0)
 			{
-				$('#enviarPara').css("background-color", "#FFEEC2");
+				$('#enviarParas').css("background-color", "#FFEEC2");
 				valido = false;
 			}
 
@@ -47,7 +47,7 @@
 			}	
 
 		 	var submeter = true;
-			if($('#enviarPara').val() == 99)//EviarPara.Avulso = 99
+			if($('#enviarParas').val() == 99)//EviarPara.Avulso = 99
 			{	
 				if($('#destinatario').val() == "")
 				{
@@ -80,7 +80,7 @@
 
 		function createListMeioComunicacao(data)
 		{
-			$('#enviarPara').html('<option value="0">Selecione um meio de comunicação...</option>');
+			$('#enviarParas').html('<option value="0">Selecione um meio de comunicação...</option>');
 			
 			DWRUtil.removeAllOptions("meioComunicacoes");
 			DWRUtil.addOptions("meioComunicacoes", data);
@@ -89,14 +89,14 @@
 		function populaEnviarPara(meioComunicacaoId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			GerenciadorComunicacaoDWR.getEnviarPara(createListEnviarPara, $('#operacao').val(), meioComunicacaoId);
+			GerenciadorComunicacaoDWR.getEnviarPara(createListEnviarPara, meioComunicacaoId);
 		}		
 
 		function createListEnviarPara(data)
 		{
-			DWRUtil.removeAllOptions("enviarPara");
-			DWRUtil.addOptions("enviarPara", data);
-			$('#enviarPara').change();
+			DWRUtil.removeAllOptions("enviarParas");
+			DWRUtil.addOptions("enviarParas", data);
+			$('#enviarParas').change();
 		}
 		
 		function exibeCamposEmailsAvulsos(enviarParaId)
@@ -113,11 +113,15 @@
 		
 		$(function(){
 			<#if edicao>
-				populaEnviarPara(${gerenciadorComunicacao.meioComunicacao});
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
 			<#else>
-				$('#meioComunicacoes').html('<option value="0">Selecione uma operação...</option>');
-				$('#enviarPara').html('<option value="0">Selecione um meio de comunicação...</option>');
+				
+				<#if meioComunicacoes?size == 0>
+					$('#meioComunicacoes').html('<option value="0">Selecione uma operação...</option>');
+				</#if>
+				<#if enviarParas?size == 0>
+					$('#enviarParas').html('<option value="0">Selecione um meio de comunicação...</option>');
+				</#if>
 				exibeCamposEmailsAvulsos(0);
 			</#if>
 			
@@ -132,7 +136,7 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.select label="Operação" name="gerenciadorComunicacao.operacao" id="operacao" cssClass="campo" list="operacoes" cssStyle="width: 310px;" liClass="liLeft" onchange="populaMeioComunicacao(this.value);" />
 			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 310px;" liClass="liLeft" onchange="populaEnviarPara(this.value);"/>
-			<@ww.select label="Enviar Para" id="enviarPara" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 310px;" onchange="exibeCamposEmailsAvulsos(this.value)" />
+			<@ww.select label="Enviar Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 310px;" onchange="exibeCamposEmailsAvulsos(this.value)" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vírgula para inserir mais de um email. 
