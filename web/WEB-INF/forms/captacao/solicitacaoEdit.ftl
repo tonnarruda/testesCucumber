@@ -138,6 +138,8 @@
 	<#assign validarCampos="return validacaoFormulario(); "/>
 </head>
 <body>
+	<@ww.actionmessage/>
+	<@ww.actionerror/>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	

@@ -896,4 +896,50 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		assertEquals(Arrays.asList(areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId(), areaAvo.getId()), areasIds);
 	}
+	
+	public void testFindAreasByUsuarioResponsavel() 
+	{
+		Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
+		areaAvo.setNome("areaAvo");
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(2L);
+		areaMae1.setNome("areaMae1");
+		areaMae1.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaMae2 = AreaOrganizacionalFactory.getEntity(3L);
+		areaMae2.setNome("areaMae2");
+		areaMae2.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity(4L);
+		areaFilha1.setNome("areaFilha1");
+		areaFilha1.setAreaMae(areaMae1);
+		
+		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity(5L);
+		areaFilha2.setNome("areaFilha2");
+		areaFilha2.setAreaMae(areaMae2);
+		
+		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
+		
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavel").with(eq(usuarioLogado.getId()), eq(empresa.getId())).will(returnValue(new Long[]{areaAvo.getId()}));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaAvo.getId()))).will(returnValue(Arrays.asList(areaMae1.getId(), areaMae2.getId())));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaMae1.getId(), areaMae2.getId()))).will(returnValue(Arrays.asList(areaFilha1.getId(), areaFilha2.getId())));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(Arrays.asList(areaFilha1.getId(), areaFilha2.getId()))).will(returnValue(new ArrayList<Long>()));
+		areaOrganizacionalDao.expects(once()).method("findAreas").with(eq(new Long[] {areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId(), areaAvo.getId()})).will(returnValue(todasAsAreas));
+		
+		Collection<AreaOrganizacional> areasIds = null;
+		Exception exception = null;
+		
+		try {
+			areasIds = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuarioLogado, empresa.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+		assertEquals(5, areasIds.size());
+	}
 }

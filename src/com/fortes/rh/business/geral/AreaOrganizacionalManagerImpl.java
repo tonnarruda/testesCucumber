@@ -690,4 +690,19 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		return areasFilhasIds;
 	}
+	
+	public Collection<AreaOrganizacional> findAreasByUsuarioResponsavel(Usuario usuario, Long empresaId) throws Exception
+	{
+		Long[] areaIds = findIdsAreasResponsaveis(usuario, empresaId);
+		if(areaIds == null || areaIds.length == 0)
+			return new ArrayList<AreaOrganizacional>();
+		
+		Collection<AreaOrganizacional> areas = getDao().findAreas(areaIds);
+		areas = montaFamilia(areas);
+		
+		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
+		areas = cUtil.sortCollectionStringIgnoreCase(areas, "descricao");
+		
+		return areas;
+	}
 }

@@ -167,7 +167,17 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
         }
 
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
+		{
+			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
+		} 
+		else 
+		{    	
+			areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
+	    	if (areas == null || areas.size() == 0)
+	    		addActionError("Você não é responsável por nenhuma área organizacional.");
+		}
+    	
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
