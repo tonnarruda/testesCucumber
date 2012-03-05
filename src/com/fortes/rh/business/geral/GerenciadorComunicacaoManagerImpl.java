@@ -18,6 +18,7 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
@@ -29,6 +30,8 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
@@ -68,6 +71,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	MensagemManager mensagemManager;
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
+
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
@@ -161,15 +165,15 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
     public void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios)
     {
-        enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios, Operacao.LIBERAR_QUESTIONARIO);
+     	Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_QUESTIONARIO.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+				enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios);
+			} 		
+		}
     }
     
-    public void enviaEmailQuestionarioNaoRespondido(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios) 
-    {
-    	enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO);
-    }
-
-	private void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios, Operacao operacao) 
+	public void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios) 
 	{
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
     	
@@ -188,18 +192,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
             for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
             {
-                try
-                {
-                	Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(operacao.getId(), empresa.getId());
-            		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-    					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
-    						mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
-    					} 		
-    				}
-                	
-                }
-                catch (Exception e)
-                {
+                try {
+                	mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -560,8 +555,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_TECNICO.getId())){
     				mail.send(null, titulo, corpo, null, email);
+    				break;
     			} 
-    			break;
     		}
 		
 		
@@ -611,7 +606,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId())){
     				mail.send(empresa, "Novo Contrato ("+configuracaoLimiteColaborador.getDescricao()+") com limite de Colaboradores por Cargo adicionado.", body.toString(), null, emails);
     			} 
-    			break;
     		}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -631,6 +625,39 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		return getDao().verifyExists(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}, valores);
 	}
 
+	public void enviarAvisoEmailLiberacao(Turma turma, Long empresaId) {
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_TURMA.getId(), empresaId);
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+				enviarAvisoEmail(turma, empresaId);
+			} 
+		}
+	}
+	
+	public void enviarAvisoEmail(Turma turma, Long empresaId) 
+	{
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
+		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId()); 
+
+		String subject = "[Fortes RH] Lembrete: Curso " + turma.getCurso().getNome();
+		String  body =  "#COLABORADOR# ,você está matriculado no seguinte curso.<br>";
+				body += "Curso: " + turma.getCurso().getNome() + "<br>";
+				body += "Turma: " + turma.getDescricao() + "<br>";
+				body += "Período: " + DateUtil.formataDiaMesAno(turma.getDataPrevIni()) + " - " + DateUtil.formataDiaMesAno(turma.getDataPrevFim()) + "<br>";
+				body += "Horário: " + turma.getHorario() + "<br>";
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			try {
+				mail.send(empresa, subject, null, body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome()), colaboradorTurma.getColaborador().getContato().getEmail());
+			} catch (Exception e)	{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

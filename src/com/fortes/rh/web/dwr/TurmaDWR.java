@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -21,8 +21,8 @@ public class TurmaDWR
 	
 	private TurmaManager turmaManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
-	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Map getTurmas(String cursoId)
 	{
@@ -39,7 +39,7 @@ public class TurmaDWR
 	{
 		Turma turma = turmaManager.findByIdProjection(turmaId);
 		
-		colaboradorTurmaManager.enviarAvisoEmail(turma, empresaId);
+		gerenciadorComunicacaoManager.enviarAvisoEmail(turma, empresaId);
 		return "Email enviado com sucesso.";
 	}
 
@@ -150,11 +150,6 @@ public class TurmaDWR
 		this.turmaManager = turmaManager;
 	}
 
-	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
-	{
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
 	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) 
 	{
 		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
@@ -163,5 +158,10 @@ public class TurmaDWR
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) 
 	{
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
+
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

@@ -104,7 +104,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionarioId, false, empresa.getId());
 		Questionario questionario = getDao().findByIdProjection(questionarioId);
-		gerenciadorComunicacaoManager.enviaEmailQuestionarioNaoRespondido(empresa, questionario, colaboradorQuestionarios);
+		gerenciadorComunicacaoManager.enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios);
 	}
 
     public void aplicarPorAspecto(Long questionarioId, boolean aplicarPorAspecto) throws Exception

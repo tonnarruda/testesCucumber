@@ -65,6 +65,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada);
 	public String checaColaboradorInscritoEmOutraTurma(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Long turmaId);
-	public void enviarAvisoEmail(Turma turma, Long empresaId);
 	public Collection<Long> findIdEstabelecimentosByTurma(Long turmaid, Long empresaId);
+	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId);
 }

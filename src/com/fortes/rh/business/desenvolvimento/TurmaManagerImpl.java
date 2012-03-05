@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -35,6 +36,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private CursoManager cursoManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private FaturamentoMensalManager faturamentoMensalManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -320,7 +322,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public void updateLiberada(Long turmaId, Boolean liberada, Long empresaId) {
 		if (liberada) {
 			Turma turma = findByIdProjection(turmaId);
-			colaboradorTurmaManager.enviarAvisoEmail(turma, empresaId);
+			gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, empresaId);
 		}
 		getDao().updateLiberada(turmaId, liberada);		
 	}
@@ -336,4 +338,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public void setFaturamentoMensalManager(FaturamentoMensalManager faturamentoMensalManager) {
 		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
 }

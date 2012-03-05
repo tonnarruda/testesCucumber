@@ -45,15 +45,6 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO(5, "Lembrete de pesquisa não respondida"){
-		public HashMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
 	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(6, "Lembrete automático de pesquisa não liberada"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
@@ -157,6 +148,15 @@ public enum Operacao
 
 			return this.getListMeioComunicacao();
 		}
+	}, 
+	LIBERAR_TURMA(17, "Liberar turma") {
+		public HashMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 
 	private int id;
@@ -208,14 +208,6 @@ public enum Operacao
 				return o.getDescricao();
 		}
 		return "";
-	}
-
-	public static Operacao getById(Integer operacaoId){
-		for (Operacao o : Operacao.values()) 
-			if(o.getId() == operacaoId)
-				return o;
-	
-		return null;
 	}
 
 	public static HashMap<Integer,String> getMeioComunicacaosById(Integer id){

@@ -15,6 +15,7 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -36,6 +37,9 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
@@ -65,6 +69,9 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
@@ -88,6 +95,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock parametrosDoSistemaManager;
 	private Mock periodoExperienciaManager;
 	private Mock areaOrganizacionalManager;
+	private Mock colaboradorTurmaManager;
 	private Mock usuarioMensagemManager;
 	private Mock usuarioEmpresaManager;
 	private Mock questionarioManager;
@@ -128,6 +136,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         gerenciadorComunicacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
+        MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
         
         cargoManager = new Mock(CargoManager.class);
         gerenciadorComunicacaoManager.setCargoManager((CargoManager) cargoManager.proxy());
@@ -353,54 +364,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Exception exception = null;
 		 try {
 			 gerenciadorComunicacaoManager.enviaEmailResponsavelRh("Chico", empresa.getId());
-		 } catch (Exception e) {
-			 exception = e;
-		 }
-		 
-		 assertNull(exception);
-	 }
-	 public void testEnviaEmailQuestionarioNaoRespondido() throws Exception
-	 {
-		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-		 parametros.setAppUrl("url");
-		 
-		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		 
-		 Questionario questionario = QuestionarioFactory.getEntity(1L);
-		 questionario.setEmpresa(empresa);
-		 questionario.setDataInicio(new Date());
-		 questionario.setDataFim(new Date());
-		 
-		 Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
-		 colaborador1.setEmailColaborador("teste1@fortesinformatica.com.br");
-		 
-		 ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
-		 colaboradorQuestionario1.setColaborador(colaborador1);
-		 
-		 Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
-		 colaborador2.setEmailColaborador("teste2@fortesinformatica.com.br");
-		 
-		 ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(2L);
-		 colaboradorQuestionario2.setColaborador(colaborador2);
-		 
-		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
-		 colaboradorQuestionarios.add(colaboradorQuestionario1);
-		 colaboradorQuestionarios.add(colaboradorQuestionario2);
-		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
-		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-		 
-		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-		 
-		 Exception exception = null;
-		 try {
-			 gerenciadorComunicacaoManager.enviaEmailQuestionarioNaoRespondido(empresa, questionario, colaboradorQuestionarios);
 		 } catch (Exception e) {
 			 exception = e;
 		 }
@@ -790,5 +753,90 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 }
 		 
 		 assertNull(exception);
+	 }
+	 
+	 public void testEnviarAvisoEmail() 
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		 Curso curso = CursoFactory.getEntity();
+		 curso.setNome("curso I");
+		 
+		 Turma turma = TurmaFactory.getEntity(2L);
+		 turma.setCurso(curso);
+		 turma.setDescricao("descricao");
+		 turma.setDataPrevIni(new Date());
+		 turma.setDataPrevFim(new Date());
+		 turma.setHorario("comercial");
+		 
+		 Contato contato = new Contato();
+		 contato.setEmail("email@email.com");
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setContato(contato);
+		 
+		 ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		 colaboradorTurma.setColaborador(colaborador);
+
+		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviarAvisoEmail(turma, empresa.getId());
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+		
+	}
+	 public void testEnviarAvisoEmailLiberacao() 
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 
+		 Curso curso = CursoFactory.getEntity();
+		 curso.setNome("curso I");
+		 
+		 Turma turma = TurmaFactory.getEntity(2L);
+		 turma.setCurso(curso);
+		 turma.setDescricao("descricao");
+		 turma.setDataPrevIni(new Date());
+		 turma.setDataPrevFim(new Date());
+		 turma.setHorario("comercial");
+		 
+		 Contato contato = new Contato();
+		 contato.setEmail("email@email.com");
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setContato(contato);
+		 
+		 ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		 colaboradorTurma.setColaborador(colaborador);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_TURMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, empresa.getId());
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+		 
 	 }
 }

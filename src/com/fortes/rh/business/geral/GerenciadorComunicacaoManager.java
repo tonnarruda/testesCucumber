@@ -9,6 +9,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -25,9 +26,9 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
 	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
-	void enviaEmailQuestionarioNaoRespondido(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
-	void enviaLembreteDeQuestionarioNaoLiberado();
 	void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
+	void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
+	void enviaLembreteDeQuestionarioNaoLiberado();
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);
 	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores);
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
@@ -38,4 +39,6 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	boolean existeConfiguracaoParaCandidatosModuloExterno(Long emrpesaId);
 	void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa);
 	public void enviaEmailConfiguracaoLimiteColaborador(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresa);
+	void enviarAvisoEmailLiberacao(Turma turma, Long empresaId);
+	void enviarAvisoEmail(Turma turma, Long empresaId);
 }

@@ -12,10 +12,9 @@ import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
+import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
-
-import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
@@ -286,35 +285,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(1, retornos.size());
 	}
 	
-	public void testEnviarAvisoEmail()
-	{
-		
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Curso curso = CursoFactory.getEntity(1L);
-		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turma.setId(1L);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setEmailColaborador("adsf@asdf.com");
-		
-		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
-		colaboradorTurma.setId(1L);
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setTurma(turma);
-		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		colaboradorTurmas.add(colaboradorTurma);
-		
-		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
-		colaboradorTurmaDao.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(colaboradorTurmas));
-		mail.expects(once()).method("send");
-		
-		colaboradorTurmaManager.enviarAvisoEmail(turma, empresa.getId());
-	}
-
 	public void testGetDadosTurma() throws Exception
 	{
 		Date data = new Date();

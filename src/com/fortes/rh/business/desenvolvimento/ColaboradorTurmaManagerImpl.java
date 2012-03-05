@@ -1091,25 +1091,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradoresComCustoTreinamentos(colaboradorId, dataIni, dataFim, realizada);
 	}
 	
-	public void enviarAvisoEmail(Turma turma, Long empresaId) 
-	{
-		Empresa empresa = empresaManager.findByIdProjection(empresaId);
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColaboradoresComEmailByTurma(turma.getId()); 
-
-		String subject = "[Fortes RH] Lembrete: Curso " + turma.getCurso().getNome();
-		String  body =  "#COLABORADOR# ,você está matriculado no seguinte curso.<br>";
-				body += "Curso: " + turma.getCurso().getNome() + "<br>";
-				body += "Turma: " + turma.getDescricao() + "<br>";
-				body += "Período: " + DateUtil.formataDiaMesAno(turma.getDataPrevIni()) + " - " + DateUtil.formataDiaMesAno(turma.getDataPrevFim()) + "<br>";
-				body += "Horário: " + turma.getHorario() + "<br>";
-		
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
-		{
-            try
-            {mail.send(empresa, subject, null, body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome()), colaboradorTurma.getColaborador().getContato().getEmail());}
-            catch (Exception e)
-            {e.printStackTrace();}
-		}
+	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId) {
+		return getDao().findColaboradoresComEmailByTurma(turmaId);
 	}
 	
 	public void setMail(Mail mail) 

@@ -21,7 +21,6 @@ public class OperacaoTest extends TestCase
 		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(2));
 		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(3));
 		assertEquals("Liberar questionário", Operacao.getDescricaoById(4));
-		assertEquals("Lembrete de pesquisa não respondida", Operacao.getDescricaoById(5));
 		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(6));
 		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(7));
 		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(8));
@@ -33,6 +32,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(14));
 		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(15));
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(16));
+		assertEquals("Liberar turma", Operacao.getDescricaoById(17));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -42,7 +42,6 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(1).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(2).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(4).size());
-		assertEquals(2, Operacao.getMeioComunicacaosById(5).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(6).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(7).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(8).size());
@@ -54,6 +53,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(14).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(16).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(17).size());
 	}
 
 	
@@ -64,7 +64,6 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
 		assertEquals(3, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
 		assertEquals(4, Operacao.LIBERAR_QUESTIONARIO.getId());
-		assertEquals(5, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.getId());
 		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
 		assertEquals(7, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
 		assertEquals(8, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
@@ -76,6 +75,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(14, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
 		assertEquals(15, Operacao.DESLIGAR_COLABORADOR_AC.getId());
 		assertEquals(16, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
+		assertEquals(17, Operacao.LIBERAR_TURMA.getId());
 	}
 
 	public void testSelecionarOperacao()
@@ -102,13 +102,6 @@ public class OperacaoTest extends TestCase
 	{
 		assertEquals(2, Operacao.LIBERAR_QUESTIONARIO.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_QUESTIONARIO.meioComunicação().values().toArray()[1]);
-		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
-	}
-	
-	public void testLembreteQuestionarioNaoRespondida()
-	{
-		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_RESPONDIDO.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
@@ -202,6 +195,15 @@ public class OperacaoTest extends TestCase
 	public void testConfiguracaoLimiteColaborador()
 	{
 		Operacao operacao = Operacao.CONFIGURACAO_LIMITE_COLABORADOR;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testLiberarTurma()
+	{
+		Operacao operacao = Operacao.LIBERAR_TURMA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
