@@ -1,15 +1,41 @@
 package com.fortes.rh.model.dicionario;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public enum Operacao
 {
-	SELECIONAR_OPERACAO(0, "Selecione..."){
+	CADASTRO_CANDIDATO_MODULO_EXTERNO(1, "Aviso de cadastro de candidato pelo módulo externo", "Candidato"){
 		public HashMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			
 			return this.getListMeioComunicacao();
 		}
 	},
-	ENCERRAMENTO_SOLICITACAO(1, "Encerramento da solicitação de pessoal"){
+	QTD_CURRICULOS_CADASTRADOS(2, "Aviso automático da quantidade de currículos cadastros por mês", "Candidato"){
+		public HashMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(3, "Exibir solicitações com canditados do modulo externo", "Candidato") {
+		public HashMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL);
+
+			return this.getListMeioComunicacao();
+		}
+	},
+	ENCERRAMENTO_SOLICITACAO(4, "Encerramento da solicitação de pessoal", "Solicitação"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -18,7 +44,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	ALTERAR_STATUS_SOLICITACAO(2, "Alteração no status da solicitação de pessoal"){
+	ALTERAR_STATUS_SOLICITACAO(5, "Alteração no status da solicitação de pessoal", "Solicitação"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -27,7 +53,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(3, "Enviar lembrete avaliação desempenho"){
+	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(6, "Enviar lembrete avaliação desempenho", "Solicitação"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -36,7 +62,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	LIBERAR_QUESTIONARIO(4, "Liberar questionário"){
+	LIBERAR_QUESTIONARIO(7, "Liberar pesquisa", "Pesquisa"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -45,7 +71,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(6, "Lembrete automático de pesquisa não liberada"){
+	LEMBRETE_QUESTIONARIO_NAO_LIBERADO(8, "Lembrete automático de pesquisa não liberada", "Pesquisa"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -54,25 +80,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CADASTRO_CANDIDATO_MODULO_EXTERNO(7, "Aviso de cadastro de candidato pelo módulo externo"){
-		public HashMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
-	QTD_CURRICULOS_CADASTRADOS(8, "Aviso automático da quantidade de currículos cadastros por mês"){
-		public HashMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer"){
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer", "Período de Experiência"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
@@ -85,7 +93,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos"){
+	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "Período de Experiência"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -94,16 +102,16 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	BACKUP_AUTOMATICO(11, "Aviso automático de backup"){
+	LIBERAR_TURMA(11, "Liberar turma", "Curso") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
-			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_TECNICO);
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
 			
 			return this.getListMeioComunicacao();
 		}
 	},
-	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador") {
+	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador", "Colaborador") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -112,7 +120,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	}, 
-	CANCELAR_SITUACAO_AC(13, "Cancelamento de Situação no AC Pessoal") {
+	CANCELAR_SITUACAO_AC(13, "Cancelamento de Situação no AC Pessoal", "Colaborador") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -122,7 +130,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(14, "Exibir solicitações com canditados do modulo externo") {
+	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC", "Colaborador") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -131,16 +139,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	}, 
-	DESLIGAR_COLABORADOR_AC(15, "Desligar colaborador no AC") {
-		public HashMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.CAIXA_MENSAGEM);
-			
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL);
-
-			return this.getListMeioComunicacao();
-		}
-	}, 
-	CONFIGURACAO_LIMITE_COLABORADOR(16, "Configuração do limite de colaboradores por cargo") {
+	CONFIGURACAO_LIMITE_COLABORADOR(15, "Configuração do limite de colaboradores por cargo", "Colaborador") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -148,12 +147,12 @@ public enum Operacao
 
 			return this.getListMeioComunicacao();
 		}
-	}, 
-	LIBERAR_TURMA(17, "Liberar turma") {
+	},
+	BACKUP_AUTOMATICO(16, "Aviso automático de backup", "Sistema"){
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
-			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_TECNICO);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -161,11 +160,13 @@ public enum Operacao
 
 	private int id;
 	private String descricao;
+	private String grupo;
 	private HashMap<Integer, String> listMeioComunicacao = new HashMap<Integer, String>();
 	
-	Operacao(int id, String descricao){
+	Operacao(int id, String descricao, String grupo){
 		this.id = id;
 		this.descricao = descricao;
+		this.grupo = grupo;
 	}
 	
 	public void add(MeioComunicacao meioComunicacao)
@@ -191,12 +192,21 @@ public enum Operacao
 	public int getId(){
 		return id;
 	}
+	
+	public String getGrupo() {
+		return grupo;
+	}
 
-	public static final HashMap<Integer, String> getHashMap(){
-		HashMap<Integer, String> operacoes= new HashMap<Integer, String>();  
+	public static final Map<String, Collection<Operacao>> getHashMapGrupos(){
+		Map<String, Collection<Operacao>> operacoes= new LinkedHashMap<String, Collection<Operacao>>();  
 	    
-		for(Operacao o : Operacao.values()) 
-			operacoes.put(o.getId(), o.getDescricao()); 
+		for (Operacao o : Operacao.values())
+		{
+			if (!operacoes.containsKey(o.getGrupo()))
+				operacoes.put(o.getGrupo(), new ArrayList<Operacao>());
+
+			operacoes.get(o.getGrupo()).add(o); 
+		}
 		
 		return operacoes;
 	}

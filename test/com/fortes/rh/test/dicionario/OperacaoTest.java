@@ -8,37 +8,35 @@ import com.fortes.rh.model.dicionario.Operacao;
 public class OperacaoTest extends TestCase
 {
 	
-	public void testGetHashMap()
+	public void testGetHashMapGrupos()
 	{
-		assertEquals(17, Operacao.getHashMap().size());
+		assertEquals(7, Operacao.getHashMapGrupos().size());
 	}
 	
 	public void testGetDescricaoById()
 	{
 		assertEquals("", Operacao.getDescricaoById(1212122121));
-		assertEquals("Selecione...", Operacao.getDescricaoById(0));
-		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(1));
-		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(2));
-		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(3));
-		assertEquals("Liberar questionário", Operacao.getDescricaoById(4));
-		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(6));
-		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(7));
-		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(8));
+		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(1));
+		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(2));
+		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(3));
+		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(4));
+		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(5));
+		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(6));
+		assertEquals("Liberar pesquisa", Operacao.getDescricaoById(7));
+		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(8));
 		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(9));
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(10));
-		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(11));
+		assertEquals("Liberar turma", Operacao.getDescricaoById(11));
 		assertEquals("Contratação de Colaborador", Operacao.getDescricaoById(12));
 		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(13));
-		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(14));
-		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(15));
-		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(16));
-		assertEquals("Liberar turma", Operacao.getDescricaoById(17));
+		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(14));
+		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(15));
+		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(16));
 	}
 
 	public void testGetMeioComunicacaoById()
 	{
 		assertEquals(null, Operacao.getMeioComunicacaosById(1212122121));
-		assertEquals(1, Operacao.getMeioComunicacaosById(0).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(1).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(2).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(4).size());
@@ -53,36 +51,29 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(14).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(16).size());
-		assertEquals(2, Operacao.getMeioComunicacaosById(17).size());
 	}
 
 	
 	public void testChave()
 	{
-		assertEquals(0, Operacao.SELECIONAR_OPERACAO.getId());
-		assertEquals(1, Operacao.ENCERRAMENTO_SOLICITACAO.getId());
-		assertEquals(2, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
-		assertEquals(3, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
-		assertEquals(4, Operacao.LIBERAR_QUESTIONARIO.getId());
-		assertEquals(6, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
-		assertEquals(7, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
-		assertEquals(8, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
+		assertEquals(1, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());
+		assertEquals(2, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());
+		assertEquals(3, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
+		assertEquals(4, Operacao.ENCERRAMENTO_SOLICITACAO.getId());
+		assertEquals(5, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
+		assertEquals(6, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());
+		assertEquals(7, Operacao.LIBERAR_QUESTIONARIO.getId());
+		assertEquals(8, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());
 		assertEquals(9, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());
 		assertEquals(10, Operacao.EXAMES_PREVISTOS.getId());
-		assertEquals(11, Operacao.BACKUP_AUTOMATICO.getId());
+		assertEquals(11, Operacao.LIBERAR_TURMA.getId());
 		assertEquals(12, Operacao.CONTRATAR_COLABORADOR.getId());
 		assertEquals(13, Operacao.CANCELAR_SITUACAO_AC.getId());
-		assertEquals(14, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());
-		assertEquals(15, Operacao.DESLIGAR_COLABORADOR_AC.getId());
-		assertEquals(16, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
-		assertEquals(17, Operacao.LIBERAR_TURMA.getId());
+		assertEquals(14, Operacao.DESLIGAR_COLABORADOR_AC.getId());
+		assertEquals(15, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
+		assertEquals(16, Operacao.BACKUP_AUTOMATICO.getId());
 	}
 
-	public void testSelecionarOperacao()
-	{
-		assertEquals(1, Operacao.SELECIONAR_OPERACAO.meioComunicação().size());
-	}
-	
 	public void testEncerrarSolicitacao()
 	{
 		assertEquals(2, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().size());

@@ -33,7 +33,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao2);
 		
 		GerenciadorComunicacao gerenciadorComunicacao3 = getEntity();
-		gerenciadorComunicacao3.setOperacao(Operacao.SELECIONAR_OPERACAO.getId());
+		gerenciadorComunicacao3.setOperacao(Operacao.BACKUP_AUTOMATICO.getId());
 		gerenciadorComunicacao3.setEmpresa(empresa);
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao3);
 		

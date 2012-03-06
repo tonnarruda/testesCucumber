@@ -114,8 +114,8 @@
 		$(function(){
 			<#if edicao>
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
+				$('#operacao').val(${gerenciadorComunicacao.operacao});
 			<#else>
-				
 				<#if meioComunicacoes?size == 0>
 					$('#meioComunicacoes').html('<option value="0">Selecione uma operação...</option>');
 				</#if>
@@ -124,7 +124,6 @@
 				</#if>
 				exibeCamposEmailsAvulsos(0);
 			</#if>
-			
 		});
 	</script>
 	
@@ -134,7 +133,24 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Operação" name="gerenciadorComunicacao.operacao" id="operacao" cssClass="campo" list="operacoes" cssStyle="width: 600px;" onchange="populaMeioComunicacao(this.value);" />
+			<li id="wwgrp_operacao" class="wwgrp">    
+				<div id="wwlbl_operacao" class="wwlbl">
+					<label for="operacao" class="desc">Operação:</label>
+				</div> 
+				<div id="wwctrl_operacao" class="wwctrl">
+					<select name="gerenciadorComunicacao.operacao" id="operacao" class="campo" style="width: 600px;" onchange="populaMeioComunicacao(this.value);">
+						<option value="0">Selecione...</option>
+						<@ww.iterator value="operacoes">
+							<optgroup label="<@ww.property value="key"/>">
+								<#list value as operacao>
+									<option value="${operacao.id}">${operacao.descricao}</option>
+								</#list>
+							</optgroup>
+						</@ww.iterator>
+					</select>
+				</div>
+			</li>			
+			
 			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
 			<@ww.select label="Enviar Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value)" />
 			<span id="emailDestinatario">

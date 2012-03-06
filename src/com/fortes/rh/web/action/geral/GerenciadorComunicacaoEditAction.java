@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
@@ -118,9 +119,9 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return gerenciadorComunicacaos;
 	}
 
-	public HashMap<Integer, String> getOperacoes()
+	public Map<String, Collection<Operacao>> getOperacoes()
 	{
-		return Operacao.getHashMap();
+		return Operacao.getHashMapGrupos();
 	}
 
 	public HashMap<Integer, String> getEnviarParas() {
