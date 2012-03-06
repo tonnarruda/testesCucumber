@@ -1,6 +1,6 @@
 package com.fortes.rh.model.dicionario;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 public enum MeioComunicacao
 {
 	SELECIONAR_MEIO_COMUNICACAO(0, "Selecione..."),
@@ -15,18 +15,18 @@ public enum MeioComunicacao
 	
 	private Integer id;
 	private String descricao;
-	private HashMap<Integer, String> listEnviarPara = new HashMap<Integer, String>();
+	private TreeMap<Integer, String> listEnviarPara = new TreeMap<Integer, String>();
 	
 	public void add(EnviarPara enviarPara)
 	{
 		if(listEnviarPara == null)
-			listEnviarPara = new HashMap<Integer, String>();
+			listEnviarPara = new TreeMap<Integer, String>();
 		
 		listEnviarPara.put(enviarPara.getId(), enviarPara.getDescricao());
 	}
 	
 	public void inicializaListaEnviarPara(){
-		listEnviarPara = new HashMap<Integer, String>();
+		listEnviarPara = new TreeMap<Integer, String>();
 		listEnviarPara.put(EnviarPara.SELECIONAR_ENVIAR_PARA.getId(), EnviarPara.SELECIONAR_ENVIAR_PARA.getDescricao());
 	}
 	
@@ -62,12 +62,12 @@ public enum MeioComunicacao
 		return "";
 	}
 
-	public static void setMeiosDeComunicacoes(HashMap<Integer, String> meioComunicação) {
+	public static void setMeiosDeComunicacoes(TreeMap<Integer, String> meioComunicação) {
 		for (MeioComunicacao meioComunicacao : values()) 
 			meioComunicação.put(meioComunicacao.getId(), meioComunicacao.getDescricao());
 	}
 	
-	public HashMap<Integer, String> getListEnviarPara() {
+	public TreeMap<Integer, String> getListEnviarPara() {
 		return listEnviarPara;
 	}
 }

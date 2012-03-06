@@ -2,8 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
@@ -18,8 +18,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private GerenciadorComunicacao gerenciadorComunicacao;
 	private Collection<GerenciadorComunicacao> gerenciadorComunicacaos;
-	private HashMap<Integer, String> meioComunicacoes;
-	private HashMap<Integer, String> enviarParas;
+	private TreeMap<Integer, String> meioComunicacoes;
+	private TreeMap<Integer, String> enviarParas;
 	
 	private void prepare() throws Exception
 	{
@@ -32,8 +32,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 			enviarParas = (MeioComunicacao.getMeioComunicacaoById(gerenciadorComunicacao.getMeioComunicacao())).getListEnviarPara();   
 		}else
 		{
-			meioComunicacoes = new HashMap<Integer, String>();
-			enviarParas = new HashMap<Integer, String>();
+			meioComunicacoes = new TreeMap<Integer, String>();
+			enviarParas = new TreeMap<Integer, String>();
 		}
 	}
 
@@ -124,11 +124,11 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return Operacao.getHashMapGrupos();
 	}
 
-	public HashMap<Integer, String> getEnviarParas() {
+	public TreeMap<Integer, String> getEnviarParas() {
 		return enviarParas;
 	}
 
-	public HashMap<Integer, String> getMeioComunicacoes() {
+	public TreeMap<Integer, String> getMeioComunicacoes() {
 		return meioComunicacoes;
 	}
 }

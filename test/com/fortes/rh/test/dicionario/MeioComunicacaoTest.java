@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dicionario;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
@@ -32,7 +33,7 @@ public class MeioComunicacaoTest extends TestCase
 
 	public void testSetMeiosDeComunicacoes()
 	{
-		HashMap<Integer, String> meioComunicacao = new HashMap<Integer, String>();
+		TreeMap<Integer, String> meioComunicacao = new TreeMap<Integer, String>();
 		MeioComunicacao.setMeiosDeComunicacoes(meioComunicacao);
 		
 		assertEquals(3, meioComunicacao.size());
