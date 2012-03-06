@@ -150,7 +150,7 @@
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>
 		
-		<@ww.select label="Exame ASO" name="empresa.exame.id" id="exame" list="exames" disabled="${somenteLeitura}"  cssStyle="width: 300px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
+		<@ww.select label="Exame ASO" name="empresa.exame.id" id="exame" list="exames" disabled="${somenteLeitura}"  cssStyle="width: 447px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
 		
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
@@ -162,7 +162,7 @@
 			<label>Busca de possíveis parentes nos cadastros de candidatos e colaboradores:</label>
 			<img id="verificaParentescoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			<br />
-			<@ww.select theme="simple" name="empresa.verificaParentesco" id="verificaParentesco" list=r"#{'N':'Desabilitada','E':'Busca nesta empresa', 'T':'Busca em todas as empresas'}" disabled="${somenteLeitura}"  cssStyle="width: 300px;" />
+			<@ww.select theme="simple" name="empresa.verificaParentesco" id="verificaParentesco" list=r"#{'N':'Desabilitada','E':'Busca nesta empresa', 'T':'Busca em todas as empresas'}" disabled="${somenteLeitura}"  cssStyle="width: 447px;" />
 		<li>
 
 		<li>&nbsp;</li>
