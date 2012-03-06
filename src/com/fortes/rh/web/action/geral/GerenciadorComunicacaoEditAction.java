@@ -54,7 +54,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		gerenciadorComunicacao.setEmpresa(getEmpresaSistema());
 		
 		if (gerenciadorComunicacaoManager.verifyExists(gerenciadorComunicacao)){
-			addActionMessage("Já existe uma configuração cadastrada com os dados informados");
+			addActionMessage("Já existe uma configuração cadastrada com os dados informados.");
 			prepareInsert();
 			return Action.INPUT;
 		}
@@ -66,7 +66,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		if (gerenciadorComunicacaoManager.verifyExists(gerenciadorComunicacao)){
-			addActionMessage("Já existe uma configuração cadastrada com os dados informados");
+			addActionMessage("Já existe uma configuração cadastrada com os dados informados.");
 			prepareUpdate();
 			return Action.INPUT;
 		}
@@ -86,12 +86,12 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		try
 		{
 			gerenciadorComunicacaoManager.remove(gerenciadorComunicacao.getId());
-			addActionMessage("Gerenciador de Comunicação excluído com sucesso.");
+			addActionMessage("Configuração excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este Gerenciador de Comunicação.");
+			addActionError("Não foi possível excluir esta configuração.");
 		}
 
 		return list();

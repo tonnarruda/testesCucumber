@@ -26,7 +26,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(3, "Exibir solicitações com canditados do modulo externo", "Candidato") {
+	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(3, "Exibir solicitações com candidatos do módulo externo", "Candidato") {
 		public HashMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
