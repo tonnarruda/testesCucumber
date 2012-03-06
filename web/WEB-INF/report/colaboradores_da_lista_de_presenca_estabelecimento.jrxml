@@ -74,7 +74,7 @@
 		<group  name="listaPresenca" >
 			<groupExpression><![CDATA[$F{colaborador.historicoColaborador.estabelecimento.id}]]></groupExpression>
 			<groupHeader>
-			<band height="253"  isSplitAllowed="true" >
+			<band height="246"  isSplitAllowed="true" >
 				<subreport  isUsingCache="true">
 					<reportElement
 						mode="Opaque"
@@ -92,10 +92,11 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="68"
+						y="131"
 						width="202"
 						height="12"
-						key="staticText-15"/>
+						key="staticText-15"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
@@ -105,10 +106,11 @@
 				<staticText>
 					<reportElement
 						x="206"
-						y="68"
+						y="131"
 						width="141"
 						height="12"
-						key="staticText-19"/>
+						key="staticText-19"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
@@ -118,10 +120,11 @@
 				<staticText>
 					<reportElement
 						x="351"
-						y="68"
+						y="131"
 						width="185"
 						height="12"
-						key="staticText-20"/>
+						key="staticText-20"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
@@ -131,10 +134,11 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="80"
+						y="143"
 						width="202"
 						height="12"
 						key="textField-2"
+						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -145,10 +149,11 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="206"
-						y="80"
+						y="143"
 						width="141"
 						height="12"
 						key="textField-3"
+						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -159,10 +164,11 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="351"
-						y="80"
+						y="143"
 						width="185"
 						height="12"
 						key="textField-4"
+						positionType="Float"
 						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -174,12 +180,13 @@
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="56"
-						width="23"
+						y="107"
+						width="39"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-21"/>
+						key="staticText-21"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true" isItalic="false" isStrikeThrough="false" />
@@ -189,13 +196,14 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="23"
-						y="56"
+						x="0"
+						y="119"
 						width="262"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-5"/>
+						key="textField-5"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica" size="9" isBold="true" isItalic="false" isStrikeThrough="false" />
@@ -205,7 +213,7 @@
 				<staticText>
 					<reportElement
 						x="61"
-						y="241"
+						y="234"
 						width="182"
 						height="12"
 						key="staticText-22"
@@ -220,7 +228,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="385"
-						y="241"
+						y="234"
 						width="125"
 						height="12"
 						key="textField-8"
@@ -235,7 +243,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="92"
+						y="155"
 						width="202"
 						height="12"
 						key="staticText-24"
@@ -250,7 +258,7 @@
 				<staticText>
 					<reportElement
 						x="351"
-						y="92"
+						y="155"
 						width="185"
 						height="12"
 						key="staticText-25"
@@ -265,7 +273,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="351"
-						y="104"
+						y="167"
 						width="185"
 						height="12"
 						key="textField"
@@ -280,7 +288,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="104"
+						y="167"
 						width="202"
 						height="12"
 						key="textField"
@@ -295,7 +303,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="206"
-						y="104"
+						y="167"
 						width="141"
 						height="12"
 						key="textField"
@@ -310,7 +318,7 @@
 				<staticText>
 					<reportElement
 						x="206"
-						y="92"
+						y="155"
 						width="141"
 						height="12"
 						key="staticText-26"
@@ -325,7 +333,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="247"
-						y="241"
+						y="234"
 						width="135"
 						height="12"
 						key="textField-7"
@@ -340,7 +348,7 @@
 				<staticText>
 					<reportElement
 						x="19"
-						y="241"
+						y="234"
 						width="41"
 						height="12"
 						key="staticText-36"
@@ -355,7 +363,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="241"
+						y="234"
 						width="15"
 						height="12"
 						key="staticText-37"
@@ -370,7 +378,7 @@
 				<staticText>
 					<reportElement
 						x="514"
-						y="241"
+						y="234"
 						width="23"
 						height="12"
 						key="staticText-38"
@@ -387,7 +395,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="200"
+						y="193"
 						width="537"
 						height="12"
 						key="textField-6"
@@ -403,7 +411,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="188"
+						y="181"
 						width="202"
 						height="12"
 						key="textField-10"
@@ -414,13 +422,12 @@
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{labelLinha01}
-]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{labelLinha01}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="224"
+						y="217"
 						width="537"
 						height="12"
 						key="textField-9"
@@ -436,7 +443,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="212"
+						y="205"
 						width="202"
 						height="12"
 						key="textField-11"
@@ -449,80 +456,10 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{labelLinha02}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="152"
-						width="537"
-						height="12"
-						key="textField"
-						positionType="Float"
-						isRemoveLineWhenBlank="true"
-						isPrintWhenDetailOverflows="true">
-							<printWhenExpression><![CDATA[new Boolean($P{quebraPaginaEstabelecimento}.booleanValue() && $P{exibirRazaoSocial}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.historicoColaborador.estabelecimento.empresa.razaoSocial}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						x="0"
-						y="140"
-						width="202"
-						height="12"
-						key="staticText-40"
-						positionType="Float"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{quebraPaginaEstabelecimento}.booleanValue() && $P{exibirRazaoSocial}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Razão Social do Estabecimento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="116"
-						width="202"
-						height="12"
-						key="staticText-41"
-						positionType="Float"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{quebraPaginaEstabelecimento}.booleanValue() && $P{exibirCnpj}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<text><![CDATA[CNPJ]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="128"
-						width="202"
-						height="12"
-						key="textField"
-						positionType="Float"
-						isRemoveLineWhenBlank="true"
-						isPrintWhenDetailOverflows="true">
-							<printWhenExpression><![CDATA[new Boolean($P{quebraPaginaEstabelecimento}.booleanValue() && $P{exibirCnpj}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.historicoColaborador.estabelecimento.cnpjFormatado}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="0"
-						y="164"
+						y="81"
 						width="202"
 						height="12"
 						key="staticText-42"
@@ -534,12 +471,12 @@
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Endereço]]></text>
+				<text><![CDATA[Endereço:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="176"
+						y="93"
 						width="536"
 						height="12"
 						key="textField"
@@ -550,9 +487,91 @@
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
-						<font/>
+						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.historicoColaborador.estabelecimento.enderecoFormatado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="56"
+						width="202"
+						height="12"
+						key="textField-17"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( $P{exibirCnpj}.booleanValue() ? 
+	"CNPJ:" 
+: 
+	( $P{exibirRazaoSocial}.booleanValue() ? 
+		"Razão Social do Estabecimento:"
+	: 
+		null
+	) 
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="205"
+						y="56"
+						width="199"
+						height="12"
+						key="textField-19"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{exibirCnpj}.booleanValue() && $P{exibirRazaoSocial}.booleanValue() ? "Razão Social do Estabecimento:" : null]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="205"
+						y="69"
+						width="331"
+						height="12"
+						key="textField-21"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintWhenDetailOverflows="true">
+							<printWhenExpression><![CDATA[new Boolean($P{quebraPaginaEstabelecimento}.booleanValue() && $P{exibirRazaoSocial}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{exibirCnpj}.booleanValue() && $P{exibirRazaoSocial}.booleanValue() ? $F{colaborador.historicoColaborador.estabelecimento.empresa.razaoSocial} : null]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="69"
+						width="202"
+						height="12"
+						key="textField-22"
+						positionType="Float"
+						isRemoveLineWhenBlank="true"
+						isPrintWhenDetailOverflows="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font pdfFontName="Helvetica" size="9" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( $P{exibirCnpj}.booleanValue() ? 
+	$F{colaborador.historicoColaborador.estabelecimento.cnpjFormatado}
+: 
+	( $P{exibirRazaoSocial}.booleanValue() ? 
+		$F{colaborador.historicoColaborador.estabelecimento.empresa.razaoSocial}
+	: 
+		null
+	) 
+)]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
