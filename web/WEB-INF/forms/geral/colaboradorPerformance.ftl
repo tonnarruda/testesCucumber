@@ -100,7 +100,30 @@
 	</script>
 </head>
 <body>
-
+<@ww.actionmessage/>
+<#if colaboradoresMesmoCpf?exists && 1 < colaboradoresMesmoCpf?size>
+	<br>
+	<span id="exibir">
+		<strong>
+			Registros de colaboradores com mesmo CPF em outras empresas
+		</strong>
+	</span>
+	<div class='grade'>
+		<div style="padding:10px">
+			<ul>
+				<#list colaboradoresMesmoCpf as colab>
+					<#if colab.id != colaborador.id>
+						<li>
+							<a href="preparePerformanceFuncional.action?colaborador.id=${colab.id}">
+								${colab.nome} na empresa ${colab.empresa.nome}
+							</a>
+						</li>
+					</#if>
+				</#list>
+			</ul>
+		</div>
+	</div>
+</#if>
 <br>
 
 <span id="exibir">
@@ -227,29 +250,6 @@
 	<br style='clear: both'>
 </div>
 
-<#if colaboradoresMesmoCpf?exists && 1 < colaboradoresMesmoCpf?size>
-	<br>
-	<span id="exibir">
-		<strong>
-			Registros de colaboradores com mesmo CPF em outras empresas
-		</strong>
-	</span>
-	<div class='grade'>
-		<div style="padding:10px">
-			<ul>
-				<#list colaboradoresMesmoCpf as colab>
-					<#if colab.id != colaborador.id>
-						<li>
-							<a href="preparePerformanceFuncional.action?colaborador.id=${colab.id}">
-								${colab.nome} na empresa ${colab.empresa.nome}
-							</a>
-						</li>
-					</#if>
-				</#list>
-			</ul>
-		</div>
-	</div>
-</#if>
 
 <br>
 <div class="painelConfiguracao">

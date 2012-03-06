@@ -215,6 +215,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
 		action.setColaborador(colaborador);
 
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();

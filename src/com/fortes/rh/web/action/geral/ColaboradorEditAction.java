@@ -81,6 +81,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DocumentoAnexo;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -785,10 +786,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 			colaborador.setFoto(colaboradorManager.getFoto(colaborador.getId()));
-			habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
+			Empresa empresaDoColaborador = colaborador.getEmpresa();
+			habilitaCampoExtra = empresaDoColaborador.isCampoExtraColaborador();
+			
+			if(!getEmpresaSistema().getId().equals(empresaDoColaborador.getId()))
+				addActionMessage("Colaborador visualizado não pertence a empresa que você está logado atualmente.");
 			
 			if(habilitaCampoExtra)
-				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, empresaDoColaborador.getId()}, new String[]{"ordem"});
 			
 			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), true);
 			
@@ -796,13 +801,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), false);
 			
-			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
+			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresaDoColaborador.getId());
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
 
 			idiomasColaborador =  colaboradorIdiomaManager.findByColaborador(colaborador.getId());
 			formacaos = formacaoManager.findByColaborador(colaborador.getId());
 			
-			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(getEmpresaSistema().getId(), colaborador.getId(), null, null);
+			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(empresaDoColaborador.getId(), colaborador.getId(), null, null);
 			
 			ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
 			pontuacao = 0;
@@ -825,7 +830,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			participacoesNaCipaColaborador = comissaoManager.getParticipacoesDeColaboradorNaCipa(colaborador.getId());
 
 			//Popula areas com areas maes
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaDoColaborador.getId(), AreaOrganizacional.TODAS, null);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (HistoricoColaborador historico: historicoColaboradors)

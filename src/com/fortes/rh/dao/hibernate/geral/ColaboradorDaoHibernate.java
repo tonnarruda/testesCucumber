@@ -532,7 +532,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
 		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
-		p.add(Projections.property("c.empresa.id"), "empresaId");
 		p.add(Projections.property("c.candidato.id"), "candidatoId");
 		p.add(Projections.property("ci.id"), "enderecoCidadeId");
 		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
@@ -544,6 +543,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("emp.id"), "empresaId");
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("emp.codigoAC"), "empresaCodigoAC");
+		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("ce.id"), "projectionCamposExtrasId");
 		p.add(Projections.property("ce.texto1"), "projectionTexto1");
 		p.add(Projections.property("ce.texto2"), "projectionTexto2");

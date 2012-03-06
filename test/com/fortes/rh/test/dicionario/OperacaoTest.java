@@ -18,7 +18,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("", Operacao.getDescricaoById(1212122121));
 		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(1));
 		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(2));
-		assertEquals("Exibir solicitações com canditados do modulo externo", Operacao.getDescricaoById(3));
+		assertEquals("Exibir solicitações com candidatos do módulo externo", Operacao.getDescricaoById(3));
 		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(4));
 		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(5));
 		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(6));
