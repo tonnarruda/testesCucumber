@@ -29,6 +29,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception;
 	
+	@SuppressWarnings("unchecked")
 	public Collection getNaoFamilia(Collection areas, Long id);
 	public boolean verificaMaternidade(Long areaOrganizacionalId);
 	public Integer getCount(String nome, Long empresaId);
@@ -56,7 +57,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds);
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception;
-	public void bind(AreaOrganizacional areaOrganizacionalTmp, TAreaOrganizacional areaOrganizacional);
+	public void bind(AreaOrganizacional areaOrganizacionalTmp, TAreaOrganizacional areaOrganizacional) throws Exception;
 	public Collection<CheckBox> populaCheckOrderDescricao(Long[] empresaIds);
 	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id);
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id);

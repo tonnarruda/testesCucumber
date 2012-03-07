@@ -65,7 +65,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		prepare();
 		if(areaOrganizacional != null && areaOrganizacional.getEmpresa() != null && areaOrganizacional.getEmpresa().getId() != null && getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
 		{
-
 			podeEditarAreaMae =	!getEmpresaSistema().isAcIntegra();
 
 			if(StringUtils.isNotBlank(areaOrganizacional.getCodigoAC()) && historicoColaboradorManager.verifyExists(new String[]{"areaOrganizacional.id"}, new Object[]{areaOrganizacional.getId()}))
@@ -112,7 +111,14 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		{
 			prepareInsert();
 			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado.");
+			String message = "Cadastro não pôde ser realizado.";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
+			addActionError(message);
 			return Action.INPUT;
 		}
 	}
@@ -140,9 +146,16 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		}
 		catch (Exception e)
 		{
-			prepare();
+			prepareInsert();
 			e.printStackTrace();
-			addActionError("Atualização não pôde ser realizada.");
+			String message = "Cadastro não pôde ser realizado.";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
+			addActionError(message);
 			return Action.INPUT;
 		}
 	}
