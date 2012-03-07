@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.70.64" data="07/03/2012"><![CDATA[
+		- Nova funcionalidade para envio dos erros para o suporte do sistema RH.
+		- Nova funcionalidade videoteca com dicas de funcionalidades do sistema.
+        - C&S > Relatório > Realinhamento: Nova opção para impressão do campo observação. 
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas: Nova possibilidade de liberar turma.
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas: Ao Liberar turma envia email  para os colaboradores inscritos.
+		- T&D > Relatórios > Lista de Freqüência: Novas opções de exibir CNPJ, razão social e endereço do estabelecimento.
+		- Info.Funcionais > Cadastro > Colaborador > Performance profissional: Nova opçao para exibir performance do colaborador cadastrado em outra empresa.
+		- Utilitários > Cadastros > Empresas: Nova opção para verificar parentesco(nome do pai, nome da mãe e conjugue) no cadastro de colaborador e candidato.
+		- Utilitários > Configurações > Gerenciador de comunicação: Configuração dos meios de comunicação do sistema(mensagem e email). 
+    ]]></Versao>
 	<Versao id="1.1.69.63" data="09/02/2012"><![CDATA[
         - C&S > Relatórios > Realinhamentos: Nova opção para Exibir observação.
         - C&S > Cadastros > Conhecimentos, Habilidade, Atitude (CHA): Validação para não permitir a mesma descrição entre ambos.
@@ -18,13 +29,13 @@
 		- Utilitários > Backup do Banco de Dados: Nova opção de gerar backup do banco de dados.
 	]]></Versao>
 	<Versao id="1.1.67.61" data="27/01/2012"><![CDATA[
-		- Sistema RH: Possibilidade de efetuar atualização do histórico do colaborador em Lote no AC Pessoal.
-		- Sistema RH: Tratamento dos erros do sistema 500,404 e 403.
+		- Possibilidade de efetuar atualização do histórico do colaborador em Lote no AC Pessoal.
+		- Tratamento dos erros do sistema 500,404 e 403.
 		- R&S > Cadastros > Candidatos > Excluir: Possibilidade de excluir candidato com vínculos.
 		- Info. Funcionais > Painel de Indicadores: Novo filtro de empresas, possibilitando selecionar mais de uma empresa.
 	]]></Versao>
 	<Versao id="1.1.67.60" data="23/01/2012"><![CDATA[
-		- Sistema RH: Tratamento de erros do RH para o AC Pessoal.
+		- Tratamento de erros do RH para o AC Pessoal.
 		- Módulo Externo: Checagem de versão de browser e redirecionamento para pagina de aviso.
 		- R&S > Movimentações > Solicitação de Pessoal > Edição: Nova forma de alterar status, para o liberador. 
 		- R&S > Movimentações > Solicitação de Pessoal > Alterar Status: Nova opção de alterar status, para o liberador. 
