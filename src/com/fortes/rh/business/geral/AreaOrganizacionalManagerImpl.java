@@ -125,43 +125,38 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 				if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != -1)
 					areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalCodigoAc(areaOrganizacional.getAreaMae().getId()));
 				
-					try
-					{
-						boolean maeSemColaboradores = true;
-						if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
-							maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
+				try
+				{
+					boolean maeSemColaboradores = true;
+					if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
+						maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
 
-						if(maeSemColaboradores)
+					if(maeSemColaboradores)
+					{
+						String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
+						if(codigoAc != null)
 						{
-							String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-							if(codigoAc != null)
-							{
-								areaOrganizacional.setCodigoAC(codigoAc);
-								save(areaOrganizacional);
-								getDao().getHibernateTemplateByGenericDao().flush();
-								// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
-							}else
-								throw new IntegraACException("Metodo: AcPessoalClientLotacao.criarLotacao, codigoAc retornou null");
-						}
-						else
-							throw new AreaColaboradorException("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
+							areaOrganizacional.setCodigoAC(codigoAc);
+							save(areaOrganizacional);
+							getDao().getHibernateTemplateByGenericDao().flush();
+							// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
+						}else
+							throw new IntegraACException("Metodo: AcPessoalClientLotacao.criarLotacao, codigoAc retornou null");
 					}
-					catch (AreaColaboradorException e)
-					{
-						acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
-						throw e;
-					}
-					catch (Exception e)
-					{
-						areaOrganizacional.setId(null);
-						acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
-						throw e;
-					}
+					else
+						throw new AreaColaboradorException("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
+				}
+				catch (AreaColaboradorException e)
+				{
+					throw e;
+				}
+				catch (Exception e)
+				{
+					areaOrganizacional.setId(null);
+					acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
+					throw e;
+				}
 				
-			}
-			catch (AreaColaboradorException e)
-			{
-				throw e;
 			}
 			catch (Exception e)
 			{

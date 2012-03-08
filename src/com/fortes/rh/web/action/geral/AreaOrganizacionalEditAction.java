@@ -97,7 +97,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		{
 			prepareInsert();
 			e.printStackTrace();
-			addActionError("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
+			addActionError(e.getMessage());
 			return Action.INPUT;
 		}
 		catch (IntegraACException e)//TODO msg ACPessoal 13/11/2007
