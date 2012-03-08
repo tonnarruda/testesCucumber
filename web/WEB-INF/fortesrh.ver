@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.70.64" data="07/03/2012"><![CDATA[
+	<Versao id="1.1.70.64" data="08/03/2012"><![CDATA[
 		- Nova funcionalidade para envio dos erros para o suporte do sistema RH.
 		- Nova funcionalidade videoteca com dicas de funcionalidades do sistema.
         - C&S > Relatório > Realinhamento: Nova opção para impressão do campo observação. 

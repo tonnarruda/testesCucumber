@@ -15,6 +15,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl;
@@ -26,14 +27,11 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.MensagemManager;
-import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
-import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -91,10 +89,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock indiceManager;
 	Mock transactionManager;
 	Mock reajusteColaboradorManager;
-	Mock usuarioEmpresaManager;
-	Mock usuarioMensagemManager;
 	Mock estabelecimentoManager;
-	Mock mensagemManager;
 	Mock acPessoalClientTabelaReajuste;
 	Mock acPessoalClientColaborador;
 	Mock colaboradorManager;
@@ -102,6 +97,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock funcaoManager;
 	Mock empresaManager;
 	Mock gerenciadorComunicacaoManager;
+	Mock candidatoSolicitacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -128,18 +124,12 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		reajusteColaboradorManager = new Mock(ReajusteColaboradorManager.class);
 		historicoColaboradorManager.setReajusteColaboradorManager((ReajusteColaboradorManager)reajusteColaboradorManager.proxy());
-
-		usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
-		historicoColaboradorManager.setUsuarioEmpresaManager((UsuarioEmpresaManager)usuarioEmpresaManager.proxy());
-
-		usuarioMensagemManager = new Mock(UsuarioMensagemManager.class);
-		historicoColaboradorManager.setUsuarioMensagemManager((UsuarioMensagemManager)usuarioMensagemManager.proxy());
+		
+		candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
+		historicoColaboradorManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager)candidatoSolicitacaoManager.proxy());
 
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 		historicoColaboradorManager.setEstabelecimentoManager((EstabelecimentoManager)estabelecimentoManager.proxy());
-
-		mensagemManager = new Mock(MensagemManager.class);
-		historicoColaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 
 		empresaManager = new Mock(EmpresaManager.class);
 		historicoColaboradorManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
@@ -1420,8 +1410,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
 		historicoColaborador.setSalario(200.0);
 
-		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-
 		TSituacao situacao = new TSituacao();
 		situacao.setId(1);
 
@@ -1430,6 +1418,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(false)).will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
+		candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, ANYTHING).isVoid();
 		
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 
@@ -1456,8 +1445,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
 
-		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-
 		String empresaCodigoAC = "001";
 		TSituacao situacao = new TSituacao();
 		situacao.setTipoSalario("C");
@@ -1465,6 +1452,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		String mensagem = "Teste";
 
 		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
+		candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, ANYTHING).isVoid();
 		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(estabelecimento));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
