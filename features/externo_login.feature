@@ -16,7 +16,7 @@ Funcionalidade: Login no modulo externo
     E eu preencho "Confirmar Senha" com "123"
     E eu clico na aba "CURRÍCULO"
     E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
+    Então eu devo ver o alert "Os seguintes campos são obrigatórios:" e clico no ok
     
     Quando eu clico na aba "DADOS PESSOAIS"
     E eu preencho "nome" com "pedro"
