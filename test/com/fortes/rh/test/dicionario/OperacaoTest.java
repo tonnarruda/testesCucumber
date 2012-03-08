@@ -8,9 +8,14 @@ import com.fortes.rh.model.dicionario.Operacao;
 public class OperacaoTest extends TestCase
 {
 	
+	public void testQtdOperacoes()
+	{
+		assertEquals(16, Operacao.values().length);
+	}
+
 	public void testGetHashMapGrupos()
 	{
-		assertEquals(7, Operacao.getHashMapGrupos().size());
+		assertEquals(6, Operacao.getHashMapGrupos().size());
 	}
 	
 	public void testGetDescricaoById()
