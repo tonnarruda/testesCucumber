@@ -36,14 +36,8 @@
     <property name="indiceManager">
       <ref bean="indiceManager" />
     </property>
-    <property name="usuarioMensagemManager">
-      <ref bean="usuarioMensagemManager" />
-    </property>
-    <property name="usuarioEmpresaManager">
-      <ref bean="usuarioEmpresaManager" />
-    </property>
-    <property name="mensagemManager">
-      <ref bean="mensagemManager" />
+    <property name="candidatoSolicitacaoManager">
+      <ref bean="candidatoSolicitacaoManager" />
     </property>
     <property name="empresaManager">
       <ref bean="empresaManager" />

@@ -22,7 +22,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -41,6 +43,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -75,10 +78,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private EstabelecimentoManager estabelecimentoManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
-	private UsuarioMensagemManager usuarioMensagemManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private MensagemManager mensagemManager;
 	private EmpresaManager empresaManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
@@ -348,27 +349,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			e.printStackTrace();
 		}
 		return areaOrganizacionals;
-	}
-	
-	private Collection<String> addColl(Map promocaoHorizontal, Map promocaoVertical)
-	{
-		Collection<String> chaves = new ArrayList<String>();
-		Collection<String> chavesHorizontal = promocaoHorizontal.keySet();
-		Collection<String> chavesVertical = promocaoVertical.keySet();
-
-		for (String chave : chavesHorizontal)
-		{
-			if (!chaves.contains(chave))
-				chaves.add(chave);
-		}
-
-		for (String chave : chavesVertical)
-		{
-			if (!chaves.contains(chave))
-				chaves.add(chave);
-		}
-
-		return chaves;
 	}
 
 	public Collection<RelatorioPromocoes> montaRelatorio(Collection<HistoricoColaborador> historicoColaboradors,
@@ -947,7 +927,14 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			update(historicoColaborador);
 		}
 
+		atualizaStatusDaSolicitacao(historicoColaborador);
+		
 		return historicoColaborador;
+	}
+	
+	private void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
+	{
+		candidatoSolicitacaoManager.setStatusByColaborador(historicoColaborador.getColaborador().getId(), StatusCandidatoSolicitacao.APROMOVER);
 	}
 
 	public Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId)
@@ -1007,16 +994,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.indiceManager = indiceManager;
 	}
 
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager)
-	{
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
 	public void setAcPessoalClientTabelaReajuste(AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste)
 	{
 		this.acPessoalClientTabelaReajuste = acPessoalClientTabelaReajuste;
@@ -1043,11 +1020,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Collection<HistoricoColaborador> historicoColaboradors = getDao().findHistoricoAprovado(historicoColaboradorId, colaboradorId);
 
 		return historicoColaboradors.size() > 0;
-	}
-
-	public void setMensagemManager(MensagemManager mensagemManager)
-	{
-		this.mensagemManager = mensagemManager;
 	}
 	
 	public HistoricoColaborador getHistoricoContratacaoAguardando(Long colaboradorId)
@@ -1514,5 +1486,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 }
