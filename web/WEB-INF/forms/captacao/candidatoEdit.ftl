@@ -179,8 +179,10 @@
 				if (expInvalido)
 		    		msg += "Experiência Profissional<br />";
 		    		
+		    	if ($("#cpf").val() == "   .   .   -  ")
+		    		msg += "CPF<br />";
 		    	
-		    	if (formacaoInvalido || idiomaInvalido || expInvalido) {
+		    	if (formacaoInvalido || idiomaInvalido || expInvalido || $("#cpf").val() == "   .   .   -  ") {
 		    		jAlert(msg);
 		    		return false;
 		    	}
@@ -201,7 +203,9 @@
 					return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 				});
 				
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
+				
+				
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
 		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
