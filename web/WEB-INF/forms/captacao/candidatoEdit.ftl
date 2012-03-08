@@ -544,7 +544,7 @@
 			
 			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>			
 			
-			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" onblur="candidatosHomonimos();"/>
+			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="candidatosHomonimos();${capitalizar}"/>
 			
 			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft , campo" cssClass="mascaraData" value="${dataNas}"/>
 			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
@@ -581,11 +581,11 @@
 			</li>			
 			
 			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 60px;" maxLength="8" liClass="liLeft , campo"/>
-			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" />
+			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" onblur="${capitalizar}"/>
 
 			<@ww.textfield label="Parentes/Amigos na empresa" name="candidato.pessoal.parentesAmigos" id="parentes" cssStyle="width: 300px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<#if !moduloExterno?exists || !moduloExterno>
-				<@ww.textfield label="Indicado Por" name="candidato.pessoal.indicadoPor" id="indicado" cssStyle="width: 300px;" maxLength="100" liClass="liLeft"/>
+				<@ww.textfield label="Indicado Por" name="candidato.pessoal.indicadoPor" id="indicado" cssStyle="width: 300px;" maxLength="100" liClass="liLeft" />
 			</#if>
 
 			<@ww.select label="Estado Civil" id="estadoCivil" name="candidato.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft , campo" />
