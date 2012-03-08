@@ -24,13 +24,16 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
+import com.fortes.rh.model.ws.TAreaOrganizacional;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -103,6 +106,60 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	assertTrue(areasTmp.size() == 2);
     	assertEquals(areas, areasTmp);
 
+    }
+    
+    public void testBind()
+    {
+    	AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(2L);
+
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
+    	
+    	TAreaOrganizacional tAreaOrganizacional = new TAreaOrganizacional();
+    	tAreaOrganizacional.setNome("Area do ac");
+    	tAreaOrganizacional.setId(2L);
+    	tAreaOrganizacional.setCodigo("00102");
+    	tAreaOrganizacional.setAreaMaeCodigo("001");
+    	tAreaOrganizacional.setEmpresaCodigo("002");
+    	tAreaOrganizacional.setGrupoAC("1");
+    	
+    	areaOrganizacionalDao.expects(atLeastOnce()).method("findAreaOrganizacionalByCodigoAc").with(eq(tAreaOrganizacional.getAreaMaeCodigo()), eq(tAreaOrganizacional.getEmpresaCodigo()), eq(tAreaOrganizacional.getGrupoAC())).will(returnValue(areaMae));
+    	colaboradorManager.expects(atLeastOnce()).method("findByArea").with(eq(areaMae)).will(returnValue(new ArrayList<Colaborador>()));
+    	
+    	Exception exp = null;
+    	try {
+			areaOrganizacionalManager.bind(areaOrganizacional, tAreaOrganizacional);
+		} catch (Exception e) {
+			exp = e;
+		}
+    	
+    	assertNull(exp);
+    }
+
+    public void testBindException()
+    {
+    	AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(2L);
+    	
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
+    	
+    	TAreaOrganizacional tAreaOrganizacional = new TAreaOrganizacional();
+    	tAreaOrganizacional.setNome("Area do ac");
+    	tAreaOrganizacional.setId(2L);
+    	tAreaOrganizacional.setCodigo("00102");
+    	tAreaOrganizacional.setAreaMaeCodigo("001");
+    	tAreaOrganizacional.setEmpresaCodigo("002");
+    	tAreaOrganizacional.setGrupoAC("1");
+    	
+    	areaOrganizacionalDao.expects(atLeastOnce()).method("findAreaOrganizacionalByCodigoAc").with(eq(tAreaOrganizacional.getAreaMaeCodigo()), eq(tAreaOrganizacional.getEmpresaCodigo()), eq(tAreaOrganizacional.getGrupoAC())).will(returnValue(areaMae));
+    	colaboradorManager.expects(atLeastOnce()).method("findByArea").with(eq(areaMae)).will(returnValue(Arrays.asList(ColaboradorFactory.getEntity())));
+    	
+    	String msg = "";
+    	try {
+    		areaOrganizacionalManager.bind(areaOrganizacional, tAreaOrganizacional);
+    	} catch (Exception e) {
+    		msg = e.getMessage();
+    	}
+    	
+    	assertEquals(msg, "Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
     }
 
     public void testVerificaMaternidade()
