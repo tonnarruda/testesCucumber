@@ -86,6 +86,10 @@
 		</delete>
 	</target>
 
+	<tstamp>
+		<format property="vinteDiasAtras" pattern="MM/dd/yyyy" offset="-20" unit="day"/>
+	</tstamp>
+
 	<target name="jasper" depends="clean-reports">
 		<taskdef name="jaspercompile" classname="net.sf.jasperreports.ant.JRAntCompileTask">
 			<classpath refid="project.classpath.ireport"/>
@@ -94,6 +98,10 @@
 			<src>
 				<fileset dir="${project.dir}/web/WEB-INF/report">
 					<include name="*.jrxml" />
+					<date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
+				</fileset>
+				<fileset dir="${project.dir}/web/WEB-INF/report">
+					<include name="cabecalho.jrxml" />
 				</fileset>
 			</src>
 		</jaspercompile>
