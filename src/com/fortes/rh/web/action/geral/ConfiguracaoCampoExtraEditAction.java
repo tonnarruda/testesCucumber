@@ -83,6 +83,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(getEmpresaSistema().getId()));
 
 			addActionMessage("Configurações gravadas com sucesso!");
+			prepareUpdate();
 			return Action.SUCCESS;
 		} catch (Exception e) {
 			addActionError("Erro ao salvar configurações.");

@@ -48,6 +48,14 @@
 		});
 		validaFormulario('form', valida);
 	}
+	
+	function carregarConfiguracoesEmpresa(empresaId)
+	{
+		var aviso = "<span style='color:red;margin-left:10px;'>Carregando configurações...</span>"
+		$('#empresa').after(aviso);
+		
+		window.location='prepareUpdate.action?empresa.id=' + empresaId;	
+	}
 </script>
 
 	</head>
@@ -58,7 +66,7 @@
 		<@ww.form name="form" action="update.action" onsubmit="${validarCampos}" method="POST">
 			<#assign i = 0 />
 			
-			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="window.location='?empresa.id=' + this.value"/>
+			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="carregarConfiguracoesEmpresa(this.value)"/>
 			
 			<@ww.checkbox label="Habilitar campos extras no cadastro de Colaboradores" name="habilitaCampoExtraColaborador" labelPosition="left"/>
 			<@ww.checkbox label="Habilitar campos extras no cadastro de Candidato" name="habilitaCampoExtraCandidato" labelPosition="left"/><br>
