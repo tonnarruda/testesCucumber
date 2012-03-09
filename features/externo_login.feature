@@ -48,3 +48,5 @@ Funcionalidade: Login no modulo externo
     E eu preencho "senhaRH" com "123"
     E eu clico no botão "Entrar"
     Então eu devo ver "Bem vindo pedro!"
+
+    E eu clico "Sair"
