@@ -221,6 +221,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (514, 'ROLE_CONFIG_LIMITE_COLABORADOR', 'Limite de Colab. por Cargo', '/geral/configuracaoLimiteColaborador/list.action', 4, true, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (540, 'ROLE_CAD_GERENCIADOR_COMUNICACAO', 'Gerenciador de Comunicação', '/geral/gerenciadorComunicacao/list.action', 5, true, 41);--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 'ROLE_UTI_AUDITORIA', 'Auditoria', '/security/auditoria/prepareList.action', 5, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 6, true, 37);
@@ -286,7 +287,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (488,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (388, 'ROLE_PPRA', 'PPRA e LTCAT', '/sesmt/ppra/prepareRelatorio.action', 1, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (85, 'ROLE_PPP', 'PPP', '/sesmt/ppp/list.action', 2, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (432, 'ROLE_REL_FICHA_EPI', 'Ficha de EPI', '/sesmt/epi/prepareImprimirFicha.action', 3, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (434, 'ROLE_CAD_EPICAVENCER', 'EPIs com CA a Vencer', '/sesmt/epi/prepareImprimirVencimentoCa.action', 4, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (434, 'ROLE_REL_EPICAVENCER', 'EPIs com CA a Vencer', '/sesmt/epi/prepareImprimirVencimentoCa.action', 4, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (489, 'ROLE_REL_EPIVENCIMENTO', 'EPIs Entregues', '/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi.action', 4, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (436, 'ROLE_REL_EPIVENCIMENTO', 'EPIs com Prazo a Vencer', '/sesmt/solicitacaoEpi/prepareRelatorioVencimentoEpi.action', 5, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (448, 'ROLE_CAD_EXTINTOR', 'Extintores - Manutenção e Inspeção', '/sesmt/extintor/prepareRelatorio.action', 6, true, 387);
@@ -295,7 +296,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (429,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (431, 'ROLE_REL_EXAMES_PREVISTOS', 'Exames Previstos', '/sesmt/exame/prepareRelatorioExamesPrevistos.action', 10, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (442, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioAfastamentos.action', 11, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (536,'ROLE_REL_AFASTAMENTO', 'Resumo de Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioResumoAfastamentos.action', 12, true, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (449, 'ROLE_CAD_FICHAMEDICA', 'Resultado de Fichas Médicas', '/sesmt/fichaMedica/prepareResultadoFichaMedica.action', 13, true, 387);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (449, 'ROLE_REL_FICHAMEDICA', 'Resultado de Fichas Médicas', '/sesmt/fichaMedica/prepareResultadoFichaMedica.action', 13, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (458, 'ROLE_FUNCAO', 'Distribuição de Colaboradores por Função', '/sesmt/funcao/prepareRelatorioQtdPorFuncao.action', 14, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (459, 'ROLE_CAD_SOLICITACAOEXAME', 'Atendimentos Médicos', '/sesmt/solicitacaoExame/prepareRelatorioAtendimentosMedicos.action', 15, true, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (460, 'ROLE_CAD_SOLICITACAOEXAME', 'Exames Realizados', '/sesmt/exame/prepareRelatorioExamesRealizados.action', 16, true, 387);
@@ -495,6 +496,24 @@ insert into public."perfil_papel" ("perfil_id", "papeis_id") values (2, 37);
 insert into public."perfil_papel" ("perfil_id", "papeis_id") values (2, 38);
 
 alter sequence perfil_sequence restart with 3;
+
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 5, 2, 4);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 6, 2, 5);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 7, 2, 6);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 8, 2, 7);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 1, 2, 7);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 2, 2, 7);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 2, 7);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 10, 2, 9);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 1, 10);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 1, 11);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 12, 2, 8);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 13, 1, 13);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 14, 1, 13);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 16, 2, 12);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 15, 2, 15);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 11, 2, 6);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 3, 1, 14);  
 
 insert into public."areaformacao" ("id", "nome") values (1, 'Administrativa');
 insert into public."areaformacao" ("id", "nome") values (2, 'Administrativo Comercial');
@@ -21173,6 +21192,13 @@ insert into migrations values('20120207112138');
 insert into migrations values('20120206111606');
 insert into migrations values('20120202163751');
 insert into migrations values('20120201105054');
+insert into migrations values('20120207110847');
+insert into migrations values('20120305153029');
+insert into migrations values('20120213174741');
+insert into migrations values('20120213150023');
+insert into migrations values('20120302142218');
+insert into migrations values('20120305140031');
+insert into migrations values('20120306133503');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
 values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.69.63', '', '25', false, false, 2, '1.1.49.1', 3, 

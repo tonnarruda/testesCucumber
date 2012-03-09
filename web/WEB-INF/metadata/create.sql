@@ -72,7 +72,8 @@ CREATE TABLE empresa (
 	mensagemCartaoAniversariante varchar(300),
 	enviarEmailAniversariante boolean default false,
 	turnoverPorSolicitacao boolean NOT NULL DEFAULT false,
-	obrigarAmbienteFuncaoColaborador boolean default false
+	obrigarAmbienteFuncaoColaborador boolean default false,
+	verificaParentesco character(1) default 'N'
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);

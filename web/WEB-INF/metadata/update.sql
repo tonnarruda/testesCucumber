@@ -18575,3 +18575,57 @@ alter table empresa alter column razaosocial type character varying(100);--.go
 insert into migrations values('20120202163751');--.go
 
 update parametrosdosistema set appversao = '1.1.69.63';--.go
+
+-- versao 1.1.70.64
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (540, 'ROLE_CAD_GERENCIADOR_COMUNICACAO', 'Gerenciador de Comunicação', '/geral/gerenciadorComunicacao/list.action', 5, true, 41);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=540 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 540); --.go
+alter sequence papel_sequence restart with 541;--.go
+insert into migrations values('20120207110847');--.go
+insert into migrations values('20120305153029');--.go
+insert into migrations values('20120213174741');--.go
+
+update papel set codigo = 'ROLE_REL_FICHAMEDICA' where id=449;--.go
+update papel set codigo = 'ROLE_REL_EPICAVENCER' where id=434;--.go
+insert into migrations values('20120213150023');--.go
+
+alter table empresa add column verificaParentesco character(1) default 'N';--.go
+insert into migrations values('20120302142218');--.go
+insert into migrations values('20120305140031');--.go
+
+CREATE FUNCTION insert_gerenciador_comunicao() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select e.id as empresaId from empresa e
+		LOOP
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 4, 2, 3);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 5, 2, 4);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 6, 2, 5);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 7, 2, 6);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 8, 2, 7);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 1, 2, 7);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 2, 2, 7);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 9, 2, 7);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 10, 2, 9);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 9, 1, 10);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 9, 1, 11);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 12, 2, 8);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 13, 1, 13);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 14, 1, 13);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 16, 2, 12);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 15, 2, 15);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 11, 2, 6);
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 3, 1, 14);   
+		END LOOP;
+
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insert_gerenciador_comunicao();--.go
+drop function insert_gerenciador_comunicao();--.go 
+insert into migrations values('20120306133503');--.go
+
+update parametrosdosistema set appversao = '1.1.70.64';--.go

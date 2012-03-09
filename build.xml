@@ -423,7 +423,7 @@
 			excludes="${test-ignore}/**">
 		</war>
 
-		<delete dir="${tmpweb}" /> <!-- Deleta diretorio temporario -->
+		<!-- <delete dir="${tmpweb}" /> Deleta diretorio temporario -->
 		<delete file="${project.dir}/dist/create.tmp" />
 		<delete file="${project.dir}/dist/create.sql" />
 		<delete file="${project.dir}/dist/create_data.sql" />
