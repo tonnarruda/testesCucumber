@@ -21,6 +21,7 @@ Funcionalidade: Configurações do Sistema
     E eu marco "Forçar caixa alta nos campos do módulo externo"
     E eu desmarco "Compartilhar Candidatos entre empresas."
     E eu desmarco "Compartilhar Colaboradores entre empresas."
+    E eu preencho "E-mail do Suporte Técnico" com "teste@abc.com.br"
     E eu preencho "Codigo da Empresa" com "123"
     E eu preencho "Codigo do Cliente" com "456"
     E eu preencho "Servidor SMTP" com "smtp.abc.com.br"
@@ -29,4 +30,3 @@ Funcionalidade: Configurações do Sistema
     E eu preencho "Senha" com "1234"
     E eu clico no botão "Gravar"
     Então eu devo ver "Configurações do Sistema atualizadas com sucesso!"
-
