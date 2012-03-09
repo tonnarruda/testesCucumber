@@ -62,28 +62,14 @@
 
 			<@display.column title="EPI" style="width:500px;">
 				${lista[0].nome}
+				
+				<br />
+				
+				<#list lista[1].solicitacaoEpiItemEntregas as entrega>
+					${entrega.qtdEntregue} - ${entrega.dataEntrega}
+				</#list>
 			</@display.column>
 
-			<@display.column title="Quantidade" style="width:50px;">
-				${lista[1].qtdSolicitado?string}
-			</@display.column>
-
-			<@display.column title="Entregue" style="width:50px;">
-				<select name="selectQtdSolicitado" id="selectQtdSolicitado_${lista[0].id}" class="qtdSolicitacao"/>
-					<#list 0..lista[1].qtdSolicitado as i>
-					  <#if i == lista[1].qtdEntregue>
-					  	<option value="${i}" selected>${i}</option>
-					  <#else>
-					 	 <option value="${i}">${i}</option>
-					  </#if>
-					</#list>
-				</select>
-			</@display.column>
-
-			<@display.column title="Data da entrega" style="width:80px;">
-				<@ww.datepicker id="selectDataSolicitado_${lista[0].id}" name="selectDataSolicitado" cssClass="mascaraData" value="${lista[1].dataEntrega?string('dd/MM/yyyy')}"/>			
-			</@display.column>
-			
 		</@display.table>
 		
 		<@ww.hidden name="solicitacaoEpi.id" />

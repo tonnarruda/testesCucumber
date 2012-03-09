@@ -7,20 +7,25 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiItemDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpiItem>
 {
 	SolicitacaoEpiItemDao solicitacaoEpiItemDao;
 	EpiDao epiDao;
 	SolicitacaoEpiDao solicitacaoEpiDao;
+	SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao;
 	EmpresaDao empresaDao;
 
 	@Override
@@ -57,6 +62,12 @@ public class SolicitacaoEpiItemDaoHibernateTest extends GenericDaoHibernateTest<
 		epiSolicitacaoEpi.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItemDao.save(epiSolicitacaoEpi);
 
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setSolicitacaoEpiItem(epiSolicitacaoEpi);
+		entrega.setDataEntrega(DateUtil.criarDataMesAno(9, 3, 2012));
+		entrega.setQtdEntregue(2);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
 		Collection<SolicitacaoEpiItem> resultado = solicitacaoEpiItemDao.findBySolicitacaoEpi(solicitacaoEpi.getId());
 
 		assertEquals(1, resultado.size());
@@ -152,5 +163,9 @@ public class SolicitacaoEpiItemDaoHibernateTest extends GenericDaoHibernateTest<
 	public void setSolicitacaoEpiItemDao(SolicitacaoEpiItemDao solicitacaoEpiItemDao)
 	{
 		this.solicitacaoEpiItemDao = solicitacaoEpiItemDao;
+	}
+
+	public void setSolicitacaoEpiItemEntregaDao(SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao) {
+		this.solicitacaoEpiItemEntregaDao = solicitacaoEpiItemEntregaDao;
 	}
 }

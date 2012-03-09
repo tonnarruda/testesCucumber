@@ -12,12 +12,23 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
 	{
-		return getDao().findBySolicitacaoEpi(solicitacaoEpiId);
+		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = getDao().findBySolicitacaoEpi(solicitacaoEpiId);
+		
+		for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
+		{
+			Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
+			solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
+		}
+		
+		return solicitacaoEpiItems;
 	}
 
 	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega)
@@ -73,6 +84,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 			return new ArrayList<SolicitacaoEpiItem>();
 
 		return getDao().findBySolicitacaoEpi(solicitacaoEpiIds);
+	}
+
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 
 }

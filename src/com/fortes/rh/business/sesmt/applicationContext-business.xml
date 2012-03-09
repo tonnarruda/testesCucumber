@@ -435,6 +435,9 @@
     <property name="dao">
       <ref bean="solicitacaoEpiItemDao" />
     </property>
+    <property name="solicitacaoEpiItemEntregaManager">
+      <ref bean="solicitacaoEpiItemEntregaManager" />
+    </property>
   </bean>
   <bean id="solicitacaoEpiItemManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -843,6 +846,20 @@
       <ref bean="composicaoSesmtManagerTarget" />
     </property>
   </bean>
+  <bean id="solicitacaoEpiItemEntregaManagerTarget" class="com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManagerImpl">
+    <property name="dao">
+      <ref bean="solicitacaoEpiItemEntregaDao" />
+    </property>
+  </bean>
+  <bean id="solicitacaoEpiItemEntregaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="solicitacaoEpiItemEntregaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 

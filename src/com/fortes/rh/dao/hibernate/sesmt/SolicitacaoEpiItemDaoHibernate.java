@@ -22,15 +22,13 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 {
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
-		criteria.createCriteria("ese.solicitacaoEpi", "se");
-		criteria.createCriteria("ese.epi", "e");
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"sei");
+		criteria.createCriteria("sei.solicitacaoEpi", "se");
+		criteria.createCriteria("sei.epi", "e");
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ese.id"), "id");
-		p.add(Projections.property("ese.qtdSolicitado"), "qtdSolicitado");
-		p.add(Projections.property("ese.qtdEntregue"), "qtdEntregue");
-		p.add(Projections.property("ese.dataEntrega"), "dataEntrega");
+		p.add(Projections.property("sei.id"), "id");
+		p.add(Projections.property("sei.qtdSolicitado"), "qtdSolicitado");
 		p.add(Projections.property("se.id"), "projectionSolicitacaoEpiId");
 		p.add(Projections.property("se.data"), "projectionSolicitacaoEpiData");
 		p.add(Projections.property("e.id"), "projectionEpiId");
