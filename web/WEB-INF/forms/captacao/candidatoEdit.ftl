@@ -196,7 +196,7 @@
 				</#if>
 				
 				// valida os multicheckboxes
-				arrayObrigatorios = arrayObrigatorios.map(function(item) {
+				arrayObrigatorios = $.map(arrayObrigatorios, function(item) {
 					return (item == 'areasCheck' || item ==  'cargosCheck' || item == 'conhecimentosCheck') ? '@' + item : item;
 				});
 				
@@ -504,7 +504,7 @@
 		<@ww.textarea label="Outros Cursos" id="desCursos" name="desCursos" cssStyle="width:783px;" onblur="${capitalizar}" liClass="campo"/>
     </div>
 
-    <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf()" method="POST" enctype="multipart/form-data">
+    <@ww.form name="form" action="${formAction}" validate="true" onsubmit="javascript:validarCamposCpf();" method="POST" enctype="multipart/form-data">
 		<div id="content1" class="1">
 			<#if candidato.foto?exists>
 				<input type="checkbox" name="exibirFoto" onclick="mostra();" id="exibeFoto"/><label for="exibeFoto">Exibir Foto</label>
