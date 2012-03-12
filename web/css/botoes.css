@@ -81,6 +81,11 @@
 	background-image:url(../imgs/btnEnviarBlue.gif);
 	width: 81px !important;
 }
+.btnDemo
+{
+	background-image:url(../imgs/btnDemo.gif);
+	width: 81px !important;
+}
 .btnResultadoAvaliacao
 {
 	background-image:url(../imgs/btnResultadoAvaliacao.gif);
@@ -580,6 +585,7 @@
 .btnInserirCurriculoDigitado,
 .btnEnviar,
 .btnEnviarBlue,
+.btnDemo,
 .btnEditar,
 .btnSolicitarBDS,
 .btnDadosComplementares,

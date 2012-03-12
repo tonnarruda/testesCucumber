@@ -40,9 +40,11 @@
 		</tr>
 		<tr>
 			<td width="109px" height="79px" class="logo"></td>
-			<td width="170px" height="79px" class="rodape"></td>
+			<td width="170px" height="79px"  valign="top" class="rodape">
+				<button type="button" onclick="window.location='login.action?demonstracao=true'" class="btnDemo" style="background-color:transparent"></button>
+			</td>
 			<td class="rodape" valign="top" align="rigth">
-				<button onclick="${validarCampos};" class="btnEnviarBlue" style="background-color:transparent" accesskey="E"></button>
+				<button onclick="${validarCampos};" class="btnEnviarBlue" style="background-color:transparent"></button>
 			</td>
 		</tr>
 	</table>

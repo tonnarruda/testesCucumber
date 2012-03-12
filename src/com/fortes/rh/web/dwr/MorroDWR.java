@@ -29,7 +29,7 @@ public class MorroDWR
 		
 		try {
 			params = parametrosDoSistemaManager.findById(1L);
-			RPClient client = Autenticador.getRemprot(params.getServidorRemprot());
+			RPClient client = Autenticador.getRemprot();
 			
 			if(client != null && StringUtils.isNotEmpty(client.getCustomerId()))
 			{

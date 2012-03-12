@@ -10,6 +10,7 @@ import com.fortes.rh.business.sesmt.PcmsoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PCMSO;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -41,12 +42,21 @@ public class PcmsoListAction extends MyActionSupportList
 
 	public String prepareRelatorio() throws Exception
 	{
+    	if(Autenticador.isDemo())
+    		addActionMessage("Este relatório não pode ser impresso na Versão Demonstração.");
+    	
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 	
 	public String gerarRelatorio() throws Exception
 	{
+		if(Autenticador.isDemo())
+		{
+			prepareRelatorio();
+			return Action.INPUT;
+		}
+		
 		try
 		{
 			dataSource = pcmsoManager.montaRelatorio(dataIni, dataFim, estabelecimento, getEmpresaSistema().getId(), exibirAgenda, exibirDistColaboradorSetor, exibirRiscos, exibirEpis, exibirExames, exibirAcidentes, exibirComposicaoSesmt);

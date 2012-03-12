@@ -4,9 +4,6 @@ import org.apache.log4j.Logger;
 
 import remprot.RPClient;
 
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.config.LogCleanerJob;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
 import com.opensymphony.xwork.ActionSupport;
 
@@ -19,16 +16,11 @@ public class Autenticador extends ActionSupport
 	private String nome;
 	private String ultimoReset;
 
-	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private static Logger logger = Logger.getLogger(Autenticador.class);
 	//TODO remprot
 	public String codigoOperacional()
 	{
-		RPClient client = new RPClient(33, "RH");
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-
-		client.setServerAddress(parametrosDoSistema.getServidorRemprot());
-		client.loadLicense();
+		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
 
 		try {
 			codigoOperacional = client.requestKey(cnpj, nome, false);
@@ -42,12 +34,7 @@ public class Autenticador extends ActionSupport
 
 	public String validaCodigoResposta()
 	{
-		RPClient client = new RPClient(33, "RH");
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-
-		client.setServerAddress(parametrosDoSistema.getServidorRemprot());
-		client.loadLicense();
-
+		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();
 		client.applyResponse(cnpj, nome, codigoResposta);
 		
 		client.loadLicense();
@@ -100,11 +87,6 @@ public class Autenticador extends ActionSupport
 	public void setNome(String nome)
 	{
 		this.nome = nome;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public String getUltimoReset() {

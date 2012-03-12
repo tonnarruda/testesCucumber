@@ -22,6 +22,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import remprot.RPClient;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
@@ -86,6 +88,7 @@ import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -1492,23 +1495,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-//		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-//		parametrosDoSistema.setServidorRemprot("127.0.0.1");
-//		int qtdColaboradorNoBanco = getDao().getCount();
-//		
-//		if((Boolean) ActionContext.getContext().getSession().get("REG_LOGS"))
-//		{
-//			RPClient remprot = Autenticador.getRemprot(parametrosDoSistema.getServidorRemprot());
-//			
-//			if(remprot.getRegistered())
-//			{
-//				if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-//					throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
-//			}			
-//		}	
-//		else
-//			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+		int qtdColaboradorNoBanco = getDao().getCount();
+		
+		RPClient remprot = Autenticador.getRemprot();
+		if(remprot.getRegistered())
+		{
+			if(qtdColaboradorNoBanco >= remprot.getUserCount())
+				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
+		}	
+		else
+			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
 	}
 
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId)
