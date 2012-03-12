@@ -31,7 +31,7 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}"  method="POST">
-		Período:<br>
+		Período:*<br>
 		<@ww.datepicker name="dataIni" id="dataIni" value="${inicio}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${fim}" cssClass="mascaraData validaDataFim" />

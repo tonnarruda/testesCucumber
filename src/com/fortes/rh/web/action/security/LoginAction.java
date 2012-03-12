@@ -23,6 +23,7 @@ public class LoginAction extends MyActionSupport
 	private String senhaBD;
 	private String versao;
 //	private Boolean atualizadoSucesso = true;
+	private Boolean demonstracao = false;
 
 	public String login() throws Exception
 	{
@@ -36,15 +37,22 @@ public class LoginAction extends MyActionSupport
 //				atualizadoSucesso = parametrosDoSistema.getAtualizadoSucesso();
 			
 			String msgAutenticacao = "";
-			boolean rhRegistrado = Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
-			if (!rhRegistrado)
+			boolean rhRegistrado = false;
+			if(demonstracao)
 			{
-				msgRemprot = "Este sistema não está licenciado para uso ou ocorreu algum erro com a comunicação do servidor.";
 				msgAutenticacao = Autenticador.getMsgPadrao();
-				return "not_registered";
+			}
+			else
+			{
+				rhRegistrado = Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
+				if (!rhRegistrado)
+				{
+					msgRemprot = "Este sistema não está licenciado para uso ou ocorreu algum erro com a comunicação do servidor.";
+					msgAutenticacao = Autenticador.getMsgPadrao();
+					return "not_registered";
+				}				
 			}
 			
-			ActionContext.getContext().getSession().put("REG_LOGS", rhRegistrado);
 			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);
 			
 			empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
@@ -124,6 +132,14 @@ public class LoginAction extends MyActionSupport
 	public String getVersao()
 	{
 		return versao;
+	}
+
+	public Boolean getDemonstracao() {
+		return demonstracao;
+	}
+
+	public void setDemonstracao(Boolean demonstracao) {
+		this.demonstracao = demonstracao;
 	}
 
 //	public Boolean getAtualizadoSucesso()

@@ -305,7 +305,7 @@
 			else
 				arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
 		}
-
+		exibeLabelDosCamposNaoPreenchidos = true;
 		function validaFormularioDinamico()
 		{
 			<#if obrigarAmbienteFuncaoColaborador && somenteLeitura == "false">

@@ -258,6 +258,8 @@ function validaCampos(campos)
 // Função Generica para validação de campos obrigatorios do formulario
 // onsubmit="return validarCampos(new Array('campo1','campo2',...));"
 // return true ou false
+
+var exibeLabelDosCamposNaoPreenchidos = false;
 function validaCamposObrigatorios(campos, formulario)
 {
 	var qtdElementos = campos.length;
@@ -322,8 +324,8 @@ function validaCamposObrigatorios(campos, formulario)
 			{
 				if(campoFocus == "")
 					campoFocus = campo;
-
-				campo.style.background = "#FFEEC2"; // Cor do campo validado que
+				//CUIDADO com a cor, utilizo o RGB
+				campo.style.background = "#FFEEC2"; // UTILIZO O RGB DESSA COR rgb(255, 238, 194) Cor do campo validado que
 													// foi deixado em branco.
 				erro += 1;
 			}
@@ -332,7 +334,22 @@ function validaCamposObrigatorios(campos, formulario)
 
 	if(erro > 0)
 	{
-		jAlert("Preencha os campos indicados.");
+		if(exibeLabelDosCamposNaoPreenchidos)
+		{
+			var camposNaoPreenchidos = [];
+			
+			//CUIDADO pegando a cor pelo rgb do #FFEEC2
+			$("input:text,textarea,select").each(function() {
+				var labelInput = $(this);
+				if(labelInput.css('background-color') == "rgb(255, 238, 194)" || labelInput.css('background-color') == "#ffeec2")
+					camposNaoPreenchidos.push(labelInput.closest('li').find('label').text().match(/(.+):/)[1].trim());
+			});
+			
+			jAlert("Preencha os campos indicados:\n" + camposNaoPreenchidos.join(", "));		
+		}
+		else
+			jAlert("Preencha os campos indicados.");
+		
 		campoFocus.focus();
 		return false;
 	}
