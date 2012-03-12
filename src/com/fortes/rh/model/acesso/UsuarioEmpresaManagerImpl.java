@@ -30,15 +30,7 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleSetorPessoal(String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC, null, "RECEBE_ALERTA_SETORPESSOAL");
-	}
-	
-	/** 
-	 * Usuários que recebem mensagens de lembrete para Avaliação do Período de Experiência 
-	 * Obs. Utiliza o mesmo ROLE que recebe mensagens do AC Pessoal.  */
-	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRoleAvaliacaoExperiencia(Long empresaId, String role)
-	{
-		return getDao().findUsuariosByEmpresaRoleSetorPessoal(null, null, empresaId, role);
+		return getDao().findUsuariosByEmpresaRole(empresaCodigoAC, grupoAC, null, "RECEBE_ALERTA_SETORPESSOAL");
 	}
 	
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role)

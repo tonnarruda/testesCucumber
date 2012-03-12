@@ -2389,7 +2389,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca, fs) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.colaborador as co ");

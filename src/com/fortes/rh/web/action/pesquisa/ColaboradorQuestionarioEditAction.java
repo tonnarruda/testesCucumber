@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -61,6 +62,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private RespostaManager respostaManager;
 	private CandidatoManager candidatoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -339,8 +341,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
-		else
+		else{
+			enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional();
 			return Action.SUCCESS;
+		}
+	}
+
+	private void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional() 
+	{
+		Long colaboradorAvaliadoId = colaboradorQuestionario.getColaborador().getId();
+		Long avaliadorId = colaboradorQuestionario.getAvaliacao().getId();
+		gerenciadorComunicacaoManager.enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(colaboradorAvaliadoId, avaliadorId, getUsuarioLogado(), getEmpresaSistema());
 	}
 
 	public String updateAvaliacaoExperiencia()
@@ -725,5 +736,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setAnuncioId(Long anuncioId) {
 		this.anuncioId = anuncioId;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

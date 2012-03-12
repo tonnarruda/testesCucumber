@@ -1,0 +1,1 @@
+update gerenciadorcomunicacao set enviarpara = 6 where operacao=9 and meiocomunicacao=2 and enviarpara=7;--.go

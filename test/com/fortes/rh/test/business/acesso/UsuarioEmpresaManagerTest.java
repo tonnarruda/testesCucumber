@@ -61,14 +61,6 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, ""));
 	}
 	
-	public void testFindUsuariosByEmpresaRoleAvaliacaoExperiencia()
-	{
-		Long empresaId = 1L;
-		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(null),eq(null),eq(empresaId), ANYTHING).will(returnValue(usuarioEmpresas));
-		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresaId, "RECEBE_ALERTA_SETORPESSOAL"));
-	}
-	
 	public void testFindByUsuarioEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
