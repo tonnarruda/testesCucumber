@@ -99,7 +99,7 @@ public class Autenticador
 		{
 			clientRemprot = new RPClient(appId, appNome);
 			/* Aqui eu indico que o servidor de licencas está rodando no endereço IP 10.1.254.2 */
-			clientRemprot.setServerAddress(urlServidorRemprot);			
+			clientRemprot.setServerAddress(urlServidorRemprot);
 			/* Aqui eu carrego os dados da licenca */
 			clientRemprot.loadLicense();
 		}
