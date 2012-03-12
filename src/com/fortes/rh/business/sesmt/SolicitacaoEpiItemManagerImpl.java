@@ -26,6 +26,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		{
 			Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
 			solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
+			for (SolicitacaoEpiItemEntrega entrega : entregas) {
+				solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
+			}
+			
 		}
 		
 		return solicitacaoEpiItems;
@@ -89,5 +93,4 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
-
 }

@@ -60,17 +60,30 @@
 				<input type="checkbox" value="${lista[0].id}" name="epiIds" class="checkItem" id="${lista[0].id}"/>
 			</@display.column>
 
-			<@display.column title="EPI" style="width:500px;">
-				${lista[0].nome}
-				
-				<br />
-				
+			<@display.column title="${lista[0].nome}" style="width:500px;">
+				<br>
 				<#list lista[1].solicitacaoEpiItemEntregas as entrega>
-					${entrega.qtdEntregue} - ${entrega.dataEntrega}
+						${entrega.dataEntrega}<br>
 				</#list>
 			</@display.column>
 
+
+			<@display.column title="Quantidade: ${lista[1].qtdSolicitado}">
+				
+				<br>
+				<#list lista[1].solicitacaoEpiItemEntregas as entrega>
+						${entrega.qtdEntregue}<br>
+				</#list>
+			</@display.column>
+			
+			<@display.column title="Entregue: ${lista[1].totalEntregue}">
+				
+			</@display.column>
+
 		</@display.table>
+			<#if insert>
+				<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+			</#if>
 		
 		<@ww.hidden name="solicitacaoEpi.id" />
 		<@ww.hidden name="solicitacaoEpi.empresa.id" />

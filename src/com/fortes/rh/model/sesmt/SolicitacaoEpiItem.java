@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -31,6 +32,9 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
 	private Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas;
 
+	@Transient
+	private int totalEntregue=0;
+
 	public void setProjectionSolicitacaoEpiId(Long id)
 	{
 		if (this.solicitacaoEpi == null)
@@ -47,20 +51,33 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		this.solicitacaoEpi.setData(data);
 	}
 
-	public void setProjectionEpiId(Long id)
-	{
+	private void inicializaEpi() {
 		if (this.epi == null)
 			this.epi = new Epi();
+	}
 
+	public void setProjectionEpiId(Long id)
+	{
+		inicializaEpi();
 		this.epi.setId(id);
 	}
 
 	public void setProjectionEpiNome(String nome)
 	{
-		if (this.epi == null)
-			this.epi = new Epi();
-
+		inicializaEpi();
 		this.epi.setNome(nome);
+	}
+	
+	public void setProjectionEpiFabricante(String fabricante)
+	{
+		inicializaEpi();
+		this.epi.setFabricante(fabricante);
+	}
+	
+	public void setProjectionEpiHistorico(EpiHistorico epiHistorico)
+	{
+		inicializaEpi();
+		this.epi.setEpiHistorico(epiHistorico);
 	}
 
 	public Epi getEpi()
@@ -99,5 +116,13 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 
 	public void setSolicitacaoEpiItemEntregas(Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas) {
 		this.solicitacaoEpiItemEntregas = solicitacaoEpiItemEntregas;
+	}
+
+	public int getTotalEntregue() {
+		return totalEntregue;
+	}
+
+	public void setTotalEntregue(int totalEntregue) {
+		this.totalEntregue = totalEntregue;
 	}
 }

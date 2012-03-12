@@ -41,6 +41,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	private Date dataEntrega;
 	private boolean entregue;
+	private boolean insert;
 
 	public String execute() throws Exception
 	{
@@ -116,11 +117,14 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 		listaEpis = new Object[solicitacaoEpiItems.size()][2];
 		int k=0;
-
+		
 		for (SolicitacaoEpiItem item : solicitacaoEpiItems)
 		{
 			listaEpis[k][0] = item.getEpi();
 			listaEpis[k][1] = item;
+			if(item.getTotalEntregue() < item.getQtdSolicitado())
+				insert=true;
+			
 			k++;
 		}
 
@@ -292,5 +296,9 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public void setEntregue(boolean entregue) {
 		this.entregue = entregue;
+	}
+
+	public boolean isInsert() {
+		return insert;
 	}
 }

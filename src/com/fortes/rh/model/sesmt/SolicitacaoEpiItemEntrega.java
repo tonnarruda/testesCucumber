@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -24,7 +25,22 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrega = null;
+	
+	@Transient
+	private String CA;
 
+	public SolicitacaoEpiItemEntrega()
+	{
+	}
+
+	public SolicitacaoEpiItemEntrega(Long id , Integer qtdEntregue, Date dataEntrega, String CA)
+	{
+		setId(id);
+		setQtdEntregue(qtdEntregue);
+		setDataEntrega(dataEntrega);
+		setCA(CA);
+	}
+	
 	public SolicitacaoEpiItem getSolicitacaoEpiItem() {
 		return solicitacaoEpiItem;
 	}
@@ -47,5 +63,13 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 
 	public void setDataEntrega(Date dataEntrega) {
 		this.dataEntrega = dataEntrega;
+	}
+
+	public String getCA() {
+		return CA;
+	}
+
+	public void setCA(String cA) {
+		CA = cA;
 	}
 }
