@@ -367,6 +367,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public String prepareRelatorioColaboradorCertificacao()
 	{
 		certificacoes = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		return prepareRelatorioColaborador();
 	}
 	
