@@ -45,8 +45,8 @@ public class Autenticador
 		//codigo de retorno do erro
 		if(clientRemprot.getErrors() != 0)
 			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
-//		return c.getRegistered();
-		return false;
+		
+		return clientRemprot.getRegistered();
 	}
 	
 	private static int RECRUT_SELECAO = 1;

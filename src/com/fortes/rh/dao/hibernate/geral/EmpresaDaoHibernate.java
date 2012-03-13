@@ -169,7 +169,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	public void removeEmpresaPadrao(long id) 
 	{
 		String acao = "DISABLE";
-		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
+		JDBCConnection.executaTrigger(acao);
 		
 		String[] sqls = new String[]{
 				"delete from gerenciadorcomunicacao where empresa_id = " + id + ";",
@@ -277,7 +277,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		JDBCConnection.executeQuery(sqls);
 		
 		acao = "ENABLE";
-		JDBCConnection.executeQuery(new String[]{executaTrigger(acao)});
+		JDBCConnection.executaTrigger(acao);
 	}
 
 	public Collection<Empresa> findTodasEmpresas()
@@ -322,15 +322,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();
-	}
-	
-	private String executaTrigger(String acao) 
-	{
-		String execTrigger = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +
-							" where table_schema='public' " +
-							" and table_catalog='fortesrh' group by table_name;";
-
-		return execTrigger;
 	}
 
 	public void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 

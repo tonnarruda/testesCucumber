@@ -61,7 +61,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
-	private GastoManager gastoManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -531,10 +530,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setCidadeManager(CidadeManager cidadeManager) {
 		this.cidadeManager = cidadeManager;
-	}
-
-	public void setGastoManager(GastoManager gastoManager) {
-		this.gastoManager = gastoManager;
 	}
 
 	//utilizado apenas para auditar a integração com AC

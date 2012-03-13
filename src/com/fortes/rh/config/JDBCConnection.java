@@ -154,4 +154,19 @@ public class JDBCConnection {
 		JDBCConnection jdbcConn = new JDBCConnection(configuracao);
 		return jdbcConn.executeSql(sql);
 	}
+	
+	public static void executaTrigger(String acao)
+	{
+		Properties configuracao = ArquivoUtil.getSystemConf();
+		JDBCConnection jdbcConn = new JDBCConnection(configuracao);
+		
+		if (StringUtils.isNotEmpty(configuracao.getProperty("db.name")))
+		{
+			String sql = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +
+						" where table_schema='public' " +
+						" and table_catalog='" + configuracao.getProperty("db.name") + "' group by table_name;";
+			
+			jdbcConn.executeSql(sql);
+		}
+	}
 }
