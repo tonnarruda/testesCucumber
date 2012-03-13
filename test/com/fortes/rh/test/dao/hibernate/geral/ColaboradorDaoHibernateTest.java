@@ -2480,7 +2480,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areaIds = new Long[] { areaOrganizacional1.getId() };
 		Long[] cargoIds = new Long[] { cargo1.getId() };
 
-		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim);
+		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, null);
 
 		assertEquals(1, retorno.size());
 	}

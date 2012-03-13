@@ -50,7 +50,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	private boolean listaColaboradores;
 	
-	private boolean agruparPorMotivo = true;
+	private String agruparPor;
 	private boolean exibirObservacao = false;
 	
 	private Empresa empresa;
@@ -97,7 +97,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradores = colaboradorManager.findColaboradoresMotivoDemissao(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim);
+			colaboradores = colaboradorManager.findColaboradoresMotivoDemissao(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim, agruparPor);
 		}
 		catch (Exception e)
 		{
@@ -108,13 +108,20 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		if (agruparPorMotivo)
+		if (agruparPor.equals("M"))
 		{
 			if(exibirObservacao)
-				return "successComObservacao";
+				return "successComObservacaoPorMotivo";
 			else
 				return Action.SUCCESS;			
-		}
+		} 
+		else if (agruparPor.equals("E"))
+		{
+			if(exibirObservacao)
+				return "successComObservacaoPorEstabelecimento";
+			else
+				return "successPorEstabelecimento";			
+		} 
 		else
 		{
 			colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "nome");
@@ -284,14 +291,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		return motivoDemissaoQuantidades;
 	}
 
-	public boolean isAgruparPorMotivo() {
-		return agruparPorMotivo;
-	}
-
-	public void setAgruparPorMotivo(boolean agruparPorMotivo) {
-		this.agruparPorMotivo = agruparPorMotivo;
-	}
-
 	public boolean isExibirObservacao()
 	{
 		return exibirObservacao;
@@ -333,6 +332,14 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public Boolean getCompartilharColaboradores() {
 		return compartilharColaboradores;
+	}
+
+	public String getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(String agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 
 }

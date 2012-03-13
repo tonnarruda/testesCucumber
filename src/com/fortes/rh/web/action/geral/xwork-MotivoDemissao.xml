@@ -37,8 +37,20 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">motivosDemissao.pdf</param>
 			</result>
-			<result name="successComObservacao" type="jasper">
+			<result name="successComObservacaoPorMotivo" type="jasper">
 				<param name="location">/WEB-INF/report/motivos_demissao_observacao.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">motivosDemissao.pdf</param>
+			</result>
+			<result name="successPorEstabelecimento" type="jasper">
+				<param name="location">/WEB-INF/report/motivos_demissao_estabelecimento.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">motivosDemissao.pdf</param>
+			</result>
+			<result name="successComObservacaoPorEstabelecimento" type="jasper">
+				<param name="location">/WEB-INF/report/motivos_demissao_estabelecimento_observacao.jasper</param>
 				<param name="dataSource">colaboradores</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">motivosDemissao.pdf</param>

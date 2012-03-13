@@ -664,7 +664,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testFindColaboradoresMotivoDemissao() throws Exception
     {
         colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
-        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date()));
+        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null));
     }
 
     public void testFindColaboradoresMotivoDemissaoException() throws Exception
@@ -673,7 +673,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         try
         {
             colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(null));
-            colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date());
+            colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null);
         }
         catch (Exception e)
         {
