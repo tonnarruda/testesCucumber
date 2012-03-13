@@ -53,37 +53,41 @@
 		<@ww.hidden name="solicitacaoEpi.colaborador.id" />
 		<div>EPIs:</div>
 
-		<#assign i = 0/>
-		<@display.table name="listaEpis" id="lista" class="dados" defaultsort=2 sort="list">
-
-			<@display.column title="<input type='checkbox' id='md' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" value="${lista[0].id}" name="epiIds" class="checkItem" id="${lista[0].id}"/>
-			</@display.column>
-
-			<@display.column title="${lista[0].nome}" style="width:500px;">
-				<br>
-				<#list lista[1].solicitacaoEpiItemEntregas as entrega>
-						${entrega.dataEntrega}<br>
+		<table class="dados">
+			<thead>
+				<tr>
+					<th>Epi</th>
+					<th>Entregas</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#list solicitacaoEpiItems as item>
+					<tr>
+						<td>${item.epi.nome}</td>
+						<td width="300" style="padding:0px">
+							<table class="dados" style="margin:0px !important;">
+								<thead>
+									<tr>
+										<th style="background:#7BA6D3;">Ações</th>
+										<th style="background:#7BA6D3;">Data</th>
+										<th style="background:#7BA6D3;">Quantidade</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#list item.solicitacaoEpiItemEntregas as entrega>
+										<tr>
+											<td width="20%" align="center"># X</td>
+											<td width="40%" align="center">${entrega.dataEntrega}</td>
+											<td width="40%" align="center">${entrega.qtdEntregue}</td>
+										</tr>
+									</#list>
+								</tbody>
+							</table>
+						</td>
+					<tr>
 				</#list>
-			</@display.column>
-
-
-			<@display.column title="Quantidade: ${lista[1].qtdSolicitado}">
-				
-				<br>
-				<#list lista[1].solicitacaoEpiItemEntregas as entrega>
-						${entrega.qtdEntregue}<br>
-				</#list>
-			</@display.column>
-			
-			<@display.column title="Entregue: ${lista[1].totalEntregue}">
-				
-			</@display.column>
-
-		</@display.table>
-			<#if insert>
-				<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-			</#if>
+			</tbody>
+		</table>
 		
 		<@ww.hidden name="solicitacaoEpi.id" />
 		<@ww.hidden name="solicitacaoEpi.empresa.id" />

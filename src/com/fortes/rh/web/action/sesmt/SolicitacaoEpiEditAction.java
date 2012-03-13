@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -114,19 +116,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			solicitacaoEpi = (SolicitacaoEpi) solicitacaoEpiManager.findById(solicitacaoEpi.getId());
 
 		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
-
-		listaEpis = new Object[solicitacaoEpiItems.size()][2];
-		int k=0;
-		
-		for (SolicitacaoEpiItem item : solicitacaoEpiItems)
-		{
-			listaEpis[k][0] = item.getEpi();
-			listaEpis[k][1] = item;
-			if(item.getTotalEntregue() < item.getQtdSolicitado())
-				insert=true;
-			
-			k++;
-		}
 
 		return Action.SUCCESS;
 	}
