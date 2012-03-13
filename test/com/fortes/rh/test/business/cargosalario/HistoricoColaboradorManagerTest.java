@@ -31,7 +31,6 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -380,6 +379,122 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		historicoColaboradorDao.expects(once()).method("findHistoricoAdmitidos").with(ANYTHING, ANYTHING).will(returnValue(historicoColaboradors));
 		assertEquals(900.0, historicoColaboradorManager.getValorTotalFolha(null, new Date()));
+	}
+	
+	public void testFindSemDissidioByDataPercentual()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Date dataBase = DateUtil.criarDataMesAno(1, 2, 2011);
+		Double percentualDissidio = 5.0;
+
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		colaborador1.setEmpresa(empresa);
+		
+		AreaOrganizacional areaOrganizacionalC1 = AreaOrganizacionalFactory.getEntity(3L);
+		
+		Estabelecimento estabelecimentoC1 = EstabelecimentoFactory.getEntity(5L);
+		
+		Cargo cargoc1 = CargoFactory.getEntity(1L);
+
+		FaixaSalarialHistorico faixaSalarialHistoricoC1 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistoricoC1.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistoricoC1.setValor(400.0);
+
+		FaixaSalarial faixaSalarialC1 = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarialC1.setCargo(cargoc1);
+		faixaSalarialC1.setFaixaSalarialHistoricoAtual(faixaSalarialHistoricoC1);
+		
+		HistoricoColaborador historico1Colaborador1 = HistoricoColaboradorFactory.getEntity();
+		historico1Colaborador1.setData(DateUtil.criarDataMesAno(1, 3, 2011));
+		historico1Colaborador1.setColaborador(colaborador1);
+		historico1Colaborador1.setFaixaSalarial(faixaSalarialC1);
+		historico1Colaborador1.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico1Colaborador1.setSalario(200.0);
+		historico1Colaborador1.setAreaOrganizacional(areaOrganizacionalC1);
+		historico1Colaborador1.setEstabelecimento(estabelecimentoC1);
+		
+		HistoricoColaborador historico2Colaborador1 = HistoricoColaboradorFactory.getEntity();
+		historico2Colaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		historico2Colaborador1.setColaborador(colaborador1);
+		historico2Colaborador1.setFaixaSalarial(faixaSalarialC1);
+		historico2Colaborador1.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico2Colaborador1.setSalario(400.0);
+		historico2Colaborador1.setAreaOrganizacional(areaOrganizacionalC1);
+		historico2Colaborador1.setEstabelecimento(estabelecimentoC1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		colaborador2.setEmpresa(empresa);
+		
+		AreaOrganizacional areaOrganizacionalC2 = AreaOrganizacionalFactory.getEntity(4L);
+		
+		Estabelecimento estabelecimentoC2 = EstabelecimentoFactory.getEntity(6L);
+		
+		Cargo cargoC2 = CargoFactory.getEntity(2L);
+		
+		FaixaSalarialHistorico faixaSalarialHistoricoC2 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistoricoC2.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistoricoC2.setValor(400.0);
+		
+		FaixaSalarial faixaSalarialC2 = FaixaSalarialFactory.getEntity(2L);
+		faixaSalarialC2.setCargo(cargoC2);
+		faixaSalarialC2.setFaixaSalarialHistoricoAtual(faixaSalarialHistoricoC2);
+		
+		HistoricoColaborador historico1Colaborador2 = HistoricoColaboradorFactory.getEntity();
+		historico1Colaborador2.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		historico1Colaborador2.setColaborador(colaborador2);
+		historico1Colaborador2.setFaixaSalarial(faixaSalarialC2);
+		historico1Colaborador2.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico1Colaborador2.setSalario(300.0);
+		historico1Colaborador2.setAreaOrganizacional(areaOrganizacionalC2);
+		historico1Colaborador2.setEstabelecimento(estabelecimentoC2);
+		
+		HistoricoColaborador historico2Colaborador2 = HistoricoColaboradorFactory.getEntity();
+		historico2Colaborador2.setData(DateUtil.criarDataMesAno(1, 4, 2011));
+		historico2Colaborador2.setColaborador(colaborador2);
+		historico2Colaborador2.setFaixaSalarial(faixaSalarialC2);
+		historico2Colaborador2.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico2Colaborador2.setSalario(400.0);
+		historico2Colaborador2.setAreaOrganizacional(areaOrganizacionalC2);
+		historico2Colaborador2.setEstabelecimento(estabelecimentoC2);
+		
+		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
+		historicoColaboradors.add(historico1Colaborador1);
+		historicoColaboradors.add(historico2Colaborador1);
+		historicoColaboradors.add(historico1Colaborador2);
+		historicoColaboradors.add(historico2Colaborador2);
+		
+		historicoColaboradorDao.expects(atLeastOnce()).method("findSemDissidioByDataPercentual").with(eq(dataBase), eq(percentualDissidio), eq(empresa.getId())).will(returnValue(historicoColaboradors));
+		
+		
+		String[] cargosIds = new String[] {"1","2"};
+		String[] areasIds = new String[] {"3","4"};
+		String[] estabelecimentosIds = new String[] {"5","6"};
+		
+		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		assertEquals("Todos hist. colaboradores", 4, resultado.size());
+
+		cargosIds = new String[] {"1"};
+		areasIds = new String[] {"3","4"};
+		estabelecimentosIds = new String[] {"5","6"};
+		
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		assertEquals("Sem cargo ID=2", historico1Colaborador1.getFaixaSalarial().getCargo().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getFaixaSalarial().getCargo().getId());
+
+		cargosIds = new String[] {"1","2"};
+		areasIds = new String[] {"4"};
+		estabelecimentosIds = new String[] {"5","6"};
+		
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		assertEquals("Sem área ID=3", historico1Colaborador2.getAreaOrganizacional().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getAreaOrganizacional().getId());
+		
+		cargosIds = new String[] {"1","2"};
+		areasIds = new String[] {"3","4"};
+		estabelecimentosIds = new String[] {"5"};
+		
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		assertEquals("Sem estabelecimento ID=6", historico1Colaborador1.getEstabelecimento().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getEstabelecimento().getId());
+		
+
 	}
 
 	public void testFindByCargosIdsPaginado()

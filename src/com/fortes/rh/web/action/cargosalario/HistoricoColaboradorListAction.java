@@ -466,10 +466,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			sugerir = false;			
 		}
 
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-		
-		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck);		
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck, areasCheck, estabelecimentosCheck);		
 		
 		if (dataBase != null && percentualDissidio != null && (historicoColaboradors == null || historicoColaboradors.isEmpty()))
 			addActionMessage("Não existem colaboradores a serem listados");
