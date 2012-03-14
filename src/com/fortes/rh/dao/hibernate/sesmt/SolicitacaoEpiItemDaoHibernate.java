@@ -25,7 +25,6 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"sei");
 		criteria.createCriteria("sei.solicitacaoEpi", "se");
 		criteria.createCriteria("sei.epi", "e");
-		criteria.createCriteria("e.epiHistoricos", "eh", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("sei.id"), "id");

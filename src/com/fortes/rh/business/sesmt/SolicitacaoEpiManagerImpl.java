@@ -17,10 +17,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
 
@@ -50,32 +48,6 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		{
 			getDao().save(solicitacaoEpi);
 			solicitacaoEpiItemManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			throw e;
-		}
-	}
-
-	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date[] selectDataSolicitado) throws Exception
-	{
-		try
-		{
-			solicitacaoEpiItemManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, selectDataSolicitado);
-			solicitacaoEpi = findById(solicitacaoEpi.getId());
-			Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
-
-			int totalEntregue = 0;
-			int totalSolicitado = 0;
-			for (SolicitacaoEpiItem i : solicitacaoEpiItems)
-			{
-				totalEntregue += i.getQtdEntregue();
-				totalSolicitado += i.getQtdSolicitado();
-			}
-			
-			solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.getSituacao(totalEntregue, totalSolicitado));
-			update(solicitacaoEpi);
 		}
 		catch(Exception e)
 		{

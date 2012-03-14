@@ -7,6 +7,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
 public interface SolicitacaoEpiItemEntregaManager extends GenericManager<SolicitacaoEpiItemEntrega>
 {
-
 	Collection<SolicitacaoEpiItemEntrega> findBySolicitacaoEpiItem(Long solicitacaoEpiItemId);
+	int getTotalEntregue(Long solicitacaoEpiItemId, Long solicitacaoEpiItemEntregaId);
 }

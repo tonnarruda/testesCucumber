@@ -34,4 +34,19 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 
 		return query.list();
 	}
+
+	public int getTotalEntregue(Long solicitacaoEpiItemId, Long solicitacaoEpiItemEntregaId) 
+	{
+		String hql = "select sum(seie.qtdEntregue) from SolicitacaoEpiItemEntrega as seie where seie.solicitacaoEpiItem.id = :solicitacaoEpiItemId";
+		if (solicitacaoEpiItemEntregaId != null)
+			hql += " and seie.id <> :solicitacaoEpiItemEntregaId";
+		
+		Query query = getSession().createQuery(hql);
+		query.setLong("solicitacaoEpiItemId", solicitacaoEpiItemId);
+
+		if (solicitacaoEpiItemEntregaId != null)
+			query.setLong("solicitacaoEpiItemEntregaId", solicitacaoEpiItemEntregaId);
+		
+		return (Integer) query.uniqueResult();
+	}
 }

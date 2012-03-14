@@ -28,7 +28,7 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		return solicitacaoEpiItemEntregaDao;
 	}
 
-	public void testeFindBySolicitacaoEpiItem()
+	public void testFindBySolicitacaoEpiItem()
 	{
 		Date data = DateUtil.criarDataMesAno(9, 3, 2012);
 		
@@ -59,7 +59,38 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		assertEquals(2, solicitacaoEpiItemEntregaDao.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId()).size());
 		assertEquals(1, solicitacaoEpiItemEntregaDao.findBySolicitacaoEpiItem(solicitacaoEpiItem2.getId()).size());
 	}
-	
+
+	public void testGetTotalEntregue()
+	{
+		Date data = DateUtil.criarDataMesAno(9, 3, 2012);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem2 = new SolicitacaoEpiItem();
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem2);
+		
+		SolicitacaoEpiItemEntrega entrega1 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega1.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega1.setDataEntrega(data);
+		entrega1.setQtdEntregue(2);
+		solicitacaoEpiItemEntregaDao.save(entrega1);
+		
+		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega2.setDataEntrega(data);
+		entrega2.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega2);
+		
+		SolicitacaoEpiItemEntrega entrega3 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega3.setSolicitacaoEpiItem(solicitacaoEpiItem2);
+		entrega3.setDataEntrega(data);
+		entrega3.setQtdEntregue(4);
+		solicitacaoEpiItemEntregaDao.save(entrega3);
+		
+		assertEquals(5, solicitacaoEpiItemEntregaDao.getTotalEntregue(solicitacaoEpiItem.getId(), null));
+		assertEquals(4, solicitacaoEpiItemEntregaDao.getTotalEntregue(solicitacaoEpiItem2.getId(), null));
+	}
 	
 	public void setSolicitacaoEpiItemEntregaDao(SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao)
 	{

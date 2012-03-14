@@ -26,10 +26,9 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		{
 			Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
 			solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
-			for (SolicitacaoEpiItemEntrega entrega : entregas) {
-				solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
-			}
 			
+			for (SolicitacaoEpiItemEntrega entrega : entregas)
+				solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
 		}
 		
 		return solicitacaoEpiItems;
@@ -48,31 +47,23 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 
 				if (StringUtils.isBlank(selectQtdSolicitado[i]))
 					selectQtdSolicitado[i] = "0";
+				
 				solicitacaoEpiItem.setQtdSolicitado(Integer.valueOf(selectQtdSolicitado[i]));
-				if(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
-					solicitacaoEpiItem.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
-				else
-					solicitacaoEpiItem.setQtdEntregue(0);
 				
 				solicitacaoEpiItem.setEpi(epiTmp);
 				solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
-				solicitacaoEpiItem.setDataEntrega(dataEntrega);
 
 				getDao().save(solicitacaoEpiItem);
-			}
-		}
-	}
-
-	public void entrega(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date[] selectDataSolicitado)
-	{
-		if (epiIds != null && selectQtdSolicitado != null && selectDataSolicitado != null)
-		{
-			for (int i=0; i < epiIds.length; i++)
-			{
-				SolicitacaoEpiItem solicitacaoEpiItem = getDao().findBySolicitacaoEpiAndEpi(solicitacaoEpi.getId(), Long.valueOf(epiIds[i]));
-				solicitacaoEpiItem.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
-				solicitacaoEpiItem.setDataEntrega(selectDataSolicitado[i]);
-				getDao().update(solicitacaoEpiItem);
+				
+				if (solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
+				{
+					SolicitacaoEpiItemEntrega entrega = new SolicitacaoEpiItemEntrega();
+					entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+					entrega.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
+					entrega.setDataEntrega(dataEntrega);
+					
+					solicitacaoEpiItemEntregaManager.save(entrega);
+				}
 			}
 		}
 	}

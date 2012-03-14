@@ -40,10 +40,24 @@
 		<action name="prepareEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareEntrega">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
 		</action>
-		<action name="entrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="entrega">
+		<action name="prepareInsertEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareInsertEntrega">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdateEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareUpdateEntrega">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+		</action>
+		<action name="insertEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="insertEntrega">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
+			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+		</action>
+		<action name="updateEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="updateEntrega">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+		</action>
+		<action name="deleteEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="deleteEntrega">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
 		</action>
 		<action name="filtroColaboradores" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="filtroColaboradores">
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEdit.ftl</result>

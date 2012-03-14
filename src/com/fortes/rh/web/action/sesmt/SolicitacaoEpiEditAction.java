@@ -1,12 +1,12 @@
 package com.fortes.rh.web.action.sesmt;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.exception.FortesException;
@@ -28,9 +28,12 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 
 	private Colaborador colaborador;
 	private SolicitacaoEpi solicitacaoEpi;
+	private SolicitacaoEpiItem solicitacaoEpiItem;
+	private SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega;
 
 	private Collection<Colaborador> colaboradors;
 	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
@@ -120,21 +123,98 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
-	public String entrega() throws Exception
+	public String prepareInsertEntrega() throws Exception
+	{
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdateEntrega() throws Exception
+	{
+		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findById(solicitacaoEpiItemEntrega.getId());
+		return Action.SUCCESS;
+	}
+
+	public String insertEntrega() throws Exception
 	{
 		try
 		{
-			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, selectDataSolicitado);
+			validaDatasEQtds(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemEntrega);
+			
+			solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemEntregaManager.save(solicitacaoEpiItemEntrega);
+		}
+		catch (FortesException fE)
+		{
+			addActionError(fE.getMessage());
+			fE.printStackTrace();
+			prepareInsertEntrega();
+			return INPUT;
 		}
 		catch (Exception e)
 		{
 			addActionError("Erro ao gravar entrega.");
 			e.printStackTrace();
-			prepareEntrega();
+			prepareInsertEntrega();
 			return INPUT;
 		}
 
-		addActionMessage("Entrega gravada com sucesso.");
+		return SUCCESS;
+	}
+	
+	public String updateEntrega() throws Exception
+	{
+		try
+		{
+			validaDatasEQtds(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemEntrega);
+			
+			solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemEntregaManager.update(solicitacaoEpiItemEntrega);
+		}
+		catch (FortesException fE)
+		{
+			addActionMessage(fE.getMessage());
+			fE.printStackTrace();
+			prepareInsertEntrega();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao editar entrega.");
+			e.printStackTrace();
+			prepareUpdateEntrega();
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	private void validaDatasEQtds(Long solicitacaoEpiId, Long solicitacaoEpiItemId, SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) throws FortesException
+	{
+		SolicitacaoEpi solicitacaoEpi = solicitacaoEpiManager.findEntidadeComAtributosSimplesById(solicitacaoEpiId);
+		if (solicitacaoEpiItemEntrega.getDataEntrega().before(solicitacaoEpi.getData()))
+			throw new FortesException("A data de entrega não pode ser anterior à data de solicitação");
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = solicitacaoEpiItemManager.findEntidadeComAtributosSimplesById(solicitacaoEpiItemId);
+		int totalEntregue = solicitacaoEpiItemEntregaManager.getTotalEntregue(solicitacaoEpiItemId, solicitacaoEpiItemEntrega.getId());
+		
+		if (totalEntregue + solicitacaoEpiItemEntrega.getQtdEntregue() > solicitacaoEpiItem.getQtdSolicitado())
+			throw new FortesException("O total de itens entregues não pode ser superior à quantidade solicitada");
+	}
+	
+	public String deleteEntrega() throws Exception
+	{
+		try
+		{
+			solicitacaoEpiItemEntregaManager.remove(solicitacaoEpiItemEntrega.getId());
+			addActionMessage("Entrega de EPI excluída com sucesso");
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao excluir entrega.");
+			e.printStackTrace();
+		}
+		
+		prepareEntrega();
 		return SUCCESS;
 	}
 
@@ -289,5 +369,25 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public boolean isInsert() {
 		return insert;
+	}
+
+	public SolicitacaoEpiItem getSolicitacaoEpiItem() {
+		return solicitacaoEpiItem;
+	}
+
+	public void setSolicitacaoEpiItem(SolicitacaoEpiItem solicitacaoEpiItem) {
+		this.solicitacaoEpiItem = solicitacaoEpiItem;
+	}
+
+	public SolicitacaoEpiItemEntrega getSolicitacaoEpiItemEntrega() {
+		return solicitacaoEpiItemEntrega;
+	}
+
+	public void setSolicitacaoEpiItemEntrega(SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) {
+		this.solicitacaoEpiItemEntrega = solicitacaoEpiItemEntrega;
+	}
+
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 }
