@@ -121,10 +121,8 @@ public class Autenticador
 	public static String getMsgAutenticado(String url)
 	{
 		//TODO remprot
-//		if(getRemprot(url).getRegistered())
-			return "";
-//		else
-//			return getMsgPadrao();
+//		return isDemo() ? getMsgPadrao() : "";
+		return "";
 	}
 
 	public static int getQtdCadastrosVersaoDemo()
