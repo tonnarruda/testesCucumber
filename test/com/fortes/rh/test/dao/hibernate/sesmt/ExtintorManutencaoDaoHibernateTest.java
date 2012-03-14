@@ -326,7 +326,7 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		Collection<ExtintorManutencaoServico> servicos = Arrays.asList(servico1, servico2);
 		
-		ExtintorManutencao manutencao = ExtintorManutencaoFactory.getEntity();
+		ExtintorManutencao manutencao = ExtintorManutencaoFactory.getEntity(9999999999l);
 		manutencao.setExtintor(extintor);
 		manutencao.setServicos(servicos);
 		extintorManutencaoDao.save(manutencao);
