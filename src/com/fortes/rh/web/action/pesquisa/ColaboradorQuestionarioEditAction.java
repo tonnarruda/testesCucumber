@@ -35,7 +35,6 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.security.UserDetailsImpl;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -111,6 +110,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Boolean compartilharColaboradores;
 	private boolean respostaColaborador;
 	private boolean moduloExterno;
+	private boolean preview;
 
 	public String prepareInsert() throws Exception
 	{
@@ -740,5 +740,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public boolean isPreview() {
+		return preview;
+	}
+
+	public void setPreview(boolean preview) {
+		this.preview = preview;
 	}
 }

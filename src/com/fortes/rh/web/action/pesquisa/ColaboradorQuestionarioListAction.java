@@ -210,35 +210,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		totalNaoRespondidas = totalNaoResp + " (" + formata.format(totalNaoResp/total) + ")";
 	}
 
-
-	//feito pelo Samuel
-//	public String prepareRelatorioRankingPerformancePeriodoDeExperiencia(){
-//		
-//		colaboradorsCheckList = colaboradorManager.populaCheckColaborador(getEmpresaSistema().getId(), colaboradorManager.verificaColaboradorLogadoVerAreas());
-//		return Action.SUCCESS;
-//	}  
-
-	//feito pelo Samuel
-//	public String imprimeRelatorioRankingPerformancePeriodoDeExperiencia() throws Exception 
-//	{
-//		try 
-//		{
-//			colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, getEmpresaSistema().getId(),  colaboradorManager.verificaColaboradorLogadoVerAreas());
-//			
-//			
-//		}
-//		catch (Exception e)
-//		{
-//			addActionMessage(e.getMessage());
-//			e.printStackTrace();
-//			prepareRelatorioRankingPerformancePeriodoDeExperiencia();
-//			return Action.INPUT;
-//		}
-//		
-//		return Action.SUCCESS;
-//	}
-	
-	
 	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
 		this.colaboradorQuestionario = colaboradorQuestionario;

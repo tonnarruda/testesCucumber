@@ -200,6 +200,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
         }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enviaLembreteDeQuestionarioNaoLiberado() 
 	{
     	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
@@ -502,7 +503,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		String avaliadorNome = avaliador !=null ? avaliador.getNomeMaisNomeComercial():usuario.getNome();
 		
 		StringBuilder mensagem = new StringBuilder();
-		mensagem.append("A avaliação do período de experiência de")
+		mensagem.append("A avaliação do período de experiência do colaborador ")
 				.append(colaboradorAvaliado.getNomeMaisNomeComercial())
 				.append(" foi respondida por ").append(avaliadorNome);
 		
@@ -510,12 +511,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				.append("\nCargo: ").append(colaboradorAvaliado.getFaixaSalarial().getDescricao())
 				.append("\nÁrea: ").append(colaboradorAvaliado.getAreaOrganizacional().getDescricao());
 		
-		String link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliado.getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id="+avaliacaoId;
+		String link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliado.getId() + "&respostaColaborador=true&preview=true&colaboradorQuestionario.avaliacao.id="+avaliacaoId;
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), empresa.getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId(), empresa.getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA.getId()))
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.PERFIL_VER_AREAS.getId()))
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.PERIODOEXPERIENCIA);
 		}
 	}
