@@ -47,6 +47,6 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 		if (solicitacaoEpiItemEntregaId != null)
 			query.setLong("solicitacaoEpiItemEntregaId", solicitacaoEpiItemEntregaId);
 		
-		return (Integer) query.uniqueResult();
+		return query.uniqueResult() != null ? (Integer) query.uniqueResult() : 0;
 	}
 }
