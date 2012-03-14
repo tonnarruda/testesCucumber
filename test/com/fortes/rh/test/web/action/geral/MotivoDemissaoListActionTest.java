@@ -1,5 +1,7 @@
 package com.fortes.rh.test.web.action.geral;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -15,6 +18,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.web.action.geral.MotivoDemissaoListAction;
@@ -80,22 +84,34 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	parametros.put("CABECALHO", cabecalho);
 
     	action.setListaColaboradores(true);
+    	action.setAgruparPor("M");
 
+    	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
+
+    	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
+    	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
+    	
     	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
 
     	assertEquals("success", action.relatorioMotivoDemissao());
 
     	action.setListaColaboradores(false);
+    	action.setAgruparPor(null);
     	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
     	assertEquals("successBasico", action.relatorioMotivoDemissao());
     	assertEquals("Relatório de Motivos de Desligamento", ((Cabecalho)action.getParametros().get("CABECALHO")).getTitulo());
     }
 
     public void testImprimeRelatorioMotivoDemissaoBasico() throws Exception
     {
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
+    	
+    	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
+    	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
+    	
+    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
 
     	assertEquals("successBasico", action.imprimeRelatorioMotivoDemissaoBasico());
     }
@@ -117,7 +133,12 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
     public void testImprimeRelatorioMotivoDemissao() throws Exception
     {
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
+    	
+    	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
+    	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
+    	action.setAgruparPor("M");
+    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
 
     	assertEquals("success", action.imprimeRelatorioMotivoDemissao());
     }
@@ -133,7 +154,7 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
-		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
+		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
 
     	assertEquals("input", action.imprimeRelatorioMotivoDemissao());
     }
