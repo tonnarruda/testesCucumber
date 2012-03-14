@@ -71,7 +71,7 @@
 		<initialValueExpression><![CDATA[Integer.valueOf(0)]]></initialValueExpression>
 	</variable>
 
-		<group  name="listaPresenca" >
+		<group  name="listaPresenca" isStartNewPage="true" >
 			<groupExpression><![CDATA[$F{colaborador.historicoColaborador.estabelecimento.id}]]></groupExpression>
 			<groupHeader>
 			<band height="246"  isSplitAllowed="true" >
