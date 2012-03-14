@@ -32,8 +32,8 @@ public class RelatorioUtil
     	if(logo.exists())
     		pathLogoRelatorio = pathLogo;
 
-    	String msgRegistro = Autenticador.getMsgPadrao();
-    	if(!Autenticador.isDemo())
+    	String msgRegistro = "";
+    	if(Autenticador.isDemo())
     		msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());
 
     	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro);
