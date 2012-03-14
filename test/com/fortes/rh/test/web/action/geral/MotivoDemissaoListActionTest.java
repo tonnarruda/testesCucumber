@@ -141,12 +141,8 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
     public void testImprimeRelatorioMotivoDemissao() throws Exception
     {
-    	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
-    	
-    	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
-    	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
     	action.setAgruparPor("M");
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
+    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
 
     	assertEquals("success", action.imprimeRelatorioMotivoDemissao());
     }
