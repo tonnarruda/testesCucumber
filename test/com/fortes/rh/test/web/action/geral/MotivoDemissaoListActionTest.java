@@ -80,9 +80,10 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	parametros.put("CABECALHO", cabecalho);
 
     	action.setListaColaboradores(true);
+    	action.setAgruparPor("M");
 
     	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
 
     	assertEquals("success", action.relatorioMotivoDemissao());
 
@@ -117,7 +118,8 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
     public void testImprimeRelatorioMotivoDemissao() throws Exception
     {
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+    	action.setAgruparPor("M");
+    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
 
     	assertEquals("success", action.imprimeRelatorioMotivoDemissao());
     }
@@ -133,7 +135,7 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
-		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
+		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
 
     	assertEquals("input", action.imprimeRelatorioMotivoDemissao());
     }

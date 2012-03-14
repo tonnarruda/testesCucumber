@@ -2480,7 +2480,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areaIds = new Long[] { areaOrganizacional1.getId() };
 		Long[] cargoIds = new Long[] { cargo1.getId() };
 
-		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, null);
+		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, "M");
 
 		assertEquals(1, retorno.size());
 	}
@@ -2810,6 +2810,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaborador.setDataDesligamento(new Date());
@@ -2822,6 +2829,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setSalario(1000D);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2000));
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO));

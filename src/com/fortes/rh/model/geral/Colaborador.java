@@ -54,7 +54,6 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 

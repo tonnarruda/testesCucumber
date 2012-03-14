@@ -349,9 +349,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	private void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional() 
 	{
-		Long colaboradorAvaliadoId = colaboradorQuestionario.getColaborador().getId();
-		Long avaliadorId = colaboradorQuestionario.getAvaliacao().getId();
-		gerenciadorComunicacaoManager.enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(colaboradorAvaliadoId, avaliadorId, getUsuarioLogado(), getEmpresaSistema());
+		Long colaboradorAvaliadoId = null;
+		Long avaliadorId  = null;
+		
+		if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId()!=null)
+			colaboradorAvaliadoId = colaboradorQuestionario.getColaborador().getId();
+		
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
+			avaliadorId = colaboradorQuestionario.getAvaliacao().getId();
+		
+		if(colaboradorAvaliadoId != null && avaliadorId != null)
+			gerenciadorComunicacaoManager.enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(colaboradorAvaliadoId, avaliadorId, getUsuarioLogado(), getEmpresaSistema());
 	}
 
 	public String updateAvaliacaoExperiencia()

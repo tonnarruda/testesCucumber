@@ -57,7 +57,7 @@ public class UsuarioEmpresaManagerTest extends MockObjectTestCase
 	{
 		String codigoAC = "";
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
-		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(codigoAC), eq(""), eq(null), ANYTHING).will(returnValue(usuarioEmpresas));
+		usuarioEmpresaDao.expects(once()).method("findUsuariosByEmpresaRole").with(eq(codigoAC), eq(""), eq(null), ANYTHING).will(returnValue(usuarioEmpresas));
 		assertEquals(usuarioEmpresas, usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoAC, ""));
 	}
 	
