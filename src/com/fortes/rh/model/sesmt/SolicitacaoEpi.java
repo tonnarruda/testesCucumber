@@ -2,10 +2,12 @@ package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,12 +38,16 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 	
+	@OneToMany(mappedBy="solicitacaoEpi")
+	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
 
 	//Usados por relatório
 	@Transient
 	private EpiHistorico epiHistorico;
 	@Transient
 	private Epi epi;
+	@Transient
+	private Integer qtdEpiSolicitado = 0;
 	@Transient
 	private Integer qtdEpiEntregue = 0;
 	@Transient
@@ -70,7 +76,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.data = new Date();
 	}
 
-	public SolicitacaoEpi(Long id, Date data, char situacaoSolicitacaoEpi, String colaboradorNome, int statusRetornoAC, String cargoNome)
+	public SolicitacaoEpi(Long id, Date data, char situacaoSolicitacaoEpi, String colaboradorNome, int statusRetornoAC, String cargoNome, Integer qtdEpiSolicitado, Integer qtdEpiEntregue)
 	{
 		setId(id);
 		this.data = data;
@@ -78,6 +84,8 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		setColaboradorNome(colaboradorNome);
 		setColaboradorStatus(statusRetornoAC);
 		setCargoNome(cargoNome);
+		this.qtdEpiSolicitado = qtdEpiSolicitado;
+		this.qtdEpiEntregue = qtdEpiEntregue;
 	}
 
 	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
@@ -98,10 +106,10 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public String getSituacao()
 	{
-		return SituacaoSolicitacaoEpi.getDescricao(situacaoSolicitacaoEpi);
+		return SituacaoSolicitacaoEpi.getSituacao(qtdEpiEntregue, qtdEpiSolicitado);
 	}
 
-	private void setCargoNome(String cargoNome)
+	public void setCargoNome(String cargoNome)
 	{
 		if (this.cargo == null)
 			this.cargo = new Cargo();
@@ -110,7 +118,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	}
 
-	private void setColaboradorNome(String colaboradorNome)
+	public void setColaboradorNome(String colaboradorNome)
 	{
 		if (this.colaborador == null)
 			this.colaborador = new Colaborador();
@@ -118,7 +126,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.colaborador.setNome(colaboradorNome);
 	}
 	
-	private void setColaboradorStatus(int colaboradorStatus)
+	public void setColaboradorStatus(int colaboradorStatus)
 	{
 		if (this.colaborador == null)
 			this.colaborador = new Colaborador();
@@ -201,5 +209,25 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public void setSituacaoSolicitacaoEpi(char situacaoSolicitacaoEpi) {
 		this.situacaoSolicitacaoEpi = situacaoSolicitacaoEpi;
+	}
+
+	public Integer getQtdEpiSolicitado() {
+		return qtdEpiSolicitado;
+	}
+
+	public void setQtdEpiSolicitado(Integer qtdEpiSolicitado) {
+		this.qtdEpiSolicitado = qtdEpiSolicitado;
+	}
+
+	public Collection<SolicitacaoEpiItem> getSolicitacaoEpiItems() {
+		return solicitacaoEpiItems;
+	}
+
+	public void setSolicitacaoEpiItems(Collection<SolicitacaoEpiItem> solicitacaoEpiItems) {
+		this.solicitacaoEpiItems = solicitacaoEpiItems;
+	}
+
+	public void setQtdEpiEntregue(Integer qtdEpiEntregue) {
+		this.qtdEpiEntregue = qtdEpiEntregue;
 	}
 }

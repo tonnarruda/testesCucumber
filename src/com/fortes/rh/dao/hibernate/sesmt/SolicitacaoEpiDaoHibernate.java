@@ -1,5 +1,8 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -7,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -14,8 +18,10 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
+import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.util.DateUtil;
 
 /**
  * @author Tiago Lopes
@@ -33,59 +39,86 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
         	query.setFirstResult(((page - 1) * pagingSize));
         	query.setMaxResults(pagingSize);
         }
-		return query.list();
+		
+		Collection<Object[]> lista = query.list();
+		Collection<SolicitacaoEpi> solicitacoes = new ArrayList<SolicitacaoEpi>();
+		SolicitacaoEpi solicitacaoEpi = null;
+		
+		for (Object[] o : lista) 
+		{
+			SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+			
+			solicitacaoEpi = new SolicitacaoEpi();
+			solicitacaoEpi.setId(new Long(o[0].toString()));
+			solicitacaoEpi.setColaboradorNome(o[3].toString());
+			solicitacaoEpi.setColaboradorStatus(new Integer(o[4].toString()));
+			try {
+				solicitacaoEpi.setData(sDF.parse(o[5].toString()));
+			} catch (ParseException e) {e.printStackTrace();}
+			solicitacaoEpi.setCargoNome(o[6].toString());
+			solicitacaoEpi.setQtdEpiSolicitado(new Integer(o[7].toString()));
+			solicitacaoEpi.setQtdEpiEntregue(new Integer(o[8].toString()));
+			
+			solicitacoes.add(solicitacaoEpi);
+			//[2574, 4, 3232, ABDIAS LOURENÇO DA SILVA NETO, 2012-03-15, Cobrador, 27, 27]
+		}
+		
+		return solicitacoes;
 	}
 
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi)
 	{
 		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi);
-		return (Integer)query.uniqueResult();
+		return new Integer(query.uniqueResult().toString());
 	}
 
 	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi)
 	{
-		StringBuilder hql = null;
+		StringBuilder sql = null;
 		if (count)
-			hql = new StringBuilder("select count(se.id) ");
+			sql = new StringBuilder("select count(sub.id) ");
 		else
-			hql = new StringBuilder("select new SolicitacaoEpi(se.id, se.data, se.situacaoSolicitacaoEpi, co.nome, hc.status, ca.nome) ");
+			sql = new StringBuilder("select sub.* ");
 
-		hql.append("from SolicitacaoEpi se ");
-		hql.append("left join se.cargo ca ");
-		hql.append("left join se.colaborador co ");
-		hql.append("left join co.historicoColaboradors hc ");
-		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("	and hc.data = (");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("		) ");
+		sql.append("from ( ");
+		sql.append("select se.id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, sum(distinct sei.qtdSolicitado) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("from solicitacaoepi as se ");
+		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
+		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
+		sql.append("left join colaborador as c on se.colaborador_id=c.id ");
+		sql.append("left join historicocolaborador as hc on c.id=hc.colaborador_id "); 
+		sql.append("left join cargo as ca on se.cargo_id=ca.id ");
+		sql.append("where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) "); 
+		sql.append("group by se.id, c.matricula, c.id, c.nome, hc.status, se.data, ca.id, ca.nome, se.empresa_id ");
+		sql.append(") as sub ");
+		sql.append("where sub.empresa_id = :empresaId ");
 
+		if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ENTREGUE)
+			sql.append("and sub.qtdSolicitado <= sub.qtdEntregue ");
+		else if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE)
+			sql.append("and sub.qtdEntregue > 0 and sub.qtdEntregue < sub.qtdSolicitado ");
+		else if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ABERTA)
+			sql.append("and sub.qtdEntregue = 0 ");
+		
 		if (StringUtils.isNotBlank(matriculaBusca))
-			hql.append("and lower(co.matricula) like :matricula ");
-
+			sql.append("and lower(sub.matricula) like :matricula ");
+		
 		if (StringUtils.isNotBlank(nomeBusca))
-			hql.append("and lower(co.nome) like :nome ");
-
+			sql.append("and lower(sub.nome) like :nome ");
+		
 		if (dataIni != null && dataFim != null)
-			hql.append("and se.data between :dataIni and :dataFim ");
+			sql.append("and sub.data between :dataIni and :dataFim ");
 
-		if (situacaoSolicitacaoEpi != 'T')
-			hql.append("and se.situacaoSolicitacaoEpi = :situacaoSolicitacaoEpi ");
-
-		if(!count)
-			hql.append("order by se.data DESC, co.nome ASC ");
-
-		Query query = getSession().createQuery(hql.toString());
-
+		if (!count)
+			sql.append("order by sub.data DESC, sub.nome ASC ");
+		
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		
 		if (dataIni != null && dataFim != null)
 		{
 			query.setDate("dataIni", dataIni);
 			query.setDate("dataFim", dataFim);
 		}
-
-		if (situacaoSolicitacaoEpi != 'T')
-			query.setCharacter("situacaoSolicitacaoEpi", situacaoSolicitacaoEpi);
 
 		if (StringUtils.isNotBlank(matriculaBusca))
 			query.setString("matricula", "%" + matriculaBusca.toLowerCase() + "%");

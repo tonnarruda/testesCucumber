@@ -93,7 +93,9 @@
 		<@display.column property="colaborador.nome" style="width: 320px;" title="Colaborador"/>
 		<@display.column property="data" title="Data Solicitação" style="width: 100px;" format="{0,date,dd/MM/yyyy}"/>
 		<@display.column property="cargo.nome" title="Cargo" style="width: 290px;"/>
-		<@display.column property="situacao" title="Situação" style="width: 90px;"/>
+		<@display.column title="Situação" style="width: 90px;">
+			 ${solicitacaoEpi.situacao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+		</@display.column>
 		<@display.footer>
 		  	<tr>
 				<td colspan="6" >Total : ${totalSize} solicitações</td>

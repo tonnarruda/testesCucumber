@@ -19,14 +19,14 @@ public class SituacaoSolicitacaoEpi extends LinkedHashMap<Character, String>
 		put('P', "Entregue Parcialmente");
 	}
 	
-	public static final char getSituacao(int qtdEntregue, int qtdSolicitado)
+	public static final String getSituacao(int qtdEntregue, int qtdSolicitado)
 	{
-		if (qtdEntregue == qtdSolicitado)
-			return ENTREGUE;
+		if (qtdEntregue >= qtdSolicitado)
+			return getDescricao(ENTREGUE);
 		else if (qtdEntregue > 0)
-			return ENTREGUE_PARCIALMENTE;
+			return getDescricao(ENTREGUE_PARCIALMENTE);
 		else
-			return ABERTA;
+			return getDescricao(ABERTA);
 	}
 
 	public static String getDescricao(char situacaoSolicitacaoEpi) 

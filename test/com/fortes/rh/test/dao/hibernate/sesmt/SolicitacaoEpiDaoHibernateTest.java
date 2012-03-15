@@ -273,7 +273,6 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
 		historicoColaboradorDao.save(historicoColaborador);
-		
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
@@ -294,6 +293,9 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
 		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).intValue());
 	}
