@@ -1,0 +1,1 @@
+alter sequence extintormanutencaoservico_sequence restart with 11;--.go
