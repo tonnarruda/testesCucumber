@@ -135,4 +135,8 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		Collection<String> obrigatorios = CollectionUtils.subtract(Arrays.asList(parametrosDoSistema.getCamposCandidatoObrigatorio().split(",")) , Arrays.asList(camposExtras));
 		parametrosDoSistema.setCamposCandidatoObrigatorio(StringUtils.join(obrigatorios.iterator(), ","));
 	}
+
+	public void updateServidorRemprot(String servidorRemprot) {
+		getDao().updateServidorRemprot(servidorRemprot);
+	}
 }

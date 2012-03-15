@@ -51,6 +51,16 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("bla", parametrosDoSistemaDao.findByIdProjection(ps.getId()).getModulos());
 	}
 	
+	public void testUpdateServidorRemprot()
+	{
+		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
+		ps.setServidorRemprot("12.2.3.5");
+		parametrosDoSistemaDao.save(ps);
+		
+		parametrosDoSistemaDao.updateServidorRemprot("9.9.9.8");
+		assertEquals("9.9.9.8", parametrosDoSistemaDao.findByIdProjection(ps.getId()).getServidorRemprot());
+	}
+	
 	public void testDisablePapeisIds()
 	{
 		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();

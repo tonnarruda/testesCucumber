@@ -71,4 +71,13 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		
 		query.executeUpdate();
 	}
+
+	public void updateServidorRemprot(String servidorRemprot) {
+
+		String hql = "update ParametrosDoSistema p set p.servidorRemprot = :servidorRemprot";
+		Query query = getSession().createQuery(hql);
+		query.setString("servidorRemprot", servidorRemprot);
+		query.executeUpdate();
+		
+	}
 }

@@ -6,6 +6,8 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.config.SetupListener;
 import com.fortes.rh.config.backup.RunAntScript;
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
@@ -24,6 +26,7 @@ public class LoginAction extends MyActionSupport
 	private String versao;
 //	private Boolean atualizadoSucesso = true;
 	private Boolean demonstracao = false;
+	private String servidorRemprot;
 
 	public String login() throws Exception
 	{
@@ -32,25 +35,27 @@ public class LoginAction extends MyActionSupport
 			if (SecurityUtil.hasLoggedUser())
 				return "index";
 			
-			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-//			if(parametrosDoSistema.getAtualizadoSucesso() != null)
-//				atualizadoSucesso = parametrosDoSistema.getAtualizadoSucesso();
 			
 			String msgAutenticacao = "";
-			boolean rhRegistrado = false;
 			if(demonstracao)
 			{
 				msgAutenticacao = Autenticador.getMsgPadrao();
 			}
 			else
 			{
-				rhRegistrado = Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
-				if (!rhRegistrado)
-				{
-					msgRemprot = "Este sistema não está licenciado para uso ou ocorreu algum erro com a comunicação do servidor.";
+				try {
+					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+					servidorRemprot = parametrosDoSistema.getServidorRemprot();
+					Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
+				} catch (NotRegistredException e) {
+					msgRemprot = e.getMessage();
 					msgAutenticacao = Autenticador.getMsgPadrao();
 					return "not_registered";
-				}				
+				} catch (NotConectAutenticationException e) {
+					msgRemprot = e.getMessage();
+					msgAutenticacao = Autenticador.getMsgPadrao();
+					return "not_conect";
+				}
 			}
 			
 			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);
@@ -64,6 +69,21 @@ public class LoginAction extends MyActionSupport
 			e.printStackTrace();
 			return Action.INPUT;
 		}
+	}
+	
+	public String configAutenticador() throws Exception
+	{
+		try
+		{
+			parametrosDoSistemaManager.updateServidorRemprot(servidorRemprot);
+		} catch (Exception e)
+		{
+			addActionError("Erro ao configurar servidor de autenticação." + e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
 	}
 
 	public String updateConf() throws Exception
@@ -140,6 +160,14 @@ public class LoginAction extends MyActionSupport
 
 	public void setDemonstracao(Boolean demonstracao) {
 		this.demonstracao = demonstracao;
+	}
+
+	public String getServidorRemprot() {
+		return servidorRemprot;
+	}
+
+	public void setServidorRemprot(String servidorRemprot) {
+		this.servidorRemprot = servidorRemprot;
 	}
 
 //	public Boolean getAtualizadoSucesso()

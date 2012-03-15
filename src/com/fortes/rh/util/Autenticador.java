@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
+
 import remprot.RPClient;
 
 
@@ -17,7 +20,7 @@ public class Autenticador
 	private static RPClient clientRemprot = null;
 	private static String urlServidorRemprot;
 	
-	public static boolean verificaCopia(String url)
+	public static void verificaCopia(String url) throws Exception
 	{
 		/*
 		Passo como parametros de criacao da classe o codigo do sistema para reset (fornecido pelo AG)
@@ -42,12 +45,14 @@ public class Autenticador
 		System.out.println("modulos: " + clientRemprot.getEnabledModules());	    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
 		System.out.println("qtd colab: " + clientRemprot.getUserCount());		    // qtd colaboradores
 		
-		//codigo de retorno do erro
-		if(clientRemprot.getErrors() != 0)
-			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
-		
-//		return clientRemprot.getRegistered();
-		return true;
+//		if(clientRemprot.getErrors() == 65535)
+//		{
+//			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
+//			throw new NotConectAutenticationException();
+//		}
+//		
+//		if(!clientRemprot.getRegistered())
+//			throw new NotRegistredException();
 	}
 	
 	private static int RECRUT_SELECAO = 1;

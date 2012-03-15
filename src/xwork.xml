@@ -52,7 +52,7 @@
 			  exportaBDSCandidatos,cancelarReajuste,criarFaixasDeMiguel,prepareRelatorioCargo,relatorioCargo,prepareRecuperaSenha,recuperaSenha, prepareColaboradorSolicitacao,
 			  prepareImprimirCertificado,listOcorrenciaColaborador,prepareFiltro,prepareRelatorioOcorrencia,buscaOcorrencia,verTurmasCurso,deleteDetalhe,prepareMudancaFuncao,mudaFuncao,bloquearLtcat,desbloquearLtcat,gerarRelatorioLtcat,
 			  imprimirSolicitacaoPessoal,prepareInsertCurriculo,aplicarDissidio,preparePesquisa,prepareAutoInsert,createAuto,prepareTransferirFaixasCargo,transferirFaixasCargo,prepareFiltroHistoricoTreinamentos,relatorioHistoricoTreinamentos,prepareImportarCadastros,importarCadastros,prepareInsertNota,sobre,prepareRelatorioColaboradorCargo,relatorioColaboradorCargo,prepareInsertFiltro,
-			  prepareUpdateFiltro,preparePromoverCandidato,updateConf,gerarBD,imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia,imprimirPerformanceFuncional
+			  prepareUpdateFiltro,preparePromoverCandidato,updateConf,gerarBD,imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia,imprimirPerformanceFuncional,configAutenticador
 			  </param>
         </interceptor-ref>
         <interceptor-ref name="workflow">
@@ -160,11 +160,16 @@
       <result name="success">/WEB-INF/pages/acegilogin.jsp</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="not_registered" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
+      <result name="not_conect" type="freemarker">/WEB-INF/pages/configuracaoAutenticador.ftl</result>
       <result name="index" type="redirect">index.action</result>
     </action>
     <action name="updateConf" class="com.fortes.rh.web.action.security.LoginAction" method="updateConf">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
+    </action>
+    <action name="configAutenticador" class="com.fortes.rh.web.action.security.LoginAction" method="configAutenticador">
+      <result name="success" type="redirect">/login.action</result>
+      <result name="input" type="freemarker">/WEB-INF/pages/configuracaoAutenticador.ftl</result>
     </action>
     <action name="gerarBD" class="com.fortes.rh.web.action.security.LoginAction" method="gerarBD">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
