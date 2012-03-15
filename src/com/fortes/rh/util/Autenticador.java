@@ -52,7 +52,7 @@ public class Autenticador
 //		}
 //		
 //		if(!clientRemprot.getRegistered())
-//			throw new NotRegistredException();
+//			throw new NotRegistredException(); 
 	}
 	
 	private static int RECRUT_SELECAO = 1;
