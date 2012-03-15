@@ -24,17 +24,13 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.MensagemManager;
-import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -1424,7 +1420,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().setMotivo(historicoColaboradorIds, tipo);
 	}
 
-	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId, String[] cargosIds)
+	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataBase, Double percentualDissidio, Long empresaId, String[] cargosIds, String[] areasIds, String[] estabelecimentosIds)
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresaId);
 		
@@ -1445,8 +1441,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 		
 		Collection<Long> cargosIdsLong = Arrays.asList(StringUtil.stringToLong(cargosIds));
+		Collection<Long> areasIdsLong = Arrays.asList(StringUtil.stringToLong(areasIds));
+		Collection<Long> estabelecimentosIdsLong = Arrays.asList(StringUtil.stringToLong(estabelecimentosIds));
 		
-		if (!cargosIdsLong.isEmpty())
+		if (!cargosIdsLong.isEmpty() || !areasIdsLong.isEmpty() || !estabelecimentosIdsLong.isEmpty())
 		{
 			Collection<Long> colaboradoresIds = new ArrayList<Long>();
 			Collection<HistoricoColaborador> historicosFiltrados = new ArrayList<HistoricoColaborador>();
@@ -1454,7 +1452,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			// Checa se o colaborador ja possuiu um dos cargos selecionados
 			for (HistoricoColaborador historicoColaborador : historicos) 
 			{
-				if (cargosIdsLong.contains(historicoColaborador.getFaixaSalarial().getCargo().getId()) && !colaboradoresIds.contains(historicoColaborador.getColaborador().getId()))
+				if  ( 	(cargosIdsLong.isEmpty() || cargosIdsLong.contains(historicoColaborador.getFaixaSalarial().getCargo().getId()) && !colaboradoresIds.contains(historicoColaborador.getColaborador().getId())) &&
+						(areasIdsLong.isEmpty() || areasIdsLong.contains(historicoColaborador.getAreaOrganizacional().getId()) && !colaboradoresIds.contains(historicoColaborador.getColaborador().getId())) &&
+						(estabelecimentosIdsLong.isEmpty() || estabelecimentosIdsLong.contains(historicoColaborador.getEstabelecimento().getId()) && !colaboradoresIds.contains(historicoColaborador.getColaborador().getId()))
+					)
 					colaboradoresIds.add(historicoColaborador.getColaborador().getId());
 			}
 			

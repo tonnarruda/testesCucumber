@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -34,7 +35,6 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.security.UserDetailsImpl;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -61,6 +61,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private RespostaManager respostaManager;
 	private CandidatoManager candidatoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -109,6 +110,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Boolean compartilharColaboradores;
 	private boolean respostaColaborador;
 	private boolean moduloExterno;
+	private boolean preview;
 
 	public String prepareInsert() throws Exception
 	{
@@ -339,8 +341,25 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
-		else
+		else{
+			enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional();
 			return Action.SUCCESS;
+		}
+	}
+
+	private void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional() 
+	{
+		Long colaboradorAvaliadoId = null;
+		Long avaliadorId  = null;
+		
+		if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId()!=null)
+			colaboradorAvaliadoId = colaboradorQuestionario.getColaborador().getId();
+		
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
+			avaliadorId = colaboradorQuestionario.getAvaliacao().getId();
+		
+		if(colaboradorAvaliadoId != null && avaliadorId != null)
+			gerenciadorComunicacaoManager.enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(colaboradorAvaliadoId, avaliadorId, getUsuarioLogado(), getEmpresaSistema());
 	}
 
 	public String updateAvaliacaoExperiencia()
@@ -725,5 +744,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setAnuncioId(Long anuncioId) {
 		this.anuncioId = anuncioId;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public boolean isPreview() {
+		return preview;
+	}
+
+	public void setPreview(boolean preview) {
+		this.preview = preview;
 	}
 }

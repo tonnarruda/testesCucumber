@@ -45,8 +45,9 @@ public class Autenticador
 		//codigo de retorno do erro
 		if(clientRemprot.getErrors() != 0)
 			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
-//		return c.getRegistered();
-		return false;
+		
+//		return clientRemprot.getRegistered();
+		return true;
 	}
 	
 	private static int RECRUT_SELECAO = 1;
@@ -121,10 +122,8 @@ public class Autenticador
 	public static String getMsgAutenticado(String url)
 	{
 		//TODO remprot
-//		if(getRemprot(url).getRegistered())
-			return "";
-//		else
-//			return getMsgPadrao();
+//		return isDemo() ? getMsgPadrao() : "";
+		return "";
 	}
 
 	public static int getQtdCadastrosVersaoDemo()

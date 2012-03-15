@@ -32,7 +32,7 @@ public class RelatorioUtil
     	if(logo.exists())
     		pathLogoRelatorio = pathLogo;
 
-    	String msgRegistro = Autenticador.getMsgPadrao();
+    	String msgRegistro = "";
     	if(!Autenticador.isDemo())
     		msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());
 

@@ -87,7 +87,9 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="validaRespostas(new Array('data'), new Array('data'), true, true, false, false, true);" class="btnGravar"></button>
+			<#if !preview>
+				<button onclick="validaRespostas(new Array('data'), new Array('data'), true, true, false, false, true);" class="btnGravar"></button>
+			</#if>
 	<#else>
 		<div class="buttonGroup">
 	</#if>

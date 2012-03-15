@@ -44,7 +44,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	public boolean atualizarUsuario(Long colaboradorId, Long usuarioId);
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor);
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 
 	public boolean updateDataDesligamentoByCodigo(String codigoac, Empresa empresa, Date data);

@@ -2,13 +2,13 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="motivos_demissao"
+		 name="motivos_demissao_estabelecimento_observacao"
 		 columnCount="1"
 		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="537"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="784"
 		 columnSpacing="0"
 		 leftMargin="29"
 		 rightMargin="29"
@@ -37,18 +37,18 @@
 	<field name="observacaoDemissao" class="java.lang.String"/>
 	<field name="estabelecimento.nome" class="java.lang.String"/>
 
-	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpMotivo" calculation="Count">
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpEstabelecimento" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
-	<variable name="countColaborador" class="java.lang.Integer" resetType="Group" resetGroup="grpMotivo" calculation="Count">
+	<variable name="countColaborador" class="java.lang.Integer" resetType="Group" resetGroup="grpEstabelecimento" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 
-		<group  name="grpMotivo" isReprintHeaderOnEachPage="true" >
-			<groupExpression><![CDATA[$F{motivoDemissao.motivo}]]></groupExpression>
+		<group  name="grpEstabelecimento" isReprintHeaderOnEachPage="true" >
+			<groupExpression><![CDATA[$F{estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="13"  isSplitAllowed="false" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -66,7 +66,7 @@
 					<textElement>
 						<font size="8" isUnderline="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -74,7 +74,7 @@
 			<band height="13"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="463"
+						x="710"
 						y="2"
 						width="47"
 						height="11"
@@ -87,7 +87,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="512"
+						x="759"
 						y="2"
 						width="25"
 						height="11"
@@ -116,14 +116,14 @@
 						mode="Opaque"
 						x="0"
 						y="0"
-						width="537"
+						width="784"
 						height="50"
 						key="subreport-1"
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="CABECALHO">
 						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
 		</pageHeader>
@@ -133,20 +133,20 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="40"
+						width="81"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Motivo]]></text>
+				<text><![CDATA[Estabelecimento]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="0"
 						y="12"
-						width="39"
+						width="42"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -157,9 +157,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="40"
+						x="42"
 						y="12"
-						width="124"
+						width="133"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -170,7 +170,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="273"
+						x="303"
 						y="12"
 						width="88"
 						height="11"
@@ -183,7 +183,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="363"
+						x="393"
 						y="12"
 						width="174"
 						height="11"
@@ -196,16 +196,29 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="166"
+						x="570"
 						y="12"
-						width="105"
+						width="214"
 						height="11"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Estabelecimento]]></text>
+				<text><![CDATA[Observação]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="177"
+						y="12"
+						width="124"
+						height="11"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Motivo]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -215,7 +228,7 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="537"
+						width="784"
 						height="14"
 						backcolor="#EEEEEE"
 						key="rectangle-3"
@@ -229,13 +242,14 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="40"
+						x="42"
 						y="1"
-						width="124"
+						width="133"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
-						stretchType="RelativeToTallestObject"/>
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
 					<textElement>
 						<font size="8"/>
@@ -250,7 +264,9 @@
 						width="39"
 						height="12"
 						backcolor="#FFFFFF"
-						key="textField"/>
+						key="textField"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
 					<textElement>
 						<font size="8"/>
@@ -260,12 +276,14 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="273"
+						x="303"
 						y="1"
 						width="88"
 						height="12"
 						backcolor="#FFFFFF"
-						key="textField-8"/>
+						key="textField-8"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
 					<textElement>
 						<font size="8"/>
@@ -275,13 +293,15 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="363"
+						x="393"
 						y="1"
 						width="174"
 						height="12"
 						backcolor="#FFFFFF"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
+						key="textField"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
@@ -289,16 +309,31 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="166"
+						x="570"
 						y="1"
-						width="105"
+						width="214"
+						height="12"
+						key="textField"
+						stretchType="RelativeToBandHeight"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{observacaoDemissao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="177"
+						y="1"
+						width="124"
 						height="12"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -310,7 +345,7 @@
 			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="314"
+						x="563"
 						y="2"
 						width="186"
 						height="13"
@@ -323,7 +358,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="503"
+						x="752"
 						y="2"
 						width="32"
 						height="13"
@@ -342,7 +377,7 @@
 					<reportElement
 						x="0"
 						y="1"
-						width="537"
+						width="784"
 						height="13"
 						backcolor="#D4D3D3"
 						key="rectangle-2"/>
@@ -350,7 +385,7 @@
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="512"
+						x="759"
 						y="1"
 						width="25"
 						height="12"
@@ -363,7 +398,7 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="464"
+						x="711"
 						y="1"
 						width="46"
 						height="12"

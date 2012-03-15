@@ -104,6 +104,10 @@
 			%*
 			
 			<br /><br />
+			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
+			<br />
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
+			<br />
 			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 			
 			<@ww.hidden name="page" id="page"/>

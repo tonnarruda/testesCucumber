@@ -45,9 +45,6 @@
     <property name="cidadeManager">
       <ref bean="cidadeManager" />
     </property>
-    <property name="gastoManager">
-      <ref bean="gastoManager" />
-    </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -1534,27 +1534,27 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor)
 	{
-		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAO);
+		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAO, agruparPor);
 
 		return query.list();
 	}
 
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
 	{
-		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAOQUANTIDADE);
+		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAOQUANTIDADE, null);
 
 		return query.list();
 	}
 
-	private Query findColaboradores(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, int origem)
+	private Query findColaboradores(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, int origem, String agruparPor)
 	{
 
 		StringBuilder hql = new StringBuilder();
 
 		if(origem == MOTIVODEMISSAO)
-			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.motivo, cg.nome, fs.nome) ");
+			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.motivo, cg.nome, fs.nome, es.nome) ");
 		else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append("select mo.motivo, count(mo.motivo) ");
 
@@ -1587,9 +1587,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append(" and cg.id in (:cargoIds) ");
 
 		// Ordenação
-		if(origem == MOTIVODEMISSAO)
-			hql.append("order by mo.motivo, co.nomeComercial ");
-		else if(origem == MOTIVODEMISSAOQUANTIDADE)
+		if(origem == MOTIVODEMISSAO){
+			if (agruparPor.equals("E")){
+				hql.append("order by es.nome, co.nomeComercial ");
+			} else if (agruparPor.equals("M")) {
+				hql.append("order by mo.motivo, co.nomeComercial ");
+			} else {
+				hql.append("order by co.nomeComercial ");
+			}
+		} else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append(" group by mo.motivo order by mo.motivo  ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -2383,7 +2389,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca, fs) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.colaborador as co ");

@@ -39,6 +39,12 @@
 		{
 			addChecks('avaliacoesCheck',data)
 		}
+		
+		function submitLiberar(avaliacaoDesempenhoId)
+		{
+			$('#btnLiberar').removeAttr("href");
+			window.location='liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId;
+		}
 	</script>
 	
 	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
@@ -69,7 +75,7 @@
 				<a href="prepareResultado.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Resultado da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
 				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
-				<a href="javascript:newConfirm('Deseja liberar esta Avaliação?', function(){window.location='liberar.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+				<a href="javascript:newConfirm('Deseja liberar esta Avaliação?', submitLiberar(${avaliacaoDesempenho.id}));" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>

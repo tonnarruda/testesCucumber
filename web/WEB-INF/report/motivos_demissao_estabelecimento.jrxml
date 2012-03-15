@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="motivos_demissao"
+		 name="motivos_demissao_estabelecimento"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -37,58 +37,60 @@
 	<field name="observacaoDemissao" class="java.lang.String"/>
 	<field name="estabelecimento.nome" class="java.lang.String"/>
 
-	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpMotivo" calculation="Count">
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
-	<variable name="countColaborador" class="java.lang.Integer" resetType="Group" resetGroup="grpMotivo" calculation="Count">
+	<variable name="countColaborador" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 
-		<group  name="grpMotivo" isReprintHeaderOnEachPage="true" >
-			<groupExpression><![CDATA[$F{motivoDemissao.motivo}]]></groupExpression>
+		<group  name="grpEstabelecimento" >
+			<groupExpression><![CDATA[$F{estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
-			<band height="13"  isSplitAllowed="false" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+			<band height="12"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Group" evaluationGroup="grpEstabelecimento"  hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="1"
+						y="0"
 						width="537"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"
+						printWhenGroupChanges="grpEstabelecimento"
 						isPrintWhenDetailOverflows="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
 					<textElement>
 						<font size="8" isUnderline="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="13"  isSplitAllowed="true" >
+			<band height="12"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="463"
-						y="2"
+						y="0"
 						width="47"
 						height="11"
-						key="staticText-2"/>
+						key="staticText-2"
+						printWhenGroupChanges="grpEstabelecimento"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
 				<text><![CDATA[Quantidade:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Group" evaluationGroup="grpEstabelecimento"  hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="512"
-						y="2"
+						y="0"
 						width="25"
 						height="11"
 						key="textField"/>
@@ -133,14 +135,14 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="40"
+						width="112"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Motivo]]></text>
+				<text><![CDATA[Estabelecimento]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -205,7 +207,7 @@
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Estabelecimento]]></text>
+				<text><![CDATA[Motivo]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -298,7 +300,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

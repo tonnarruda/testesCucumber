@@ -71,7 +71,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	MensagemManager mensagemManager;
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
-
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
@@ -201,6 +200,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
         }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enviaLembreteDeQuestionarioNaoLiberado() 
 	{
     	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
@@ -341,7 +341,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), colaboradorAvaliacao.getColaborador().getEmpresa().getId());
 	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
 	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
 	    			} 		
 	    		}
@@ -447,9 +447,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Empresa empresa = periodoExperiencia.getEmpresa();
 				Integer diasAvaliacao = periodoExperiencia.getDias();
 				
-				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "GERENCIA_MSG_PERIODOEXPERIENCIA");		
+				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "GERENCIA_MSG_PERIODOEXPERIENCIA");		
 
-				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRoleAvaliacaoExperiencia(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
+				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
 				usuarioEmpresasPeriodoExperiencia.removeAll(usuarioEmpresasPeriodoExperienciaGerencial);
 				
 				String data = DateUtil.formataDiaMesAno(dataAvaliacao.getTime());
@@ -489,6 +489,35 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    		}
 				}
 			}
+		}
+	}
+	
+	public void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa) 
+	{
+		Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "ROLE_VER_AREAS");
+
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		Colaborador colaboradorAvaliado = colaboradorManager.findByIdDadosBasicos(colaboradorAvaliadoId, null);
+
+		Colaborador avaliador = colaboradorManager.findByUsuarioProjection(usuario.getId());
+		String avaliadorNome = avaliador !=null ? avaliador.getNomeMaisNomeComercial():usuario.getNome();
+		
+		StringBuilder mensagem = new StringBuilder();
+		mensagem.append("A avaliação do período de experiência do colaborador ")
+				.append(colaboradorAvaliado.getNomeMaisNomeComercial())
+				.append(" foi respondida por ").append(avaliadorNome);
+		
+		mensagem.append("\n\nColaborador: ").append(colaboradorAvaliado.getNomeMaisNomeComercial())
+				.append("\nCargo: ").append(colaboradorAvaliado.getFaixaSalarial().getDescricao())
+				.append("\nÁrea: ").append(colaboradorAvaliado.getAreaOrganizacional().getDescricao());
+		
+		String link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliado.getId() + "&respostaColaborador=true&preview=true&colaboradorQuestionario.avaliacao.id="+avaliacaoId;
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.PERFIL_VER_AREAS.getId()))
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.PERIODOEXPERIENCIA);
 		}
 	}
 	

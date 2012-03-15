@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(16, Operacao.values().length);
+		assertEquals(17, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -37,6 +37,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(14));
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(15));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(16));
+		assertEquals("Aviso ao responder perído de experiência", Operacao.getDescricaoById(17));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -56,6 +57,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(14).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(16).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(17).size());
 	}
 
 	
@@ -77,6 +79,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(14, Operacao.DESLIGAR_COLABORADOR_AC.getId());
 		assertEquals(15, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
 		assertEquals(16, Operacao.BACKUP_AUTOMATICO.getId());
+		assertEquals(17, Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId());
 	}
 
 	public void testEncerrarSolicitacao()
@@ -204,5 +207,14 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+
+	public void testResponderAvaliacaoPeriodoExperiencia()
+	{
+		Operacao operacao = Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 }

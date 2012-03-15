@@ -54,7 +54,6 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SalarioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -287,7 +286,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setGrupoNomeProjection(grupoNome);
 	}
 	//usado em Relatório de Desligamento
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String motivoDemissao, String cargoNome, String faixaSalarialNome)
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String motivoDemissao, String cargoNome, String faixaSalarialNome, String estabelecimentoNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -295,7 +294,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataAdmissao = dataAdmissao;
 		this.dataDesligamento = dataDesligamento;
 		this.observacaoDemissao = observacaoDemissao;
-
+		
 		if(this.motivoDemissao == null)
 			this.motivoDemissao = new MotivoDemissao();
 
@@ -308,6 +307,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if(this.faixaSalarial.getCargo() == null)
 			this.faixaSalarial.setCargo(new Cargo());
 		this.faixaSalarial.getCargo().setNome(cargoNome);
+		
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		this.estabelecimento.setNome(estabelecimentoNome);
 	}
 
 	//usado no Relatório de Admitidos
@@ -746,7 +749,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//Construtor usado em findByIdDadosBasicos
-	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, Integer statusRetornoAC, AreaOrganizacional areaOrganizacional, Cargo cargo)
+	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, Integer statusRetornoAC, AreaOrganizacional areaOrganizacional, Cargo cargo, FaixaSalarial faixaSalarial)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -756,8 +759,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setAreaOrganizacional(areaOrganizacional);
 
 		if(this.faixaSalarial == null)
-			this.setFaixaSalarial(new FaixaSalarial());
-
+			setFaixaSalarial(faixaSalarial);
+			
 		this.getFaixaSalarial().setCargo(cargo);
 
 		if(this.historicoColaborador == null)

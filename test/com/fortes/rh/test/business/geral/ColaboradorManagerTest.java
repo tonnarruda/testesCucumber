@@ -652,19 +652,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		return demitido;
 	}
 
-	private TurnOver montaAtivo(int mes, int ano, double qtdAtivos) 
-	{
-		TurnOver ativos = new TurnOver();
-		Date dataMesAno = DateUtil.criarDataMesAno(01, mes, ano);
-		ativos.setMesAnoQtdAtivos(dataMesAno, qtdAtivos);
-		
-		return ativos;
-	}
-
     public void testFindColaboradoresMotivoDemissao() throws Exception
     {
-        colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
-        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date()));
+        colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
+        assertNotNull(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), "M"));
     }
 
     public void testFindColaboradoresMotivoDemissaoException() throws Exception
@@ -672,8 +663,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Exception exc = null;
         try
         {
-            colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(null));
-            colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date());
+            colaboradorDao.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(null));
+            colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date(), null);
         }
         catch (Exception e)
         {

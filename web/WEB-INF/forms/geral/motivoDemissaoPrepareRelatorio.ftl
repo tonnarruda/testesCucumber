@@ -130,7 +130,7 @@
 		<@ww.select label="Exibir lista de Colaboradores" id="listaColaboradores" onchange="getAgruparPorMotivo()" name="listaColaboradores" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 96px;"/>
 		
 		<span id="agruparPorMotivo">
-			<@ww.select label="Agrupar por motivo" name="agruparPorMotivo" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 76px;"/>
+			<@ww.select label="Agrupar Por" name="agruparPor" list=r"#{'N':'Nenhum', 'E':'Estabelecimento', 'M':'Motivo'}" cssStyle="width: 140px;"/>
 			<@ww.select label="Exibir observação" name="exibirObservacao" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 76px;"/>
 		</span>
 	</@ww.form>

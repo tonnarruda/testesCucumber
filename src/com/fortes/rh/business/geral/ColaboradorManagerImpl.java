@@ -895,10 +895,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionEmpresa(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor)
 			throws Exception
 	{
-		Collection<Colaborador> colaboradors = getDao().findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim);
+		Collection<Colaborador> colaboradors = getDao().findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, agruparPor);
 		if (colaboradors == null || colaboradors.isEmpty())
 			throw new Exception("Não existem dados para o filtro informado.");
 
@@ -1495,17 +1495,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-		int qtdColaboradorNoBanco = getDao().getCount();
-		
-		RPClient remprot = Autenticador.getRemprot();
-		if(remprot.getRegistered())
-		{
-			if(qtdColaboradorNoBanco >= remprot.getUserCount())
-				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
-		}	
-		else
-			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+//		int qtdColaboradorNoBanco = getDao().getCount();
+//		
+//		RPClient remprot = Autenticador.getRemprot();
+//		if(remprot.getRegistered())
+//		{
+//			if(qtdColaboradorNoBanco >= remprot.getUserCount())
+//				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
+//		}	
+//		else
+//			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
 	}
 
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId)
