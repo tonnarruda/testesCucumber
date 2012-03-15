@@ -18,4 +18,8 @@ public class SolicitacaoEpiItemEntregaManagerImpl extends GenericManagerImpl<Sol
 	{
 		return getDao().getTotalEntregue(solicitacaoEpiItemId, solicitacaoEpiItemEntregaId);
 	}
+
+	public SolicitacaoEpiItemEntrega findByIdProjection(Long solicitacaoEpiItemEntregaId) {
+		return getDao().findByIdProjection(solicitacaoEpiItemEntregaId);
+	}
 }

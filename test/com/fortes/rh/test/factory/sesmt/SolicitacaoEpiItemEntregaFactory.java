@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
@@ -11,6 +12,8 @@ public class SolicitacaoEpiItemEntregaFactory
 	{
 		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = new SolicitacaoEpiItemEntrega();
 		solicitacaoEpiItemEntrega.setId(null);
+		solicitacaoEpiItemEntrega.setDataEntrega(new Date());
+		solicitacaoEpiItemEntrega.setQtdEntregue(2);
 		return solicitacaoEpiItemEntrega;
 	}
 

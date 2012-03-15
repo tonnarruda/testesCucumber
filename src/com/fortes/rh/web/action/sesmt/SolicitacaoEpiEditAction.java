@@ -130,7 +130,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	
 	public String prepareUpdateEntrega() throws Exception
 	{
-		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findById(solicitacaoEpiItemEntrega.getId());
+		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findByIdProjection(solicitacaoEpiItemEntrega.getId());
 		return Action.SUCCESS;
 	}
 

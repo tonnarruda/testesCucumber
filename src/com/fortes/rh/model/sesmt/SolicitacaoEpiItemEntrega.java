@@ -41,6 +41,14 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		setCA(CA);
 	}
 	
+	public void setProjectionSolicitacaoEpiItemId(Long solicitacaoEpiItemId) 
+	{
+		if(this.solicitacaoEpiItem == null)
+			this.solicitacaoEpiItem = new SolicitacaoEpiItem();
+		
+		this.solicitacaoEpiItem.setId(solicitacaoEpiItemId);
+	}
+	
 	public SolicitacaoEpiItem getSolicitacaoEpiItem() {
 		return solicitacaoEpiItem;
 	}

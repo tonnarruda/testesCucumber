@@ -9,6 +9,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpiItemEntrega>
@@ -90,6 +91,20 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		
 		assertEquals(5, solicitacaoEpiItemEntregaDao.getTotalEntregue(solicitacaoEpiItem.getId(), null));
 		assertEquals(4, solicitacaoEpiItemEntregaDao.getTotalEntregue(solicitacaoEpiItem2.getId(), null));
+	}
+	
+	public void testFindByIdProjection() 
+	{
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity();
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		solicitacaoEpiItemEntregaDao.save(solicitacaoEpiItemEntrega);
+		
+		SolicitacaoEpiItemEntrega retorno = solicitacaoEpiItemEntregaDao.findByIdProjection(solicitacaoEpiItemEntrega.getId());
+		assertEquals(solicitacaoEpiItemEntrega.getId(), retorno.getId());
+		assertEquals(solicitacaoEpiItem.getId(), retorno.getSolicitacaoEpiItem().getId());
 	}
 	
 	public void setSolicitacaoEpiItemEntregaDao(SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao)
