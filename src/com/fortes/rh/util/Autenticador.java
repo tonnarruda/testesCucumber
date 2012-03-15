@@ -46,6 +46,7 @@ public class Autenticador
 		if(clientRemprot.getErrors() != 0)
 			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
 		
+//		return clientRemprot.getRegistered();
 		return true;
 	}
 	

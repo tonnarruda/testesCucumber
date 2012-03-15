@@ -1495,17 +1495,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-		int qtdColaboradorNoBanco = getDao().getCount();
-		
-		RPClient remprot = Autenticador.getRemprot();
-		if(remprot.getRegistered())
-		{
-			if(qtdColaboradorNoBanco >= remprot.getUserCount())
-				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
-		}	
-		else
-			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+//		int qtdColaboradorNoBanco = getDao().getCount();
+//		
+//		RPClient remprot = Autenticador.getRemprot();
+//		if(remprot.getRegistered())
+//		{
+//			if(qtdColaboradorNoBanco >= remprot.getUserCount())
+//				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
+//		}	
+//		else
+//			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
 	}
 
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId)
