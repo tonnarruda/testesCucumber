@@ -67,19 +67,25 @@ public class ResultadoQuestionario implements Serializable
 		
 	}
 	
+	//ninguem sabe o que é isso.
 	public void montaComentarioDistinct()
 	{
 		this.colabComentariosDistinct = new ArrayList<ColaboradorResposta>();
 		Long perguntaId = 0L;
+		Long colaboradorQuestionarioIdTmp = 0L;
 		
 		for (ColaboradorResposta colaboradorResposta : colabRespostas) 
 		{
 			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()) && 
 			(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || 
 			(colaboradorResposta.getColaboradorQuestionario() != null && 
-			colaboradorResposta.getColaboradorQuestionario().getId() != null  
+			colaboradorResposta.getColaboradorQuestionario().getId() != null &&  
+			!colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioIdTmp) 
 			)))
+			{
 				colabComentariosDistinct.add(colaboradorResposta);
+				colaboradorQuestionarioIdTmp = colaboradorResposta.getColaboradorQuestionario().getId();
+			}
 			
 			perguntaId = colaboradorResposta.getPergunta().getId();
 		}
