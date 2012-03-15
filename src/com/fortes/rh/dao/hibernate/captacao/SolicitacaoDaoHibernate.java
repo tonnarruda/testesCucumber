@@ -140,8 +140,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		if (empresaId != null)
 			criteria.add(Expression.eq("s.empresa.id", empresaId));
 
-		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.desc("s.data"));
+		criteria.addOrder(Order.asc("c.nome"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
 
