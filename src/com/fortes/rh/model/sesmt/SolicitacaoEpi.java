@@ -76,20 +76,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.vencimentoCA = vencimentoCA;
 	}
 
-	public Date getDataVencimentoEpi()
-	{
-		Date dataVencimento = null;
-		if (epiHistorico != null && epiHistorico.getValidadeUso() != null && dataEpiEntrega != null)
-		{
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(dataEpiEntrega);
-			calendar.add(Calendar.DAY_OF_YEAR, +epiHistorico.getValidadeUso());
-			dataVencimento = calendar.getTime();
-		}
-		
-		return dataVencimento;
-	}
-	
 	public String getSituacaoDescricao()
 	{
 		return SituacaoSolicitacaoEpi.getSituacaoDescricao(qtdEpiEntregue, qtdEpiSolicitado);

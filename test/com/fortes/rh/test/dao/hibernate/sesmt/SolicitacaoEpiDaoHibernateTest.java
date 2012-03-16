@@ -42,7 +42,6 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
-import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpi>

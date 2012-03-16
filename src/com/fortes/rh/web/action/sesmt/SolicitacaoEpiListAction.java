@@ -400,8 +400,4 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
 		return dataSourceEntrega;
 	}
-
-	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
-		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
-	}
 }
