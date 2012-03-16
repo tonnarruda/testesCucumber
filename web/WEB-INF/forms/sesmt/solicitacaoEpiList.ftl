@@ -72,7 +72,7 @@
 
 	<@display.table name="solicitacaoEpis" id="solicitacaoEpi" class="dados" >
 		<@display.column title="Ações" class="acao">
-			<#if solicitacaoEpi.situacaoSolicitacaoEpi == 'E'>
+			<#if solicitacaoEpi.situacao == 'E' || solicitacaoEpi.situacao == 'P'>
 				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
 				<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -94,13 +94,8 @@
 		<@display.column property="data" title="Data Solicitação" style="width: 100px;" format="{0,date,dd/MM/yyyy}"/>
 		<@display.column property="cargo.nome" title="Cargo" style="width: 290px;"/>
 		<@display.column title="Situação" style="width: 90px;">
-			 ${solicitacaoEpi.situacao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+			 ${solicitacaoEpi.situacaoDescricao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
 		</@display.column>
-		<@display.footer>
-		  	<tr>
-				<td colspan="6" >Total : ${totalSize} solicitações</td>
-	  		</tr>
-		</@display.footer>
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 

@@ -104,7 +104,12 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.vencimentoCA = vencimentoCA;
 	}
 
-	public String getSituacao()
+	public String getSituacaoDescricao()
+	{
+		return SituacaoSolicitacaoEpi.getSituacaoDescricao(qtdEpiEntregue, qtdEpiSolicitado);
+	}
+
+	public char getSituacao()
 	{
 		return SituacaoSolicitacaoEpi.getSituacao(qtdEpiEntregue, qtdEpiSolicitado);
 	}

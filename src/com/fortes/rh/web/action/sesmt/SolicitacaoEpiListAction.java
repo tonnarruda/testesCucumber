@@ -17,6 +17,7 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -60,6 +61,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Date vencimento;
 	private char agruparPor = 'E'; // Ordenação do relatório (Epi ou Colaborador)
 	private Collection<SolicitacaoEpi> dataSource;
+	private Collection<SolicitacaoEpiItemEntrega> dataSourceEntrega;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
 
@@ -154,7 +156,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
+			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			
 			switch (agruparPor)
@@ -394,5 +396,9 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setSituacao(char situacao) {
 		this.situacao = situacao;
+	}
+
+	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
+		return dataSourceEntrega;
 	}
 }

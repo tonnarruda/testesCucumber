@@ -16,6 +16,7 @@ import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -39,12 +41,14 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpi>
 {
 	SolicitacaoEpiDao solicitacaoEpiDao;
 	SolicitacaoEpiItemDao solicitacaoEpiItemDao;
+	SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao;
 	EpiDao epiDao;
 	EpiHistoricoDao epiHistoricoDao;
 	ColaboradorDao colaboradorDao;
@@ -159,7 +163,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 	public void testFindEntregaEpi()
 	{
-		Date hoje = new Date();
+		Date hoje = DateUtil.criarDataMesAno(2, 2, 2012);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -179,30 +184,26 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
-		EpiHistorico epiHistorico = new EpiHistorico();
-		epiHistorico.setValidadeUso(6);
-		epiHistorico.setData(hoje);
-		epiHistoricoDao.save(epiHistorico);
-
-		Collection<EpiHistorico> epiHistoricos = new ArrayList<EpiHistorico>();
-		epiHistoricos.add(epiHistorico);
-		
 		Epi epi = EpiFactory.getEntity();
 		epi.setEmpresa(empresa);
 		epi.setNome("teste");
-		epi.setEpiHistoricos(epiHistoricos);
 		epiDao.save(epi);
 		
 		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
-		solicitacaoEpiItem.setDataEntrega(hoje);
 		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItem.setEpi(epi);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega.setDataEntrega(hoje);
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+		
 		Long[] epiCheck = {epi.getId()};
 		char agruparPor = 'E';//agrupar por EPI
 		
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor);
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor);
 		
 		assertEquals(1, colecao.size());
 	}
@@ -210,7 +211,11 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	
 	public void testFindEntregaEpiComColaborador()
 	{
-		Date hoje = new Date();
+		Date hoje = DateUtil.criarDataMesAno(28, 2, 2012);
+		Date data1 = DateUtil.criarDataMesAno(1, 3, 2012);
+		Date data2 = DateUtil.criarDataMesAno(2, 3, 2012);
+		Date data3 = DateUtil.criarDataMesAno(3, 3, 2012);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -244,18 +249,42 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		epi.setEpiHistoricos(epiHistoricos);
 		epiDao.save(epi);
 		
-		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
-		solicitacaoEpiItem.setDataEntrega(hoje);
-		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
-		solicitacaoEpiItem.setEpi(epi);
-		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		SolicitacaoEpiItem item1 = new SolicitacaoEpiItem();
+		item1.setSolicitacaoEpi(solicitacaoEpi);
+		item1.setQtdSolicitado(6);
+		item1.setEpi(epi);
+		solicitacaoEpiItemDao.save(item1);
+
+		SolicitacaoEpiItem item2 = new SolicitacaoEpiItem();
+		item2.setSolicitacaoEpi(solicitacaoEpi);
+		item2.setQtdSolicitado(5);
+		item2.setEpi(epi);
+		solicitacaoEpiItemDao.save(item2);
+		
+		SolicitacaoEpiItemEntrega entrega1 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega1.setSolicitacaoEpiItem(item1);
+		entrega1.setDataEntrega(data1);
+		entrega1.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega1);
+
+		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setSolicitacaoEpiItem(item1);
+		entrega2.setDataEntrega(data2);
+		entrega2.setQtdEntregue(4);
+		solicitacaoEpiItemEntregaDao.save(entrega2);
+
+		SolicitacaoEpiItemEntrega entrega3 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega3.setSolicitacaoEpiItem(item2);
+		entrega3.setDataEntrega(data3);
+		entrega3.setQtdEntregue(5);
+		solicitacaoEpiItemEntregaDao.save(entrega3);
 		
 		Long[] colaboradorCheck = {colaborador.getId()};
 		char agruparPor = 'C';//agrupar por colaborador
 		
-		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), null, colaboradorCheck, agruparPor);
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data3, null, colaboradorCheck, agruparPor);
 		
-		assertEquals(1, colecao.size());
+		assertEquals(3, colecao.size());
 	}
 	
 	public void testGetCount()
@@ -374,6 +403,10 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setSolicitacaoEpiItemEntregaDao(SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao) {
+		this.solicitacaoEpiItemEntregaDao = solicitacaoEpiItemEntregaDao;
 	}
 
 }

@@ -21,7 +21,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
 /**
  * @author Tiago Lopes
@@ -60,7 +60,6 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			solicitacaoEpi.setQtdEpiEntregue(new Integer(o[8].toString()));
 			
 			solicitacoes.add(solicitacaoEpi);
-			//[2574, 4, 3232, ABDIAS LOURENÇO DA SILVA NETO, 2012-03-15, Cobrador, 27, 27]
 		}
 		
 		return solicitacoes;
@@ -200,20 +199,20 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 
-	public Collection<SolicitacaoEpi> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor)
+	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpi(e.id,co.id,e.nome,co.nome,ca.nome,se.data,eh.validadeUso, item.dataEntrega, item.qtdEntregue, eh.vencimentoCA) ");
-		hql.append("from Epi e ");
-		hql.append("join e.solicitacaoEpiItems item ");
-		hql.append("join item.solicitacaoEpi se ");
-		hql.append("join se.colaborador co ");
-		hql.append("join se.cargo ca ");
-		hql.append("left join e.epiHistoricos eh ");
-		hql.append("where se.situacaoSolicitacaoEpi <> 'A' ");
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome) ");
+		hql.append("from SolicitacaoEpiItemEntrega ent ");
+		hql.append("join ent.solicitacaoEpiItem item ");
+		hql.append("join item.solicitacaoEpi s ");
+		hql.append("join s.colaborador co ");
+		hql.append("join s.cargo ca ");
+		hql.append("join item.epi e ");
+		hql.append("where co.desligado = false ");
 		
 		if (dataIni != null && dataFim != null)
-			hql.append("and item.dataEntrega between :dataIni and :dataFim ");
+			hql.append("and ent.dataEntrega between :dataIni and :dataFim ");
 		
 		if(epiIds != null && epiIds.length != 0)
 			hql.append("and e.id in (:epiCheck) ");
@@ -221,12 +220,12 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(colaboradorCheck != null && colaboradorCheck.length != 0)
 			hql.append("and co.id in (:colaboradorCheck) ");
 		
-		hql.append("and co.desligado = false and e.empresa.id = :empresaId ");
-		
+		hql.append("and e.empresa.id = :empresaId ");
+
 		if (agruparPor == 'E')
-			hql.append("order by e.nome,co.nome,se.data ");
+			hql.append("order by e.nome,co.nome,s.data ");
 		if (agruparPor == 'C')
-			hql.append("order by co.nome,e.nome,se.data ");
+			hql.append("order by co.nome,e.nome,s.data ");
 			
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);

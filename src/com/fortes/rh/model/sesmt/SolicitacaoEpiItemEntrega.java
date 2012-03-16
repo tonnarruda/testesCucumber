@@ -33,6 +33,23 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	{
 	}
 
+	public SolicitacaoEpiItemEntrega(Long id, Integer qtdEntregue, Date dataEntrega, Integer qtdSolicitado, String epiNome, String cargoNome, String colaboradorNome)
+	{
+		this.setId(id);
+		this.setQtdEntregue(qtdEntregue);
+		this.setDataEntrega(dataEntrega);
+		
+		this.solicitacaoEpiItem = new SolicitacaoEpiItem();
+		this.solicitacaoEpiItem.setQtdSolicitado(qtdSolicitado);
+		
+		this.solicitacaoEpiItem.setEpi(new Epi());
+		this.solicitacaoEpiItem.getEpi().setNome(epiNome);
+
+		this.solicitacaoEpiItem.setSolicitacaoEpi(new SolicitacaoEpi());
+		this.solicitacaoEpiItem.getSolicitacaoEpi().setCargoNome(cargoNome);
+		this.solicitacaoEpiItem.getSolicitacaoEpi().setColaboradorNome(colaboradorNome);
+	}
+
 	public SolicitacaoEpiItemEntrega(Long id , Integer qtdEntregue, Date dataEntrega, String CA)
 	{
 		setId(id);

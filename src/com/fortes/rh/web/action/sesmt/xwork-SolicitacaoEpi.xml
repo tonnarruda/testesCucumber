@@ -97,7 +97,7 @@
 		</action>
 		<action name="relatorioEntregaEpi" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioEntregaEpi">
 			<result name="success" type="jasper">
-				<param name="dataSource">dataSource</param>
+				<param name="dataSource">dataSourceEntrega</param>
 				<param name="location">WEB-INF/report/Epi_Entregues.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">epiEntregues.pdf</param>

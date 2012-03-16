@@ -19,6 +19,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
 
@@ -109,10 +110,9 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return solicitacoesEpiAVencer;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Collection<SolicitacaoEpi> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor) throws ColecaoVaziaException
+	public Collection<SolicitacaoEpiItemEntrega> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor) throws ColecaoVaziaException
 	{
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findEntregaEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor);
+		Collection<SolicitacaoEpiItemEntrega> solicitacaoEpis = getDao().findEntregaEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
