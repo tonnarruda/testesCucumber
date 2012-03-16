@@ -168,7 +168,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);
 	public void enviaEmailAniversariantes() throws Exception;
-	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao);
+	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao, Long empresaId);
 	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
 	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);

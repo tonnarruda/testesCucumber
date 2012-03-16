@@ -4232,6 +4232,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindByEstabelecimentoDataAdmissao()
 	{
+		Empresa fortes = EmpresaFactory.getEmpresa();
+		empresaDao.save(fortes);
+		Empresa ente = EmpresaFactory.getEmpresa();
+		empresaDao.save(ente);
+		
 		Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
 		estabelecimentoDao.save(matriz);
 		Estabelecimento filial = EstabelecimentoFactory.getEntity(2L);
@@ -4241,6 +4246,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001");
 		joao.setDataAdmissao(hoje);
+		joao.setEmpresa(fortes);
 		colaboradorDao.save(joao);
 		
 		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity(1L);
@@ -4251,6 +4257,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002");
 		pedro.setDataAdmissao(hoje);
+		pedro.setEmpresa(ente);
 		colaboradorDao.save(pedro);
 		
 		HistoricoColaborador historicoPedro = HistoricoColaboradorFactory.getEntity(2L);
@@ -4261,6 +4268,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador rui = ColaboradorFactory.getEntity(3L, "rui", "rui", "003");
 		rui.setDataAdmissao(hoje);
+		rui.setEmpresa(fortes);
 		colaboradorDao.save(rui);
 		
 		HistoricoColaborador historicoRui = HistoricoColaboradorFactory.getEntity(3L);
@@ -4271,6 +4279,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador manoel = ColaboradorFactory.getEntity(4L, "manoel", "manoel", "004");
 		manoel.setDataAdmissao(DateUtil.criarDataMesAno(1, 1, 2011));
+		manoel.setEmpresa(fortes);
 		colaboradorDao.save(manoel);
 		
 		HistoricoColaborador historicoManoel = HistoricoColaboradorFactory.getEntity(4L);
@@ -4279,7 +4288,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoManoel.setData(DateUtil.criarDataMesAno(1, 1, 2011));
 		historicoColaboradorDao.save(historicoManoel);
 		
-		assertEquals(2, colaboradorDao.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje).size());
+		assertEquals(1, colaboradorDao.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, fortes.getId()).size());
 	}
 	
 	public void testFindColaboradoresByIds()

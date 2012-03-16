@@ -3644,7 +3644,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();		
 	}
 
-	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao) {
+	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao, Long empresaId) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
 		hql.append("from HistoricoColaborador as hc ");
@@ -3657,6 +3657,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("  ) ");
 		hql.append("and co.desligado = false ");
 		hql.append("and co.dataAdmissao >= :dataAdmissao ");
+		hql.append("and co.empresa.id = :empresaId ");
 		
 		if (estabelecimentoId != null && !estabelecimentoId.equals(-1L))
 			hql.append("and hc.estabelecimento.id = :estabelecimentoId ");
@@ -3664,8 +3665,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("order by co.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
+		
 		if (estabelecimentoId != null && !estabelecimentoId.equals(-1L))
 			query.setLong("estabelecimentoId", estabelecimentoId);
+		
+		query.setLong("empresaId", empresaId);
 		query.setDate("dataAdmissao", dataAdmissao);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
@@ -3681,7 +3685,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
         subQuery.setProjection(pSub);
 
         subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=this_.id"));
-        subQuery.add(Expression.le("hc2.data", new Date()));
         subQuery.add(Expression.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
         
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");

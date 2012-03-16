@@ -141,7 +141,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialEmpresa", Colaborador.class);
     }
 
-    public Map getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao)
+    public Map getColaboradoresByEstabelecimentoDataAdmissao(Long estabelecimentoId, String dataAdmissao, Long empresaId)
     {
     	Date data = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -156,7 +156,7 @@ public class ColaboradorDWR
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
-    	colaboradores.addAll(colaboradorManager.findByEstabelecimentoDataAdmissao(estabelecimentoId, data));
+    	colaboradores.addAll(colaboradorManager.findByEstabelecimentoDataAdmissao(estabelecimentoId, data, empresaId));
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
