@@ -503,7 +503,7 @@ INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, e
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 8, 2, 7);
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 1, 2, 7);
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 2, 2, 7);
-INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 2, 7);
+INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 2, 6);
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 10, 2, 9);
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 1, 10);
 INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), 1, 9, 1, 11);

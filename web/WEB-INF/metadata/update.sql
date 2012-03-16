@@ -18629,3 +18629,13 @@ drop function insert_gerenciador_comunicao();--.go
 insert into migrations values('20120306133503');--.go
 
 update parametrosdosistema set appversao = '1.1.70.64';--.go
+
+-- versao 1.1.71.65
+
+update gerenciadorcomunicacao set enviarpara = 6 where operacao=9 and meiocomunicacao=2 and enviarpara=7;--.go
+insert into migrations values('20120309134850');--.go
+
+alter sequence extintormanutencaoservico_sequence restart with 11;--.go
+insert into migrations values('20120315154757');--.go
+
+update parametrosdosistema set appversao = '1.1.71.65';--.go
