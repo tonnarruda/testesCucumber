@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.71.65" data="16/03/2012"><![CDATA[
+        - C&S > Movimentações > Alteração de Promoção para Dissídio: Nova filtro por área organizacional e cargo.
+        - Info.Funcionais > Relatórios > Desligamentos: Nova opção de agrupar por estabelecimento.
+        - Utilitário > Configurações > Gerenciador de Comunicação: Nova opção de configurar o envio de mensagem, para os usuários que possuem o perfil "Visualizar todas as Áreas Organizacionais", quando o gestor da área organizacional responder avaliação de acompanhamento do período de experiência.
+    ]]></Versao>
 	<Versao id="1.1.70.64" data="08/03/2012"><![CDATA[
 		- Nova funcionalidade para envio dos erros para o suporte do sistema RH.
 		- Nova funcionalidade videoteca com dicas de funcionalidades do sistema.
