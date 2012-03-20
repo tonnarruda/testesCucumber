@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column proximaversao date;--.go
