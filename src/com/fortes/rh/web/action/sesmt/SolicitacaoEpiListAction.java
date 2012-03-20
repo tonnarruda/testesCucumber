@@ -177,8 +177,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public Collection getSolicitacaoEpis() {
+	public Collection<SolicitacaoEpi> getSolicitacaoEpis() {
 		return solicitacaoEpis;
 	}
 

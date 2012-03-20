@@ -103,7 +103,7 @@
 				<param name="documentName">epiEntregues.pdf</param>
 			</result>
 			<result name="success_agrupar_colaborador" type="jasper">
-				<param name="dataSource">dataSource</param>
+				<param name="dataSource">dataSourceEntrega</param>
 				<param name="location">WEB-INF/report/Epi_Entregues_agrupaColab.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">epiEntregues.pdf</param>
