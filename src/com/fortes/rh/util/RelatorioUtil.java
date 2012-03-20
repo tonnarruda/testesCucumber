@@ -33,8 +33,11 @@ public class RelatorioUtil
     		pathLogoRelatorio = pathLogo;
 
     	String msgRegistro = "";
-    	if(!Autenticador.isDemo())
-    		msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());
+		if (parametrosDoSistema.verificaRemprot())
+		{
+			if(!Autenticador.isDemo())
+				msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
+		}
 
     	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro);
     	cabecalho.setLicenciadoPara(empresa.getNome());

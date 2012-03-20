@@ -1,8 +1,11 @@
 package com.fortes.rh.test.model.geral;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.DateUtil;
 
 public class ParametrosDoSistemaTest extends TestCase {
 
@@ -24,6 +27,26 @@ public class ParametrosDoSistemaTest extends TestCase {
 		// quando null
 		seParametroDeEnvioDeEmailEhSetadoPara(null);
 		assertFalse("envio de e-mail", parametros.isEnvioDeEmailHabilitado());
+	}
+	
+	public void testVerificaRemprotAteHoje() {
+		parametros.setProximaVersao(new Date());
+		assertEquals(false, parametros.verificaRemprot());
+	}
+	
+	public void testVerificaRemprotDataFutura() {
+		parametros.setProximaVersao(DateUtil.criarDataMesAno(21, 03, 2015));
+		assertEquals(false, parametros.verificaRemprot());
+	}
+	
+	public void testVerificaRemprotDataPassada() {
+		parametros.setProximaVersao(DateUtil.criarDataMesAno(01, 02, 2000));
+		assertEquals(true, parametros.verificaRemprot());
+	}
+	
+	public void testVerificaRemprotSemDataProximaVersao() {
+		parametros.setProximaVersao(null);
+		assertEquals(true, parametros.verificaRemprot());
 	}
 	
 	private void seParametroDeEnvioDeEmailEhSetadoPara(Boolean podeEnviar) {

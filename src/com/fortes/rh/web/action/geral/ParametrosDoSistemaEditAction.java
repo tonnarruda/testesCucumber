@@ -99,6 +99,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 		if (parametrosDoSistemaAux.getModulos() != null)
 			parametrosDoSistema.setModulos(parametrosDoSistemaAux.getModulos());
+		
+		if(parametrosDoSistema.getProximaVersao() == null)
+			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
 
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		

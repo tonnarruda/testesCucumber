@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.security;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -43,18 +44,21 @@ public class LoginAction extends MyActionSupport
 			}
 			else
 			{
-				try {
-					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-					servidorRemprot = parametrosDoSistema.getServidorRemprot();
-					Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
-				} catch (NotRegistredException e) {
-					msgRemprot = e.getMessage();
-					msgAutenticacao = Autenticador.getMsgPadrao();
-					return "not_registered";
-				} catch (NotConectAutenticationException e) {
-					msgRemprot = e.getMessage();
-					msgAutenticacao = Autenticador.getMsgPadrao();
-					return "not_conect";
+				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+				if (parametrosDoSistema.verificaRemprot())
+				{
+					try {
+						servidorRemprot = parametrosDoSistema.getServidorRemprot();
+						Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
+					} catch (NotRegistredException e) {
+						msgRemprot = e.getMessage();
+						msgAutenticacao = Autenticador.getMsgPadrao();
+						return "not_registered";
+					} catch (NotConectAutenticationException e) {
+						msgRemprot = e.getMessage();
+						msgAutenticacao = Autenticador.getMsgPadrao();
+						return "not_conect";
+					}					
 				}
 			}
 			

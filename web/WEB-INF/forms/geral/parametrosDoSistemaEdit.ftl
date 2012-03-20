@@ -1,11 +1,12 @@
 <html>
 <head>
 <@ww.head/>
+	<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 	<title>Editar Configurações do Sistema</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','diasLembretePesquisa','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','diasLembretePesquisa','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -37,6 +38,13 @@
 			jAlert(data);
 		}
 	</script>
+	
+	<#if parametrosDoSistema?exists && parametrosDoSistema.proximaVersao?exists>
+		<#assign dataVersao = parametrosDoSistema.proximaVersao?date/>
+	<#else>
+		<#assign dataVersao = ""/>
+	</#if>
+	<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
 <@ww.actionerror />
@@ -58,7 +66,7 @@
 	dias de antecedência. (Exemplo: 1&2&3)
 	<br/><br/>
 	
-	<@ww.select label="Perfil Padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome"/>
+	<@ww.select label="Perfil Padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil"/>
 	
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar Candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
@@ -79,6 +87,7 @@
 		</div>
 	</div>
 	<br/>
+
 
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
@@ -101,6 +110,10 @@
 	</li>
 
 	
+	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
+	<#if usuarioId?exists>
+		<@ww.datepicker label="Data da Versão" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />	
+	</#if>
 </@ww.form>
 
 	<div class="buttonGroup">

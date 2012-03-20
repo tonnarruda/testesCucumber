@@ -84,6 +84,7 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
@@ -328,7 +329,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorManager.validaQtdCadastros();
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+			if (parametrosDoSistema.verificaRemprot())
+				colaboradorManager.validaQtdCadastros();
 		} catch (Exception e)
 		{
 			addActionMessage(e.getMessage());
@@ -496,7 +499,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorManager.validaQtdCadastros();			
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+			if (parametrosDoSistema.verificaRemprot())
+				colaboradorManager.validaQtdCadastros();			
 			
 		} catch (Exception e)
 		{

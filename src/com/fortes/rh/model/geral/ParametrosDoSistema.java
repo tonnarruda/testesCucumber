@@ -1,12 +1,15 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -14,6 +17,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.util.DateUtil;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="parametrosDoSistema_sequence", allocationSize=1)
@@ -47,6 +51,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Lob
     private String modulos;
+    @Temporal(TemporalType.DATE)
+    private Date proximaVersao;
 
     // dias antes da pesquisa em que será enviado lembrete para quem ainda não respondeu
     @Column(length=20)
@@ -301,5 +307,14 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setCompartilharCandidatos(Boolean compartilharCandidatos) {
 		this.compartilharCandidatos = compartilharCandidatos;
+	}
+	public Date getProximaVersao() {
+		return proximaVersao;
+	}
+	public void setProximaVersao(Date proximaversao) {
+		this.proximaVersao = proximaversao;
+	}
+	public boolean verificaRemprot() {
+		return this.proximaVersao == null || new Date().getTime() - this.proximaVersao.getTime() > 0;
 	}
 }
