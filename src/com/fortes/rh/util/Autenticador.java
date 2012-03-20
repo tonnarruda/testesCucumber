@@ -73,7 +73,9 @@ public class Autenticador
 
 	public static Collection<Long> getModulosNaoConfigurados(int chave) 
 	{
+		//TODO remprot
 		chave = 63;
+		
 		Collection<Long> modulos = new ArrayList<Long>();
 		modulos.add(357L);
 		modulos.add(361L);
