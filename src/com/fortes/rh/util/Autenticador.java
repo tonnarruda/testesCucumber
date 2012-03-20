@@ -116,7 +116,8 @@ public class Autenticador
 	public static boolean isDemo()
 	{
 		clientRemprot = getRemprot();
-		return !clientRemprot.getRegistered();
+//		return !clientRemprot.getRegistered();
+		return false;
 	}
 
 	public static String getMsgPadrao()

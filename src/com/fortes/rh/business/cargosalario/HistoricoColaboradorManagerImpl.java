@@ -859,7 +859,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
 			TSituacao situacao = bindSituacao(historicoColaboradorTmp, empresa.getCodigoAC());
-			
 			acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);
 		}
 		
