@@ -326,8 +326,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareInsert() throws Exception
 	{
+		try
+		{
+			colaboradorManager.validaQtdCadastros();
+		} catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			return Action.INPUT;
+		}
+		
 		prepare();
-
 		if(updateDados)
 		{
 			Map session = ActionContext.getContext().getSession();

@@ -17,6 +17,8 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import remprot.RPClient;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -78,10 +80,13 @@ import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
+import com.fortes.rh.test.util.mockObjects.MockRPClient;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
@@ -186,6 +191,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
+        Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
+        Mockit.redefineMethods(RPClient.class, MockRPClient.class);
     }
 
     public void testFindAdmitidosNoPeriodo() throws Exception
@@ -845,6 +852,21 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         }
 
         assertNotNull(exc);
+    }
+    
+    public void testAvisoQtdCadastros() throws Exception
+    {
+		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(95));
+		String msg = colaboradorManager.avisoQtdCadastros();
+		assertEquals("Atualmente existem " + 95 + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + 100 + " colaboradores.", msg);
+
+		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(96));
+		msg = colaboradorManager.avisoQtdCadastros();
+		assertEquals("Atualmente existem " + 96 + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + 100 + " colaboradores.", msg);
+		
+		colaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(10));
+		msg = colaboradorManager.avisoQtdCadastros();
+		assertNull(msg);
     }
 
 

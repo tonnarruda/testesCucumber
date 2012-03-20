@@ -154,6 +154,10 @@ public class Index extends ActionSupport
 			
 			validaIntegracaoAC();
 			
+			String msgAvisoQtdColaborador = colaboradorManager.avisoQtdCadastros();
+			if (msgAvisoQtdColaborador != null)
+				addActionMessage(msgAvisoQtdColaborador);
+			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
 

@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -180,4 +177,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setCandidatoNull(Long candidatoId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
+	public String avisoQtdCadastros() throws Exception;
 }

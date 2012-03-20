@@ -38,7 +38,9 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareInsert">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
+			<result name="input" type="redirect">list.action</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>

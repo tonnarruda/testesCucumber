@@ -1495,17 +1495,32 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-//		int qtdColaboradorNoBanco = getDao().getCount();
+//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
 //		
 //		RPClient remprot = Autenticador.getRemprot();
 //		if(remprot.getRegistered())
 //		{
 //			if(qtdColaboradorNoBanco >= remprot.getUserCount())
-//				throw new Exception("Sua licença só permite cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");			
+//				throw new Exception("Sua licença só permite cadastrar " + remprot.getUserCount() + " colaboradores.<br>Quantidade de colaboradores cadastrados no sistema: " + qtdColaboradorNoBanco);			
 //		}	
 //		else
 //			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
 //				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+	}
+	
+	public String avisoQtdCadastros() throws Exception
+	{
+//		TODO remprot
+//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+//		
+//		RPClient remprot = Autenticador.getRemprot();
+//		if(remprot.getRegistered())
+//		{
+//			if((remprot.getUserCount() - (remprot.getUserCount() * 0.05 )) <= qtdColaboradorNoBanco )
+//				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
+//		}	
+		
+		return null;
 	}
 
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId)
