@@ -862,6 +862,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			
 			acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);
 		}
+		
+		if(historicoColaboradorTmp.getCandidatoSolicitacao() != null && historicoColaboradorTmp.getCandidatoSolicitacao().getId() != null)
+			candidatoSolicitacaoManager.setStatus(historicoColaboradorTmp.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
 	}
 
 	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador) throws Exception

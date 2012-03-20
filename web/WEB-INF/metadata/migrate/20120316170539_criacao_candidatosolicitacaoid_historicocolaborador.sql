@@ -1,0 +1,2 @@
+alter table historicocolaborador add column candidatosolicitacao_id bigint;--.go
+ALTER TABLE ONLY historicocolaborador ADD CONSTRAINT historicocolaborador_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);--.go

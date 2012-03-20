@@ -18,6 +18,7 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -150,8 +151,12 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
-			if (candidatoSolicitacaoId != null)
+			if (candidatoSolicitacaoId != null){
 				candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO);
+				
+				CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
+				historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
+			}
 			
 			return Action.SUCCESS;
 		}

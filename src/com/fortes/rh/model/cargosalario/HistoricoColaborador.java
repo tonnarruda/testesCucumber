@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -70,6 +72,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	private Ambiente ambiente;
 	@ManyToOne
 	private Estabelecimento estabelecimento;
+	@OneToOne
+	private CandidatoSolicitacao candidatoSolicitacao;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	private ReajusteColaborador reajusteColaborador;
@@ -1049,5 +1053,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setDiferencaSalarialEmPorcentam(Double diferencaSalarialEmPorcentam) {
 		this.diferencaSalarialEmPorcentam = diferencaSalarialEmPorcentam;
+	}
+
+	public CandidatoSolicitacao getCandidatoSolicitacao() {
+		return candidatoSolicitacao;
+	}
+
+	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) {
+		this.candidatoSolicitacao = candidatoSolicitacao;
 	}
 }
