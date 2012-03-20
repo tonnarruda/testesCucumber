@@ -70,8 +70,6 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("item.id"), "id");
-		p.add(Projections.property("item.qtdSolicitado"), "qtdSolicitado");
-		p.add(Projections.property("item.qtdEntregue"), "qtdEntregue");
 		p.add(Projections.property("se.id"), "projectionSolicitacaoEpiId");
 		p.add(Projections.property("se.data"), "projectionSolicitacaoEpiData");
 		p.add(Projections.property("e.id"), "projectionEpiId");

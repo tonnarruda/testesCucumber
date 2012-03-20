@@ -156,7 +156,6 @@ import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoAmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoMedicaoRiscoManagerTest;
-import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
@@ -1150,7 +1149,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CertificacaoEditActionTest.class);
         
         suite.addTestSuite(SolicitacaoEpiItemEntregaDaoHibernateTest.class);
-        suite.addTestSuite(SolicitacaoEpiItemEntregaManagerTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

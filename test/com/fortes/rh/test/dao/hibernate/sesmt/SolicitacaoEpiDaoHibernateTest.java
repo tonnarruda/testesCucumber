@@ -42,6 +42,7 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpi>
@@ -320,9 +321,18 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpi.setData(dataIni);
 		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
+		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
+		item.setSolicitacaoEpi(solicitacaoEpi);
+		item.setQtdSolicitado(3);
+		solicitacaoEpiItemDao.save(item);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setSolicitacaoEpiItem(item);
+		entrega.setDataEntrega(dataIni);
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
@@ -351,20 +361,48 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Epi epi = EpiFactory.getEntity();
     	epi.setEmpresa(empresa);
     	epiDao.save(epi);
+
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargo.setNome("motorista");
+    	cargoDao.save(cargo);
     	
     	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpi.setData(dataIni);
 		solicitacaoEpi.setColaborador(colaborador);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
+		solicitacaoEpi.setCargo(cargo);
 		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
+		item.setSolicitacaoEpi(solicitacaoEpi);
+		item.setQtdSolicitado(3);
+		solicitacaoEpiItemDao.save(item);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setSolicitacaoEpiItem(item);
+		entrega.setDataEntrega(dataIni);
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
 		
 		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi2.setEmpresa(empresa);
 		solicitacaoEpi2.setData(dataMeio);
 		solicitacaoEpi2.setColaborador(colaborador);
-		solicitacaoEpi2.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
+		solicitacaoEpi2.setCargo(cargo);
 		solicitacaoEpiDao.save(solicitacaoEpi2);
+		
+		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
+		item2.setSolicitacaoEpi(solicitacaoEpi2);
+		item2.setQtdSolicitado(2);
+		solicitacaoEpiItemDao.save(item2);
+		
+		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setSolicitacaoEpiItem(item2);
+		entrega2.setDataEntrega(dataIni);
+		entrega2.setQtdEntregue(2);
+		solicitacaoEpiItemEntregaDao.save(entrega2);
+		
+		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
 		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).size());
 	}

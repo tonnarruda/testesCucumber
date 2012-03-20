@@ -2,6 +2,8 @@ package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.Date;
 
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
@@ -105,6 +107,32 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		SolicitacaoEpiItemEntrega retorno = solicitacaoEpiItemEntregaDao.findByIdProjection(solicitacaoEpiItemEntrega.getId());
 		assertEquals(solicitacaoEpiItemEntrega.getId(), retorno.getId());
 		assertEquals(solicitacaoEpiItem.getId(), retorno.getSolicitacaoEpiItem().getId());
+	}
+	
+	public void testRemove() throws Exception
+	{
+		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
+		solicitacaoEpiItemDao.save(item);
+		
+		SolicitacaoEpiItemEntrega entrega = getEntity();
+		entrega.setSolicitacaoEpiItem(item);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+
+		Long id = entrega.getId();
+		
+		solicitacaoEpiItemEntregaDao.remove(id);
+
+		Exception ex = null;
+
+		try {
+			entrega = getGenericDao().findById(id);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			ex = e;
+		}
+
+		assertNotNull(ex);
+		assertTrue(ex instanceof HibernateObjectRetrievalFailureException);
 	}
 	
 	public void setSolicitacaoEpiItemEntregaDao(SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao)
