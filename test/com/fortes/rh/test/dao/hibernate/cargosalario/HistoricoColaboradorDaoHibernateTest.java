@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.dao.captacao.CandidatoDao;
+import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
@@ -23,6 +25,8 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -50,6 +54,8 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -84,6 +90,8 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private IndiceDao indiceDao;
 	private IndiceHistoricoDao indiceHistoricoDao;
 	private GrupoACDao grupoACDao;
+	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	private CandidatoDao candidatoDao;
 	
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
 
@@ -300,6 +308,28 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		assertEquals(MotivoHistoricoColaborador.PROMOCAO ,historicoColaboradorDao.findByIdProjectionHistorico(historicoContratado.getId()).getMotivo());
 		assertEquals(MotivoHistoricoColaborador.DISSIDIO ,historicoColaboradorDao.findByIdProjectionHistorico(historicoDissidio.getId()).getMotivo());
+	}
+	
+	public void testRemoveCandidatoSolicitacao()
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		HistoricoColaborador historicoContratado = HistoricoColaboradorFactory.getEntity();
+		historicoContratado.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoContratado.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoContratado);
+		
+		historicoColaboradorDao.removeCandidatoSolicitacao(candidatoSolicitacao.getId());	
+		
+		assertNull(historicoColaboradorDao.findByIdProjection(historicoContratado.getId()).getCandidatoSolicitacao());
 	}
 	
 	public void testDeleteSituacaoByMovimentoSalarial()
@@ -1681,5 +1711,13 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setGrupoACDao(GrupoACDao grupoACDao) {
 		this.grupoACDao = grupoACDao;
+	}
+
+	public void setCandidatoSolicitacaoDao(CandidatoSolicitacaoDao candidatoSolicitacaoDao) {
+		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
+	}
+
+	public void setCandidatoDao(CandidatoDao candidatoDao) {
+		this.candidatoDao = candidatoDao;
 	}
 }

@@ -556,6 +556,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.gfip"), "gfip");
 		p.add(Projections.property("hc.quantidadeIndice"), "quantidadeIndice");
 		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
+		p.add(Projections.property("hc.candidatoSolicitacao"), "candidatoSolicitacao");
 		p.add(Projections.property("i.id"), "projectionIndiceId");
 		p.add(Projections.property("i.nome"), "projectionIndiceNome");
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
@@ -712,6 +713,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.estabelecimento.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("hc.areaOrganizacional.id"), "areaId");
 		p.add(Projections.property("hc.reajusteColaborador.id"), "projectionReajusteColaboradorId");
+		p.add(Projections.property("hc.candidatoSolicitacao"), "candidatoSolicitacao");
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
@@ -1185,6 +1187,14 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setString("promocao", MotivoHistoricoColaborador.PROMOCAO);
 		query.setString("contratado", MotivoHistoricoColaborador.CONTRATADO);
 		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
+	}
+
+	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set candidatoSolicitacao.id = null where candidatoSolicitacao.id = :candidatoSolicitacaoId ");
+		query.setLong("candidatoSolicitacaoId", candidatoSolicitacaoId);
 		
 		query.executeUpdate();
 	}

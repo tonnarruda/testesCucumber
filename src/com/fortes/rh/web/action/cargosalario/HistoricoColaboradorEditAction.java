@@ -71,13 +71,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Collection<Colaborador> colaboradors;
 	private String colaboradorNome;
 	
-	private Candidato candidato;
 	private Long candidatoSolicitacaoId;
-
-	private boolean integraAc;
-
 	private Date dataPrimeiroHist;
-
+	private boolean integraAc;
 	private boolean obrigarAmbienteFuncaoColaborador;	
 	
 	public void prepare() throws Exception
@@ -150,13 +146,15 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				historicoColaboradorManager.ajustaMotivoContratado(historicoColaborador.getColaborador().getId());
 			
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
-			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
-			if (candidatoSolicitacaoId != null){
+			
+			if (candidatoSolicitacaoId != null)
+			{
 				candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO);
-				
 				CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
 				historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
 			}
+			
+			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
 			
 			return Action.SUCCESS;
 		}
@@ -424,10 +422,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		return colaboradorNome;
 	}
 
-	public void setCandidato(Candidato candidato) {
-		this.candidato = candidato;
-	}
-	
 	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
 		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
 	}
