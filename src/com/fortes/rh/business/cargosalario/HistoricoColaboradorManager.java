@@ -149,4 +149,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Map<Character, Collection<Object[]>> montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
 
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
+
+	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 }

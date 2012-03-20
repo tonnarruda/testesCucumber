@@ -7,12 +7,14 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -27,7 +29,8 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private HistoricoCandidatoManager historicoCandidatoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
 	private Collection<HistoricoCandidato> historicoCandidatos;
@@ -110,7 +113,9 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
-
+		
+		historicoColaboradorManager.removeCandidatoSolicitacao(candidatoSolicitacao.getId());
+		
 		candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
 		solicitacao = candidatoSolicitacao.getSolicitacao();
 
@@ -337,6 +342,10 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setSolicitacaoDestino(Solicitacao solicitacaoDestino) {
 		this.solicitacaoDestino = solicitacaoDestino;
+	}
+
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
+		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
 }
