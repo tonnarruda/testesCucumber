@@ -99,7 +99,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 	public void testFindVencimentoEpi()
 	{
-		Date hoje = new Date();
+		Date hoje = DateUtil.criarDataMesAno(20, 3, 2012);
 
 		Calendar dataSeisMesesAtras = Calendar.getInstance();
     	dataSeisMesesAtras.add(Calendar.MONTH, -6);
@@ -152,6 +152,18 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItem.setEpi(epi);
 		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega.setDataEntrega(hoje);
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+
+		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega2.setDataEntrega(hoje);
+		entrega2.setQtdEntregue(2);
+		solicitacaoEpiItemEntregaDao.save(entrega2);
 
 		Long[] tipoEPIIds = {tipoEPI.getId()};
 		Long[] areasIds = {areaOrganizacional.getId()};
@@ -159,7 +171,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, tipoEPIIds, areasIds, estabelecimentoIds);
 
-		assertEquals(1,colecao.size());
+		assertEquals(2, colecao.size());
 	}
 
 	public void testFindEntregaEpi()

@@ -99,11 +99,11 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		switch (agruparPor)
 		{
 			case 'E':
-		        Collections.sort((List) solicitacoesEpiAVencer, new BeanComparator("epi.nome", new ComparatorString()));
+		        Collections.sort((List<SolicitacaoEpi>) solicitacoesEpiAVencer, new BeanComparator("epi.nome", new ComparatorString()));
 				break;
 
 			case 'C':
-		        Collections.sort((List) solicitacoesEpiAVencer, new BeanComparator("colaborador.nome", new ComparatorString()));
+		        Collections.sort((List<SolicitacaoEpi>) solicitacoesEpiAVencer, new BeanComparator("colaborador.nome", new ComparatorString()));
 				break;
 		}
 

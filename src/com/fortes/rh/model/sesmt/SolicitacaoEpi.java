@@ -52,7 +52,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private Integer qtdEpiEntregue = 0;
 	@Transient
 	private Date dataEpiEntrega;
-	
 	@Transient
 	private Date vencimentoCA;
 

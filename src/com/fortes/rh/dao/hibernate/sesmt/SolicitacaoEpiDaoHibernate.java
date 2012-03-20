@@ -152,10 +152,11 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new SolicitacaoEpi(e.id, co.id, e.nome, co.nome, ca.nome, se.data, eh.validadeUso, item.dataEntrega, item.qtdEntregue, eh.vencimentoCA) ");
-		hql.append("from Epi e ");
-		hql.append("join e.solicitacaoEpiItems item ");
-		hql.append("join item.solicitacaoEpi se ");
+		hql.append("select distinct new SolicitacaoEpi(e.id, co.id, e.nome, co.nome, ca.nome, se.data, eh.validadeUso, ent.dataEntrega, ent.qtdEntregue, eh.vencimentoCA) ");
+		hql.append("from SolicitacaoEpi se ");
+		hql.append("join se.solicitacaoEpiItems item ");
+		hql.append("join item.solicitacaoEpiItemEntregas ent ");
+		hql.append("join item.epi e ");
 		hql.append("join se.colaborador co ");
 		hql.append("join se.cargo ca ");
 		hql.append("join co.historicoColaboradors hc ");
