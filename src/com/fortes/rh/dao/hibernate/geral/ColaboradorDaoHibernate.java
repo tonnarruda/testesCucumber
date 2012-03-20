@@ -3678,17 +3678,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findColaboradoresByIds(Long[] colaboradoresIds) 
 	{
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
-        ProjectionList pSub = Projections.projectionList().create();
-
-        pSub.add(Projections.max("hc2.data"));
-        subQuery.setProjection(pSub);
-
-        subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=this_.id"));
-        subQuery.add(Expression.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		String hoje = DateUtil.formataAnoMesDia(new Date());
+        String cond = " hc1_.data = coalesce( "+
+        		" (select max(hc2.data) "+
+        		" from HistoricoColaborador hc2  "+
+        		" where hc2.colaborador_id={alias}.id "+
+        		"     and hc2.data<='"+ hoje +"'  "+
+        		"     and hc2.status="+ StatusRetornoAC.CONFIRMADO +") ,  "+
+        		" (select min(hc2.data) "+
+        		" from HistoricoColaborador hc2  "+
+        		" where hc2.colaborador_id={alias}.id "+
+        		"     and hc2.data>'"+ hoje +"'  "+
+        		"     and hc2.status="+ StatusRetornoAC.CONFIRMADO +") "+
+        		" )"; 
         
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
-		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("c.historicoColaboradors", "hc", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("hc.estabelecimento", "e", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
@@ -3703,7 +3708,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
 		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
 		
-		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
+		criteria.add( Restrictions.sqlRestriction(cond));
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.in("c.id", colaboradoresIds));
