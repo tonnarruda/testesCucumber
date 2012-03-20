@@ -8,7 +8,7 @@
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
-
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -16,7 +16,7 @@
 	
 	<script type="text/javascript">
 			var tecnicasUtilizadas = [${tecnicasUtilizadas}];
-			
+		
 	</script>
 
     <#assign date = "" />
@@ -90,7 +90,7 @@
 					<input type="text" value="${tecnicaUtilizada}" id="tecnica" name="tecnicaValues" maxLength="100" style="width: 190px;border:1px solid #7E9DB9;" />
 					<@ww.hidden name="riscoIds" value="${riscoMedicaoRisco.risco.id}"/>
 				</@display.column>
-				<@display.column title="Descrição PPRA" >
+				<@display.column title="Descrição PPRA">
 					<@ww.textarea theme="simple" value="${descricaoPpra}" name="ppraValues" cssStyle="width: 280px;height: 50px;"/>
 				</@display.column>
 				<@display.column title="Descrição LTCAT">
@@ -109,6 +109,22 @@
 		</div>
 		
 		<script type="text/javascript">
+		
+		$(function() {
+			insereHelp(3);			
+			insereHelp(4);			
+		});
+		
+		function insereHelp(posicao)
+		{
+			var id = "tooltipHelp" + posicao;
+			$("#riscoMedicaoRisco th:eq(" + posicao + ")" ).append('<img id="' + id + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />');
+			
+			$('#' + id).qtip({
+				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
+			});
+		}
+		
 		function populaAmbientes()
 	    {
 	      var estabelecimentoId = document.getElementById("estabelecimento").value;
