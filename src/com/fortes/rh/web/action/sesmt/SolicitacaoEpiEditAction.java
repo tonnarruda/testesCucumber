@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
@@ -13,6 +14,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -26,6 +28,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
+	private EpiHistoricoManager epiHistoricoManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 
@@ -46,6 +49,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private Date dataEntrega;
 	private boolean entregue;
 	private boolean insert;
+	private Collection<EpiHistorico> epiHistoricos;
 
 	public String execute() throws Exception
 	{
@@ -124,12 +128,16 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public String prepareInsertEntrega() throws Exception
 	{
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		epiHistoricos = epiHistoricoManager.findByEpi(solicitacaoEpiItem.getEpi().getId());
 		return Action.SUCCESS;
 	}
 	
 	public String prepareUpdateEntrega() throws Exception
 	{
 		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findByIdProjection(solicitacaoEpiItemEntrega.getId());
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		epiHistoricos = epiHistoricoManager.findByEpi(solicitacaoEpiItem.getEpi().getId());
 		return Action.SUCCESS;
 	}
 
@@ -387,5 +395,13 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
+	}
+
+	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
+		this.epiHistoricoManager = epiHistoricoManager;
+	}
+
+	public Collection<EpiHistorico> getEpiHistoricos() {
+		return epiHistoricos;
 	}
 }

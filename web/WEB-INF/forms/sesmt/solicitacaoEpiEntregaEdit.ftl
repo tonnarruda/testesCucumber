@@ -33,6 +33,7 @@
 	<@ww.form name="form" action="${formAction}" method="POST">
 		<@ww.datepicker label="Data da Entrega" name="solicitacaoEpiItemEntrega.dataEntrega" id="dataEntrega" required="true" value="${data}" cssClass="mascaraData"/>
 		<@ww.textfield label="Qtd. Entregue" name="solicitacaoEpiItemEntrega.qtdEntregue" id="qtdEntregue" required="true"  onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="3"  />
+		<@ww.select label="Histórico (data - CA - validade de uso)" name="epiHistorico.id" id="epiHistoricoId" list="epiHistoricos" cssStyle="width: 300px;" listKey="id" listValue="descricao"/>
 		<@ww.hidden name="solicitacaoEpi.id" />
 		<@ww.hidden name="solicitacaoEpiItem.id" />
 		<@ww.hidden name="solicitacaoEpiItemEntrega.id" />

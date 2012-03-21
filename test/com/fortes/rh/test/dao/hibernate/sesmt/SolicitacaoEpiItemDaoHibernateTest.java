@@ -127,6 +127,28 @@ public class SolicitacaoEpiItemDaoHibernateTest extends GenericDaoHibernateTest<
 		SolicitacaoEpiItem resultado = solicitacaoEpiItemDao.findBySolicitacaoEpiAndEpi(solicitacaoEpi.getId(), epi.getId());
 		assertEquals(resultado, epiSolicitacaoEpi);
 	}
+	
+	public void testFindByIdProjection()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setEmpresa(empresa);
+		epiDao.save(epi);
+
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setEmpresa(empresa);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem epiSolicitacaoEpi = new SolicitacaoEpiItem();
+		epiSolicitacaoEpi.setEpi(epi);
+		epiSolicitacaoEpi.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItemDao.save(epiSolicitacaoEpi);
+		
+		assertEquals(epiSolicitacaoEpi, solicitacaoEpiItemDao.findByIdProjection(epiSolicitacaoEpi.getId()));
+	}
+	
 	public void testRemoveAllBySolicitacaoEpi()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

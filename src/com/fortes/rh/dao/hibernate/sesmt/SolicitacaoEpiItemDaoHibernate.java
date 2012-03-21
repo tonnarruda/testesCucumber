@@ -81,4 +81,21 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 
 		return criteria.list();
 	}
+
+	public SolicitacaoEpiItem findByIdProjection(Long id) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"item");
+		criteria.createCriteria("item.epi", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("item.id"), "id");
+		p.add(Projections.property("e.id"), "projectionEpiId");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("item.id", id));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (SolicitacaoEpiItem) criteria.uniqueResult();
+	}
 }

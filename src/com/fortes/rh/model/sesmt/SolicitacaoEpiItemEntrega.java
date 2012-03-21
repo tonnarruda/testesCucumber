@@ -20,6 +20,8 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private SolicitacaoEpiItem solicitacaoEpiItem;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private EpiHistorico epiHistorico;
 
 	private Integer qtdEntregue=0;
 	
@@ -96,5 +98,13 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 
 	public void setCA(String cA) {
 		CA = cA;
+	}
+
+	public EpiHistorico getEpiHistorico() {
+		return epiHistorico;
+	}
+
+	public void setEpiHistorico(EpiHistorico epiHistorico) {
+		this.epiHistorico = epiHistorico;
 	}
 }

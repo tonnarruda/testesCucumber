@@ -83,4 +83,8 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
+
+	public SolicitacaoEpiItem findByIdProjection(Long id) {
+		return getDao().findByIdProjection(id);
+	}
 }

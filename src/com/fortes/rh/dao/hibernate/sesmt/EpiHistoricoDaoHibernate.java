@@ -74,6 +74,7 @@ public class EpiHistoricoDaoHibernate extends GenericDaoHibernate<EpiHistorico> 
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("eh.epi.id", epiId));
+		criteria.addOrder(Order.desc("eh.data"));//data é importante no combo da entrega de epi
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EpiHistorico.class));
 
 		return criteria.list();		
