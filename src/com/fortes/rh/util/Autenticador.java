@@ -45,11 +45,14 @@ public class Autenticador
 		System.out.println("modulos: " + clientRemprot.getEnabledModules());	    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
 		System.out.println("qtd colab: " + clientRemprot.getUserCount());		    // qtd colaboradores
 		
-		//codigo de retorno do erro
-		if(clientRemprot.getErrors() != 0)
-			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
-		
-		return clientRemprot.getRegistered();
+//		if(clientRemprot.getErrors() == 65535)
+//		{
+//			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
+//			throw new NotConectAutenticationException();
+//		}
+//		
+//		if(!clientRemprot.getRegistered())
+//			throw new NotRegistredException();
 	}
 	
 	private static int RECRUT_SELECAO = 1;
