@@ -10,7 +10,6 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
@@ -229,9 +228,8 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
-			solicitacaoEpi.setSituacaoSolicitacaoEpi(this.entregue ? SituacaoSolicitacaoEpi.ENTREGUE : SituacaoSolicitacaoEpi.ABERTA);
 
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
 			
 			addActionMessage("Solicitação gravada com sucesso.");
 			return SUCCESS;

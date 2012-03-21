@@ -27,7 +27,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 {
 	@Temporal(TemporalType.DATE)
 	private Date data;
-	private char situacaoSolicitacaoEpi;
 
 	@ManyToOne
 	private Colaborador colaborador;
@@ -59,18 +58,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	{
 		if (this.data == null)
 			this.data = new Date();
-	}
-
-	public SolicitacaoEpi(Long id, Date data, char situacaoSolicitacaoEpi, String colaboradorNome, int statusRetornoAC, String cargoNome, Integer qtdEpiSolicitado, Integer qtdEpiEntregue)
-	{
-		setId(id);
-		this.data = data;
-		this.situacaoSolicitacaoEpi = situacaoSolicitacaoEpi;
-		setColaboradorNome(colaboradorNome);
-		setColaboradorStatus(statusRetornoAC);
-		setCargoNome(cargoNome);
-		this.qtdEpiSolicitado = qtdEpiSolicitado;
-		this.qtdEpiEntregue = qtdEpiEntregue;
 	}
 
 	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
@@ -205,14 +192,6 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public Date getDataEpiEntrega() {
 		return dataEpiEntrega;
-	}
-
-	public char getSituacaoSolicitacaoEpi() {
-		return situacaoSolicitacaoEpi;
-	}
-
-	public void setSituacaoSolicitacaoEpi(char situacaoSolicitacaoEpi) {
-		this.situacaoSolicitacaoEpi = situacaoSolicitacaoEpi;
 	}
 
 	public Integer getQtdEpiSolicitado() {

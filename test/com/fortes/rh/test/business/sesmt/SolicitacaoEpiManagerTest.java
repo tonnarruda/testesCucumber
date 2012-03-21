@@ -22,7 +22,6 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
@@ -83,12 +82,12 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 
 		solicitacaoEpiDao.expects(once()).method("save").with(eq(solicitacaoEpi)).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] { eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false) }).isVoid();
 
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null, false);
 		}
 		catch (Exception e)
 		{
@@ -106,7 +105,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null);
+			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null, false);
 		}
 		catch (Exception e)
 		{
@@ -123,7 +122,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 		solicitacaoEpiItemManager.expects(once()).method("removeAllBySolicitacaoEpi").with(eq(solicitacaoEpi.getId())).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] {eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false)}).isVoid();
 
 		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
 	}
@@ -221,7 +220,6 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		
 		assertEquals(1, solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null, null, 'E').size());
 
-		Collection<SolicitacaoEpi> solicitacaoEpisRetorno2 = new ArrayList<SolicitacaoEpi>();
 		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(new Constraint[]{eq(empresaId),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(solicitacaoEpisRetorno));
 		
 		try {

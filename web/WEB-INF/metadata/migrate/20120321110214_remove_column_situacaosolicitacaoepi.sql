@@ -1,0 +1,1 @@
+alter table solicitacaoepi drop column situacaosolicitacaoepi;--.go

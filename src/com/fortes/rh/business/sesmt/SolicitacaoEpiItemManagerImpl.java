@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
@@ -34,7 +33,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return solicitacaoEpiItems;
 	}
 
-	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega)
+	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega, boolean entregue)
 	{
 		if (epiIds != null && selectQtdSolicitado != null)
 		{
@@ -54,8 +53,8 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 				solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 
 				getDao().save(solicitacaoEpiItem);
-				
-				if (solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
+
+				if (entregue)
 				{
 					SolicitacaoEpiItemEntrega entrega = new SolicitacaoEpiItemEntrega();
 					entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);

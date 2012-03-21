@@ -138,7 +138,6 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 
 		p.add(Projections.property("se.id"), "id");
 		p.add(Projections.property("se.data"), "data");
-		p.add(Projections.property("se.situacaoSolicitacaoEpi"), "situacaoSolicitacaoEpi");
 
 		criteria.setProjection(p);
 
@@ -170,8 +169,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(exibirVencimentoCA)
 			hql.append(" or :data >= eh.vencimentoCA ");
 		
-		hql.append(" ) and se.situacaoSolicitacaoEpi <> 'A' ");
-		hql.append("and co.desligado = false and e.empresa.id = :empresaId ");
+		hql.append(" ) and co.desligado = false and e.empresa.id = :empresaId ");
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
 			hql.append("   and e.tipoEPI.id in (:tipoEPIIds) ");

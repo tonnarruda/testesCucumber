@@ -74,4 +74,25 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 
 		return (SolicitacaoEpiItemEntrega) criteria.uniqueResult();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<SolicitacaoEpiItemEntrega> findBySolicitacaoEpi(Long solicitacaoEpiId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"seie");
+		criteria.createCriteria("seie.solicitacaoEpiItem", "sei");
+		criteria.createCriteria("sei.solicitacaoEpi", "se");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("seie.id"), "id");
+		p.add(Projections.property("seie.qtdEntregue"), "qtdEntregue");
+		p.add(Projections.property("seie.dataEntrega"), "dataEntrega");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("se.id", solicitacaoEpiId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 }

@@ -10,10 +10,10 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
@@ -27,6 +27,7 @@ import com.fortes.web.tags.CheckBox;
 @SuppressWarnings("serial")
 public class SolicitacaoEpiListAction extends MyActionSupportList
 {
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
@@ -96,13 +97,12 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if (solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
+		if (solicitacaoEpiItemEntregaManager.existeEntrega(solicitacaoEpi.getId()))
 		{
 			addActionError("A solicitação não pôde ser excluída porque já foi entregue.");
 		}
 		else
 		{
-			
 			solicitacaoEpiManager.remove(solicitacaoEpi.getId());
 			addActionMessage("Solicitação de EPIs excluída com sucesso.");			
 		}
@@ -399,5 +399,9 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
 		return dataSourceEntrega;
+	}
+
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 }

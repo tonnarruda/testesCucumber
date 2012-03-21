@@ -145,7 +145,6 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(dataSeisMesesAtras.getTime());
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 
 		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
@@ -194,7 +193,6 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(hoje);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		Epi epi = EpiFactory.getEntity();
@@ -245,7 +243,6 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpi.setData(hoje);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ENTREGUE);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
 		EpiHistorico epiHistorico = new EpiHistorico();

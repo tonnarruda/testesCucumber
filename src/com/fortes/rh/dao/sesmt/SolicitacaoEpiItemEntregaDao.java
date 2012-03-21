@@ -10,4 +10,5 @@ public interface SolicitacaoEpiItemEntregaDao extends GenericDao<SolicitacaoEpiI
 	Collection<SolicitacaoEpiItemEntrega> findBySolicitacaoEpiItem(Long solicitacaoEpiItemId);
 	int getTotalEntregue(Long solicitacaoEpiItemId, Long solicitacaoEpiItemEntregaId);
 	SolicitacaoEpiItemEntrega findByIdProjection(Long solicitacaoEpiItemEntregaId);
+	Collection<SolicitacaoEpiItemEntrega> findBySolicitacaoEpi(Long solicitacaoEpiId);
 }
