@@ -13,4 +13,6 @@ public interface EpiHistoricoDao extends GenericDao<EpiHistorico>
 	Collection<EpiHistorico> getHistoricosEpi(Long id, Date dataInicio, Date dataFim);
 
 	Collection<EpiHistorico> findByEpi(Long epiId);
+
+	EpiHistorico findUltimoByEpiId(Long epiId);
 }

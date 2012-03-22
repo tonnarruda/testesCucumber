@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -78,5 +79,19 @@ public class EpiHistoricoDaoHibernate extends GenericDaoHibernate<EpiHistorico> 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EpiHistorico.class));
 
 		return criteria.list();		
+	}
+
+	public EpiHistorico findUltimoByEpiId(Long epiId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new EpiHistorico(hist.id, hist.atenuacao, hist.vencimentoCA, hist.validadeUso, hist.CA, hist.epi.id, hist.data) ");
+		hql.append("from EpiHistorico as hist ");
+		hql.append("where hist.epi.id = :epiId ");
+		hql.append("  and hist.data = (select max(eh.data) from EpiHistorico eh where eh.epi.id = :epiId) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("epiId", epiId);
+
+		return (EpiHistorico) query.uniqueResult();
 	}
 }

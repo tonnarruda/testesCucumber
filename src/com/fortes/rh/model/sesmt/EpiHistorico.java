@@ -34,7 +34,20 @@ public class EpiHistorico extends AbstractModel implements Serializable
     @Temporal(TemporalType.DATE)
     private Date data;
     
-    //Projection
+    public EpiHistorico() {}
+
+    public EpiHistorico(Long id, String atenuacao, Date vencimentoCA, Integer validadeUso, String cA, Long epiId, Date data) 
+    {
+    	this.setId(id);
+		this.atenuacao = atenuacao;
+		this.vencimentoCA = vencimentoCA;
+		this.validadeUso = validadeUso;
+		this.CA = cA;
+		this.data = data;
+		this.setProjectionEpiId(epiId);
+	}
+
+	//Projection
     public void setProjectionEpiId(Long epiId)
 	{
 		if(this.epi == null)

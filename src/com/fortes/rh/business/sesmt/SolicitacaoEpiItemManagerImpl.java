@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -16,6 +17,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	private EpiHistoricoManager epiHistoricoManager;
 	
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
 	{
@@ -56,10 +58,13 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 
 				if (entregue)
 				{
+					EpiHistorico epiHistorico = epiHistoricoManager.findUltimoByEpiId(epiTmp.getId());
+					
 					SolicitacaoEpiItemEntrega entrega = new SolicitacaoEpiItemEntrega();
 					entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
 					entrega.setQtdEntregue(Integer.valueOf(selectQtdSolicitado[i]));
 					entrega.setDataEntrega(dataEntrega);
+					entrega.setEpiHistorico(epiHistorico);
 					
 					solicitacaoEpiItemEntregaManager.save(entrega);
 				}
@@ -80,11 +85,16 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return getDao().findBySolicitacaoEpi(solicitacaoEpiIds);
 	}
 
+	public SolicitacaoEpiItem findByIdProjection(Long id) 
+	{
+		return getDao().findByIdProjection(id);
+	}
+	
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 
-	public SolicitacaoEpiItem findByIdProjection(Long id) {
-		return getDao().findByIdProjection(id);
+	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
+		this.epiHistoricoManager = epiHistoricoManager;
 	}
 }

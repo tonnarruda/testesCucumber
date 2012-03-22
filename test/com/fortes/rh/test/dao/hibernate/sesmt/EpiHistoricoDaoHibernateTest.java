@@ -83,6 +83,29 @@ public class EpiHistoricoDaoHibernateTest extends GenericDaoHibernateTest<EpiHis
 		assertEquals(2, retorno.size());
 	}
 
+	public void testFindUltimoByEpi()
+	{
+		Epi epi = new Epi();
+		epi.setId(1L);
+		epiDao.save(epi);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setId(1L);
+		epiHistorico.setEpi(epi);
+		epiHistorico.setData(DateUtil.criarDataMesAno(22, 3, 2012));
+		epiHistoricoDao.save(epiHistorico);
+		
+		EpiHistorico epiHistorico2 = new EpiHistorico();
+		epiHistorico2.setId(2L);
+		epiHistorico2.setEpi(epi);
+		epiHistorico2.setData(DateUtil.criarDataMesAno(23, 3, 2012));
+		epiHistoricoDao.save(epiHistorico2);
+		
+		EpiHistorico retorno = epiHistoricoDao.findUltimoByEpiId(epi.getId());
+		
+		assertEquals(epiHistorico2.getId(), retorno.getId());
+	}
+
 	@Override
 	public GenericDao<EpiHistorico> getGenericDao()
 	{
