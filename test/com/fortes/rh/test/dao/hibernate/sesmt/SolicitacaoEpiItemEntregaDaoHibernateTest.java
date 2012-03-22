@@ -6,13 +6,18 @@ import java.util.Date;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.sesmt.EpiDao;
+import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
+import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
@@ -23,6 +28,8 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 	private SolicitacaoEpiItemEntregaDao solicitacaoEpiItemEntregaDao;
 	private SolicitacaoEpiItemDao solicitacaoEpiItemDao;
 	private SolicitacaoEpiDao solicitacaoEpiDao;
+	private EpiDao epiDao;
+	private EpiHistoricoDao epiHistoricoDao;
 
 	@Override
 	public SolicitacaoEpiItemEntrega getEntity()
@@ -105,13 +112,22 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity();
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
+		Epi epi = EpiFactory.getEntity();
+		epiDao.save(epi);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setEpi(epi);
+		epiHistoricoDao.save(epiHistorico);
+		
 		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = SolicitacaoEpiItemEntregaFactory.getEntity();
 		solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		solicitacaoEpiItemEntrega.setEpiHistorico(epiHistorico);
 		solicitacaoEpiItemEntregaDao.save(solicitacaoEpiItemEntrega);
 		
 		SolicitacaoEpiItemEntrega retorno = solicitacaoEpiItemEntregaDao.findByIdProjection(solicitacaoEpiItemEntrega.getId());
 		assertEquals(solicitacaoEpiItemEntrega.getId(), retorno.getId());
 		assertEquals(solicitacaoEpiItem.getId(), retorno.getSolicitacaoEpiItem().getId());
+		assertEquals(epiHistorico.getId(), retorno.getEpiHistorico().getId());
 	}
 	
 	public void testFindBySolicitacaoEpi() 
@@ -185,5 +201,13 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 
 	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao) {
 		this.solicitacaoEpiDao = solicitacaoEpiDao;
+	}
+
+	public void setEpiDao(EpiDao epiDao) {
+		this.epiDao = epiDao;
+	}
+
+	public void setEpiHistoricoDao(EpiHistoricoDao epiHistoricoDao) {
+		this.epiHistoricoDao = epiHistoricoDao;
 	}
 }

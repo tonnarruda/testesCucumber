@@ -17,7 +17,7 @@
 			<#assign data = "">
 	</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('dataEntrega','qtdEntregue'), new Array('dataEntrega'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('dataEntrega','qtdEntregue','epiHistoricoId'), new Array('dataEntrega'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<#-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
@@ -33,7 +33,7 @@
 	<@ww.form name="form" action="${formAction}" method="POST">
 		<@ww.datepicker label="Data da Entrega" name="solicitacaoEpiItemEntrega.dataEntrega" id="dataEntrega" required="true" value="${data}" cssClass="mascaraData"/>
 		<@ww.textfield label="Qtd. Entregue" name="solicitacaoEpiItemEntrega.qtdEntregue" id="qtdEntregue" required="true"  onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="3"  />
-		<@ww.select label="Histórico (data - CA - validade de uso)" name="epiHistorico.id" id="epiHistoricoId" list="epiHistoricos" cssStyle="width: 300px;" listKey="id" listValue="descricao"/>
+		<@ww.select label="Histórico (data - CA - validade de uso)" name="solicitacaoEpiItemEntrega.epiHistorico.id" id="epiHistoricoId" required="true" list="epiHistoricos" headerKey="" headerValue="Selecione..." cssStyle="width: 300px;" listKey="id" listValue="descricao"/>
 		<@ww.hidden name="solicitacaoEpi.id" />
 		<@ww.hidden name="solicitacaoEpiItem.id" />
 		<@ww.hidden name="solicitacaoEpiItemEntrega.id" />

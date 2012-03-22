@@ -68,6 +68,14 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		this.solicitacaoEpiItem.setId(solicitacaoEpiItemId);
 	}
 	
+	public void setProjectionEpiHistoricoId(Long epiHistoricoId) 
+	{
+		if(this.epiHistorico == null)
+			this.epiHistorico = new EpiHistorico();
+		
+		this.epiHistorico.setId(epiHistoricoId);
+	}
+	
 	public SolicitacaoEpiItem getSolicitacaoEpiItem() {
 		return solicitacaoEpiItem;
 	}
