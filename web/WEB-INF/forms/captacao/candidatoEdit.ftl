@@ -12,8 +12,17 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
  <style type="text/css">
+		<#if moduloExterno>
+			@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
+		<#else>
+			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		</#if>
  		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
 		
 		#parentesDialog { display: none; }
 		#parentesDialog li { margin: 5px 0px; }
@@ -23,17 +32,8 @@
 		#parentesDialog .xz { background-color:#fbfa99; color:red; }
 		#parentesDialog table { width: 100%; }
 		#parentesDialog td { width: 50%; vertical-align: top; }
-	<#if moduloExterno>
-		@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
-	<#else>
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-	</#if>
 
 </style>
-
-  <link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css"/>" media="screen" type="text/css">
-  <link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css"/>" media="screen" type="text/css">
-  
 
   <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Language" content="pt-br" />
@@ -69,13 +69,6 @@
 
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
 
-  <style type="text/css">
-    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-  </style>
-	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
-	
-	
 	<#if moduloExterno?exists && moduloExterno>
 			<#assign edicao="false"/>
 	<#else>
