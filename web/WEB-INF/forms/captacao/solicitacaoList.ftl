@@ -224,7 +224,14 @@
 		</@authz.authorize>
 	
 		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
-			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')"><img border="0" title="Alterar status" src="<@ww.url includeParams="none" value="/imgs/page_edit.gif"/>"></a>
+			<#if solicitacao.status == 'A'>
+				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_green.png"/></#assign>
+			<#elseif solicitacao.status == 'R'>
+				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_red.png"/></#assign>
+			<#else>
+				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_yellow.png"/></#assign>
+			</#if>
+			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')"><img border="0" title="Alterar status (${solicitacao.statusFormatado})" src="${imgStatus}"></a>
 		</@authz.authorize>
 		
 		</@display.column>
