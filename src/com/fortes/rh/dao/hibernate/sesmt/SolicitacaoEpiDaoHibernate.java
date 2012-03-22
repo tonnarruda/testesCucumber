@@ -159,12 +159,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("join se.colaborador co ");
 		hql.append("join se.cargo ca ");
 		hql.append("join co.historicoColaboradors hc ");
-		hql.append("left join e.epiHistoricos eh ");
-		hql.append("where eh.data = (select max(eh2.data)");
-		hql.append("                    from EpiHistorico eh2");
-		hql.append("                    where eh2.epi.id = e.id");
-		hql.append("                    and eh2.data <= :data)");
-		hql.append("and ((:data - se.data) >= eh.validadeUso ");
+		hql.append("left join ent.epiHistorico eh ");
+		hql.append("where ((:data - ent.dataEntrega) >= eh.validadeUso ");
 
 		if(exibirVencimentoCA)
 			hql.append(" or :data >= eh.vencimentoCA ");
@@ -201,8 +197,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome) ");
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, eh.vencimentoCA) ");
 		hql.append("from SolicitacaoEpiItemEntrega ent ");
+		hql.append("left join ent.epiHistorico eh ");
 		hql.append("join ent.solicitacaoEpiItem item ");
 		hql.append("join item.solicitacaoEpi s ");
 		hql.append("join s.colaborador co ");

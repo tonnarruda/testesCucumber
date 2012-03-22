@@ -35,7 +35,7 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	{
 	}
 
-	public SolicitacaoEpiItemEntrega(Long id, Integer qtdEntregue, Date dataEntrega, Integer qtdSolicitado, String epiNome, String cargoNome, String colaboradorNome)
+	public SolicitacaoEpiItemEntrega(Long id, Integer qtdEntregue, Date dataEntrega, Integer qtdSolicitado, String epiNome, String cargoNome, String colaboradorNome, Date dataVencimentoCA)
 	{
 		this.setId(id);
 		this.setQtdEntregue(qtdEntregue);
@@ -50,6 +50,9 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		this.solicitacaoEpiItem.setSolicitacaoEpi(new SolicitacaoEpi());
 		this.solicitacaoEpiItem.getSolicitacaoEpi().setCargoNome(cargoNome);
 		this.solicitacaoEpiItem.getSolicitacaoEpi().setColaboradorNome(colaboradorNome);
+		
+		this.epiHistorico = new EpiHistorico();
+		this.epiHistorico.setVencimentoCA(dataVencimentoCA);
 	}
 
 	public SolicitacaoEpiItemEntrega(Long id , Integer qtdEntregue, Date dataEntrega, String CA)

@@ -1,7 +1,6 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -84,6 +83,11 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	public char getSituacao()
 	{
 		return SituacaoSolicitacaoEpi.getSituacao(qtdEpiEntregue, qtdEpiSolicitado);
+	}
+	
+	public Date getDataVencimentoEpi()
+	{
+		return this.dataEpiEntrega;
 	}
 
 	public void setCargoNome(String cargoNome)

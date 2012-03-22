@@ -1,7 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -100,9 +99,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 	public void testFindVencimentoEpi()
 	{
 		Date hoje = DateUtil.criarDataMesAno(20, 3, 2012);
-
-		Calendar dataSeisMesesAtras = Calendar.getInstance();
-    	dataSeisMesesAtras.add(Calendar.MONTH, -6);
+		Date dataSeisMesesAtras = DateUtil.criarDataMesAno(20, 9, 2011);
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
@@ -121,7 +118,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		EpiHistorico epiHistorico = new EpiHistorico();
 		epiHistorico.setValidadeUso(6);
 		epiHistorico.setEpi(epi);
-		epiHistorico.setData(dataSeisMesesAtras.getTime());
+		epiHistorico.setData(dataSeisMesesAtras);
+		epiHistorico.setVencimentoCA(dataSeisMesesAtras);
 		epiHistoricoDao.save(epiHistorico);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -142,7 +140,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		historicoColaboradorDao.save(historicoColaborador);
 
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setData(dataSeisMesesAtras.getTime());
+		solicitacaoEpi.setData(dataSeisMesesAtras);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpi.setCargo(cargo);
 		solicitacaoEpiDao.save(solicitacaoEpi);
@@ -153,14 +151,16 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
 		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setEpiHistorico(epiHistorico);
 		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
-		entrega.setDataEntrega(hoje);
+		entrega.setDataEntrega(dataSeisMesesAtras);
 		entrega.setQtdEntregue(3);
 		solicitacaoEpiItemEntregaDao.save(entrega);
 
 		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setEpiHistorico(epiHistorico);
 		entrega2.setSolicitacaoEpiItem(solicitacaoEpiItem);
-		entrega2.setDataEntrega(hoje);
+		entrega2.setDataEntrega(dataSeisMesesAtras);
 		entrega2.setQtdEntregue(2);
 		solicitacaoEpiItemEntregaDao.save(entrega2);
 
@@ -171,11 +171,13 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, tipoEPIIds, areasIds, estabelecimentoIds);
 
 		assertEquals(2, colecao.size());
+		assertEquals(dataSeisMesesAtras, ((SolicitacaoEpi)colecao.toArray()[0]).getVencimentoCA());
 	}
 
 	public void testFindEntregaEpi()
 	{
 		Date hoje = DateUtil.criarDataMesAno(2, 2, 2012);
+		Date vencCA = DateUtil.criarDataMesAno(2, 5, 2012);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -200,12 +202,18 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		epi.setNome("teste");
 		epiDao.save(epi);
 		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setEpi(epi);
+		epiHistorico.setVencimentoCA(vencCA);
+		epiHistoricoDao.save(epiHistorico);
+		
 		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
 		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItem.setEpi(epi);
 		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
 		
 		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setEpiHistorico(epiHistorico);
 		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
 		entrega.setDataEntrega(hoje);
 		entrega.setQtdEntregue(3);
@@ -217,6 +225,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor);
 		
 		assertEquals(1, colecao.size());
+		assertEquals(vencCA, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
 	}
 	
 	
@@ -248,6 +257,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		EpiHistorico epiHistorico = new EpiHistorico();
 		epiHistorico.setValidadeUso(6);
 		epiHistorico.setData(hoje);
+		epiHistorico.setVencimentoCA(hoje);
 		epiHistoricoDao.save(epiHistorico);
 		
 		Collection<EpiHistorico> epiHistoricos = new ArrayList<EpiHistorico>();
@@ -272,18 +282,21 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiItemDao.save(item2);
 		
 		SolicitacaoEpiItemEntrega entrega1 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega1.setEpiHistorico(epiHistorico);
 		entrega1.setSolicitacaoEpiItem(item1);
 		entrega1.setDataEntrega(data1);
 		entrega1.setQtdEntregue(3);
 		solicitacaoEpiItemEntregaDao.save(entrega1);
 
 		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setEpiHistorico(epiHistorico);
 		entrega2.setSolicitacaoEpiItem(item1);
 		entrega2.setDataEntrega(data2);
 		entrega2.setQtdEntregue(4);
 		solicitacaoEpiItemEntregaDao.save(entrega2);
 
 		SolicitacaoEpiItemEntrega entrega3 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega3.setEpiHistorico(epiHistorico);
 		entrega3.setSolicitacaoEpiItem(item2);
 		entrega3.setDataEntrega(data3);
 		entrega3.setQtdEntregue(5);
@@ -295,6 +308,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data3, null, colaboradorCheck, agruparPor);
 		
 		assertEquals(3, colecao.size());
+		assertEquals(hoje, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
 	}
 	
 	public void testGetCount()

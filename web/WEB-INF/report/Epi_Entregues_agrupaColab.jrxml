@@ -33,6 +33,7 @@
 	<field name="qtdEntregue" class="java.lang.Integer"/>
 	<field name="dataEntrega" class="java.util.Date"/>
 	<field name="solicitacaoEpiItem.qtdSolicitado" class="java.lang.Integer"/>
+	<field name="epiHistorico.vencimentoCA" class="java.util.Date"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{solicitacaoEpiItem.epi.nome}]]></variableExpression>
@@ -99,7 +100,7 @@
 					<reportElement
 						x="317"
 						y="2"
-						width="81"
+						width="50"
 						height="11"
 						key="textField-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -210,18 +211,18 @@
 					<reportElement
 						x="317"
 						y="21"
-						width="80"
+						width="50"
 						height="11"
 						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Qtd. Solicitada]]></text>
+				<text><![CDATA[Qtd. Sol.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="481"
+						x="421"
 						y="21"
 						width="54"
 						height="11"
@@ -234,16 +235,29 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="399"
+						x="369"
 						y="21"
-						width="80"
+						width="50"
 						height="11"
 						key="staticText-9"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Qtd. Entregue]]></text>
+				<text><![CDATA[Qtd. Entr.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="477"
+						y="21"
+						width="56"
+						height="11"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Venc. CA]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -266,9 +280,9 @@
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="399"
+						x="369"
 						y="1"
-						width="80"
+						width="50"
 						height="11"
 						key="textField-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -279,7 +293,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="481"
+						x="421"
 						y="1"
 						width="54"
 						height="11"
@@ -289,6 +303,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{dataEntrega}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="477"
+						y="1"
+						width="56"
+						height="11"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{epiHistorico.vencimentoCA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
