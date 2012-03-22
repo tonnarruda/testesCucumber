@@ -240,7 +240,6 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 
 	public void setUltimoLogin(Long id) {
 		getDao().setUltimoLogin(id);
-		
 	}
 
 	public Collection<Usuario> findAllSelect(Long empresaId) {

@@ -202,18 +202,9 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Usuario usuario2 = UsuarioFactory.getEntity(2L);
 		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity(2L);
 		usuarioEmpresa2.setUsuario(usuario2);
-		
-		Usuario usuarioFora = UsuarioFactory.getEntity(3L);
-		UsuarioEmpresa usuarioEmpresaFora = UsuarioEmpresaFactory.getEntity(3L);
-		usuarioEmpresaFora.setUsuario(usuarioFora);
-		
+				
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
-		
-		Collection<UsuarioEmpresa> todosUsuarioEmpresasComRolePeriodoExperiencia = new ArrayList<UsuarioEmpresa>();
-		todosUsuarioEmpresasComRolePeriodoExperiencia.add(usuarioEmpresa);
-		todosUsuarioEmpresasComRolePeriodoExperiencia.add(usuarioEmpresa2);
-		todosUsuarioEmpresasComRolePeriodoExperiencia.add(usuarioEmpresaFora);
-		
+			
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = new ArrayList<UsuarioEmpresa>();
 		usuariosResponsaveisAreaOrganizacionais.add(usuarioEmpresa);
 		usuariosResponsaveisAreaOrganizacionais.add(usuarioEmpresa2);
@@ -223,7 +214,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", todosUsuarioEmpresasComRolePeriodoExperiencia, new ArrayList<Long>());
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", new ArrayList<Long>());
 	}
 	
 	public void testDeleteUm() throws Exception

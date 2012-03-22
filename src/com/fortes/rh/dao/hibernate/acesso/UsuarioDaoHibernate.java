@@ -136,7 +136,6 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		criteria.addOrder(Order.asc("u.nome"));
 
-
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));
 
@@ -154,9 +153,9 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		
 		criteria.setProjection(p);
 		
+		criteria.add(Expression.eq("u.acessoSistema", true));
 		criteria.add(Expression.eq("ue.empresa.id", empresaId));
 		criteria.addOrder(Order.asc("u.nome"));
-		
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));

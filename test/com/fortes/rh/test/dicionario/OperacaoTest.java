@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(15, Operacao.values().length);
+		assertEquals(17, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()

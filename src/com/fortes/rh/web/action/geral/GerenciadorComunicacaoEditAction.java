@@ -11,7 +11,6 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
-import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;

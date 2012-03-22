@@ -1,8 +1,8 @@
 package com.fortes.rh.test.dao.hibernate.acesso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
@@ -26,6 +26,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
+import com.fortes.rh.util.LongUtil;
 
 public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<UsuarioEmpresa>
 {
@@ -166,6 +167,46 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		assertEquals(true, usuarioEmpresaDao.findPerfisEmpresas().size() >= 1);
+	}
+	
+	public void testfindUsuariosAtivo()
+	{
+		Empresa fortes = EmpresaFactory.getEmpresa();
+		empresaDao.save(fortes);
+
+		Empresa fox = EmpresaFactory.getEmpresa();
+		empresaDao.save(fox);
+
+		Usuario leo = UsuarioFactory.getEntity();
+		leo.setAcessoSistema(true);
+		usuarioDao.save(leo);
+
+		UsuarioEmpresa usuarioEmpresaLeo = new UsuarioEmpresa();
+		usuarioEmpresaLeo.setUsuario(leo);
+		usuarioEmpresaLeo.setEmpresa(fox);
+		usuarioEmpresaDao.save(usuarioEmpresaLeo);
+
+		Usuario mel = UsuarioFactory.getEntity();
+		mel.setAcessoSistema(true);
+		usuarioDao.save(mel);
+		
+		UsuarioEmpresa usuarioEmpresaMel = new UsuarioEmpresa();
+		usuarioEmpresaMel.setUsuario(mel);
+		usuarioEmpresaMel.setEmpresa(fortes);
+		usuarioEmpresaDao.save(usuarioEmpresaMel);
+
+		Usuario teo = UsuarioFactory.getEntity();
+		teo.setAcessoSistema(false);
+		usuarioDao.save(teo);
+		
+		UsuarioEmpresa usuarioEmpresaTeo = new UsuarioEmpresa();
+		usuarioEmpresaTeo.setUsuario(teo);
+		usuarioEmpresaTeo.setEmpresa(fox);
+		usuarioEmpresaDao.save(usuarioEmpresaTeo);
+
+		Collection<Usuario> usuarios = Arrays.asList(leo, mel, teo);
+		
+		assertEquals(1, usuarioEmpresaDao.findUsuariosAtivo(LongUtil.collectionToCollectionLong(usuarios), fox.getId()).size());
 	}
 	
 	public void testFindUsuariosByEmpresaRoleSetorPessoal()

@@ -73,4 +73,9 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 	public Collection<UsuarioEmpresa> findPerfisEmpresas() {
 		return getDao().findPerfisEmpresas();
 	}
+
+	public Collection<UsuarioEmpresa> findUsuariosAtivo(Collection<Long> usuarioIds, Long empresaId) 
+	{
+		return getDao().findUsuariosAtivo(usuarioIds, empresaId);
+	}
 }

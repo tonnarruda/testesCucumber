@@ -53,6 +53,7 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
@@ -341,7 +342,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), colaboradorAvaliacao.getColaborador().getEmpresa().getId());
 	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
 	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
 	    			} 		
 	    		}
@@ -446,12 +447,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				
 				Empresa empresa = periodoExperiencia.getEmpresa();
 				Integer diasAvaliacao = periodoExperiencia.getDias();
-				
-				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "GERENCIA_MSG_PERIODOEXPERIENCIA");		
-
-				Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "RECEBE_MSG_PERIODOEXPERIENCIA");		
-				usuarioEmpresasPeriodoExperiencia.removeAll(usuarioEmpresasPeriodoExperienciaGerencial);
-				
 				String data = DateUtil.formataDiaMesAno(dataAvaliacao.getTime());
 				
 				for (Colaborador colaborador : colaboradores)
@@ -480,12 +475,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), empresa.getId());
 		    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		    		{
-		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperienciaGerencial, colaborador, TipoMensagem.PERIODOEXPERIENCIA);
-		    			} 		
-		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, usuarioEmpresasPeriodoExperiencia, colaborador.getAreaOrganizacional().getDescricaoIds());
-		    			} 		
+		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+		    			{
+		    				Collection<UsuarioEmpresa> usuariosConfigurados = usuarioEmpresaManager.findUsuariosAtivo(LongUtil.collectionToCollectionLong(gerenciadorComunicacao.getUsuarios()), gerenciadorComunicacao.getEmpresa().getId());	
+		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "", usuariosConfigurados, colaborador, TipoMensagem.PERIODOEXPERIENCIA);
+		    			}
+		    			
+		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
+		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds());
 		    		}
 				}
 			}

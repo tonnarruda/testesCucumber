@@ -210,6 +210,11 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuario2.setNome("babauuu_2");
 		usuarioDao.save(usuario2);
 		
+		Usuario usuario3 = UsuarioFactory.getEntity();
+		usuario3.setAcessoSistema(false);
+		usuario3.setNome("babauuu_2");
+		usuarioDao.save(usuario3);
+		
 		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
 		usuarioEmpresa.setEmpresa(empresa);
 		usuarioEmpresa.setUsuario(usuario);
@@ -219,6 +224,11 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresa2.setEmpresa(empresa2);
 		usuarioEmpresa2.setUsuario(usuario2);
 		usuarioEmpresaDao.save(usuarioEmpresa2);
+		
+		UsuarioEmpresa usuarioEmpresa3 = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa3.setEmpresa(empresa);
+		usuarioEmpresa3.setUsuario(usuario3);
+		usuarioEmpresaDao.save(usuarioEmpresa3);
 		
 		Collection<Usuario> usuarios = usuarioDao.findAllSelect(empresa.getId());
 		assertEquals(1, usuarios.size());

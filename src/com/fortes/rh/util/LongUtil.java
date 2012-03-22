@@ -84,9 +84,12 @@ public class LongUtil
 	{
 		Collection<Long> ids = new ArrayList<Long>();
 		
-		for (AbstractModel model : modelos) 
+		if(modelos != null)
 		{
-			ids.add(model.getId());
+			for (AbstractModel model : modelos) 
+			{
+				ids.add(model.getId());
+			}			
 		}
 		
 		return ids;

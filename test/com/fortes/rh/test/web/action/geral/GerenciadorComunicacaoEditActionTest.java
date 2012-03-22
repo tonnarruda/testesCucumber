@@ -7,7 +7,9 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,6 +22,7 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 {
 	private GerenciadorComunicacaoEditAction action;
 	private Mock manager;
+	private Mock usuarioManager;
 
 	protected void setUp() throws Exception
 	{
@@ -27,7 +30,10 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		manager = new Mock(GerenciadorComunicacaoManager.class);
 		action = new GerenciadorComunicacaoEditAction();
 		action.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) manager.proxy());
-
+		
+		usuarioManager = new Mock(UsuarioManager.class);
+		action.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
+		
 		action.setGerenciadorComunicacao(new GerenciadorComunicacao());
 	}
 
@@ -81,7 +87,6 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(false));
 		manager.expects(once()).method("save").with(eq(gerenciadorComunicacao)).will(returnValue(gerenciadorComunicacao));
-//		r.expects(once()).method("findAllSelect").with(eq(gerenciadorComunicacao)).will(returnValue(gerenciadorComunicacao));
 
 		assertEquals("success", action.insert());
 	}
@@ -92,11 +97,13 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		gerenciadorComunicacao.setOperacao(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
 		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa());
 		
 		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
 		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(gerenciadorComunicacao));
+		usuarioManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Usuario>()));
 		
-//		assertEquals("input", action.insert());
+		assertEquals("input", action.insert());
 	}
 
 	public void testUpdate() throws Exception
@@ -116,11 +123,13 @@ public class GerenciadorComunicacaoEditActionTest extends MockObjectTestCase
 		gerenciadorComunicacao.setOperacao(Operacao.ALTERAR_STATUS_SOLICITACAO.getId());
 		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
 		action.setGerenciadorComunicacao(gerenciadorComunicacao);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa());
 		
 		manager.expects(once()).method("verifyExists").with(eq(gerenciadorComunicacao)).will(returnValue(true));
 		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(gerenciadorComunicacao));
+		usuarioManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Usuario>()));
 		
-//		assertEquals("input", action.update());
+		assertEquals("input", action.update());
 	}
 
 	public void testGetSet() throws Exception

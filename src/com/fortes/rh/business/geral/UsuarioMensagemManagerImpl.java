@@ -98,18 +98,10 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Collection<Long> areasIds)
+	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionaisComRole = new ArrayList<UsuarioEmpresa>();
-		
-		for (UsuarioEmpresa usuarioEmpresaAreaOrganizacional : usuariosResponsaveisAreaOrganizacionais)
-			for (UsuarioEmpresa usuarioEmpresa : usuarioEmpresas)
-				if(usuarioEmpresa.getUsuario() != null && usuarioEmpresaAreaOrganizacional.getUsuario() != null 
-					&& usuarioEmpresa.getUsuario().getId().equals(usuarioEmpresaAreaOrganizacional.getUsuario().getId()))
-						usuariosResponsaveisAreaOrganizacionaisComRole.add(usuarioEmpresa);
-			
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionaisComRole, null, TipoMensagem.INDIFERENTE);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, TipoMensagem.INDIFERENTE);
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

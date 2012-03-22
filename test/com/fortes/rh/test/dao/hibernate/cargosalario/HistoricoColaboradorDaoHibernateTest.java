@@ -9,6 +9,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
@@ -27,6 +28,7 @@ import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -58,6 +60,7 @@ import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -92,6 +95,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private GrupoACDao grupoACDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private CandidatoDao candidatoDao;
+	private SolicitacaoDao solicitacaoDao;
 	
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
 
@@ -318,8 +322,12 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
 		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
 		
 		HistoricoColaborador historicoContratado = HistoricoColaboradorFactory.getEntity();
@@ -1719,5 +1727,9 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setCandidatoDao(CandidatoDao candidatoDao) {
 		this.candidatoDao = candidatoDao;
+	}
+
+	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao) {
+		this.solicitacaoDao = solicitacaoDao;
 	}
 }
