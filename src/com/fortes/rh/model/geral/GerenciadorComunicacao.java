@@ -1,14 +1,17 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
@@ -27,6 +30,9 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 
 	@Column(length=200)
     private String destinatario;
+	
+	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class)
+	private Collection<Usuario> usuarios;
 
 	public Integer getMeioComunicacao() {
 		return meioComunicacao;
@@ -72,5 +78,11 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 			return this.destinatario.substring(0, 57) + "...";
 		
 		return this.destinatario;
+	}
+	public Collection<Usuario> getUsuarios() {
+		return usuarios;
+	}
+	public void setUsuarios(Collection<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 }

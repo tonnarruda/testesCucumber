@@ -1202,5 +1202,3 @@ function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone, e
 	
 	return dados;
 }
-
-

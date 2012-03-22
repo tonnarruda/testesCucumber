@@ -48,5 +48,7 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	public void createAuto(Empresa empresa, Perfil perfil, String senhaPadrao) throws Exception;
 
 	public void setUltimoLogin(Long id);
+	
+	public Collection<Usuario> findAllSelect(Long empresaId);
 
 }

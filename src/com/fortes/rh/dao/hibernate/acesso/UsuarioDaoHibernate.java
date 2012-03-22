@@ -142,6 +142,27 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		return criteria.list();
 	}
+	
+	public Collection<Usuario> findAllSelect(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "ue");
+		criteria.createCriteria("ue.usuario","u");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("u.id"), "id");
+		p.add(Projections.property("u.nome"), "nome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ue.empresa.id", empresaId));
+		criteria.addOrder(Order.asc("u.nome"));
+		
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));
+		
+		return criteria.list();
+	}
 
 	public Usuario findByLogin(Usuario usuario)
 	{

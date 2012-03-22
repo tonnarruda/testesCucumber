@@ -34,7 +34,7 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	
 	@OneToMany(mappedBy="usuario")
 	private Collection<UsuarioEmpresa> usuarioEmpresas;
-
+	
 	@Transient
 	private String novaSenha = new String();//tem que ser inicializado, Francisco Barroso.
 	@Transient
@@ -185,5 +185,4 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	public void setSuperAdmin(boolean superAdmin) {
 		this.superAdmin = superAdmin;
 	}
-
 }
