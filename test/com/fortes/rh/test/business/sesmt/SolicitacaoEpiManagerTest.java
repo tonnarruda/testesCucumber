@@ -181,23 +181,21 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
 					dataSeisMesesAtras.getTime(), validadeUso, null, 1, null);
 
-		SolicitacaoEpi solicitacaoEpiAnteriorFora =
+		SolicitacaoEpi solicitacaoEpi2 =
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
 					dataSeteMesesAtras.getTime(), validadeUso, null, 1, null);
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
-		colecao.add(solicitacaoEpiAnteriorFora);
+		colecao.add(solicitacaoEpi2);
 		colecao.add(solicitacaoEpi);
 
 		Collection<SolicitacaoEpi> resultado = null;
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[]{eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[]{eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 
 		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null, null, null );
 
-		assertEquals(1, resultado.size());
-
-		assertEquals(solicitacaoEpi, ((SolicitacaoEpi)resultado.toArray()[0]));
+		assertEquals(2, resultado.size());
 	}
 
 	public void testFindRelatorioEntregaEpi() throws Exception
@@ -238,7 +236,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[] {eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[] {eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 		Exception exception = null;
 
 		try

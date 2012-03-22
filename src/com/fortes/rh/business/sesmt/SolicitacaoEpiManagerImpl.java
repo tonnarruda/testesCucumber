@@ -1,14 +1,10 @@
 package com.fortes.rh.business.sesmt;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -20,7 +16,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
-import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
@@ -85,29 +80,14 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<SolicitacaoEpi> findRelatorioVencimentoEpi(Long empresaId, Date vencimento, char agruparPor, boolean exibirVencimentoCA, String[] tipoEPICheck, String[] areasCheck, String[] estabelecimentoCheck) throws ColecaoVaziaException
 	{
-		Collection<SolicitacaoEpi> solicitacoesEpiAVencer = null;
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findVencimentoEpi(empresaId, vencimento, exibirVencimentoCA, LongUtil.arrayStringToArrayLong(tipoEPICheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
+		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findVencimentoEpi(empresaId, vencimento, exibirVencimentoCA, LongUtil.arrayStringToArrayLong(tipoEPICheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentoCheck), agruparPor);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			throw new ColecaoVaziaException("Não existem EPIs com Prazo a Vencer para os filtros informados.");
 
-		solicitacoesEpiAVencer = prepareUltimosEpisVencidos(solicitacaoEpis);
-
-		switch (agruparPor)
-		{
-			case 'E':
-		        Collections.sort((List<SolicitacaoEpi>) solicitacoesEpiAVencer, new BeanComparator("epi.nome", new ComparatorString()));
-				break;
-
-			case 'C':
-		        Collections.sort((List<SolicitacaoEpi>) solicitacoesEpiAVencer, new BeanComparator("colaborador.nome", new ComparatorString()));
-				break;
-		}
-
-		return solicitacoesEpiAVencer;
+		return solicitacaoEpis;
 	}
 
 	public Collection<SolicitacaoEpiItemEntrega> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor) throws ColecaoVaziaException
@@ -118,36 +98,6 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
 		
 		return solicitacaoEpis;
-	}
-
-	/*
-	 * Trata a coleção de solicitações, mantendo apenas o último Epi vencido de cada tipo de Epi para cada colaborador
-	 * Ex., Para o Epi "Luva" solicitado para o colaborador Antonio, vencido em 09/09, 01/10 e 02/10, só deve retornar o de 02/10.
-	 *
-	 * Obs: É esperado que a coleção venha ordenada por Colaborador, Epi e Data
-	 */
-	private Collection<SolicitacaoEpi> prepareUltimosEpisVencidos(Collection<SolicitacaoEpi> solicitacaoEpis)
-	{
-		Collection<SolicitacaoEpi> solicitacoesEpiAVencer = new ArrayList<SolicitacaoEpi>();
-		SolicitacaoEpi solicitacaoEpiAnterior = null;
-
-		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis)
-		{
-			if ((solicitacaoEpiAnterior != null)
-					&& solicitacaoEpi.getColaborador().getId().equals(solicitacaoEpiAnterior.getColaborador().getId())
-					&& solicitacaoEpi.getEpi().getId().equals(solicitacaoEpiAnterior.getEpi().getId()))
-			{
-				if (solicitacaoEpiAnterior.getData().compareTo(solicitacaoEpi.getData()) == -1)
-				{
-					solicitacoesEpiAVencer.remove(solicitacaoEpiAnterior);
-				}
-			}
-
-			solicitacoesEpiAVencer.add(solicitacaoEpi);
-			solicitacaoEpiAnterior = solicitacaoEpi;
-		}
-
-		return solicitacoesEpiAVencer;
 	}
 
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
