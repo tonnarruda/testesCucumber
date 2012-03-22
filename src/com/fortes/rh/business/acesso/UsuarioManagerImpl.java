@@ -242,4 +242,8 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		getDao().setUltimoLogin(id);
 		
 	}
+
+	public Collection<Usuario> findAllSelect(Long empresaId) {
+		return getDao().findAllSelect(empresaId);
+	}
 }

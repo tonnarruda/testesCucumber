@@ -48,7 +48,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		GerenciadorComunicacao gerenciadorComunicacao1 = getEntity();
 		gerenciadorComunicacao1.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
 		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao1.setEnviarPara(EnviarPara.USUARIO.getId());
+		gerenciadorComunicacao1.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao1.setEmpresa(empresa);
 
 		assertFalse(gerenciadorComunicacaoDao.verifyExists(gerenciadorComunicacao1));
@@ -58,7 +58,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		GerenciadorComunicacao gerenciadorComunicacao2 = getEntity();
 		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
 		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIO.getId());
+		gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao2.setEmpresa(empresa);
 				
 		assertTrue(gerenciadorComunicacaoDao.verifyExists(gerenciadorComunicacao2));

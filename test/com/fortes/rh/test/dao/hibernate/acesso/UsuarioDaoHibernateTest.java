@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.acesso;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
@@ -15,6 +16,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
@@ -188,6 +190,41 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 
 		Usuario usuarioDoBanco = usuarioDao.findByLogin("babauuu_");
 		assertTrue(usuarioDoBanco.isAcessoSistema());
+	}
+	
+	public void testFindAllSelectEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setNome("babauuu_1");
+		usuarioDao.save(usuario);
+
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuario2.setAcessoSistema(true);
+		usuario2.setNome("babauuu_2");
+		usuarioDao.save(usuario2);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa2.setEmpresa(empresa2);
+		usuarioEmpresa2.setUsuario(usuario2);
+		usuarioEmpresaDao.save(usuarioEmpresa2);
+		
+		Collection<Usuario> usuarios = usuarioDao.findAllSelect(empresa.getId());
+		assertEquals(1, usuarios.size());
+		
+		Usuario usuarioRetorno = (Usuario) usuarios.toArray()[0];
+		assertEquals("babauuu_1", usuarioRetorno.getNome());
 	}
 	
 	public void testSetUltimoLogin()

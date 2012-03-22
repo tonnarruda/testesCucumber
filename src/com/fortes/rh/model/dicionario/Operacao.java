@@ -13,6 +13,7 @@ public enum Operacao
 			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -85,11 +86,22 @@ public enum Operacao
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA);
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+//			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA);			
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			
+			return this.getListMeioComunicacao();
+		}
+	},
+	//Usuários com permissão de gerenciador de mensagem por período de experiência
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCE(18, "Aviso automático do período de acomp. de experiência para o gestor responsável da área organizacional     apenas da área cujo gestor é responsável.", "Aval. Desempenho"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+//			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GERENCIADOR_DE_MENSAGEM_PERIODO_EXPERIENCIA);
+//			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_PERIODO_EXPERIENCIA);			
+//			
 			return this.getListMeioComunicacao();
 		}
 	},

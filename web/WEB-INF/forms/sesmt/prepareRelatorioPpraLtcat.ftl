@@ -39,10 +39,14 @@
 	    	 }
 	    }
 	    $(function(){
-			$("#ppra").change(function () {
-					$('#wwgrp_exibirComposicaoSesmt').toggle('slow');
+			$('#ppra').change(function() {
+				if (this.checked)
+					$('#exibirComposicaoSesmt').removeAttr('disabled');
+				else
+					$('#exibirComposicaoSesmt').attr("disabled", true);
 			});
-			$('#wwgrp_exibirComposicaoSesmt').toggle('slow');
+			
+			$('#ppra').change();
 		});
 	</script>
 

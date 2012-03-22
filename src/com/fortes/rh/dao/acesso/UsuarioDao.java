@@ -30,5 +30,7 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	public void desativaSuperAdmin();
 	
 	public Usuario findByIdProjection(Long usuarioId);
+	
+	public Collection<Usuario> findAllSelect(Long empresaId);
 
 }

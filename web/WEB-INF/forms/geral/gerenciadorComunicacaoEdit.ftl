@@ -1,3 +1,5 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 	<head>
 		<@ww.head/>
@@ -14,63 +16,80 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GerenciadorComunicacaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<style type="text/css">
+    	@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+    	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+  	</style>
 		
 	<script type="text/javascript">
-		function validacoes()
-		{
-			var valido = true;
-			
-			$('.campo').css("background-color", "#FFFFFF");
+	function validacoesGerenciadorComunicacao()
+	{
+		var valido = true;
 		
-		 	if($('#operacao').val() == 0)//0(zero) = Operacao.NAO_INFORMADO
-			{
-				$('#operacao').css("background-color", "#FFEEC2");
-				valido = false;
-			}
-			
-		 	if($('#meioComunicacoes').val() == 0)
-			{
-				$('#meioComunicacoes').css("background-color", "#FFEEC2");
-				valido = false;
-			}
-			
-		 	if($('#enviarParas').val() == 0)
-			{
-				$('#enviarParas').css("background-color", "#FFEEC2");
-				valido = false;
-			}
-
-			if(!valido)
-			{
-				jAlert("Selecione os campos indicados.");
-				return false;
-			}	
-
-		 	var submeter = true;
-			if($('#enviarParas').val() == 99)//EviarPara.Avulso = 99
-			{	
-				if($('#destinatario').val() == "")
-				{
-					$('#destinatario').css("background-color", "#FFEEC2");
-					jAlert("Preencha o campo indicado.");
-					return false;	
-				}
-			
-				$.each($('#destinatario').val().split(','), function()
-				{
-					if(!validaEmail(this.trim()))
-					{
-						$('#destinatario').css("background-color", "#FF6347");
-						submeter = false;						
-					}
-				});
-			}
-			
-			if(submeter)
-				document.form.submit();
-			else
-				jAlert("Email(s) inválido(s).");
+		$('.campo').css("background-color", "#FFFFFF");
+	
+	 	if($('#operacao').val() == 0)//0(zero) = Operacao.NAO_INFORMADO
+		{
+			$('#operacao').css("background-color", "#FFEEC2");
+			valido = false;
 		}
+		
+	 	if($('#meioComunicacoes').val() == 0)
+		{
+			$('#meioComunicacoes').css("background-color", "#FFEEC2");
+			valido = false;
+		}
+		
+	 	if($('#enviarParas').val() == 0)
+		{
+			$('#enviarParas').css("background-color", "#FFEEC2");
+			valido = false;
+		}
+		
+		if(!valido)
+		{
+			jAlert("Selecione os campos indicados.");
+			return false;
+		}	
+	
+		if($('#enviarParas').val() == 1)//EviarPara.USUARIOS = 1
+		{	
+			if(qtdeChecksSelected(document.getElementsByName('form')[0],'usuariosCheck') == 0)
+			{
+				$('#listCheckBoxusuariosCheck').css("background-color", "#FFEEC2");
+				jAlert("Preencha o campo indicado.");
+				return false;	
+			}
+		}
+	
+	 	var submeter = true;
+		if($('#enviarParas').val() == 99)//EviarPara.AVULSO = 99
+		{	
+			if($('#destinatario').val() == "")
+			{
+				$('#destinatario').css("background-color", "#FFEEC2");
+				jAlert("Preencha o campo indicado.");
+				return false;	
+			}
+		
+			$.each($('#destinatario').val().split(','), function()
+			{
+				if(!validaEmail(this.trim()))
+				{
+					$('#destinatario').css("background-color", "#FF6347");
+					submeter = false;						
+				}
+			});
+		}
+		
+		if(submeter)
+			document.form.submit();
+		else
+			jAlert("Email(s) inválido(s).");
+}
+		
+		
 		
 		function populaMeioComunicacao(operacaoId)
 		{
@@ -110,12 +129,26 @@
 				$('#emailDestinatario').hide();
 			}
 		}
+
+		function exibeUsuarios(enviarParaId)
+		{
+			if(enviarParaId == 1)//EviarPara.USUARIOS = 1
+			{
+				$('#usuariosCheck').show();
+			} else {
+				$('#usuariosCheck').hide();
+			}
+		}
 		
 		$(function(){
 			<#if edicao>
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
+				exibeUsuarios(${gerenciadorComunicacao.enviarPara});
 				$('#operacao').val(${gerenciadorComunicacao.operacao});
 			<#else>
+				<#if gerenciadorComunicacao?exists && gerenciadorComunicacao.operacao?exists>
+					$('#operacao').val(${gerenciadorComunicacao.operacao});
+				</#if>
 				<#if meioComunicacoes?size == 0>
 					$('#meioComunicacoes').html('<option value="0">Selecione uma operação...</option>');
 				</#if>
@@ -123,6 +156,7 @@
 					$('#enviarParas').html('<option value="0">Selecione um meio de comunicação...</option>');
 				</#if>
 				exibeCamposEmailsAvulsos(0);
+				exibeUsuarios(0);
 			</#if>
 		});
 	</script>
@@ -152,10 +186,13 @@
 			</li>			
 			
 			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
-			<@ww.select label="Enviar Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value)" />
+			<@ww.select label="Enviar Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vírgula para inserir mais de um email. 
+			</span>
+			<span id="usuariosCheck">
+				<@frt.checkListBox label="Usuários" id="usuariosMarcados" name="usuariosCheck" list="usuariosCheckList"/>
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
 			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />
@@ -163,7 +200,7 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="validacoes();" class="btnGravar"></button>
+			<button onclick="validacoesGerenciadorComunicacao();" class="btnGravar"></button>
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
 	</body>
