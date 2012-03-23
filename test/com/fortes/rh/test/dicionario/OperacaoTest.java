@@ -15,7 +15,7 @@ public class OperacaoTest extends TestCase
 
 	public void testGetHashMapGrupos()
 	{
-		assertEquals(6, Operacao.getHashMapGrupos().size());
+		assertEquals(7, Operacao.getHashMapGrupos().size());
 	}
 	
 	public void testGetDescricaoById()

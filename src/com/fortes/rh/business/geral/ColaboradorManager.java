@@ -144,7 +144,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck) throws Exception;
 	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
-	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel);
+	public String[] findEmailsByUsuarios(Collection<Long> usuarioEmpresaIds);
 	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds);
 	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds);
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds);

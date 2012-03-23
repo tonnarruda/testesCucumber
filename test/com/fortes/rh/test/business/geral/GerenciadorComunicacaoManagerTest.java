@@ -480,19 +480,25 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<String> emails = Arrays.asList("email@email.com");
 		 
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 Collection<Usuario> usuarios = Arrays.asList(usuario);
+		 
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setUsuarios(usuarios);
 		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
 		 Collection<Exame> examesPrevistos = Arrays.asList(ExameFactory.getEntity()); 
 		 
-		 colaboradorManager.expects(once()).method("findEmailsByPapel").with(eq(empresa.getId()),eq("ROLE_RECEBE_EXAMES_PREVISTOS")).will(returnValue(emails));
 		 parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametros));
 		 exameManager.expects(once()).method("findRelatorioExamesPrevistos").with(new Constraint[] {eq(empresa.getId()), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(examesPrevistos));
+		 
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.EXAMES_PREVISTOS.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
+		 colaboradorManager.expects(once()).method("findEmailsByUsuarios").withAnyArguments();
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
@@ -529,6 +535,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 teo.setEmpresa(empresa);
 		 Collection<Colaborador> colaboradors = Arrays.asList(teo);
 		 
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 Collection<Usuario> usuarios = Arrays.asList(usuario);
+		 
 		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao1.setEmpresa(empresa);
 		 gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
@@ -536,6 +545,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao2.setEmpresa(empresa);
+		 gerenciadorComunicacao2.setUsuarios(usuarios);
 		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 
@@ -642,26 +652,21 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 avaliado.setAreaOrganizacional(area);
 		 avaliado.setFaixaSalarial(faixa1);
 		 avaliado.setEmpresa(empresa);
-		 
-		 UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
-		 Collection<UsuarioEmpresa> usuarioEmpresasPeriodoExperienciaGerencial = Arrays.asList(usuarioEmpresa);
-		 
-		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao1.setEmpresa(empresa);
-		 gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao1.setEnviarPara(EnviarPara.USUARIOS.getId());
-		 
-		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao2.setEmpresa(empresa);
-		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.PERFIL_VER_AREAS.getId());
-		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2);
 
-		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRole").with(eq(empresa.getId()),eq("ROLE_VER_AREAS")).will(returnValue(usuarioEmpresasPeriodoExperienciaGerencial));
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 Collection<Usuario> usuarios = Arrays.asList(usuario);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setUsuarios(usuarios);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+
 		 colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(ANYTHING, ANYTHING).will(returnValue(avaliado));
 		 colaboradorManager.expects(once()).method("findByUsuarioProjection").with(ANYTHING).will(returnValue(avaliador));
-		 
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		 

@@ -14,12 +14,10 @@ public enum EnviarPara
 	COLABORADOR_AVALIADO (17, "Colaborador (Avaliado)"),
 	RESPONSAVEL_RH (7, "Responsável do RH"),
 	RESPONSAVEL_SETOR_PESSOAL (8, "Responsável do setor pessoal"),
-	PERFIL_AUTORIZADO_EXAMES_PREVISTOS (9, "Usuários com permissão de receber emails de exames previstos"),
 	RESPONSAVEL_TECNICO (12, "Responsável Tecnico"),
 	RECEBE_MENSAGEM_AC_PESSOAL (13, "Usuários com perfil de receber mensagem do AC Pessoal"),
 	PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL (14, "Usuários com permissão de visualizar solicitação pessoal"),
 	RESPONSAVEL_LIMITE_CONTRATO (15, "Responsável pelo limite de colaboradores por cargo"),
-	PERFIL_VER_AREAS (16, "Usuários com perfil de visualizar todas as áreas organizacionais"),
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)

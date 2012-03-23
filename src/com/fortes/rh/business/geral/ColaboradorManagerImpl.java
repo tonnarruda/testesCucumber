@@ -1813,9 +1813,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByUsuarioProjection(usuarioId);
 	}
 	
-	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel)
+	public String[] findEmailsByUsuarios(Collection<Long> usuarioEmpresaIds)
 	{
-		return getDao().findEmailsByPapel(empresaId, codPapel);
+		if(usuarioEmpresaIds.isEmpty())
+			return new String[0];
+		
+		return getDao().findEmailsByPapel(usuarioEmpresaIds);
 	}
 
 	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds) 

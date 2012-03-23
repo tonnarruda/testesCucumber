@@ -3077,25 +3077,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.executeUpdate();
 
 	}
-	
-	public Collection<String> findEmailsByPapel(Long empresaId, String codPapel)
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct c.email from papel pa ");
-		sql.append("inner join perfil_papel pp on pa.id = pp.papeis_id ");
-		sql.append("inner join perfil p on p.id = pp.perfil_id ");
-		sql.append("inner join usuarioempresa ue on p.id = ue.perfil_id ");
-		sql.append("inner join usuario u on u.id = ue.usuario_id ");
-		sql.append("inner join colaborador c on c.usuario_id = u.id ");
-		sql.append("where codigo = :papel ");
-		sql.append("and ue.empresa_id = :empresaId ");			
 
-		Query query = getSession().createSQLQuery(sql.toString());
-		query.setString("papel", codPapel);
-		query.setLong("empresaId", empresaId);
-		
-		return query.list();
-	}
 
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
 	{		
@@ -3881,5 +3863,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
+	
+	public String[] findEmailsByPapel(Collection<Long> usuarioEmpresaIds)
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct c.email from usuarioempresa as ue ");
+		sql.append("inner join usuario u on u.id = ue.usuario_id ");
+		sql.append("inner join colaborador c on c.usuario_id = u.id ");
+		sql.append("where ue.id in (:usuarioEmpresaIds) ");
 
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("usuarioEmpresaIds", usuarioEmpresaIds, Hibernate.LONG);
+		
+		return StringUtil.converteCollectionToArrayString(query.list());
+	}
 }

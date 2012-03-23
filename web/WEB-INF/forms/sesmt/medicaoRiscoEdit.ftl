@@ -121,7 +121,7 @@
 			$("#riscoMedicaoRisco th:eq(" + posicao + ")" ).append('<img id="' + id + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />');
 			
 			$('#' + id).qtip({
-				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
+				content: 'Sugerimos que utilize este campo para descrever fonte geradora, meio de propagação, dano a saúde, tipo de exposição (eventual, intermitente, etc).'
 			});
 		}
 		

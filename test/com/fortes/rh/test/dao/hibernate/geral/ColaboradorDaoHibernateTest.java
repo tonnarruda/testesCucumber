@@ -13,6 +13,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
+import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
@@ -45,6 +46,7 @@ import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
@@ -115,6 +117,7 @@ import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
@@ -126,6 +129,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private EmpresaDao empresaDao;
 	private UsuarioDao usuarioDao;
+	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private CandidatoDao candidatoDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private AvaliacaoDao avaliacaoDao;
@@ -3813,8 +3817,38 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindEmailsByPapel() 
 	{
-		//sql, ta so passando por dentro
-		colaboradorDao.findEmailsByPapel(1L, "");
+		Usuario teo = UsuarioFactory.getEntity();
+		usuarioDao.save(teo);
+
+		Colaborador colabTeo = ColaboradorFactory.getEntity();
+		colabTeo.setUsuario(teo);
+		colabTeo.setEmailColaborador("teste@teste.com");
+		colaboradorDao.save(colabTeo);
+		
+		UsuarioEmpresa ueTeo = UsuarioEmpresaFactory.getEntity();
+		ueTeo.setUsuario(teo);
+		usuarioEmpresaDao.save(ueTeo);
+		
+		Usuario leo = UsuarioFactory.getEntity();
+		usuarioDao.save(leo);
+
+		Colaborador colabLeo = ColaboradorFactory.getEntity();
+		colabLeo.setUsuario(leo);
+		colabLeo.setEmailColaborador("teste@teste.com");
+		colaboradorDao.save(colabLeo);
+		
+		UsuarioEmpresa ueLeo = UsuarioEmpresaFactory.getEntity();
+		ueLeo.setUsuario(leo);
+		usuarioEmpresaDao.save(ueLeo);
+		
+		Collection<Long> usuarioEmpresaIds = Arrays.asList(ueTeo.getId(), ueLeo.getId()); 
+		
+		//somente para startar a consulta em sql
+		colaboradorDao.findbyCandidato(colabLeo.getId(), 1L);
+		
+		String[] emails = colaboradorDao.findEmailsByPapel(usuarioEmpresaIds);
+		
+		assertEquals(1, emails.length);
 	}
 
 	public void testFindParticipantesByAvaliacaoDesempenho() {
@@ -4634,6 +4668,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setQuestionarioDao(QuestionarioDao questionarioDao) {
 		this.questionarioDao = questionarioDao;
+	}
+
+	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao) {
+		this.usuarioEmpresaDao = usuarioEmpresaDao;
 	}
 
 }

@@ -21199,6 +21199,8 @@ insert into migrations values('20120213150023');
 insert into migrations values('20120302142218');
 insert into migrations values('20120305140031');
 insert into migrations values('20120306133503');
+insert into migrations values('20120309134850');
+insert into migrations values('20120315154757');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
 values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.71.65', '', '25', false, false, 2, '1.1.49.1', 3, 

@@ -1,6 +1,7 @@
 package com.fortes.rh.business.geral;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -366,48 +367,46 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			
 			for (Empresa empresa : empresas) 
 			{
-				Collection<String> emailsCollection = colaboradorManager.findEmailsByPapel(empresa.getId(), "ROLE_RECEBE_EXAMES_PREVISTOS");
-				if (!emailsCollection.isEmpty())
+				Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
+				Date ultimoDiaDoMesPosterior = DateUtil.getUltimoDiaMes(DateUtil.incrementaMes(new Date(), 1));
+				String dataString = DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior);
+				String subject = "(" + empresa.getNome()+ ")" + "Exames previstos até " + dataString;
+				String body = "<B>" + empresa.getNome() + "<B><br><br>" + "Segue em anexo Relatório de Exames Previstos até " + dataString;
+				
+				try 
 				{
-					Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
-					Date ultimoDiaDoMesPosterior = DateUtil.getUltimoDiaMes(DateUtil.incrementaMes(new Date(), 1));
-					String dataString = DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior);
-					String subject = "(" + empresa.getNome()+ ")" + "Exames previstos até " + dataString;
-					String body = "<B>" + empresa.getNome() + "<B><br><br>" + "Segue em anexo Relatório de Exames Previstos até " + dataString;
-					
-					try 
-					{
-						char barra = File.separatorChar;
-						String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-						path = path + barra + "WEB-INF" + barra +"report" + barra; 
-						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-						String msgRegistro = Autenticador.getMsgAutenticado("");
-						String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
-				    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
-				    	cabecalho.setLicenciadoPara(empresa.getNome());
-				    	parametros.put("CABECALHO", cabecalho);
-				    	parametros.put("SUBREPORT_DIR", path);
-				    	
-				    	colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
+					char barra = File.separatorChar;
+					String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+					path = path + barra + "WEB-INF" + barra +"report" + barra; 
+					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+					String msgRegistro = Autenticador.getMsgAutenticado("");
+					String logo = ArquivoUtil.getPathLogoEmpresa() + empresa.getLogoUrl();
+			    	Cabecalho cabecalho = new Cabecalho("Exames Previstos até " + DateUtil.formataDiaMesAno(ultimoDiaDoMesPosterior), empresa.getNome(), "", "[Envio Automático]", parametrosDoSistema.getAppVersao(), logo, msgRegistro);
+			    	cabecalho.setLicenciadoPara(empresa.getNome());
+			    	parametros.put("CABECALHO", cabecalho);
+			    	parametros.put("SUBREPORT_DIR", path);
+			    	
+			    	colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
 
-						if (!colecaoExamesPrevistos.isEmpty()){
-							DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colecaoExamesPrevistos, "exames_previstos.jasper");
-							
-							String[] emails = new String[emailsCollection.size()];
-							emails = emailsCollection.toArray(emails);
-							
-							Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.EXAMES_PREVISTOS.getId(), empresa.getId());
-				    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-				    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS.getId())){
-				    				mail.send(empresa, subject, files, body, emails);		
-				    			} 		
-				    		}
-						}
-					} 
-					catch (ColecaoVaziaException e) 
+					if (!colecaoExamesPrevistos.isEmpty())
 					{
-						throw new Exception(e.getMessage(), e);
+						DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colecaoExamesPrevistos, "exames_previstos.jasper");
+						
+						Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.EXAMES_PREVISTOS.getId(), empresa.getId());
+			    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+			    			{
+			    				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+			    				String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
+			    				
+			    				mail.send(empresa, subject, files, body, emails);		
+			    			} 		
+			    		}
 					}
+				} 
+				catch (ColecaoVaziaException e) 
+				{
+					throw new Exception(e.getMessage(), e);
 				}
 			}
 		}
@@ -477,7 +476,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    		{
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
 		    			{
-		    				Collection<UsuarioEmpresa> usuariosConfigurados = usuarioEmpresaManager.findUsuariosAtivo(LongUtil.collectionToCollectionLong(gerenciadorComunicacao.getUsuarios()), gerenciadorComunicacao.getEmpresa().getId());	
+		    				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
 		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "", usuariosConfigurados, colaborador, TipoMensagem.PERIODOEXPERIENCIA);
 		    			}
 		    			
@@ -488,10 +487,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 		}
 	}
+
+	
 	
 	public void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa) 
 	{
-		Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "ROLE_VER_AREAS");
+//		Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "ROLE_VER_AREAS");
 
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Colaborador colaboradorAvaliado = colaboradorManager.findByIdDadosBasicos(colaboradorAvaliadoId, null);
@@ -513,8 +514,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId(), empresa.getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.PERFIL_VER_AREAS.getId()))
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+			{	
+				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.PERIODOEXPERIENCIA);
+			}
 		}
 	}
 	
@@ -548,6 +552,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa) 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
@@ -682,6 +687,16 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private Collection<UsuarioEmpresa> verificaUsuariosAtivosNaEmpresa(GerenciadorComunicacao gerenciadorComunicacao) 
+	{
+		Collection<UsuarioEmpresa> usuariosConfigurados = new ArrayList<UsuarioEmpresa>();
+		
+		if(gerenciadorComunicacao.getUsuarios() != null && gerenciadorComunicacao.getUsuarios().size() > 0)
+			usuariosConfigurados = usuarioEmpresaManager.findUsuariosAtivo(LongUtil.collectionToCollectionLong(gerenciadorComunicacao.getUsuarios()), gerenciadorComunicacao.getEmpresa().getId());
+		
+		return usuariosConfigurados;
 	}
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

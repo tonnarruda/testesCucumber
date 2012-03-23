@@ -97,7 +97,7 @@ public enum Operacao
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
-			MeioComunicacao.EMAIL.add(EnviarPara.PERFIL_AUTORIZADO_EXAMES_PREVISTOS);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -157,11 +157,11 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Desempenho"){
+	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Período de Experiência"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_VER_AREAS);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}

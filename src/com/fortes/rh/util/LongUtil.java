@@ -84,7 +84,7 @@ public class LongUtil
 	{
 		Collection<Long> ids = new ArrayList<Long>();
 		
-		if(modelos != null)
+		if(modelos != null && modelos.size() > 0)
 		{
 			for (AbstractModel model : modelos) 
 			{
