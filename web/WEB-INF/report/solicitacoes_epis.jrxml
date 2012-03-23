@@ -29,7 +29,7 @@
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="cargo.nome" class="java.lang.String"/>
 	<field name="data" class="java.util.Date"/>
-	<field name="situacao" class="java.lang.String"/>
+	<field name="situacaoDescricao" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -155,7 +155,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{situacao}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{situacaoDescricao}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

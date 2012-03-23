@@ -80,7 +80,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql = new StringBuilder("select sub.* ");
 
 		sql.append("from ( ");
-		sql.append("select se.id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, sum(distinct sei.qtdSolicitado) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("select se.id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
 		sql.append("from solicitacaoepi as se ");
 		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
 		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
@@ -235,6 +235,58 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (colaboradorCheck != null && colaboradorCheck.length != 0)
 			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
 
+		if (dataIni != null && dataFim != null)
+		{
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}
+		
+		return query.list();
+	}
+	
+	public Collection<SolicitacaoEpiItemEntrega> findEntregasByEpi(Long empresaId, Date dataIni, Date dataFim, String colaboradorNome, String colaboradorMatricula, char situacaoSolicitacaoEpi)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, est.nome) ");
+		hql.append("from SolicitacaoEpiItemEntrega ent ");
+		hql.append("join ent.solicitacaoEpiItem item ");
+		hql.append("join item.solicitacaoEpi s ");
+		hql.append("join s.colaborador co ");
+		hql.append("join co.historicoColaboradors hc ");
+		hql.append("join hc.estabelecimento est ");
+		hql.append("join s.cargo ca ");
+		hql.append("join item.epi e ");
+		hql.append("where co.desligado = false ");
+		hql.append("  hc.data = (");
+		hql.append("   select max(hc2.data) ");
+		hql.append("   from HistoricoColaborador as hc2 ");
+		hql.append("   where hc2.colaborador.id = co.id ");
+		hql.append("   and hc2.data <= :dataAtual  ");
+		hql.append("  ) ");
+		
+		if (dataIni != null && dataFim != null)
+			hql.append("and ent.dataEntrega between :dataIni and :dataFim ");
+		
+//		if(epiIds != null && epiIds.length != 0)
+//			hql.append("and e.id in (:epiCheck) ");
+		
+//		if(colaboradorCheck != null && colaboradorCheck.length != 0)
+//			hql.append("and co.id in (:colaboradorCheck) ");
+		
+		hql.append("and e.empresa.id = :empresaId ");
+		
+		hql.append("order by se.data desc, co.nome ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		
+//		if(epiIds != null && epiIds.length != 0)
+//			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
+//		
+//		if (colaboradorCheck != null && colaboradorCheck.length != 0)
+//			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+		
+		query.setDate("dataAtual", new Date());
 		if (dataIni != null && dataFim != null)
 		{
 			query.setDate("dataIni", dataIni);
