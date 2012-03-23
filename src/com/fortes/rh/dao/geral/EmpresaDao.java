@@ -25,4 +25,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Collection<Empresa> findByCartaoAniversario();
 	boolean checkEmpresaIntegradaAc();
 	Collection<Empresa> findComCodigoAC();
+	public Empresa findEmailsEmpresa(Long empresaId);
 }

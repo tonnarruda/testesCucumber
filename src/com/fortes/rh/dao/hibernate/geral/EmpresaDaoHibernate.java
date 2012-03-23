@@ -299,6 +299,27 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return criteria.list();
 	}
 	
+	public Empresa findEmailsEmpresa(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
+		p.add(Projections.property("e.emailRespSetorPessoal"),"emailRespSetorPessoal");
+		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
+		p.add(Projections.property("e.logoUrl"),"logoUrl");
+		
+		criteria.add(Expression.eq("e.id", empresaId));
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (Empresa) criteria.uniqueResult();
+	}
+	
 	public Collection<Empresa> findByCartaoAniversario()
 	{
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");

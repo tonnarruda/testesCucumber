@@ -270,11 +270,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	
 	public Collection<Empresa> findEmailsEmpresa()
 	{
-		
 		return getDao().findTodasEmpresas();
-		
 	}
 	
+	public Empresa findEmailsEmpresa(Long empresaId)
+	{
+		return getDao().findEmailsEmpresa(empresaId);
+	}
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
 		this.conhecimentoManager = conhecimentoManager;

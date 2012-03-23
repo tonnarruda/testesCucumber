@@ -137,8 +137,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
-		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
-//		assertEquals(3,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+		assertEquals(3,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testExamesPrevistos()

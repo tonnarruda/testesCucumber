@@ -35,6 +35,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);
 	void removeEmpresa(long id);
 	Collection<Empresa> findEmailsEmpresa();
+	public Empresa findEmailsEmpresa(Long empresaId);
 	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
 	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
 	Collection<Empresa> findTodasEmpresas();

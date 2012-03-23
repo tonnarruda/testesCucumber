@@ -81,23 +81,25 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer", "Aval. Desempenho"){
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer", "Aval. Período de Experiência"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
 			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR_AVALIADO);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			
 			return this.getListMeioComunicacao();
 		}
 	},
-	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "Aval. Desempenho"){
+	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Período de Experiência"){
 		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
-			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -148,20 +150,20 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "Exames"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	BACKUP_AUTOMATICO(16, "Aviso automático de backup", "Utilitários"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_TECNICO);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
-	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Período de Experiência"){
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.CAIXA_MENSAGEM);
-			
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
