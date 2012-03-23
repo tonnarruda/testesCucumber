@@ -10,7 +10,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -31,7 +34,20 @@ public class EpiHistorico extends AbstractModel implements Serializable
     @Temporal(TemporalType.DATE)
     private Date data;
     
-    //Projection
+    public EpiHistorico() {}
+
+    public EpiHistorico(Long id, String atenuacao, Date vencimentoCA, Integer validadeUso, String cA, Long epiId, Date data) 
+    {
+    	this.setId(id);
+		this.atenuacao = atenuacao;
+		this.vencimentoCA = vencimentoCA;
+		this.validadeUso = validadeUso;
+		this.CA = cA;
+		this.data = data;
+		this.setProjectionEpiId(epiId);
+	}
+
+	//Projection
     public void setProjectionEpiId(Long epiId)
 	{
 		if(this.epi == null)
@@ -45,6 +61,19 @@ public class EpiHistorico extends AbstractModel implements Serializable
     		this.epi = new Epi();
     	
     	this.epi.setNome(epiNome);
+    }
+    
+    public String getDescricao()
+    {
+    	String caDesc = "sem CA";
+    	String validadeTmp = ""+validadeUso;
+    	String validadeDesc = "sem validade de uso";
+    	if(StringUtils.isNotEmpty(CA))
+    		caDesc = CA;
+    	if(StringUtils.isNotEmpty(validadeTmp))
+    		validadeDesc = validadeTmp;
+    	
+    	return DateUtil.formataDiaMesAno(data) + " - " + caDesc + " - " + validadeDesc;
     }
 
 	public String getAtenuacao()

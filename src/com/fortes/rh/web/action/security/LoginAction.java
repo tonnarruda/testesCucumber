@@ -57,7 +57,7 @@ public class LoginAction extends MyActionSupport
 					} catch (NotConectAutenticationException e) {
 						msgRemprot = e.getMessage();
 						msgAutenticacao = Autenticador.getMsgPadrao();
-						return "not_conect";
+						return "not_conect"; 
 					}					
 				}
 			}

@@ -10,13 +10,14 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -26,6 +27,7 @@ import com.fortes.web.tags.CheckBox;
 @SuppressWarnings("serial")
 public class SolicitacaoEpiListAction extends MyActionSupportList
 {
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
@@ -60,6 +62,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Date vencimento;
 	private char agruparPor = 'E'; // Ordenação do relatório (Epi ou Colaborador)
 	private Collection<SolicitacaoEpi> dataSource;
+	private Collection<SolicitacaoEpiItemEntrega> dataSourceEntrega;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
 
@@ -94,13 +97,12 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if (solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE)
+		if (solicitacaoEpiItemEntregaManager.existeEntrega(solicitacaoEpi.getId()))
 		{
 			addActionError("A solicitação não pôde ser excluída porque já foi entregue.");
 		}
 		else
 		{
-			
 			solicitacaoEpiManager.remove(solicitacaoEpi.getId());
 			addActionMessage("Solicitação de EPIs excluída com sucesso.");			
 		}
@@ -154,7 +156,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
+			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			
 			switch (agruparPor)
@@ -175,8 +177,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public Collection getSolicitacaoEpis() {
+	public Collection<SolicitacaoEpi> getSolicitacaoEpis() {
 		return solicitacaoEpis;
 	}
 
@@ -394,5 +395,9 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setSituacao(char situacao) {
 		this.situacao = situacao;
+	}
+
+	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
+		return dataSourceEntrega;
 	}
 }

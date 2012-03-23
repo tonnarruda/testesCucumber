@@ -229,9 +229,7 @@
 			<@ww.hidden name="solicitacaoEpi.empresa.id" />
 			<@ww.hidden name="solicitacaoEpi.cargo.id" />
 			
-			<#if solicitacaoEpi.id?exists>
-				<@ww.hidden name="solicitacaoEpi.situacaoSolicitacaoEpi" />
-			<#else>
+			<#if !solicitacaoEpi.id?exists>
 				<li>
 					<fieldset class="fieldsetPadrao">
 						<ul>

@@ -156,6 +156,7 @@ import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoAmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoMedicaoRiscoManagerTest;
+import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
@@ -302,6 +303,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.RiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoMedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemEntregaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dicionario.AptoTest;
 import com.fortes.rh.test.dicionario.AreasFormacaoTest;
@@ -1049,6 +1051,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(SolicitacaoEpiManagerTest.class);
         suite.addTestSuite(SolicitacaoEpiItemDaoHibernateTest.class);
         suite.addTestSuite(SolicitacaoEpiItemManagerTest.class);
+        
+        suite.addTestSuite(SolicitacaoEpiItemEntregaManagerTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemEntregaDaoHibernateTest.class);
 
         suite.addTestSuite(EtapaProcessoEleitoralTest.class);
         suite.addTestSuite(EtapaProcessoEleitoralDaoHibernateTest.class);

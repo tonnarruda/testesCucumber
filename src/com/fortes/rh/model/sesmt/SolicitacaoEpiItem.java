@@ -1,18 +1,19 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,10 +28,12 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	private SolicitacaoEpi solicitacaoEpi;
 
 	private Integer qtdSolicitado=0;
-	private Integer qtdEntregue=0;
 	
-	@Temporal(TemporalType.DATE)
-	private Date dataEntrega = null;
+	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
+	private Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas;
+
+	@Transient
+	private int totalEntregue=0;
 
 	public void setProjectionSolicitacaoEpiId(Long id)
 	{
@@ -48,64 +51,78 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		this.solicitacaoEpi.setData(data);
 	}
 
-	public void setProjectionEpiId(Long id)
-	{
+	private void inicializaEpi() {
 		if (this.epi == null)
 			this.epi = new Epi();
+	}
 
+	public void setProjectionEpiId(Long id)
+	{
+		inicializaEpi();
 		this.epi.setId(id);
 	}
 
 	public void setProjectionEpiNome(String nome)
 	{
-		if (this.epi == null)
-			this.epi = new Epi();
-
+		inicializaEpi();
 		this.epi.setNome(nome);
+	}
+	
+	public void setProjectionEpiFabricante(String fabricante)
+	{
+		inicializaEpi();
+		this.epi.setFabricante(fabricante);
+	}
+	
+	public void setProjectionEpiHistorico(EpiHistorico epiHistorico)
+	{
+		inicializaEpi();
+		this.epi.setEpiHistorico(epiHistorico);
 	}
 
 	public Epi getEpi()
 	{
 		return epi;
 	}
+	
 	public void setEpi(Epi epi)
 	{
 		this.epi = epi;
 	}
-	public Integer getQtdEntregue()
-	{
-		return qtdEntregue;
-	}
-	public void setQtdEntregue(Integer qtdEntregue)
-	{
-		this.qtdEntregue = qtdEntregue;
-	}
+	
 	public Integer getQtdSolicitado()
 	{
 		return qtdSolicitado;
 	}
+	
 	public void setQtdSolicitado(Integer qtdSolicitado)
 	{
 		this.qtdSolicitado = qtdSolicitado;
 	}
+	
 	public SolicitacaoEpi getSolicitacaoEpi()
 	{
 		return solicitacaoEpi;
 	}
+	
 	public void setSolicitacaoEpi(SolicitacaoEpi solicitacaoEpi)
 	{
 		this.solicitacaoEpi = solicitacaoEpi;
 	}
 
-	public Date getDataEntrega() {
-		if (dataEntrega == null || dataEntrega.before(DateUtil.criarAnoMesDia(01, 01, 1900)))
-			return new Date();
-			
-		return dataEntrega;
+	public Collection<SolicitacaoEpiItemEntrega> getSolicitacaoEpiItemEntregas() {
+		return solicitacaoEpiItemEntregas;
 	}
 
-	public void setDataEntrega(Date dataEntrega) {
-		this.dataEntrega = dataEntrega;
+	public void setSolicitacaoEpiItemEntregas(Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas) {
+		this.solicitacaoEpiItemEntregas = solicitacaoEpiItemEntregas;
 	}
 
+	public int getTotalEntregue() {
+		return totalEntregue;
+	}
+
+	public void setTotalEntregue(int totalEntregue) {
+		this.totalEntregue = totalEntregue;
+	}
 }

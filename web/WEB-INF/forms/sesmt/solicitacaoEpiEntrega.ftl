@@ -7,17 +7,29 @@
 		input {
 			border: 1px solid #7E9DB9 !important;
 		}
+		
+		.dados a
+		{
+			text-decoration: none;
+			font-size: 10px !important;
+		}
+		.dados a:hover
+		{
+			text-decoration: none;
+			color: #000;
+		}
+
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<title>Entrega de EPIs</title>
 	
-	<!-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
+	<#-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/" encode='false'/>calendar.js"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/lang/" encode='false'/>calendar-${parameters.language?default("en")}.js"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/" encode='false'/>calendar-setup.js"></script>
-	<!-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
-
+	<#-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
+	
 	<script type='text/javascript'>
 		$(function() {
 			$('.mascaraData').attr('disabled', true);
@@ -48,54 +60,71 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<@ww.form name="form" action="entrega.action" method="POST">
-		<h4> Colaborador: ${solicitacaoEpi.colaborador.nome}<br/>Data Solicitação: ${solicitacaoEpi.data?string('dd/MM/yyyy')}</h4>
-		<@ww.hidden name="solicitacaoEpi.colaborador.id" />
-		<div>EPIs:</div>
+	<h4> Colaborador: ${solicitacaoEpi.colaborador.nome}<br/>Data Solicitação: ${solicitacaoEpi.data?string('dd/MM/yyyy')}</h4>
+	<@ww.hidden name="solicitacaoEpi.colaborador.id" />
+	<div>EPIs:</div>
 
-		<#assign i = 0/>
-		<@display.table name="listaEpis" id="lista" class="dados" defaultsort=2 sort="list">
-
-			<@display.column title="<input type='checkbox' id='md' />" style="width: 30px; text-align: center;">
-				<input type="checkbox" value="${lista[0].id}" name="epiIds" class="checkItem" id="${lista[0].id}"/>
-			</@display.column>
-
-			<@display.column title="EPI" style="width:500px;">
-				${lista[0].nome}
-			</@display.column>
-
-			<@display.column title="Quantidade" style="width:50px;">
-				${lista[1].qtdSolicitado?string}
-			</@display.column>
-
-			<@display.column title="Entregue" style="width:50px;">
-				<select name="selectQtdSolicitado" id="selectQtdSolicitado_${lista[0].id}" class="qtdSolicitacao"/>
-					<#list 0..lista[1].qtdSolicitado as i>
-					  <#if i == lista[1].qtdEntregue>
-					  	<option value="${i}" selected>${i}</option>
-					  <#else>
-					 	 <option value="${i}">${i}</option>
-					  </#if>
-					</#list>
-				</select>
-			</@display.column>
-
-			<@display.column title="Data da entrega" style="width:80px;">
-				<@ww.datepicker id="selectDataSolicitado_${lista[0].id}" name="selectDataSolicitado" cssClass="mascaraData" value="${lista[1].dataEntrega?string('dd/MM/yyyy')}"/>			
-			</@display.column>
-			
-		</@display.table>
-		
-		<@ww.hidden name="solicitacaoEpi.id" />
-		<@ww.hidden name="solicitacaoEpi.empresa.id" />
-		<@ww.hidden name="solicitacaoEpi.data" />
-		<@ww.hidden name="solicitacaoEpi.cargo.id" />
-		<@ww.hidden name="solicitacaoEpi.entregue" />
-		<@ww.token/>
-	</@ww.form>
-
+	<table class="dados">
+		<thead>
+			<tr>
+				<th style="background:#7BA6D3;" colspan="2">Itens da Solicitação</th>
+				<th style="background:#7BA6D3;" colspan="3">Histórico de Entregas</th>
+			</tr>
+			<tr>
+				<th>Epi</th>
+				<th>Qtd. Solicitada</th>
+				<th width="50">Ações</th>
+				<th width="100">Data</th>
+				<th width="100">Qtd. Entregue</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#assign i = 0/>
+			<#list solicitacaoEpiItems as item>
+				<tr class="<#if i%2 == 0>odd<#else>even</#if>">
+					<td valign="top">
+						${item.epi.nome}
+					</td>
+					<td valign="top" width="100" align="right">
+						${item.qtdSolicitado}
+					</td>
+					<td colspan="3" align="center" style="padding:0px">
+						<#if item.solicitacaoEpiItemEntregas?exists && 0 < item.solicitacaoEpiItemEntregas?size>
+							<table style="margin:0px !important;">
+								<tbody>
+									<#list item.solicitacaoEpiItemEntregas as entrega>
+										<tr>
+											<td width="50" align="center">
+												<a href="prepareUpdateEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+											</td>
+											<td width="100" align="center">${entrega.dataEntrega}</td>
+											<td width="100" align="right">${entrega.qtdEntregue}</td>
+										</tr>
+									</#list>
+								</tbody>
+							</table>
+						</#if>
+						
+						<#if item.totalEntregue < item.qtdSolicitado>
+							<a href="prepareInsertEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}">
+								<img title="Inserir entrega" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+								Inserir entrega
+							</a>
+						<#else>
+							<a>
+								<img title="Todos os itens foram entregues" src="<@ww.url includeParams="none" value="/imgs/info.png"/>" border="0" align="absMiddle" /> 
+								Todos os itens foram entregues
+							</a>
+						</#if>
+					</td>
+				<tr>
+				<#assign i = i + 1/>
+			</#list>
+		</tbody>
+	</table>
+	
 	<div class="buttonGroup">
-		<button onclick="document.forms[0].submit();" class="btnGravar"></button>
 		<button onclick="window.location='list.action'" class="btnVoltar"></button>
 	</div>
 </body>

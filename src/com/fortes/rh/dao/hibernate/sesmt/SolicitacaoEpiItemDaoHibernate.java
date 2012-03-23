@@ -22,19 +22,19 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 {
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
-		criteria.createCriteria("ese.solicitacaoEpi", "se");
-		criteria.createCriteria("ese.epi", "e");
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"sei");
+		criteria.createCriteria("sei.solicitacaoEpi", "se");
+		criteria.createCriteria("sei.epi", "e");
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ese.id"), "id");
-		p.add(Projections.property("ese.qtdSolicitado"), "qtdSolicitado");
-		p.add(Projections.property("ese.qtdEntregue"), "qtdEntregue");
-		p.add(Projections.property("ese.dataEntrega"), "dataEntrega");
+		p.add(Projections.property("sei.id"), "id");
+		p.add(Projections.property("sei.qtdSolicitado"), "qtdSolicitado");
 		p.add(Projections.property("se.id"), "projectionSolicitacaoEpiId");
 		p.add(Projections.property("se.data"), "projectionSolicitacaoEpiData");
 		p.add(Projections.property("e.id"), "projectionEpiId");
 		p.add(Projections.property("e.nome"), "projectionEpiNome");
+		p.add(Projections.property("e.fabricante"), "projectionEpiFabricante");
+		p.add(Projections.property("e.epiHistoricos"), "projectionEpiHistorico");
 
 		criteria.setProjection(p);
 
@@ -70,8 +70,6 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("item.id"), "id");
-		p.add(Projections.property("item.qtdSolicitado"), "qtdSolicitado");
-		p.add(Projections.property("item.qtdEntregue"), "qtdEntregue");
 		p.add(Projections.property("se.id"), "projectionSolicitacaoEpiId");
 		p.add(Projections.property("se.data"), "projectionSolicitacaoEpiData");
 		p.add(Projections.property("e.id"), "projectionEpiId");
@@ -82,5 +80,22 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public SolicitacaoEpiItem findByIdProjection(Long id) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"item");
+		criteria.createCriteria("item.epi", "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("item.id"), "id");
+		p.add(Projections.property("e.id"), "projectionEpiId");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("item.id", id));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (SolicitacaoEpiItem) criteria.uniqueResult();
 	}
 }

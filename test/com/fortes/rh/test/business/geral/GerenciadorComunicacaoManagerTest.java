@@ -448,7 +448,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao.setEmpresa(empresa);
 		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR_AVALIADO.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR_AVALIADO.getId()); 
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 

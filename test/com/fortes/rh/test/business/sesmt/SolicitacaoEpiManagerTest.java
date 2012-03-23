@@ -22,7 +22,6 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
-import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
@@ -83,12 +82,12 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 
 		solicitacaoEpiDao.expects(once()).method("save").with(eq(solicitacaoEpi)).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] { eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false) }).isVoid();
 
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null, false);
 		}
 		catch (Exception e)
 		{
@@ -106,7 +105,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null);
+			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null, false);
 		}
 		catch (Exception e)
 		{
@@ -123,7 +122,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 		solicitacaoEpiItemManager.expects(once()).method("removeAllBySolicitacaoEpi").with(eq(solicitacaoEpi.getId())).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] {eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false)}).isVoid();
 
 		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
 	}
@@ -182,23 +181,21 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
 					dataSeisMesesAtras.getTime(), validadeUso, null, 1, null);
 
-		SolicitacaoEpi solicitacaoEpiAnteriorFora =
+		SolicitacaoEpi solicitacaoEpi2 =
 			new SolicitacaoEpi(epi.getId(), colaborador.getId(), epi.getNome(), colaborador.getNome(), "Cargo",
 					dataSeteMesesAtras.getTime(), validadeUso, null, 1, null);
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
-		colecao.add(solicitacaoEpiAnteriorFora);
+		colecao.add(solicitacaoEpi2);
 		colecao.add(solicitacaoEpi);
 
 		Collection<SolicitacaoEpi> resultado = null;
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[]{eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[]{eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 
 		resultado = solicitacaoEpiManager.findRelatorioVencimentoEpi(empresaId, hoje, agruparPor, false, null, null, null );
 
-		assertEquals(1, resultado.size());
-
-		assertEquals(solicitacaoEpi, ((SolicitacaoEpi)resultado.toArray()[0]));
+		assertEquals(2, resultado.size());
 	}
 
 	public void testFindRelatorioEntregaEpi() throws Exception
@@ -221,7 +218,6 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		
 		assertEquals(1, solicitacaoEpiManager.findRelatorioEntregaEpi(empresaId, hoje, null, null, null, 'E').size());
 
-		Collection<SolicitacaoEpi> solicitacaoEpisRetorno2 = new ArrayList<SolicitacaoEpi>();
 		solicitacaoEpiDao.expects(once()).method("findEntregaEpi").with(new Constraint[]{eq(empresaId),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(solicitacaoEpisRetorno));
 		
 		try {
@@ -240,7 +236,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 
-		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[] {eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findVencimentoEpi").with(new Constraint[] {eq(empresaId),eq(hoje), eq(false), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
 		Exception exception = null;
 
 		try
@@ -253,82 +249,5 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		}
 
 		assertNotNull(exception);
-	}
-
-	public void testEntrega() throws Exception
-	{
-		String[] epiIds = {"1"};
-		String[] selectQtdSolicitado = {"3"};
-
-		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
-
-		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = new ArrayList<SolicitacaoEpiItem>();
-		SolicitacaoEpiItem item = new SolicitacaoEpiItem();
-		item.setQtdSolicitado(3);
-		item.setQtdEntregue(3);
-		solicitacaoEpiItems.add(item);
-
-		solicitacaoEpiItemManager.expects(once()).method("entrega")
-					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING);
-		solicitacaoEpiDao.expects(once()).method("findById").will(returnValue(solicitacaoEpi));
-		solicitacaoEpiItemManager.expects(once()).method("findBySolicitacaoEpi")
-					.with(eq(solicitacaoEpi.getId())).will(returnValue(solicitacaoEpiItems));
-		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
-
-		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
-
-		assertEquals(SituacaoSolicitacaoEpi.ENTREGUE, solicitacaoEpi.getSituacaoSolicitacaoEpi());
-	}
-
-	// Entrega com qtd entregue menor que o solicitado
-	public void testEntregaParcial() throws Exception
-	{
-		String[] epiIds = {"1"};
-		String[] selectQtdSolicitado = {"3"};
-
-		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
-
-		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = new ArrayList<SolicitacaoEpiItem>();
-		SolicitacaoEpiItem item = new SolicitacaoEpiItem();
-		item.setQtdSolicitado(3);
-		item.setQtdEntregue(1);
-		solicitacaoEpiItems.add(item);
-
-		solicitacaoEpiItemManager.expects(once()).method("entrega")
-					.with(eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING);
-		solicitacaoEpiDao.expects(once()).method("findById").will(returnValue(solicitacaoEpi));
-		solicitacaoEpiItemManager.expects(once()).method("findBySolicitacaoEpi")
-					.with(eq(solicitacaoEpi.getId())).will(returnValue(solicitacaoEpiItems));
-		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
-
-		solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
-
-		assertFalse(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE);
-	}
-
-	public void testEntregaException()
-	{
-		solicitacaoEpiItemManager.expects(once()).method("entrega").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-
-		String[] epiIds = {"1"};
-		String[] selectQtdSolicitado = {"3"};
-
-		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
-		solicitacaoEpi.setSituacaoSolicitacaoEpi(SituacaoSolicitacaoEpi.ABERTA);
-
-		Exception exception = null;
-		try
-		{
-			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, null);
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
-		assertFalse(solicitacaoEpi.getSituacaoSolicitacaoEpi() == SituacaoSolicitacaoEpi.ENTREGUE);
 	}
 }

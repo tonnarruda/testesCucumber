@@ -5,16 +5,19 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -25,10 +28,14 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
+	private EpiHistoricoManager epiHistoricoManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 
 	private Colaborador colaborador;
 	private SolicitacaoEpi solicitacaoEpi;
+	private SolicitacaoEpiItem solicitacaoEpiItem;
+	private SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega;
 
 	private Collection<Colaborador> colaboradors;
 	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
@@ -41,6 +48,8 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	private Date dataEntrega;
 	private boolean entregue;
+	private boolean insert;
+	private Collection<EpiHistorico> epiHistoricos;
 
 	public String execute() throws Exception
 	{
@@ -114,34 +123,105 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
 
-		listaEpis = new Object[solicitacaoEpiItems.size()][2];
-		int k=0;
-
-		for (SolicitacaoEpiItem item : solicitacaoEpiItems)
-		{
-			listaEpis[k][0] = item.getEpi();
-			listaEpis[k][1] = item;
-			k++;
-		}
-
 		return Action.SUCCESS;
 	}
 
-	public String entrega() throws Exception
+	public String prepareInsertEntrega() throws Exception
+	{
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		epiHistoricos = epiHistoricoManager.findByEpi(solicitacaoEpiItem.getEpi().getId());
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdateEntrega() throws Exception
+	{
+		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findByIdProjection(solicitacaoEpiItemEntrega.getId());
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		epiHistoricos = epiHistoricoManager.findByEpi(solicitacaoEpiItem.getEpi().getId());
+		return Action.SUCCESS;
+	}
+
+	public String insertEntrega() throws Exception
 	{
 		try
 		{
-			solicitacaoEpiManager.entrega(solicitacaoEpi, epiIds, selectQtdSolicitado, selectDataSolicitado);
+			validaDatasEQtds(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemEntrega);
+			
+			solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemEntregaManager.save(solicitacaoEpiItemEntrega);
+		}
+		catch (FortesException fE)
+		{
+			addActionError(fE.getMessage());
+			fE.printStackTrace();
+			prepareInsertEntrega();
+			return INPUT;
 		}
 		catch (Exception e)
 		{
 			addActionError("Erro ao gravar entrega.");
 			e.printStackTrace();
-			prepareEntrega();
+			prepareInsertEntrega();
 			return INPUT;
 		}
 
-		addActionMessage("Entrega gravada com sucesso.");
+		return SUCCESS;
+	}
+	
+	public String updateEntrega() throws Exception
+	{
+		try
+		{
+			validaDatasEQtds(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemEntrega);
+			
+			solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemEntregaManager.update(solicitacaoEpiItemEntrega);
+		}
+		catch (FortesException fE)
+		{
+			addActionMessage(fE.getMessage());
+			fE.printStackTrace();
+			prepareInsertEntrega();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao editar entrega.");
+			e.printStackTrace();
+			prepareUpdateEntrega();
+			return INPUT;
+		}
+		
+		return SUCCESS;
+	}
+	
+	private void validaDatasEQtds(Long solicitacaoEpiId, Long solicitacaoEpiItemId, SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) throws FortesException
+	{
+		SolicitacaoEpi solicitacaoEpi = solicitacaoEpiManager.findEntidadeComAtributosSimplesById(solicitacaoEpiId);
+		if (solicitacaoEpiItemEntrega.getDataEntrega().before(solicitacaoEpi.getData()))
+			throw new FortesException("A data de entrega não pode ser anterior à data de solicitação");
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = solicitacaoEpiItemManager.findEntidadeComAtributosSimplesById(solicitacaoEpiItemId);
+		int totalEntregue = solicitacaoEpiItemEntregaManager.getTotalEntregue(solicitacaoEpiItemId, solicitacaoEpiItemEntrega.getId());
+		
+		if (totalEntregue + solicitacaoEpiItemEntrega.getQtdEntregue() > solicitacaoEpiItem.getQtdSolicitado())
+			throw new FortesException("O total de itens entregues não pode ser superior à quantidade solicitada");
+	}
+	
+	public String deleteEntrega() throws Exception
+	{
+		try
+		{
+			solicitacaoEpiItemEntregaManager.remove(solicitacaoEpiItemEntrega.getId());
+			addActionMessage("Entrega de EPI excluída com sucesso");
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao excluir entrega.");
+			e.printStackTrace();
+		}
+		
+		prepareEntrega();
 		return SUCCESS;
 	}
 
@@ -156,9 +236,8 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
-			solicitacaoEpi.setSituacaoSolicitacaoEpi(this.entregue ? SituacaoSolicitacaoEpi.ENTREGUE : SituacaoSolicitacaoEpi.ABERTA);
 
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
 			
 			addActionMessage("Solicitação gravada com sucesso.");
 			return SUCCESS;
@@ -292,5 +371,37 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public void setEntregue(boolean entregue) {
 		this.entregue = entregue;
+	}
+
+	public boolean isInsert() {
+		return insert;
+	}
+
+	public SolicitacaoEpiItem getSolicitacaoEpiItem() {
+		return solicitacaoEpiItem;
+	}
+
+	public void setSolicitacaoEpiItem(SolicitacaoEpiItem solicitacaoEpiItem) {
+		this.solicitacaoEpiItem = solicitacaoEpiItem;
+	}
+
+	public SolicitacaoEpiItemEntrega getSolicitacaoEpiItemEntrega() {
+		return solicitacaoEpiItemEntrega;
+	}
+
+	public void setSolicitacaoEpiItemEntrega(SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) {
+		this.solicitacaoEpiItemEntrega = solicitacaoEpiItemEntrega;
+	}
+
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
+	}
+
+	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
+		this.epiHistoricoManager = epiHistoricoManager;
+	}
+
+	public Collection<EpiHistorico> getEpiHistoricos() {
+		return epiHistoricos;
 	}
 }

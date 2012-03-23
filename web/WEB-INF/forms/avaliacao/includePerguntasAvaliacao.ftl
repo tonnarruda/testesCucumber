@@ -78,9 +78,21 @@
 		</#if>
 		
 		<#if pergunta.tipo == tipoPergunta.nota >
+		
+			<#if perguntas[i].colaboradorRespostas[0].comentario?exists>
+				<#assign valueComentario = perguntas[i].colaboradorRespostas[0].comentario />
+			<#else>
+				<#assign valueComentario = "" />
+			</#if>
+		
 			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id}" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
+			
+			<#if pergunta.comentario>
+				${pergunta.textoComentario}<br>
+				<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" style="height:75px;width:730px;overflow-y:scroll">${valueComentario}</textarea><br>
+			</#if>
 		</#if>
 	</div>
 

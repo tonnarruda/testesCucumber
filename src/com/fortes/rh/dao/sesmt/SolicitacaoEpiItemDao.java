@@ -11,4 +11,5 @@ public interface SolicitacaoEpiItemDao extends GenericDao<SolicitacaoEpiItem>
 	void removeAllBySolicitacaoEpi(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long[] solicitacaoEpiIds);
 	SolicitacaoEpiItem findBySolicitacaoEpiAndEpi(Long id, Long long1);
+	SolicitacaoEpiItem findByIdProjection(Long id);
 }

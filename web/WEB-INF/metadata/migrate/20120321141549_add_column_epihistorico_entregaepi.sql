@@ -1,0 +1,2 @@
+alter table solicitacaoepiitementrega add column epihistorico_id bigint;--.go
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_epihistorico_fk FOREIGN KEY (epihistorico_id) REFERENCES epihistorico(id);--.go 
