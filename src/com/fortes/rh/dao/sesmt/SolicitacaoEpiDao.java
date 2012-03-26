@@ -7,6 +7,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 
 /**
  * @author Tiago Lopes
@@ -18,4 +19,5 @@ public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 	SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds, char agruparPor);
 	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiCheck, Long[] colaboradorCheck, char agruparPor);
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao);
 }

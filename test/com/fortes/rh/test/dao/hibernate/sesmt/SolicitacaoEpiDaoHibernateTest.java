@@ -31,6 +31,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -428,6 +429,95 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
 		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).size());
+	}
+	
+	public void testFindEpisWithItens() 
+	{
+		Date dataIni=DateUtil.criarDataMesAno(01, 02, 2010);
+		Date dataMeio=DateUtil.criarDataMesAno(13, 03, 2010);
+		Date dataFim=DateUtil.criarDataMesAno(01, 04, 2010);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("José");
+		colaborador.setDesligado(false);
+		colaboradorDao.save(colaborador);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+		
+		Epi epi1 = EpiFactory.getEntity();
+		epi1.setNome("Epi Nome 1");
+    	epi1.setEmpresa(empresa);
+    	epiDao.save(epi1);
+
+    	Epi epi2 = EpiFactory.getEntity();
+    	epi2.setNome("Epi Nome 2");
+    	epi2.setEmpresa(empresa);
+    	epiDao.save(epi2);
+    	
+    	Epi epi3 = EpiFactory.getEntity();
+    	epi3.setNome("Epi Nome 3");
+    	epi3.setEmpresa(empresa);
+    	epiDao.save(epi3);
+    	
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargo.setNome("motorista");
+    	cargoDao.save(cargo);
+    	
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setEmpresa(empresa);
+		solicitacaoEpi.setData(dataIni);
+		solicitacaoEpi.setColaborador(colaborador);
+		solicitacaoEpi.setCargo(cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
+		item.setSolicitacaoEpi(solicitacaoEpi);
+		item.setEpi(epi1);
+		item.setQtdSolicitado(3);
+		solicitacaoEpiItemDao.save(item);
+		
+		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi2.setEmpresa(empresa);
+		solicitacaoEpi2.setData(dataMeio);
+		solicitacaoEpi2.setColaborador(colaborador);
+		solicitacaoEpi2.setCargo(cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi2);
+		
+		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
+		item2.setSolicitacaoEpi(solicitacaoEpi2);
+		item2.setEpi(epi2);
+		item2.setQtdSolicitado(2);
+		solicitacaoEpiItemDao.save(item2);
+		
+		SolicitacaoEpiItem item3 = SolicitacaoEpiItemFactory.getEntity();
+		item3.setSolicitacaoEpi(solicitacaoEpi2);
+		item3.setEpi(epi3);
+		item3.setQtdSolicitado(3);
+		solicitacaoEpiItemDao.save(item3);
+		
+		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A');
+		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
+		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
+		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		
+		
+		assertEquals(3, lista.size());
+		assertEquals(item2.getQtdSolicitado(), vo1.getQtdSolicitadoItem());
+		assertEquals(item3.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
+		assertEquals(item.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
+		assertEquals(new Integer(5), vo1.getQtdSolicitadoTotal());
+		assertEquals(new Integer(5), vo2.getQtdSolicitadoTotal());
+		assertEquals(new Integer(3), vo3.getQtdSolicitadoTotal());
 	}
 
 	public void setEpiDao(EpiDao epiDao)

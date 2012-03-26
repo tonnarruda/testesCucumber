@@ -19,6 +19,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
 @Entity
@@ -53,6 +54,10 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private Date dataEpiEntrega;
 	@Transient
 	private Date vencimentoCA;
+//	@Transient
+//	private Estabelecimento estabelecimento;
+//	@Transient
+//	private char situacao;
 
 	public SolicitacaoEpi()
 	{

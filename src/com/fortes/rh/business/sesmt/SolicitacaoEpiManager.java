@@ -8,6 +8,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 
 public interface SolicitacaoEpiManager extends GenericManager<SolicitacaoEpi>
 {
@@ -17,4 +18,5 @@ public interface SolicitacaoEpiManager extends GenericManager<SolicitacaoEpi>
 	void update(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado);
 	Collection<SolicitacaoEpi> findRelatorioVencimentoEpi(Long empresaId, Date vencimento, char agruparPor, boolean exibirVencimentoCA, String[] tipoEPICheck, String[] areasCheck, String[] estabelecimentoCheckList) throws ColecaoVaziaException;
 	public Collection<SolicitacaoEpiItemEntrega> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor) throws ColecaoVaziaException;
+	Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao);
 }

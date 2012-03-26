@@ -14,7 +14,7 @@
 	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
 	    	</interceptor-ref>	
 			<result name="success" type="jasper">
-				<param name="dataSource">solicitacaoEpis</param>
+				<param name="dataSource">dataSourceLista</param>
 				<param name="location">WEB-INF/report/solicitacoes_epis.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">solicitacoes_epis.pdf</param>

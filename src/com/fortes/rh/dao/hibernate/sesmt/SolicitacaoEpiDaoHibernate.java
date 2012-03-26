@@ -1,10 +1,12 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -22,6 +24,7 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 
 /**
  * @author Tiago Lopes
@@ -244,55 +247,69 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 	
-	public Collection<SolicitacaoEpiItemEntrega> findEntregasByEpi(Long empresaId, Date dataIni, Date dataFim, String colaboradorNome, String colaboradorMatricula, char situacaoSolicitacaoEpi)
+	public Collection<com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, est.nome) ");
-		hql.append("from SolicitacaoEpiItemEntrega ent ");
-		hql.append("join ent.solicitacaoEpiItem item ");
-		hql.append("join item.solicitacaoEpi s ");
-		hql.append("join s.colaborador co ");
-		hql.append("join co.historicoColaboradors hc ");
-		hql.append("join hc.estabelecimento est ");
-		hql.append("join s.cargo ca ");
-		hql.append("join item.epi e ");
-		hql.append("where co.desligado = false ");
-		hql.append("  hc.data = (");
-		hql.append("   select max(hc2.data) ");
-		hql.append("   from HistoricoColaborador as hc2 ");
-		hql.append("   where hc2.colaborador.id = co.id ");
-		hql.append("   and hc2.data <= :dataAtual  ");
-		hql.append("  ) ");
+		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradormatricula, sse.colaboradornome, e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, sse.qtdentregue, sse.solicitacaoepisituacao ");
+		sql.append("from situacaosolicitacaoepi sse ");
+		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
+		sql.append("join epi e on item.epi_id = e.id ");
+		sql.append("where sse.empresaid = :empresaId ");
 		
+		if (situacao != SituacaoSolicitacaoEpi.TODAS)
+			sql.append("and sse.solicitacaoepisituacao = :situacao ");
+
 		if (dataIni != null && dataFim != null)
-			hql.append("and ent.dataEntrega between :dataIni and :dataFim ");
+			sql.append("and sse.solicitacaoepidata between :dataIni and :dataFim ");
 		
-//		if(epiIds != null && epiIds.length != 0)
-//			hql.append("and e.id in (:epiCheck) ");
+		sql.append("order by sse.solicitacaoepidata desc, sse.colaboradornome ");
 		
-//		if(colaboradorCheck != null && colaboradorCheck.length != 0)
-//			hql.append("and co.id in (:colaboradorCheck) ");
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		
-		hql.append("and e.empresa.id = :empresaId ");
-		
-		hql.append("order by se.data desc, co.nome ");
-		
-		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		
-//		if(epiIds != null && epiIds.length != 0)
-//			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
-//		
-//		if (colaboradorCheck != null && colaboradorCheck.length != 0)
-//			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+		if (situacao != SituacaoSolicitacaoEpi.TODAS)
+			query.setCharacter("situacao", situacao);
 		
-		query.setDate("dataAtual", new Date());
 		if (dataIni != null && dataFim != null)
 		{
 			query.setDate("dataIni", dataIni);
 			query.setDate("dataFim", dataFim);
 		}
 		
-		return query.list();
+		Collection<Object[]> resultado = query.list();
+		
+		SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+		Collection<SolicitacaoEpiItemVO> lista = new ArrayList<SolicitacaoEpiItemVO>();
+		Object[] obj;
+		SolicitacaoEpiItemVO vo;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			obj = it.next();
+			vo = new SolicitacaoEpiItemVO();
+			vo.setSolicitacaoEpiId(((BigInteger) obj[0]).longValue());
+			vo.setEmpresaId(((BigInteger) obj[1]).longValue());
+			vo.setEstabelecimentoId(((BigInteger) obj[2]).longValue());
+			vo.setEstabelecimentoNome(((String) obj[3]));
+			vo.setColaboradorMatricula(((String) obj[4]));
+			vo.setColaboradorNome(((String) obj[5]));
+			vo.setEpiNome(((String) obj[6]));
+			try {
+				vo.setSolicitacaoEpiData(sDF.parse(obj[7].toString()));
+			} catch (ParseException e) {e.printStackTrace();}
+			vo.setCargoNome(((String) obj[8]));
+			vo.setQtdSolicitadoTotal(new Integer(obj[9].toString()));
+			vo.setItemId(((BigInteger) obj[10]).longValue());
+			vo.setQtdSolicitadoItem(new Integer(obj[11].toString()));
+			vo.setQtdEntregue(new Integer(obj[12].toString()));
+			vo.setSolicitacaoEpiSituacao(obj[13].toString().charAt(0));
+			
+			lista.add(vo);
+		}
+		
+		return lista;
 	}
 }

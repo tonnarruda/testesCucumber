@@ -16,6 +16,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi, SolicitacaoEpiDao> implements SolicitacaoEpiManager
@@ -98,6 +99,10 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");
 		
 		return solicitacaoEpis;
+	}
+
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao) {
+		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao);
 	}
 
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)

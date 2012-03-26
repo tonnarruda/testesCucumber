@@ -18,6 +18,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -63,6 +64,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private char agruparPor = 'E'; // Ordenação do relatório (Epi ou Colaborador)
 	private Collection<SolicitacaoEpi> dataSource;
 	private Collection<SolicitacaoEpiItemEntrega> dataSourceEntrega;
+	private Collection<SolicitacaoEpiItemVO> dataSourceLista;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
 
@@ -85,7 +87,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 		
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(0, 0, getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao);
+		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
@@ -399,5 +401,9 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public Collection<SolicitacaoEpiItemEntrega> getDataSourceEntrega() {
 		return dataSourceEntrega;
+	}
+
+	public Collection<SolicitacaoEpiItemVO> getDataSourceLista() {
+		return dataSourceLista;
 	}
 }
