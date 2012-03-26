@@ -43,4 +43,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarAvisoEmailLiberacao(Turma turma, Long empresaId);
 	void enviarAvisoEmail(Turma turma, Long empresaId);
 	void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa);
+	void insereGerenciadorComunicacaoDefault(Empresa empresa);
 }

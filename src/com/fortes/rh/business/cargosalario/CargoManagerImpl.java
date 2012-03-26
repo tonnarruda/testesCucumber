@@ -282,7 +282,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		if(faixaSalarials.size() > 0)
 			faixaSalarialManager.removeFaixaAndHistoricos(faixaSalarialUtil.convertCollectionToArrayIds(faixaSalarials));
 
-		remove(cargoId);
+		super.remove(cargoId);
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterarmos o outro banco.

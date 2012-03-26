@@ -19,6 +19,7 @@ import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -47,6 +48,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GrupoACManager grupoACManager;
 	private ExameManager exameManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -146,6 +148,14 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		
 		empresaManager.save(empresa);
 		
+		try {
+			gerenciadorComunicacaoManager.insereGerenciadorComunicacaoDefault(empresa);
+		} catch (Exception e) {
+			addActionMessage("Não foi possível inserir as configurações do gerenciador de comunicação. Entre em contato com o suporte.");
+			e.printStackTrace();
+			return INPUT;
+		}
+		
 		//criacao da pasta para o modulo externo
 		java.io.File pastaExterno = new java.io.File(ArquivoUtil.getPathExterno());
 		java.io.File novaPastaExterno = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
@@ -162,7 +172,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 		return Action.SUCCESS;
 	}
-
+	
 	public String update() throws Exception
 	{
 		if(empresa.getGrupoAC().equals(""))
@@ -428,5 +438,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setImgCartaoAniversariante(File imgCartaoAniversariante) {
 		this.imgCartaoAniversariante = imgCartaoAniversariante;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

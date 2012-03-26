@@ -74,6 +74,28 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
 	
+	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
+	{
+		save(new GerenciadorComunicacao(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.QTD_CURRICULOS_CADASTRADOS, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.ENCERRAMENTO_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.CANDIDATO_NAO_APTO, empresa));
+		save(new GerenciadorComunicacao(Operacao.ALTERAR_STATUS_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_SOLICITACAO, empresa));
+		save(new GerenciadorComunicacao(Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO, empresa));
+		save(new GerenciadorComunicacao(Operacao.LIBERAR_QUESTIONARIO, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
+		save(new GerenciadorComunicacao(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR_AVALIADO, empresa));
+		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA, empresa));
+		save(new GerenciadorComunicacao(Operacao.LIBERAR_TURMA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
+		save(new GerenciadorComunicacao(Operacao.CONTRATAR_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_SETOR_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.CANCELAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.CANCELAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.DESLIGAR_COLABORADOR_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.CONFIGURACAO_LIMITE_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO, empresa));
+		save(new GerenciadorComunicacao(Operacao.BACKUP_AUTOMATICO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
+	}
+	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
 		if (empresa.getEmailCandidatoNaoApto() && StringUtils.isNotBlank(empresa.getMailNaoAptos())){

@@ -27,13 +27,24 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	private Integer operacao;
 	private Integer meioComunicacao;
 	private Integer enviarPara;
-
+	
 	@Column(length=200)
     private String destinatario;
 	
 	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class)
 	private Collection<Usuario> usuarios;
 
+	public GerenciadorComunicacao (){
+	}
+	
+	public GerenciadorComunicacao (Operacao operacao, MeioComunicacao meioComunicacao, EnviarPara enviarPara, Empresa empresa)
+	{
+		this.operacao = operacao.getId();
+		this.meioComunicacao = meioComunicacao.getId();
+		this.enviarPara = enviarPara.getId();
+		this.empresa = empresa;
+	}
+	
 	public Integer getMeioComunicacao() {
 		return meioComunicacao;
 	}

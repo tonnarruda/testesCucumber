@@ -81,7 +81,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer", "Aval. Período de Experiência"){
+	AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO(9, "Aviso automático das avaliações do período de experiência a vencer", "Aval. Desempenho"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
@@ -95,7 +95,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Período de Experiência"){
+	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Desempenho"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -150,7 +150,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "Exames"){
+	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "SESMT"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			

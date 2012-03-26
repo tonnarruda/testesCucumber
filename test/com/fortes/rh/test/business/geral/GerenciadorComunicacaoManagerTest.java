@@ -19,6 +19,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -161,6 +162,40 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
+	
+	public void testeInsereGerenciadorComunicacaoDefault() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+
+		// se for inserir mais  um defalt terá de aterar no importador o método insereGerenciadorComunicacaoDefault(empresa) em empresaJDBC.
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.insereGerenciadorComunicacaoDefault(empresa);
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertNull(exception);
+	}
 
 	public void testExecuteEncerrarSolicitacao()
 	{

@@ -542,4 +542,5 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		logger.info("Antes: " + tavaIntegradaComAC);
 		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
 	}
+
 }
