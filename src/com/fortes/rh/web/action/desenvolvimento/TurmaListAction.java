@@ -11,6 +11,7 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -201,8 +202,25 @@ public class TurmaListAction extends MyActionSupportList
 	public String imprimirRelatorioInvestimento() throws Exception
 	{
 		turmas = turmaManager.findByTurmasPeriodo(LongUtil.arrayStringToArrayLong(turmasCheck),  dataIni, dataFim, BooleanUtil.getValueCombo(realizada));
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento", getEmpresaSistema(),  getPeriodoFormatado());
-		parametros.put("EXIBIR_CUSTO_DETALHADO", exibirCustoDetalhado);
+		
+		try {
+			if (turmas.isEmpty())
+				throw new ColecaoVaziaException();
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento", getEmpresaSistema(),  getPeriodoFormatado());
+			parametros.put("EXIBIR_CUSTO_DETALHADO", exibirCustoDetalhado);
+		
+		} catch (ColecaoVaziaException e) {
+			addActionMessage("Não existem dados para o filtro informado.");
+			relatorioInvestimento();
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao gerar o relatório.");
+			relatorioInvestimento();
+			return Action.INPUT;
+		}
 		
 		return Action.SUCCESS;
 	}

@@ -59,7 +59,7 @@
 
 	<@ww.form name="form" action="list.action" onsubmit="list();" validate="true" method="POST">
 		<li>
-			<@ww.div cssClass="divInfo" cssStyle="width: 500px;">
+			<@ww.div cssClass="divInfo" cssStyle="width: 98%;">
 				<ul>
 					<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
 					<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:150px;"/>

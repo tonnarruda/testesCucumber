@@ -332,7 +332,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	private void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception 
 	{
 		if (avaliados.isEmpty() || avaliadores.isEmpty())
-			throw new FortesException("Não foi possível liberar esta avaliação: número insuficiente de participantes.");
+			throw new FortesException("Não foi possível liberar esta avaliação: número insuficiente de participantes. Verifique se os participantes foram desligados.");
 		
 		if (!permiteAutoAvaliacao && avaliados.size() == 1 && avaliadores.size() == 1)
 		{
