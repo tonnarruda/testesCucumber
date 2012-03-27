@@ -53,15 +53,15 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 		colecao.add(new SolicitacaoEpi());
-		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
 
-		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi));
+		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null));
 	}
 
 	public void testGetCount()
 	{
-		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
-		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS));
+		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
+		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null));
 	}
 
 	public void testFindByIdProjection()

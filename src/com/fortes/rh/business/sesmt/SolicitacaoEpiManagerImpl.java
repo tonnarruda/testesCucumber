@@ -24,14 +24,14 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi)
 	{
-		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao);
+		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi);
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi)
 	{
-		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao);
+		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi);
 	}
 
 	public SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId)
@@ -101,8 +101,8 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return solicitacaoEpis;
 	}
 
-	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao) {
-		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao);
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi) {
+		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao, colaborador, tipoEpi);
 	}
 
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)

@@ -33,9 +33,9 @@ import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi)
 	{
-		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi);
+		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi);
 
 		if(pagingSize != 0)
         {
@@ -68,13 +68,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return solicitacoes;
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi)
 	{
-		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi);
+		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi);
 		return new Integer(query.uniqueResult().toString());
 	}
 
-	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi)
+	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi, Long tipoEpi)
 	{
 		StringBuilder sql = null;
 		if (count)
@@ -83,16 +83,23 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql = new StringBuilder("select sub.* ");
 
 		sql.append("from ( ");
-		sql.append("select se.id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
 		sql.append("from solicitacaoepi as se ");
 		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
 		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
+		sql.append("left join epihistorico ehist on ehist.id=seie.epihistorico_id "); 
+		sql.append("left join epi e on e.id=ehist.epi_id "); 
 		sql.append("left join colaborador as c on se.colaborador_id=c.id ");
 		sql.append("left join historicocolaborador as hc on c.id=hc.colaborador_id "); 
 		sql.append("left join cargo as ca on se.cargo_id=ca.id ");
 		sql.append("where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) "); 
+		
+		if (tipoEpi != null)
+			sql.append("and e.tipoepi_id = :tipoEpi ");
+
 		sql.append("group by se.id, c.matricula, c.id, c.nome, hc.status, se.data, ca.id, ca.nome, se.empresa_id ");
 		sql.append(") as sub ");
+ 
 		sql.append("where sub.empresa_id = :empresaId ");
 
 		if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ENTREGUE)
@@ -107,6 +114,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if (StringUtils.isNotBlank(nomeBusca))
 			sql.append("and lower(sub.nome) like :nome ");
+
 		
 		if (dataIni != null && dataFim != null)
 			sql.append("and sub.data between :dataIni and :dataFim ");
@@ -128,6 +136,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (StringUtils.isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
 
+		if (tipoEpi != null)
+			query.setLong("tipoEpi", tipoEpi);
+
+		
 		query.setLong("empresaId", empresaId);
 
 		return query;
@@ -247,7 +259,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 	
-	public Collection<com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao)
+	public Collection<com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi)
 	{
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 
@@ -264,6 +276,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (dataIni != null && dataFim != null)
 			sql.append("and sse.solicitacaoepidata between :dataIni and :dataFim ");
 		
+		if (tipoEpi != null)
+			sql.append("and e.tipoepi_id = :tipoEpi ");
+		
+		if (colaborador != null)
+		{
+			if (colaborador.getMatricula() != null)
+				sql.append("and lower(sse.colaboradorMatricula) like :colaboradorMatricula ");
+
+			if (colaborador.getNome() != null)
+				sql.append("and lower(sse.colaboradorNome) like :colaboradorNome ");
+		}
+		
 		sql.append("order by sse.solicitacaoepidata desc, sse.colaboradornome ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
@@ -277,6 +301,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		{
 			query.setDate("dataIni", dataIni);
 			query.setDate("dataFim", dataFim);
+		}
+		
+		if (tipoEpi != null)
+			query.setLong("tipoEpi", tipoEpi);
+		
+		if (colaborador != null)
+		{
+			if (colaborador.getMatricula() != null)
+				query.setString("colaboradorMatricula", "%" + colaborador.getMatricula() + "%");
+
+			if (colaborador.getNome() != null)
+				query.setString("colaboradorNome", "%" + colaborador.getNome() + "%");
 		}
 		
 		Collection<Object[]> resultado = query.list();

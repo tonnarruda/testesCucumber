@@ -331,9 +331,23 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 		
+    	TipoEPI tipoEPI = new TipoEPI();
+    	tipoEPI.setNome("tipo Epi");
+    	tipoEPIDao.save(tipoEPI);
+
+    	TipoEPI tipoEPI2 = new TipoEPI();
+    	tipoEPI2.setNome("tipo Epi 2");
+    	tipoEPIDao.save(tipoEPI2);
+    	
 		Epi epi = EpiFactory.getEntity();
+		epi.setTipoEPI(tipoEPI);
     	epi.setEmpresa(empresa);
     	epiDao.save(epi);
+
+    	Epi epi2 = EpiFactory.getEntity();
+    	epi2.setTipoEPI(tipoEPI2);
+    	epi2.setEmpresa(empresa);
+    	epiDao.save(epi2);
 
 		EpiHistorico epiHistorico = new EpiHistorico();
 		epiHistorico.setValidadeUso(6);
@@ -341,26 +355,53 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		epiHistorico.setData(dataIni);
 		epiHistoricoDao.save(epiHistorico);
 		
+		EpiHistorico epiHistorico2 = new EpiHistorico();
+		epiHistorico2.setValidadeUso(6);
+		epiHistorico2.setEpi(epi2);
+		epiHistorico2.setData(dataIni);
+		epiHistoricoDao.save(epiHistorico2);
+		
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpi.setData(dataIni);
 		solicitacaoEpi.setColaborador(colaborador);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 		
+		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi2.setEmpresa(empresa);
+		solicitacaoEpi2.setData(dataIni);
+		solicitacaoEpi2.setColaborador(colaborador);
+		solicitacaoEpiDao.save(solicitacaoEpi2);
+		
 		SolicitacaoEpiItem item = SolicitacaoEpiItemFactory.getEntity();
 		item.setSolicitacaoEpi(solicitacaoEpi);
 		item.setQtdSolicitado(3);
+		item.setEpi(epi);
 		solicitacaoEpiItemDao.save(item);
 		
+		SolicitacaoEpiItem item2 = SolicitacaoEpiItemFactory.getEntity();
+		item2.setSolicitacaoEpi(solicitacaoEpi2);
+		item2.setQtdSolicitado(3);
+		item2.setEpi(epi2);
+		solicitacaoEpiItemDao.save(item2);
+		
 		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setEpiHistorico(epiHistorico);
 		entrega.setSolicitacaoEpiItem(item);
 		entrega.setDataEntrega(dataIni);
 		entrega.setQtdEntregue(3);
 		solicitacaoEpiItemEntregaDao.save(entrega);
 		
+		SolicitacaoEpiItemEntrega entrega2 = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega2.setEpiHistorico(epiHistorico2);
+		entrega2.setSolicitacaoEpiItem(item2);
+		entrega2.setDataEntrega(dataIni);
+		entrega2.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega2);
+		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId()).intValue());
 	}
 	
 	public void testFindAllSelect()
@@ -428,7 +469,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null).size());
 	}
 	
 	public void testFindEpisWithItens() 
@@ -506,7 +547,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		item3.setQtdSolicitado(3);
 		solicitacaoEpiItemDao.save(item3);
 		
-		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A');
+		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A', null, null);
 		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
 		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
 		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		

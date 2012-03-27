@@ -18,6 +18,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -41,6 +42,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private String nomeBusca;
 	private String matriculaBusca;
 	private char situacao = 'T';
+	private Long tipoEpi;
+	private Collection<TipoEPI> tipoEpis;
 	private Colaborador colaborador = new Colaborador();
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -73,8 +76,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 
-		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao));
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao);
+		tipoEpis = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ getEmpresaSistema().getId() });
+
+		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi));
+		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
@@ -87,7 +92,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 		
-		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao);
+		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
@@ -405,5 +410,21 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public Collection<SolicitacaoEpiItemVO> getDataSourceLista() {
 		return dataSourceLista;
+	}
+
+	public Long getTipoEpi() {
+		return tipoEpi;
+	}
+
+	public void setTipoEpi(Long tipoEpi) {
+		this.tipoEpi = tipoEpi;
+	}
+
+	public Collection<TipoEPI> getTipoEpis() {
+		return tipoEpis;
+	}
+
+	public void setTipoEpis(Collection<TipoEPI> tipoEpis) {
+		this.tipoEpis = tipoEpis;
 	}
 }

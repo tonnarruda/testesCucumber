@@ -389,9 +389,9 @@ public class HistoricoCandidato extends AbstractModel implements Serializable, C
 
 	public boolean getAptoBoolean() 
 	{
-		if (this.apto == null)
-			return false;
+		if (this.apto == Apto.SIM)
+			return true;
 		
-		return this.apto != Apto.NAO;
+		return false;
 	}
 }

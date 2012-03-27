@@ -59,6 +59,7 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData" />
 
+		<@ww.select label="Categorias de EPI" name="tipoEpi" id="tipoEpi" listKey="id" listValue="nome" list="tipoEpis" headerKey="" headerValue="Selecione..." />
 		<@ww.hidden id="pagina" name="page"/>
 		<@ww.hidden name="entrega"/>
 

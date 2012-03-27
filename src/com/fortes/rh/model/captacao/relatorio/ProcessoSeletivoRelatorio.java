@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 
 // Utilizado para gerar relatório de processo seletivo
+@SuppressWarnings("serial")
 public class ProcessoSeletivoRelatorio implements Serializable
 {
 	private EtapaSeletiva etapa;
