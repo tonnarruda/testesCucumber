@@ -11,6 +11,7 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
@@ -95,6 +96,9 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 
     public void testInsert() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setControlaRiscoPor('A');
+    	
     	HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
     	historicoAmbiente.setId(1L);
     	
@@ -104,15 +108,19 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 		action.setRiscoChecks(riscoChecks);
 		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
-
+		action.setEmpresaSistema(empresa);
+		
     	action.setHistoricoAmbiente(historicoAmbiente);
     	
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck), eq(empresa.getControlaRiscoPor())});
     	assertEquals(action.insert(), "success");
     }
 
     public void testUpdate() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setControlaRiscoPor('A');
+    	
     	HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
     	historicoAmbiente.setId(1L);
     	
@@ -122,9 +130,10 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 		action.setRiscoChecks(riscoChecks);
 		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
+		action.setEmpresaSistema(empresa);
 
     	action.setHistoricoAmbiente(historicoAmbiente);
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck), eq(empresa.getControlaRiscoPor())});
     	assertEquals(action.update(), "success");
     }
     

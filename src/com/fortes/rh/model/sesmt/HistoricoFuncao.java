@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,6 +19,7 @@ import javax.persistence.Transient;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.util.DateUtil;
 
+@SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="historicofuncao_sequence", allocationSize=1)
 public class HistoricoFuncao extends AbstractModel implements Serializable
@@ -35,6 +38,9 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
     @ManyToMany(fetch=FetchType.LAZY)
     private Collection<Epi> epis;
+    
+    @OneToMany(mappedBy="historicoFuncao", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Collection<RiscoFuncao> riscoFuncaos;
 
     @Transient
     private Epi epi;
@@ -169,5 +175,13 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 		}
 		
 		return descricao.toString();
+	}
+
+	public Collection<RiscoFuncao> getRiscoFuncaos() {
+		return riscoFuncaos;
+	}
+
+	public void setRiscoFuncaos(Collection<RiscoFuncao> riscoFuncaos) {
+		this.riscoFuncaos = riscoFuncaos;
 	}
 }

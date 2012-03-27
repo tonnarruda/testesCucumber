@@ -28,12 +28,20 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		return historicoAmbiente;
 	}
 	
-	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception 
+	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws Exception 
 	{
 		Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
 		Collection<Epc> epcs = new CollectionUtil<Epc>().convertArrayStringToCollection(Epc.class, epcCheck);
 		
-		riscoAmbienteManager.removeByHistoricoAmbiente(historicoAmbiente.getId());
+		if (controlaRiscoPor == 'F'){
+			Collection<RiscoAmbiente> riscosMarcadosAux = riscoAmbienteManager.findToList(new String[] {"id"},new String[] {"id"}, new String[]{"historicoAmbiente.id"}, new Object[]{historicoAmbiente.getId()});
+			
+			CollectionUtil<RiscoAmbiente> cut = new CollectionUtil<RiscoAmbiente>();
+			riscosMarcados = cut.convertCollectionToArrayIds(riscosMarcadosAux);
+			
+		} else {
+			riscoAmbienteManager.removeByHistoricoAmbiente(historicoAmbiente.getId());
+		}
 		
 		Collection<RiscoAmbiente> riscoAmbientesSelecionados = new ArrayList<RiscoAmbiente>();
 		

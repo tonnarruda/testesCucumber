@@ -90,6 +90,8 @@ public class Empresa extends AbstractModel implements Serializable
     private Exame exame; // Exame ASO
     
     private boolean turnoverPorSolicitacao;
+    
+    private char controlaRiscoPor = 'A'; // A - Ambiente ; F - Função
 	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -464,4 +466,13 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setVerificaParentesco(char verificaParentesco) {
 		this.verificaParentesco = verificaParentesco;
 	}
+
+	public char getControlaRiscoPor() {
+		return controlaRiscoPor;
+	}
+
+	public void setControlaRiscoPor(char controlaRiscoPor) {
+		this.controlaRiscoPor = controlaRiscoPor;
+	}
+
 }

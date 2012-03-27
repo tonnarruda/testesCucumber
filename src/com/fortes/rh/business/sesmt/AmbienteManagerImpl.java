@@ -122,12 +122,12 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return getDao().findAmbientes(page, pagingSize, empresaId, ambiente);
 	}
 
-	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception
+	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws Exception
 	{
 		save(ambiente);
 
 		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, controlaRiscoPor);
 	}
 	
 	public void removeCascade(Long id) throws Exception 

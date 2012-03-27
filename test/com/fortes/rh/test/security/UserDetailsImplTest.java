@@ -15,6 +15,7 @@ public class UserDetailsImplTest extends TestCase
 		Long id = 1L;
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setNome("empresa");
+		empresa.setControlaRiscoPor('A');
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		UserDetailsImpl userDetailsImpl = new UserDetailsImpl(id, "nome", "username", "1234", "", null, false, false, false, false, "menu", empresa, colaborador);
 		
@@ -33,6 +34,7 @@ public class UserDetailsImplTest extends TestCase
 		assertEquals(false, userDetailsImpl.isAccountNonLocked());
 		assertEquals(false, userDetailsImpl.isCredentialsNonExpired());
 		assertEquals(false, userDetailsImpl.isEnabled());
+		assertEquals('A', userDetailsImpl.getEmpresaControlaRiscoPor());
 		
 		Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
 		userDetailsImpl.setAuthorities(null);

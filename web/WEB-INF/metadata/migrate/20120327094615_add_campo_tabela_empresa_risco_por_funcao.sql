@@ -1,0 +1,1 @@
+alter table empresa add column controlariscopor character(1) default 'A';--.go

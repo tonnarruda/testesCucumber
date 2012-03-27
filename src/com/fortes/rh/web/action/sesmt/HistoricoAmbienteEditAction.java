@@ -96,14 +96,14 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
 		
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
 		return Action.SUCCESS;
 	}
 	

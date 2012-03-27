@@ -133,6 +133,7 @@
     <mapping class="com.fortes.rh.model.sesmt.ExtintorManutencao" />
     <mapping class="com.fortes.rh.model.sesmt.ExtintorManutencaoServico" />
     <mapping class="com.fortes.rh.model.sesmt.RiscoAmbiente" />
+    <mapping class="com.fortes.rh.model.sesmt.RiscoFuncao" />
     <mapping class="com.fortes.rh.model.sesmt.MedicaoRisco" />
     <mapping class="com.fortes.rh.model.sesmt.RiscoMedicaoRisco" />
     <mapping class="com.fortes.rh.model.sesmt.Evento" />

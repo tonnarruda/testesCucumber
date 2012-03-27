@@ -137,6 +137,11 @@ public class UserDetailsImpl implements UserDetails
 		return empresa.isAcIntegra();
 	}
 	
+	public char getEmpresaControlaRiscoPor()
+	{
+		return empresa.getControlaRiscoPor();
+	}
+	
 	public Colaborador getColaborador()
 	{
 		return colaborador;
