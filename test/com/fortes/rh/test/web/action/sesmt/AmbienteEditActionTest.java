@@ -18,6 +18,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
@@ -68,7 +69,10 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 
     public void testPrepareInsert() throws Exception
     {
-		riscoManager.expects(once()).method("findAllSelect");
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresaSistema(empresa);
+    	
+    	riscoManager.expects(once()).method("findRiscosAmbientesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoAmbiente>()));
 		epcManager.expects(once()).method("findAllSelect");
 		epcManager.expects(once()).method("populaCheckBox");
 		estabelecimentoManager.expects(once()).method("findAllSelect");

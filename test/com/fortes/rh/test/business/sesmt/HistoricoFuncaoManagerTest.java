@@ -12,12 +12,14 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManagerImpl;
+import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.util.DateUtil;
@@ -29,6 +31,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 	private Mock funcaoManager = null;
 	private Mock exameManager = null;
 	private Mock epiManager = null;
+	private Mock riscoFuncaoManager = null;
 
     protected void setUp() throws Exception
     {
@@ -37,11 +40,13 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
         funcaoManager = new Mock(FuncaoManager.class);
         exameManager = new Mock(ExameManager.class);
         epiManager = new Mock(EpiManager.class);
+        riscoFuncaoManager = new Mock(RiscoFuncaoManager.class);
         
         historicoFuncaoManager.setExameManager((ExameManager) exameManager.proxy());
         historicoFuncaoManager.setDao((HistoricoFuncaoDao) historicoFuncaoDao.proxy());
         historicoFuncaoManager.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
         historicoFuncaoManager.setEpiManager((EpiManager) epiManager.proxy());
+        historicoFuncaoManager.setRiscoFuncaoManager((RiscoFuncaoManager) riscoFuncaoManager.proxy());
     }
 
 	public void testGetUltimoHistoricosByDateFuncaos() throws Exception
@@ -225,19 +230,41 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 
 		Long[] examesChecked = new Long[]{1L};
 		Long[] episChecked = new Long[]{1L};
+		Long[] riscosChecked = new Long[]{1L};
+		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
 		historicoFuncaoDao.expects(once()).method("save").with(eq(historicoFuncao));
 
-		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked);
+		Exception exception = null;
+		
+		try {
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, riscosFuncoes, 'F');
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 	}
-
+	
 	public void testUpdateHistorico()
 	{
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
-
+		historicoFuncao.setId(1L);
+		
 		Long[] examesChecked = new Long[]{1L};
 		Long[] episChecked = new Long[]{1L};
+		Long[] riscosChecked = new Long[]{1L};
+		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
+		riscoFuncaoManager.expects(once()).method("removeByHistoricoFuncao").with(eq(historicoFuncao.getId())).will(returnValue(true));
 		historicoFuncaoDao.expects(once()).method("update").with(eq(historicoFuncao));
-
-		historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
+		
+		Exception exception = null;
+		
+		try {
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscosChecked, riscosFuncoes, 'F');
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 	}
 }

@@ -12,11 +12,7 @@ public class RiscoAmbienteManagerImpl extends GenericManagerImpl<RiscoAmbiente, 
 {
 	public boolean removeByHistoricoAmbiente(Long historicoAmbienteId) 
 	{
-		if (historicoAmbienteId != null)
-		{
-			return getDao().removeByHistoricoAmbiente(historicoAmbienteId);
-		}
-		return true;
+		return getDao().removeByHistoricoAmbiente(historicoAmbienteId);
 	}
 
 	public Collection<Risco> findRiscosByAmbienteData(Long ambienteId, Date data) 

@@ -37,7 +37,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(14));
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(15));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(16));
-		assertEquals("Aviso ao responder perído de experiência", Operacao.getDescricaoById(17));
+		assertEquals("Aviso ao responder período de experiência", Operacao.getDescricaoById(17));
 	}
 
 	public void testGetMeioComunicacaoById()

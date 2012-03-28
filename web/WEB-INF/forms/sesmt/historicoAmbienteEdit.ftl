@@ -99,7 +99,7 @@
 				<@ww.hidden name="riscosAmbientes[${i}].epcEficaz" />
 				<@ww.hidden name="riscosAmbientes[${i}].risco.id" />
 				<#assign i = i + 1/>
-			</#list>
+			</#list> 
 		</#if>
 
 		<@ww.hidden name="historicoAmbiente.id" />

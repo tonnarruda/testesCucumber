@@ -18,6 +18,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
@@ -27,7 +28,8 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	private AbstractPlatformTransactionManager transactionManager;
 	private ExameManager exameManager;
 	private EpiManager epiManager;
-
+	private RiscoFuncaoManager riscoFuncaoManager;
+	
 	public void setTransactionManager(AbstractPlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
@@ -198,36 +200,45 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 //		return historicoFuncoes;
 //	}
 
-	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked)
+	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws Exception
 	{
-		try
+		historicoFuncao.setExames(addExames(examesChecked));
+		CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
+		historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
+		
+		if (historicoFuncao.getId() != null)
 		{
-			historicoFuncao.setExames(addExames(examesChecked));
-			CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
-			historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
-			
+			if (controlaRiscoPor == 'A'){
+				Collection<RiscoFuncao> riscosMarcadosAux = riscoFuncaoManager.findToList(new String[] {"id"},new String[] {"id"}, new String[]{"historicoFuncao.id"}, new Object[]{historicoFuncao.getId()});
+				
+				CollectionUtil<RiscoFuncao> cut = new CollectionUtil<RiscoFuncao>();
+				riscoChecks = cut.convertCollectionToArrayIds(riscosMarcadosAux);
+				
+			} else {
+				riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
+			}
+		}
+		
+		Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
+		
+		for (Long riscoId : riscoChecks)
+		{
+			for (RiscoFuncao riscoFuncao : riscoFuncoes)
+			{
+				if (riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
+				{
+					riscoFuncao.setHistoricoFuncao(historicoFuncao);
+					riscoFuncoesSelecionados.add(riscoFuncao);
+				}
+			}
+		}
+		
+		historicoFuncao.setRiscoFuncaos(riscoFuncoesSelecionados);
+		
+		if (historicoFuncao.getId() == null)
 			save(historicoFuncao);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public void updateHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked)
-	{
-		try
-		{
-			historicoFuncao.setExames(addExames(examesChecked));
-			CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
-			historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
-	
+		else
 			update(historicoFuncao);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 //	@SuppressWarnings("unchecked")
@@ -290,6 +301,10 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	public Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data)
 	{
 		return getDao().findEpis(funcaoIds, data);
+	}
+
+	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
+		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 
 }

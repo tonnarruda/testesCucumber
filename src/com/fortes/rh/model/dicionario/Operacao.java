@@ -95,7 +95,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder perído de experiência", "Aval. Desempenho"){
+	RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA(17, "Aviso ao responder período de experiência", "Aval. Desempenho"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			

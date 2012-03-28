@@ -55,18 +55,8 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public String prepareInsert() throws Exception
 	{
-		riscos = riscoManager.findAllSelect(getEmpresaSistema().getId());
-		riscosAmbientes = new ArrayList<RiscoAmbiente>();
-		if (riscos != null)
-		{
-			RiscoAmbiente riscoAmbiente;
-			for (Risco risco : riscos) {
-				riscoAmbiente = new RiscoAmbiente();
-				riscoAmbiente.setRisco(risco);
-				riscosAmbientes.add(riscoAmbiente);
-			}
-		}
-		
+		riscosAmbientes = riscoManager.findRiscosAmbientesByEmpresa(getEmpresaSistema().getId());
+
 		epcs = epcManager.findAllSelect(getEmpresaSistema().getId());
 		epcCheckList = epcManager.populaCheckBox(getEmpresaSistema().getId());
 		

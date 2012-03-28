@@ -1,5 +1,6 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -24,22 +25,80 @@
 	<#else>
 		<#assign data = "">
 	</#if>
+	
+	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
+	<script type="text/javascript">
+		$(function() {
+			$('#md').click(function() {
+				var checked = $(this).attr('checked');
+				$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });
+			});
+			
+			$('input[name="riscoChecks"]').click(function() {
+				habilitarDesabilitarCamposLinha(this);
+			});
+		});
+		
+		function habilitarDesabilitarCamposLinha(campoRisco)
+		{
+			$(campoRisco).parent().parent().find('input, select').not(campoRisco).attr('disabled', !campoRisco.checked);
+		}
+	</script>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
-		<#if !funcao.id?exists>
-			<@ww.datepicker label="A partir de" name="historicoFuncao.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
-		</#if>
-
 		<@ww.textfield label="Nome da Função" name="funcao.nome" id="nome"  cssClass="inputNome" maxLength="100" required="true" />
 
 		<#if !funcao.id?exists>
-			<@ww.textarea label="Descrição das Atividades Executadas pela Função" name="historicoFuncao.descricao" id="descricao" cssClass="inputNome"  required="true"/>
-			<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" />
-			<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" />
+			<li>
+				<fieldset>
+					<ul>
+						<legend>Dados do Primeiro Histórico do Função</legend>
+						<@ww.datepicker label="A partir de" name="historicoFuncao.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
+						<@ww.textarea label="Descrição das Atividades Executadas pela Função" name="historicoFuncao.descricao" id="descricao" cssClass="inputNome"  required="true"/>
+						<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" />
+						<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" />
+			
+						<#assign i = 0/>
+						<#if empresaControlaRiscoPor == 'F'> 
+							Riscos existentes:<br>
+							<@display.table name="riscosFuncoes" id="riscoFuncao" class="dados" style="width:500px;border:none;">
+								<@display.column title="<input type='checkbox' id='md'/>" style="width: 30px; text-align: center;">
+									<input type="checkbox" id="check${riscoFuncao.risco.id}" value="${riscoFuncao.risco.id}" name="riscoChecks" />
+								</@display.column>
+								<@display.column property="risco.descricao" title="Risco" style="width: 240px;"/>
+								<@display.column property="risco.descricaoGrupoRisco" title="Tipo" style="width: 240px;"/>
+								<@display.column title="EPI Eficaz" style="width: 140px;text-align:center;">
+									<#if riscoFuncao.risco.epiEficaz == true> 
+										Sim
+									<#else>
+										NA 
+									</#if>
+								</@display.column>
+								<@display.column title="Periodicidade" style="text-align:center;">
+									<@ww.select name="riscosFuncoes[${i}].periodicidadeExposicao" id="perExposicao${riscoFuncao.risco.id}" headerKey="" headerValue="Selecione" list=r"#{'C':'Contínua','I':'Intermitente','E':'Eventual'}" disabled="true"/>
+								</@display.column>
+								<@display.column title="EPC Eficaz" style="width: 140px;text-align:center;">
+									<@ww.checkbox id="epcEficaz${riscoFuncao.risco.id}" name="riscosFuncoes[${i}].epcEficaz" disabled="true"/>
+									<@ww.hidden name="riscosFuncoes[${i}].risco.id"/>
+								</@display.column>
+								
+								<#assign i = i + 1/>
+							</@display.table>
+						<#else>
+							<#list riscosFuncoes as riscoFuncao>
+								<@ww.hidden name="riscosFuncoes[${i}].periodicidadeExposicao" />
+								<@ww.hidden name="riscosFuncoes[${i}].epcEficaz" />
+								<@ww.hidden name="riscosFuncoes[${i}].risco.id" />
+								<#assign i = i + 1/>
+							</#list> 
+						</#if>
+					</ul>
+				</fieldset>
+			</li>
 		</#if>
 
 

@@ -154,6 +154,7 @@ import com.fortes.rh.test.business.sesmt.PcmsoManagerTest;
 import com.fortes.rh.test.business.sesmt.ProntuarioManagerTest;
 import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoAmbienteManagerTest;
+import com.fortes.rh.test.business.sesmt.RiscoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoMedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
@@ -300,6 +301,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.ProntuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RealizacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoAmbienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.RiscoFuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoMedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest;
@@ -982,6 +984,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(RiscoAmbienteDaoHibernateTest.class);
         suite.addTestSuite(RiscoAmbienteManagerTest.class);
         suite.addTestSuite(RiscoAmbienteDWRTest.class);
+
+        suite.addTestSuite(RiscoFuncaoManagerTest.class);
+        suite.addTestSuite(RiscoFuncaoDaoHibernateTest.class);
 
         suite.addTestSuite(TipoEpiEditActionTest.class);
         suite.addTestSuite(TipoEpiListActionTest.class);

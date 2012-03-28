@@ -13,6 +13,7 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
@@ -22,6 +23,8 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -36,6 +39,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	private ExameManager exameManager;
 	private EpiManager epiManager;
+	private RiscoManager riscoManager;
 
 	private Funcao funcao;
 	private Cargo cargoTmp;
@@ -47,6 +51,11 @@ public class FuncaoEditAction extends MyActionSupportEdit
     private Collection<Ambiente> ambientes;
     private AmbienteManager ambienteManager;
 
+	private Collection<RiscoFuncao> riscosFuncoes;
+
+	private String[] riscoChecks;
+
+    
     private Colaborador colaborador;
     private ColaboradorManager colaboradorManager;
     private HistoricoColaborador historicoColaborador;
@@ -81,7 +90,10 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception
 	{
 		prepare();
+		
 		cargoTmp = cargoManager.findByIdProjection(cargoTmp.getId());
+		
+		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
 	}
@@ -382,6 +394,26 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setVeioDoSESMT(boolean veioDoSESMT)
 	{
 		this.veioDoSESMT = veioDoSESMT;
+	}
+
+	public String[] getRiscoChecks() {
+		return riscoChecks;
+	}
+
+	public void setRiscoChecks(String[] riscoChecks) {
+		this.riscoChecks = riscoChecks;
+	}
+
+	public Collection<RiscoFuncao> getRiscosFuncoes() {
+		return riscosFuncoes;
+	}
+
+	public void setRiscosFuncoes(Collection<RiscoFuncao> riscosFuncoes) {
+		this.riscosFuncoes = riscosFuncoes;
+	}
+
+	public void setRiscoManager(RiscoManager riscoManager) {
+		this.riscoManager = riscoManager;
 	}
 
 
