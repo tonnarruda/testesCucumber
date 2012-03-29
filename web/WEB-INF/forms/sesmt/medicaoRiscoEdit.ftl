@@ -47,7 +47,7 @@
 	<body>
 		<@ww.actionerror />
 		
-		<@ww.form name="form" action="${formAction}" method="POST" onsubmit="return false;">
+		<@ww.form name="form" action="${formAction}" method="POST">
 			
 			<@ww.datepicker label="Data da medição" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" onchange="setGravarDesabilitado('true');"/>
 			

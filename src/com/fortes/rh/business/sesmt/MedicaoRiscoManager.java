@@ -9,9 +9,9 @@ import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 
 public interface MedicaoRiscoManager extends GenericManager<MedicaoRisco>
 {
-	Collection<MedicaoRisco> findAllSelect(Long empresaId, Long ambienteId);
-	void save(MedicaoRisco medicaoRisco, String[] riscoIds, String[] ltcatValues, String[] ppraValues, String[] tecnicaValues,
-			 	String[] intensidadeValues) throws Exception;
+	Collection<MedicaoRisco> findAllSelectByAmbiente(Long empresaId, Long ambienteId);
+	Collection<MedicaoRisco> findAllSelectByFuncao(Long empresaId, Long funcaoId);
+	void save(MedicaoRisco medicaoRisco, String[] riscoIds, String[] ltcatValues, String[] ppraValues, String[] tecnicaValues, String[] intensidadeValues) throws Exception;
 	String getTecnicasUtilizadas(Long empresaId);
 	Collection<RiscoMedicaoRisco> preparaRiscosDaMedicao(MedicaoRisco medicaoRisco, Collection<Risco> riscos);
 	void removeCascade(Long id);
