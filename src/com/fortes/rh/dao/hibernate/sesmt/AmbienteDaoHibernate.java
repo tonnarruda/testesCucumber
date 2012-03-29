@@ -132,23 +132,28 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		return query.list();
 	}
 	
-	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo)
+	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo, Long funcaoId)
 	{
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("select count(*) as qtd ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("	join hc.colaborador c ");
-		hql.append("	join hc.ambiente a ");
 		hql.append("where   hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.data <=:data and hc2.status = :status and hc2.colaborador.id = hc.colaborador.id) ");
 		hql.append("	and c.pessoal.sexo = :sexo ");
-		hql.append("	and a.id = :ambienteId ");
+		hql.append("	and hc.ambiente.id = :ambienteId ");
+
+		if(funcaoId != null)
+			hql.append("	and hc.funcao.id = :funcaoId ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
 		query.setString("sexo", sexo);
 		query.setLong("ambienteId", ambienteId);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		if(funcaoId != null)
+			query.setLong("funcaoId", funcaoId);
 
 		return (Integer)query.uniqueResult();
 	}

@@ -6,8 +6,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -39,6 +43,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 	private EpiManager epiManager;
 	private ComposicaoSesmtManager composicaoSesmtManager;
+	private EmpresaManager empresaManager;
 	
 	private Collection<PpraLtcatRelatorio> relatorios = null;
 	
@@ -58,6 +63,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		ComposicaoSesmt composicaoSesmt = null;
 		
 		Estabelecimento estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
+		boolean isControlaRiscoPorAmbiente = empresaManager.isControlaRiscoPorAmbiente(empresa.getId());
 		
 		relatorios = new ArrayList<PpraLtcatRelatorio>();
 		
@@ -71,13 +77,35 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		
 		for (Ambiente ambiente : ambientes)
 		{
-			relatorios.add(this.populaRelatorioPorAmbiente(empresa, estabelecimento, ambiente, data, composicaoSesmt));
+			Collection<Funcao> funcoesDoAmbiente = funcaoManager.findFuncoesDoAmbiente(ambiente.getId(), data);
+			
+			if(isControlaRiscoPorAmbiente)//ambiente
+			{
+				relatorios.add(this.populaRelatorioPorAmbiente(empresa, estabelecimento, ambiente, data, composicaoSesmt, funcoesDoAmbiente));
+			}
+			else
+			{
+				for (Funcao funcao : funcoesDoAmbiente) 
+					relatorios.add(this.populaRelatorioPorFuncao(empresa, estabelecimento, ambiente, data, composicaoSesmt, funcao));
+			}
 		}
 		
 		return relatorios;
 	}
 	
-	private PpraLtcatRelatorio populaRelatorioPorAmbiente(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt) 
+	private void populaRelatorioPor(Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, PpraLtcatRelatorio ppraLtcatRelatorio) 
+	{
+		ppraLtcatRelatorio.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
+		ppraLtcatRelatorio.setTempoExposicao(ambiente.getHistoricoAtual().getTempoExposicao());
+		
+		Collection<Epc> epcsDoAmbiente = epcManager.findEpcsDoAmbiente(ambiente.getId(), data);
+		ppraLtcatRelatorio.formataEpcs(epcsDoAmbiente);
+		
+		Collection<Epi> episDoAmbiente = epiManager.findEpisDoAmbiente(ambiente.getId(), data); 
+		ppraLtcatRelatorio.formataEpis(episDoAmbiente);
+	}
+	
+	private PpraLtcatRelatorio populaRelatorioPorAmbiente(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, Collection<Funcao> funcoesDoAmbiente) 
 	{
 		Ppra ppra = new Ppra();
 		Ltcat ltcat = new Ltcat();
@@ -85,24 +113,41 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente.getNome(), ambiente.getHistoricoAtual().getDescricao());
 		PpraLtcatRelatorio ppraLtcatRelatorio = new PpraLtcatRelatorio(cabecalho, ppra, ltcat, exibirPpra, exibirLtcat);
 		
-		cabecalho.setQtdHomens(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.MASCULINO));
-		cabecalho.setQtdMulheres(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.FEMININO));
+		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
 		
-		ppraLtcatRelatorio.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
-		ppraLtcatRelatorio.setTempoExposicao(ambiente.getHistoricoAtual().getTempoExposicao());
-		
-		Collection<Funcao> funcoesDoAmbiente = funcaoManager.findFuncoesDoAmbiente(ambiente.getId(), data);
 		ppraLtcatRelatorio.formataFuncoes(funcoesDoAmbiente);
-		
+
 		Collection<RiscoMedicaoRisco> riscosDoAmbiente = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
 		ppraLtcatRelatorio.formataRiscosPpra(riscosDoAmbiente);
 		ppraLtcatRelatorio.formataRiscosLtcat(riscosDoAmbiente);
 		
-		Collection<Epc> epcsDoAmbiente = epcManager.findEpcsDoAmbiente(ambiente.getId(), data);
-		ppraLtcatRelatorio.formataEpcs(epcsDoAmbiente);
+		cabecalho.setQtdHomens(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.MASCULINO, null));
+		cabecalho.setQtdMulheres(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.FEMININO, null));
 		
-		Collection<Epi> episDoAmbiente = epiManager.findEpisDoAmbiente(ambiente.getId(), data); 
-		ppraLtcatRelatorio.formataEpis(episDoAmbiente);
+		return ppraLtcatRelatorio;
+	}
+
+
+	private PpraLtcatRelatorio populaRelatorioPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, Funcao funcao) 
+	{
+		Ppra ppra = new Ppra();
+		Ltcat ltcat = new Ltcat();
+		
+		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente.getNome(), ambiente.getHistoricoAtual().getDescricao());
+		PpraLtcatRelatorio ppraLtcatRelatorio = new PpraLtcatRelatorio(cabecalho, ppra, ltcat, exibirPpra, exibirLtcat);
+		
+		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
+
+		ppraLtcatRelatorio.formataFuncoes(Arrays.asList(funcao));
+
+		//TODO Samuel falta implementar por funcao
+		Collection<RiscoMedicaoRisco> riscosDoAmbiente = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
+		
+		ppraLtcatRelatorio.formataRiscosPpra(riscosDoAmbiente);
+		ppraLtcatRelatorio.formataRiscosLtcat(riscosDoAmbiente);
+		
+		cabecalho.setQtdHomens(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.MASCULINO, funcao.getId()));
+		cabecalho.setQtdMulheres(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.FEMININO, funcao.getId()));
 		
 		return ppraLtcatRelatorio;
 	}
@@ -184,10 +229,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		}
 	}
 
-	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo) {
-		return getDao().getQtdColaboradorByAmbiente(ambienteId, data, sexo);
-	}
-	
 	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
 		getDao().deleteByEstabelecimento(estabelecimentoIds);
 	}
@@ -216,6 +257,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 
 	public void setComposicaoSesmtManager(ComposicaoSesmtManager composicaoSesmtManager) {
 		this.composicaoSesmtManager = composicaoSesmtManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 
 }

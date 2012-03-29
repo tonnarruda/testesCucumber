@@ -292,7 +292,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		historicoColaborador3.setFuncao(funcao3);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(2, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO));
+		assertEquals(1, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO, funcao2.getId()));
 	}
 	
 	public void testDeleteByEstabelecimento() {

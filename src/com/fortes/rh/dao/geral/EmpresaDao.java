@@ -26,4 +26,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	boolean checkEmpresaIntegradaAc();
 	Collection<Empresa> findComCodigoAC();
 	public Empresa findEmailsEmpresa(Long empresaId);
+	boolean isControlaRiscoPorAmbiente(Long empresaId);
 }

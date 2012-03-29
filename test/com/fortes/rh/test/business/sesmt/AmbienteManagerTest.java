@@ -8,6 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManagerImpl;
 import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
@@ -49,6 +50,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 	private Mock epcManager;
 	private Mock epiManager;
 	private Mock composicaoSesmtManager;
+	private Mock empresaManager;
 
 	protected void setUp() throws Exception
     {
@@ -76,6 +78,9 @@ public class AmbienteManagerTest extends MockObjectTestCase
 
         composicaoSesmtManager = mock(ComposicaoSesmtManager.class);
         ambienteManager.setComposicaoSesmtManager((ComposicaoSesmtManager) composicaoSesmtManager.proxy());
+        
+        empresaManager = mock(EmpresaManager.class);
+        ambienteManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
     }
 
 	public void testGetCount()
@@ -261,13 +266,6 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		assertEquals( new ArrayList<CheckBox>(), ambienteManager.populaCheckBox(1L));
 	}
 
-	public void testGetQtdColaboradorByAmbiente()
-	{
-		ambienteDao.expects(once()).method("getQtdColaboradorByAmbiente").will(returnValue(new Integer(1)));
-		
-		assertEquals(1, ambienteManager.getQtdColaboradorByAmbiente(1L, new Date(), "masculino"));
-	}
-	
 	public void testPopulaRelatorio() throws Exception
 	{
 		Date hoje = Calendar.getInstance().getTime();
@@ -317,11 +315,12 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		
 		composicaoSesmtManager.expects(once()).method("findByData").with(eq(empresa.getId()), ANYTHING);
 		funcaoManager.expects(atLeastOnce()).method("findFuncoesDoAmbiente").will(returnValue(new ArrayList<Funcao>()));
-		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.MASCULINO)).will(returnValue(10));
-		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.FEMININO)).will(returnValue(50));
+		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.MASCULINO),ANYTHING).will(returnValue(10));
+		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.FEMININO),ANYTHING).will(returnValue(50));
 		riscoMedicaoRiscoManager.expects(atLeastOnce()).method("findMedicoesDeRiscosDoAmbiente").will(returnValue(new ArrayList<RiscoMedicaoRisco>()));
 		epcManager.expects(atLeastOnce()).method("findEpcsDoAmbiente").will(returnValue(new ArrayList<Epc>()));
 		epiManager.expects(atLeastOnce()).method("findEpisDoAmbiente").will(returnValue(new ArrayList<Epi>()));
+		empresaManager.expects(atLeastOnce()).method("isControlaRiscoPorAmbiente").will(returnValue(true));
 		
 		Date data = hoje;
 		String[] ambienteCheck=new String[]{"50", "51"};

@@ -69,8 +69,6 @@ public class PpraLtcatCabecalho
 		this.estabelecimento = estabelecimento;
 	}
 
-	
-
 	public String getFuncoes() {
 		return funcoes;
 	}

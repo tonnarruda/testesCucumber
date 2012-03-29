@@ -396,4 +396,12 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	}
+
+	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
+	{
+		Query query = getSession().createQuery("select e.controlaRiscoPor from Empresa e where e.id = :empresaId");
+		query.setLong("empresaId", empresaId);
+		
+		return (Character) query.uniqueResult() == 'A';
+	}
 }

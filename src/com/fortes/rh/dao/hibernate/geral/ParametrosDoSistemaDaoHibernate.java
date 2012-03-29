@@ -1,12 +1,6 @@
 package com.fortes.rh.dao.hibernate.geral;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -16,7 +10,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.geral.Relacionamento;
 
 public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<ParametrosDoSistema> implements ParametrosDoSistemaDao
 {

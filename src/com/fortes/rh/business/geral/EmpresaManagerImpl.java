@@ -543,4 +543,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
 	}
 
+	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
+		return getDao().isControlaRiscoPorAmbiente(empresaId);
+	}
+
 }

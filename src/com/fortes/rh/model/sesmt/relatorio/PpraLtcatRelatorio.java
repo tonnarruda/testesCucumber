@@ -20,8 +20,7 @@ public class PpraLtcatRelatorio
 
 	private Collection<ComposicaoSesmt> composicaoSesmts;
 
-	public PpraLtcatRelatorio(PpraLtcatCabecalho cabecalho, Ppra ppra,
-								Ltcat ltcat, boolean exibirPpra, boolean exibirLtcat) 
+	public PpraLtcatRelatorio(PpraLtcatCabecalho cabecalho, Ppra ppra, Ltcat ltcat, boolean exibirPpra, boolean exibirLtcat) 
 	{
 		this.cabecalho = cabecalho; 
 		

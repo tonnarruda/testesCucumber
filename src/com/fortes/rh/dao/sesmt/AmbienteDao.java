@@ -13,6 +13,6 @@ public interface AmbienteDao extends GenericDao<Ambiente>
 	Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId);
 	Ambiente findByIdProjection(Long ambienteId);
 	Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data, Long estabelecimentoId);
-	int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo);
+	int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo, Long funcaoId);
 	void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 }

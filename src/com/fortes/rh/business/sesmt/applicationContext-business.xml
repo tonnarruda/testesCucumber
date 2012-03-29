@@ -111,6 +111,9 @@
     <property name="composicaoSesmtManager">
       <ref bean="composicaoSesmtManager" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
   </bean>
   <bean id="ambienteManager" parent="parentManager">
     <property name="proxyInterfaces">
