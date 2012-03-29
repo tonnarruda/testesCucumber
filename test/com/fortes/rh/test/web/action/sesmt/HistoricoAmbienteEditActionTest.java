@@ -16,6 +16,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
@@ -66,8 +67,8 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
     	action.setHistoricoAmbiente(historicoAmbiente);
     	
     	ambienteManager.expects(once()).method("findByIdProjection").with(eq(ambiente.getId())).will(returnValue(ambiente));
-    	riscoManager.expects(once()).method("findAllSelect");
     	epcManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Epc>()));
+    	riscoManager.expects(once()).method("findRiscosAmbientesByEmpresa").with(eq(1L)).will(returnValue(new ArrayList<RiscoAmbiente>()));
 
     	manager.expects(once()).method("findUltimoHistorico").with(eq(ambiente.getId())).will(returnValue(historicoAmbiente));
 
@@ -87,8 +88,8 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("findById").with(eq(historicoAmbiente.getId())).will(returnValue(historicoAmbiente));
     	ambienteManager.expects(once()).method("findByIdProjection").with(eq(ambiente.getId())).will(returnValue(ambiente));
-    	riscoManager.expects(once()).method("findAllSelect");
     	epcManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Epc>()));
+    	riscoManager.expects(once()).method("findRiscosAmbientesByEmpresa").with(eq(1L)).will(returnValue(new ArrayList<RiscoAmbiente>()));
 
     	assertEquals(action.prepareUpdate(), "success");
     	assertEquals(action.getHistoricoAmbiente(), historicoAmbiente);
@@ -171,7 +172,5 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
     	action.getEpcCheck();
     	action.getRiscoChecks();
     	action.getEpcEficazChecks();
-    	action.getRiscos();
-
     }
 }

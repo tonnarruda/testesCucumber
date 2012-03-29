@@ -9,7 +9,6 @@ import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
-import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -28,7 +27,6 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	private HistoricoAmbiente historicoAmbiente;
 	private Ambiente ambiente;
 	
-	private Collection<Risco> riscos;
 	private Collection<RiscoAmbiente> riscosAmbientes;
 	
 	private Collection<CheckBox> epcCheckList = new ArrayList<CheckBox>();
@@ -40,17 +38,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	
 	private void prepare() throws Exception
 	{
-		riscos = riscoManager.findAllSelect(getEmpresaSistema().getId());
-		riscosAmbientes = new ArrayList<RiscoAmbiente>();
-		if (riscos != null)
-		{
-			RiscoAmbiente riscoAmbiente;
-			for (Risco risco : riscos) {
-				riscoAmbiente = new RiscoAmbiente();
-				riscoAmbiente.setRisco(risco);
-				riscosAmbientes.add(riscoAmbiente);
-			}
-		}
+		riscosAmbientes = riscoManager.findRiscosAmbientesByEmpresa(getEmpresaSistema().getId());
 		
 		if(historicoAmbiente != null && historicoAmbiente.getId() != null)
 			historicoAmbiente = historicoAmbienteManager.findById(historicoAmbiente.getId());
@@ -179,10 +167,6 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
-	}
-
-	public Collection<Risco> getRiscos() {
-		return riscos;
 	}
 
 	public void setAmbienteManager(AmbienteManager ambienteManager)

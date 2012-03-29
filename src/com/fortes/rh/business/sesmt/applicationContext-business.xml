@@ -36,31 +36,6 @@
       <ref bean="funcaoManagerTarget" />
     </property>
   </bean>
-  <bean id="historicoFuncaoManagerTarget" class="com.fortes.rh.business.sesmt.HistoricoFuncaoManagerImpl">
-    <property name="dao">
-      <ref bean="historicoFuncaoDao" />
-    </property>
-    <property name="funcaoManager">
-      <ref bean="funcaoManager" />
-    </property>
-    <property name="exameManager">
-      <ref bean="exameManager" />
-    </property>
-    <property name="transactionManager">
-      <ref bean="transactionManager" />
-    </property>
-    <property name="epiManager">
-      <ref bean="epiManager" />
-    </property>
-  </bean>
-  <bean id="historicoFuncaoManager" parent="parentManager">
-    <property name="proxyInterfaces">
-      <value>com.fortes.rh.business.sesmt.HistoricoFuncaoManager</value>
-    </property>
-    <property name="target">
-      <ref bean="historicoFuncaoManagerTarget" />
-    </property>
-  </bean>
   <bean id="epiManagerTarget" class="com.fortes.rh.business.sesmt.EpiManagerImpl">
     <property name="dao">
       <ref bean="epiDao" />
@@ -166,6 +141,34 @@
     </property>
     <property name="target">
       <ref bean="historicoAmbienteManagerTarget" />
+    </property>
+  </bean>
+  <bean id="historicoFuncaoManagerTarget" class="com.fortes.rh.business.sesmt.HistoricoFuncaoManagerImpl">
+    <property name="dao">
+      <ref bean="historicoFuncaoDao" />
+    </property>
+    <property name="funcaoManager">
+      <ref bean="funcaoManager" />
+    </property>
+    <property name="exameManager">
+      <ref bean="exameManager" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+    <property name="epiManager">
+      <ref bean="epiManager" />
+    </property>
+    <property name="riscoFuncaoManager">
+      <ref bean="riscoFuncaoManager" />
+    </property>
+  </bean>
+  <bean id="historicoFuncaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.HistoricoFuncaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="historicoFuncaoManagerTarget" />
     </property>
   </bean>
   <bean id="riscoManagerTarget" class="com.fortes.rh.business.sesmt.RiscoManagerImpl">
@@ -763,6 +766,19 @@
     </property>
     <property name="target">
       <ref bean="riscoAmbienteManagerTarget" />
+    </property>
+  </bean>
+  <bean id="riscoFuncaoManagerTarget" class="com.fortes.rh.business.sesmt.RiscoFuncaoManagerImpl">
+    <property name="dao">
+      <ref bean="riscoFuncaoDao" />
+    </property>
+  </bean>
+  <bean id="riscoFuncaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.RiscoFuncaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="riscoFuncaoManagerTarget" />
     </property>
   </bean>
   <bean id="medicaoRiscoManagerTarget" class="com.fortes.rh.business.sesmt.MedicaoRiscoManagerImpl">

@@ -17,6 +17,7 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -31,6 +32,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -57,6 +59,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
 	private Mock ambienteManager;
 	private Mock exameManager;
 	private Mock epiManager;
+	private Mock riscoManager;
 
     protected void setUp() throws Exception
     {
@@ -69,14 +72,17 @@ public class FuncaoEditActionTest extends MockObjectTestCase
         ambienteManager = new Mock(AmbienteManager.class);
         exameManager = new Mock(ExameManager.class);
         epiManager = new Mock(EpiManager.class);
+        riscoManager = new Mock(RiscoManager.class);
 
         action = new FuncaoEditAction();
+        action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         action.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
         action.setCargoManager((CargoManager) cargoManager.proxy());
         action.setHistoricoFuncaoManager((HistoricoFuncaoManager) historicoFuncaoManager.proxy());
         action.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
         action.setExameManager((ExameManager) exameManager.proxy());
         action.setEpiManager((EpiManager) epiManager.proxy());
+        action.setRiscoManager((RiscoManager) riscoManager.proxy());
 
         action.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
         action.setAmbienteManager((AmbienteManager) ambienteManager.proxy());
@@ -120,6 +126,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	funcaoManager.expects(once()).method("findByIdProjection").with(eq(funcaoRetorno.getId())).will(returnValue(funcaoRetorno));
     	exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId())).will(returnValue(new ArrayList<Epi>()));
+    	riscoManager.expects(once()).method("findRiscosFuncoesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoFuncao>()));
 
     	assertEquals(action.prepareInsert(), "success");
     	assertEquals(action.getCargoTmp(), cargo);

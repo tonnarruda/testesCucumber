@@ -210,6 +210,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="riscoFuncaoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.RiscoFuncaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="medicaoRiscoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.MedicaoRiscoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

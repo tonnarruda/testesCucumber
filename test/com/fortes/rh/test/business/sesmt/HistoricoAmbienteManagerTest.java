@@ -41,7 +41,6 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		
-		riscoAmbienteManager.expects(once()).method("removeByHistoricoAmbiente").with(ANYTHING).will(returnValue(true));
 		historicoAmbienteDao.expects(once()).method("save");
 		
 		Exception exception = null;

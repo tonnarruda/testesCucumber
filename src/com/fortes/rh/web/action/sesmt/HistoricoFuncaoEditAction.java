@@ -6,10 +6,13 @@ import java.util.HashSet;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -21,6 +24,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	private ExameManager exameManager;
 	private EpiManager epiManager;
+	private RiscoManager riscoManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -30,7 +34,11 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> examesCheckList = new HashSet<CheckBox>();
 	private Long[] episChecked;
 	private Collection<CheckBox> episCheckList = new HashSet<CheckBox>();
+	private Long[] riscoChecks;
 
+	private Collection<Risco> riscos;
+	private Collection<RiscoFuncao> riscosFuncoes;
+	
 	private boolean veioDoSESMT;
 	
 	public String execute() throws Exception
@@ -41,11 +49,13 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private void prepare() throws Exception
 	{
 		if(historicoFuncao != null && historicoFuncao.getId() != null)
-			historicoFuncao = historicoFuncaoManager.findByIdProjection(historicoFuncao.getId());
+			historicoFuncao = historicoFuncaoManager.findById(historicoFuncao.getId());
 
 		Collection<Exame> exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		
+		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -67,7 +77,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		historicoFuncao.setFuncao(funcao);
-		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked);
+		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
 
 		if(veioDoSESMT)
 			return "SUCESSO_VEIO_SESMT";
@@ -77,7 +87,8 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
-		historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
+//		historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
+		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
 
 		if(veioDoSESMT)
 			return "SUCESSO_VEIO_SESMT";
@@ -163,5 +174,29 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public void setVeioDoSESMT(boolean veioDoSESMT)
 	{
 		this.veioDoSESMT = veioDoSESMT;
+	}
+
+	public Collection<Risco> getRiscos() {
+		return riscos;
+	}
+
+	public Collection<RiscoFuncao> getRiscosFuncoes() {
+		return riscosFuncoes;
+	}
+
+	public void setRiscosFuncoes(Collection<RiscoFuncao> riscosFuncoes) {
+		this.riscosFuncoes = riscosFuncoes;
+	}
+
+	public void setRiscoManager(RiscoManager riscoManager) {
+		this.riscoManager = riscoManager;
+	}
+
+	public Long[] getRiscoChecks() {
+		return riscoChecks;
+	}
+
+	public void setRiscoChecks(Long[] riscoChecks) {
+		this.riscoChecks = riscoChecks;
 	}
 }

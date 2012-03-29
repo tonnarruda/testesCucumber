@@ -1,22 +1,13 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.sesmt.Epi;
-import com.fortes.rh.model.sesmt.Funcao;
-import com.fortes.rh.model.sesmt.HistoricoAmbiente;
-import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 
