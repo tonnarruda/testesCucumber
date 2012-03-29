@@ -62,9 +62,9 @@
 						backcolor="#FFFFFF"
 						key="textField"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
 					<textElement>
-						<font size="8" isUnderline="false"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true" isUnderline="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
 				</textField>
@@ -144,9 +144,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="0"
+						x="5"
 						y="12"
-						width="42"
+						width="44"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -157,9 +157,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="42"
+						x="50"
 						y="12"
-						width="133"
+						width="130"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -170,7 +170,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="303"
+						x="306"
 						y="12"
 						width="88"
 						height="11"
@@ -183,7 +183,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="393"
+						x="395"
 						y="12"
 						width="174"
 						height="11"
@@ -209,7 +209,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="177"
+						x="181"
 						y="12"
 						width="124"
 						height="11"
@@ -242,9 +242,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="42"
+						x="50"
 						y="1"
-						width="133"
+						width="130"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -259,9 +259,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="5"
 						y="1"
-						width="39"
+						width="44"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -276,7 +276,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="303"
+						x="306"
 						y="1"
 						width="88"
 						height="12"
@@ -293,7 +293,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="393"
+						x="395"
 						y="1"
 						width="174"
 						height="12"
@@ -324,7 +324,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="177"
+						x="181"
 						y="1"
 						width="124"
 						height="12"

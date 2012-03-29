@@ -62,9 +62,9 @@
 						backcolor="#FFFFFF"
 						key="textField"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
 					<textElement>
-						<font size="8" isUnderline="false"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true" isUnderline="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{motivoDemissao.motivo}!=null?$F{motivoDemissao.motivo}:"<Motivo não informado>"]]></textFieldExpression>
 				</textField>
@@ -133,10 +133,10 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="40"
+						width="537"
 						height="11"
 						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -144,9 +144,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="0"
+						x="8"
 						y="12"
-						width="39"
+						width="41"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -157,9 +157,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="40"
+						x="50"
 						y="12"
-						width="124"
+						width="120"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -170,7 +170,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="273"
+						x="274"
 						y="12"
 						width="88"
 						height="11"
@@ -196,9 +196,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="166"
+						x="171"
 						y="12"
-						width="105"
+						width="102"
 						height="11"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -229,9 +229,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="40"
+						x="50"
 						y="1"
-						width="124"
+						width="120"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -245,9 +245,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="8"
 						y="1"
-						width="39"
+						width="41"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"/>
@@ -260,7 +260,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="273"
+						x="274"
 						y="1"
 						width="88"
 						height="12"
@@ -289,9 +289,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="166"
+						x="171"
 						y="1"
-						width="105"
+						width="102"
 						height="12"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>

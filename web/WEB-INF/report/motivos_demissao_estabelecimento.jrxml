@@ -40,14 +40,14 @@
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
-	<variable name="countColaborador" class="java.lang.Integer" resetType="Report" calculation="Count">
+	<variable name="countColaborador" class="java.lang.Integer" resetType="Group" resetGroup="grpEstabelecimento" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 
-		<group  name="grpEstabelecimento" >
+		<group  name="grpEstabelecimento" isStartNewPage="true" isReprintHeaderOnEachPage="true" >
 			<groupExpression><![CDATA[$F{estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="12"  isSplitAllowed="true" >
@@ -63,9 +63,9 @@
 						key="textField"
 						printWhenGroupChanges="grpEstabelecimento"
 						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#CCCCCC"/>
 					<textElement>
-						<font size="8" isUnderline="false"/>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true" isUnderline="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
 				</textField>
@@ -135,10 +135,10 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="112"
+						width="537"
 						height="11"
 						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
@@ -146,9 +146,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="0"
+						x="6"
 						y="12"
-						width="39"
+						width="41"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -159,9 +159,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="40"
+						x="48"
 						y="12"
-						width="124"
+						width="119"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -172,7 +172,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="273"
+						x="274"
 						y="12"
 						width="88"
 						height="11"
@@ -198,7 +198,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="166"
+						x="168"
 						y="12"
 						width="105"
 						height="11"
@@ -231,9 +231,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="40"
+						x="48"
 						y="1"
-						width="124"
+						width="119"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -247,9 +247,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
+						x="6"
 						y="1"
-						width="39"
+						width="41"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"/>
@@ -262,7 +262,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="273"
+						x="274"
 						y="1"
 						width="88"
 						height="12"
@@ -291,7 +291,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="166"
+						x="168"
 						y="1"
 						width="105"
 						height="12"
