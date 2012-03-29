@@ -13,6 +13,7 @@ public class SolicitacaoEpiItemVO
 	private Long empresaId;
 	private Long estabelecimentoId;
 	private String estabelecimentoNome;
+	private Long colaboradorId;
 	private String colaboradorMatricula;
 	private String colaboradorNome;
 	@Temporal(TemporalType.DATE)
@@ -141,4 +142,14 @@ public class SolicitacaoEpiItemVO
 	{
 		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacao);
 	}
+
+	public Long getColaboradorId() {
+		return colaboradorId;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
+	}
+
+
 }

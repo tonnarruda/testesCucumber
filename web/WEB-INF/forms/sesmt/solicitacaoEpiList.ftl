@@ -49,12 +49,12 @@
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
-		<@ww.select label="Situação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
+		<@ww.select label="Situação da Solicitação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
 
-		<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
-		<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
-
-		Período:<br/>
+		<@ww.textfield label="Matrícula do Colaborador" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
+		<@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
+		<@ww.select label="Situação do Colaborador" name="situacaoColaborador" id="situacaoColaborador" list="situacoesDoColaborador" cssStyle="width: 355px;"/>
+		Período da Solicitação:<br/>
 		<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData" />

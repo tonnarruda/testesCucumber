@@ -14,6 +14,7 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
@@ -70,7 +71,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Collection<SolicitacaoEpiItemVO> dataSourceLista;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
-
+	
+	private Map<String, String> situacoesDoColaborador = new SituacaoColaborador();
+	private String situacaoColaborador = SituacaoColaborador.TODOS;
+	
 	public String list() throws Exception
 	{
 		colaborador.setNome(nomeBusca);
@@ -78,8 +82,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 		tipoEpis = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ getEmpresaSistema().getId() });
 
-		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi));
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi);
+		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador));
+		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
@@ -92,7 +96,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 		
-		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi);
+		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
@@ -427,4 +431,17 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public void setTipoEpis(Collection<TipoEPI> tipoEpis) {
 		this.tipoEpis = tipoEpis;
 	}
+
+	public String getSituacaoColaborador() {
+		return situacaoColaborador;
+	}
+
+	public void setSituacaoColaborador(String situacaoColaborador) {
+		this.situacaoColaborador = situacaoColaborador;
+	}
+
+	public Map<String, String> getSituacoesDoColaborador() {
+		return situacoesDoColaborador;
+	}
+
 }

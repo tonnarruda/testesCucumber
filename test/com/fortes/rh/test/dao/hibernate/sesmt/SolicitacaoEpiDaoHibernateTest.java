@@ -19,6 +19,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -401,7 +402,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId()).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS).intValue());
 	}
 	
 	public void testFindAllSelect()
@@ -412,13 +413,30 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("José");
+		colaborador.setDesligado(true);
 		colaboradorDao.save(colaborador);
+
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setNome("");
+		colaborador1.setMatricula("");
+		colaboradorDao.save(colaborador1);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setNome("Chico");
+		colaborador2.setDesligado(false);
+		colaboradorDao.save(colaborador2);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2010));
 		historicoColaboradorDao.save(historicoColaborador);
+
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		historicoColaboradorDao.save(historicoColaborador2);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
@@ -466,10 +484,34 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		entrega2.setDataEntrega(dataIni);
 		entrega2.setQtdEntregue(2);
 		solicitacaoEpiItemEntregaDao.save(entrega2);
+
+		SolicitacaoEpi solicitacaoEpi3 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi3.setEmpresa(empresa);
+		solicitacaoEpi3.setData(dataIni);
+		solicitacaoEpi3.setColaborador(colaborador2);
+		solicitacaoEpi3.setCargo(cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi3);
+		
+		SolicitacaoEpiItem item3 = SolicitacaoEpiItemFactory.getEntity();
+		item3.setSolicitacaoEpi(solicitacaoEpi3);
+		item3.setQtdSolicitado(3);
+		solicitacaoEpiItemDao.save(item3);
+		
+		
+
+//		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+//		entrega.setSolicitacaoEpiItem(item);
+//		entrega.setDataEntrega(dataIni);
+//		entrega.setQtdEntregue(3);
+//		solicitacaoEpiItemEntregaDao.save(entrega);
+		
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS).size());
+		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO).size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO).size());
 	}
 	
 	public void testFindEpisWithItens() 
@@ -547,7 +589,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		item3.setQtdSolicitado(3);
 		solicitacaoEpiItemDao.save(item3);
 		
-		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A', null, null);
+		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), dataIni, dataFim, 'A', null, null, SituacaoColaborador.TODOS);
 		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
 		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
 		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		

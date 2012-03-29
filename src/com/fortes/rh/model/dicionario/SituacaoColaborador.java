@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 
 public class SituacaoColaborador extends LinkedHashMap
 {
-	private static final String TODOS = "T";
-	private static final String DESLIGADO = "D";
-	private static final String ATIVO = "A";
+	public static final String TODOS = "T";
+	public static final String DESLIGADO = "D";
+	public static final String ATIVO = "A";
 
 	@SuppressWarnings("unchecked")
 	public SituacaoColaborador()
