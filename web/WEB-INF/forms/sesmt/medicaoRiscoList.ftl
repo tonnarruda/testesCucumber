@@ -7,7 +7,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Medição dos Riscos nos Ambientes</title>
+	<title>Medição dos Riscos</title>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	

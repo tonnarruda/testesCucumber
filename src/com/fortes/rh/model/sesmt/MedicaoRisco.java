@@ -27,12 +27,14 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 	
 	@ManyToOne
 	private Ambiente ambiente;
+
+	@ManyToOne
+	private Funcao funcao;
     
 	@OneToMany(mappedBy="medicaoRisco", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos;
 	
-	public MedicaoRisco() {
-	}
+	public MedicaoRisco() {}
 
 	public MedicaoRisco(Long id, RiscoMedicaoRisco rmr, boolean epcEficaz, Date data) 
 	{
@@ -95,5 +97,13 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 	public void setRiscoMedicaoRiscos(
 			Collection<RiscoMedicaoRisco> riscoMedicaoRiscos) {
 		this.riscoMedicaoRiscos = riscoMedicaoRiscos;
+	}
+
+	public Funcao getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(Funcao funcao) {
+		this.funcao = funcao;
 	}
 }

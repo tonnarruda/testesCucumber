@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -47,6 +48,25 @@ public class FuncaoDWRTest extends MockObjectTestCase
 
 		Map retorno = funcaoDWR.getFuncaoByFaixaSalarial(faixaSalarial.getId());
 
+		assertEquals(2, retorno.size());
+	}
+	
+	public void testGetByCargo()
+	{
+		Cargo cargo = CargoFactory.getEntity(1L);
+		
+		Funcao funcao = FuncaoFactory.getEntity(1L);
+		funcao.setCargo(cargo);
+
+		Funcao funcao2 = FuncaoFactory.getEntity(1L);
+		funcao2.setCargo(cargo);
+		
+		Collection<Funcao> funcaos = Arrays.asList(funcao, funcao2);
+		
+		funcaoManager.expects(once()).method("findByCargo").with(eq(cargo.getId())).will(returnValue(funcaos));
+		
+		Map<Long, String> retorno = funcaoDWR.getByCargo(cargo.getId());
+		
 		assertEquals(2, retorno.size());
 	}
 }

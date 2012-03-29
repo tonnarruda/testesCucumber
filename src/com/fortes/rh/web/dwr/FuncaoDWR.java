@@ -8,7 +8,6 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.CollectionUtil;
 
-@SuppressWarnings("unchecked")
 public class FuncaoDWR
 {
 	private FuncaoManager funcaoManager;
@@ -32,6 +31,19 @@ public class FuncaoDWR
 		funcaoLista.addAll(funcaos);
 
 		return  new CollectionUtil<Funcao>().convertCollectionToMap(funcaoLista,"getId","getNome");
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getByCargo(Long cargoId)
+	{
+		Collection<Funcao> funcaos = new ArrayList<Funcao>();
+		
+		if(cargoId != 0)
+		{
+			funcaos = funcaoManager.findByCargo(cargoId);
+		}
+		
+		return new CollectionUtil<Funcao>().convertCollectionToMap(funcaos,"getId","getNome");
 	}
 
 	public void setFuncaoManager(FuncaoManager funcaoManager)

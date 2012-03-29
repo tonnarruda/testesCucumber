@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
+import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
@@ -22,13 +27,18 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	
 	private MedicaoRiscoManager medicaoRiscoManager;
 	private AmbienteManager ambienteManager;
+	private FuncaoManager funcaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private CargoManager cargoManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
+	private RiscoFuncaoManager riscoFuncaoManager;
 	
 	private Ambiente ambiente;
+	private Funcao funcao;
 	private MedicaoRisco medicaoRisco;
 	private Risco risco;
 	private Estabelecimento estabelecimento;
+	private Cargo cargo;
 	
 	private Date data;
 	
@@ -43,15 +53,21 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private boolean desabilitarGravar = true;
 	
 	private Collection<Ambiente> ambientes;
+	private Collection<Funcao> funcoes;
 	private Collection<MedicaoRisco> medicaoRiscos;
 	private Collection<Estabelecimento> estabelecimentos;
+	private Collection<Cargo> cargos;
 	private Collection<Risco> riscos;
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 
 	private void prepare() throws Exception
 	{
 		tecnicasUtilizadas = medicaoRiscoManager.getTecnicasUtilizadas(getEmpresaSistema().getId());
-		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		
+		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+			estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+			cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), null, null, null);
 		
 		if (getMedicaoRisco().getId() != null)
 		{
@@ -72,8 +88,17 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		
 		desabilitarGravar = false;
 		
-		ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
-		riscos = riscoAmbienteManager.findRiscosByAmbienteData(ambiente.getId(), data);
+		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		{
+			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
+			riscos = riscoAmbienteManager.findRiscosByAmbienteData(ambiente.getId(), data);
+		} 
+		else  if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		{
+			funcoes = funcaoManager.findByCargo(cargo.getId());
+			riscos = riscoFuncaoManager.findRiscosByFuncaoData(funcao.getId(), data);
+		}
+			
 		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
 		return SUCCESS;
 	}
@@ -286,5 +311,41 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 
 	public void setDesabilitarGravar(boolean desabilitarGravar) {
 		this.desabilitarGravar = desabilitarGravar;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	public Collection<Funcao> getFuncoes() {
+		return funcoes;
+	}
+
+	public Funcao getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(Funcao funcao) {
+		this.funcao = funcao;
+	}
+
+	public Collection<Cargo> getCargos() {
+		return cargos;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
+	}
+
+	public void setFuncaoManager(FuncaoManager funcaoManager) {
+		this.funcaoManager = funcaoManager;
+	}
+
+	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
+		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 }

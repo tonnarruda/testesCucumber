@@ -91,21 +91,21 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 			return StringUtil.converteCollectionToStringComAspas(tecnicasUtilizadas);
 	}
 
-	public Collection<RiscoMedicaoRisco> preparaRiscosDaMedicao(MedicaoRisco medicaoRisco, Collection<Risco> riscosDoAmbiente) 
+	public Collection<RiscoMedicaoRisco> preparaRiscosDaMedicao(MedicaoRisco medicaoRisco, Collection<Risco> riscos) 
 	{
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 		
-		if (medicaoRisco.getRiscoMedicaoRiscos() != null && riscosDoAmbiente != null)
+		if (medicaoRisco.getRiscoMedicaoRiscos() != null && riscos != null)
 		{
 			// Popula apenas com as medições de riscos que estão atualmente no Ambiente 
 			for (RiscoMedicaoRisco riscoMedicao : medicaoRisco.getRiscoMedicaoRiscos())
 			{
-				if (riscosDoAmbiente.contains(riscoMedicao.getRisco()))
+				if (riscos.contains(riscoMedicao.getRisco()))
 					riscoMedicaoRiscos.add(riscoMedicao);
 			}
 		}
 		
-		for (Risco risco : riscosDoAmbiente)
+		for (Risco risco : riscos)
 		{
 			boolean riscoExiste = false;
 			
