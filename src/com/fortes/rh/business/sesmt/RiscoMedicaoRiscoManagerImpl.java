@@ -26,6 +26,11 @@ public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedica
 	{
 		return getDao().findMedicoesDeRiscosDoAmbiente(ambienteId, data);
 	}
+	
+	public Collection<RiscoMedicaoRisco> findMedicoesDeRiscosDaFuncao(Long funcaoId, Date data) 
+	{
+		return getDao().findMedicoesDeRiscosDaFuncao(funcaoId, data);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<RiscoMedicaoRisco> getByRiscoPeriodo(Long riscoId, Long ambienteId, Date dataAmbienteIni, Date dataAmbienteFim) 

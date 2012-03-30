@@ -72,4 +72,22 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 		criteria.setMaxResults(1);
 		return (MedicaoRisco)criteria.uniqueResult();
 	}
+
+	public Collection<RiscoMedicaoRisco> findMedicoesDeRiscosDaFuncao(Long funcaoId, Date data) {
+		
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data) ");
+		hql.append("from RiscoMedicaoRisco rm ");
+		hql.append("	join rm.risco r ");
+		hql.append("	join rm.medicaoRisco m ");
+		hql.append("where m.funcao.id = :funcaoId ");
+		hql.append("	and m.data = ( select max(m2.data) from MedicaoRisco m2 where m2.data <= :data and m2.funcao.id = m.funcao.id) ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("data", data);
+		query.setLong("funcaoId", funcaoId);
+		
+		return query.list();
+	}
 }

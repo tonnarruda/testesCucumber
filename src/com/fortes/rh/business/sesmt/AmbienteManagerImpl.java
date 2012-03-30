@@ -141,7 +141,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		ppraLtcatRelatorio.formataFuncoes(Arrays.asList(funcao));
 
 		//TODO Samuel falta implementar por funcao
-		Collection<RiscoMedicaoRisco> riscosDoAmbiente = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
+		Collection<RiscoMedicaoRisco> riscosDoAmbiente = riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(funcao.getId(), data);
 		
 		ppraLtcatRelatorio.formataRiscosPpra(riscosDoAmbiente);
 		ppraLtcatRelatorio.formataRiscosLtcat(riscosDoAmbiente);

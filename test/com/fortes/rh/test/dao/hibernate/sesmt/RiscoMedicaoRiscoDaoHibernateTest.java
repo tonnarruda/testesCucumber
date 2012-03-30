@@ -4,11 +4,13 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
+import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
@@ -25,6 +27,7 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 	private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
 	private MedicaoRiscoDao medicaoRiscoDao;
 	private AmbienteDao ambienteDao;
+	private FuncaoDao funcaoDao;
 	private RiscoAmbienteDao riscoAmbienteDao;
 
 	@Override
@@ -111,6 +114,32 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		assertEquals(2, riscoMedicaoRiscoDao.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), new Date()).size());
 	}
 	
+	public void testFindMedicoesDeRiscosDaFuncao()
+	{
+		Funcao funcao = new Funcao();
+		funcaoDao.save(funcao);
+		
+		Risco risco = RiscoFactory.getEntity(1L);
+		riscoDao.save(risco);
+		
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
+		medicaoRisco.setData(new Date());
+		medicaoRisco.setFuncao(funcao);
+		medicaoRiscoDao.save(medicaoRisco);
+		
+		RiscoMedicaoRisco riscoMedicaoRisco = RiscoMedicaoRiscoFactory.getEntity(1L);
+		riscoMedicaoRisco.setRisco(risco);
+		riscoMedicaoRisco.setMedicaoRisco(medicaoRisco);
+		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
+		
+		RiscoMedicaoRisco riscoMedicaoRisco2 = RiscoMedicaoRiscoFactory.getEntity(2L);
+		riscoMedicaoRisco2.setRisco(risco);
+		riscoMedicaoRisco2.setMedicaoRisco(medicaoRisco);
+		riscoMedicaoRiscoDao.save(riscoMedicaoRisco2);
+		
+		assertEquals(2, riscoMedicaoRiscoDao.findMedicoesDeRiscosDaFuncao(funcao.getId(), new Date()).size());
+	}
+	
 	private void saveDadosMedicao() 
 	{
 		Ambiente ambiente = AmbienteFactory.getEntity();
@@ -185,5 +214,9 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 
 	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
 		this.riscoAmbienteDao = riscoAmbienteDao;
+	}
+
+	public void setFuncaoDao(FuncaoDao funcaoDao) {
+		this.funcaoDao = funcaoDao;
 	}
 }
