@@ -22,6 +22,7 @@ import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<ColaboradorOcorrencia> implements ColaboradorOcorrenciaDao
@@ -198,7 +199,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
 	{
-		String diasDoPeriodo = "select cast('" + dataIni + "' as date) + serie as dia from generate_series(0, cast('" + dataFim + "' as date) - cast('" + dataIni + "' as date)) as serie ";
+		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(hc.id) as total from ");
