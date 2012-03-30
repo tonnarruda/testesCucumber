@@ -358,21 +358,6 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		Collection<Absenteismo> absenteismo = colaboradorOcorrenciaDao.countFaltasByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), Arrays.asList(EmpresaFactory.getEmpresa(1L).getId()), estabelecimentoIds, areasIds, null);
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
-	
-	public void testMontaDiasDoPeriodo()
-	{
-		assertEquals("select cast('2011-02-27' as date) as dia union " +
-				"select cast('2011-02-28' as date) as dia union " +
-				"select cast('2011-03-01' as date) as dia union " +
-				"select cast('2011-03-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("27/02/2011"), DateUtil.montaDataByString("02/03/2011")));
-		
-		assertEquals("select cast('2011-03-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("02/03/2011"), DateUtil.montaDataByString("02/03/2011")));
-
-		assertEquals("select cast('2011-12-30' as date) as dia union " +
-				"select cast('2011-12-31' as date) as dia union " +
-				"select cast('2012-01-01' as date) as dia union " +
-				"select cast('2012-01-02' as date) as dia ", colaboradorOcorrenciaDao.montaDiasDoPeriodo(DateUtil.montaDataByString("30/12/2011"), DateUtil.montaDataByString("02/01/2012")));
-	}
 
 	public GenericDao<ColaboradorOcorrencia> getGenericDao()
 	{
