@@ -26,7 +26,7 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 	@Temporal(TemporalType.DATE)
     private Date data;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Ambiente ambiente;
 
 	@ManyToOne
@@ -95,8 +95,22 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 		if (funcao == null)
 			funcao = new Funcao();
 		
-		this.funcao.setCargo(new Cargo());
+		if(funcao.getCargo() == null)
+			this.funcao.setCargo(new Cargo());
+		
 		this.funcao.getCargo().setNome(cargoNome);
+	}
+	
+	
+	public void setProjectionCargoId(Long cargoId)
+	{
+		if (funcao == null)
+			funcao = new Funcao();
+		
+		if(funcao.getCargo() == null)
+			this.funcao.setCargo(new Cargo());
+		
+		this.funcao.getCargo().setId(cargoId);
 	}
 	
 	public Date getData() {

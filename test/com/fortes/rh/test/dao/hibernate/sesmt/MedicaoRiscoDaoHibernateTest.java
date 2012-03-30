@@ -18,6 +18,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -25,6 +26,8 @@ import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 
 public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<MedicaoRisco>
 {
@@ -118,6 +121,56 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		
 		assertEquals(1, medicaoRiscoDao.findTecnicasUtilizadasDistinct(empresa.getId()).size());
 	}
+	
+	public void testGetFuncaoByMedicaoRisco() 
+	{
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Cargo");
+		cargoDao.save(cargo);
+		
+		funcao = new Funcao();
+		funcao.setCargo(cargo);
+		funcaoDao.save(funcao);
+		
+		medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setFuncao(funcao);
+		medicaoRiscoDao.save(medicaoRisco);
+		
+		assertEquals(medicaoRisco.getFuncao().getCargo().getId(), ((MedicaoRisco) medicaoRiscoDao.getFuncaoByMedicaoRisco(medicaoRisco.getId())).getFuncao().getCargo().getId());
+	}
+	
+	public void testFindRiscoMedicaoRiscos() 
+	{
+		Risco risco = RiscoFactory.getEntity();
+		riscoDao.save(risco);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Cargo");
+		cargoDao.save(cargo);
+		
+		funcao = new Funcao();
+		funcao.setCargo(cargo);
+		funcaoDao.save(funcao);
+		
+		medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setFuncao(funcao);
+		medicaoRiscoDao.save(medicaoRisco);
+		
+		
+		RiscoMedicaoRisco riscoMedicaoRisco = new RiscoMedicaoRisco();
+		riscoMedicaoRisco.setRisco(risco);
+		riscoMedicaoRisco.setMedicaoRisco(medicaoRisco);
+		riscoMedicaoRisco.setTecnicaUtilizada("Técnica 1");
+		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
+
+		RiscoMedicaoRisco riscoMedicaoRisco2 = new RiscoMedicaoRisco();
+		riscoMedicaoRisco2.setRisco(risco);
+		riscoMedicaoRisco2.setMedicaoRisco(medicaoRisco);
+		riscoMedicaoRisco2.setTecnicaUtilizada("Técnica 2");
+		riscoMedicaoRiscoDao.save(riscoMedicaoRisco2);
+		
+		assertEquals(2, medicaoRiscoDao.findRiscoMedicaoRiscos(medicaoRisco.getId()).size());
+	}
 
 	private void saveDadosMedicao() {
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
@@ -158,6 +211,8 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		riscoMedicaoRisco.setTecnicaUtilizada("Técnica 1");
 		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
 	}
+	
+
 	
 	public void setAmbienteDao(AmbienteDao ambienteDao) {
 		this.ambienteDao = ambienteDao;

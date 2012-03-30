@@ -150,4 +150,15 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 		MedicaoRisco medicaoRisco = findById(id);
 		getDao().remove(medicaoRisco);
 	}
+
+	public MedicaoRisco getFuncaoByMedicaoRisco(Long medicaoRiscoId) 
+	{
+		return getDao().getFuncaoByMedicaoRisco(medicaoRiscoId);
+	}
+	
+	public Collection<RiscoMedicaoRisco> findRiscoMedicaoRiscos(Long medicaoRiscoId) 
+	{
+		return getDao().findRiscoMedicaoRiscos(medicaoRiscoId);
+	}
+
 }

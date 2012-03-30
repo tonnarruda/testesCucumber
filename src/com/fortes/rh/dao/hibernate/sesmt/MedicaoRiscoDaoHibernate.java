@@ -1,8 +1,10 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -11,6 +13,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 
@@ -96,5 +99,43 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 		criteria.add(Expression.eq("ambiente.empresa.id", empresaId));
 		
 		return criteria.list();
+	}
+
+	public MedicaoRisco getFuncaoByMedicaoRisco(Long medicaoRiscoId) 
+	{
+		Criteria criteria = getSession().createCriteria(MedicaoRisco.class, "mr");
+		criteria.createCriteria("mr.funcao", "f");
+		criteria.createCriteria("f.cargo", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("mr.id"), "id");
+		p.add(Projections.property("mr.data"), "data");
+		p.add(Projections.property("f.id"), "projectionFuncaoId");
+		p.add(Projections.property("f.nome"), "projectionFuncaoNome");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("mr.id", medicaoRiscoId));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (MedicaoRisco) criteria.uniqueResult();
+	}
+
+	public Collection<RiscoMedicaoRisco> findRiscoMedicaoRiscos(Long medicaoRiscoId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new RiscoMedicaoRisco(r.id, r.descricao, rmr.intensidadeMedida, rmr.tecnicaUtilizada, rmr.descricaoPpra, rmr.descricaoLtcat ) "); 
+		hql.append("from RiscoMedicaoRisco as rmr ");
+		hql.append("left join rmr.risco as r "); 
+		hql.append("left join rmr.medicaoRisco as mr "); 
+		hql.append("left join mr.funcao as f "); 
+		hql.append("where mr.id = :medicaoRiscoId "); 
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("medicaoRiscoId", medicaoRiscoId);
+
+		return query.list();
 	}
 }

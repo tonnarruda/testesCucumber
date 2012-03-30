@@ -88,6 +88,20 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 		this.medicaoRisco.setData(medicaoData);
 		this.medicaoRisco.setAmbiente(ambiente);
 	}
+
+	public RiscoMedicaoRisco(Long riscoId, String riscoDescricao, String intensidadeMedida , String tecnicaUtilizada, String descricaoPpra, String descricaoLtcat ) 
+	{
+		if (risco == null)
+			risco = new Risco();
+		
+		risco.setId(riscoId);
+		risco.setDescricao(riscoDescricao);
+		
+		this.intensidadeMedida = intensidadeMedida;
+		this.tecnicaUtilizada = tecnicaUtilizada;
+		this.descricaoPpra = descricaoPpra;
+		this.descricaoLtcat = descricaoLtcat;
+	}
 	
 	public String getDescricaoPpra() {
 		return descricaoPpra;

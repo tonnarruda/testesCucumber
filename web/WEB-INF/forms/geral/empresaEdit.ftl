@@ -154,9 +154,6 @@
 		
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
-		<@ww.select label="Controlar risco por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" />
-		<@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
-		<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o colaborador" name="empresa.obrigarAmbienteFuncaoColaborador" id="obrigarAmbienteFuncaoColaborador" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
 		<li>
@@ -170,6 +167,20 @@
 		
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
+		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				SESMT
+				<br><br>
+				<ul>
+					<@ww.select label="Controlar risco por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 442px;"/>
+					<br><@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
+					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o colaborador" name="empresa.obrigarAmbienteFuncaoColaborador" id="obrigarAmbienteFuncaoColaborador" labelPosition="right" /><br>
+				</ul>
+			</@ww.div>
+		</li>
+
 		<li>&nbsp;</li>
 
 		<li>
