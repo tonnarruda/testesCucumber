@@ -113,6 +113,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private boolean exibeFiltro;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Long empresaId;
+	private String nomeBusca = "";
 	private Collection<Empresa> empresas;
 	
 	//relatório de Colaboradores x Certificações
@@ -143,7 +144,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
 		
 		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId));
-		colaboradorTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), empresaId, getPage(), getPagingSize());
+		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, getPage(), getPagingSize());
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
@@ -792,5 +793,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
+	}
+
+	public String getNomeBusca() {
+		return nomeBusca;
+	}
+
+	public void setNomeBusca(String nomeBusca) {
+		this.nomeBusca = nomeBusca;
 	}
 }

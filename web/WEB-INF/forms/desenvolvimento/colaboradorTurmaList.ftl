@@ -81,6 +81,7 @@
 		<#if compartilharColaboradores>
 			<#include "../util/topFiltro.ftl" />
 	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>
+	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 350px;"/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	    	<#include "../util/bottomFiltro.ftl" />
 	    	<br>

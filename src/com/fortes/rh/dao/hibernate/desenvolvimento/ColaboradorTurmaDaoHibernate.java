@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -223,7 +224,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Integer page, Integer pagingSize)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, pt.id, co.id, co.nome, co.nomeComercial, co.matricula, ao.id, ao.nome, ct.aprovado, e, fs.nome, c.nome, emp.id, emp.nome, emp.razaoSocial, emp.cnpj) ");
@@ -242,6 +243,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if(empresaId != null)
 			hql.append("	and emp.id = :empresaId ");
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			hql.append("	and lower(co.nome) like :nome ");
+
 		
 		hql.append("	and hc.data = ( ");
 		hql.append("		select max(hc2.data) " );
@@ -264,6 +269,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 
