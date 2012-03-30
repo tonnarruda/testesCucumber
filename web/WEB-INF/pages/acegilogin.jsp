@@ -28,7 +28,7 @@
 	</script>
 </head>
 <body>
-<form name="form" action="<ww:url value='j_acegi_security_check'/>" onsubmit="return validaCampos();" method="POST">
+<form name="form" action="<ww:url value='j_acegi_security_check'/>" onsubmit="validaCampos();" method="POST">
 	<br><br><br>
 	<% if("1".equals(request.getParameter("login_error"))) { %>
 	<table width="344px" align="center">

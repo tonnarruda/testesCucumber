@@ -58,7 +58,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	public void testList() throws Exception
 	{
 		ambienteManager.expects(once()).method("findAmbientes");
-		manager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<MedicaoRisco>()));
+		manager.expects(once()).method("findAllSelectByAmbiente").will(returnValue(new ArrayList<MedicaoRisco>()));
 		
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getMedicaoRiscos());
@@ -166,6 +166,8 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 
 	public void testGetSet() throws Exception
 	{
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		
 		action.setMedicaoRisco(null);
 
 		assertNotNull(action.getMedicaoRisco());

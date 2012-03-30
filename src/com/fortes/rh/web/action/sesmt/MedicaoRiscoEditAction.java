@@ -199,6 +199,9 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	
 	public MedicaoRisco getMedicaoRisco()
 	{
+		if(medicaoRisco == null)
+			medicaoRisco = new MedicaoRisco();
+		
 		return medicaoRisco;
 	}
 

@@ -46,7 +46,7 @@ public class MedicaoRiscoManagerTest extends MockObjectTestCase
 		
 		Collection<MedicaoRisco> medicaoRiscos = MedicaoRiscoFactory.getCollection(1L);
 
-		medicaoRiscoDao.expects(once()).method("findAllSelect").with(eq(empresaId),eq(ambienteId)).will(returnValue(medicaoRiscos));
+		medicaoRiscoDao.expects(once()).method("findAllSelectByAmbiente").with(eq(empresaId),eq(ambienteId)).will(returnValue(medicaoRiscos));
 		assertEquals(medicaoRiscos, medicaoRiscoManager.findAllSelectByAmbiente(empresaId, ambienteId));
 	}
 	

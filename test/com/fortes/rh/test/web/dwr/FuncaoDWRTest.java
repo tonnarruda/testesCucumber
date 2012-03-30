@@ -58,7 +58,7 @@ public class FuncaoDWRTest extends MockObjectTestCase
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		funcao.setCargo(cargo);
 
-		Funcao funcao2 = FuncaoFactory.getEntity(1L);
+		Funcao funcao2 = FuncaoFactory.getEntity(2L);
 		funcao2.setCargo(cargo);
 		
 		Collection<Funcao> funcaos = Arrays.asList(funcao, funcao2);
