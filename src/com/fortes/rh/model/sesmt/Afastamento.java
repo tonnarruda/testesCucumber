@@ -19,6 +19,7 @@ public class Afastamento extends AbstractModel implements Serializable
 	private String descricao;
 
 	private boolean inss;
+	private boolean absenteismo;
 	
 	@Transient
 	private int qtd;
@@ -52,5 +53,13 @@ public class Afastamento extends AbstractModel implements Serializable
 
 	public void setQtd(int qtd) {
 		this.qtd = qtd;
+	}
+
+	public boolean isAbsenteismo() {
+		return absenteismo;
+	}
+
+	public void setAbsenteismo(boolean absenteismo) {
+		this.absenteismo = absenteismo;
 	}
 }

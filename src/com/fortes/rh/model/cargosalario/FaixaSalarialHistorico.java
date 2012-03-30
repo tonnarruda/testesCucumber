@@ -236,10 +236,14 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
     @NaoAudita
     public String getDescricaoIndice()
     {
-    	String nomeDoIndice = this.getNomeDoIndice();
-		Double valorDoIndice = getValorDoIndice();
-		
-		return this.quantidade + "x " + nomeDoIndice + " (" + MathUtil.formataValor(valorDoIndice) + ")";
+    	if(this.tipo == TipoAplicacaoIndice.INDICE) {
+    		String nomeDoIndice = this.getNomeDoIndice();
+    		Double valorDoIndice = getValorDoIndice();
+
+    		return this.quantidade + "x " + nomeDoIndice + " (" + MathUtil.formataValor(valorDoIndice) + ")";
+    	}
+    	else
+    		return "";
     }
     @NaoAudita
 	private Double getValorDoIndice() {

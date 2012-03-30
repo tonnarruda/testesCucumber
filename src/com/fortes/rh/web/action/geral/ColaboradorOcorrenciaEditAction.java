@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ProvidenciaManager;
+import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.AbsenteismoCollection;
+import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
@@ -39,6 +41,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private ColaboradorManager colaboradorManager;
 	private OcorrenciaManager ocorrenciaManager;
+	private AfastamentoManager afastamentoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -58,9 +61,11 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private String[] areasCheck;
 	private String[] estabelecimentosCheck;
 	private String[] ocorrenciasCheck;
+	private String[] afastamentosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> ocorrenciasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> afastamentosCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<AbsenteismoCollection> dataSource = new ArrayList<AbsenteismoCollection>();
@@ -225,6 +230,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		
 		Collection<Ocorrencia> ocorrencia = ocorrenciaManager.findOcorrenciasComAbseteismo(getEmpresaSistema().getId());
 		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencia, "getId", "getDescricao");		
+		
+		Collection<Afastamento> afastamentos = afastamentoManager.findToList(new String[]{"id", "descricao"}, new String[]{"id", "descricao"}, new String[]{"absenteismo"}, new Object[]{Boolean.TRUE});
+		afastamentosCheckList = CheckListBoxUtil.populaCheckListBox(afastamentos, "getId", "getDescricao");		
 
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -394,5 +402,17 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<Providencia> getProvidencias() {
 		return providencias;
+	}
+
+	public void setAfastamentoManager(AfastamentoManager afastamentoManager) {
+		this.afastamentoManager = afastamentoManager;
+	}
+
+	public void setAfastamentosCheck(String[] afastamentosCheck) {
+		this.afastamentosCheck = afastamentosCheck;
+	}
+
+	public Collection<CheckBox> getAfastamentosCheckList() {
+		return afastamentosCheckList;
 	}
 }

@@ -1,0 +1,1 @@
+alter table afastamento add column absenteismo boolean default false;--.go

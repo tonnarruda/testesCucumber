@@ -16,6 +16,7 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.textfield label="Descrição" name="afastamento.descricao" id="descricao" cssClass="inputNome" maxLength="100" required="true"/>
 			<@ww.checkbox label="" name="afastamento.inss" theme="simple"/>Afastamento pelo INSS
+			<@ww.checkbox label="Considerar como absenteísmo" name="afastamento.absenteismo"  labelPosition="left"/>
 			<@ww.hidden name="afastamento.id" />
 			<@ww.token/>
 		</@ww.form>
