@@ -8,6 +8,7 @@ import com.fortes.rh.model.sesmt.MedicaoRisco;
 public interface MedicaoRiscoDao extends GenericDao<MedicaoRisco> 
 {
 	MedicaoRisco findByIdProjection(Long id); 
-	Collection<MedicaoRisco> findAllSelect(Long empresaId, Long ambienteId);
+	Collection<MedicaoRisco> findAllSelectByAmbiente(Long empresaId, Long ambienteId);
+	Collection<MedicaoRisco> findAllSelectByFuncao(Long empresaId, Long funcaoId);
 	Collection<String> findTecnicasUtilizadasDistinct(Long empresaId);
 }

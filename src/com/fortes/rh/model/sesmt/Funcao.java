@@ -22,11 +22,15 @@ public class Funcao extends AbstractModel implements Serializable
 {
 	@Column(length=100)
     private String nome;
+	
     @ManyToOne
     private Cargo cargo;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="funcao")
 	private Collection<HistoricoFuncao> historicoFuncaos;
+	
+	@OneToMany(mappedBy="funcao")
+	private Collection<MedicaoRisco> medicaoRiscos;
 	
 	@Transient
 	private HistoricoFuncao historicoAtual;
@@ -98,6 +102,14 @@ public class Funcao extends AbstractModel implements Serializable
 
 	public void setHistoricoAtual(HistoricoFuncao historicoAtual) {
 		this.historicoAtual = historicoAtual;
+	}
+
+	public Collection<MedicaoRisco> getMedicaoRiscos() {
+		return medicaoRiscos;
+	}
+
+	public void setMedicaoRiscos(Collection<MedicaoRisco> medicaoRiscos) {
+		this.medicaoRiscos = medicaoRiscos;
 	}
 
 }

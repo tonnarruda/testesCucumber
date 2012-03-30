@@ -27,13 +27,22 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 		return getDao().findByIdProjection(id);
 	}	
 	
-	public Collection<MedicaoRisco> findAllSelect(Long empresaId, Long ambienteId) 
+	public Collection<MedicaoRisco> findAllSelectByAmbiente(Long empresaId, Long ambienteId) 
 	{
 		if (ambienteId != null && ambienteId.equals(-1L))
 			ambienteId = null;
 		
-		return getDao().findAllSelect(empresaId, ambienteId);
+		return getDao().findAllSelectByAmbiente(empresaId, ambienteId);
 	}
+	
+	public Collection<MedicaoRisco> findAllSelectByFuncao(Long empresaId, Long funcaoId) 
+	{
+		if (funcaoId != null && funcaoId.equals(-1L))
+			funcaoId = null;
+		
+		return getDao().findAllSelectByFuncao(empresaId, funcaoId);
+	}
+
 
 	public void save(MedicaoRisco medicaoRisco, String[] riscoIds, String[] ltcatValues, String[] ppraValues, String[] tecnicaValues, String[] intensidadeValues) throws Exception 
 	{
@@ -141,5 +150,4 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 		MedicaoRisco medicaoRisco = findById(id);
 		getDao().remove(medicaoRisco);
 	}
-
 }
