@@ -256,7 +256,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		try 
 		{
 			AbsenteismoCollection absenteismoCollection = new AbsenteismoCollection();
-			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(getEmpresaSistema().getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck)));
+			absenteismoCollection.setAbsenteismos(colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(getEmpresaSistema().getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(ocorrenciasCheck), LongUtil.arrayStringToCollectionLong(afastamentosCheck)));
 			dataSource = Arrays.asList(absenteismoCollection);
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
@@ -414,5 +414,9 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAfastamentosCheckList() {
 		return afastamentosCheckList;
+	}
+
+	public String[] getAfastamentosCheck() {
+		return afastamentosCheck;
 	}
 }

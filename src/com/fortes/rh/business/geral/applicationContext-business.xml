@@ -478,6 +478,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="colaboradorAfastamentoManager">
+      <ref bean="colaboradorAfastamentoManager" />
+    </property>
     <property name="ocorrenciaManager">
       <ref bean="ocorrenciaManager" />
     </property>

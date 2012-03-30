@@ -17,6 +17,7 @@ import com.fortes.rh.model.dicionario.OpcaoImportacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
@@ -281,5 +282,10 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		}
 		
 		return colaboradorAfastamentos;
+	}
+
+	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> afastamentosIds) 
+	{
+		return getDao().countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, afastamentosIds);
 	}
 }

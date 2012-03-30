@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
@@ -21,15 +22,14 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
-import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
+	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
 
@@ -38,7 +38,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().findByColaborador(id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorOcorrencia> filtrar(Long[] ocorrenciaCheckLong, Long[] colaboradorCheckLong, Long[] estabelecimentoCheckLong, Map parametros)
 	{
 		Collection<ColaboradorOcorrencia> colaboradorOcorrenciasDefinitivo = new ArrayList<ColaboradorOcorrencia>();
@@ -224,21 +223,31 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
 	}
 
-	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasId) throws Exception 
+	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds, Collection<Long> afastamentosIds) throws Exception 
 	{
-		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, ocorrenciasId);
-		if (absenteismos == null || absenteismos.isEmpty())
-			throw new ColecaoVaziaException();
+		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, ocorrenciasIds);
+		Collection<Absenteismo> afastamentos = colaboradorAfastamentoManager.countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, afastamentosIds);
 		
 		for (Absenteismo absenteismo : absenteismos) 
 		{
-			Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
-			absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaIds, estabelecimentosIds, areasIds, null, ocorrenciasId, true, null, true));
-			absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
-
-			if(!absenteismo.getQtdTotalFaltas().equals(0))
-				absenteismo.setAbsenteismo( new Double(absenteismo.getQtdTotalFaltas()) / (absenteismo.getQtdAtivos() * absenteismo.getQtdDiasTrabalhados()));
+			for (Absenteismo afastamento : afastamentos) 
+			{
+				if (absenteismo.getAno().equals(afastamento.getAno()) && absenteismo.getMes().equals(afastamento.getMes()))
+				{
+					Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
+					absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaIds, estabelecimentosIds, areasIds, null, ocorrenciasIds, true, null, true));
+					absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes));
+		
+					absenteismo.setQtdTotalFaltas(absenteismo.getQtdTotalFaltas() + afastamento.getQtdTotalFaltas());
+					
+					if(!absenteismo.getQtdTotalFaltas().equals(0))
+						absenteismo.setAbsenteismo( new Double(absenteismo.getQtdTotalFaltas()) / (absenteismo.getQtdAtivos() * absenteismo.getQtdDiasTrabalhados()));
+				}
+			}
 		}
+
+		if (absenteismos.isEmpty())
+			throw new ColecaoVaziaException();
 		
 		return absenteismos;
 	}
@@ -268,11 +277,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
 
 		try {
-			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, null, areasIds, null);
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, null, areasIds, null, null);
 			
 			for (Absenteismo absenteismo : absenteismos) 
 			{
-				Date ultimoDiaMes = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(absenteismo.getMes() + "/" + absenteismo.getAno()));
+				Date ultimoDiaMes = DateUtil.getInicioMesData(DateUtil.criarDataMesAno(absenteismo.getMes() + "/" + absenteismo.getAno()));
 				graficoEvolucaoAbsenteismo.add(new Object[]{ultimoDiaMes.getTime(), absenteismo.getAbsenteismo()});	
 			}
 		} catch (Exception e) 
@@ -294,5 +303,9 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento)
 	{
 		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento);
+	}
+
+	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
+		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
 	}
 }

@@ -2,8 +2,12 @@ package com.fortes.rh.dao.hibernate.sesmt;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -18,8 +22,10 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ColaboradorAfastamentoDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.util.DateUtil;
 
 /**
  * @author Tiago Lopes
@@ -278,5 +284,67 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 			query.setParameterList("motivosIds", motivosIds, Hibernate.LONG);
 		
 		return query.list();
+	}
+	
+	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> afastamentosIds) 
+	{
+		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(a.id) as total from ");
+		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
+		sql.append("left join ColaboradorAfastamento ca on ");
+		sql.append("	((datasDoPeriodo.dia between ca.inicio and ca.fim) or (ca.fim is null and datasDoPeriodo.dia = ca.inicio)) ");
+		if(afastamentosIds != null && !afastamentosIds.isEmpty())
+			sql.append("	and ca.afastamento_id in (:afastamentosIds) ");
+		sql.append("left join Afastamento a on ");
+		sql.append("	a.id = ca.afastamento_id and a.absenteismo = true ");
+		sql.append("left join Colaborador c on c.id = ca.colaborador_id ");
+		
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			sql.append("	and c.empresa_id in (:empresaIds) ");
+		
+		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
+		sql.append("	and hc.status = :status ");
+		
+		if(areasIds != null && !areasIds.isEmpty())
+			sql.append("	and hc.areaorganizacional_id in (:areaIds) ");
+		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			sql.append("	and hc.estabelecimento_id in (:estabelecimentoIds) ");
+		
+		sql.append("	and hc.data = ( ");
+		sql.append("		select max(hc2.data) ");
+		sql.append("		from HistoricoColaborador as hc2 ");
+		sql.append("		where hc2.colaborador_id = c.id ");
+		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		sql.append("	) ");
+		sql.append("group by date_part('year',dia), date_part('month',dia) ");
+		sql.append("order by date_part('year',dia), date_part('month',dia) ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+
+		query.setDate("hoje", new Date());
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(areasIds != null && !areasIds.isEmpty())
+			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
+		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
+		if(afastamentosIds != null && !afastamentosIds.isEmpty())
+			query.setParameterList("afastamentosIds", afastamentosIds, Hibernate.LONG);
+		
+		Collection<Object[]> lista = query.list();
+		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
+
+		DecimalFormat df = new DecimalFormat("00");
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
+		{
+			Object[] array = it.next();
+			absenteismos.add(new Absenteismo(df.format((Double)array[0]), df.format((Double)array[1]), ((BigInteger)array[2]).intValue()));
+		}
+
+		return absenteismos;
 	}
 }
