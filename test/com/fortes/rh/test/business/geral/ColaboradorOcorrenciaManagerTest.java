@@ -14,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManagerImpl;
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
@@ -34,6 +35,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	Mock transactionManager;
 	Mock ocorrenciaManager;
 	Mock colaboradorManager;
+	Mock colaboradorAfastamentoManager;
 	Mock acPessoalClientColaboradorOcorrencia;
 
 	protected void setUp() throws Exception
@@ -50,6 +52,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrenciaManager.setOcorrenciaManager((OcorrenciaManager)ocorrenciaManager.proxy());
 		colaboradorManager = mock(ColaboradorManager.class);
 		colaboradorOcorrenciaManager.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
+		colaboradorAfastamentoManager = mock(ColaboradorAfastamentoManager.class);
+		colaboradorOcorrenciaManager.setColaboradorAfastamentoManager((ColaboradorAfastamentoManager)colaboradorAfastamentoManager.proxy());
 		acPessoalClientColaboradorOcorrencia = mock(AcPessoalClientColaboradorOcorrencia.class);
 		colaboradorOcorrenciaManager.setAcPessoalClientColaboradorOcorrencia((AcPessoalClientColaboradorOcorrencia)acPessoalClientColaboradorOcorrencia.proxy());
 	}
@@ -447,6 +451,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		retornoBD.add(new Absenteismo("2011", "05", 19));
 		
 		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
+		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
@@ -462,17 +467,17 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		Absenteismo absenteismoFev = (Absenteismo) absenteismos.toArray()[1];
 		assertEquals("02", absenteismoFev.getMes());
-		assertEquals(new Integer(2), absenteismoFev.getQtdTotalFaltas());
+		assertEquals(new Integer(4), absenteismoFev.getQtdTotalFaltas());
 		assertEquals(new Integer(10), absenteismoFev.getQtdAtivos());
 		assertEquals(new Integer(20), absenteismoFev.getQtdDiasTrabalhados());
-		assertEquals(0.01, absenteismoFev.getAbsenteismo());
+		assertEquals(0.02, absenteismoFev.getAbsenteismo());
 		
 		Absenteismo absenteismoAbr = (Absenteismo) absenteismos.toArray()[3];
 		assertEquals("04", absenteismoAbr.getMes());
-		assertEquals(new Integer(15), absenteismoAbr.getQtdTotalFaltas());
+		assertEquals(new Integer(30), absenteismoAbr.getQtdTotalFaltas());
 		assertEquals(new Integer(10), absenteismoAbr.getQtdAtivos());
 		assertEquals(new Integer(21), absenteismoAbr.getQtdDiasTrabalhados());
-		assertEquals(0.0714, absenteismoAbr.getAbsenteismo());
+		assertEquals(0.1429, absenteismoAbr.getAbsenteismo());
 	}
 	
 	public void testDeleteOcorrencias()
