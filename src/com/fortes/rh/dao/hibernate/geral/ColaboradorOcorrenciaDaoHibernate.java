@@ -197,22 +197,9 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return exists;
 	}
 
-	public String montaDiasDoPeriodo(Date dataIni, Date dataFim) 
-	{
-		StringBuilder diasDoPeriodo = new StringBuilder();
-		
-		int qtdDias = DateUtil.diferencaEntreDatas(dataIni, dataFim);
-		for (int i = 0; i < qtdDias; i++) 
-			diasDoPeriodo.append("select cast('" + DateUtil.formataAnoMesDia(DateUtil.incrementaDias(dataIni, i)) + "' as date) as dia union ");
-
-		diasDoPeriodo.append("select cast('" + DateUtil.formataAnoMesDia(DateUtil.incrementaDias(dataIni, qtdDias)) + "' as date) as dia ");
-		
-		return diasDoPeriodo.toString();
-	}
-	
 	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
 	{
-		String diasDoPeriodo = montaDiasDoPeriodo(dataIni, dataFim);
+		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(hc.id) as total from ");
@@ -260,7 +247,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
 			query.setParameterList("ocorrenciasIds", ocorrenciasIds, Hibernate.LONG);
 		
-		Collection lista = query.list();
+		Collection<Object[]> lista = query.list();
 		Collection<Absenteismo> absenteismos = new ArrayList<Absenteismo>();
 
 		DecimalFormat df = new DecimalFormat("00");

@@ -30,14 +30,11 @@ public class Absenteismo
 		return mes + "/" + ano;
 	}
 
-	
-
 	public void setMesAnoQtdAtivos(Date dataMesAno, Integer qtdAtivos) 
 	{
 		this.setQtdAtivos(qtdAtivos);
 	}
 
-	
 	public Integer getQtdDiasTrabalhados() 
 	{
 		return qtdDiasTrabalhados;
