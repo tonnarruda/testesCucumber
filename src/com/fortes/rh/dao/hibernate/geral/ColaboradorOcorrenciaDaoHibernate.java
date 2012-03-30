@@ -202,14 +202,14 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(hc.id) as total from ");
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(o.id) as total from ");
 		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
 		sql.append("left join ColaboradorOcorrencia co on ");
 		sql.append("	((datasDoPeriodo.dia between co.dataini and co.datafim) or (co.datafim is null and datasDoPeriodo.dia = co.dataini)) ");
 		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
 			sql.append("	and co.ocorrencia_id in (:ocorrenciasIds) ");
 		sql.append("left join Ocorrencia o on ");
-		sql.append("	o.id = co.ocorrencia_id ");
+		sql.append("	o.id = co.ocorrencia_id and o.absenteismo = true ");
 		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
@@ -229,7 +229,6 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("		where hc2.colaborador_id = c.id ");
 		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
 		sql.append("	) ");
-		sql.append("where o.absenteismo = true or co.id is null ");
 		sql.append("group by date_part('year',dia), date_part('month',dia) ");
 		sql.append("order by date_part('year',dia), date_part('month',dia) ");
 		

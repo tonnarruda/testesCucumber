@@ -452,7 +452,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null);
+		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null);
 		assertEquals(5, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -508,7 +508,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null);
+			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null);
 		}
 		catch (Exception e)
 		{
