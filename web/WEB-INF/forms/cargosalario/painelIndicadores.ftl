@@ -13,6 +13,7 @@
 	
 
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
@@ -28,6 +29,9 @@
 
 		<script type="text/javascript">
 			$(function () {
+				$('#tooltipAbsenteismo').qtip({
+					content: 'São consideradas faltas as Ocorrências cujo o tipo está marcado como Absenteísmo e os Afastamentos cujo o motivo está marcado como Absenteísmo.'
+				});
 			
 				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar");
 				montaPie(${grfFaixaEtarias}, "#faixaEtaria");
@@ -176,7 +180,7 @@
 		<div class="fieldGraph bigger">
 			<h1>Absenteísmo</h1>
 	   		<div id="evolucaoAbsenteismo" style="margin: 25px;height:300px;"></div>
-			<div class="formula">Fórmula: [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+			<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
 			
 			<div style="clear: both"></div>
 			

@@ -2,12 +2,21 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
-<@ww.head/>
+	<@ww.head/>
+	
+	<title>Absenteísmo</title>
+	<#include "../ftl/mascarasImports.ftl" />
+	
+	<#assign validarCampos="return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));"/>
 
-<title>Absenteísmo</title>
-<#include "../ftl/mascarasImports.ftl" />
-
-<#assign validarCampos="return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));"/>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript">
+		$(function () {
+			$('#tooltipAbsenteismo').qtip({
+				content: 'São consideradas faltas as Ocorrências cujo o tipo está marcado como Absenteísmo e os Afastamentos cujo o motivo está marcado como Absenteísmo.'
+			});
+		});
+	</script>
 </head>
 <body>
 	
@@ -17,7 +26,7 @@
 	
 	<@ww.div >
 	O <i>absenteísmo</i> é usado para designar as ausências dos trabalhadores no processo de trabalho, seja por falta ou atraso, devido a algum motivo interveniente.
-	Ele é calculado pela fórmula [Total de faltas do mês / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]
+	Ele é calculado pela fórmula [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]
 	</@ww.div>
 	<br/>
 	
