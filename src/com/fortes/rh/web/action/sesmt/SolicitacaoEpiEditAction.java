@@ -59,18 +59,25 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private void prepare() throws Exception
 	{
 		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
-			solicitacaoEpi = (SolicitacaoEpi) solicitacaoEpiManager.findById(solicitacaoEpi.getId());
-
-		Collection<Epi> epis = epiManager.findAllSelect(getEmpresaSistema().getId());
-
-		listaEpis = new Object[epis.size()][2];
-		int i=0;
-
-		for (Epi epi : epis)
 		{
-			listaEpis[i][0] = epi;
-			listaEpis[i][1] = new SolicitacaoEpiItem();
-			i++;
+			solicitacaoEpi = (SolicitacaoEpi) solicitacaoEpiManager.findById(solicitacaoEpi.getId());
+			colaborador = solicitacaoEpi.getColaborador(); 
+		}
+
+		if (colaborador != null && colaborador.getId() != null)
+		{
+			//Collection<Epi> epis = epiManager.findAllSelect(getEmpresaSistema().getId());
+			Collection<Epi> epis = epiManager.findPriorizandoEpiRelacionado(getEmpresaSistema().getId(), colaborador.getId());
+	
+			listaEpis = new Object[epis.size()][2];
+			int i=0;
+	
+			for (Epi epi : epis)
+			{
+				listaEpis[i][0] = epi;
+				listaEpis[i][1] = new SolicitacaoEpiItem();
+				i++;
+			}
 		}
 	}
 
@@ -116,6 +123,46 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
+	public String insert() throws Exception
+	{
+		try
+		{
+			this.colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null);
+			
+			if(this.entregue && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
+				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no AC Pessoal.");
+			
+			solicitacaoEpi.setColaborador(colaborador);
+			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
+			solicitacaoEpi.setEmpresa(getEmpresaSistema());
+
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
+			
+			addActionMessage("Solicitação gravada com sucesso.");
+			return SUCCESS;
+		}
+		catch (FortesException e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepare();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao gravar solicitação.");
+			e.printStackTrace();
+			prepare();
+			return INPUT;
+		}
+	}
+
+	public String update() throws Exception
+	{
+		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
+		return SUCCESS;
+	}
+	
 	public String prepareEntrega() throws Exception
 	{
 		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
@@ -222,45 +269,6 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		}
 		
 		prepareEntrega();
-		return SUCCESS;
-	}
-
-	public String insert() throws Exception
-	{
-		try
-		{
-			this.colaborador = colaboradorManager.findByIdDadosBasicos(solicitacaoEpi.getColaborador().getId(), null);
-			
-			if(this.entregue && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
-				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no AC Pessoal.");
-			
-			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
-			solicitacaoEpi.setEmpresa(getEmpresaSistema());
-
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
-			
-			addActionMessage("Solicitação gravada com sucesso.");
-			return SUCCESS;
-		}
-		catch (FortesException e)
-		{
-			addActionMessage(e.getMessage());
-			e.printStackTrace();
-			prepare();
-			return INPUT;
-		}
-		catch (Exception e)
-		{
-			addActionError("Erro ao gravar solicitação.");
-			e.printStackTrace();
-			prepare();
-			return INPUT;
-		}
-	}
-
-	public String update() throws Exception
-	{
-		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
 		return SUCCESS;
 	}
 

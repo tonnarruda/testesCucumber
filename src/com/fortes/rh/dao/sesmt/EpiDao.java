@@ -17,4 +17,5 @@ public interface EpiDao extends GenericDao<Epi>
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Epi> findSincronizarEpiInteresse(Long empresaOrigemId);
 	Collection<String> findFabricantesDistinctByEmpresa(Long empresaId);
+	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId);
 }

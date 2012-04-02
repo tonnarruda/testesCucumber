@@ -27,4 +27,5 @@ public interface EpiManager extends GenericManager<Epi>
 	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	String findFabricantesDistinctByEmpresa(Long empresaId);
 	Collection<Epi> findAllSelect(Long empresaId);
+	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId);
 }

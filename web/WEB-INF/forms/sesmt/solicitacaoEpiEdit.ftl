@@ -5,6 +5,9 @@
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		
+		.blue { color: blue; }
+		.gray { color: #454C54; }
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -151,6 +154,11 @@
 		}
 	}
 
+	function listaEpis(colaboradorId)
+	{
+		$('#colaboradorId').val(colaboradorId);
+		validaFormulario('formFiltro', null, null);
+	}
 </script>
 
 <#if solicitacaoEpi?exists && solicitacaoEpi.data?exists>
@@ -169,7 +177,8 @@
 		<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
 		<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" cssClass="mascaraCpf" onkeypress="return(somenteNumeros(event,''));" />
 		<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:60px;"  maxLength="20"/>
-		<button onclick="validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"></button>
+		<@ww.hidden id="colaboradorId" name="colaborador.id" />
+		<button onclick="$('#colaboradorId').val(''); validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"></button>
 		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"></button>
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
@@ -182,72 +191,84 @@
 				<h4> Colaborador: ${solicitacaoEpi.colaborador.nome} </h4>
 				<@ww.hidden name="solicitacaoEpi.colaborador.id" />
 			<#else>
-				<@ww.select label="Colaborador" name="solicitacaoEpi.colaborador.id" id="colaborador" list="colaboradors" listKey="id" listValue="NomeCpf" />
+				<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" headerKey="" headerValue="Selecione" listKey="id" listValue="NomeCpf" onchange="listaEpis(this.value)" />
 			</#if>
-			<@ww.datepicker label="Data" id="data" name="solicitacaoEpi.data" required="true" cssClass="mascaraData" value="${data}"/>
-
-			<div>EPIs:</div>
-
-			<#assign i = 0/>
-			<@display.table name="listaEpis" id="lista" class="dados" sort="list">
-
-				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
-					<#assign checked=""/>
-					<#if epiIds?exists>
-						<#list epiIds as epiId>
-							<#if (lista[0].id?string == epiId)>
-								<#assign checked="checked"/>
-							</#if>
-						</#list>
-					</#if>
-					<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="mudarQtd(this);" ${checked}/>
-				</@display.column>
-
-				<@display.column title="EPI" style="width:400px;">
-					<label for="check${lista[0].id}">${lista[0].nome}</label>
-				</@display.column>
-
-				<@display.column title="Fabricante">
-					<label for="check${lista[0].id}">${lista[0].fabricante}</label>
-				</@display.column>
-
-				<@display.column title="Número do CA">
-					<label for="check${lista[0].id}">${lista[0].epiHistorico.CA}</label>
-				</@display.column>
-
-				<@display.column title="Quantidade">
-					<#if lista[1].qtdSolicitado?exists>
-						<#assign qtdSolicitado = lista[1].qtdSolicitado?string />
+			
+			<#if listaEpis?exists && 0 < listaEpis?size>
+				<@ww.datepicker label="Data" id="data" name="solicitacaoEpi.data" required="true" cssClass="mascaraData" value="${data}"/>
+	
+				<div id="legendas" align="right"><span style="background-color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;EPIs indicados para a função</div>
+	
+				<div>EPIs:</div>
+	
+				<#assign i = 0/>
+				<@display.table name="listaEpis" id="lista" class="dados" sort="list">
+					<#if lista[0].relacionadoAoColaborador>
+						<#assign class="blue"/>
 					<#else>
-						<#assign qtdSolicitado = "" />
+						<#assign class="gray"/>
 					</#if>
-					<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 130px;border:1px solid #7E9DB9;"/>
-				</@display.column>
-			</@display.table>
-
-			<@ww.hidden name="solicitacaoEpi.id" />
-			<@ww.hidden name="solicitacaoEpi.empresa.id" />
-			<@ww.hidden name="solicitacaoEpi.cargo.id" />
-			
-			<#if !solicitacaoEpi.id?exists>
-				<li>
-					<fieldset class="fieldsetPadrao">
-						<ul>
-							<legend>Considerar os EPIs acima como entregues:</legend>
-							<@ww.select label="Entregues" name="entregue" id="entregue" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" />
-							<@ww.datepicker label="Data" id="dataEntrega" name="dataEntrega" required="true" cssClass="mascaraData" value="${data}"/>
-						</ul>
-					</fieldset>
-				</li>
+					
+					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
+						<#assign checked=""/>
+						<#if epiIds?exists>
+							<#list epiIds as epiId>
+								<#if (lista[0].id?string == epiId)>
+									<#assign checked="checked"/>
+								</#if>
+							</#list>
+						</#if>
+						<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="mudarQtd(this);" ${checked}/>
+					</@display.column>
+	
+					<@display.column title="EPI" style="width:400px;">
+						<label for="check${lista[0].id}" class="${class}">${lista[0].nome}</label>
+					</@display.column>
+	
+					<@display.column title="Fabricante">
+						<label for="check${lista[0].id}" class="${class}">${lista[0].fabricante}</label>
+					</@display.column>
+	
+					<@display.column title="Número do CA">
+						<label for="check${lista[0].id}" class="${class}">${lista[0].epiHistorico.CA}</label>
+					</@display.column>
+	
+					<@display.column title="Quantidade">
+						<#if lista[1].qtdSolicitado?exists>
+							<#assign qtdSolicitado = lista[1].qtdSolicitado?string />
+						<#else>
+							<#assign qtdSolicitado = "" />
+						</#if>
+						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 130px;border:1px solid #7E9DB9;"/>
+					</@display.column>
+				</@display.table>
+	
+				<@ww.hidden name="solicitacaoEpi.id" />
+				<@ww.hidden name="solicitacaoEpi.empresa.id" />
+				<@ww.hidden name="solicitacaoEpi.cargo.id" />
+				
+				<#if !solicitacaoEpi.id?exists>
+					<li>
+						<fieldset class="fieldsetPadrao">
+							<ul>
+								<legend>Considerar os EPIs acima como entregues:</legend>
+								<@ww.select label="Entregues" name="entregue" id="entregue" list=r"#{true:'Sim',false:'Não'}" liClass="liLeft" />
+								<@ww.datepicker label="Data" id="dataEntrega" name="dataEntrega" required="true" cssClass="mascaraData" value="${data}"/>
+							</ul>
+						</fieldset>
+					</li>
+				</#if>
+				
+				<@ww.token/>
 			</#if>
-			
-			<@ww.token/>
 		</@ww.form>
 
-		<div class="buttonGroup">
-			<button onclick="return enviaForm();" class="btnGravar"></button>
-			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" ></button>
-		</div>
+		<#if listaEpis?exists && 0 < listaEpis?size>
+			<div class="buttonGroup">
+				<button onclick="return enviaForm();" class="btnGravar"></button>
+				<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" ></button>
+			</div>
+		</#if>
 	</#if>
 
 	<script type="text/javascript">

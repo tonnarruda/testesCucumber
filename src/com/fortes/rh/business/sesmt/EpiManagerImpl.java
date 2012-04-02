@@ -262,4 +262,9 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	{
 		return getDao().findByHistoricoFuncao(historicoFuncaoId);
 	}
+
+	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId) 
+	{
+		return getDao().findPriorizandoEpiRelacionado(empresaId, colaboradorId);
+	}
 }

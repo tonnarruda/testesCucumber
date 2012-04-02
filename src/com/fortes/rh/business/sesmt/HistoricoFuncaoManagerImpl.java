@@ -221,14 +221,17 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		
 		Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
 		
-		for (Long riscoId : riscoChecks)
+		if (riscoChecks != null)
 		{
-			for (RiscoFuncao riscoFuncao : riscoFuncoes)
+			for (Long riscoId : riscoChecks)
 			{
-				if (riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
+				for (RiscoFuncao riscoFuncao : riscoFuncoes)
 				{
-					riscoFuncao.setHistoricoFuncao(historicoFuncao);
-					riscoFuncoesSelecionados.add(riscoFuncao);
+					if (riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
+					{
+						riscoFuncao.setHistoricoFuncao(historicoFuncao);
+						riscoFuncoesSelecionados.add(riscoFuncao);
+					}
 				}
 			}
 		}

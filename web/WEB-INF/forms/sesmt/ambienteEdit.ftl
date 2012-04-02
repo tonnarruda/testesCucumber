@@ -110,7 +110,11 @@
 		<@display.table name="historicoAmbientes" id="historicoAmbiente" pagesize=10 class="dados">
 			<@display.column title="Ações" class="acao">
 				<a href="../historicoAmbiente/prepareUpdate.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoAmbiente/delete.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<#if 1 < historicoAmbientes?size>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoAmbiente/delete.action?historicoAmbiente.id=${historicoAmbiente.id}&ambiente.id=${ambiente.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<#else>
+					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico do ambiente" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
+				</#if>
 			</@display.column>
 			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width:80px;"/>
 			<@display.column property="descricao" title="Histórico - Descrição"/>

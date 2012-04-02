@@ -30,6 +30,9 @@ public class Epi extends AbstractModel implements Serializable
     private TipoEPI tipoEPI;
 
     private boolean fardamento;
+    
+    @Transient
+    private boolean relacionadoAoColaborador;
 
     @Transient
     private EpiHistorico epiHistorico;
@@ -138,5 +141,13 @@ public class Epi extends AbstractModel implements Serializable
 	public void setSolicitacaoEpiItems(Collection<SolicitacaoEpiItem> solicitacaoEpiItems)
 	{
 		this.solicitacaoEpiItems = solicitacaoEpiItems;
+	}
+
+	public boolean isRelacionadoAoColaborador() {
+		return relacionadoAoColaborador;
+	}
+
+	public void setRelacionadoAoColaborador(boolean relacionadoAoColaborador) {
+		this.relacionadoAoColaborador = relacionadoAoColaborador;
 	}
 }

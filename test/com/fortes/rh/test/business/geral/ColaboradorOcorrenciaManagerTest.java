@@ -430,13 +430,14 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		retornoBD.add(new Absenteismo("2011", "05", 19));
 		
 		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
+		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
 		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null);
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
-		assertEquals(0.01, ((Object[])absenteismos.toArray()[1])[1]);
-		assertEquals(0.0714, ((Object[])absenteismos.toArray()[3])[1]);
+		assertEquals(0.02, ((Object[])absenteismos.toArray()[1])[1]);
+		assertEquals(0.1429, ((Object[])absenteismos.toArray()[3])[1]);
 
 	}
 	
@@ -506,6 +507,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(new ArrayList<Absenteismo>()));
+		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(new ArrayList<Absenteismo>()));
 		
 		Date dataIni = new Date();
 		Date dataFim = dataIni;

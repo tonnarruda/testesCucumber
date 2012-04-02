@@ -278,7 +278,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 
-		colaboradorTurmaDao.expects(once()).method("findByTurma").with(eq(turma.getId()), eq(null), ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+		colaboradorTurmaDao.expects(once()).method("findByTurma").with(new Constraint[]{ eq(turma.getId()), eq(null), ANYTHING, ANYTHING, ANYTHING }).will(returnValue(colaboradorTurmas));
 
 		Collection<ColaboradorTurma> retornos = colaboradorTurmaManager.findByTurma(turma.getId(), null, null, null);
 

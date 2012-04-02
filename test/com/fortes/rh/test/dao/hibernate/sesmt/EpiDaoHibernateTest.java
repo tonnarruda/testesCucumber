@@ -1,14 +1,18 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.EpiHistoricoDao;
+import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
@@ -16,18 +20,24 @@ import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
@@ -46,6 +56,9 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 	private RiscoAmbienteDao riscoAmbienteDao;
 	private HistoricoFuncaoDao historicoFuncaoDao;
 	private TipoEPIDao tipoEPIDao;
+	private ColaboradorDao colaboradorDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	private FuncaoDao funcaoDao;
 
 	private Empresa empresa;
 
@@ -309,6 +322,76 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(2, colecao.size());
 	}
 	
+	public void testFindPriorizandoEpiRelacionado()
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 01, 2011);
+		Date data2 = DateUtil.criarDataMesAno(02, 02, 2011);
+	
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+
+		Funcao funcao2 = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao2);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setFuncao(funcao);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data1);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		TipoEPI tipoEPI = new TipoEPI();
+		tipoEPIDao.save(tipoEPI);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setTipoEPI(tipoEPI);
+		epi.setEmpresa(empresa);
+		epiDao.save(epi);
+
+		Epi epi2 = EpiFactory.getEntity();
+		epi2.setTipoEPI(tipoEPI);
+		epi2.setEmpresa(empresa);
+		epiDao.save(epi2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setEpis(Arrays.asList(epi));
+		historicoFuncao.setData(data1);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
+		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setEpis(Arrays.asList(epi2));
+		historicoFuncao2.setData(data1);
+		historicoFuncaoDao.save(historicoFuncao2);
+		
+		EpiHistorico eh1 = new EpiHistorico();
+		eh1.setData(data1);
+		eh1.setVencimentoCA(data1);
+		eh1.setEpi(epi);
+		epiHistoricoDao.save(eh1);
+
+		EpiHistorico eh2 = new EpiHistorico();
+		eh2.setData(data2);
+		eh2.setVencimentoCA(data2);
+		eh2.setEpi(epi);
+		epiHistoricoDao.save(eh2);
+
+		EpiHistorico eh3 = new EpiHistorico();
+		eh3.setData(data1);
+		eh3.setVencimentoCA(data1);
+		eh3.setEpi(epi2);
+		epiHistoricoDao.save(eh3);
+
+		Collection<Epi> colecao = epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId());
+		assertEquals(2, colecao.size());
+	}
+	
 	private void setEmpresa()
 	{
 		empresa = EmpresaFactory.getEmpresa();
@@ -368,5 +451,17 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 
 	public void setTipoEPIDao(TipoEPIDao tipoEPIDao) {
 		this.tipoEPIDao = tipoEPIDao;
+	}
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setFuncaoDao(FuncaoDao funcaoDao) {
+		this.funcaoDao = funcaoDao;
 	}
 }
