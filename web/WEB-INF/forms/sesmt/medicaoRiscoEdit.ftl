@@ -69,7 +69,7 @@
 				<@ww.select label="Função" id="funcao" required="true" name="funcao.id" list="funcoes" listKey="id" listValue="nome" headerValue="${headerValue}" headerKey="" cssStyle="width:240px;" onchange="setGravarDesabilitado('true');"/>
 			</#if>
 			
-			<button onclick="populaRiscos();" class="btnCarregarRiscos"></button>
+			<button type="button" onclick="populaRiscos();" class="btnCarregarRiscos"></button>
 			<br /><br />
 			
 			<@display.table name="riscoMedicaoRiscos" id="riscoMedicaoRisco" class="dados">
@@ -108,8 +108,8 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="validarCampos();" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button type="button" onclick="validarCampos();" class="btnGravar"></button>
+			<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
 		
 		<script type="text/javascript">
@@ -191,9 +191,9 @@
 	    	document.form.action = formAction;
 	    	
 	    	<#if empresaControlaRiscoPor == 'A'>
-	    		return validaFormulario('form', new Array('data','ambiente'), new Array('data'));
+	    		validaFormulario('form', new Array('data','ambiente'), new Array('data'));
 			<#else>
-	    		return validaFormulario('form', new Array('data','funcao'), new Array('data'));
+	    		validaFormulario('form', new Array('data','funcao'), new Array('data'));
 	    	</#if>
 	    }
     </script>
