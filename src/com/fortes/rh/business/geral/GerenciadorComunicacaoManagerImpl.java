@@ -37,6 +37,7 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -768,5 +769,35 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+	public void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem) 
+	{
+		StringBuilder mensagemFinal = new StringBuilder();
+		mensagemFinal.append("Cancelamento da contratação do colaborador. ");
+		mensagemFinal.append("\r\n\r\n");
+		mensagemFinal.append("<b>Motivo do cancelamento:</b> ");
+		mensagemFinal.append("\r\n");
+		mensagemFinal.append(mensagem);
+		mensagemFinal.append("\r\n\r\n");
+		mensagemFinal.append("<b>Dados do colaborador cancelado:</b> ");
+		mensagemFinal.append("\r\n");
+		mensagemFinal.append("Nome: "+colaborador.getNomeComercial());
+		mensagemFinal.append("\r\n");
+		mensagemFinal.append("Estabelecimento: "+colaborador.getHistoricoColaborador().getEstabelecimento().getNome());
+		mensagemFinal.append("\r\n");
+		mensagemFinal.append("Área Organizacional: "+colaborador.getHistoricoColaborador().getAreaOrganizacional().getDescricao());
+		mensagemFinal.append("\r\n");
+		mensagemFinal.append("Cargo: "+colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNomeMercado());
+		mensagemFinal.append("\r\n");
+
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(colaborador.getEmpresa().getCodigoAC(), colaborador.getEmpresa().getGrupoAC());
+
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_CONTRATACAO_AC.getId(), colaborador.getEmpresa().getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.HISTORICOCOLABORADOR);
+		}
 	}
 }

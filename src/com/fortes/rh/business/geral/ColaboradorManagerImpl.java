@@ -390,6 +390,26 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return empregado;
 	}
+	
+    private char getVinculo(String admissaoTipo, String admissaoVinculo, String admissaoCategoria) {
+        char colocacao;
+
+        if (admissaoTipo!=null && admissaoTipo.equals("00")) {
+            colocacao = 'S';
+        } else {
+            if (admissaoVinculo!=null && admissaoVinculo.equals("50")) {
+                colocacao = 'T';
+            } else {
+                if (admissaoCategoria!=null && admissaoCategoria.equals("07")) {
+                    colocacao = 'A';
+                } else {
+                    colocacao = 'E';
+                }
+            }
+        }
+
+        return colocacao;
+    }
 
 	private void contratarColaborador(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa) throws AddressException, MessagingException,
 			Exception
@@ -1330,6 +1350,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
 			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
 
+		char vinculo = getVinculo(empregado.getAdmissaotipo(), empregado.getAdmissaovinculo(), empregado.getCategoria());
+		colaborador.setVinculo(String.valueOf(vinculo));
+		
 		return colaborador;
 	}
 
@@ -1419,6 +1442,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
+	{
+		historicoColaboradorManager.atualizaStatusDaSolicitacao(historicoColaborador);
+		removeColaboradorDependencias(colaborador);		
+		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
+	}
+	
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador) 
 	{
 		formacaoManager.removeColaborador(colaborador);

@@ -930,7 +930,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaborador;
 	}
 	
-	private void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
+	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
 	{
 		candidatoSolicitacaoManager.setStatusByColaborador(historicoColaborador.getColaborador().getId(), StatusCandidatoSolicitacao.APROMOVER);
 	}

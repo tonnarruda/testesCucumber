@@ -804,6 +804,43 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 	 
+	 public void testEnviaMensagemCancelamentoContratacao() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setCodigoAC("0001");
+		 empresa.setGrupoAC("001");
+		 
+		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		 faixaSalarial.setCargo(CargoFactory.getEntity());
+		 
+		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
+		 historico.setEstabelecimento(EstabelecimentoFactory.getEntity());
+		 historico.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity());
+		 historico.setFaixaSalarial(faixaSalarial);
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setEmpresa(empresa);
+		 colaborador.setHistoricoColaborador(historico);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_CONTRATACAO_AC.getId()),ANYTHING).will(returnValue(Arrays.asList(gerenciadorComunicacao)));
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, "mensagem do ac");
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 assertNull(exception);
+	 }
+	 
 	 public void testEnviaEmailConfiguracaoLimiteColaborador() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);

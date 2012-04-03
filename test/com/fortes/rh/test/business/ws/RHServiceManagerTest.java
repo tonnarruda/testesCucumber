@@ -347,6 +347,30 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
 	}
+	
+	public void testCancelarContratacao() throws Exception
+	{
+		TEmpregado empregado = new TEmpregado();
+		empregado.setCodigoAC("00001");
+		empregado.setEmpresaCodigoAC("0001");
+		empregado.setGrupoAC("001");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+		TSituacao situacao = new TSituacao();
+		situacao.setData("01/01/2010");
+		situacao.setEmpregadoCodigoAC("00001");
+		situacao.setEmpresaCodigoAC("0001");
+		situacao.setGrupoAC("001");
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		
+		colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").withAnyArguments().will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("cancelarContratacaoNoAC").withAnyArguments().isVoid();
+		historicoColaboradorManager.expects(once()).method("findByAC").withAnyArguments().will(returnValue(historicoColaborador));;
+
+		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, situacao, "").isSucesso());
+	}
 
 	public void testAtualizarColaborador() throws Exception
 	{

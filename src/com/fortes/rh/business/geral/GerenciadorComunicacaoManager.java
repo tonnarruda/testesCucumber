@@ -11,6 +11,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -44,4 +45,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarAvisoEmail(Turma turma, Long empresaId);
 	void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa);
 	void insereGerenciadorComunicacaoDefault(Empresa empresa);
+	void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem);
 }

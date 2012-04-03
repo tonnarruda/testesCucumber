@@ -43,6 +43,7 @@ public interface RHService
 	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
 	FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC);
 	FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo);
+	FeedbackWebService cancelarContratacao(TEmpregado empregado, TSituacao situacao,  String mensagem);
 
 	//Tabela situacao no AC -> SEP
 	FeedbackWebService removerSituacao(TSituacao situacao);
@@ -88,4 +89,6 @@ public interface RHService
 	// Ocorrencia de Empregado -> OCE
 	FeedbackWebService criarOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
 	FeedbackWebService removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
+	
+	
 }

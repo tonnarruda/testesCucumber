@@ -384,6 +384,39 @@ public class RHServiceImpl implements RHService
 			return new FeedbackWebService(false, "Erro ao atualizar empregado e situação.",  formataException(parametros, e));
 		}
 	}
+	
+	public FeedbackWebService cancelarContratacao(TEmpregado empregado, TSituacao situacao,  String mensagem)
+	{
+		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
+		try
+		{
+			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+
+			if(historico == null)
+				return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException("Situação do colaborador inexistente no RH", null ));
+			
+			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
+
+			if(colaborador == null)
+				return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException("Empregado inexistente no RH", null ));
+			
+			Empresa empresa = new Empresa();
+			empresa.setCodigoAC(empregado.getEmpresaCodigoAC());
+			empresa.setGrupoAC(empregado.getGrupoAC());
+			
+			colaborador.setEmpresa(empresa);
+			colaborador.setHistoricoColaborador(historico);
+			
+			colaboradorManager.cancelarContratacaoNoAC(colaborador, historico, mensagem);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException(parametros, e));
+		}
+	}
 
 	public FeedbackWebService criarSituacaoEmLote(TSituacao[] situacaos)
 	{

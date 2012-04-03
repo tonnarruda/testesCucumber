@@ -56,6 +56,9 @@ public class TEmpregado implements Serializable
 	private String ctpsUFSigla;	
 	private String ctpsDataExpedicao;
 	private String grupoAC;
+	private String admissaotipo;
+	private String admissaovinculo;
+	private String categoria;
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -468,6 +471,30 @@ public class TEmpregado implements Serializable
 	public void setNomeComercial(String nomeComercial)
 	{
 		this.nomeComercial = nomeComercial;
+	}
+
+	public String getAdmissaotipo() {
+		return admissaotipo;
+	}
+
+	public void setAdmissaotipo(String admissaotipo) {
+		this.admissaotipo = admissaotipo;
+	}
+
+	public String getAdmissaovinculo() {
+		return admissaovinculo;
+	}
+
+	public void setAdmissaovinculo(String admissaovinculo) {
+		this.admissaovinculo = admissaovinculo;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	
 }

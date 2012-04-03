@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(17, Operacao.values().length);
+		assertEquals(18, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -38,6 +38,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(15));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(16));
 		assertEquals("Aviso ao responder período de experiência", Operacao.getDescricaoById(17));
+		assertEquals("Cancelamento da Contratação no AC Pessoal", Operacao.getDescricaoById(18));
 	}
 
 	public void testGetMeioComunicacaoById()
@@ -58,6 +59,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(15).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(16).size());
 		assertEquals(2, Operacao.getMeioComunicacaosById(17).size());
+		assertEquals(2, Operacao.getMeioComunicacaosById(18).size());
 	}
 
 	
@@ -80,6 +82,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(15, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());
 		assertEquals(16, Operacao.BACKUP_AUTOMATICO.getId());
 		assertEquals(17, Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId());
+		assertEquals(18, Operacao.CANCELAR_CONTRATACAO_AC.getId());
 	}
 
 	public void testEncerrarSolicitacao()
