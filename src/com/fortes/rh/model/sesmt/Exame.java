@@ -30,6 +30,8 @@ public class Exame extends AbstractModel implements Serializable
     private int qtdNormal;
     @Transient
     private int qtdAnormal;
+    @Transient
+    private boolean relacionadoAoColaborador;
 
     public Exame()
     {
@@ -107,5 +109,13 @@ public class Exame extends AbstractModel implements Serializable
 	public void setQtdAnormal(int qtdAnormal) 
 	{
 		this.qtdAnormal = qtdAnormal;
+	}
+
+	public boolean isRelacionadoAoColaborador() {
+		return relacionadoAoColaborador;
+	}
+
+	public void setRelacionadoAoColaborador(boolean relacionadoAoColaborador) {
+		this.relacionadoAoColaborador = relacionadoAoColaborador;
 	}
 }

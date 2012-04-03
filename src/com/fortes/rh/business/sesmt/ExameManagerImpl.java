@@ -241,26 +241,9 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return examesRealizados;
 	}
 	
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
 	public void enviaLembreteExamesPrevistos(Collection<Empresa> empresas) 
 	{
 		gerenciadorComunicacaoManager.enviaLembreteExamesPrevistos(empresas);
-	}
-
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 	
 	private JasperReport compileReport(String reportPath, InputStream reportInputStream) throws JRException {
@@ -271,7 +254,28 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 			jasperReport = JasperCompileManager.compileReport(reportInputStream);
 		return jasperReport;
 	}
+	
+	public Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId) {
+		return getDao().findPriorizandoExameRelacionado(empresaId, colaboradorId);
+	}
 
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setMail(Mail mail)
+	{
+		this.mail = mail;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+	
 	public void setParametros(Map<String, Object> parametros) {
 		this.parametros = parametros;
 	}

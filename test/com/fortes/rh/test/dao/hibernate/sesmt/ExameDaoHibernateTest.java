@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -14,6 +15,7 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.ClinicaAutorizadaDao;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.dao.sesmt.ExameSolicitacaoExameDao;
+import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.dao.sesmt.RealizacaoExameDao;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
@@ -27,6 +29,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -35,6 +38,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -56,6 +60,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 	AreaOrganizacionalDao areaOrganizacionalDao;
 	HistoricoColaboradorDao historicoColaboradorDao;
 	EstabelecimentoDao estabelecimentoDao;
+	FuncaoDao funcaoDao;
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
@@ -544,6 +549,53 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		assertEquals(2, exames.size());
 	}
 	
+	public void testFindPriorizandoExameRelacionado() 
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 01, 2011);
+		Date data2 = DateUtil.criarDataMesAno(02, 02, 2011);
+	
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+
+		Funcao funcao2 = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao2);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setFuncao(funcao);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(data1);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
+		exameDao.save(exame1);
+		
+		Exame exame2 = ExameFactory.getEntity();
+		exame2.setEmpresa(empresa);
+		exameDao.save(exame2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setExames(Arrays.asList(exame1));
+		historicoFuncao.setData(data1);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
+		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setExames(Arrays.asList(exame2));
+		historicoFuncao2.setData(data2);
+		historicoFuncaoDao.save(historicoFuncao2);
+
+		Collection<Exame> colecao = exameDao.findPriorizandoExameRelacionado(empresa.getId(), colaborador.getId());
+		assertEquals(2, colecao.size());
+	}
+	
 	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
 	{
 		this.historicoFuncaoDao = historicoFuncaoDao;
@@ -586,6 +638,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 
 	public void setClinicaAutorizadaDao(ClinicaAutorizadaDao clinicaAutorizadaDao) {
 		this.clinicaAutorizadaDao = clinicaAutorizadaDao;
+	}
+
+	public void setFuncaoDao(FuncaoDao funcaoDao) {
+		this.funcaoDao = funcaoDao;
 	}
 
 }

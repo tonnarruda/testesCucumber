@@ -61,7 +61,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	
 	private Exame exameAso;
 
-	private char examesPara;
+	private char examesPara = 'C';
 	private String nomeBusca;
 	private String matriculaBusca;
 
@@ -134,31 +134,41 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		motivos = MotivoSolicitacaoExame.getInstance();
 
 		if(solicitacaoExame != null && solicitacaoExame.getId() != null)
+		{
 			solicitacaoExame = solicitacaoExameManager.findByIdProjection(solicitacaoExame.getId());
+			colaborador = solicitacaoExame.getColaborador();
+			candidato = solicitacaoExame.getCandidato();
+		}
 
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
 
-		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		clinicaAutorizadas = clinicaAutorizadaManager.findClinicasAtivasByDataEmpresa(getEmpresaSistema().getId(), hoje);
-		listaExames = new Object[exames.size()][4];
 
-		int i = 0;
-		
-		
-		for (Exame exame : exames)
+		if (colaborador != null && colaborador.getId() != null)
+			exames = exameManager.findPriorizandoExameRelacionado(getEmpresaSistema().getId(), colaborador.getId());
+		else if (candidato != null && candidato.getId() != null)
+			exames = exameManager.findAllSelect(getEmpresaSistema().getId());
+
+		if (exames != null)
 		{
-			Collection<ClinicaAutorizada> clinicas = clinicaAutorizadaManager.findByExame(getEmpresaSistema().getId(), exame.getId(), hoje);
-			if (clinicas == null || clinicas.isEmpty())
+			listaExames = new Object[exames.size()][4];
+			int i = 0;
+
+			for (Exame exame : exames)
 			{
-				ClinicaAutorizada clinicaTmp = new ClinicaAutorizada();
-				clinicaTmp.setNome("Nenhuma clínica");
-				clinicas.add(clinicaTmp);
+				Collection<ClinicaAutorizada> clinicas = clinicaAutorizadaManager.findByExame(getEmpresaSistema().getId(), exame.getId(), hoje);
+				if (clinicas == null || clinicas.isEmpty())
+				{
+					ClinicaAutorizada clinicaTmp = new ClinicaAutorizada();
+					clinicaTmp.setNome("Nenhuma clínica");
+					clinicas.add(clinicaTmp);
+				}
+				listaExames[i][0] = exame;
+				listaExames[i][1] = clinicas;
+				listaExames[i][2] = exame.getPeriodicidade();
+				listaExames[i][3] = exame.equals(exameAso); // indica qual é o exame ASO
+				i++;
 			}
-			listaExames[i][0] = exame;
-			listaExames[i][1] = clinicas;
-			listaExames[i][2] = exame.getPeriodicidade();
-			listaExames[i][3] = exame.equals(exameAso); // indica qual é o exame ASO
-			i++;
 		}
 	}
 
@@ -210,7 +220,12 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public String insert()
 	{
 		try
-		{
+		{   
+			if (examesPara == 'C') 
+				solicitacaoExame.setColaborador(colaborador);
+			else
+				solicitacaoExame.setCandidato(candidato);
+			
 			solicitacaoExame.setEmpresa(getEmpresaSistema());
 			solicitacaoExameManager.save(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}

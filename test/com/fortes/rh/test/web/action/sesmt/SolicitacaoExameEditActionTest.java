@@ -24,6 +24,8 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -80,11 +82,26 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		Mockit.restoreAllOriginalDefinitions();
 	}
 	
-	public void testPrepareInsert() throws Exception
+	public void testPrepareInsertColaborador() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setExame(ExameFactory.getEntity(1L));
 		action.setEmpresaSistema(empresa);
+		action.setColaborador(ColaboradorFactory.getEntity(1L));
+		
+		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
+		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
+		exameManager.expects(once()).method("findPriorizandoExameRelacionado").will(returnValue(new ArrayList<Exame>()));
+		
+		assertEquals("success",action.prepareInsert());
+	}
+	
+	public void testPrepareInsertCandidato() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setExame(ExameFactory.getEntity(1L));
+		action.setEmpresaSistema(empresa);
+		action.setCandidato(CandidatoFactory.getCandidato(1L));
 		
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
 		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));

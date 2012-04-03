@@ -19,4 +19,5 @@ public interface ExameDao extends GenericDao<Exame>
 	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds);
 	Integer getCount(Long empresaId, Exame exame);
 	Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame);
+	Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId);
 }

@@ -6,7 +6,11 @@
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		
+		.blue { color: blue; }
+		.gray { color: #454C54; }
 	</style>
+		
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
@@ -21,11 +25,17 @@
 	</#if>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 <#if exameAso?exists>
 	<script>
+		$(function() {
+			<#if (listaExames?exists && listaExames?size > 0)>
+				filtrarOpcao();
+				configuraCampos();
+			</#if>
+		});
 	
 		function filtrarOpcao()
 		{
@@ -46,6 +56,7 @@
 		{
 			document.getElementById(id_da_div).style.display = 'none';
 		}
+		
 		function exibe(id_da_div)
 		{
 			document.getElementById(id_da_div).style.display = '';
@@ -183,6 +194,22 @@
 				}
 			}
 		}
+		
+		function listaExames(selecionadoId, tipo)
+		{
+			if (tipo == 'CO')
+				$('#colaboradorId').val(selecionadoId);
+			else if (tipo == 'CA')
+				$('#candidatoId').val(selecionadoId);
+
+			validaFormulario('formFiltro', null, null);
+		}
+		
+		function pesquisar()
+		{
+			$('#colaboradorId, #candidatoId').val('');
+			validaFormulario('formFiltro', null, null);
+		}
 	</script>
 </#if>
 	
@@ -219,15 +246,17 @@
 		<span id="divCandidato" style="display:''">
 			<@ww.textfield label="Nome" name="candidato.nome" id="nomeCandidato" cssStyle="width: 300px;"/>
 			<@ww.textfield label="CPF" name="candidato.pessoal.cpf" id="cpfCandidato" cssClass="mascaraCpf"/>
+			<@ww.hidden id="candidatoId" name="candidato.id" />
 		</span>
 		<span id="divColaborador" style="display:none">
 			<@ww.textfield label="Nome" name="colaborador.nome" id="nomeColaborador" cssStyle="width: 300px;"/>
 			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 60px;"/>
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfColaborador" cssClass="mascaraCpf"/>
+			<@ww.hidden id="colaboradorId" name="colaborador.id" />
 		</span>
 	
 		<div class="buttonGroup">
-			<button onclick="validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"> </button>
+			<button onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>
 			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"> </button>
 		</div>
 		<br/>
@@ -257,112 +286,117 @@
 			<@ww.hidden name="gravarEImprimir" value="true" />
 	
 			<#if (candidatos?exists && candidatos?size > 0)>
-				<@ww.select label="Candidato" name="solicitacaoExame.candidato.id" id="candidato" required="true" list="candidatos" listKey="id" listValue="nomeECpf" cssStyle="width:600px;"/>
+				<@ww.select label="Candidato" name="candidato.id" id="candidato" required="true" list="candidatos" headerKey="" headerValue="Selecione..." listKey="id" listValue="nomeECpf" onchange="listaExames(this.value, 'CA')" cssStyle="width:600px;"/>
 			</#if>
 	
 			<#if (colaboradors?exists && colaboradors?size > 0)>
-				<@ww.select label="Colaborador" name="solicitacaoExame.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" cssStyle="width:600px;"/>
+				<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradors" headerKey="" headerValue="Selecione..." listKey="id" listValue="nomeCpfMatricula" onchange="listaExames(this.value, 'CO')" cssStyle="width:600px;"/>
 			</#if>
 	
-			<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}"/>
-			<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
-		 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
-	
-			<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
-			
-			<div>Exames:</div>
-	
-			<#assign i = 0/>
-			<@display.table name="listaExames" id="lista" class="dados" defaultsort=2 sort="list">
-	
-				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
-					<#assign checked=""/>
-					<#if examesId?exists>
-						<#list examesId as exameId>
-							<#if (lista[0].id?string == exameId)>
-								<#assign checked="checked"/>
-							</#if>
-						</#list>
+			<#if (listaExames?exists && listaExames?size > 0)>
+				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}"/>
+				<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
+			 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
+		
+				<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
+				
+				<div id="legendas" align="right"><span style="background-color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Exames indicados para a função</div>
+				
+				<div>Exames:</div>
+		
+				<#assign i = 0/>
+				<@display.table name="listaExames" id="lista" class="dados" >
+					<#if lista[0].relacionadoAoColaborador>
+						<#assign class="blue"/>
+					<#else>
+						<#assign class="gray"/>
 					</#if>
-					<input type="checkbox" value="${lista[0].id}" id="exameId${lista[0].id}" name="examesId" onclick="acaoCheckExame(this);" ${checked}/>
-				</@display.column>
-	
-				<@display.column title="Exame">
-					${lista[0].nome}
-				</@display.column>
-	
-				<#assign selected=""/>
-	
-				<@display.column title="Clínica" >
-	
-					<select name="selectClinicas" id="selectClinica_${lista[0].id}" disabled style="width:350px;">
-	
-						<option value="">Nenhuma clínica</option>
-						<#list lista[1] as clinica>
-							<#if checked == "checked" && selected == "">
-								<#if selectClinicas?exists && selectClinicas[i]?exists>
-									<#if clinica.id?string == selectClinicas[i]?string>
-										<#assign selected="selected"/>
-										<#assign i = i + 1/>
+		
+					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
+						<#assign checked=""/>
+						<#if examesId?exists>
+							<#list examesId as exameId>
+								<#if (lista[0].id?string == exameId)>
+									<#assign checked="checked"/>
+								</#if>
+							</#list>
+						</#if>
+						<input type="checkbox" value="${lista[0].id}" id="exameId${lista[0].id}" name="examesId" onclick="acaoCheckExame(this);" ${checked}/>
+					</@display.column>
+		
+					<@display.column title="Exame">
+						<label for="check${lista[0].id}" class="${class}">${lista[0].nome}</label>
+					</@display.column>
+		
+					<#assign selected=""/>
+		
+					<@display.column title="Clínica" >
+		
+						<select name="selectClinicas" id="selectClinica_${lista[0].id}" disabled style="width:350px;" >
+		
+							<option value="">Nenhuma clínica</option>
+							<#list lista[1] as clinica>
+								<#if checked == "checked" && selected == "">
+									<#if selectClinicas?exists && selectClinicas[i]?exists>
+										<#if clinica.id?string == selectClinicas[i]?string>
+											<#assign selected="selected"/>
+											<#assign i = i + 1/>
+										</#if>
+									<#else>
+										<#if exameSolicitacaoExames?exists >
+											<#list exameSolicitacaoExames as exameSolicitacaoExame>
+												<#if lista[0].id == exameSolicitacaoExame.exame.id && exameSolicitacaoExame.clinicaAutorizada.id?exists && clinica.id == exameSolicitacaoExame.clinicaAutorizada.id>
+													<#assign selected="selected"/>
+													<#break/>
+												</#if>
+											</#list>
+										</#if>
 									</#if>
 								<#else>
-									<#if exameSolicitacaoExames?exists >
-										<#list exameSolicitacaoExames as exameSolicitacaoExame>
-											<#if lista[0].id == exameSolicitacaoExame.exame.id && exameSolicitacaoExame.clinicaAutorizada.id?exists && clinica.id == exameSolicitacaoExame.clinicaAutorizada.id>
-												<#assign selected="selected"/>
-												<#break/>
-											</#if>
-										</#list>
-									</#if>
+									<#assign selected=""/>
 								</#if>
-							<#else>
-								<#assign selected=""/>
-							</#if>
-	
-							<#if clinica.id?exists>
-						  		<option value="${clinica.id}" ${selected}>${clinica.nome}</option>
-							</#if>
-	
-						</#list>
-	
-					</select>
-				</@display.column>
-				
-				<@display.column title="Periodicidade (meses)">
-				
-					<#assign periodo = lista[2] />
+		
+								<#if clinica.id?exists>
+							  		<option value="${clinica.id}" ${selected}>${clinica.nome}</option>
+								</#if>
+		
+							</#list>
+		
+						</select>
+					</@display.column>
 					
-					<#if exameSolicitacaoExames?exists >
-						<#list exameSolicitacaoExames as exameSolicitacaoExame>
-							<#if lista[0].id == exameSolicitacaoExame.exame.id>
-								<#assign periodo = exameSolicitacaoExame.periodicidade />
-								<#break/>
-							</#if>
-						</#list>
-					</#if>
-				
-					<@ww.textfield name="periodicidades" value="${periodo}" theme="simple" disabled="true" maxlength="10" id="periodicidadeId${lista[0].id}" cssStyle="width:30px;border:1px solid #7E9DB9; text-align:right;" maxLength="4" onkeypress="return(somenteNumeros(event,''));"/>
-				</@display.column>
-			</@display.table>
-			<@ww.token/>
+					<@display.column title="Periodicidade (meses)">
+					
+						<#assign periodo = lista[2] />
+						
+						<#if exameSolicitacaoExames?exists >
+							<#list exameSolicitacaoExames as exameSolicitacaoExame>
+								<#if lista[0].id == exameSolicitacaoExame.exame.id>
+									<#assign periodo = exameSolicitacaoExame.periodicidade />
+									<#break/>
+								</#if>
+							</#list>
+						</#if>
+					
+						<@ww.textfield name="periodicidades" value="${periodo}" theme="simple" disabled="true" maxlength="10" id="periodicidadeId${lista[0].id}" cssStyle="width:30px;border:1px solid #7E9DB9; text-align:right;" maxLength="4" onkeypress="return(somenteNumeros(event,''));"/>
+					</@display.column>
+				</@display.table>
+				<@ww.token/>
+			</#if>
 		</@ww.form>
 	
-		<div class="buttonGroup">
-			<button onclick="return mudaAction('gravar');" class="btnGravar"> </button>
-			<#-- TODO ver solução para gravar/visualizar. problemas no Inserir (gravando várias vezes)  
-			<button onclick="return mudaAction('gravarVisualizar');" class="btnGravarVisualizar"> </button>
-			-->
-			<#if solicitacaoExame.id?exists>
-				<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" accesskey="V"> </button>
-			</#if>
-		</div>
-	
+		<#if (listaExames?exists && listaExames?size > 0)>
+			<div class="buttonGroup">
+				<button onclick="return mudaAction('gravar');" class="btnGravar"> </button>
+				<#-- TODO ver solução para gravar/visualizar. problemas no Inserir (gravando várias vezes)  
+				<button onclick="return mudaAction('gravarVisualizar');" class="btnGravarVisualizar"> </button>
+				-->
+				<#if solicitacaoExame.id?exists>
+					<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" accesskey="V"> </button>
+				</#if>
+			</div>
+		</#if>
 	</#if>
-	
-	<script type="text/javascript">
-		filtrarOpcao();
-		configuraCampos();
-	</script>
 </#if>
 
 </body>

@@ -159,6 +159,12 @@
 		$('#colaboradorId').val(colaboradorId);
 		validaFormulario('formFiltro', null, null);
 	}
+	
+	function pesquisar()
+	{
+		$('#colaboradorId').val(''); 
+		validaFormulario('formFiltro', null, null);
+	}
 </script>
 
 <#if solicitacaoEpi?exists && solicitacaoEpi.data?exists>
@@ -178,7 +184,7 @@
 		<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" cssClass="mascaraCpf" onkeypress="return(somenteNumeros(event,''));" />
 		<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:60px;"  maxLength="20"/>
 		<@ww.hidden id="colaboradorId" name="colaborador.id" />
-		<button onclick="$('#colaboradorId').val(''); validaFormulario('formFiltro', null, null);" class="btnPesquisar grayBGE"></button>
+		<button onclick="pesquisar();" class="btnPesquisar grayBGE"></button>
 		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"></button>
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
@@ -191,7 +197,7 @@
 				<h4> Colaborador: ${solicitacaoEpi.colaborador.nome} </h4>
 				<@ww.hidden name="solicitacaoEpi.colaborador.id" />
 			<#else>
-				<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" headerKey="" headerValue="Selecione" listKey="id" listValue="NomeCpf" onchange="listaEpis(this.value)" />
+				<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" headerKey="" headerValue="Selecione..." listKey="id" listValue="NomeCpf" onchange="listaEpis(this.value)" />
 			</#if>
 			
 			<#if listaEpis?exists && 0 < listaEpis?size>
