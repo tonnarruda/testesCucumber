@@ -317,7 +317,7 @@ public class AspectoManagerTest extends MockObjectTestCase
     	aspectoDao.expects(once()).method("getNomesByAvaliacao").with(eq(1L)).will(returnValue(nomesAspectos));
     	
     	String aspectosFormatadosHtml = aspectoManager.getAspectosFormatadosByAvaliacao(1L);
-    	assertEquals("<a href=\"#\" name=\"Habilidades interpessoais\" onclick=\"setAspecto(this.name)\">Habilidades interpessoais</a><br><a href=\"#\" name=\"Habilidades técnicas\" onclick=\"setAspecto(this.name)\">Habilidades técnicas</a><br>", aspectosFormatadosHtml);
+    	assertEquals("<a href=\"#\" onclick=\"setAspecto(this.innerText)\">Habilidades interpessoais</a><br><a href=\"#\" onclick=\"setAspecto(this.innerText)\">Habilidades técnicas</a><br>", aspectosFormatadosHtml);
     }
 
 }
