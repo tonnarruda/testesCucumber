@@ -73,7 +73,8 @@ CREATE TABLE empresa (
 	enviarEmailAniversariante boolean default false,
 	turnoverPorSolicitacao boolean NOT NULL DEFAULT false,
 	obrigarAmbienteFuncaoColaborador boolean default false,
-	verificaParentesco character(1) default 'N'
+	verificaParentesco character(1) default 'N',
+	controlariscopor character(1) default 'A'
 );
 ALTER TABLE empresa ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
 ALTER TABLE empresa ADD CONSTRAINT empresa_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
@@ -1588,7 +1589,8 @@ CREATE TABLE historicocolaborador (
     faixasalarial_id bigint,
     reajustecolaborador_id bigint,
     status Integer,
-    movimentoSalarialId bigint
+    movimentoSalarialId bigint,
+    candidatosolicitacao_id bigint
 );
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_pkey PRIMARY KEY (id);
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_data_colaborador_uk UNIQUE (data, colaborador_id);
@@ -1601,7 +1603,9 @@ ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_historicoco
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_indice_fk FOREIGN KEY (indice_id) REFERENCES indice(id);
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_reajustecolaborador_fk FOREIGN KEY (reajustecolaborador_id) REFERENCES reajustecolaborador(id);
+ALTER TABLE ONLY historicocolaborador ADD CONSTRAINT historicocolaborador_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);--.go
 CREATE SEQUENCE historicocolaborador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
 
 CREATE TABLE certificacao (
     id bigint NOT NULL,
@@ -1748,8 +1752,7 @@ CREATE TABLE solicitacaoepi (
     data date,
     colaborador_id bigint,
     cargo_id bigint,
-    empresa_id bigint,
-    situacaosolicitacaoepi character(1) not null default 'A'
+    empresa_id bigint
 );
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
@@ -1761,9 +1764,7 @@ CREATE TABLE solicitacaoepi_item (
 	id bigint NOT NULL,
 	epi_id bigint,
 	solicitacaoepi_id bigint,
-	qtdSolicitado integer NOT NULL,
-	qtdEntregue integer NOT NULL,
-	dataEntrega date
+	qtdSolicitado integer NOT NULL
 );
 ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_pkey PRIMARY KEY (id);
 ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_solicitacaoepi_fk FOREIGN KEY (solicitacaoepi_id) REFERENCES solicitacaoepi(id);
@@ -1922,7 +1923,8 @@ CREATE SEQUENCE comissaoreuniaopresenca_sequence START WITH 1 INCREMENT BY 1 NO 
 CREATE TABLE afastamento (
 	id bigint NOT NULL,
 	inss boolean,
-	descricao character varying(100)
+	descricao character varying(100),
+	absenteismo boolean default false
 );
 
 ALTER TABLE afastamento ADD CONSTRAINT afastamento_pkey PRIMARY KEY(id);
@@ -2105,11 +2107,13 @@ ALTER TABLE historicoambiente_epc ADD CONSTRAINT historicoambiente_epc_epc_fk FO
 CREATE TABLE medicaorisco (
 	id bigint NOT NULL,
     data date,
-    ambiente_id bigint
+    ambiente_id bigint,
+    funcao_id bigint
 );
 
 ALTER TABLE medicaorisco ADD CONSTRAINT medicaorisco_pkey PRIMARY KEY(id);
 ALTER TABLE medicaorisco ADD CONSTRAINT medicaorisco_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);
+ALTER TABLE medicaorisco ADD CONSTRAINT medicaorisco_funcao_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);
 CREATE SEQUENCE medicaorisco_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE riscomedicaorisco (
@@ -2210,7 +2214,8 @@ CREATE TABLE parametrosdosistema (
     camposCandidatoObrigatorio text,
     camposCandidatoTabs text,
     compartilharColaboradores boolean default true,
-    compartilharCandidatos boolean default true
+    compartilharCandidatos boolean default true,
+    proximaversao date
 );
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
 ALTER TABLE parametrosdosistema ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
@@ -2466,7 +2471,7 @@ ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompete
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_candidato_fk FOREIGN KEY (candidato_id) REFERENCES candidato(id);
-ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configuracaoNivelCompetencia_configuracaoNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configNivelCompetencia_configNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);
 CREATE SEQUENCE configuracaoNivelCompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE colaboradorperiodoexperienciaavaliacao (
@@ -2568,3 +2573,59 @@ select id, nome, empresa_id, observacao, 'C' as tipo from conhecimento union
 select id, nome, empresa_id, observacao, 'H' as tipo from habilidade union 
 select id, nome, empresa_id, observacao, 'A' as tipo from atitude 
 order by id;
+
+CREATE TABLE gerenciadorcomunicacao_usuario (
+    gerenciadorcomunicacao_id bigint NOT NULL,
+    usuarios_id bigint NOT NULL
+);
+ALTER TABLE ONLY gerenciadorcomunicacao_usuario ADD CONSTRAINT gerenciadorcomunicacao_usuario_gerenciadorcomunicacao_fk FOREIGN KEY (gerenciadorcomunicacao_id) REFERENCES gerenciadorcomunicacao(id);
+ALTER TABLE ONLY gerenciadorcomunicacao_usuario ADD CONSTRAINT gerenciadorcomunicacao_usuario_usuario_fk FOREIGN KEY (usuarios_id) REFERENCES usuario(id);
+
+CREATE TABLE solicitacaoepiitementrega (
+	id bigint NOT NULL,
+	solicitacaoepiitem_id bigint NOT NULL,
+	qtdEntregue integer NOT NULL,
+	dataEntrega date NOT NULL,
+	epihistorico_id bigint
+);
+
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_pkey PRIMARY KEY (id);
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_solicitacaoepi_item_fk FOREIGN KEY (solicitacaoepiitem_id) REFERENCES solicitacaoepi_item(id);
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_epihistorico_fk FOREIGN KEY (epihistorico_id) REFERENCES epihistorico(id);
+CREATE SEQUENCE solicitacaoepiitementrega_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE OR REPLACE VIEW situacaosolicitacaoepi AS 
+ SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, 
+        CASE
+            WHEN sub.qtdsolicitado <= sub.qtdentregue THEN 'E'::text
+            WHEN sub.qtdentregue > 0 AND sub.qtdentregue < sub.qtdsolicitado THEN 'P'::text
+            WHEN sub.qtdentregue = 0 THEN 'A'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacao
+   FROM ( SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, se.data AS solicitacaoepidata, ca.nome AS cargonome, ( SELECT sum(sei2.qtdsolicitado) AS sum
+                   FROM solicitacaoepi_item sei2
+                  WHERE sei2.solicitacaoepi_id = se.id) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), 0::bigint) AS qtdentregue
+           FROM solicitacaoepi se
+      LEFT JOIN solicitacaoepi_item sei ON sei.solicitacaoepi_id = se.id
+   LEFT JOIN solicitacaoepiitementrega seie ON seie.solicitacaoepiitem_id = sei.id
+   LEFT JOIN colaborador c ON se.colaborador_id = c.id
+   LEFT JOIN historicocolaborador hc ON c.id = hc.colaborador_id
+   LEFT JOIN estabelecimento est ON hc.estabelecimento_id = est.id
+   LEFT JOIN cargo ca ON se.cargo_id = ca.id
+  WHERE hc.data = (( SELECT max(hc2.data) AS max
+   FROM historicocolaborador hc2
+  WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= current_date)) AND hc.status = 1
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, se.data, ca.id, ca.nome) sub;
+ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;
+
+CREATE TABLE riscofuncao (
+	id bigint NOT NULL,
+    epceficaz boolean,
+    historicofuncao_id bigint,
+    risco_id bigint,
+    periodicidadeexposicao character(1)
+);
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_pkey PRIMARY KEY (id);
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_historicofuncao_fk FOREIGN KEY (historicofuncao_id) REFERENCES historicofuncao(id);
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);
+CREATE SEQUENCE riscofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

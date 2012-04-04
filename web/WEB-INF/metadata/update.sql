@@ -18639,3 +18639,165 @@ alter sequence extintormanutencaoservico_sequence restart with 11;--.go
 insert into migrations values('20120315154757');--.go
 
 update parametrosdosistema set appversao = '1.1.71.65';--.go
+-- versao 1.1.72.66
+
+alter table historicocolaborador add column candidatosolicitacao_id bigint;--.go
+ALTER TABLE ONLY historicocolaborador ADD CONSTRAINT historicocolaborador_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);--.go
+insert into migrations values('20120316170539');--.go
+
+alter table parametrosdosistema add column proximaversao date;--.go
+insert into migrations values('20120320151327');--.go
+
+alter table solicitacaoepi drop column situacaosolicitacaoepi;--.go
+insert into migrations values('20120321110214');--.go
+
+CREATE TABLE gerenciadorcomunicacao_usuario (
+    gerenciadorcomunicacao_id bigint NOT NULL,
+    usuarios_id bigint NOT NULL
+);--go
+ALTER TABLE ONLY gerenciadorcomunicacao_usuario ADD CONSTRAINT gerenciadorcomunicacao_usuario_gerenciadorcomunicacao_fk FOREIGN KEY (gerenciadorcomunicacao_id) REFERENCES gerenciadorcomunicacao(id);--go
+ALTER TABLE ONLY gerenciadorcomunicacao_usuario ADD CONSTRAINT gerenciadorcomunicacao_usuario_usuario_fk FOREIGN KEY (usuarios_id) REFERENCES usuario(id);--go
+insert into migrations values('20120321111539');--.go
+
+CREATE TABLE solicitacaoepiitementrega (
+	id bigint NOT NULL,
+	solicitacaoepiitem_id bigint NOT NULL,
+	qtdEntregue integer NOT NULL,
+	dataEntrega date NOT NULL,
+	epihistorico_id bigint
+);--.go
+
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_pkey PRIMARY KEY (id);--.go
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_solicitacaoepi_item_fk FOREIGN KEY (solicitacaoepiitem_id) REFERENCES solicitacaoepi_item(id);--.go
+ALTER TABLE solicitacaoepiitementrega ADD CONSTRAINT solicitacaoepiitementrega_epihistorico_fk FOREIGN KEY (epihistorico_id) REFERENCES epihistorico(id);--.go 
+CREATE SEQUENCE solicitacaoepiitementrega_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20120309104327');--.go
+insert into migrations values('20120321141549');--.go
+
+insert into solicitacaoepiitementrega 
+select nextval('solicitacaoepiitementrega_sequence'), id, qtdentregue, dataentrega from solicitacaoepi_item where dataentrega is not null;--.go
+insert into migrations values('20120309105446');--.go
+
+ALTER TABLE solicitacaoepi_item DROP COLUMN qtdEntregue;--.go
+ALTER TABLE solicitacaoepi_item DROP COLUMN dataEntrega;--.go
+insert into migrations values('20120309110244');--.go
+
+update solicitacaoepiitementrega ent set epihistorico_id = (select eh.id from solicitacaoepi_item item 
+ inner join epihistorico eh on eh.epi_id = item.epi_id 
+ where item.id=ent.solicitacaoepiitem_id 
+ and eh.data = (select max(data) from epihistorico eh2 where eh2.epi_id = eh.epi_id limit 1));--.go
+insert into migrations values('20120321142934');--.go
+
+update gerenciadorcomunicacao set enviarpara = 17 where operacao=9 and meiocomunicacao=2 and enviarpara=6;--.go
+update gerenciadorcomunicacao set enviarpara = 1 where operacao=9 and meiocomunicacao=1 and enviarpara=10;--.go
+update gerenciadorcomunicacao set enviarpara = 2 where operacao=9 and meiocomunicacao=1 and enviarpara=11;--.go
+insert into migrations values('20120322112156');--.go
+
+insert into gerenciadorcomunicacao_usuario
+ (select g.id, ue.usuario_id from usuarioempresa ue
+ join perfil_papel pp on pp.perfil_id=ue.perfil_id
+ left join gerenciadorcomunicacao g on g.empresa_id = ue.empresa_id and g.operacao=9 and g.meiocomunicacao=1 and g.enviarpara=1
+ where pp.papeis_id=518 and g.id is not null
+ order by g.id, ue.usuario_id);--.go
+delete from perfil_papel where papeis_id in (517,518);--.go
+delete from papel where id in (517,518);--.go
+insert into migrations values('20120322153219');--.go
+
+update gerenciadorcomunicacao set enviarpara = 1 where operacao=17 and meiocomunicacao=1 and enviarpara=16;--.go
+insert into gerenciadorcomunicacao_usuario
+ (select g.id, ue.usuario_id from usuarioempresa ue
+ join perfil_papel pp on pp.perfil_id=ue.perfil_id
+ left join gerenciadorcomunicacao g on g.empresa_id = ue.empresa_id and g.operacao=17 and g.meiocomunicacao=1 and g.enviarpara=1
+ where pp.papeis_id=478 and g.id is not null
+ order by g.id, ue.usuario_id);--.go
+insert into migrations values('20120323132649');--.go
+
+CREATE FUNCTION insert_gerenciador_comunicao() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select e.id as empresaId from empresa e
+		LOOP
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 9, 2, 7);
+		END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insert_gerenciador_comunicao();--.go
+drop function insert_gerenciador_comunicao();--.go 
+insert into migrations values('20120323150553');--.go
+
+CREATE OR REPLACE VIEW situacaosolicitacaoepi AS 
+ SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, 
+        CASE
+            WHEN sub.qtdsolicitado <= sub.qtdentregue THEN 'E'::text
+            WHEN sub.qtdentregue > 0 AND sub.qtdentregue < sub.qtdsolicitado THEN 'P'::text
+            WHEN sub.qtdentregue = 0 THEN 'A'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacao
+   FROM ( SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, se.data AS solicitacaoepidata, ca.nome AS cargonome, ( SELECT sum(sei2.qtdsolicitado) AS sum
+                   FROM solicitacaoepi_item sei2
+                  WHERE sei2.solicitacaoepi_id = se.id) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), 0::bigint) AS qtdentregue
+           FROM solicitacaoepi se
+      LEFT JOIN solicitacaoepi_item sei ON sei.solicitacaoepi_id = se.id
+   LEFT JOIN solicitacaoepiitementrega seie ON seie.solicitacaoepiitem_id = sei.id
+   LEFT JOIN colaborador c ON se.colaborador_id = c.id
+   LEFT JOIN historicocolaborador hc ON c.id = hc.colaborador_id
+   LEFT JOIN estabelecimento est ON hc.estabelecimento_id = est.id
+   LEFT JOIN cargo ca ON se.cargo_id = ca.id
+  WHERE hc.data = (( SELECT max(hc2.data) AS max
+   FROM historicocolaborador hc2
+  WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= current_date)) AND hc.status = 1
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, se.data, ca.id, ca.nome) sub;--.go
+ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;--.go
+insert into migrations values('20120323171701');--.go
+insert into migrations values('20120326093851');--.go
+insert into migrations values('20120327134739');--.go
+insert into migrations values('20120329134351');--.go
+
+update gerenciadorcomunicacao set enviarpara = 1 where operacao=10 and meiocomunicacao=2 and enviarpara=9;--.go
+
+insert into gerenciadorcomunicacao_usuario
+ (select g.id, ue.usuario_id from usuarioempresa ue
+ join perfil_papel pp on pp.perfil_id=ue.perfil_id
+ left join gerenciadorcomunicacao g on g.empresa_id = ue.empresa_id and g.operacao=10 and g.meiocomunicacao=2 and g.enviarpara=1
+ where pp.papeis_id=497 and g.id is not null
+ order by g.id, ue.usuario_id);--.go
+
+delete from perfil_papel where papeis_id in (497);--.go
+delete from papel where id in (497);--.go
+insert into migrations values('20120325030633');--.go
+
+alter table empresa add column controlariscopor character(1) default 'A';--.go
+insert into migrations values('20120327094615');--.go
+
+CREATE TABLE riscofuncao (
+	id bigint NOT NULL,
+    epceficaz boolean,
+    historicofuncao_id bigint,
+    risco_id bigint,
+    periodicidadeexposicao character(1)
+);--.go
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_pkey PRIMARY KEY (id);--.go
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_historicofuncao_fk FOREIGN KEY (historicofuncao_id) REFERENCES historicofuncao(id);--.go
+ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);--.go
+CREATE SEQUENCE riscofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20120327171345');--.go
+insert into migrations values('20120327183352');--.go
+
+update papel set nome = 'Medição de Riscos' where id=450;--.go
+insert into migrations values('20120329093411');--.go
+
+alter table medicaorisco add column funcao_id bigint;--.go
+ALTER TABLE medicaorisco ADD CONSTRAINT medicaorisco_funcao_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);--.go
+insert into migrations values('20120329093801');--.go
+
+alter table afastamento add column absenteismo boolean default false;--.go
+insert into migrations values('20120329164209');--.go
+
+alter table configuracaonivelcompetencia drop constraint configuracaonivelcompetencia_configuracaonivelcompetenciacolabo;--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configNivelCompetencia_configNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);--.go
+insert into migrations values('20120404144633');--.go
+
+update parametrosdosistema set appversao = '1.1.72.66';--.go

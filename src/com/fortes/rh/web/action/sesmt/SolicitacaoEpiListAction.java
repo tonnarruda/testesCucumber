@@ -444,4 +444,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		return situacoesDoColaborador;
 	}
 
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
+	}
+
 }

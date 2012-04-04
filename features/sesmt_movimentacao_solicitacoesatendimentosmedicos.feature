@@ -13,6 +13,7 @@ Funcionalidade: Solicitações/Atendimentos Médicos
     Então eu devo ver o título "Inserir Solicitação/Atendimento Médico"
     E eu seleciono "Colaborador" de "Exames para"
     E eu clico no botão "Pesquisar"
+    E eu seleciono "geraldo" de "Colaborador"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
 

@@ -1,0 +1,2 @@
+alter table configuracaonivelcompetencia drop constraint configuracaonivelcompetencia_configuracaonivelcompetenciacolabo;--.go
+ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configNivelCompetencia_configNivelCompetenciaColaborador_fk FOREIGN KEY (configuracaoNivelCompetenciaColaborador_id) REFERENCES configuracaoNivelCompetenciaColaborador(id);--.go

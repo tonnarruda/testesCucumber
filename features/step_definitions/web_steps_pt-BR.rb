@@ -524,6 +524,7 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
   insert :epihistorico do
     data '01/02/2011'
     ca 'a0a1a2a3'
+    validadeUso 30
     epi :nome => epi_nome
   end
 end

@@ -13,6 +13,7 @@ Funcionalidade: Solicitações de EPI
     Então eu devo ver o título "Inserir Solicitação de EPIs"
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
+    E eu seleciono "geraldo" de "colaborador"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert "Selecione pelo menos um EPI." e clico no ok
     E eu clico no botão "Voltar"
@@ -40,10 +41,15 @@ Funcionalidade: Solicitações de EPI
 
     Então eu clico na linha "geraldo" da imagem "Entrega"
     E eu devo ver o título "Entrega de EPIs"
-    E eu marco "epiIds"
-    E eu seleciono "1" de "selectQtdSolicitado"
+    E eu clico na imagem com o título "Inserir entrega"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Solicitações de EPI"
+    E eu devo ver o alert do confirmar e clico no ok
+    E eu preencho o campo (JS) "dataEntrega" com "28/07/2011"
+    E eu preencho "Qtd. Entregue" com "1"
+    E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Entrega de EPIs"
+    Então eu clico no botão "Voltar"
 
     Então eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Solicitação de EPIs"

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.72.66" data="28/03/2012"><![CDATA[
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Nova opção do filtro por nome do colaborador.
+        - Info. Funcionais > Relatórios > Absenteísmo: Possibilidade de marcar os afastamentos que serão considerardos no cálculo do absenteismo.  
+        - SESMT > Cadastross > Motivos de Afastamentos: Nova opção para marcar o afastamento para considerar no cálculo do absenteísmo.
         - SESMT > Movimentações > Entrega de EPIs: Novo forma de entrega de EPIs salvando historico da data de entrega.
-        - SESMT > Movimentações > Entrega de EPIs: Novo opção para filtrar por categoria de EPIs.
+        - SESMT > Movimentações > Entrega de EPIs: Nova opção do filtro por categoria de EPIs.
+        - SESMT > Movimentações > Solicitação de EPIs: Nova opção do filtro por situação do colaborador.
+        - SESMT > Movimentações > Solicitação de EPIs: Organização da lista de EPI's enfatizando os EPI's vinculados a função referente ao colaborador.
+        - SESMT > Movimentações > Solicitações/Atendimentos Médicos: Organização da lista de exames enfatizando os exames vinculados a função referente ao colaborador.
         - SESMT > Relatórios > PPRA e LTCAT: Novo layout no relatório de LTCAT exibindo ambiente e função.
+        - Utilitários > Cadastros > Empresas: Nova opção para selecionar o controle dos riscos por ambiente ou função.  
         - Utilitários > Configurações > Gerenciador de comunicação: Possibilidade de selecionar usuários na configuração de aviso automático das avaliações do período de experiência a vencer.
         - Utilitários > Configurações > Gerenciador de comunicação: Nova configurações de aviso ao responder período de experiência, para caixa de mensagem, aos usuários selecionados.
     ]]></Versao>

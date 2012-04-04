@@ -44,7 +44,7 @@ Funcionalidade: Cadastrar Avaliações de Desempenho
     E eu devo ver "_avaliacao 2 (Clone)"
 
     Então eu clico na linha "_avaliacao 2" da imagem "Liberar"
-    E eu devo ver o alert do confirmar e clico no ok
+    E eu devo ver "Não foi possível liberar esta avaliação: número insuficiente de participantes. Verifique se os participantes foram desligados."
 
     Então eu clico em excluir "_avaliacao 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok

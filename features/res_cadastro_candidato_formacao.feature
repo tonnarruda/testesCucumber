@@ -14,7 +14,7 @@ Funcionalidade: Cadastrar Candidato
     Quando eu aperto "inserirFormacao"
     E eu devo ver "Inserir Formação"
     Quando eu clico no botão "Gravar"
-	Então eu devo ver o alert do valida campos e clico no ok
+	Então eu devo ver o alert do confirmar e clico no ok
 	E eu seleciono "Artes" de "Área de Formação"
 	E eu preencho "Curso" com "java"
 	E eu preencho "Instituição de ensino" com "unifor"
