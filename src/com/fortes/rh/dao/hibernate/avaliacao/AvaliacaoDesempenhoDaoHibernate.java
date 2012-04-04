@@ -123,6 +123,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
@@ -153,6 +154,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		if(liberada != null)
 			criteria.add(Expression.eq("a.liberada", liberada));
 
+		criteria.addOrder(Order.desc("a.inicio"));
 		criteria.addOrder(Order.asc("a.titulo"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
