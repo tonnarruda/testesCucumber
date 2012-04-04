@@ -164,7 +164,7 @@ public class AspectoManagerImpl extends GenericManagerImpl<Aspecto, AspectoDao> 
 		StringBuilder nomes = new StringBuilder();
 		for (String nome : aspectosNomes) 
 		{
-			nomes.append("<a href=\"#\" name=\""+ nome +"\" onclick=\"setAspecto(this.name)\">" + nome + "</a><br>");
+			nomes.append("<a href=\"#\" onclick=\"setAspecto(this.innerText)\">" + nome.replaceAll("\'", "\"") + "</a><br>");
 		}
 		
 		return nomes.toString();
