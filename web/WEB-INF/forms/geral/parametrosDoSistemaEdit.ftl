@@ -6,7 +6,7 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','diasLembretePesquisa','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','diasLembretePesquisa','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -111,13 +111,13 @@
 
 	
 	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
-	<#if usuarioId?exists>
-		<@ww.datepicker label="Data da Versão" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />	
+	<#if usuarioId?exists && usuarioId?string == "1">
+		<@ww.datepicker label="Data da Versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />	
 	</#if>
 </@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos}" class="btnGravar" accesskey="${accessKey}">
+		<button type="button" onclick="${validarCampos}" class="btnGravar" accesskey="${accessKey}">
 		</button>
 	</div>
 

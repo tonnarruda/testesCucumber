@@ -100,7 +100,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		if (parametrosDoSistemaAux.getModulos() != null)
 			parametrosDoSistema.setModulos(parametrosDoSistemaAux.getModulos());
 		
-		if(parametrosDoSistema.getProximaVersao() == null)
+		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
 			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
 
 		parametrosDoSistemaManager.update(parametrosDoSistema);
