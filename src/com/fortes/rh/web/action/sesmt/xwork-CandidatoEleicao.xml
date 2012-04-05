@@ -45,6 +45,7 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">lista_frequencia_colaborador.pdf</param>
 			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/candidatoEleicaoList.ftl</result>
 		</action>
 		
 	</package>

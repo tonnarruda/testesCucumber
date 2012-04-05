@@ -12,6 +12,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.CandidatoEleicaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
@@ -190,10 +191,17 @@ public class CandidatoEleicaoListAction extends MyActionSupportList
 			Date votacaoFim = eleicao.getVotacaoFim();
 			
 			historicoColaboradors = historicoColaboradorManager.findImprimirListaFrequencia(estabelecimento, votacaoIni, votacaoFim);
+			if (historicoColaboradors.isEmpty())
+				throw new FortesException("Não existem colaboradores neste estabelecimento para o período de votação.");				
 			
-			String filtro = eleicao.getDescricao() + " \n " + DateUtil.formataDiaMesAno(votacaoIni) + " á " + DateUtil.formataDiaMesAno(votacaoFim);
+			String filtro = eleicao.getDescricao() + " \n " + DateUtil.formataDiaMesAno(votacaoIni) + " à " + DateUtil.formataDiaMesAno(votacaoFim);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Frequência ", getEmpresaSistema(), filtro);
+		} catch (FortesException e) {
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			list();
+			return Action.INPUT;
 		} catch (Exception e) {
 			addActionError("Erro ao gerar relatório: " + e.getMessage());
 			e.printStackTrace();

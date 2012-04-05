@@ -950,12 +950,15 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		StringBuilder hql = new StringBuilder();
 		hql	.append("select new HistoricoColaborador(hc.id, c.nome,hc.areaOrganizacional.nome) ")
 			.append("from HistoricoColaborador as hc ")
+			.append("inner join hc.estabelecimento as est ")
 			.append("left join hc.colaborador as c ")
 			.append("where c.dataAdmissao <= :votacaoFim ")
+			.append("	and c.empresa.id = est.empresa.id ")
 			.append("	and (c.desligado is false or (c.desligado is true and c.dataDesligamento between :votacaoIni and :votacaoFim)) ")
 			.append("	and hc.status = :status ")
+			.append("	and hc.estabelecimento.id = :estabelecimento ")
 			.append("	and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = c.id ")
-			.append("					and hc2.data <= :votacaoFim and hc2.estabelecimento.id = :estabelecimento ")
+			.append("					and hc2.data <= :votacaoFim ")
 			.append("					and hc2.status = :status) ")
 			.append("	or hc.data is null ")
 			.append("order by c.nome");
