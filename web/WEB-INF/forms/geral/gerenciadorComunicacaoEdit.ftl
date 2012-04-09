@@ -21,27 +21,10 @@
     	@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
     	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
     	
-    	.addDias {
-    		margin-left: 7px;
-    	}
-    	
-    	.dias{
-    		background-color: #DEDEDE;
-    		padding: 2px 3px;
-    	}
-    	
-    	.del {
-    		cursor: pointer;
-    		background-color: #DEDEDE;
-    		padding: 2px 3px;
-    		margin-right: 4px;
-    	}
-    	
-    	.del:hover
-		{
-			text-decoration: none;
-    		background-color: #CCC;
-		}
+    	.addDias { margin-left: 7px; }
+    	.dias { background-color: #DEDEDE; padding: 2px 3px; }
+    	.del { cursor: pointer; background-color: #DEDEDE; padding: 2px 3px; margin-right: 4px; }
+    	.del:hover { text-decoration: none; background-color: #CCC; }
   	</style>
 		
 	<script type="text/javascript">
@@ -173,7 +156,7 @@
 		
 		function exibeCampoQtdDiasLembrete(operacaoId)
 		{
-			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId});
+			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId});
 		}
 		
 		function addDia(qtd)
@@ -198,16 +181,9 @@
 				
 				<#if gerenciadorComunicacao.qtdDiasLembrete?exists && gerenciadorComunicacao.qtdDiasLembrete != "">
 					var arrayDias = $('${gerenciadorComunicacao.qtdDiasLembrete}'.split('&')).map(function(item) { return parseInt(this); });
-					
-					arrayDias.sort(function(a, b) {  
-					    return a - b;  
-					});  
-					
-					$(arrayDias).each(function(){
-						addDia(this);
-					});
+					arrayDias.sort(function(a, b) { return a - b; });  
+					$(arrayDias).each(function(){ addDia(this); });
 				</#if>
-				
 			<#else>
 				<#if gerenciadorComunicacao?exists && gerenciadorComunicacao.operacao?exists>
 					$('#operacao').val(${gerenciadorComunicacao.operacao});
@@ -264,7 +240,7 @@
 				<span id="configDias"></span>
 				<span class="addDias">
 					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
-					<img src="<@ww.url includeParams="none" value="/imgs/mais.gif"/>" border="0" align="absMiddle" onclick="addDia($('#qtdDias').val())" />
+					<img title="Inserir configuração" src="<@ww.url includeParams="none" value="/imgs/mais.gif"/>" border="0" align="absMiddle" onclick="addDia($('#qtdDias').val())" style="cursor:pointer;" />
 				</span> 				
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />

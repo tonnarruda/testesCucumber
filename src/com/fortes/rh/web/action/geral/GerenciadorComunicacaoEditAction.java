@@ -12,7 +12,6 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
-import com.fortes.rh.test.dicionario.OperacaoTest;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -134,6 +133,10 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	
 	public int getLembreteQuestionarioNaoLiberadoId(){
 		return Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId();
+	}
+
+	public int getAvaliacaoPeriodoExperienciaVencendoId(){
+		return Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId();
 	}
 	
 	public GerenciadorComunicacao getGerenciadorComunicacao()

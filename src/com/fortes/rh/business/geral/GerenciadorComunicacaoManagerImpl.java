@@ -461,58 +461,60 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaManager.findAll();
-		Collection<Integer> diasLembrete = parametrosDoSistemaManager.getDiasLembretePeriodoExperiencia();
 		
-		for (Integer diaLembrete : diasLembrete)
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), null);
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
-			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
+			Collection<Integer> diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+			for (Integer diaLembrete : diasLembrete)
 			{
-				Integer dias = periodoExperiencia.getDias() - diaLembrete;
-				if (dias <= 0)
-					continue;
-				
-				Calendar dataAvaliacao = Calendar.getInstance();
-				dataAvaliacao.add(Calendar.DAY_OF_YEAR, +diaLembrete);
-				
- 				Collection<Colaborador> colaboradores = null;
-				
-				try {
-					colaboradores = colaboradorManager.findAdmitidosHaDias(dias, periodoExperiencia.getEmpresa());
-				} catch (Exception e) {
-					e.printStackTrace();
-					return;
-				}
-				
-				Empresa empresa = periodoExperiencia.getEmpresa();
-				Integer diasAvaliacao = periodoExperiencia.getDias();
-				String data = DateUtil.formataDiaMesAno(dataAvaliacao.getTime());
-				
-				for (Colaborador colaborador : colaboradores)
+				for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 				{
-					StringBuilder mensagem = new StringBuilder();
-					mensagem.append("Período de Experiência: ")
-							.append(diaLembrete)
-							.append(" dias para a Avaliação de ").append(diasAvaliacao).append(" dias de ")
-							.append(colaborador.getNome()).append(".\n\n");
+					if (periodoExperiencia.getEmpresa().getId() != gerenciadorComunicacao.getEmpresa().getId())
+						continue;
 					
-					mensagem.append("Lembrete de Avaliação de ")
-							.append(diasAvaliacao)
-							.append(" dias do Período de Experiência.\n")
-							.append("\nColaborador: ").append(colaborador.getNome());
+					Integer dias = periodoExperiencia.getDias() - diaLembrete;
+					if (dias <= 0)
+						continue;
 					
-					if (StringUtils.isNotBlank(colaborador.getNomeComercial()))
-						mensagem.append(" (").append(colaborador.getNomeComercial()).append(") ");
+					Calendar dataAvaliacao = Calendar.getInstance();
+					dataAvaliacao.add(Calendar.DAY_OF_YEAR, +diaLembrete);
 					
-					mensagem.append("\nCargo: ").append(colaborador.getFaixaSalarial().getDescricao())
-							.append("\nÁrea: ").append(colaborador.getAreaOrganizacional().getDescricao())
-							.append("\nData da avaliação: ").append(data);
+	 				Collection<Colaborador> colaboradores = null;
+	 				
+					try {
+						colaboradores = colaboradorManager.findAdmitidosHaDias(dias, periodoExperiencia.getEmpresa());
+					} catch (Exception e) {
+						e.printStackTrace();
+						continue;
+					}
 					
-					String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
+					Integer diasAvaliacao = periodoExperiencia.getDias();
+					String data = DateUtil.formataDiaMesAno(dataAvaliacao.getTime());
 					
-					
-					Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), empresa.getId());
-		    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
-		    		{
+					for (Colaborador colaborador : colaboradores)
+					{
+						StringBuilder mensagem = new StringBuilder();
+						mensagem.append("Período de Experiência: ")
+								.append(diaLembrete)
+								.append(" dias para a Avaliação de ").append(diasAvaliacao).append(" dias de ")
+								.append(colaborador.getNome()).append(".\n\n");
+						
+						mensagem.append("Lembrete de Avaliação de ")
+								.append(diasAvaliacao)
+								.append(" dias do Período de Experiência.\n")
+								.append("\nColaborador: ").append(colaborador.getNome());
+						
+						if (StringUtils.isNotBlank(colaborador.getNomeComercial()))
+							mensagem.append(" (").append(colaborador.getNomeComercial()).append(") ");
+						
+						mensagem.append("\nCargo: ").append(colaborador.getFaixaSalarial().getDescricao())
+								.append("\nÁrea: ").append(colaborador.getAreaOrganizacional().getDescricao())
+								.append("\nData da avaliação: ").append(data);
+						
+						String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
+						
+						
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
 		    			{
 		    				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
@@ -521,13 +523,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    			
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
 		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds());
-		    		}
+					}
 				}
 			}
 		}
 	}
-
-	
 	
 	public void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa) 
 	{
