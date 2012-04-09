@@ -53,10 +53,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String modulos;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
-
-    // dias antes da pesquisa em que será enviado lembrete para quem ainda não respondeu
-    @Column(length=20)
-    private String diasLembretePesquisa;
     
     // dias antes da avaliação de período de experiência para enviar lembrete 
     @Column(length=20)
@@ -80,15 +76,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String camposCandidatoObrigatorio;
     private String camposCandidatoTabs;
     
-	public String getDiasLembretePesquisa()
-	{
-		return diasLembretePesquisa;
-	}
-	public void setDiasLembretePesquisa(String diasLembretePesquisa)
-	{
-		this.diasLembretePesquisa = diasLembretePesquisa;
-	}
-
 	public String getAppContext()
 	{
 		return appContext;

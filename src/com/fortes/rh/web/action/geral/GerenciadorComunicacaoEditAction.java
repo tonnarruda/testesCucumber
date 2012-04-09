@@ -12,6 +12,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
+import com.fortes.rh.test.dicionario.OperacaoTest;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -131,6 +132,10 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return list();
 	}
 	
+	public int getLembreteQuestionarioNaoLiberadoId(){
+		return Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId();
+	}
+	
 	public GerenciadorComunicacao getGerenciadorComunicacao()
 	{
 		if(gerenciadorComunicacao == null)
@@ -157,7 +162,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	{
 		return Operacao.getHashMapGrupos();
 	}
-
+	
 	public TreeMap<Integer, String> getEnviarParas() {
 		return enviarParas;
 	}

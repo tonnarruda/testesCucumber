@@ -1,0 +1,2 @@
+update GerenciadorComunicacao set qtddiaslembrete=(select p.diasLembretePesquisa from parametrosdosistema p) where operacao=8 and (qtddiaslembrete = '' or qtddiaslembrete is null);--.go
+alter table parametrosdosistema drop column diasLembretePesquisa;--.go

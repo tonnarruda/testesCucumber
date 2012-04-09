@@ -18,12 +18,6 @@ import com.fortes.rh.web.ws.AcPessoalClientSistema;
 public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<ParametrosDoSistema, ParametrosDoSistemaDao> implements ParametrosDoSistemaManager
 {
 	private AcPessoalClientSistema acPessoalClientSistema;
-
-	public Collection<Integer> getDiasLembretePesquisa()
-	{
-		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) findAll().toArray()[0];
-		return getIntervaloAviso(parametrosDoSistema.getDiasLembretePesquisa());
-	}
 	
 	public Collection<Integer> getDiasLembretePeriodoExperiencia()
 	{

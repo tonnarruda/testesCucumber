@@ -8,7 +8,6 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoSistema>
 {
-	public Collection<Integer> getDiasLembretePesquisa();
 	public Collection<Integer> getDiasLembretePeriodoExperiencia();
 	public ParametrosDoSistema findByIdProjection(Long id);
 	public boolean getSistemaAtualizado();

@@ -30,6 +30,8 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	
 	@Column(length=200)
     private String destinatario;
+	@Column(length=20)
+	private String qtdDiasLembrete;
 	
 	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class)
 	private Collection<Usuario> usuarios;
@@ -95,5 +97,13 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	}
 	public void setUsuarios(Collection<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public String getQtdDiasLembrete() {
+		return qtdDiasLembrete;
+	}
+
+	public void setQtdDiasLembrete(String qtdDiasLembrete) {
+		this.qtdDiasLembrete = qtdDiasLembrete;
 	}
 }

@@ -37,7 +37,6 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
@@ -224,47 +223,59 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
             }
         }
 	}
-	
+	//TODO refatorar
+	private Collection<Integer> getIntervaloAviso (String diasLembrete) {
+		if (diasLembrete == null)
+			return new ArrayList<Integer>();
+		
+		String[] dias = diasLembrete.split("&");
+		Collection<Integer> result = new ArrayList<Integer>(dias.length);
+		for (String diaLembrete : dias)
+			result.add(Integer.valueOf(diaLembrete.trim()));
+		
+		return result;
+	}
+
+
 	@SuppressWarnings("deprecation")
 	public void enviaLembreteDeQuestionarioNaoLiberado() 
 	{
-    	Collection<Integer> diasLembretePesquisa = parametrosDoSistemaManager.getDiasLembretePesquisa();
 		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId(), null);
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			try
+			{
+				Collection<Integer> diasLembretePesquisa = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
 
-        for (Integer diaLembretePesquisa : diasLembretePesquisa)
-        {
-        	Calendar data = Calendar.getInstance();
-        	data.setTime(new Date());
-        	data.add(Calendar.DAY_OF_MONTH, +diaLembretePesquisa);
+				for (Integer diaLembretePesquisa : diasLembretePesquisa)
+				{
+					Calendar data = Calendar.getInstance();
+					data.setTime(new Date());
+					data.add(Calendar.DAY_OF_MONTH, +diaLembretePesquisa);
 
-	        Collection<Questionario> questionarios = questionarioManager.findQuestionarioNaoLiberados(data.getTime());
+					Collection<Questionario> questionarios = questionarioManager.findQuestionarioNaoLiberados(data.getTime());
 
-	        for (Questionario questionario : questionarios)
-	        {
-	        	try
-	        	{
-	        		String label = TipoQuestionario.getDescricao(questionario.getTipo());
+					for (Questionario questionario : questionarios)
+					{
+						String label = TipoQuestionario.getDescricao(questionario.getTipo());
 
-	        		StringBuilder corpo = new StringBuilder();
-	        		corpo.append("ATENÇÃO:<br>");
-	        		corpo.append("a " + label + questionario.getTitulo() + " está prevista para iniciar no dia " + DateUtil.formataDiaMesAno(questionario.getDataInicio())+".<br>") ;
-	        		corpo.append("Você ainda precisa liberá-la para que os colaboradores possam respondê-la.") ;
+						StringBuilder corpo = new StringBuilder();
+						corpo.append("ATENÇÃO:<br>");
+						corpo.append("a " + label + questionario.getTitulo() + " está prevista para iniciar no dia " + DateUtil.formataDiaMesAno(questionario.getDataInicio())+".<br>") ;
+						corpo.append("Você ainda precisa liberá-la para que os colaboradores possam respondê-la.") ;
 
-	        		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId(), questionario.getEmpresa().getId());
-	        		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	        			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
-	        				mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, questionario.getEmpresa().getEmailRespRH());
-	        			} 		
-	        		}
+						if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
+							mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, questionario.getEmpresa().getEmailRespRH());
+					}
+				} 		
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 
-	        	}
-	        	catch (Exception e)
-	        	{
-	        		e.printStackTrace();
-	        	}
-	        }
-        }
-		
 	}
 
 	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao) 

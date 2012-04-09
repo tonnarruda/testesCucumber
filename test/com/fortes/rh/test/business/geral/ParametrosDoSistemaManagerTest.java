@@ -75,19 +75,7 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     	parametrosDoSistemaDao.expects(once()).method("disablePapeisIds").isVoid();
     	parametrosDoSistemaManager.disablePapeisIds();
     }
-    
-    public void testGetDiasLembretePesquisa()
-    {
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setDiasLembretePesquisa("1&2&3");
-    	Collection<ParametrosDoSistema> parametrosDoSistemas = new ArrayList<ParametrosDoSistema>();
-    	parametrosDoSistemas.add(parametrosDoSistema);
-    	
-    	parametrosDoSistemaDao.expects(once()).method("findAll").will(returnValue(parametrosDoSistemas));
-    	
-    	Collection<Integer> diasLembrete = parametrosDoSistemaManager.getDiasLembretePesquisa();
-    	assertEquals(3, diasLembrete.size());
-    }
+
     public void testGetDiasLembretePeriodoExperiencia()
     {
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
@@ -99,16 +87,6 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     	
     	Collection<Integer> diasLembrete = parametrosDoSistemaManager.getDiasLembretePeriodoExperiencia();
     	assertEquals(3, diasLembrete.size());
-    }
-    public void testGetDiasLembretePesquisaIsNull()
-    {
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setDiasLembretePesquisa(null);
-    	Collection<ParametrosDoSistema> parametrosDoSistemas = new ArrayList<ParametrosDoSistema>();
-    	parametrosDoSistemas.add(parametrosDoSistema);
-    	parametrosDoSistemaDao.expects(once()).method("findAll").will(returnValue(parametrosDoSistemas));
-    	
-    	assertNull(parametrosDoSistemaManager.getDiasLembretePesquisa());
     }
 
     Empresa empresa = EmpresaFactory.getEmpresa(1L);

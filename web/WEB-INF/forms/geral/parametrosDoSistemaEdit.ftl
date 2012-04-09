@@ -6,7 +6,7 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','diasLembretePesquisa','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -56,10 +56,6 @@
 	<@ww.textfield label="Configuração do Autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="40" maxLength="100" required="true"/>
 	
 	<br/>
-	Alertar sobre liberação de Pesquisas
-	<@ww.textfield theme="simple" name="parametrosDoSistema.diasLembretePesquisa" onkeypress = "return(somenteNumeros(event,'&'));" id="diasLembretePesquisa" maxLength="20" required="true" cssStyle="width:55px; text-align:right;"/>
-	dias antes da data inicial. (Exemplo: 1&2&3) 
-	<br/><br/>
 	
 	Alertar sobre Acompanhamento do Período de Experiência com 
 	<@ww.textfield theme="simple" name="parametrosDoSistema.diasLembretePeriodoExperiencia" onkeypress = "return(somenteNumeros(event,'&'));" id="diasLembretePeriodoExperiencia" maxLength="20" required="true" cssStyle="width:55px; text-align:right;" />

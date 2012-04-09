@@ -20,76 +20,98 @@
 	<style type="text/css">
     	@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
     	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+    	
+    	.addDias {
+    		margin-left: 7px;
+    	}
+    	
+    	.dias{
+    		background-color: #DEDEDE;
+    		padding: 2px 3px;
+    	}
+    	
+    	.del {
+    		cursor: pointer;
+    		background-color: #DEDEDE;
+    		padding: 2px 3px;
+    		margin-right: 4px;
+    	}
+    	
+    	.del:hover
+		{
+			text-decoration: none;
+    		background-color: #CCC;
+		}
   	</style>
 		
 	<script type="text/javascript">
-	function validacoesGerenciadorComunicacao()
-	{
-		var valido = true;
-		
-		$('.campo').css("background-color", "#FFFFFF");
-	
-	 	if($('#operacao').val() == 0)//0(zero) = Operacao.NAO_INFORMADO
+		function validacoesGerenciadorComunicacao()
 		{
-			$('#operacao').css("background-color", "#FFEEC2");
-			valido = false;
-		}
+			var valido = true;
+			
+			$('.campo').css("background-color", "#FFFFFF");
 		
-	 	if($('#meioComunicacoes').val() == 0)
-		{
-			$('#meioComunicacoes').css("background-color", "#FFEEC2");
-			valido = false;
-		}
-		
-	 	if($('#enviarParas').val() == 0)
-		{
-			$('#enviarParas').css("background-color", "#FFEEC2");
-			valido = false;
-		}
-		
-		if(!valido)
-		{
-			jAlert("Selecione os campos indicados.");
-			return false;
-		}	
-	
-		if($('#enviarParas').val() == 1)//EviarPara.USUARIOS = 1
-		{	
-			if(qtdeChecksSelected(document.getElementsByName('form')[0],'usuariosCheck') == 0)
+		 	if($('#operacao').val() == 0)//0(zero) = Operacao.NAO_INFORMADO
 			{
-				$('#listCheckBoxusuariosCheck').css("background-color", "#FFEEC2");
-				jAlert("Preencha o campo indicado.");
-				return false;	
+				$('#operacao').css("background-color", "#FFEEC2");
+				valido = false;
 			}
-		}
-	
-	 	var submeter = true;
-		if($('#enviarParas').val() == 99)//EviarPara.AVULSO = 99
-		{	
-			if($('#destinatario').val() == "")
+			
+		 	if($('#meioComunicacoes').val() == 0)
 			{
-				$('#destinatario').css("background-color", "#FFEEC2");
-				jAlert("Preencha o campo indicado.");
-				return false;	
+				$('#meioComunicacoes').css("background-color", "#FFEEC2");
+				valido = false;
 			}
-		
-			$.each($('#destinatario').val().split(','), function()
+			
+		 	if($('#enviarParas').val() == 0)
 			{
-				if(!validaEmail(this.trim()))
+				$('#enviarParas').css("background-color", "#FFEEC2");
+				valido = false;
+			}
+			
+			if(!valido)
+			{
+				jAlert("Selecione os campos indicados.");
+				return false;
+			}	
+		
+			if($('#enviarParas').val() == 1)//EviarPara.USUARIOS = 1
+			{	
+				if(qtdeChecksSelected(document.getElementsByName('form')[0],'usuariosCheck') == 0)
 				{
-					$('#destinatario').css("background-color", "#FF6347");
-					submeter = false;						
+					$('#listCheckBoxusuariosCheck').css("background-color", "#FFEEC2");
+					jAlert("Preencha o campo indicado.");
+					return false;	
 				}
-			});
+			}
+		
+		 	var submeter = true;
+			if($('#enviarParas').val() == 99)//EviarPara.AVULSO = 99
+			{	
+				if($('#destinatario').val() == "")
+				{
+					$('#destinatario').css("background-color", "#FFEEC2");
+					jAlert("Preencha o campo indicado.");
+					return false;	
+				}
+			
+				$.each($('#destinatario').val().split(','), function()
+				{
+					if(!validaEmail(this.trim()))
+					{
+						$('#destinatario').css("background-color", "#FF6347");
+						submeter = false;						
+					}
+				});
+			}
+			
+			$('#qtdDiasLembrete').val($('.dias').map(function() { return this.innerText }).get().join('&'));
+			
+			if(submeter)
+				document.form.submit();
+			else
+				jAlert("Email(s) inválido(s).");
 		}
-		
-		if(submeter)
-			document.form.submit();
-		else
-			jAlert("Email(s) inválido(s).");
-}
-		
-		
 		
 		function populaMeioComunicacao(operacaoId)
 		{
@@ -103,6 +125,11 @@
 			
 			DWRUtil.removeAllOptions("meioComunicacoes");
 			DWRUtil.addOptions("meioComunicacoes", data);
+			if ($("#meioComunicacoes option").size() == 2)
+			{
+				$("#meioComunicacoes option:last").attr("selected", "selected");
+				$("#meioComunicacoes").change();
+			}
 		}
 
 		function populaEnviarPara(meioComunicacaoId)
@@ -115,6 +142,10 @@
 		{
 			DWRUtil.removeAllOptions("enviarParas");
 			DWRUtil.addOptions("enviarParas", data);
+			if ($("#enviarParas option").size() == 2)
+			{
+				$("#enviarParas option:last").attr("selected", "selected");
+			}
 			$('#enviarParas').change();
 		}
 		
@@ -132,7 +163,7 @@
 
 		function exibeUsuarios(enviarParaId)
 		{
-			if(enviarParaId == 1)//EviarPara.USUARIOS = 1
+			if(enviarParaId == 1)//EnviarPara.USUARIOS = 1
 			{
 				$('#usuariosCheck').show();
 			} else {
@@ -140,11 +171,43 @@
 			}
 		}
 		
+		function exibeCampoQtdDiasLembrete(operacaoId)
+		{
+			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId});
+		}
+		
+		function addDia(qtd)
+		{
+			if ($('.dias[id="' + qtd + '"]').size() == 0)
+				$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)">x</span>');
+			
+			$('#qtdDias').val('').focus();
+		}
+
+		function delDia(item)
+		{
+			$(item).prev().remove();
+			$(item).remove();
+		}
+		
 		$(function(){
 			<#if edicao>
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
 				exibeUsuarios(${gerenciadorComunicacao.enviarPara});
 				$('#operacao').val(${gerenciadorComunicacao.operacao});
+				
+				<#if gerenciadorComunicacao.qtdDiasLembrete?exists && gerenciadorComunicacao.qtdDiasLembrete != "">
+					var arrayDias = $('${gerenciadorComunicacao.qtdDiasLembrete}'.split('&')).map(function(item) { return parseInt(this); });
+					
+					arrayDias.sort(function(a, b) {  
+					    return a - b;  
+					});  
+					
+					$(arrayDias).each(function(){
+						addDia(this);
+					});
+				</#if>
+				
 			<#else>
 				<#if gerenciadorComunicacao?exists && gerenciadorComunicacao.operacao?exists>
 					$('#operacao').val(${gerenciadorComunicacao.operacao});
@@ -157,6 +220,7 @@
 				</#if>
 				exibeCamposEmailsAvulsos(0);
 				exibeUsuarios(0);
+				exibeCampoQtdDiasLembrete(0);
 			</#if>
 		});
 	</script>
@@ -172,7 +236,7 @@
 					<label for="operacao" class="desc">Operação:</label>
 				</div> 
 				<div id="wwctrl_operacao" class="wwctrl">
-					<select name="gerenciadorComunicacao.operacao" id="operacao" class="campo" style="width: 600px;" onchange="populaMeioComunicacao(this.value);">
+					<select name="gerenciadorComunicacao.operacao" id="operacao" class="campo" style="width: 600px;" onchange="populaMeioComunicacao(this.value);exibeCampoQtdDiasLembrete(this.value);">
 						<option value="0">Selecione...</option>
 						<@ww.iterator value="operacoes">
 							<optgroup label="<@ww.property value="key"/>">
@@ -193,6 +257,15 @@
 			</span>
 			<span id="usuariosCheck">
 				<@frt.checkListBox label="Usuários" id="usuariosMarcados" name="usuariosCheck" list="usuariosCheckList"/>
+			</span>
+			<span id="camposQtdDiasLembrete">
+				<@ww.hidden id="qtdDiasLembrete" name="gerenciadorComunicacao.qtdDiasLembrete"/>
+				Dias de antecedência para o aviso: 
+				<span id="configDias"></span>
+				<span class="addDias">
+					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
+					<img src="<@ww.url includeParams="none" value="/imgs/mais.gif"/>" border="0" align="absMiddle" onclick="addDia($('#qtdDias').val())" />
+				</span> 				
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
 			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />
