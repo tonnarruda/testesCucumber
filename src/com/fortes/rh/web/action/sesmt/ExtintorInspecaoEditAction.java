@@ -121,14 +121,19 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 
 	public String list() 
 	{
+		prepareList(getPage(), getPagingSize());
+	
+		return SUCCESS;
+	}
+
+	private void prepareList(int page, int pegingSize) 
+	{
 		if (extintorId != null && extintorId == -1L)
 			extintorId = null;
 		
 		setTotalSize(extintorInspecaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, regularidade));
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		extintorInspecaos = extintorInspecaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, regularidade, localizacao);
-	
-		return SUCCESS;
+		extintorInspecaos = extintorInspecaoManager.findAllSelect(page, pegingSize, getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, regularidade, localizacao);
 	}
 
 	public String delete() throws Exception
@@ -142,7 +147,7 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 
 		try {
 		
-			list();
+			prepareList(0, 0);
 
 			if(extintorInspecaos.isEmpty()){
 				throw new Exception ("Não existe informações com os filtros selecionados para geração do relatório");
