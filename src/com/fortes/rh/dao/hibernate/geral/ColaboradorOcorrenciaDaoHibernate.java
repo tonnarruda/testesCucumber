@@ -202,39 +202,47 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(o.id) as total from ");
-		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
-		sql.append("left join ColaboradorOcorrencia co on ");
-		sql.append("	((datasDoPeriodo.dia between co.dataini and co.datafim) or (co.datafim is null and datasDoPeriodo.dia = co.dataini)) ");
-		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
-			sql.append("	and co.ocorrencia_id in (:ocorrenciasIds) ");
-		sql.append("left join Ocorrencia o on ");
-		sql.append("	o.id = co.ocorrencia_id and o.absenteismo = true ");
-		sql.append("left join Colaborador c on c.id = co.colaborador_id ");
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(co.id) as total ");
+		sql.append("from  ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
+		sql.append("      left join ");
+		sql.append("      ( ");
+		sql.append("			select co.id, co.colaborador_id, co.dataini, co.datafim, co.ocorrencia_id ");
+		sql.append("			from ColaboradorOcorrencia co ");
+		sql.append("			left join Ocorrencia o on o.id = co.ocorrencia_id ");
+		sql.append("            left join Colaborador c on c.id = co.colaborador_id ");
+		
+		sql.append("            left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
+		sql.append("				 and hc.data = ( ");
+		sql.append("				 	select max(hc2.data) ");
+		sql.append("				 	from HistoricoColaborador as hc2 ");
+		sql.append("				 	where hc2.colaborador_id = c.id ");
+		sql.append("						and hc2.data <= :data and hc2.status = :status ");
+		sql.append("				 ) ");
+		sql.append("			where o.absenteismo = true ");
+		sql.append("		    and hc.status = :status ");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			sql.append("	and c.empresa_id in (:empresaIds) ");
-		
-		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
-		sql.append("	and hc.status = :status ");
-		
+			sql.append("	    and c.empresa_id in (:empresaIds) ");
 		if(areasIds != null && !areasIds.isEmpty())
-			sql.append("	and hc.areaorganizacional_id in (:areaIds) ");
+			sql.append("	    and hc.areaorganizacional_id in (:areaIds) ");
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			sql.append("	and hc.estabelecimento_id in (:estabelecimentoIds) ");
+			sql.append("	    and hc.estabelecimento_id in (:estabelecimentoIds) ");
+		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
+			sql.append("	    and co.ocorrencia_id in (:ocorrenciasIds) ");
 		
-		sql.append("	and hc.data = ( ");
-		sql.append("		select max(hc2.data) ");
-		sql.append("		from HistoricoColaborador as hc2 ");
-		sql.append("		where hc2.colaborador_id = c.id ");
-		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		sql.append("	) ");
+		sql.append("      ) as co  ");
+		sql.append("        on     ");
+		sql.append("          (datasDoPeriodo.dia between co.dataini and co.datafim)    ");
+		sql.append("       	  or   ");
+		sql.append("       	  (co.datafim is null and datasDoPeriodo.dia = co.dataini)  ");
+		
+		
 		sql.append("group by date_part('year',dia), date_part('month',dia) ");
 		sql.append("order by date_part('year',dia), date_part('month',dia) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 
-		query.setDate("hoje", new Date());
+		query.setDate("data", dataFim);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);

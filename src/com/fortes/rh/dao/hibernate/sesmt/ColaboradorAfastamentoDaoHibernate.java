@@ -291,39 +291,44 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(a.id) as total from ");
+		sql.append("select date_part('year',dia) as ano, date_part('month',dia) as mes, count(ca.id) as total from ");
 		sql.append(" ( " + diasDoPeriodo + " ) as datasDoPeriodo  ");
-		sql.append("left join ColaboradorAfastamento ca on ");
-		sql.append("	((datasDoPeriodo.dia between ca.inicio and ca.fim) or (ca.fim is null and datasDoPeriodo.dia = ca.inicio)) ");
-		if(afastamentosIds != null && !afastamentosIds.isEmpty())
-			sql.append("	and ca.afastamento_id in (:afastamentosIds) ");
-		sql.append("left join Afastamento a on ");
-		sql.append("	a.id = ca.afastamento_id and a.absenteismo = true ");
-		sql.append("left join Colaborador c on c.id = ca.colaborador_id ");
+		sql.append("      left join ");
+		sql.append("      ( ");
+		sql.append("			select ca.id, ca.colaborador_id, ca.inicio, ca.fim, ca.afastamento_id  ");
+		sql.append("			from ColaboradorAfastamento ca ");
+		sql.append("			left join Afastamento a on  a.id = ca.afastamento_id ");
+		sql.append("            left join Colaborador c on c.id = ca.colaborador_id ");
+		sql.append("            left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
+		sql.append("				and hc.data = ( ");
+		sql.append("					select max(hc2.data) ");
+		sql.append("					from HistoricoColaborador as hc2 ");
+		sql.append("					where hc2.colaborador_id = c.id ");
+		sql.append("						and hc2.data <= :data and hc2.status = :status ");
+		sql.append("				) ");
+		sql.append("		    where a.absenteismo = true ");
+		sql.append("		    and hc.status = :status ");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
-			sql.append("	and c.empresa_id in (:empresaIds) ");
-		
-		sql.append("left join HistoricoColaborador hc on hc.colaborador_id = c.id ");
-		sql.append("	and hc.status = :status ");
-		
+			sql.append("		and c.empresa_id in (:empresaIds) ");
 		if(areasIds != null && !areasIds.isEmpty())
-			sql.append("	and hc.areaorganizacional_id in (:areaIds) ");
+			sql.append("		and hc.areaorganizacional_id in (:areaIds) ");
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
-			sql.append("	and hc.estabelecimento_id in (:estabelecimentoIds) ");
+			sql.append("		and hc.estabelecimento_id in (:estabelecimentoIds) ");
+		if(afastamentosIds != null && !afastamentosIds.isEmpty())
+			sql.append("		and ca.afastamento_id in (:afastamentosIds) ");
 		
-		sql.append("	and hc.data = ( ");
-		sql.append("		select max(hc2.data) ");
-		sql.append("		from HistoricoColaborador as hc2 ");
-		sql.append("		where hc2.colaborador_id = c.id ");
-		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		sql.append("	) ");
+		sql.append("      ) as ca  ");
+		sql.append("        on     ");
+		sql.append("          (datasDoPeriodo.dia between ca.inicio and ca.fim) ");
+		sql.append("       	  or   ");
+		sql.append("       	  (ca.fim is null and datasDoPeriodo.dia = ca.inicio) ");
 		sql.append("group by date_part('year',dia), date_part('month',dia) ");
 		sql.append("order by date_part('year',dia), date_part('month',dia) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 
-		query.setDate("hoje", new Date());
+		query.setDate("data", dataFim);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);

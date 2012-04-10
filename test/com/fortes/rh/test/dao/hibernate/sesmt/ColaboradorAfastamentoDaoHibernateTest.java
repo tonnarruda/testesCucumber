@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -16,6 +17,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -420,6 +422,16 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(new Integer(3), colaboradorAfastamentoResult.getQtdAfastamentos());
 	}
 
+	public void testCountAfastamentosByPeriodo() 
+	{
+		Collection<Long> areasIds = Arrays.asList(1L);
+		Collection<Long> estabelecimentoIds = Arrays.asList(1L, 2L);
+		
+		@SuppressWarnings("unused")
+		Collection<Absenteismo> absenteismo = colaboradorAfastamentoDao.countAfastamentosByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), Arrays.asList(EmpresaFactory.getEmpresa(1L).getId()), estabelecimentoIds, areasIds, null);
+		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
+	}
+	
 	public void setAfastamentoDao(AfastamentoDao afastamentoDao)
 	{
 		this.afastamentoDao = afastamentoDao;
