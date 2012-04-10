@@ -120,6 +120,13 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 
 	public String list()
 	{
+		prepareList(getPage(), getPagingSize());
+
+		return SUCCESS;
+	}
+
+	private void prepareList(int page, int pagingSize) 
+	{
 		if (extintorId != null && extintorId == -1L)
 			extintorId = null;
 
@@ -127,10 +134,8 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 			extintors = extintorManager.findByEstabelecimento(estabelecimentoId, true);
 		
 		setTotalSize(extintorManutencaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno));
-		extintorManutencaos = extintorManutencaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno, localizacao);
+		extintorManutencaos = extintorManutencaoManager.findAllSelect(page, pagingSize, getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno, localizacao);
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-
-		return SUCCESS;
 	}
 
 	public String delete() throws Exception
@@ -144,7 +149,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 
 		try {
 		
-			list();
+			prepareList(0, 0);
 
 			if(extintorManutencaos.isEmpty()){
 				throw new Exception ("Não existe informações com os filtros selecionados para geração do relatório");
