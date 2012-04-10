@@ -10,7 +10,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(18, Operacao.values().length);
+		assertEquals(20, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -39,6 +39,8 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(16));
 		assertEquals("Aviso ao responder período de experiência", Operacao.getDescricaoById(17));
 		assertEquals("Cancelamento da Contratação no AC Pessoal", Operacao.getDescricaoById(18));
+		assertEquals("Notificação de não abertura de solicitação de EPI", Operacao.getDescricaoById(19));
+		assertEquals("Notificação de não entrega da solicitação de EPI", Operacao.getDescricaoById(20));
 	}
 
 	public void testGetMeioComunicacaoById()

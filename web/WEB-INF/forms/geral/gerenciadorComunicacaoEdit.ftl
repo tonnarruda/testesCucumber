@@ -177,6 +177,7 @@
 			<#if edicao>
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
 				exibeUsuarios(${gerenciadorComunicacao.enviarPara});
+				exibeCampoQtdDiasLembrete(${gerenciadorComunicacao.operacao});
 				$('#operacao').val(${gerenciadorComunicacao.operacao});
 				
 				<#if gerenciadorComunicacao.qtdDiasLembrete?exists && gerenciadorComunicacao.qtdDiasLembrete != "">

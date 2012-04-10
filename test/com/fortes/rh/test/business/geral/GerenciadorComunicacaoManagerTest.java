@@ -19,7 +19,6 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -77,7 +76,6 @@ import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -361,12 +359,12 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacao.setEmpresa(empresa);
 		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
 		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 gerenciadorComunicacao.setQtdDiasLembrete("1");
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
-		 parametrosDoSistemaManager.expects(once()).method("getDiasLembretePesquisa").will(returnValue(Arrays.asList(1,2)));
 		 questionarioManager.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(ANYTHING).will(returnValue(questionarios));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId()), eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
@@ -577,19 +575,21 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacao1.setEmpresa(empresa);
 		 gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		 gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		 gerenciadorComunicacao1.setQtdDiasLembrete("1");
 		 
 		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao2.setEmpresa(empresa);
 		 gerenciadorComunicacao2.setUsuarios(usuarios);
 		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 gerenciadorComunicacao2.setQtdDiasLembrete("1");
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2);
 		 
 		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
-		 parametrosDoSistemaManager.expects(once()).method("getDiasLembretePeriodoExperiencia").will(returnValue(Arrays.asList(1)));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();

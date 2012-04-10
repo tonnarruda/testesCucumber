@@ -168,6 +168,22 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	LEMBRETE_ABERTURA_SOLICITACAO_EPI(19, "Notificação de não abertura de solicitação de EPI", "SESMT"){
+		public TreeMap<Integer, String> meioComunicação(){
+
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			return this.getListMeioComunicacao();
+		}
+	},
+	LEMBRETE_ENTREGA_SOLICITACAO_EPI(20, "Notificação de não entrega da solicitação de EPI", "SESMT"){
+		public TreeMap<Integer, String> meioComunicação(){
+
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			return this.getListMeioComunicacao();
+		}
+	},
 	BACKUP_AUTOMATICO(16, "Aviso automático de backup", "Utilitários"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
