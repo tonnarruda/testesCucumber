@@ -2,6 +2,7 @@ package com.fortes.rh.web.ws;
 
 import static org.apache.axis.Constants.XSD_BOOLEAN;
 
+
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
@@ -206,5 +207,34 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		}
 		
 		return result;
+	}
+
+	public boolean solicitacaoDesligamentoAc(TEmpregado empregado, String dataSolicitacaoDesligamento, Empresa empresa) 
+	{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "solicitacaoDesligamento");
+
+			QName qnameEmpregado = new QName(grupoAC.getAcUrlWsdl(), "TEmpregado");
+			call.registerTypeMapping(TEmpregado.class, qnameEmpregado, new BeanSerializerFactory(TEmpregado.class, qnameEmpregado), new BeanDeserializerFactory(TEmpregado.class, qnameEmpregado));
+
+			QName xmltype = new QName("ns1:TEmpregado");
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+			call.addParameter("Empregado", xmltype, ParameterMode.IN);
+			call.addParameter("dataSolicitacaoDesligamento", xmlstring, ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), empregado, dataSolicitacaoDesligamento };
+
+			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+			return result.getSucesso("solicitacaoDesligamento", param, this.getClass()); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

@@ -8,7 +8,9 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction;
@@ -48,6 +50,7 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	
     	action.setParametrosDoSistema(parametrosDoSistema);
+    	action.setUsuarioLogado(UsuarioFactory.getEntity(1L));
     	
     	manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	

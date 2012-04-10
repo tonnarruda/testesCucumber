@@ -4533,6 +4533,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("23", qtdTabelasComEmpresa);
 	}
 
+	public void testAtualizaDataSolicitacaoDesligamentoAc() 
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Date hoje = new Date(); 
+
+		Exception exception = null;
+		try {
+			colaboradorDao.atualizaDataSolicitacaoDesligamentoAc(hoje, colaborador.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}

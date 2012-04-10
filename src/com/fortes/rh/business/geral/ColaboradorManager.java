@@ -180,4 +180,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
+	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, String motivo, Long colaboradorId) throws Exception;
 }

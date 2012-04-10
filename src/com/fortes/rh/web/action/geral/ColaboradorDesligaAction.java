@@ -54,7 +54,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 		return Action.SUCCESS;
 	}
-
+	
 	public String desliga() throws Exception
 	{
 		try {
@@ -65,6 +65,25 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	
 			addActionMessage("Colaborador desligado com sucesso.");
 		
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			prepareUpdate();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String solicitacaoDesligamento() throws Exception
+	{
+		try {
+			if (dataDesligamento.before(colaborador.getDataAdmissao()))
+				throw new Exception("Data de desligamento anterior à data de admissão");
+			
+			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getMotivo(), colaborador.getId());
+			
+			addActionMessage("Solicitação de desligamento enviada com sucesso.");
+			
 		} catch (Exception e) {
 			addActionError(e.getMessage());
 			prepareUpdate();
@@ -179,4 +198,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public void setObservacaoDemissao(String observacaoDemissao) {
 		this.observacaoDemissao = observacaoDemissao;
 	}
+	
+	public Date getDataAtual() {
+		return new Date();
+	}
+	
 }

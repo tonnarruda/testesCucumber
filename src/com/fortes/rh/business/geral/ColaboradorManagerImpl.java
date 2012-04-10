@@ -84,6 +84,7 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -959,19 +960,28 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
+	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, String motivo, Long colaboradorId) throws Exception 
+	{
+		Colaborador colaborador = (Colaborador) find(new String[]{"id"}, new Object[]{colaboradorId}).toArray()[0];
+		TEmpregado empregado = bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC());
+		
+		acPessoalClientColaborador.solicitacaoDesligamentoAc(empregado, DateUtil.formataDiaMesAno(dataSolicitacaoDesligamento), colaborador.getEmpresa());
+		getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, null);
+	}
+	
 	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
-
+		
 		try
 		{
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
 			getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
-
+			
 			transactionManager.commit(status);
 		}
 		catch (Exception e)

@@ -71,6 +71,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private boolean desligado = false;
 	@Temporal(TemporalType.DATE)
 	private Date dataDesligamento;
+	@Temporal(TemporalType.DATE)
+	private Date dataSolicitacaoDesligamentoAc;
 	@Lob
 	private String observacao;
 	@Temporal(TemporalType.DATE)
@@ -2400,5 +2402,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setStatusAvaliacao(String statusAvaliacao) {
 		this.statusAvaliacao = statusAvaliacao;
+	}
+
+	public Date getDataSolicitacaoDesligamentoAc() {
+		return dataSolicitacaoDesligamentoAc;
+	}
+
+	public void setDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamentoAc) {
+		this.dataSolicitacaoDesligamentoAc = dataSolicitacaoDesligamentoAc;
 	}
 }

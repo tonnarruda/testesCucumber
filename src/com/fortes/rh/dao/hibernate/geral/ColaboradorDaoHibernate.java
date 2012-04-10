@@ -3863,4 +3863,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return StringUtil.converteCollectionToArrayString(query.list());
 	}
+
+	public void atualizaDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, Long colaboradorId) 
+	{
+		String hql = "update Colaborador set dataSolicitacaoDesligamentoAc = :dataSolicitacaoDesligamentoAc where id = :colaboradorId";
+		Query query = getSession().createQuery(hql);
+		query.setDate("dataSolicitacaoDesligamentoAc", dataSolicitacaoDesligamento);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
+	}
 }
