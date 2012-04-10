@@ -223,7 +223,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
             }
         }
 	}
-	//TODO refatorar
+
 	private Collection<Integer> getIntervaloAviso (String diasLembrete) {
 		if (diasLembrete == null)
 			return new ArrayList<Integer>();
@@ -557,6 +557,42 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{	
 				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.PERIODOEXPERIENCIA);
+			}
+		}
+	}
+	
+	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi()
+	{
+		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		
+		StringBuilder mensagem = new StringBuilder();
+		mensagem.append("");
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), null);//acho que não precisa passar empresa, pois se existe uma configuração ela é da empresa então vou usar a empresa da configuracao para as outras consultas
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+			{	
+				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+				//usuarioMensagemManager
+			}
+		}
+	}
+	
+	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi()
+	{
+		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		
+		StringBuilder mensagem = new StringBuilder();
+		mensagem.append("");
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), null);//acho que não precisa passar empresa, pois se existe uma configuração ela é da empresa então vou usar a empresa da configuracao para as outras consultas
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+			{	
+				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+				//usuarioMensagemManager
 			}
 		}
 	}
