@@ -33,9 +33,6 @@ public class BackupCleanerJob implements Job {
 		this.maxDay = maxDay;
 	}
 	
-	/**
-	 * Deleta todos os arquivos de backup antigos.
-	 */
 	public void execute(JobExecutionContext ctx) throws JobExecutionException {
 		File[] files = this.listBackupFiles();
 		if(files != null && files.length > 1)
