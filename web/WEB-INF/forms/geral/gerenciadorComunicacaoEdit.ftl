@@ -22,8 +22,9 @@
     	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
     	
     	.addDias { margin-left: 7px; }
-    	.dias { background-color: #DEDEDE; padding: 2px 5px; margin-right: 4px; }
-    	.del { cursor: pointer; }
+    	.dias { background-color: #DEDEDE; padding: 2px 5px; }
+    	.del { cursor: pointer; background-color: #DEDEDE; padding: 2px 3px; margin-right: 4px; }
+    	.del:hover { text-decoration: none; background-color: #CCC; }
   	</style>
 		
 	<script type="text/javascript">
@@ -160,8 +161,8 @@
 		
 		function addDia(qtd)
 		{
-			if ($('.dias[id="' + qtd + '"]').size() == 0)
-				$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + ' <img class="del" title="Excluir configuração" onclick="delDia(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
+			if (qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
+				$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
 			
 			$('#qtdDias').val('').focus();
 		}
