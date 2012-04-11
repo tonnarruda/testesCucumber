@@ -57,6 +57,7 @@ import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
@@ -78,6 +79,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
@@ -349,41 +351,50 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			empregado.setIdentidadeUF(estado.getSigla());
 		}
 
-		if (colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero() != null)
-			empregado.setTituloNumero(colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero());
-		if (colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao() != null)
-			empregado.setTituloSecao(colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao());
-		if (colaborador.getPessoal().getTituloEleitoral().getTitEleitZona() != null)
-			empregado.setTituloZona(colaborador.getPessoal().getTituloEleitoral().getTitEleitZona());
+		if (colaborador.getPessoal().getTituloEleitoral() != null) {
+			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero() != null)
+				empregado.setTituloNumero(colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero());
+			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao() != null)
+				empregado.setTituloSecao(colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao());
+			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitZona() != null)
+				empregado.setTituloZona(colaborador.getPessoal().getTituloEleitoral().getTitEleitZona());
+		}
 
-		if (colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero() != null)
-			empregado.setCertificadoMilitarNumero(colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero());
-		if (colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie() != null)
-			empregado.setCertificadoMilitarSerie(colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie());
-		if (colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo() != null)
-			empregado.setCertificadoMilitarTipo(colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo());
+		
+		if (colaborador.getPessoal().getCertificadoMilitar() != null) {
+			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero() != null)
+				empregado.setCertificadoMilitarNumero(colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero());
+			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie() != null)
+				empregado.setCertificadoMilitarSerie(colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie());
+			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo() != null)
+				empregado.setCertificadoMilitarTipo(colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo());
+		}
 
-		if (colaborador.getHabilitacao().getNumeroHab() != null)
-			empregado.setHabilitacaoNumero(colaborador.getHabilitacao().getNumeroHab());
-		if (colaborador.getHabilitacao().getEmissao() != null)
-			empregado.setHabilitacaoEmissao(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getEmissao()));
-		if (colaborador.getHabilitacao().getVencimento() != null)
-			empregado.setHabilitacaoVencimento(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getVencimento()));
-		if (colaborador.getHabilitacao().getCategoria() != null)
-			empregado.setHabilitacaoCategoria(colaborador.getHabilitacao().getCategoria());
+		if (colaborador.getHabilitacao() != null) {
+			if (colaborador.getHabilitacao().getNumeroHab() != null)
+				empregado.setHabilitacaoNumero(colaborador.getHabilitacao().getNumeroHab());
+			if (colaborador.getHabilitacao().getEmissao() != null)
+				empregado.setHabilitacaoEmissao(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getEmissao()));
+			if (colaborador.getHabilitacao().getVencimento() != null)
+				empregado.setHabilitacaoVencimento(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getVencimento()));
+			if (colaborador.getHabilitacao().getCategoria() != null)
+				empregado.setHabilitacaoCategoria(colaborador.getHabilitacao().getCategoria());
+		}
 
-		if (colaborador.getPessoal().getCtps().getCtpsNumero() != null)
-			empregado.setCtpsNumero(colaborador.getPessoal().getCtps().getCtpsNumero());
-		if (colaborador.getPessoal().getCtps().getCtpsSerie() != null)
-			empregado.setCtpsSerie(colaborador.getPessoal().getCtps().getCtpsSerie());
-		if (colaborador.getPessoal().getCtps().getCtpsDv() != null)
-			empregado.setCtpsDV(Character.toString(colaborador.getPessoal().getCtps().getCtpsDv()));
-		if (colaborador.getPessoal().getCtps().getCtpsDataExpedicao() != null)
-			empregado.setCtpsDataExpedicao(DateUtil.formataDiaMesAno(colaborador.getPessoal().getCtps().getCtpsDataExpedicao()));
-		if (colaborador.getPessoal().getCtps().getCtpsUf() != null && colaborador.getPessoal().getCtps().getCtpsUf().getId() != null)
-		{
-			Estado estado = estadoManager.findById(colaborador.getPessoal().getCtps().getCtpsUf().getId());
-			empregado.setCtpsUFSigla(estado.getSigla());
+		if (colaborador.getPessoal().getCtps() != null) {
+			if (colaborador.getPessoal().getCtps().getCtpsNumero() != null)
+				empregado.setCtpsNumero(colaborador.getPessoal().getCtps().getCtpsNumero());
+			if (colaborador.getPessoal().getCtps().getCtpsSerie() != null)
+				empregado.setCtpsSerie(colaborador.getPessoal().getCtps().getCtpsSerie());
+			if (colaborador.getPessoal().getCtps().getCtpsDv() != null)
+				empregado.setCtpsDV(Character.toString(colaborador.getPessoal().getCtps().getCtpsDv()));
+			if (colaborador.getPessoal().getCtps().getCtpsDataExpedicao() != null)
+				empregado.setCtpsDataExpedicao(DateUtil.formataDiaMesAno(colaborador.getPessoal().getCtps().getCtpsDataExpedicao()));
+			if (colaborador.getPessoal().getCtps().getCtpsUf() != null && colaborador.getPessoal().getCtps().getCtpsUf().getId() != null)
+			{
+				Estado estado = estadoManager.findById(colaborador.getPessoal().getCtps().getCtpsUf().getId());
+				empregado.setCtpsUFSigla(estado.getSigla());
+			}
 		}
 
 		return empregado;
@@ -965,8 +976,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Colaborador colaborador = (Colaborador) find(new String[]{"id"}, new Object[]{colaboradorId}).toArray()[0];
 		TEmpregado empregado = bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC());
 		
-		acPessoalClientColaborador.solicitacaoDesligamentoAc(empregado, DateUtil.formataDiaMesAno(dataSolicitacaoDesligamento), colaborador.getEmpresa());
-		getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, null);
+//		acPessoalClientColaborador.solicitacaoDesligamentoAc(empregado, DateUtil.formataDiaMesAno(dataSolicitacaoDesligamento), colaborador.getEmpresa());
+		getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, colaboradorId);
+		
 	}
 	
 	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
@@ -2200,6 +2212,24 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado) {
 		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
+	}
+	
+	public Collection<PendenciaAC> findPendencias(Long empresaId) {
+		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
+
+		Collection<Colaborador> colaboradors = getDao().findPendenciasSolicitacaoDesligamentoAC(empresaId);
+
+		for (Colaborador colaborador : colaboradors) {
+			PendenciaAC pendenciaAC = new PendenciaAC();
+			
+			pendenciaAC.setPendencia("Solictação de Desligamento");
+			pendenciaAC.setDetalhes("Solictação de desligamento do colaborador "+colaborador.getNome());
+			pendenciaAC.setStatus(StatusRetornoAC.getDescricao(StatusRetornoAC.AGUARDANDO));
+			
+			pendenciaACs.add(pendenciaAC);
+		}
+
+		return pendenciaACs;
 	}
 	
 	public void setCandidatoNull(Long candidatoId) 

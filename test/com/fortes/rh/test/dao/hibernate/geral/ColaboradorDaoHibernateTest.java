@@ -4550,6 +4550,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertNull(exception);
 	}
 	
+	public void testFindPendenciasSolicitacaoDesligamentoAC() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setDataSolicitacaoDesligamentoAc(DateUtil.criarDataMesAno(01, 01, 2012));
+		colaborador1.setEmpresa(empresa);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaboradorDao.save(colaborador2);
+		
+		assertEquals(1, colaboradorDao.findPendenciasSolicitacaoDesligamentoAC(empresa.getId()).size());
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}

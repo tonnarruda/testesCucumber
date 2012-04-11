@@ -141,6 +141,15 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	CANCELAR_SOLICITACAO_DESLIGAMENTO_AC(21, "Cancelamento de Solicitação de Desligamento no AC Pessoal", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);

@@ -267,6 +267,7 @@ public class Index extends ActionSupport
 			{
 				pendenciaACs.addAll(historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId));
 				pendenciaACs.addAll(faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId));
+				pendenciaACs.addAll(colaboradorManager.findPendencias(empresaId));
 			}
 		}
 	}

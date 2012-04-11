@@ -3873,4 +3873,24 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.executeUpdate();
 	}
+
+	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamentoAc"));
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
+	}
 }

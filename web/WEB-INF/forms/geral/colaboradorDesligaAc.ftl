@@ -26,6 +26,7 @@
 	<@ww.form name="form" action="solicitacaoDesligamento.action" method="POST">
 	
 		<@ww.hidden label="Id" name="colaborador.id" />
+		<@ww.hidden name="colaborador.dataAdmissao" />
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/><br>
 	
 		<@ww.datepicker label="Data da Solicitação de Desligamento" name="dataDesligamento" id="data" cssClass="mascaraData" required="true"/>
