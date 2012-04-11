@@ -22,9 +22,8 @@
     	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
     	
     	.addDias { margin-left: 7px; }
-    	.dias { background-color: #DEDEDE; padding: 2px 3px; }
-    	.del { cursor: pointer; background-color: #DEDEDE; padding: 2px 3px; margin-right: 4px; }
-    	.del:hover { text-decoration: none; background-color: #CCC; }
+    	.dias { background-color: #DEDEDE; padding: 2px 5px; margin-right: 4px; }
+    	.del { cursor: pointer; }
   	</style>
 		
 	<script type="text/javascript">
@@ -162,15 +161,14 @@
 		function addDia(qtd)
 		{
 			if ($('.dias[id="' + qtd + '"]').size() == 0)
-				$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)">x</span>');
+				$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + ' <img class="del" title="Excluir configuração" onclick="delDia(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
 			
 			$('#qtdDias').val('').focus();
 		}
 
 		function delDia(item)
 		{
-			$(item).prev().remove();
-			$(item).remove();
+			$(item).parent().remove();
 		}
 		
 		$(function(){
@@ -241,7 +239,7 @@
 				<span id="configDias"></span>
 				<span class="addDias">
 					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
-					<img title="Inserir configuração" src="<@ww.url includeParams="none" value="/imgs/mais.gif"/>" border="0" align="absMiddle" onclick="addDia($('#qtdDias').val())" style="cursor:pointer;" />
+					<img title="Inserir configuração" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" onclick="addDia($('#qtdDias').val())" style="cursor:pointer;" />
 				</span> 				
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
