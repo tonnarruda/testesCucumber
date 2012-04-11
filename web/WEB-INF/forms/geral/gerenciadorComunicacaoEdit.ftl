@@ -169,7 +169,8 @@
 
 		function delDia(item)
 		{
-			$(item).parent().remove();
+			$(item).prev().remove();
+			$(item).remove();
 		}
 		
 		$(function(){
