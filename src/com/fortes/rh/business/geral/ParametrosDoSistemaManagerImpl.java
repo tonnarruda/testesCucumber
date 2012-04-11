@@ -1,6 +1,5 @@
 package com.fortes.rh.business.geral;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
@@ -19,26 +18,6 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 {
 	private AcPessoalClientSistema acPessoalClientSistema;
 	
-	public Collection<Integer> getDiasLembretePeriodoExperiencia()
-	{
-		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) findAll().toArray()[0];
-		return getIntervaloAviso(parametrosDoSistema.getDiasLembretePeriodoExperiencia());
-	}
-
-	private Collection<Integer> getIntervaloAviso (String diasLembrete) {
-		if (diasLembrete == null)
-		{
-			return null;
-		}
-		String[] dias = diasLembrete.split("&");
-		Collection<Integer> result = new ArrayList<Integer>(dias.length);
-		for (String diaLembrete : dias)
-		{
-			result.add(Integer.valueOf(diaLembrete.trim()));
-		}
-		return result;
-	}
-
 	public ParametrosDoSistema findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);

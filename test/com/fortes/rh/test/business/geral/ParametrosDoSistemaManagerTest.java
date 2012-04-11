@@ -76,19 +76,6 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     	parametrosDoSistemaManager.disablePapeisIds();
     }
 
-    public void testGetDiasLembretePeriodoExperiencia()
-    {
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setDiasLembretePeriodoExperiencia("1&2&3");
-    	Collection<ParametrosDoSistema> parametrosDoSistemas = new ArrayList<ParametrosDoSistema>();
-    	parametrosDoSistemas.add(parametrosDoSistema);
-    	
-    	parametrosDoSistemaDao.expects(once()).method("findAll").will(returnValue(parametrosDoSistemas));
-    	
-    	Collection<Integer> diasLembrete = parametrosDoSistemaManager.getDiasLembretePeriodoExperiencia();
-    	assertEquals(3, diasLembrete.size());
-    }
-
     Empresa empresa = EmpresaFactory.getEmpresa(1L);
     
     public void testGetVersaoWebServiceAC() throws Exception
