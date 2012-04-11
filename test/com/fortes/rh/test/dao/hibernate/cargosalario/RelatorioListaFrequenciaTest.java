@@ -172,10 +172,10 @@ public class RelatorioListaFrequenciaTest extends BaseDaoHibernateTest
 		dadoQueExisteColaboradorNaoDesligadoCom("Bruno", "22/09/2010", matriz);
 
 		dadoQueExisteColaboradorNaoDesligadoCom("Milfont", "10/09/2010", matriz); // fora
-		dadoQueColaboradorMudouDeEstabelecimento(ultimoColaboradorCriado, "22/09/2010", filial);
+		dadoQueColaboradorMudouDeEstabelecimento(ultimoColaboradorCriado, "24/09/2010", filial);
 
 		dadoQueExisteColaboradorNaoDesligadoCom("Barroso", "21/09/2010", matriz); // dentro
-		dadoQueColaboradorMudouDeEstabelecimento(ultimoColaboradorCriado, "22/09/2010", filial);
+		dadoQueColaboradorMudouDeEstabelecimento(ultimoColaboradorCriado, "24/09/2010", filial);
 
 		dadoUmaEleicaoQualquer();
 
