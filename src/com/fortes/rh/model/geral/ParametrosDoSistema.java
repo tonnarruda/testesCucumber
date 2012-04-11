@@ -54,10 +54,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
     
-    // dias antes da avaliação de período de experiência para enviar lembrete 
-    @Column(length=20)
-    private String diasLembretePeriodoExperiencia;
-    
     private Boolean enviarEmail = false;
     private Boolean atualizadoSucesso;
     private Boolean compartilharColaboradores;
@@ -231,12 +227,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setAtualizaPapeisIdsAPartirDe(Long atualizaPapeisIdsAPartirDe) {
 		this.atualizaPapeisIdsAPartirDe = atualizaPapeisIdsAPartirDe;
-	}
-	public String getDiasLembretePeriodoExperiencia() {
-		return diasLembretePeriodoExperiencia;
-	}
-	public void setDiasLembretePeriodoExperiencia(String diasLembretePeriodoExperiencia) {
-		this.diasLembretePeriodoExperiencia = diasLembretePeriodoExperiencia;
 	}
 	
 	/**

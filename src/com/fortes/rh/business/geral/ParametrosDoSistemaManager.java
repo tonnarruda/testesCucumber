@@ -1,14 +1,11 @@
 package com.fortes.rh.business.geral;
 
-import java.util.Collection;
-
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoSistema>
 {
-	public Collection<Integer> getDiasLembretePeriodoExperiencia();
 	public ParametrosDoSistema findByIdProjection(Long id);
 	public boolean getSistemaAtualizado();
 	public boolean verificaCompatibilidadeComWebServiceAC(String versaoAC, String versaoMinimaCompativel);
