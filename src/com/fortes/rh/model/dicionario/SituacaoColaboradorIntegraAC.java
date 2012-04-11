@@ -9,6 +9,7 @@ public class SituacaoColaboradorIntegraAC extends LinkedHashMap
 	private static final String ATIVO = "A";
 	private static final String AGUARDANDO = "G";
 	private static final String CANCELADO = "C";
+	private static final String AGUARDANDO_CONFIRMACAO_DESLIGAMENTO = "U";
 
 	@SuppressWarnings("unchecked")
 	public SituacaoColaboradorIntegraAC()
@@ -18,5 +19,6 @@ public class SituacaoColaboradorIntegraAC extends LinkedHashMap
 		put(DESLIGADO, "Desligado");
 		put(AGUARDANDO, "Aguardando Confirmação");
 		put(CANCELADO, "Cancelado");
+		put(AGUARDANDO_CONFIRMACAO_DESLIGAMENTO, "Aguardando Confirmação de Desligamento");
 	}
 }

@@ -57,7 +57,6 @@ import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
-import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
@@ -86,7 +85,6 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
-import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -639,7 +637,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
 	{
-		return getDao().updateDataDesligamentoByCodigo(codigoAC, empresa, dataDesligamento);
+		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
 	}
 
 	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
@@ -1674,6 +1672,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setMatricula((String) array[3]);
 			colaborador.setDesligado((Boolean) array[4]);
 			colaborador.setDataAdmissao((Date) array[5]);
+			colaborador.setDataSolicitacaoDesligamentoAc((Date) array[13]);
 			colaborador.setPessoal(new Pessoal());
 			colaborador.getPessoal().setCpf((String) array[6]);
 			colaborador.setUsuario(new Usuario());
@@ -2232,6 +2231,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return pendenciaACs;
 	}
 	
+	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) throws Exception
+	{
+		getDao().atualizaDataSolicitacaoDesligamentoAc(null, colaborador.getId());
+		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem);
+	}
+	
+
 	public void setCandidatoNull(Long candidatoId) 
 	{
 		getDao().setCandidatoNull(candidatoId);

@@ -51,7 +51,6 @@ import com.ibm.icu.util.Calendar;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
-@SuppressWarnings("unchecked")
 public class ColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;

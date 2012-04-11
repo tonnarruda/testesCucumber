@@ -418,6 +418,33 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
+	public FeedbackWebService cancelarSolicitacaoDesligamentoAC(TEmpregado empregado, String mensagem)
+	{
+		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
+		try
+		{
+			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
+			
+			if(colaborador == null)
+				return new FeedbackWebService(false, "Erro ao cancelar solicitação de desligamento do empregado.", formataException("Empregado inexistente no RH", null ));
+			
+			Empresa empresa = new Empresa();
+			empresa.setCodigoAC(empregado.getEmpresaCodigoAC());
+			empresa.setGrupoAC(empregado.getGrupoAC());
+			
+			colaborador.setEmpresa(empresa);
+			
+			colaboradorManager.cancelarSolicitacaoDesligamentoAC(colaborador, mensagem);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Erro ao cancelar solicitação de desligamento do empregado.", formataException(parametros, e));
+		}
+	}
+	
 	public FeedbackWebService criarSituacaoEmLote(TSituacao[] situacaos)
 	{
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();

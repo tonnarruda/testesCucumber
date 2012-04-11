@@ -183,4 +183,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, String motivo, Long colaboradorId) throws Exception;
 	public Collection<PendenciaAC> findPendencias(Long empresaId);
+	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) throws Exception;
 }

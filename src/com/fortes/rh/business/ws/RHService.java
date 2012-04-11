@@ -44,6 +44,7 @@ public interface RHService
 	FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC);
 	FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo);
 	FeedbackWebService cancelarContratacao(TEmpregado empregado, TSituacao situacao,  String mensagem);
+	FeedbackWebService cancelarSolicitacaoDesligamentoAC(TEmpregado empregado, String mensagem);
 
 	//Tabela situacao no AC -> SEP
 	FeedbackWebService removerSituacao(TSituacao situacao);

@@ -363,6 +363,11 @@
 	background-image:url(../imgs/btnDesligarColaborador.gif);
 	width: 178px !important;
 }
+.btnSolicitarDesligamento
+{
+	background-image:url(../imgs/btnSolicitarDesligamento.gif);
+	width: 178px !important;
+}
 .btnEditarOpcoesDeResposta
 {
 	background-image:url(../imgs/btnEditarOpcoesDeResposta.gif);
@@ -593,6 +598,7 @@
 .btnEncerrarSolicitacao,
 .btnUpload,
 .btnDesligarColaborador,
+.btnSolicitarDesligamento,
 .btnSolicitacoes,
 .btnListarItens,
 .btnRealizarBackup,

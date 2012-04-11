@@ -36,7 +36,7 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<input type="button" value=" " onclick="enviarForm(this);" class="btnDesligarColaborador" />
+		<input type="button" value=" " onclick="enviarForm(this);" class="btnSolicitarDesligamento" />
 		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
 	</div>
 </body>

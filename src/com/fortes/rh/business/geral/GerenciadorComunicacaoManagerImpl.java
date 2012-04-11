@@ -94,6 +94,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.DESLIGAR_COLABORADOR_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.CONFIGURACAO_LIMITE_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO, empresa));
 		save(new GerenciadorComunicacao(Operacao.BACKUP_AUTOMATICO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
+		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 	}
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
@@ -804,7 +805,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 
-	public void enviaMensagemCancelamentoSolicitacaoDesligamento(Colaborador colaborador, String mensagem) 
+	public void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) 
 	{
 		StringBuilder mensagemFinal = new StringBuilder();
 		mensagemFinal.append("Cancelamento de Solicitação de Desligamento. ");

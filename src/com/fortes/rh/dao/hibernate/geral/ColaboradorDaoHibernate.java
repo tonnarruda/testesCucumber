@@ -1603,9 +1603,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query;
 	}
 
-	public boolean updateDataDesligamentoByCodigo(String codigoac, Empresa empresa, Date data)
+	public boolean desligaByCodigo(String codigoac, Empresa empresa, Date data)
 	{
-		String hql = "update Colaborador set dataDesligamento = :data, " +
+		String hql = "update Colaborador set dataDesligamento = :data, dataSolicitacaoDesligamentoAc = null, " +
 					"desligado = :valor where codigoac = :codigo and empresa = :emp";
 
 		Query query = getSession().createQuery(hql);
@@ -2832,7 +2832,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc ");
+		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc , colab_.dataSolicitacaoDesligamentoAc ");
 		sql.append("from historicoColaborador hc ");
 		sql.append("inner join ");
 		sql.append("( ");
@@ -2917,7 +2917,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(cpfBusca != null && !cpfBusca.trim().equals(""))
 			sql.append("and colab_.cpf like :cpfBusca ");
 
-		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
+		if(situacao != null && !situacao.trim().equals("") && situacao.equals("U"))
+			sql.append("and colab_.dataSolicitacaoDesligamentoAc is not null ");
+		else if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
 			sql.append("and colab_.desligado = :situacao ");
 
 		sql.append(" order by name");
@@ -2952,7 +2954,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("cargoId", cargoId);
 		if(estabelecimentoId != null)
 			query.setLong("estabelecimentoId", estabelecimentoId);
-		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T"))
+		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T") && !situacao.trim().equals("U"))
 		{
 			if(situacao.trim().equals("A"))
 			{

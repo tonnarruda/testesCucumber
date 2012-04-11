@@ -358,13 +358,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.save(colaborador);
 
-		assertTrue(colaboradorDao.updateDataDesligamentoByCodigo("010203", empresa, new Date()));
+		assertTrue(colaboradorDao.desligaByCodigo("010203", empresa, new Date()));
 
 		Colaborador colDesligado = colaboradorDao.findByCodigoAC("010203", empresa);
 		assertNotNull(colDesligado.getDataDesligamento());
 		assertTrue(colDesligado.isDesligado());
 
-		assertTrue(colaboradorDao.updateDataDesligamentoByCodigo("010203", empresa, null));
+		assertTrue(colaboradorDao.desligaByCodigo("010203", empresa, null));
 
 		Colaborador colReligado = colaboradorDao.findByCodigoAC("010203", empresa);
 		assertNull(colReligado.getDataDesligamento());

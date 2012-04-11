@@ -45,5 +45,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa);
 	void insereGerenciadorComunicacaoDefault(Empresa empresa);
 	void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem);
-	void enviaMensagemCancelamentoSolicitacaoDesligamento(Colaborador colaborador, String mensagem);
+	void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem);
 }
