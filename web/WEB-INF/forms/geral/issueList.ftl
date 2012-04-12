@@ -12,11 +12,21 @@
 		$(function(){
 			var labels = ${labels};
 			$(labels).each(function() {
-				$("#containerLabels").append('<span class="label"><span style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
+				$("#containerLabels").append('<span class="label"><span class="lbl" style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
 			});
 			
 			$(".label").click(function(){
-				window.location="list.action?label=" + $(this).text().trim();
+				var buscaLabel = $(this).text().trim();
+				
+				if(buscaLabel == "Todos Fechados")
+				{
+					window.location="list.action?closed=true";
+					return false;			
+				}				
+				
+				if(buscaLabel == "Todos Abertos")
+					buscaLabel = "";
+				window.location="list.action?label=" + buscaLabel;
 			});
 		}); 
 	</script>
@@ -26,7 +36,11 @@
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	<div id="containerLabels"></div>
+	<div id="containerLabels">
+	Filtro:
+	<span class="label"><span class="lbl" style="background-color: #00BFFF;">&nbsp&nbsp</span> Todos Abertos</span>  
+	<span class="label"><span class="lbl" style="background-color: #8B8682;">&nbsp&nbsp</span> Todos Fechados</span>  
+	</div>
 	<br>
 	<@display.table name="issues" id="issue" class="dados">
 		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">

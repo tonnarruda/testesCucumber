@@ -27,11 +27,14 @@ public class IssueManagerImpl implements IssueManager
 	private static final String USERPWD = "suporterh:s1234rh";
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public Collection<Issue> getIssues(String label) {
+	public Collection<Issue> getIssues(String label, boolean closed) {
 		HttpClient client = new HttpClient();
-		String url = URL_ISSUES;
+		String url = URL_ISSUES + "?sort=created&direction=desc";
+
+		if(closed)
+			url += "&state=closed";
 		if(StringUtils.isNotEmpty(label))
-			url += "?labels="+label.replace(" ", "%20");
+			url += "&labels="+label.replace(" ", "%20");
 			
 		GetMethod method = new GetMethod( url );
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  

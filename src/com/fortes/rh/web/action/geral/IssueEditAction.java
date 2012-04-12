@@ -15,6 +15,7 @@ public class IssueEditAction extends MyActionSupportList
 	private IssueManager issueManager;
 	private Issue issue;
 	private String labels;
+	private boolean closed;
 	private String label;
 	private Collection<Issue> issues;
 
@@ -76,7 +77,7 @@ public class IssueEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		labels = issueManager.getLabels();
-		issues = issueManager.getIssues(label);
+		issues = issueManager.getIssues(label, closed);
 		return Action.SUCCESS;
 	}
 	
@@ -112,5 +113,9 @@ public class IssueEditAction extends MyActionSupportList
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public void setClosed(boolean closed) {
+		this.closed = closed;
 	}
 }
