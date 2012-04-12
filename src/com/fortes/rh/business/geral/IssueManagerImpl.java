@@ -15,7 +15,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.model.geral.Issue;
+import com.fortes.rh.model.github.Issue;
 import com.fortes.rh.util.StringUtil;
 
 
@@ -56,10 +56,6 @@ public class IssueManagerImpl implements IssueManager
 		}
 		
 		issues.addAll(cus);
-		for (Issue issue : issues) {
-			System.out.println(issue.getNumber());
-			System.out.println(issue.getLabels());
-		}
 		return issues;
 	}
 	

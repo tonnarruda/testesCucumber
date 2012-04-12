@@ -2,7 +2,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.geral.Issue;
+import com.fortes.rh.model.github.Issue;
 
 
 public interface IssueManager

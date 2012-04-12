@@ -1,8 +1,9 @@
-package com.fortes.rh.model.geral;
+package com.fortes.rh.model.github;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fortes.rh.model.github.Label;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -16,7 +17,7 @@ public class Issue implements Serializable
 	private String closed_at;
 	private String closed_by;
 	private String state;
-	private Object[] labels;
+	private Label[] labels;
 //	private String html_url;
 //	private String assignee;
 //	private String milestone;
@@ -86,19 +87,19 @@ public class Issue implements Serializable
 		this.number = number;
 	}
 
-	public Object[] getLabels() {
-		return labels;
-	}
-
-	public void setLabels(Object[] labels) {
-		this.labels = labels;
-	}
-
 	public String getClosed_by() {
 		return closed_by;
 	}
 
 	public void setClosed_by(String closed_by) {
 		this.closed_by = closed_by;
+	}
+
+	public Label[] getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Label[] labels) {
+		this.labels = labels;
 	}
 }

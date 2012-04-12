@@ -13,8 +13,6 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
 			<result name="success" type="redirect">/geral/issue/list.action</result>
 		</action>
-<<<<<<< HEAD
-=======
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.geral.IssueEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
 		</action>
@@ -22,6 +20,5 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
 			<result name="success" type="redirect">/geral/issue/list.action</result>
 		</action>
->>>>>>> Form para cadastro de issues (incompleto)
 	</package>
 </xwork>

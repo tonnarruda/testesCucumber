@@ -14,11 +14,7 @@
 	<body>
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
-<<<<<<< HEAD
-			<@ww.hidden name="issue.id" />
-=======
 			<@ww.hidden name="issue.number" />
->>>>>>> Form para cadastro de issues (incompleto)
 			
 			<@ww.textfield label="Título" name="issue.title" id="titulo" cssStyle="width: 600px" maxLength="200" required="true"/>
 			<@ww.textarea label="Descrição" name="issue.body" id="body" cssStyle="width: 600px"/>

@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.IssueManager;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.model.geral.Issue;
+import com.fortes.rh.model.github.Issue;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
