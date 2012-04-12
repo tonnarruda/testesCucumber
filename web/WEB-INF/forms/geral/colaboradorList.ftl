@@ -85,11 +85,16 @@
 		<@display.column title="Ações" media="html" class="acao" style = "width:250px;">
 			<#if !colaborador.desligado>
 				<#if integraAc && !colaborador.naoIntegraAc>
+					<img border="0" title="Desligue o colaborador no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+
+<!-- TODO: Descomentar quando implementação estiver pronta no AC Pessoal
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
 						<img border="0" title="Solicitação de desligamento aguardando confirmação no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<#else>
 						<a href="prepareDesligaAC.action?colaborador.id=${colaborador.id}"><img border="0" title="Solicitação de Desligamento do Colaborador no Ac Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
 					</#if>
+-->
+
 				<#else>
 					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
 				</#if>

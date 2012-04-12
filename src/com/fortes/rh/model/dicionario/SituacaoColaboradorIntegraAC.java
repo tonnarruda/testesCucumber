@@ -19,6 +19,7 @@ public class SituacaoColaboradorIntegraAC extends LinkedHashMap
 		put(DESLIGADO, "Desligado");
 		put(AGUARDANDO, "Aguardando Confirmação");
 		put(CANCELADO, "Cancelado");
-		put(AGUARDANDO_CONFIRMACAO_DESLIGAMENTO, "Aguardando Confirmação de Desligamento");
+		// TODO: Descomentar quando implementação estiver pronta no AC Pessoal
+		// put(AGUARDANDO_CONFIRMACAO_DESLIGAMENTO, "Aguardando Confirmação de Desligamento");
 	}
 }
