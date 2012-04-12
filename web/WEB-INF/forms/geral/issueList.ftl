@@ -19,7 +19,7 @@
 		$(function(){
 			var labels = ${labels};
 			$(labels).each(function() {
-				$("#containerLabels").append('<span class="label"><span style="background-color: #'+this.color+';">&nbsp&nbsp</span>' + this.name + '</span> ');
+				$("#containerLabels").append('<span class="label"><span style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
 			});
 			
 			$(".label").click(function(){

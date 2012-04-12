@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if issue.number?exists>
-			<title>Editar Issue</title>
+			<title>Editar Cartão</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir Issue</title>
+			<title>Inserir Cartão</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	

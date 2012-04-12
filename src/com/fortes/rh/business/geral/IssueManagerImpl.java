@@ -31,7 +31,7 @@ public class IssueManagerImpl implements IssueManager
 		HttpClient client = new HttpClient();
 		String url = URLIssues;
 		if(StringUtils.isNotEmpty(label))
-			url += "?labels="+label;
+			url += "?labels="+label.replace(" ", "%20");
 			
 		GetMethod method = new GetMethod( url );
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
