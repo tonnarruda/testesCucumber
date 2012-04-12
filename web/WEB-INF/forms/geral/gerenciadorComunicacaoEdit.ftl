@@ -88,7 +88,7 @@
 				});
 			}
 			
-			$('#qtdDiasLembrete').val($('.dias').map(function() { return this.innerText }).get().join('&'));
+			$('#qtdDiasLembrete').val($('.dias').map(function() { return $(this).text() }).get().join('&'));
 			
 			if(submeter)
 				document.form.submit();
@@ -156,7 +156,8 @@
 		
 		function exibeCampoQtdDiasLembrete(operacaoId)
 		{
-			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId});
+			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} ||
+											   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId});
 		}
 		
 		function addDia(qtd)

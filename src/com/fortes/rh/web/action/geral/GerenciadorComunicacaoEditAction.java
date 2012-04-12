@@ -131,12 +131,24 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return list();
 	}
 	
-	public int getLembreteQuestionarioNaoLiberadoId(){
+	public int getLembreteQuestionarioNaoLiberadoId()
+	{
 		return Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId();
 	}
 
-	public int getAvaliacaoPeriodoExperienciaVencendoId(){
+	public int getAvaliacaoPeriodoExperienciaVencendoId()
+	{
 		return Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId();
+	}
+	
+	public int getLembreteAberturaSolicitacaoEpiId()
+	{
+		return Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId();
+	}
+	
+	public int getLembreteEntregaSolicitacaoEpiId()
+	{
+		return Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId();
 	}
 	
 	public GerenciadorComunicacao getGerenciadorComunicacao()

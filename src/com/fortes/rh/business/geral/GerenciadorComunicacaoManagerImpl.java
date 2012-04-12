@@ -562,14 +562,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi()
+	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi(Long empresaId)
 	{
 		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		
 		StringBuilder mensagem = new StringBuilder();
 		mensagem.append("");
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), null);//acho que não precisa passar empresa, pois se existe uma configuração ela é da empresa então vou usar a empresa da configuracao para as outras consultas
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), empresaId);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
@@ -580,14 +580,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi()
+	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi(Long empresaId)
 	{
 		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		
 		StringBuilder mensagem = new StringBuilder();
 		mensagem.append("");
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), null);//acho que não precisa passar empresa, pois se existe uma configuração ela é da empresa então vou usar a empresa da configuracao para as outras consultas
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), empresaId);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
