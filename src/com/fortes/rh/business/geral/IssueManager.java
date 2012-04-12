@@ -7,7 +7,7 @@ import com.fortes.rh.model.github.Issue;
 
 public interface IssueManager
 {
-	Collection<Issue> getIssues();
+	Collection<Issue> getIssues(String label);
 	String getLabels();
 	void save(Issue issue) throws Exception;
 	Issue findByNumber(String number);

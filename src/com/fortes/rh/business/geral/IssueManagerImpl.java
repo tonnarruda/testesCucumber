@@ -13,6 +13,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.github.Issue;
@@ -26,11 +27,13 @@ public class IssueManagerImpl implements IssueManager
 	private static final String USERPWD = "suporterh:s1234rh";
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public Collection<Issue> getIssues() {
+	public Collection<Issue> getIssues(String label) {
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod( URLIssues );
-		method.setQueryString("");
-
+		String url = URLIssues;
+		if(StringUtils.isNotEmpty(label))
+			url += "?labels="+label;
+			
+		GetMethod method = new GetMethod( url );
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
         method.addRequestHeader("Authorization", "Basic " + StringUtil.encodeString(USERPWD)); 
         

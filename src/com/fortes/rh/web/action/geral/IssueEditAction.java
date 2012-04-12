@@ -15,6 +15,7 @@ public class IssueEditAction extends MyActionSupportList
 	private IssueManager issueManager;
 	private Issue issue;
 	private String labels;
+	private String label;
 	private Collection<Issue> issues;
 
 	private void prepare() throws Exception
@@ -75,7 +76,7 @@ public class IssueEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		labels = issueManager.getLabels();
-		issues = issueManager.getIssues();
+		issues = issueManager.getIssues(label);
 		return Action.SUCCESS;
 	}
 	
@@ -103,5 +104,13 @@ public class IssueEditAction extends MyActionSupportList
 
 	public String getLabels() {
 		return labels;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }
