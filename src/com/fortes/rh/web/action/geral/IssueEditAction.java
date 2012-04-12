@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.IssueManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Issue;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -31,9 +32,22 @@ public class IssueEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String insert() throws Exception
+	public String insert()
 	{
-		return Action.SUCCESS;
+		try {
+			issueManager.save(issue);
+			return Action.SUCCESS;
+		
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao enviar os dados");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception

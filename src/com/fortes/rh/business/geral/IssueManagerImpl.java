@@ -2,16 +2,20 @@ package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Issue;
+import com.fortes.rh.util.StringUtil;
 
 
 public class IssueManagerImpl implements IssueManager
@@ -26,7 +30,7 @@ public class IssueManagerImpl implements IssueManager
 		method.setQueryString("");
 
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
-        method.addRequestHeader("Authorization", "Basic " + new sun.misc.BASE64Encoder().encode(USERPWD.getBytes()));  
+        method.addRequestHeader("Authorization", "Basic " + StringUtil.encodeString(USERPWD)); 
         
 		String issuesJson = "";
 		try {
@@ -56,5 +60,31 @@ public class IssueManagerImpl implements IssueManager
 		issues.addAll(cus);
 		
 		return issues;
+	}
+
+	@SuppressWarnings("deprecation")
+	public void save(Issue issue) throws Exception 
+	{
+		HttpClient client = new HttpClient();
+		PostMethod method = new PostMethod(URL);
+		
+        method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
+        method.addRequestHeader("Authorization", "Basic " + StringUtil.encodeString(USERPWD));
+        
+        Map<Object, Object> params = new HashMap<Object, Object>();
+        params.put("title", issue.getTitle());
+        params.put("body", issue.getBody());
+        
+        method.setRequestBody(StringUtil.toJSON(params, null));
+        
+        try {
+        	int status = client.executeMethod(method);
+        	
+        	if (status != HttpStatus.SC_CREATED)
+        		throw new FortesException("Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status));
+		
+        } finally {
+			method.releaseConnection();
+		}
 	}
 }
