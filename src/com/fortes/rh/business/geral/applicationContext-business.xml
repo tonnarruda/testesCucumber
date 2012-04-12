@@ -914,4 +914,14 @@
       <ref bean="morroManagerTarget" />
     </property>
   </bean>
+  <bean id="issueManagerTarget" class="com.fortes.rh.business.geral.IssueManagerImpl"/>
+  <bean id="issueManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.IssueManager</value>
+    </property>
+	<property name="target">
+      <ref bean="issueManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

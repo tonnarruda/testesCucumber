@@ -339,7 +339,9 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-TipoDespesa.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-Providencia.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-GerenciadorComunicacao.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-Issue.xml" />
 </xwork>
+
 
 
 

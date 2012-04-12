@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="issue" extends="default" namespace="/geral/issue">
+		<action name="list" class="com.fortes.rh.web.action.geral.IssueEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/issueList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.IssueEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.IssueEditAction" method="insert">
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
+			<result name="success" type="redirect">/geral/issue/list.action</result>
+		</action>
+	</package>
+</xwork>
