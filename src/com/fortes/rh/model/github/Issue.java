@@ -24,6 +24,7 @@ public class Issue implements Serializable
 	private Milestone milestone;
 	private PullRequest pull_request;
 	private Label[] labels;
+	private String[] labelNames;
 	
 	public Date getCreated_at_date() {
 		return DateUtil.montaDataByStringJson(created_at);
@@ -147,5 +148,13 @@ public class Issue implements Serializable
 
 	public void setPull_request(PullRequest pull_request) {
 		this.pull_request = pull_request;
+	}
+
+	public String[] getLabelNames() {
+		return labelNames;
+	}
+
+	public void setLabelNames(String[] labelNames) {
+		this.labelNames = labelNames;
 	}
 }

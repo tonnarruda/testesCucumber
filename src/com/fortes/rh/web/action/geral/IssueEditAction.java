@@ -56,7 +56,7 @@ public class IssueEditAction extends MyActionSupportList
 		}
 	}
 
-	public String update()
+	public String update() throws Exception
 	{
 		try {
 			issueManager.save(issue);
@@ -65,11 +65,13 @@ public class IssueEditAction extends MyActionSupportList
 		} catch (FortesException e) {
 			addActionError(e.getMessage());
 			e.printStackTrace();
+			prepareUpdate();
 			return Action.INPUT;
 			
 		} catch (Exception e) {
 			addActionError("Ocorreu um erro ao enviar os dados");
 			e.printStackTrace();
+			prepareUpdate();
 			return Action.INPUT;
 		}
 	}
