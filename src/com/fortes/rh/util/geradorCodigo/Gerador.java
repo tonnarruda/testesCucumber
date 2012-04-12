@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Gerador
 {
-	public final String WORKSPACE = System.getenv("WORKSPACE_FORTESRH");
+	public final String WORKSPACE = "C:\\Users\\Barroso\\Workspaces\\MyEclipse 9\\FortesRH";
 	public final char separator = java.io.File.separatorChar;
 	public String NOME_CLASSE;
 	public String NOME_CLASSE_MINUSCULO;

@@ -6,10 +6,10 @@ import java.io.IOException;
 public class Principal
 {
 							//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "SolicitacaoEpiItemEntrega";
-	public static String NOME_CLASSE_MINUSCULO = "solicitacaoEpiItemEntrega";
-	public static String NOME_PACOTE = "sesmt";
-	public static boolean GERAR_TODOS_ARQUIVOS = false;//gera todos os arquivos ou somente entidade, manager e dao 
+	public static String NOME_CLASSE = "Issue";
+	public static String NOME_CLASSE_MINUSCULO = "issue";
+	public static String NOME_PACOTE = "geral";
+	public static boolean GERAR_TODOS_ARQUIVOS = true;//gera todos os arquivos ou somente entidade, manager e dao 
 	
 	private static final char separator = java.io.File.separatorChar;
 	
