@@ -48,7 +48,6 @@ public class IssueManagerImpl implements IssueManager
 		
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
-			jsonConfig.setExcludes( new String[]{"pull_request", "user", "html_url", "url", "comments", "assignee", "milestone"} );
 			JSONArray arr = JSONArray.fromObject(issuesJson, jsonConfig);
 			issues = (ArrayList<Issue>) JSONArray.toList(arr, Issue.class);
 		} catch (Exception e) {
@@ -81,8 +80,6 @@ public class IssueManagerImpl implements IssueManager
 		Issue issue = new Issue();
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
-			jsonConfig.setExcludes( new String[]{"pull_request", "user", "html_url", "url", "comments", "assignee", "milestone"} );
-			
 			JSONObject obj = JSONObject.fromObject(issueJson, jsonConfig);
 			issue = (Issue) JSONObject.toBean(obj, Issue.class);
 		} catch (Exception e) {

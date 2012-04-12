@@ -17,15 +17,13 @@ public class Issue implements Serializable
 	private String closed_at;
 	private String closed_by;
 	private String state;
+	private String url;
+	private String comments;
+	private User user;
+	private User assignee;
+	private Milestone milestone;
+	private PullRequest pull_request;
 	private Label[] labels;
-//	private String html_url;
-//	private String assignee;
-//	private String milestone;
-//	private String comments;
-//	private String pull_request;
-//	private String user;
-//	private String url;
-//	private String patch_url;
 	
 	public Date getCreated_at_date() {
 		return DateUtil.montaDataByStringJson(created_at);
@@ -101,5 +99,53 @@ public class Issue implements Serializable
 
 	public void setLabels(Label[] labels) {
 		this.labels = labels;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public User getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(User assignee) {
+		this.assignee = assignee;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public Milestone getMilestone() {
+		return milestone;
+	}
+
+	public void setMilestone(Milestone milestone) {
+		this.milestone = milestone;
+	}
+
+	public PullRequest getPull_request() {
+		return pull_request;
+	}
+
+	public void setPull_request(PullRequest pull_request) {
+		this.pull_request = pull_request;
 	}
 }
