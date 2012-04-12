@@ -9,5 +9,9 @@
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.IssueEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
 		</action>
+		<action name="insert" class="com.fortes.rh.web.action.geral.IssueEditAction" method="insert">
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/issueEdit.ftl</result>
+			<result name="success" type="redirect">/geral/issue/list.action</result>
+		</action>
 	</package>
 </xwork>
