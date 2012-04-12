@@ -22,14 +22,14 @@ import com.fortes.rh.util.StringUtil;
 
 public class IssueManagerImpl implements IssueManager
 {
-	private static final String URLIssues = "https://api.github.com/repos/fortesinformatica/FortesRH/issues";
-	private static final String URLLabels = "https://api.github.com/repos/fortesinformatica/FortesRH/labels";
+	private static final String URL_ISSUES = "https://api.github.com/repos/fortesinformatica/FortesRH/issues";
+	private static final String URL_LABELS = "https://api.github.com/repos/fortesinformatica/FortesRH/labels";
 	private static final String USERPWD = "suporterh:s1234rh";
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public Collection<Issue> getIssues(String label) {
 		HttpClient client = new HttpClient();
-		String url = URLIssues;
+		String url = URL_ISSUES;
 		if(StringUtils.isNotEmpty(label))
 			url += "?labels="+label.replace(" ", "%20");
 			
@@ -63,7 +63,7 @@ public class IssueManagerImpl implements IssueManager
 	public Issue findByNumber(String number) 
 	{
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod( URLIssues + "/" + number );
+		GetMethod method = new GetMethod( URL_ISSUES + "/" + number );
 		method.setQueryString("");
 
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
@@ -96,7 +96,7 @@ public class IssueManagerImpl implements IssueManager
 	public void save(Issue issue) throws Exception 
 	{
 		boolean isUpdate = !StringUtil.isBlank(issue.getNumber());
-		String url = URLIssues;
+		String url = URL_ISSUES;
 		
 		if (isUpdate)
 			url += "/" + issue.getNumber();
@@ -124,9 +124,10 @@ public class IssueManagerImpl implements IssueManager
 		}
 	}
 
-	public String getLabels() {
+	public String getLabels() 
+	{
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod( URLLabels );
+		GetMethod method = new GetMethod( URL_LABELS );
 		method.setQueryString("");
 
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  

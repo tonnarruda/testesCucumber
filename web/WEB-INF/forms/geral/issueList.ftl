@@ -4,16 +4,9 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		.label{
-			 padding: 4px;
-			 margin-right: 4px; 
-			 cursor: pointer; 
-		}
-		.label:hover {
-			text-decoration: none;
-			background-color: #DEDEDE;
-		}
-		
+		.label { padding: 4px; margin-right: 4px; cursor: pointer; }
+		.label:hover { text-decoration: none; background-color: #DEDEDE; }
+		.lbl { padding: 2px 4px; margin: 2px; font-size: 9px; font-weight: bold; color: #FFF; border-radius: 3px; }
 	</style>
 	<script type="text/javascript">
 		$(function(){
@@ -49,7 +42,12 @@
 		</@display.column>
 		<@display.column property="number" title="Número" style="width:30px;text-align:center;vertical-align:top;"/>
 		<@display.column property="created_at_date" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px;text-align:center;vertical-align:top;"/>
-		<@display.column property="title" title="Titulo" style="width:200px;vertical-align:top;"/>
+		<@display.column title="Titulo" style="width:200px;vertical-align:top;">
+			${issue.title}
+			<#list issue.labels as label>
+				<span class="lbl" style="background-color:#${label.color};">${label.name}</span>
+			</#list>
+		</@display.column>
 		<@display.column property="body" title="Descrição" style="width:500px;"/>
 	</@display.table>
 	
