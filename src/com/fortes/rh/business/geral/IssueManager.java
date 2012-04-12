@@ -9,4 +9,5 @@ public interface IssueManager
 {
 	Collection<Issue> getIssues();
 	void save(Issue issue) throws Exception;
+	Issue findByNumber(String number);
 }

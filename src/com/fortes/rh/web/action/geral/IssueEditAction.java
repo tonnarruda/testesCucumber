@@ -29,6 +29,9 @@ public class IssueEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		
+		issue = issueManager.findByNumber(issue.getNumber());
+		
 		return Action.SUCCESS;
 	}
 
@@ -50,9 +53,22 @@ public class IssueEditAction extends MyActionSupportList
 		}
 	}
 
-	public String update() throws Exception
+	public String update()
 	{
-		return Action.SUCCESS;
+		try {
+			issueManager.save(issue);
+			return Action.SUCCESS;
+		
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao enviar os dados");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 	}
 
 	public String list() throws Exception

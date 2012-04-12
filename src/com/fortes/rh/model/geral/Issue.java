@@ -8,14 +8,14 @@ import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("serial")
 public class Issue implements Serializable
 {
-	private String id;
+	private String number;
 	private String title;
 	private String body;
 	private String created_at;
 	private String updated_at;
 	private String closed_at;
+	private String closed_by;
 	private String state;
-	private String number;
 	private Object[] labels;
 //	private String html_url;
 //	private String assignee;
@@ -28,14 +28,6 @@ public class Issue implements Serializable
 	
 	public Date getCreated_at_date() {
 		return DateUtil.montaDataByStringJson(created_at);
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
 	}
 	
 	public String getTitle() {
@@ -100,5 +92,13 @@ public class Issue implements Serializable
 
 	public void setLabels(Object[] labels) {
 		this.labels = labels;
+	}
+
+	public String getClosed_by() {
+		return closed_by;
+	}
+
+	public void setClosed_by(String closed_by) {
+		this.closed_by = closed_by;
 	}
 }
