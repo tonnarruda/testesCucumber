@@ -25,13 +25,6 @@ public class Issue implements Serializable
 	private PullRequest pull_request;
 	private Label[] labels;
 	
-	public String getLabelsDesc() {
-		String labelsDesc = "";
-		if(labels.length > 0)
-			labelsDesc = ((Label)labels[0]).getColor();
-		return labelsDesc;
-	}
-	
 	public Date getCreated_at_date() {
 		return DateUtil.montaDataByStringJson(created_at);
 	}

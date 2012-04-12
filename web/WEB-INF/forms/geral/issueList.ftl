@@ -15,13 +15,6 @@
 				$("#containerLabels").append('<span class="label"><span style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
 			});
 			
-			$('#issue :hidden').each(function(){
-				var cor = $(this).attr('class')
-				if(cor != "")
-					$(this).parent().append('<span style="background-color: #'+cor+';">&nbsp&nbsp</span>');
-			});
-			
-			
 			$(".label").click(function(){
 				window.location="list.action?label=" + $(this).text().trim();
 			});
@@ -38,7 +31,6 @@
 	<@display.table name="issues" id="issue" class="dados">
 		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">
 			<a href="prepareUpdate.action?issue.number=${issue.number}"><img border="0" align='absMiddle' title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<hidden class="${issue.labelsDesc}"/>
 		</@display.column>
 		<@display.column property="number" title="Número" style="width:30px;text-align:center;vertical-align:top;"/>
 		<@display.column property="created_at_date" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px;text-align:center;vertical-align:top;"/>
