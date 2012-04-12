@@ -21,13 +21,14 @@ import com.fortes.rh.util.StringUtil;
 
 public class IssueManagerImpl implements IssueManager
 {
-	private static final String URL = "https://api.github.com/repos/fortesinformatica/FortesRH/issues";
+	private static final String URLIssues = "https://api.github.com/repos/fortesinformatica/FortesRH/issues";
+	private static final String URLLabels = "https://api.github.com/repos/fortesinformatica/FortesRH/labels";
 	private static final String USERPWD = "suporterh:s1234rh";
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public Collection<Issue> getIssues() {
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod( URL );
+		GetMethod method = new GetMethod( URLIssues );
 		method.setQueryString("");
 
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
@@ -60,7 +61,7 @@ public class IssueManagerImpl implements IssueManager
 	public Issue findByNumber(String number) 
 	{
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod( URL + "/" + number );
+		GetMethod method = new GetMethod( URLIssues + "/" + number );
 		method.setQueryString("");
 
         method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
@@ -95,7 +96,7 @@ public class IssueManagerImpl implements IssueManager
 	public void save(Issue issue) throws Exception 
 	{
 		boolean isUpdate = !StringUtil.isBlank(issue.getNumber());
-		String url = URL;
+		String url = URLIssues;
 		
 		if (isUpdate)
 			url += "/" + issue.getNumber();
@@ -121,5 +122,26 @@ public class IssueManagerImpl implements IssueManager
         } finally {
 			method.releaseConnection();
 		}
+	}
+
+	public String getLabels() {
+		HttpClient client = new HttpClient();
+		GetMethod method = new GetMethod( URLLabels );
+		method.setQueryString("");
+
+        method.addRequestHeader("Content-Type", "application/json; charset=utf-8");  
+        method.addRequestHeader("Authorization", "Basic " + StringUtil.encodeString(USERPWD)); 
+        
+		String labelsJson = "";
+		try {
+			client.executeMethod( method );
+			labelsJson = method.getResponseBodyAsString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			method.releaseConnection();
+		}
+		
+		return labelsJson;
 	}
 }

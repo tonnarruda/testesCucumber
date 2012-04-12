@@ -4,14 +4,29 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		.label{
+			 padding: 4px;
+			 margin-right: 4px; 
+			 cursor: pointer; 
+		}
+		
 	</style>
-
+	<script type="text/javascript">
+		$(function(){
+			var labels = ${labels};
+			$(labels).each(function() {
+				$("#containerLabels").append('<span class="label"><span style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
+			});
+		}); 
+	</script>
+	
 	<title>Cartões</title>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	
+	<div id="containerLabels"></div>
+	<br>
 	<@display.table name="issues" id="issue" class="dados">
 		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">
 			<a href="prepareUpdate.action?issue.number=${issue.number}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>

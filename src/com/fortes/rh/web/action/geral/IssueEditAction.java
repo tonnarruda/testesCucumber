@@ -14,6 +14,7 @@ public class IssueEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	private IssueManager issueManager;
 	private Issue issue;
+	private String labels;
 	private Collection<Issue> issues;
 
 	private void prepare() throws Exception
@@ -73,6 +74,7 @@ public class IssueEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		labels = issueManager.getLabels();
 		issues = issueManager.getIssues();
 		return Action.SUCCESS;
 	}
@@ -97,5 +99,9 @@ public class IssueEditAction extends MyActionSupportList
 	public Collection<Issue> getIssues()
 	{
 		return issues;
+	}
+
+	public String getLabels() {
+		return labels;
 	}
 }
