@@ -501,6 +501,19 @@ public class DateUtil
 			throw new IllegalArgumentException("Data inválida.");
 		}
 	}
+	
+	public static Date montaDataByStringJson(String dataStr)
+	{
+		try {
+			dataStr = dataStr.substring(0, 10);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date result = sdf.parse(dataStr);
+			return result;
+			
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Data inválida.");
+		}
+	}
 
 	private static boolean possuiPossivelErroDeDigitacao(String dataStr) {
 		Pattern pattern = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");

@@ -181,6 +181,15 @@ public class DateUtilTest extends TestCase
 		assertEquals("Test 3", 108, data.getYear());
 	}
 	
+	public void testMontaDataByStringJson() throws Exception
+	{
+		Date data = DateUtil.montaDataByStringJson("2008-04-09T11:52:34Z");
+		
+		assertEquals("Test 1", 9, data.getDate());
+		assertEquals("Test 2", 03, data.getMonth());
+		assertEquals("Test 3", 108, data.getYear());
+	}
+	
 	public void testIncrementaDias() throws Exception
 	{
 		Date data = DateUtil.montaDataByString("05/02/2009");

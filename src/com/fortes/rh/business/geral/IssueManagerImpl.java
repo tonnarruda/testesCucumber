@@ -43,7 +43,7 @@ public class IssueManagerImpl implements IssueManager
 		
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
-			jsonConfig.setExcludes( new String[]{ "state","pull_request", "user", "html_url", "url", "updated_at", "closed_at", "comments", "assignee", "labels", "number", "milestone", "created_at"} );
+			jsonConfig.setExcludes( new String[]{"pull_request", "user", "html_url", "url", "comments", "assignee", "milestone"} );
 			
 //			issuesJson = "[{'id':'2', 'body': 'sas', 'title': 'teste','pull_request':{'patch_url':'da'}}, {'id':'3', 'body': 'sasfdas', 'title': 'testeafdsa','pull_request':{'patch_url':'dasfd'}}]";
 			

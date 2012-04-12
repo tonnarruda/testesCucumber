@@ -13,11 +13,13 @@
 	<@ww.actionerror />
 	
 	<@display.table name="issues" id="issue" class="dados">
-		<@display.column title="Ações" class="acao">
+		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">
 			<a href="prepareUpdate.action?issue.id=${issue.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?issue.id=${issue.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
-		<@display.column property="title" title="Titulo"/>
+		<@display.column property="number" title="Número" style="width:30px;text-align:center;vertical-align:top;"/>
+		<@display.column property="created_at_date" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px;text-align:center;vertical-align:top;"/>
+		<@display.column property="title" title="Titulo" style="width:200px;vertical-align:top;"/>
+		<@display.column property="body" title="Descrição" style="width:500px;"/>
 	</@display.table>
 	
 	<div class="buttonGroup">
