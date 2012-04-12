@@ -3,6 +3,8 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Transient;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
@@ -41,7 +43,6 @@ public class IssueManagerImpl implements IssueManager
 		
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
-			
 			JSONArray arr = JSONArray.fromObject(issuesJson, jsonConfig);
 			cus = (ArrayList<Issue>) JSONArray.toList(arr, Issue.class);
 		} catch (Exception e) {

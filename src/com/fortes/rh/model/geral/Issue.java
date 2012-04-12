@@ -2,6 +2,8 @@ package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
 
+import javax.persistence.Transient;
+
 @SuppressWarnings("serial")
 public class Issue implements Serializable
 {
@@ -13,8 +15,8 @@ public class Issue implements Serializable
 	private String closed_at;
 	private String state;
 	private String number;
-	private String assignee;
 	private String html_url;
+	private String assignee;
 	private String milestone;
 	private String comments;
 	private String pull_request;
