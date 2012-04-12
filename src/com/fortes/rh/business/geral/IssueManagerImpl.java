@@ -44,18 +44,16 @@ public class IssueManagerImpl implements IssueManager
 		}
 		
 		Collection<Issue> issues = new ArrayList<Issue>();
-		ArrayList<Issue> cus = new ArrayList<Issue>();
 		
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setExcludes( new String[]{"pull_request", "user", "html_url", "url", "comments", "assignee", "milestone"} );
 			JSONArray arr = JSONArray.fromObject(issuesJson, jsonConfig);
-			cus = (ArrayList<Issue>) JSONArray.toList(arr, Issue.class);
+			issues = (ArrayList<Issue>) JSONArray.toList(arr, Issue.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		issues.addAll(cus);
 		return issues;
 	}
 	
