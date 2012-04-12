@@ -1,6 +1,8 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.util.DateUtil;
@@ -16,7 +18,7 @@ public class Issue implements Serializable
 	private String closed_at;
 	private String state;
 	private String number;
-	private String[] labels;
+	private Object[] labels;
 //	private String html_url;
 //	private String assignee;
 //	private String milestone;
@@ -79,12 +81,19 @@ public class Issue implements Serializable
 		this.number = number;
 	}
 
-	public String[] getLabels() {
+	public Object[] getLabels() {
 		return labels;
 	}
 
-	public void setLabels(String[] labels) {
+	public void setLabels(Object[] labels) {
+		if(labels.length > 0)
+		{
+			Labels labels2 = (Labels) labels[0];
+			System.out.println(labels2.getName());
+		}
 		this.labels = labels;
 	}
+
+
 	
 }

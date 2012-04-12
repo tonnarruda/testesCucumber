@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -44,9 +42,6 @@ public class IssueManagerImpl implements IssueManager
 		try {
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setExcludes( new String[]{"pull_request", "user", "html_url", "url", "comments", "assignee", "milestone"} );
-			
-//			issuesJson = "[{'id':'2', 'body': 'sas', 'title': 'teste','pull_request':{'patch_url':'da'}}, {'id':'3', 'body': 'sasfdas', 'title': 'testeafdsa','pull_request':{'patch_url':'dasfd'}}]";
-			
 			JSONArray arr = JSONArray.fromObject(issuesJson, jsonConfig);
 			cus = (ArrayList<Issue>) JSONArray.toList(arr, Issue.class);
 		} catch (Exception e) {
@@ -54,7 +49,10 @@ public class IssueManagerImpl implements IssueManager
 		}
 		
 		issues.addAll(cus);
-		
+		for (Issue issue : issues) {
+			System.out.println(issue.getNumber());
+			System.out.println(issue.getLabels());
+		}
 		return issues;
 	}
 }
