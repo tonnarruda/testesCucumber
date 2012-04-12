@@ -88,7 +88,7 @@
 				});
 			}
 			
-			$('#qtdDiasLembrete').val($('.dias').map(function() { return $(this).text() }).get().join('&'));
+			$('#qtdDiasLembrete').val($('.dias').map(function() { return this.innerText }).get().join('&'));
 			
 			if(submeter)
 				document.form.submit();

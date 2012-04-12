@@ -121,8 +121,8 @@ public class IssueManagerImpl implements IssueManager
         try {
         	int status = client.executeMethod(method);
         	
-        	if (status != HttpStatus.SC_CREATED)
-        		throw new FortesException("Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status));
+        	if (status != (isUpdate ? HttpStatus.SC_OK : HttpStatus.SC_CREATED))
+        		throw new FortesException("Falha no envio: " + status + " - " + HttpStatus.getStatusText(status));
 		
         } finally {
 			method.releaseConnection();
