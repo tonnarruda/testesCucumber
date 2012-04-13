@@ -44,7 +44,9 @@
 	<br>
 	<@display.table name="issues" id="issue" class="dados">
 		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">
-			<a href="prepareUpdate.action?issue.number=${issue.number}"><img border="0" align='absMiddle' title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<#if issue.user.id == '1630543'>
+				<a href="prepareUpdate.action?issue.number=${issue.number}"><img border="0" align='absMiddle' title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			</#if>
 		</@display.column>
 		<@display.column property="number" title="Número" style="width:30px;text-align:center;vertical-align:top;"/>
 		<@display.column property="created_at_date" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px;text-align:center;vertical-align:top;"/>

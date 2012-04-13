@@ -40,7 +40,7 @@
 			<@ww.textfield label="Título" name="issue.title" id="titulo" cssStyle="width: 600px" maxLength="200" required="true"/>
 			<@ww.textarea label="Descrição" name="issue.body" id="body" cssStyle="width: 600px"/>
 			
-			<label>Labels: </label>
+			<label>Tipo do cartão:</label>
 			<div id="listaLabels"></div>
 			
 			<@ww.token/>
