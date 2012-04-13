@@ -20,22 +20,21 @@
 		
 		<script type="text/javascript">
 			$(function() {
-			
-				<#if issue.labels?exists>
-					<#list issue.labels as label>
-						addLabel('${label.name}', '${label.color}');
-					</#list>
-				</#if>
-				
 				var labels = ${labels};
 					$(labels).each(function() {
 						addLabel(this.name, this.color);
 				});
-
+	
 				$(".label").click(function(){
 					$(".label").removeClass('labelCheck');
 					checkLabel($(this));
 				});
+				
+				<#if issue.labels?exists>
+					<#list issue.labels as label>
+						$('.lbl:contains("${label.name}")').click();
+					</#list>
+				</#if>
 			});
 			
 			function checkLabel(label) {
