@@ -192,6 +192,7 @@
 				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
 				/browsersCompativeis.action*=ROLE_ANONYMOUS,ROLE_USER
 				/videoteca.action*=ROLE_USER
+				/geral/cartao/**=ROLE_USER
 				/*=ROLE_USER
 
 				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO

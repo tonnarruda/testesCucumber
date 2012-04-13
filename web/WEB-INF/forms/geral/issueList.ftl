@@ -5,7 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		.label { padding: 4px; margin-right: 4px; cursor: pointer; }
-		.label:hover { text-decoration: none; background-color: #DEDEDE; }
+		.label:hover { background-color: #DEDEDE; }
 		.lbl { padding: 2px 4px; margin: 2px; font-size: 9px; font-weight: bold; color: #FFF; border-radius: 3px; }
 	</style>
 	<script type="text/javascript">
@@ -15,17 +15,26 @@
 				$("#containerLabels").append('<span class="label"><span class="lbl" style="background-color: #'+this.color+';">&nbsp&nbsp</span> ' + this.name + '</span> ');
 			});
 			
+			<#if (label?exists && label != '')>
+				$(".label:contains('${label}')").css('background-color', '#DEDEDE');
+			<#elseif closed?exists && closed == true>
+				$(".lblFechados").css('background-color', '#DEDEDE');
+			<#else>
+				$(".lblAbertos").css('background-color', '#DEDEDE');
+			</#if>
+			
 			$(".label").click(function(){
 				var buscaLabel = $(this).text().trim();
 				
-				if(buscaLabel == "Todos Fechados")
+				if(buscaLabel == "Todos os Fechados")
 				{
 					window.location="list.action?closed=true";
 					return false;			
 				}				
 				
-				if(buscaLabel == "Todos Abertos")
+				if(buscaLabel == "Todos os Abertos")
 					buscaLabel = "";
+				
 				window.location="list.action?label=" + buscaLabel;
 			});
 		}); 
@@ -38,8 +47,8 @@
 	<@ww.actionerror />
 	<div id="containerLabels">
 	Filtro:
-	<span class="label"><span class="lbl" style="background-color: #00BFFF;">&nbsp&nbsp</span> Todos Abertos</span>  
-	<span class="label"><span class="lbl" style="background-color: #8B8682;">&nbsp&nbsp</span> Todos Fechados</span>  
+	<span class="label lblAbertos"><span class="lbl" style="background-color: #00BFFF;">&nbsp&nbsp</span> Todos os Abertos</span>  
+	<span class="label lblFechados"><span class="lbl" style="background-color: #8B8682;">&nbsp&nbsp</span> Todos os Fechados</span>  
 	</div>
 	<br>
 	<@display.table name="issues" id="issue" class="dados">

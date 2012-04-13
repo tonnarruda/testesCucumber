@@ -120,4 +120,8 @@ public class IssueEditAction extends MyActionSupportList
 	public void setClosed(boolean closed) {
 		this.closed = closed;
 	}
+
+	public boolean isClosed() {
+		return closed;
+	}
 }
