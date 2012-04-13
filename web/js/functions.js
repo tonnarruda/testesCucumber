@@ -1202,3 +1202,20 @@ function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone, e
 	
 	return dados;
 }
+
+function contraste(className)
+{
+	try {
+		$('.' + className).each(function() {
+			var rgb = /rgb\((\d+), (\d+), (\d+)\)/.exec( window.getComputedStyle(this, null).backgroundColor );
+			
+			var r = parseInt(rgb[1], 10), 
+				g = parseInt(rgb[2], 10), 
+				b = parseInt(rgb[3], 10);
+			
+			var brilho = (r*299 + g*587 + b*114) / 1000;
+		    
+		    $(this).css('color', (brilho > 125) ? '#333' : '#FFF');
+		});
+	} catch(e) {}
+}

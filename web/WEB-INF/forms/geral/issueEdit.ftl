@@ -3,9 +3,13 @@
 		<@ww.head/>
 		<style type="text/css">
 			.lbl { padding: 2px 4px; margin: 2px; font-size: 9px; font-weight: bold; color: #FFF; border-radius: 3px; }
-			.label { padding: 3px 5px; margin-left: 2px; cursor: pointer; border-radius: 3px; }
-			.label:hover { background-color: #DEDEDE; }
-			.labelCheck { background-color: #DEDEDE;  }
+			.label { padding: 3px 5px 3px 12px; margin-left: 2px; cursor: pointer; border-radius: 3px; }
+			.label:hover, .labelCheck { 
+				background-color: #DEDEDE;  
+				background-image: url(<@ww.url value="/imgs/menu-bar-right-arrow.gif"/>); 
+				background-position: 4px 8px;
+				background-repeat: no-repeat; 
+			}
 		</style>
 		
 		<#if issue.number?exists>
@@ -35,6 +39,9 @@
 						$('.lbl:contains("${label.name}")').click();
 					</#list>
 				</#if>
+				
+				// ajusta os contrastes
+				contraste('lbl');
 			});
 			
 			function checkLabel(label) {
@@ -53,10 +60,14 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="issue.number" />
 
-			<label>Cartão:</label>
-			<div id="listaLabels"></div>
-			<input id="labelCheck" type="hidden" name="issue.labelNames" value=""/>
-			<br />
+			<li>
+				<label class="desc">Cartão: </label>
+			</li>
+			<li>
+				<div id="listaLabels"></div>
+				<input id="labelCheck" type="hidden" name="issue.labelNames" value=""/>
+				<br />
+			</li>
 			
 			<@ww.textfield label="Título" name="issue.title" id="titulo" cssStyle="width: 600px" maxLength="200" required="true"/>
 			<@ww.textarea label="Descrição" name="issue.body" id="body" cssStyle="width: 600px"/>
