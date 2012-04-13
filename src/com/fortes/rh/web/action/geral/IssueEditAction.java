@@ -21,6 +21,7 @@ public class IssueEditAction extends MyActionSupportList
 
 	private void prepare() throws Exception
 	{
+		labels = issueManager.getLabels();
 	}
 
 	public String prepareInsert() throws Exception
@@ -32,7 +33,6 @@ public class IssueEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		
 		issue = issueManager.findByNumber(issue.getNumber());
 		
 		return Action.SUCCESS;
