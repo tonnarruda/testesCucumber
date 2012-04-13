@@ -4,7 +4,7 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		.label { padding: 4px; margin-right: 4px; cursor: pointer; }
+		.label { padding: 4px; margin-right: 4px; cursor: pointer; border-radius: 3px; }
 		.label:hover { background-color: #DEDEDE; }
 		.lbl { padding: 2px 4px; margin: 2px; font-size: 9px; font-weight: bold; color: #FFF; border-radius: 3px; }
 	</style>
