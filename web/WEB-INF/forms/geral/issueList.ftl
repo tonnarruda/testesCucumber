@@ -68,10 +68,10 @@
 		<@display.column property="number" title="Número" style="width:30px;text-align:center;vertical-align:top;"/>
 		<@display.column property="created_at_date" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px;text-align:center;vertical-align:top;"/>
 		<@display.column title="Titulo" style="width:200px;vertical-align:top;">
-			${issue.title}
 			<#list issue.labels as label>
 				<span class="lbl" style="background-color:#${label.color};">${label.name}</span>
 			</#list>
+			&nbsp;${issue.title}
 		</@display.column>
 		<@display.column property="body" title="Descrição" style="width:500px;"/>
 		<@display.column property="user.login" title="Criado por" style="width:100px;"/>
