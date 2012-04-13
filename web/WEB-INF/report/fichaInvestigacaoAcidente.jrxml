@@ -895,7 +895,8 @@
 						y="339"
 						width="123"
 						height="13"
-						key="textField">
+						key="textField"
+						positionType="Float">
 							<printWhenExpression><![CDATA[new Boolean ($P{ASS1} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -910,7 +911,8 @@
 						y="339"
 						width="123"
 						height="13"
-						key="textField-24">
+						key="textField-24"
+						positionType="Float">
 							<printWhenExpression><![CDATA[new Boolean ($P{ASS2} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -925,7 +927,8 @@
 						y="339"
 						width="123"
 						height="13"
-						key="textField-25">
+						key="textField-25"
+						positionType="Float">
 							<printWhenExpression><![CDATA[new Boolean ($P{ASS3} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -940,7 +943,8 @@
 						y="339"
 						width="123"
 						height="13"
-						key="textField-26">
+						key="textField-26"
+						positionType="Float">
 							<printWhenExpression><![CDATA[new Boolean ($P{ASS4} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
