@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="FortesRH_test_cp" basedir=".." default="cp">
+	
+	<property name="destino" value="C://Users//Barroso//Desktop//TesteDeploy"/>
+	<property name="origem" value="C://TesteDeploy"/>
+	
+	<target name="cp">
+		<copy todir="${destino}">
+			<fileset dir="${origem}"/>
+			<fileset file="${origem}//maisum.txt"/>
+		</copy>
+	</target>
+	
+	<target name="del">
+		<delete file="${destino}//jardim//dog.txt"/>
+		<delete dir="${destino}//jardim"/>
+	</target>
+	
+	<target name="valida">
+		<checksum totalproperty="total" forceoverwrite="yes">
+	    	<fileset dir="${destino}">
+	    		<exclude name="vei.txt"/>
+	    	</fileset>
+		</checksum>
+		
+		<echo>${total}</echo>
+		
+		<delete>
+			<fileset dir="${destino}" includes="**/*.MD5"/>
+		</delete>
+	</target>
+</project>
