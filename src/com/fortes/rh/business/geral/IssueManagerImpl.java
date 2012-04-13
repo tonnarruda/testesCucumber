@@ -113,8 +113,9 @@ public class IssueManagerImpl implements IssueManager
         Map<Object, Object> params = new HashMap<Object, Object>();
         params.put("title", issue.getTitle());
         params.put("body", issue.getBody());
-        if (issue.getLabelNames() != null)
-        	params.put("labels", issue.getLabelNames());
+        if (issue.getLabelNames() == null)
+        	issue.setLabelNames(new String[]{});
+        params.put("labels", issue.getLabelNames());
         
         method.setRequestBody(StringUtil.toJSON(params, null));
         

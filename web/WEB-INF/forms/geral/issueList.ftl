@@ -4,8 +4,9 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		.label { padding: 3px 4px 3px 12px; cursor: pointer; border-radius: 3px; }
+		.label { padding: 3px 4px 3px 12px; cursor: pointer; border-radius: 3px; border: 1px solid transparent; }
 		.label:hover, .marcado { 
+			border-color: #BBB;
 			background-color: #DEDEDE;  
 			background-image: url(<@ww.url value="/imgs/menu-bar-right-arrow.gif"/>); 
 			background-position: 4px 8px;
