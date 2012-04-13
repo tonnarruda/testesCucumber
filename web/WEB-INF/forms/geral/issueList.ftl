@@ -57,6 +57,7 @@
 			</#list>
 		</@display.column>
 		<@display.column property="body" title="Descrição" style="width:500px;"/>
+		<@display.column property="user.login" title="Criado por" style="width:100px;"/>
 	</@display.table>
 	
 	<div class="buttonGroup">
