@@ -1367,7 +1367,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
 			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
 
-		char vinculo = getVinculo(empregado.getAdmissaotipo(), empregado.getAdmissaovinculo(), empregado.getCategoria());
+		char vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo().toString(), empregado.getCategoria().toString());
 		colaborador.setVinculo(String.valueOf(vinculo));
 		
 		return colaborador;
@@ -1459,9 +1459,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
-	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
+	public void cancelarContratacaoNoAC(TEmpregado empregado, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
 	{
-		historicoColaboradorManager.atualizaStatusDaSolicitacao(historicoColaborador);
+		Empresa empresa = new Empresa();
+		empresa.setCodigoAC(empregado.getEmpresaCodigoAC());
+		empresa.setGrupoAC(empregado.getGrupoAC());
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setId(Long.valueOf(empregado.getId()));
+		colaborador.setNomeComercial(empregado.getNomeComercial());
+		colaborador.setEmpresa(empresa);
+		colaborador.setHistoricoColaborador(historicoColaborador);
+		
+		historicoColaboradorManager.remove(historicoColaborador);
 		removeColaboradorDependencias(colaborador);		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
 	}

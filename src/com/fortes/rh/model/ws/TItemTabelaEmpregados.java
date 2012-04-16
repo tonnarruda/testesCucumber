@@ -2,29 +2,22 @@ package com.fortes.rh.model.ws;
 
 public class TItemTabelaEmpregados
 {
-	private String codigo = "";
-	private String empresa = "";
-	private String cargo = "";
-	private String lotacao = "";
-	private String estabelecimento = "";
-	private String data = "";
-	private Double valor = 0D;
-	private Double valor_alt = 0D;
-	private Integer rh_sep_id = 0;
-	private String saltipo = "";
-	private String indcodigosalario = "";
-	private Double indqtde = 0D;
-	private String grupoAC = "";
-	private String obs = "";
-
-	public String getGrupoAC() {
-		return grupoAC;
-	}
-
-	public void setGrupoAC(String grupoAC) {
-		this.grupoAC = grupoAC;
-	}
-
+	private String codigo = ""; // 	   Fcodigo: string;
+	private String empresa = "";// Fempresa: string;
+	private String cargo = "";// Fcargo: string;
+	private String lotacao = "";//Flotacao: String;
+	private String estabelecimento = "";//Festabelecimento: String;
+	private String data = "";//Fdata: string;
+	private Double valor = 0D;//Fvalor: double;
+	private Double valor_alt = 0D;//Fvalor_alt: Double;
+	private Integer rh_sep_id = 0;//Frh_sep_id: integer;
+	private String saltipo = "";// Fsaltipo: string;
+	private String indcodigosalario = ""; //Findcodigosalario: string;
+	private Double indqtde = 0D;// Findqtde: double;
+	private String FexpAgenteNocivo = ""; // FexpAgenteNocivo
+	private String obs = "";//Fobs : String;
+	private String dataRescisao;//FdataRescisao: TXSDateTime;
+	
 	private String expAgenteNocivo;//GFIP
 
 	public String getCargo()
@@ -138,6 +131,22 @@ public class TItemTabelaEmpregados
 
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+
+	public String getDataRescisao() {
+		return dataRescisao;
+	}
+
+	public void setDataRescisao(String dataRescisao) {
+		this.dataRescisao = dataRescisao;
+	}
+
+	public String getFexpAgenteNocivo() {
+		return FexpAgenteNocivo;
+	}
+
+	public void setFexpAgenteNocivo(String fexpAgenteNocivo) {
+		FexpAgenteNocivo = fexpAgenteNocivo;
 	}
 
 }

@@ -56,9 +56,10 @@ public class TEmpregado implements Serializable
 	private String ctpsUFSigla;	
 	private String ctpsDataExpedicao;
 	private String grupoAC;
-	private String admissaotipo;
-	private String admissaovinculo;
-	private String categoria;
+	private String tipoAdmissao;
+	private String chaveAC_RH;
+	private Integer vinculo;
+	private Integer categoria;
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -473,28 +474,36 @@ public class TEmpregado implements Serializable
 		this.nomeComercial = nomeComercial;
 	}
 
-	public String getAdmissaotipo() {
-		return admissaotipo;
+	public Integer getVinculo() {
+		return vinculo;
 	}
 
-	public void setAdmissaotipo(String admissaotipo) {
-		this.admissaotipo = admissaotipo;
+	public void setVinculo(Integer vinculo) {
+		this.vinculo = vinculo;
 	}
 
-	public String getAdmissaovinculo() {
-		return admissaovinculo;
+	public String getTipoAdmissao() {
+		return tipoAdmissao;
 	}
 
-	public void setAdmissaovinculo(String admissaovinculo) {
-		this.admissaovinculo = admissaovinculo;
+	public void setTipoAdmissao(String tipoAdmissao) {
+		this.tipoAdmissao = tipoAdmissao;
 	}
 
-	public String getCategoria() {
+	public Integer getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Integer categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getChaveAC_RH() {
+		return chaveAC_RH;
+	}
+
+	public void setChaveAC_RH(String chaveACRH) {
+		chaveAC_RH = chaveACRH;
 	}
 	
 }

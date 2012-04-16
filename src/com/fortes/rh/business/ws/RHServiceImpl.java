@@ -390,24 +390,12 @@ public class RHServiceImpl implements RHService
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
 		try
 		{
-			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+			HistoricoColaborador historico = historicoColaboradorManager.findById(Long.valueOf(situacao.getId()));
 
 			if(historico == null)
-				return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException("Situação do colaborador inexistente no RH", null ));
+				throw new Exception();
 			
-			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
-
-			if(colaborador == null)
-				return new FeedbackWebService(false, "Erro ao cancelar contratação do empregado.", formataException("Empregado inexistente no RH", null ));
-			
-			Empresa empresa = new Empresa();
-			empresa.setCodigoAC(empregado.getEmpresaCodigoAC());
-			empresa.setGrupoAC(empregado.getGrupoAC());
-			
-			colaborador.setEmpresa(empresa);
-			colaborador.setHistoricoColaborador(historico);
-			
-			colaboradorManager.cancelarContratacaoNoAC(colaborador, historico, mensagem);
+			colaboradorManager.cancelarContratacaoNoAC(empregado, historico, mensagem);
 			
 			return new FeedbackWebService(true);
 		}
