@@ -562,14 +562,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi(Long empresaId)
+	public void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi()
 	{
 		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		
 		StringBuilder mensagem = new StringBuilder();
 		mensagem.append("");
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), empresaId);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), null);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
@@ -580,20 +580,27 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi(Long empresaId)
+	public void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi()
 	{
-		//ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		
 		StringBuilder mensagem = new StringBuilder();
 		mensagem.append("");
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), empresaId);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), null);
+		
+		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
 			{	
+				Collection<Integer> diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				Collection<Colaborador> colaboradors = colaboradorManager.findAdmitidosHaDiasSemEpi(diasLembrete, gerenciadorComunicacao.getEmpresa().getId());
+
 				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
-				//usuarioMensagemManager
+				for (Colaborador colaborador : colaboradors) {
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "AC Pessoal", null, usuarioEmpresaPeriodoExperiencia, colaborador, TipoMensagem.INDIFERENTE);
+				}
 			}
 		}
 	}

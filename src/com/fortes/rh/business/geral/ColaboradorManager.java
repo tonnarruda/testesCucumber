@@ -184,4 +184,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, String motivo, Long colaboradorId) throws Exception;
 	public Collection<PendenciaAC> findPendencias(Long empresaId);
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) throws Exception;
+	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 }

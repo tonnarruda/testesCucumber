@@ -151,6 +151,14 @@
     <property name="targetMethod" value="execute"/>
   </bean>
   
+  <bean name="lembreteAberturaSolicitacaoEpiJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+  </bean>
+  <bean name="lembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="lembreteAberturaSolicitacaoEpiJob"/>
+    <property name="targetMethod" value="enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi"/>
+  </bean>
+  
   <bean name="limpaDirTemp" class="org.springframework.scheduling.quartz.JobDetailBean">
     <property name="jobClass" value="com.fortes.rh.business.geral.LimpaDirTemp" />
   </bean>
@@ -214,6 +222,10 @@
     <property name="jobDetail" ref="emailCartaoAniversariantes" />
 	<property name="cronExpression" value="0 20 6 * * ?" /> <!-- Todo os dias as 06:20h am -->
   </bean>
+  <bean id="cronTriggerLembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="lembreteAberturaSolicitacaoEpi" />
+	<property name="cronExpression" value="0 0 6 * * ?" /> <!-- Todo os dias as 06:00h am -->
+  </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -226,6 +238,7 @@
 		<ref bean="cronTriggerQuantidadeCurriculos" />
 		<ref bean="cronTriggerLembreteExamesPrevistos" />
 		<ref bean="cronTriggerEmailCartaoAniversariantes" />
+		<ref bean="cronTriggerLembreteAberturaSolicitacaoEpi" />
       </list>
     </property>
   </bean>

@@ -2247,6 +2247,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem);
 	}
 	
+	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)
+	{
+		return getDao().findAdmitidosHaDiasSemEpi(dias, empresaId);
+	}
 
 	public void setCandidatoNull(Long candidatoId) 
 	{

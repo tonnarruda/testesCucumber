@@ -4567,144 +4567,212 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradorDao.findPendenciasSolicitacaoDesligamentoAC(empresa.getId()).size());
 	}
 	
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+	public void testFindAdmitidosHaDiasSemEpi()
+	{
+		Calendar quarentaDiasAtras = Calendar.getInstance();
+		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
+
+		Calendar quarentaUmDiasAtras = Calendar.getInstance();
+		quarentaUmDiasAtras.add(Calendar.DAY_OF_YEAR, -50);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaboradorDao.save(colaborador1);
+
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador1);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDataAdmissao(quarentaUmDiasAtras.getTime());
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
+	}
+	
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
-	public void setEmpresaDao(EmpresaDao empresaDao) {
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
 		this.empresaDao = empresaDao;
 	}
 
-	public void setUsuarioDao(UsuarioDao usuarioDao) {
+	public void setUsuarioDao(UsuarioDao usuarioDao)
+	{
 		this.usuarioDao = usuarioDao;
 	}
 
-	public GenericDao<Colaborador> getGenericDao() {
+	public GenericDao<Colaborador> getGenericDao()
+	{
 		return colaboradorDao;
 	}
 
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+	public void setColaboradorDao(ColaboradorDao colaboradorDao)
+	{
 		this.colaboradorDao = colaboradorDao;
 	}
 
-	public void setCandidatoDao(CandidatoDao candidatoDao) {
+	public void setCandidatoDao(CandidatoDao candidatoDao)
+	{
 		this.candidatoDao = candidatoDao;
 	}
 
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
+	{
 		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
+	{
 		this.estabelecimentoDao = estabelecimentoDao;
 	}
 
-	public void setCargoDao(CargoDao cargoDao) {
+	public void setCargoDao(CargoDao cargoDao)
+	{
 		this.cargoDao = cargoDao;
 	}
 
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
+	{
 		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
-	public void setGrupoOcupacionalDao(GrupoOcupacionalDao grupoOcupacionalDao) {
+	public void setGrupoOcupacionalDao(GrupoOcupacionalDao grupoOcupacionalDao)
+	{
 		this.grupoOcupacionalDao = grupoOcupacionalDao;
 	}
 
-	public void setMotivoDemissaoDao(MotivoDemissaoDao motivoDemissaoDao) {
+	public void setMotivoDemissaoDao(MotivoDemissaoDao motivoDemissaoDao)
+	{
 		this.motivoDemissaoDao = motivoDemissaoDao;
 	}
 
-	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao) {
+	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao)
+	{
 		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
 	}
 
-	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) {
+	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao)
+	{
 		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
 	}
 
-	public void setReajusteColaboradorDao(ReajusteColaboradorDao reajusteColaboradorDao) {
+	public void setReajusteColaboradorDao(ReajusteColaboradorDao reajusteColaboradorDao)
+	{
 		this.reajusteColaboradorDao = reajusteColaboradorDao;
 	}
 
-	public void setAmbienteDao(AmbienteDao ambienteDao) {
+	public void setAmbienteDao(AmbienteDao ambienteDao)
+	{
 		this.ambienteDao = ambienteDao;
 	}
 
-	public void setFuncaoDao(FuncaoDao funcaoDao) {
+	public void setFuncaoDao(FuncaoDao funcaoDao)
+	{
 		this.funcaoDao = funcaoDao;
 	}
 
-	public void setBairroDao(BairroDao bairroDao) {
+	public void setBairroDao(BairroDao bairroDao)
+	{
 		this.bairroDao = bairroDao;
 	}
 
-	public void setPerfilDao(PerfilDao perfilDao) {
+	public void setPerfilDao(PerfilDao perfilDao)
+	{
 		this.perfilDao = perfilDao;
 	}
 
-	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) {
+	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao)
+	{
 		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
 	}
 
-	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
+	{
 		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
 	}
 
-	public void setCamposExtrasDao(CamposExtrasDao camposExtrasDao) {
+	public void setCamposExtrasDao(CamposExtrasDao camposExtrasDao)
+	{
 		this.camposExtrasDao = camposExtrasDao;
 	}
 
-	public void setTurmaDao(TurmaDao turmaDao) {
+	public void setTurmaDao(TurmaDao turmaDao)
+	{
 		this.turmaDao = turmaDao;
 	}
 
-	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
+	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao)
+	{
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
 	}
 
-	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao)
+	{
 		this.avaliacaoDao = avaliacaoDao;
 	}
 
-	public void setGrupoACDao(GrupoACDao grupoACDao) {
+	public void setGrupoACDao(GrupoACDao grupoACDao)
+	{
 		this.grupoACDao = grupoACDao;
 	}
 
-	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao) {
+	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao)
+	{
 		this.motivoSolicitacaoDao = motivoSolicitacaoDao;
 	}
 
-	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao) {
+	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
+	{
 		this.solicitacaoDao = solicitacaoDao;
 	}
 
-	public void setCandidatoSolicitacaoDao(
-			CandidatoSolicitacaoDao candidatoSolicitacaoDao) {
+	public void setCandidatoSolicitacaoDao(CandidatoSolicitacaoDao candidatoSolicitacaoDao)
+	{
 		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
 	}
 
-	public void setOcorrenciaDao(OcorrenciaDao ocorrenciaDao) {
+	public void setOcorrenciaDao(OcorrenciaDao ocorrenciaDao)
+	{
 		this.ocorrenciaDao = ocorrenciaDao;
 	}
 
-	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao) {
+	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao)
+	{
 		this.colaboradorOcorrenciaDao = colaboradorOcorrenciaDao;
 	}
 
-	public void setMensagemDao(MensagemDao mensagemDao) {
+	public void setMensagemDao(MensagemDao mensagemDao)
+	{
 		this.mensagemDao = mensagemDao;
 	}
 
-	public QuestionarioDao getQuestionarioDao() {
+	public QuestionarioDao getQuestionarioDao()
+	{
 		return questionarioDao;
 	}
 
-	public void setQuestionarioDao(QuestionarioDao questionarioDao) {
+	public void setQuestionarioDao(QuestionarioDao questionarioDao)
+	{
 		this.questionarioDao = questionarioDao;
 	}
 
-	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao) {
+	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)
+	{
 		this.usuarioEmpresaDao = usuarioEmpresaDao;
 	}
 
