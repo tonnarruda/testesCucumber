@@ -2251,6 +2251,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findAdmitidosHaDiasSemEpi(dias, empresaId);
 	}
+	
+	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
+	{
+		return getDao().findAguardandoEntregaEpi(diasLembrete, empresaId);
+	}
 
 	public void setCandidatoNull(Long candidatoId) 
 	{
@@ -2270,5 +2275,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-
 }

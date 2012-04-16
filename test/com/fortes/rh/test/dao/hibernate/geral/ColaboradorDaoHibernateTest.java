@@ -43,7 +43,10 @@ import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
+import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
+import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
+import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
@@ -89,7 +92,10 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
@@ -120,6 +126,8 @@ import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> {
@@ -156,6 +164,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private OcorrenciaDao ocorrenciaDao;
 	private ColaboradorOcorrenciaDao colaboradorOcorrenciaDao;
 	private MensagemDao mensagemDao;
+	private HistoricoFuncaoDao historicoFuncaoDao;
+	private EpiDao epiDao;
+	private SolicitacaoEpiDao solicitacaoEpiDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -4577,7 +4588,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
 
+		Epi epi1 = EpiFactory.getEntity();
+		epiDao.save(epi1);
+		
+		Epi epi2 = EpiFactory.getEntity();
+		epiDao.save(epi2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setEpis(Arrays.asList(epi1, epi2));
+		historicoFuncaoDao.save(historicoFuncao);
+		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setEmpresa(empresa);
 		colaborador1.setDataAdmissao(quarentaDiasAtras.getTime());
@@ -4585,6 +4611,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setFuncao(funcao);
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoColaboradorDao.save(historicoColaborador1);
 
@@ -4595,10 +4622,61 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setFuncao(funcao);
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoColaboradorDao.save(historicoColaborador2);
 		
 		assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
+
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setColaborador(colaborador1);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		assertEquals(0, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
+		
+	}
+	
+	public void testFindAguardandoEntregaEpi()
+	{
+		Calendar cincoDiasAtras = Calendar.getInstance();
+		cincoDiasAtras.add(Calendar.DAY_OF_YEAR, -5);
+		
+		Calendar tresDiasAtras = Calendar.getInstance();
+		tresDiasAtras.add(Calendar.DAY_OF_YEAR, -3);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		SolicitacaoEpi solicitacaoEpi1 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi1.setColaborador(colaborador1);
+		solicitacaoEpi1.setData(tresDiasAtras.getTime());
+		solicitacaoEpiDao.save(solicitacaoEpi1);
+
+		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi2.setColaborador(colaborador2);
+		solicitacaoEpi2.setData(cincoDiasAtras.getTime());
+		solicitacaoEpiDao.save(solicitacaoEpi2);
+		
+		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
+		
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
@@ -4774,6 +4852,24 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)
 	{
 		this.usuarioEmpresaDao = usuarioEmpresaDao;
+	}
+
+	
+	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
+	{
+		this.historicoFuncaoDao = historicoFuncaoDao;
+	}
+
+	
+	public void setEpiDao(EpiDao epiDao)
+	{
+		this.epiDao = epiDao;
+	}
+
+	
+	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao)
+	{
+		this.solicitacaoEpiDao = solicitacaoEpiDao;
 	}
 
 }

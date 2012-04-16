@@ -204,6 +204,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Long avaliacaoDesempenhoId;
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
+	@Transient
+	private Integer qtdEpiAssociadoAFuncao;
 
 	public Colaborador()
 	{
@@ -810,7 +812,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.empresa.setNome(nomeEmpresa);
 	}
 	
-	
 	public Colaborador(Long id, String nome,String nomeComercial,  boolean desligado)
 	{
 		super();
@@ -877,8 +878,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Colaborador(String nome) {
 		this.nome = nome;
 	}
-
-	private void setFaixaSalarialHistoricoStatusProjection(Integer faixaSalarialHistoricoStatus)
+	
+		private void setFaixaSalarialHistoricoStatusProjection(Integer faixaSalarialHistoricoStatus)
 	{
 		if(this.historicoColaborador == null)
 			this.setHistoricoColaborador(new HistoricoColaborador());
@@ -2410,5 +2411,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamentoAc) {
 		this.dataSolicitacaoDesligamentoAc = dataSolicitacaoDesligamentoAc;
+	}
+
+	
+	public Integer getQtdEpiAssociadoAFuncao()
+	{
+		return qtdEpiAssociadoAFuncao;
+	}
+
+	
+	public void setQtdEpiAssociadoAFuncao(Integer qtdEpiAssociadoAFuncao)
+	{
+		this.qtdEpiAssociadoAFuncao = qtdEpiAssociadoAFuncao;
 	}
 }

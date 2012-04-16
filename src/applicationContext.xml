@@ -153,10 +153,22 @@
   
   <bean name="lembreteAberturaSolicitacaoEpiJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+	<property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+	<property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
   </bean>
   <bean name="lembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="lembreteAberturaSolicitacaoEpiJob"/>
     <property name="targetMethod" value="enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi"/>
+  </bean>
+
+  <bean name="lembreteEntregaEpiJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+	<property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+	<property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
+  </bean>
+  <bean name="lembreteEntregaEpi" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="lembreteEntregaEpiJob"/>
+    <property name="targetMethod" value="enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi"/>
   </bean>
   
   <bean name="limpaDirTemp" class="org.springframework.scheduling.quartz.JobDetailBean">
@@ -226,6 +238,10 @@
     <property name="jobDetail" ref="lembreteAberturaSolicitacaoEpi" />
 	<property name="cronExpression" value="0 0 6 * * ?" /> <!-- Todo os dias as 06:00h am -->
   </bean>
+  <bean id="cronTriggerLembreteEntregaEpi" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="lembreteEntregaEpi" />
+	<property name="cronExpression" value="0 10 6 * * ?" /> <!-- Todo os dias as 06:10h am -->
+  </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -239,6 +255,7 @@
 		<ref bean="cronTriggerLembreteExamesPrevistos" />
 		<ref bean="cronTriggerEmailCartaoAniversariantes" />
 		<ref bean="cronTriggerLembreteAberturaSolicitacaoEpi" />
+		<ref bean="cronTriggerLembreteEntregaEpi" />
       </list>
     </property>
   </bean>

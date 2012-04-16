@@ -123,4 +123,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void atualizaDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, Long colaboradorId);
 	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
+	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
 }

@@ -158,6 +158,9 @@
 		{
 			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} ||
 											   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId});
+											   
+			var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
+			$('#camposQtdDiasLembrete label').text(label);
 		}
 		
 		function addDia(qtd)
@@ -238,7 +241,7 @@
 			</span>
 			<span id="camposQtdDiasLembrete">
 				<@ww.hidden id="qtdDiasLembrete" name="gerenciadorComunicacao.qtdDiasLembrete"/>
-				Dias de antecedência para o aviso: 
+				<label></label> 
 				<span id="configDias"></span>
 				<span class="addDias">
 					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
