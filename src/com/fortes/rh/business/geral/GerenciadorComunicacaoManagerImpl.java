@@ -829,30 +829,22 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 
-	public void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) 
+	@SuppressWarnings("deprecation")
+	public void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) 
 	{
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		colaborador = colaboradorManager.findByCodigoAC(colaborador.getCodigoAC(), colaborador.getEmpresa());
 		
 		StringBuilder mensagemFinal = new StringBuilder();
-		mensagemFinal.append("Cancelamento de Solicitação de Desligamento. ");
+		mensagemFinal.append("Cancelamento da solicitação de desligamento do colaborador ");
+		mensagemFinal.append(colaborador.getNome());
 		mensagemFinal.append("\r\n\r\n");
 		mensagemFinal.append("<b>Motivo do cancelamento:</b> ");
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append(mensagem);
-		mensagemFinal.append("\r\n\r\n");
-		mensagemFinal.append("<b>Dados do colaborador da solicitação de desligamento:</b> ");
-		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Nome: "+colaborador.getNome());
-		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Estabelecimento: "+colaborador.getHistoricoColaborador().getEstabelecimento().getNome());
-		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Área Organizacional: "+colaborador.getHistoricoColaborador().getAreaOrganizacional().getDescricao());
-		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Cargo: "+colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNomeMercado());
 		mensagemFinal.append("\r\n");
 		
-		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(colaborador.getEmpresa().getCodigoAC(), colaborador.getEmpresa().getGrupoAC());
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId(), colaborador.getEmpresa().getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)

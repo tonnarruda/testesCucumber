@@ -2246,10 +2246,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return pendenciaACs;
 	}
 	
-	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) throws Exception
+	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception
 	{
 		getDao().atualizaDataSolicitacaoDesligamentoAc(null, colaborador.getId());
-		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem);
+		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem, empresaCodigoAC, grupoAC);
 	}
 	
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)

@@ -204,8 +204,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Long avaliacaoDesempenhoId;
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
-	@Transient
-	private Integer qtdEpiAssociadoAFuncao;
 
 	public Colaborador()
 	{
@@ -2411,17 +2409,5 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamentoAc) {
 		this.dataSolicitacaoDesligamentoAc = dataSolicitacaoDesligamentoAc;
-	}
-
-	
-	public Integer getQtdEpiAssociadoAFuncao()
-	{
-		return qtdEpiAssociadoAFuncao;
-	}
-
-	
-	public void setQtdEpiAssociadoAFuncao(Integer qtdEpiAssociadoAFuncao)
-	{
-		this.qtdEpiAssociadoAFuncao = qtdEpiAssociadoAFuncao;
 	}
 }

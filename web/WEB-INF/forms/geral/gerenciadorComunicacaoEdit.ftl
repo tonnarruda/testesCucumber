@@ -2,6 +2,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 	<head>
+		<#assign validarCampos="return validaFormulario('form', new Array('destinatario'))"/>
 		<@ww.head/>
 		<#if gerenciadorComunicacao.id?exists>
 			<title>Editar Gerenciador de Comunicação</title>
@@ -52,21 +53,32 @@
 				valido = false;
 			}
 			
-			if(!valido)
-			{
-				jAlert("Selecione os campos indicados.");
-				return false;
-			}	
 		
 			if($('#enviarParas').val() == 1)//EviarPara.USUARIOS = 1
 			{	
 				if(qtdeChecksSelected(document.getElementsByName('form')[0],'usuariosCheck') == 0)
 				{
 					$('#listCheckBoxusuariosCheck').css("background-color", "#FFEEC2");
-					jAlert("Preencha o campo indicado.");
-					return false;	
+					valido =  false;	
 				}
 			}
+			
+			if($('#operacao').val() == ${lembreteQuestionarioNaoLiberadoId} || $('#operacao').val() == ${avaliacaoPeriodoExperienciaVencendoId} ||
+			   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId})
+			{
+				if($('.dias').size() == 0 )
+				{
+					$('#qtdDias').css("background-color", "#FFEEC2");
+					valido = false;
+				}	
+			}
+
+			if(!valido)
+			{
+				jAlert("Preencha os campos indicados.");
+				return false;
+			}	
+			
 		
 		 	var submeter = true;
 			if($('#enviarParas').val() == 99)//EviarPara.AVULSO = 99
@@ -158,7 +170,7 @@
 		{
 			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} ||
 											   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId});
-											   
+									   
 			var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 			$('#camposQtdDiasLembrete label').text(label);
 		}
@@ -208,7 +220,6 @@
 	
 	</head>
 	<body>
-		<#assign validarCampos="return validaFormulario('form', new Array('destinatario'))"/>
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
