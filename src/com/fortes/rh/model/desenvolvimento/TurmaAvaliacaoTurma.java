@@ -1,17 +1,15 @@
 package com.fortes.rh.model.desenvolvimento;
 
-import java.io.Serializable;
-
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
-import com.fortes.model.AbstractModel;
+import org.hibernate.annotations.GenericGenerator;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name="turma_avaliacaoturma")
 @AssociationOverrides({
@@ -19,9 +17,11 @@ import com.fortes.model.AbstractModel;
 			joinColumns = @JoinColumn(name = "turma_id")),
 		@AssociationOverride(name = "pk.turmaAvaliacaoTurma", 
 			joinColumns = @JoinColumn(name = "avaliacaoturmas_id")) }) 
-public class TurmaAvaliacaoTurma extends AbstractModel implements Serializable
+public class TurmaAvaliacaoTurma
 {
 	@EmbeddedId
+	@GeneratedValue(generator="pkGenerator")
+	@GenericGenerator(name="pkGenerator", strategy="com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurmaIdentifierGenerator") 
 	private TurmaAvaliacaoTurmaId pk = new TurmaAvaliacaoTurmaId();
 	
 	private boolean liberada;

@@ -1,16 +1,12 @@
 package com.fortes.rh.model.desenvolvimento;
 
-import java.io.Serializable;
-
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
-import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
-@SuppressWarnings("serial")
 @Embeddable 
-public class TurmaAvaliacaoTurmaId extends AbstractModel implements Serializable
+public class TurmaAvaliacaoTurmaId
 {
 	@ManyToOne
 	private Turma turma;
