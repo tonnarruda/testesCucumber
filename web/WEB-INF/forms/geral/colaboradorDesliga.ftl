@@ -73,7 +73,7 @@
 	
 	
 	<div class="buttonGroup">
-		<#if colaborador.motivoDemissao.id?exists>
+		<#if colaborador.dataDesligamento?exists>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnGravar" />
 		<#else>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnDesligarColaborador" />

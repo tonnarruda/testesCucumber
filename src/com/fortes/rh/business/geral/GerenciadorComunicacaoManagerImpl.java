@@ -831,6 +831,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) 
 	{
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		colaborador = colaboradorManager.findByCodigoAC(colaborador.getCodigoAC(), colaborador.getEmpresa());
+		
 		StringBuilder mensagemFinal = new StringBuilder();
 		mensagemFinal.append("Cancelamento de Solicitação de Desligamento. ");
 		mensagemFinal.append("\r\n\r\n");
