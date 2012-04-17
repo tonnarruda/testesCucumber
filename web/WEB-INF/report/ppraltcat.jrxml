@@ -27,6 +27,7 @@
 		<defaultValueExpression ><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EXIBIR_COMPOSICAO_SESMT" isForPrompting="false" class="java.lang.Boolean"/>
+	<parameter name="AGRUPADO_POR_AMBIENTE" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="ppra" class="com.fortes.rh.model.sesmt.relatorio.Ppra"/>
 	<field name="ltcat" class="com.fortes.rh.model.sesmt.relatorio.Ltcat"/>
@@ -197,7 +198,9 @@ DO AMBIENTE DE TRABALHO]]></text>
 						width="535"
 						height="15"
 						key="textField-19"
-						positionType="Float"/>
+						positionType="Float">
+							<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
 					<textElement isStyledText="true">
 						<font size="9"/>
@@ -217,6 +220,22 @@ DO AMBIENTE DE TRABALHO]]></text>
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="192"
+						width="535"
+						height="19"
+						key="textField-21"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="2"/>
+					<textElement isStyledText="true">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>

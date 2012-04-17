@@ -63,6 +63,7 @@ public class PpraEditAction extends MyActionSupportEdit
 		{
 			parametros = RelatorioUtil.getParametrosRelatorio("PPRA", getEmpresaSistema(), null);
 			parametros.put("EXIBIR_COMPOSICAO_SESMT", exibirComposicaoSesmt);
+			parametros.put("AGRUPADO_POR_AMBIENTE", getEmpresaSistema().getControlaRiscoPor() == 'A');
 			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		}
 		catch (ColecaoVaziaException e)
