@@ -1007,4 +1007,86 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 		 
 	 }
+	 
+	public void testEnviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi()
+	{
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setNomeComercial("Teo");
+		 colaborador.setEmpresa(empresa);
+
+		 Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+		 colaborador2.setNome("Leo");
+		 colaborador2.setNomeComercial("Leo");
+		 colaborador2.setEmpresa(empresa);
+
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 Collection<Usuario> usuarios = Arrays.asList(usuario);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setUsuarios(usuarios);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDiasSemEpi").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador, colaborador2)));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
+		 usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi();
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	}
+	
+	public void testEnviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Teo");
+		colaborador.setNomeComercial("Teo");
+		colaborador.setEmpresa(empresa);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+		colaborador2.setNome("Leo");
+		colaborador2.setNomeComercial("Leo");
+		colaborador2.setEmpresa(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		Collection<Usuario> usuarios = Arrays.asList(usuario);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao.setEmpresa(empresa);
+		gerenciadorComunicacao.setUsuarios(usuarios);
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		colaboradorManager.expects(once()).method("findAguardandoEntregaEpi").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador, colaborador2)));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
+		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi();
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
 }

@@ -185,4 +185,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<PendenciaAC> findPendencias(Long empresaId);
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem) throws Exception;
 	public char getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria);
+	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
+	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
 }

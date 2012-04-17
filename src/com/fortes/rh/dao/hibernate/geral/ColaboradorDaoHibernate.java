@@ -3904,4 +3904,68 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
+
+	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)
+	{
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("inner join hc.colaborador as co ");
+		hql.append("inner join hc.funcao as f ");
+		hql.append("inner join f.historicoFuncaos as hf ");
+		hql.append("inner join hf.epis as e ");
+		hql.append("where ");
+		hql.append("		hc.data = (");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append("		) ");
+		hql.append("		and hf.data = (");
+		hql.append("			select max(hf2.data) ");
+		hql.append("			from HistoricoFuncao as hf2 ");
+		hql.append("			where hf2.funcao.id = f.id ");
+		hql.append("			and hf2.data <= :hoje ");
+		hql.append("		) ");
+		hql.append("and not exists (select 1 from SolicitacaoEpi se where se.colaborador.id = co.id) ");
+		hql.append("and co.desligado = false ");
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and :hoje - co.dataAdmissao in (:dias) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("hoje", new Date());
+		query.setParameterList("dias", dias);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return query.list();
+	}
+
+	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
+		hql.append("from SolicitacaoEpi as se ");
+		hql.append("inner join se.colaborador as co ");
+		hql.append("inner join co.historicoColaboradors as hc ");
+		hql.append("where  hc.data = (");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append("		) ");
+		hql.append("and co.desligado = false ");
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and :hoje - se.data in (:dias) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("hoje", new Date());
+		query.setParameterList("dias", diasLembrete);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return query.list();
+	}
+	
 }
