@@ -16,4 +16,5 @@ public interface HistoricoAmbienteDao extends GenericDao<HistoricoAmbiente>
 	List<DadosAmbienteRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim);
 	HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima);
 	Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data);
+	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId);
 }

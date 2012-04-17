@@ -11,15 +11,11 @@ import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.model.sesmt.Risco;
-import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
-import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -197,6 +193,24 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		Collection<HistoricoAmbiente> historicoAmbientes = historicoAmbienteDao.findRiscosAmbientes(ambientesIds, new Date("2008/01/01"));
 		
 		assertEquals("Test 1", 1, historicoAmbientes.size());
+	}
+	
+	public void testFindByData() throws Exception
+	{
+		Date hoje = DateUtil.criarDataMesAno(1, 1, 2000);
+		
+		Ambiente ambiente = new Ambiente();
+		ambiente.setNome("ambiente");
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente();
+		historicoAmbiente1.setData(hoje);
+		historicoAmbiente1.setAmbiente(ambiente);
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		assertEquals("Inserção", historicoAmbiente1, historicoAmbienteDao.findByData(hoje, null));
+		assertEquals("Atualização própria", null, historicoAmbienteDao.findByData(hoje, historicoAmbiente1.getId()));
+		assertEquals("Atualização outra", historicoAmbiente1, historicoAmbienteDao.findByData(hoje, 0L));
 	}
 
 	public void setAmbienteDao(AmbienteDao ambienteDao) {

@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
@@ -200,8 +201,11 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 //		return historicoFuncoes;
 //	}
 
-	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws Exception
+	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws FortesException, Exception 
 	{
+		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId()) != null)
+			throw new FortesException("Já existe um histórico para a data informada");			
+		
 		historicoFuncao.setExames(addExames(examesChecked));
 		CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
 		historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
@@ -270,6 +274,11 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 //
 //		return examesRelatorios;
 //	}
+
+	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId) 
+	{
+		return getDao().findByData(data, historicoFuncaoId);
+	}
 
 	public void removeByFuncoes(Long[] funcaoIds)
 	{

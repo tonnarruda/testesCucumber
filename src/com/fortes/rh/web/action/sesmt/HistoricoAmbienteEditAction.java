@@ -7,6 +7,7 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
@@ -83,16 +84,41 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 
 	public String insert() throws Exception
 	{
-		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+		try {
+			historicoAmbiente.setAmbiente(ambiente);
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+	
+			return Action.SUCCESS;
 		
-		return Action.SUCCESS;
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			prepareInsert(); 
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao gravar o histórico do ambiente");
+			prepareInsert(); 
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception
 	{
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
-		return Action.SUCCESS;
+		try {
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+	
+			return Action.SUCCESS;
+		
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			prepareUpdate(); 
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao gravar o histórico do ambiente");
+			prepareUpdate(); 
+			return Action.INPUT;
+		}
 	}
 	
 	public String delete() throws Exception

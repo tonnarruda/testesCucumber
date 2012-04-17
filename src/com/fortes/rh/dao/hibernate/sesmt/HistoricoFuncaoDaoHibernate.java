@@ -178,4 +178,18 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		return historicosDistinct;
 	}
+
+	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		
+		criteria.add(Expression.eq("historico.data", data));
+		
+		if (historicoFuncaoId != null)
+			criteria.add(Expression.ne("historico.id", historicoFuncaoId));
+		
+		criteria.setMaxResults(1);
+		
+		return (HistoricoFuncao)criteria.uniqueResult();
+	}
 }

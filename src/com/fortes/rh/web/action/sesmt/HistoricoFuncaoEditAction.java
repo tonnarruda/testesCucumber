@@ -7,6 +7,7 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -76,24 +77,48 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public String insert() throws Exception
 	{
-		historicoFuncao.setFuncao(funcao);
-		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
-
-		if(veioDoSESMT)
-			return "SUCESSO_VEIO_SESMT";
-		else
-			return Action.SUCCESS;
+		try {
+			historicoFuncao.setFuncao(funcao);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+	
+			if(veioDoSESMT)
+				return "SUCESSO_VEIO_SESMT";
+			else
+				return Action.SUCCESS;
+		
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			prepareInsert(); 
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao gravar o histórico da função");
+			prepareInsert(); 
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception
 	{
-//		historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
-		historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+		try {
+//			historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+	
+			if(veioDoSESMT)
+				return "SUCESSO_VEIO_SESMT";
+			else
+				return Action.SUCCESS;
 
-		if(veioDoSESMT)
-			return "SUCESSO_VEIO_SESMT";
-		else
-			return Action.SUCCESS;
+		} catch (FortesException e) {
+			addActionError(e.getMessage());
+			prepareInsert(); 
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao gravar o histórico da função");
+			prepareInsert(); 
+			return Action.INPUT;
+		}
 	}
 
 	public HistoricoFuncao getHistoricoFuncao()
