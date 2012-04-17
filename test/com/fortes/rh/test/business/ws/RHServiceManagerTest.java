@@ -358,6 +358,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
 		TSituacao situacao = new TSituacao();
+		situacao.setId(1);
 		situacao.setData("01/01/2010");
 		situacao.setEmpregadoCodigoAC("00001");
 		situacao.setEmpresaCodigoAC("0001");
@@ -365,9 +366,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		
-		colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").withAnyArguments().will(returnValue(colaborador));
 		colaboradorManager.expects(once()).method("cancelarContratacaoNoAC").withAnyArguments().isVoid();
-		historicoColaboradorManager.expects(once()).method("findByAC").withAnyArguments().will(returnValue(historicoColaborador));;
+		historicoColaboradorManager.expects(once()).method("findById").withAnyArguments().will(returnValue(historicoColaborador));;
 
 		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, situacao, "").isSucesso());
 	}
@@ -429,7 +429,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
 
-		assertEquals(true, rHServiceManager.criarSituacao(situacao).isSucesso());
+		assertEquals(true, rHServiceManager.criarSituacao(null, situacao).isSucesso());
 	}
 
 	public void testCriarSituacaoException() throws Exception
@@ -439,7 +439,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("54321");
 
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(throwException(new Exception()));
-		assertEquals(false, rHServiceManager.criarSituacao(situacao).isSucesso());
+		assertEquals(false, rHServiceManager.criarSituacao(null, situacao).isSucesso());
 	}
 
 	public void testAtualizarSituacao() throws Exception

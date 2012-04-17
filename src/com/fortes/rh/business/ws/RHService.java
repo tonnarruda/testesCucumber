@@ -51,7 +51,7 @@ public interface RHService
 	FeedbackWebService removerSituacaoEmLote(Integer movimentoSalarialId, String empCodigo, String grupoAC);
 	FeedbackWebService criarSituacaoEmLote(TSituacao[] situacao);
 	FeedbackWebService atualizarSituacaoEmLote(TSituacao[] situacao);
-	FeedbackWebService criarSituacao(TSituacao situacao);
+	FeedbackWebService criarSituacao(TEmpregado empregado, TSituacao situacao);
 	FeedbackWebService atualizarSituacao(TSituacao situacao);
 	FeedbackWebService cancelarSituacao(TSituacao situacao, String mensagem);
 

@@ -398,16 +398,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return empregado;
 	}
 	
-    private char getVinculo(String admissaoTipo, String admissaoVinculo, String admissaoCategoria) {
+    public char getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
         char colocacao;
 
         if (admissaoTipo!=null && admissaoTipo.equals("00")) {
             colocacao = 'S';
         } else {
-            if (admissaoVinculo!=null && admissaoVinculo.equals("50")) {
+            if (admissaoVinculo!=null && admissaoVinculo == 50) {
                 colocacao = 'T';
             } else {
-                if (admissaoCategoria!=null && admissaoCategoria.equals("07")) {
+                if (admissaoCategoria!=null && admissaoCategoria == 7) {
                     colocacao = 'A';
                 } else {
                     colocacao = 'E';
@@ -969,17 +969,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, String motivo, Long colaboradorId) throws Exception 
+	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception 
 	{
-		Colaborador colaborador = (Colaborador) find(new String[]{"id"}, new Object[]{colaboradorId}).toArray()[0];
-		TEmpregado empregado = bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC());
+		Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
+		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
+		historicoColaborador.setDataSolicitacaoDesligamento(dataSolicitacaoDesligamento);
+		historicosColaborador.add(historicoColaborador);
 		
-//		acPessoalClientColaborador.solicitacaoDesligamentoAc(empregado, DateUtil.formataDiaMesAno(dataSolicitacaoDesligamento), colaborador.getEmpresa());
-		getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, colaboradorId);
-		
+		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
+		{
+			getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, colaboradorId);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId);
+		}
 	}
 	
-	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -1367,7 +1371,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
 			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
 
-		char vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo().toString(), empregado.getCategoria().toString());
+		
+		char vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
 		colaborador.setVinculo(String.valueOf(vinculo));
 		
 		return colaborador;

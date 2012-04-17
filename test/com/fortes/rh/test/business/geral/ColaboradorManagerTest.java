@@ -690,7 +690,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         assertNotNull(colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, new Date(), new Date()));
     }
 
-    public void testDesligaColaborador() throws Exception
+    public void testSolicitacaoDesligamentoAc() throws Exception
     {
         Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
@@ -701,6 +701,19 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
         colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId());
+    }
+    
+    public void testDesligaColaborador() throws Exception
+    {
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	
+    	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
+    	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
+    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
+    	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
+    	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
+    	
+    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId());
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {

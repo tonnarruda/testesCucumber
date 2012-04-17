@@ -1618,14 +1618,23 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return result == 1 ? true : false;
 	}
 
-	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId)
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId)
 	{
-		String hql = "update Colaborador set  desligado = :desligado, dataDesligamento = :data, observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoDemissaoId where id = :colaboradorId";
+		StringBuffer hql = new StringBuffer("update Colaborador set  ");
+		
+		if(desligado != null && dataDesligamento != null)		
+			hql.append("desligado = :desligado, dataDesligamento = :data, ");
+		
+		hql.append("observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoDemissaoId where id = :colaboradorId ");
 
-		Query query = getSession().createQuery(hql);
+		Query query = getSession().createQuery(hql.toString());
 
-		query.setBoolean("desligado", desligado);
-		query.setDate("data", dataDesligamento);
+		if(desligado != null && dataDesligamento != null)
+		{
+			query.setBoolean("desligado", desligado);
+			query.setDate("data", dataDesligamento);
+		}
+		
 		query.setString("observacaoDemissao", observacaoDemissao);
 		query.setLong("motivoDemissaoId", motivoDemissaoId);
 		query.setLong("colaboradorId", colaboradorId);

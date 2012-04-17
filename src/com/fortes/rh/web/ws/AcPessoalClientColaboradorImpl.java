@@ -2,7 +2,10 @@ package com.fortes.rh.web.ws;
 
 import static org.apache.axis.Constants.XSD_BOOLEAN;
 
+import java.util.Collection;
 
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
@@ -11,13 +14,17 @@ import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.util.DateUtil;
 
 public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborador {
 	private AcPessoalClient acPessoalClient;
@@ -209,29 +216,71 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		return result;
 	}
 
-	public boolean solicitacaoDesligamentoAc(TEmpregado empregado, String dataSolicitacaoDesligamento, Empresa empresa) 
+	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa) 
 	{
 		try {
-			StringBuilder token = new StringBuilder();
-			GrupoAC grupoAC = new GrupoAC();
-			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "solicitacaoDesligamento");
+				StringBuilder token = new StringBuilder();
+				GrupoAC grupoAC = new GrupoAC();
+				Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SetRescisaoRhEmpregados");
 
-			QName qnameEmpregado = new QName(grupoAC.getAcUrlWsdl(), "TEmpregado");
-			call.registerTypeMapping(TEmpregado.class, qnameEmpregado, new BeanSerializerFactory(TEmpregado.class, qnameEmpregado), new BeanDeserializerFactory(TEmpregado.class, qnameEmpregado));
+	            QName qname = new QName(grupoAC.getAcUrlWsdl(),"TItemTabelaEmpregados");
+	            call.registerTypeMapping(TItemTabelaEmpregados.class, qname, new BeanSerializerFactory(TItemTabelaEmpregados.class, qname), new BeanDeserializerFactory(TItemTabelaEmpregados.class, qname));
 
-			QName xmltype = new QName("ns1:TEmpregado");
-			QName xmlstring = new QName("xs:string");
+		        call.addParameter("Token",org.apache.axis.encoding.XMLType.XSD_STRING,ParameterMode.IN);
+		        call.addParameter("Tabela",org.apache.axis.encoding.XMLType.SOAP_ARRAY,ParameterMode.IN);
 
-			call.addParameter("Token", xmlstring, ParameterMode.IN);
-			call.addParameter("Empresa", xmlstring, ParameterMode.IN);
-			call.addParameter("Empregado", xmltype, ParameterMode.IN);
-			call.addParameter("dataSolicitacaoDesligamento", xmlstring, ParameterMode.IN);
+		        acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 
-			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
-			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), empregado, dataSolicitacaoDesligamento };
+		        TItemTabelaEmpregados[] arrayReajuste = new TItemTabelaEmpregados[historicosAc.size()];
 
-			TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
-			return result.getSucesso("solicitacaoDesligamento", param, this.getClass()); 
+		        int cont = 0;
+		        for (HistoricoColaborador historico : historicosAc)
+				{
+		        	TItemTabelaEmpregados item = new TItemTabelaEmpregados();
+		        	item.setCargo(historico.getFaixaSalarial().getCodigoAC());
+		        	item.setCodigo(historico.getColaborador().getCodigoAC());
+		        	item.setData(DateUtil.formataDiaMesAno(historico.getData()));
+		        	item.setEmpresa(empresa.getCodigoAC());
+		        	item.setLotacao(historico.getAreaOrganizacional().getCodigoAC());
+		        	item.setRh_sep_id(Integer.valueOf(historico.getId().toString()));
+		        	item.setEstabelecimento(historico.getEstabelecimento().getCodigoAC());
+		        	item.setSaltipo(String.valueOf(TipoAplicacaoIndice.getCodigoAC(historico.getTipoSalario())));
+		        	item.setDataRescisao(DateUtil.formataDiaMesAno(historico.getDataSolicitacaoDesligamento()));
+		        	item.setObs(historico.getObsACPessoal());
+		        	
+		        	item.setExpAgenteNocivo(historico.getGfip());
+
+		    		switch (historico.getTipoSalario())
+		    		{
+		    			case TipoAplicacaoIndice.CARGO:
+		    			{
+		    				item.setIndcodigosalario("");
+		    				item.setIndqtde(0.0);
+		    				item.setValor(0.0);
+		    				break;
+		    			}
+		    			case TipoAplicacaoIndice.INDICE:
+		    				item.setIndcodigosalario(historico.getIndice().getCodigoAC());
+		    				item.setIndqtde(historico.getQuantidadeIndice());
+		    				item.setValor(0.0);
+		    				break;
+		    			case TipoAplicacaoIndice.VALOR:
+		    				item.setIndcodigosalario("");
+		    				item.setIndqtde(0.0);
+		    				item.setValor(historico.getSalarioCalculado());
+		    				break;
+		    		}
+
+		        	arrayReajuste[cont++] = item;
+				}
+
+		       	Object[] param = new Object[]{token.toString(), arrayReajuste};
+
+		       	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
+		       	Boolean retorno = result.getSucesso("SetRescisaoRhEmpregados", param, this.getClass()); 
+	       		if(!retorno)
+		        	throw new IntegraACException("Situação do colaborador inexistente no Ac Pessoal.");
+		       	return retorno;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

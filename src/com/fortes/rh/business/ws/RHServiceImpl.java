@@ -440,7 +440,7 @@ public class RHServiceImpl implements RHService
 		{
 			for (TSituacao tSituacao : situacaos)
 			{
-				historicoColaboradors.add(montaSituacao(tSituacao));
+				historicoColaboradors.add(montaSituacao(null, tSituacao));
 			}
 			
 			historicoColaboradorManager.saveOrUpdate(historicoColaboradors);
@@ -471,12 +471,12 @@ public class RHServiceImpl implements RHService
 		
 	}
 	
-	public FeedbackWebService criarSituacao(TSituacao situacao)
+	public FeedbackWebService criarSituacao(TEmpregado empregado, TSituacao situacao)
 	{
 		String parametros = "Situacao data: " + situacao.getData() + "\nempregado: " + situacao.getEmpregadoCodigoAC() + "\nempresa: " + situacao.getEmpresaCodigoAC() + "\ngrupoAC: " + situacao.getGrupoAC(); 
 		try
 		{
-			HistoricoColaborador historicoColaborador = montaSituacao(situacao);
+			HistoricoColaborador historicoColaborador = montaSituacao(empregado, situacao);
 			historicoColaboradorManager.save(historicoColaborador);
 			return new FeedbackWebService(true);
 		}
@@ -487,11 +487,15 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	private HistoricoColaborador montaSituacao(TSituacao situacao) throws Exception
+	private HistoricoColaborador montaSituacao(TEmpregado empregado, TSituacao situacao) throws Exception
 	{
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.prepareSituacao(situacao);
 
 		Colaborador colaborador = colaboradorManager.findByCodigoAC(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+		
+		if(empregado != null)
+			colaborador.setVinculo(String.valueOf(colaboradorManager.getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria())));
+		
 		historicoColaborador.setColaborador(colaborador);
 		return historicoColaborador;
 	}

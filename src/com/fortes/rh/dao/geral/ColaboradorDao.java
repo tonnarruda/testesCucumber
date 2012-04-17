@@ -47,7 +47,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 
 	public boolean desligaByCodigo(String codigoac, Empresa empresa, Date data);
-	public void desligaColaborador(boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId);
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId);
 	public void religaColaborador(Long colaboradorId);
 	public Collection<Colaborador> findProjecaoSalarialByHistoricoColaborador(Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);
 	public Collection<Colaborador> findProjecaoSalarialByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);

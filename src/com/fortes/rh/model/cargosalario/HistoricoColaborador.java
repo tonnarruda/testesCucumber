@@ -92,6 +92,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Double salarioVariavel;
 	@Transient private Double diferencaSalarialEmPorcentam;
 	@Transient private String obsACPessoal;
+	@Transient private Date dataSolicitacaoDesligamento;
 	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
 		
@@ -110,7 +111,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			Long indiceId, String indiceNome, Double indiceHistoricoValor, Long areaId, String areaNome, Long ambienteId,
 			String ambienteNome, Long funcaoId, String funcaoNome, Long faixaSalarialId, String faixaSalarialNome,
 			Long cargoId, String cargoNomeMercado, String cargoNome, Long grupoId, String grupoNome, Long estabelecimentoId, String estabelecimentoNome,
-			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor)
+			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor,
+			String faixaCodigoAc, String areaOrganizacionalCodigoAc, String estabelecimentoCodigoAc )
 	{
 		setId(id);
 		setSalario(salario);
@@ -121,6 +123,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setTipoSalario(tipoSalario);
 		setStatus(status);
 		setEmpresaId(empresaId);
+		setEstabelecimentoCodigoAC(estabelecimentoCodigoAc);
 		setColaboradorId(colaboradorId);
 		setColaboradorNomeComercial(colaboradorNomeComercial);
 		setColaboradorNome(colaboradorNome);
@@ -131,12 +134,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setProjectionIndiceHistoricoValor(indiceHistoricoValor);
 		setAreaId(areaId);
 		setAreaOrganizacionalNome(areaNome);
+		setAreaOrganizacionalCodigoAC(areaOrganizacionalCodigoAc);
 		setAmbienteId(ambienteId);
 		setAmbienteNome(ambienteNome);
 		setFuncaoId(funcaoId);
 		setFuncaoNome(funcaoNome);
 		setFaixaSalarialId(faixaSalarialId);
 		setFaixaSalarialNome(faixaSalarialNome);
+		setFaixaCodigoAC(faixaCodigoAc);
 		setCargoId(cargoId);
 		setCargoNomeMercado(cargoNomeMercado);
 		setCargoNome(cargoNome);
@@ -365,6 +370,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 		areaOrganizacional.setId(areaId);
 	}
+	
+	public void setAreaOrganizacionalCodigoAC(String areaOrganizacionalCodigoAC)
+	{
+		if (areaOrganizacional == null)
+			areaOrganizacional = new AreaOrganizacional();
+		
+		areaOrganizacional.setCodigoAC(areaOrganizacionalCodigoAC);
+	}
 
 	public void setProjectionIndiceId(Long projectionIndiceId)
 	{
@@ -567,6 +580,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			this.faixaSalarial = new FaixaSalarial();
 
 		this.faixaSalarial.setNome(faixaSalarialNome);
+	}
+
+	public void setFaixaCodigoAC(String faixaSalarialCodigoAC)
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setCodigoAC(faixaSalarialCodigoAC);
 	}
 
 	public void setProjectionFaixaHistoricoValor(Double faixaHistoricoValor)
@@ -949,6 +970,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.estabelecimento = estabelecimento;
 	}
 
+	public void setEstabelecimentoCodigoAC(String estabelecimentoCodigoAC)
+	{
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setCodigoAC(estabelecimentoCodigoAC);
+	}
+
 	public FaixaSalarial getFaixaSalarial()
 	{
 		return faixaSalarial;
@@ -1062,4 +1091,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) {
 		this.candidatoSolicitacao = candidatoSolicitacao;
 	}
+
+	public Date getDataSolicitacaoDesligamento() {
+		return dataSolicitacaoDesligamento;
+	}
+
+	public void setDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento) {
+		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;
+	}
+
 }
