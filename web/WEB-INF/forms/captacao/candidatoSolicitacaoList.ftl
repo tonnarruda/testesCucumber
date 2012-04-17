@@ -119,7 +119,7 @@
 
 		<a href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}"><img border="0" title="Competências" src="<@ww.url value="/imgs/competencias.gif"/>"></a>
 
-		<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO">
+		<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_CURRICULO">
         	<a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 		</@authz.authorize>
 
