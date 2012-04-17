@@ -1,0 +1,1 @@
+alter table turma_avaliacaoturma add column liberada boolean default false;--.go

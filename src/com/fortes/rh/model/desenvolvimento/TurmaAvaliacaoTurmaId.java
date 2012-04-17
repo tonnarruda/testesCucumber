@@ -2,32 +2,57 @@ package com.fortes.rh.model.desenvolvimento;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
 @SuppressWarnings("serial")
-public class TurmaAvaliacaoTurmaId extends AbstractModel implements Serializable, Cloneable
+@Embeddable 
+public class TurmaAvaliacaoTurmaId extends AbstractModel implements Serializable
 {
-	@Id
-	private Long turmaId;
+	@ManyToOne
+	private Turma turma;
 	
-	@Id
-	private Long avaliacaoTurmaId;
-
-	public Long getTurmaId() {
-		return turmaId;
+	@ManyToOne
+	private AvaliacaoTurma avaliacaoTurma;
+	
+	public Turma getTurma() {
+		return turma;
+	}
+	
+	public void setTurma(Turma turma) {
+		this.turma = turma;
+	}
+	
+	public AvaliacaoTurma getAvaliacaoTurma() {
+		return avaliacaoTurma;
 	}
 
-	public void setTurmaId(Long turmaId) {
-		this.turmaId = turmaId;
+	public void setAvaliacaoTurma(AvaliacaoTurma avaliacaoTurma) {
+		this.avaliacaoTurma = avaliacaoTurma;
 	}
-
-	public Long getAvaliacaoTurmaId() {
-		return avaliacaoTurmaId;
-	}
-
-	public void setAvaliacaoTurmaId(Long avaliacaoTurmaId) {
-		this.avaliacaoTurmaId = avaliacaoTurmaId;
-	}
+		
+	public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+ 
+        TurmaAvaliacaoTurmaId that = (TurmaAvaliacaoTurmaId) o;
+ 
+        if (turma != null ? !turma.equals(that.turma) : that.turma != null) 
+        	return false;
+        
+        if (avaliacaoTurma != null ? !avaliacaoTurma.equals(that.avaliacaoTurma) : that.avaliacaoTurma != null)
+            return false;
+ 
+        return true;
+    }
+ 
+    public int hashCode() {
+        int result;
+        result = (turma != null ? turma.hashCode() : 0);
+        result = 31 * result + (avaliacaoTurma != null ? avaliacaoTurma.hashCode() : 0);
+        return result;
+    }
 }

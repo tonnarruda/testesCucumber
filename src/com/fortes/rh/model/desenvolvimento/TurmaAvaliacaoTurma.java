@@ -2,64 +2,65 @@ package com.fortes.rh.model.desenvolvimento;
 
 import java.io.Serializable;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name="turma_avaliacaoturma")
-@IdClass(TurmaAvaliacaoTurmaId.class)
-public class TurmaAvaliacaoTurma extends AbstractModel implements Serializable, Cloneable
+@AssociationOverrides({
+		@AssociationOverride(name = "pk.turma", 
+			joinColumns = @JoinColumn(name = "turma_id")),
+		@AssociationOverride(name = "pk.turmaAvaliacaoTurma", 
+			joinColumns = @JoinColumn(name = "avaliacaoturmas_id")) }) 
+public class TurmaAvaliacaoTurma extends AbstractModel implements Serializable
 {
-	@Id
-	private Long turmaId;
-	@Id
-	private Long avaliacaoTurmaId;
+	@EmbeddedId
+	private TurmaAvaliacaoTurmaId pk = new TurmaAvaliacaoTurmaId();
 	
-	@ManyToOne
-	@PrimaryKeyJoinColumn(name="turma_id", referencedColumnName="id")
-	private Turma turma;
+	private boolean liberada;
+
+	public TurmaAvaliacaoTurma() {
+				
+	}
 	
-	@ManyToOne
-	@PrimaryKeyJoinColumn(name="avaliacaoturmas_id", referencedColumnName="id")
-	private AvaliacaoTurma avaliacaoTurma;
-
-	public Long getTurmaId() {
-		return turmaId;
+	public TurmaAvaliacaoTurmaId getPk() {
+		return pk;
 	}
 
-	public void setTurmaId(Long turmaId) {
-		this.turmaId = turmaId;
+	public void setPk(TurmaAvaliacaoTurmaId pk) {
+		this.pk = pk;
 	}
 
-	public Long getAvaliacaoTurmaId() {
-		return avaliacaoTurmaId;
+	public boolean isLiberada() {
+		return liberada;
 	}
 
-	public void setAvaliacaoTurmaId(Long avaliacaoTurmaId) {
-		this.avaliacaoTurmaId = avaliacaoTurmaId;
+	public void setLiberada(boolean liberada) {
+		this.liberada = liberada;
 	}
-
-	public Turma getTurma() {
-		return turma;
+	
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+ 
+		TurmaAvaliacaoTurma that = (TurmaAvaliacaoTurma) o;
+ 
+		if (getPk() != null ? !getPk().equals(that.getPk()) : that.getPk() != null)
+			return false;
+ 
+		return true;
 	}
-
-	public void setTurma(Turma turma) {
-		this.turma = turma;
-	}
-
-	public AvaliacaoTurma getAvaliacaoTurma() {
-		return avaliacaoTurma;
-	}
-
-	public void setAvaliacaoTurma(AvaliacaoTurma avaliacaoTurma) {
-		this.avaliacaoTurma = avaliacaoTurma;
+ 
+	public int hashCode() {
+		return (getPk() != null ? getPk().hashCode() : 0);
 	}
 }
