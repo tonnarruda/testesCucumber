@@ -22,6 +22,7 @@
 		</#list>
 	</#if>
 	
+	<#include "../ftl/mascarasImports.ftl" />
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -240,7 +241,17 @@
 		}
 		
 	</script>
+	<#if dataIni?exists>
+		<#assign valueDataIni = dataIni?date/>
+	<#else>
+		<#assign valueDataIni = ""/>
+	</#if>
 
+	<#if dataFim?exists>
+		<#assign valueDataFim = dataFim?date/>
+	<#else>
+		<#assign valueDataFim = ""/>
+	</#if>
 
 </head>
 <body>
@@ -258,6 +269,11 @@
 				<strong><@authz.authentication operation="empresaNome"/></strong>
 			</li>
 		</#if>
+		
+		<div>Período*:</div>
+		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
+		<@ww.label value="a" liClass="liLeft"/>
+		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 

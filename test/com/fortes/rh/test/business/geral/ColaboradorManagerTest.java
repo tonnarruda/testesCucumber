@@ -515,9 +515,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
         colaboradors.add(colaborador);
 
-        colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING}).will(returnValue(colaboradors));
+        colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").withAnyArguments().will(returnValue(colaboradors));
 
-        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null);
+        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null);
 
         assertEquals(1, retorno.size());
     }

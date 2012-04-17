@@ -39,7 +39,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds);
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds, Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order);
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds, Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim);
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	public boolean atualizarUsuario(Long colaboradorId, Long usuarioId);
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);

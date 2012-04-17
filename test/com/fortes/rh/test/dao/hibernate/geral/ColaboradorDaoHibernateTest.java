@@ -2387,8 +2387,69 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		areaOrganizacionalIds.add(areaOrganizacional.getId());
 		grupoOcupacionalIds.add(grupoOcupacional.getId());
 
-		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null);
+		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, null, null);
 
+		assertEquals(1, colaboradors.size());
+	}
+	
+	public void testFindAreaOrganizacionalByAreasAndPeriodoDataAdmissao() {
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("estabelecimento");
+		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador responsavel = getEntity();
+		responsavel = colaboradorDao.save(responsavel);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setResponsavel(responsavel);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+		
+		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacional = grupoOcupacionalDao.save(grupoOcupacional);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setGrupoOcupacional(grupoOcupacional);
+		cargo = cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		Colaborador colaborador = getEntity();
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 2010));
+		colaborador = colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		// colaborador fora da data de admissao
+		Colaborador colaborador2 = getEntity();
+		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador2 = colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador2.setEstabelecimento(estabelecimento);
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		// Parâmetros do find
+		Collection<Long> estabelecimentoIds = new ArrayList<Long>();
+		Collection<Long> areaOrganizacionalIds = new ArrayList<Long>();
+		Collection<Long> grupoOcupacionalIds = new ArrayList<Long>();
+		
+		estabelecimentoIds.add(estabelecimento.getId());
+		areaOrganizacionalIds.add(areaOrganizacional.getId());
+		grupoOcupacionalIds.add(grupoOcupacional.getId());
+		
+		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaOrganizacionalIds, null, null, null, DateUtil.criarDataMesAno(01, 02, 2011), DateUtil.criarDataMesAno(01, 02, 2012));
+		
 		assertEquals(1, colaboradors.size());
 	}
 
@@ -2443,7 +2504,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		estabelecimentoIds.add(estabelecimento.getId());
 		areaOrganizacionalIds.add(areaOrganizacional.getId());
 
-		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtras, null, null);
+		Collection<Colaborador> colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtras, null, null, null, null);
 		assertEquals(1, colaboradors.size());
 
 		CamposExtras camposExtrasBusca = new CamposExtras();
@@ -2466,7 +2527,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		camposExtrasBusca.setNumero1(40);
 		camposExtrasBusca.setNumero1Fim(60);
 
-		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtrasBusca, null, null);
+		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtrasBusca, null, null, null, null);
 		assertEquals(1, colaboradors.size());
 
 		// Parâmetros do find
@@ -2481,7 +2542,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		camposExtrasBusca.setNumero1Fim(60);
 
-		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtrasBusca, null, null);
+		colaboradors = colaboradorDao.findAreaOrganizacionalByAreas(true, estabelecimentoIds, areaOrganizacionalIds, camposExtrasBusca, null, null, null, null);
 		assertEquals(1, colaboradors.size());
 	}
 

@@ -295,7 +295,7 @@
 					</textElement>
 				<text><![CDATA[Total:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="746"
 						y="1"
@@ -306,7 +306,7 @@
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{countCampo1}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{countCampo1}==null?new Long(0):$V{countCampo1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>

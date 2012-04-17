@@ -1070,7 +1070,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order)
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1125,6 +1125,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
+		
+		if(dataAdmissaoIni != null && dataAdmissaoFim != null)
+			hql.append(" and co.dataAdmissao between :dataAdmissaoIni and :dataAdmissaoFim  ");
 
 		if(habilitaCampoExtra && camposExtras != null)
 		{
@@ -1180,6 +1183,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+		
+		if(dataAdmissaoIni != null && dataAdmissaoFim != null)
+		{
+			query.setDate("dataAdmissaoIni", dataAdmissaoIni);
+			query.setDate("dataAdmissaoFim", dataAdmissaoFim);
+		}
 		
 		if(habilitaCampoExtra && camposExtras != null)
 		{

@@ -270,8 +270,11 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField);
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim);
 
+			if(colaboradores.isEmpty())
+				throw new Exception("SEM_DADOS");
+			
 			Context cx = Context.enter();
 	        try {
 	            cx.setLanguageVersion(Context.VERSION_1_7);
@@ -336,8 +339,12 @@ public class ColaboradorListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionMessage("Não foi possível gerar o relatório");
 			
+			if(e.getMessage().equals("SEM_DADOS"))
+				addActionMessage("Não existem dados para o filtro informado.");
+			else
+				addActionMessage("Não foi possível gerar o relatório.");
+				
 			prepareRelatorioDinamico();
  			return Action.INPUT;
 		}
@@ -350,7 +357,10 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim);
+			
+			if(colaboradores.isEmpty())
+				throw new Exception("SEM_DADOS");
 			
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
 			reportTitle = configuracaoRelatorioDinamico.getTitulo();
@@ -377,7 +387,11 @@ public class ColaboradorListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionMessage("Não foi possível gerar o relatório");
+			
+			if(e.getMessage().equals("SEM_DADOS"))
+				addActionMessage("Não existem dados para o filtro informado.");
+			else
+				addActionMessage("Não foi possível gerar o relatório.");
 			
 			prepareRelatorioDinamico();
 			return Action.INPUT;

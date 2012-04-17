@@ -884,9 +884,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionUsuario(colaboradorId);
 	}
 
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order)
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim)
 	{
-		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order);
+		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim);
 	}
 
 	public void setCidadeManager(CidadeManager cidadeManager)
