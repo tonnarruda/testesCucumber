@@ -30,7 +30,7 @@
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/><br>
 	
 		<@ww.datepicker label="Data da Solicitação de Desligamento" name="dataDesligamento" id="data" cssClass="mascaraData" required="true"/>
-		<@ww.select label="Motivo do Desligamento" name="motDemissao.motivo" id="motivoId" list="motivoDemissaos"  listKey="id" listValue="motivo" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" required="true" />
+		<@ww.select label="Motivo do Desligamento" name="motDemissao.id" id="motivoId" list="motivoDemissaos"  listKey="id" listValue="motivo" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" required="true" />
 		<@ww.textarea label="Mensagem para o AC Pessoal" name="observacaoDemissao" cssStyle="width:445px;"/>
 	
 	</@ww.form>
