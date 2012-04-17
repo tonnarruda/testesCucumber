@@ -41,6 +41,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		
+		historicoAmbienteDao.expects(once()).method("findByData").with(eq(historicoAmbiente.getData()), eq(historicoAmbiente.getId())).will(returnValue(null));
 		historicoAmbienteDao.expects(once()).method("save");
 		
 		Exception exception = null;
@@ -66,6 +67,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 		
+		historicoAmbienteDao.expects(once()).method("findByData").with(eq(historicoAmbiente.getData()), eq(historicoAmbiente.getId())).will(returnValue(null));
 		riscoAmbienteManager.expects(once()).method("removeByHistoricoAmbiente").with(eq(historicoAmbiente.getId())).will(returnValue(true));
 		historicoAmbienteDao.expects(once()).method("update");
 		

@@ -232,6 +232,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		Long[] episChecked = new Long[]{1L};
 		Long[] riscosChecked = new Long[]{1L};
 		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
+		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId())).will(returnValue(null));
 		historicoFuncaoDao.expects(once()).method("save").with(eq(historicoFuncao));
 
 		Exception exception = null;
@@ -254,6 +255,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		Long[] episChecked = new Long[]{1L};
 		Long[] riscosChecked = new Long[]{1L};
 		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
+		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId())).will(returnValue(null));
 		riscoFuncaoManager.expects(once()).method("removeByHistoricoFuncao").with(eq(historicoFuncao.getId())).will(returnValue(true));
 		historicoFuncaoDao.expects(once()).method("update").with(eq(historicoFuncao));
 		

@@ -60,6 +60,7 @@
 
 </head>
 <body>
+	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.datepicker label="A partir de" name="historicoFuncao.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
@@ -103,9 +104,11 @@
 		</#if>
 
 		<@ww.hidden name="funcao.id" />
+		<@ww.hidden name="funcao.nome" />
 		<@ww.hidden name="historicoFuncao.id" />
 		<@ww.hidden name="historicoFuncao.funcao.id" />
 		<@ww.hidden name="cargoTmp.id" />
+		<@ww.hidden name="cargoTmp.nome" />
 		<@ww.hidden name="veioDoSESMT" />
 	</@ww.form>
 

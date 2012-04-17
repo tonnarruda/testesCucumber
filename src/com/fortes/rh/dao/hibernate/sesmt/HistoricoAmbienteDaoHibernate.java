@@ -17,6 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
@@ -146,5 +147,19 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		}
 		
 		return historicosDistinct;
+	}
+
+	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		
+		criteria.add(Expression.eq("historico.data", data));
+		
+		if (historicoAmbienteId != null)
+			criteria.add(Expression.ne("historico.id", historicoAmbienteId));
+		
+		criteria.setMaxResults(1);
+		
+		return (HistoricoAmbiente)criteria.uniqueResult();
 	}
 }

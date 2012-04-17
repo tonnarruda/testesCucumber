@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
@@ -28,8 +29,11 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		return historicoAmbiente;
 	}
 	
-	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws Exception 
+	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws FortesException, Exception 
 	{
+		if (this.findByData(historicoAmbiente.getData(), historicoAmbiente.getId()) != null)
+			throw new FortesException("Já existe um histórico para a data informada");	
+		
 		Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
 		Collection<Epc> epcs = new CollectionUtil<Epc>().convertArrayStringToCollection(Epc.class, epcCheck);
 		
@@ -69,6 +73,11 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 			update(historicoAmbiente);
 	}
 	
+	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId) 
+	{
+		return getDao().findByData(data, historicoAmbienteId);
+	}
+
 	public boolean removeByAmbiente(Long ambienteId) 
 	{
 		return getDao().removeByAmbiente(ambienteId);
