@@ -28,7 +28,8 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 	private Turma turma ;
 	@Transient
 	private Integer qtdColaboradorQuestionario ;
-	
+	@Transient
+	private boolean liberada;
 	
 	public AvaliacaoTurma()
 	{
@@ -232,6 +233,14 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 
 	public void setQtdColaboradorQuestionario(Integer qtdColaboradorQuestionario) {
 		this.qtdColaboradorQuestionario = qtdColaboradorQuestionario;
+	}
+
+	public boolean isLiberada() {
+		return liberada;
+	}
+
+	public void setLiberada(boolean liberada) {
+		this.liberada = liberada;
 	}
 
 }

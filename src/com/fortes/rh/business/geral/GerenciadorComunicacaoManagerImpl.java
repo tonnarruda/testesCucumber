@@ -46,6 +46,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.Cabecalho;
@@ -756,15 +757,16 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		return getDao().verifyExists(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}, valores);
 	}
 
-	public void enviarAvisoEmailLiberacao(Turma turma, Long empresaId) {
+	public void enviarAvisoEmailLiberacao(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId) {
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_TURMA.getId(), empresaId);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
-				enviarAvisoEmail(turma, empresaId);
+				enviarAvisoAvaliacaoEmail(turma, avaliacaoTurma, empresaId);
 			} 
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void enviarAvisoEmail(Turma turma, Long empresaId) 
 	{
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
@@ -773,11 +775,32 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId()); 
 
 		String subject = "[Fortes RH] Lembrete: Curso " + turma.getCurso().getNome();
-		String  body =  "#COLABORADOR# ,você está matriculado no seguinte curso.<br>";
+		String  body =  "#COLABORADOR#, você está matriculado no seguinte curso.<br>";
 				body += "Curso: " + turma.getCurso().getNome() + "<br>";
 				body += "Turma: " + turma.getDescricao() + "<br>";
 				body += "Período: " + DateUtil.formataDiaMesAno(turma.getDataPrevIni()) + " - " + DateUtil.formataDiaMesAno(turma.getDataPrevFim()) + "<br>";
 				body += "Horário: " + turma.getHorario() + "<br>";
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			try {
+				mail.send(empresa, subject, null, body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome()), colaboradorTurma.getColaborador().getContato().getEmail());
+			} catch (Exception e)	{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public void enviarAvisoAvaliacaoEmail(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId) 
+	{
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
+		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId()); 
+		
+		String subject = "[Fortes RH] Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
+		String  body =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida.";
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{

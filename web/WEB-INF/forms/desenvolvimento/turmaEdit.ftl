@@ -233,7 +233,6 @@
 			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
 		</#if>
 
-		<#-- <@ww.select disabled="${somenteLeitura}" label="Questionário de Avaliação de Curso" name="turma.avaliacaoTurma.id" list="avaliacaoTurmas" listKey="id" listValue="questionario.titulo" headerValue="Selecione..." headerKey=""/> -->
 		<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
 
 		<@ww.hidden name="turma.id" id="turmaId" />

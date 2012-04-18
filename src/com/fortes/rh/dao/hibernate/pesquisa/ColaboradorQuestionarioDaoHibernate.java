@@ -834,7 +834,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		hql.append("select new ColaboradorQuestionario(c, q, t) ");
 		hql.append("from ColaboradorTurma ct "); 
 		hql.append("inner join ct.turma t ");
-		hql.append("inner join t.avaliacaoTurmas at "); 
+		hql.append("inner join t.turmaAvaliacaoTurmas tat "); 
+		hql.append("inner join tat.avaliacaoTurma at "); 
 		hql.append("inner join at.questionario q ");
 		hql.append("inner join ct.colaborador c "); 
 		hql.append("left join c.colaboradorQuestionarios cq with cq.turma.id=t.id and cq.questionario.id=q.id and c.usuario.id = :usuarioId ");

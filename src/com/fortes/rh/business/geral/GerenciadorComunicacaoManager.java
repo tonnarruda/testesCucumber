@@ -16,6 +16,7 @@ import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.ws.TSituacao;
@@ -40,7 +41,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	boolean existeConfiguracaoParaCandidatosModuloExterno(Long emrpesaId);
 	void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa);
 	public void enviaEmailConfiguracaoLimiteColaborador(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresa);
-	void enviarAvisoEmailLiberacao(Turma turma, Long empresaId);
+	void enviarAvisoEmailLiberacao(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId);
 	void enviarAvisoEmail(Turma turma, Long empresaId);
 	void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa);
 	void enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi();

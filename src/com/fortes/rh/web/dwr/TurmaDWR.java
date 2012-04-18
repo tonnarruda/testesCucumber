@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
@@ -21,6 +22,7 @@ public class TurmaDWR
 	
 	private TurmaManager turmaManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
@@ -112,26 +114,18 @@ public class TurmaDWR
 		return realizada;
 	}
 	
-	public String liberar(Long turmaId, Long empresaId)  
+	public Long liberar(Long turmaId, Long avaliacaoTurmaId, Long empresaId)  
 	{
-		try {
-			turmaManager.updateLiberada(turmaId, LIBERADA, empresaId);
-			
-		} catch (Exception e) {
-			return "Erro ao liberar turma .";
-		}
-		return "Turma liberada com sucesso.";
+		turmaAvaliacaoTurmaManager.updateLiberada(turmaId, avaliacaoTurmaId, LIBERADA, empresaId);
+		
+		return turmaId;
 	}
 	
-	public String bloquear(Long turmaId, Long empresaId) 
+	public Long bloquear(Long turmaId, Long avaliacaoTurmaId, Long empresaId) 
 	{
-		try {
-			turmaManager.updateLiberada(turmaId, BLOQUEADA, empresaId);
-			
-		} catch (Exception e) {
-			return "Erro ao bloquear turma .";
-		}
-		return "Turma bloqueada com sucesso.";
+		turmaAvaliacaoTurmaManager.updateLiberada(turmaId, avaliacaoTurmaId, BLOQUEADA, empresaId);
+		
+		return turmaId;
 	}
 	
 	public Collection<TurmaTipoDespesa> getDespesas(Long turmaId)
@@ -163,5 +157,10 @@ public class TurmaDWR
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+
+	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
+		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
 	}
 }

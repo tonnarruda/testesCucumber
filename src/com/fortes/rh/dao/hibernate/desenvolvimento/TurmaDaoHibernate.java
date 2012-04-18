@@ -183,7 +183,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
         criteria.createCriteria("t.curso", "c");
-        criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
+        criteria.createCriteria("t.turmaAvaliacaoTurmas", "tat", Criteria.LEFT_JOIN);
+        criteria.createCriteria("tat.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
         criteria.createCriteria("a.questionario", "q", Criteria.LEFT_JOIN);
 
         ProjectionList p = Projections.projectionList().create();
@@ -232,7 +233,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.curso", "c");
-		criteria.createCriteria("t.avaliacaoTurmas", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("t.turmaAvaliacaoTurmas", "tat", Criteria.LEFT_JOIN);
+		criteria.createCriteria("tat.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("a.questionario", "q", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
@@ -523,16 +525,5 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	Double valor = (Double) criteria.uniqueResult();
         
     	return valor == null ? 0.0 : valor;
-	}
-
-
-	public void updateLiberada(Long turmaId, Boolean liberada) {
-		String hql = "update Turma set liberada = :liberada where id = :turmaId";
-
-		Query query = getSession().createQuery(hql);
-		query.setLong("turmaId", turmaId);
-		query.setBoolean("liberada", liberada);
-
-		query.executeUpdate();
 	}
 }

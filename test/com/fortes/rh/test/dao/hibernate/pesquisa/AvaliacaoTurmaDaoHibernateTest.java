@@ -1,16 +1,17 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.AvaliacaoTurmaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -30,6 +31,7 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 	private EmpresaDao empresaDao;
 	
 	private AvaliacaoTurma avaliacaoTurma;
+	private TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao;
 	private Questionario questionario;
 	
 	@Override
@@ -171,11 +173,18 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		avaliacaoTurma3.setQuestionario(questionario2);
 		avaliacaoTurmaDao.save(avaliacaoTurma3);
 		
-		Collection<AvaliacaoTurma> avaliacaoTurmas = Arrays.asList(avaliacaoTurma1, avaliacaoTurma3);
-		
 		Turma turma = TurmaFactory.getEntity();
-		turma.setAvaliacaoTurmas(avaliacaoTurmas);
 		turmaDao.save(turma);
+
+		TurmaAvaliacaoTurma turmaAvaliacaoTurma1 = new TurmaAvaliacaoTurma();
+		turmaAvaliacaoTurma1.setTurma(turma);
+		turmaAvaliacaoTurma1.setAvaliacaoTurma(avaliacaoTurma1);
+		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma1);
+		
+		TurmaAvaliacaoTurma turmaAvaliacaoTurma3 = new TurmaAvaliacaoTurma();
+		turmaAvaliacaoTurma3.setTurma(turma);
+		turmaAvaliacaoTurma3.setAvaliacaoTurma(avaliacaoTurma3);
+		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma3);
 		
 		Collection<AvaliacaoTurma> aTurmas = avaliacaoTurmaDao.findByTurma(turma.getId());
 		
@@ -232,5 +241,9 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 
 	public void setTurmaDao(TurmaDao turmaDao) {
 		this.turmaDao = turmaDao;
+	}
+
+	public void setTurmaAvaliacaoTurmaDao(TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao) {
+		this.turmaAvaliacaoTurmaDao = turmaAvaliacaoTurmaDao;
 	}
 }

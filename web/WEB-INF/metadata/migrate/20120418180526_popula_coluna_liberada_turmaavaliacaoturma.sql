@@ -1,0 +1,1 @@
+update turma_avaliacaoturma tat set liberada = (select t.liberada from turma t where t.id = tat.turma_id);--.go

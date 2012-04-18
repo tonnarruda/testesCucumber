@@ -21,6 +21,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 		
 	<script type="text/javascript">
+		var evt;
+	
 		function enviarEmail(turmaId)
 		{
 			DWRUtil.useLoadingMessage('Enviando...');
@@ -38,30 +40,32 @@
 			jAlert("Envio de email falhou.");
 		}
 		
-		function liberarTurma(turmaId)
+		function liberarAvaliacaoTurma(turmaId, avaliacaoTurmaId)
 		{
 			DWRUtil.useLoadingMessage('Liberando...');
-			TurmaDWR.liberar(retorno, turmaId, <@authz.authentication operation="empresaId"/>);
+			TurmaDWR.liberar(retorno, turmaId, avaliacaoTurmaId, <@authz.authentication operation="empresaId"/>);
 		}
 
-		function bloquearTurma(turmaId)
+		function bloquearAvaliacaoTurma(turmaId, avaliacaoTurmaId)
 		{
 			DWRUtil.useLoadingMessage('Bloqueando...');
-			TurmaDWR.bloquear(retorno, turmaId, <@authz.authentication operation="empresaId"/>);
+			TurmaDWR.bloquear(retorno, turmaId, avaliacaoTurmaId, <@authz.authentication operation="empresaId"/>);
 		}
 		
-		function retorno(data)
+		function retorno(turmaId)
 		{
-			jAlert(data, 'Fortes RH', function() { window.location.reload(); });
+			getMenuAvaliacoes(evt, turmaId, ${curso.id}, 'liberar_bloquear');
 		}
 
 		function getMenuAvaliacoes(event, turmaId, cursoId, acao)
 		{
+			evt = event;
+		
 			TurmaDWR.getAvaliacaoTurmas(turmaId, {
 				callback: function(dados) {
 					$('.popup').empty();
 					
-					var link, urlIcone;
+					var link, urlIcone, title;
 					var onClick = "";
 					var popupAvaliacoes = "<ul>";
 					
@@ -70,6 +74,21 @@
 						{
 							link = "../../pesquisa/questionario/imprimir.action?questionario.id=" + avaliacaoTurma.questionario.id + "&filtroQuestionario=" + avaliacaoTurma.turma.id;
 							urlIcone = "<@ww.url includeParams="none" value="/imgs/printer.gif"/>";
+							title = "Imprimir";
+						}
+						else if (acao == 'liberar_bloquear')
+						{
+							link = "javascript:;";
+							if (avaliacaoTurma.liberada)
+							{
+								onClick = "bloquearAvaliacaoTurma(" + turmaId + ", " + avaliacaoTurma.id + ")";
+								urlIcone = "<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>";
+								title = "Bloquear";
+							} else {
+								onClick = "liberarAvaliacaoTurma(" + turmaId + ", " + avaliacaoTurma.id + ")";;
+								urlIcone = "<@ww.url includeParams="none" value="/imgs/liberar.gif"/>";
+								title = "Liberar";
+							}
 						}
 						else
 						{
@@ -80,9 +99,10 @@
 								onClick = 'jAlert("Não existe questionário respondido para esta avaliação.")';
 							}
 							urlIcone = "<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>";
+							title = "Relatório";
 						}
 					
-						popupAvaliacoes += "<li><a href='" + link + "' onclick='" + onClick+ " ' >";
+						popupAvaliacoes += "<li><a title='" + title + "' href='" + link + "' onclick='" + onClick+ " ' >";
 						popupAvaliacoes += "<img src='" + urlIcone + "' align='absmiddle'/>&nbsp; " + avaliacaoTurma.questionarioTitulo;
 						popupAvaliacoes += "</a></li>\n";
 					});
@@ -113,11 +133,8 @@
 		
 			<@ww.hidden name="turma.id" value="" />
 			
-			<#if turma.liberada>
-				<a href="javascript:newConfirm('Deseja bloquear esta turma?', function(){bloquearTurma(${turma.id});});"><img border="0" title="Bloquear" src="<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>"></a>
-			<#else>
-				<a href="javascript:newConfirm('Deseja liberar esta turma?', function(){liberarTurma(${turma.id});});"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
-			</#if>
+			<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id}, 'liberar_bloquear')"><img border="0" title="Liberar/Bloquear Avaliações" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+			
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>

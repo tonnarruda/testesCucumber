@@ -1,0 +1,1 @@
+alter table turma_avaliacaoturma rename column avaliacaoturmas_id to avaliacaoturma_id;--.go

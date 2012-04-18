@@ -1,7 +1,6 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -16,6 +15,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DNTManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -73,6 +73,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock tipoDespesaManager;
 	private Mock turmaTipoDespesaManager;
+	private Mock turmaAvaliacaoTurmaManager;
 	
 
     protected void setUp() throws Exception
@@ -120,6 +121,9 @@ public class TurmaEditActionTest extends MockObjectTestCase
         
         tipoDespesaManager = new Mock(TipoDespesaManager.class);
         action.setTipoDespesaManager((TipoDespesaManager) tipoDespesaManager.proxy());
+
+        turmaAvaliacaoTurmaManager = new Mock(TurmaAvaliacaoTurmaManager.class);
+        action.setTurmaAvaliacaoTurmaManager((TurmaAvaliacaoTurmaManager) turmaAvaliacaoTurmaManager.proxy());
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
@@ -191,12 +195,9 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setTurma(turma);
 
     	turmaManager.expects(once()).method("salvarTurmaDiasCusto");
+    	turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas");
     	
     	assertEquals("success", action.insert());
-    	
-    	AvaliacaoTurma aTurma = (AvaliacaoTurma)action.getTurma().getAvaliacaoTurmas().toArray()[0]; 
-    	
-    	assertEquals(234L, aTurma.getId().longValue());
     }
 
     public void testUpdate() throws Exception
@@ -208,6 +209,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	
     	colaboradorTurmaManager.expects(once()).method("saveUpdate").with(ANYTHING, ANYTHING);
     	turmaManager.expects(once()).method("updateTurmaDias").with(ANYTHING, ANYTHING);
+    	turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas");
     	
     	assertEquals("success", action.update());
     }

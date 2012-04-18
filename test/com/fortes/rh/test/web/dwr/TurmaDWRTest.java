@@ -254,7 +254,6 @@ public class TurmaDWRTest extends MockObjectTestCase
 		assertEquals(1, retorno.size());
 	}
 	
-
     public void testLiberar() 
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -262,9 +261,11 @@ public class TurmaDWRTest extends MockObjectTestCase
     	Turma turma = TurmaFactory.getEntity(1L);
     	turma.setEmpresa(empresa);
     	
-    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING);
+    	AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
     	
-    	assertEquals("Turma liberada com sucesso.", turmaDWR.liberar(turma.getId(), empresa.getId()));
+    	turmaTipoDespesaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
+    	
+    	assertEquals("Turma liberada com sucesso.", turmaDWR.liberar(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
 	}
     
     public void testBloquear() 
@@ -274,9 +275,11 @@ public class TurmaDWRTest extends MockObjectTestCase
     	Turma turma = TurmaFactory.getEntity(1L);
     	turma.setEmpresa(empresa);
     	
-    	turmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING);
+    	AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
     	
-    	assertEquals("Turma bloqueada com sucesso.", turmaDWR.bloquear(turma.getId(), empresa.getId()));
+    	turmaTipoDespesaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
+    	
+    	assertEquals("Turma bloqueada com sucesso.", turmaDWR.bloquear(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
     }
 	
 }

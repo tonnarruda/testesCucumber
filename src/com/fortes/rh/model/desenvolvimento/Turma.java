@@ -7,7 +7,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -21,7 +20,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
-import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 
@@ -50,8 +48,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private boolean realizada = false;
 	private boolean liberada = false;
 	private Integer qtdParticipantesPrevistos;
-	@ManyToMany(fetch=FetchType.LAZY)
-	private Collection<AvaliacaoTurma> avaliacaoTurmas;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
+	private Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas; 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
@@ -378,14 +376,6 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		this.diasEstimadosParaAprovacao = diasEstimadosParaAprovacao;
 	}
 
-	public Collection<AvaliacaoTurma> getAvaliacaoTurmas() {
-		return avaliacaoTurmas;
-	}
-
-	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas) {
-		this.avaliacaoTurmas = avaliacaoTurmas;
-	}
-
 	public Integer getQtdAvaliacoes() {
 		return qtdAvaliacoes;
 	}
@@ -416,5 +406,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setLiberada(boolean liberada) {
 		this.liberada = liberada;
+	}
+
+	public Collection<TurmaAvaliacaoTurma> getTurmaAvaliacaoTurmas() {
+		return turmaAvaliacaoTurmas;
+	}
+
+	public void setTurmaAvaliacaoTurmas(Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas) {
+		this.turmaAvaliacaoTurmas = turmaAvaliacaoTurmas;
 	}
 }

@@ -9,7 +9,6 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
@@ -164,16 +163,18 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 	public Collection<AvaliacaoTurma> findByTurma(Long turmaId) 
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class, "t");
-		criteria.createCriteria("t.avaliacaoTurmas", "a");
+		criteria.createCriteria("t.turmaAvaliacaoTurmas", "tat");
+		criteria.createCriteria("tat.avaliacaoTurma", "a");
 		criteria.createCriteria("a.questionario", "q");
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("t.id"), "projectionTurmaId");
 		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("tat.liberada"), "liberada");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("q.titulo"), "projectionQuestionarioTitulo");
-		p.add(Projections.sqlProjection("(select count(*) from colaboradorquestionario cq where cq.questionario_id = q2_.id) as qtdColaboradorQuestionario" , 
+		p.add(Projections.sqlProjection("(select count(*) from colaboradorquestionario cq where cq.questionario_id = q3_.id) as qtdColaboradorQuestionario" , 
 				                        new String[] {"qtdColaboradorQuestionario"}, 
 				                        new Type[] {Hibernate.INTEGER}));
 		

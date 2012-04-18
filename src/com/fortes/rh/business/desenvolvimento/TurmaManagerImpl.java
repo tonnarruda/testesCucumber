@@ -24,6 +24,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
 {
@@ -100,22 +101,12 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
-		try
-		{
-			save(turma);
-			diaTurmaManager.saveDiasTurma(turma, diasCheck);
+		save(turma);
+		
+		diaTurmaManager.saveDiasTurma(turma, diasCheck);
+		
+		if (!StringUtil.isBlank(despesaJSON))
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
-			transactionManager.commit(status);
-		}
-		catch(Exception e)
-		{
-			transactionManager.rollback(status);
-			throw e;
-		}
 	}
 
 	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception
@@ -150,7 +141,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			Turma turmaClonada = (Turma) turma.clone();
 			turmaClonada.setEmpresaId(empresaDestinoId);
 			turmaClonada.setId(null);
-			turmaClonada.setAvaliacaoTurmas(null);
+			turmaClonada.setTurmaAvaliacaoTurmas(null);
 			
 			if(cursoIdTmp.equals(turma.getCurso().getId()))
 			{
@@ -317,14 +308,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			percentual = (custos / faturamentoPeriodo) * 100;
 		
 		return percentual;
-	}
-	
-	public void updateLiberada(Long turmaId, Boolean liberada, Long empresaId) {
-		if (liberada) {
-			Turma turma = findByIdProjection(turmaId);
-			gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, empresaId);
-		}
-		getDao().updateLiberada(turmaId, liberada);		
 	}
 
 	public void setCursoManager(CursoManager cursoManager) {

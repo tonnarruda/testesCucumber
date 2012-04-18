@@ -101,6 +101,28 @@
       <ref bean="turmaManagerTarget" />
     </property>
   </bean>
+  <bean id="turmaAvaliacaoTurmaManagerTarget" class="com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManagerImpl">
+    <property name="dao">
+      <ref bean="turmaAvaliacaoTurmaDao" />
+    </property>
+    <property name="turmaManager">
+      <ref bean="turmaManager" />
+    </property>
+    <property name="avaliacaoTurmaManager">
+      <ref bean="avaliacaoTurmaManager" />
+    </property>
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
+  </bean>
+  <bean id="turmaAvaliacaoTurmaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaAvaliacaoTurmaManagerTarget" />
+    </property>
+  </bean>
   <bean id="cursoManagerTarget" class="com.fortes.rh.business.desenvolvimento.CursoManagerImpl">
     <property name="dao">
       <ref bean="cursoDao" />

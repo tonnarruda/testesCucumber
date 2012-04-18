@@ -1000,7 +1000,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, empresa.getId());
+			 gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, null, empresa.getId());
 		 } catch (Exception e) {
 			 exception = e;
 		 }

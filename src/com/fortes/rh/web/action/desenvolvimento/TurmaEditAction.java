@@ -21,6 +21,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DNTManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -41,6 +42,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
@@ -55,6 +57,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
@@ -77,6 +80,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private CertificacaoManager certificacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
@@ -160,6 +164,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>(0);
 	private AvaliacaoTurma avaliacaoTurma;
 	private boolean avaliacaoRespondida;
+	
+	private Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas = new ArrayList<TurmaAvaliacaoTurma>();
+	private TurmaAvaliacaoTurma turmaAvaliacaoTurma;
 
 	private char certificadoDe = 'T';
 	private Certificacao certificacao;
@@ -220,6 +227,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			throw new Exception("Permissão negada!");
 
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
+		
+		if(!avaliacaoRespondida)
+			avaliacaoRespondida = turmaAvaliacaoTurmaManager.verificaAvaliacaoliberada(turma.getId());
 
 		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim()), "getId", "getDescricao");
 		Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
@@ -247,24 +257,20 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma.setEmpresa(getEmpresaSistema());
 
-		CollectionUtil<AvaliacaoTurma> cUtil = new CollectionUtil<AvaliacaoTurma>();
-		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
-		
-		turma.setAvaliacaoTurmas(avaliacaoTurmas);
 		turmaManager.salvarTurmaDiasCusto(turma, diasCheck, custos);
 
+		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
+		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
-		
-		CollectionUtil<AvaliacaoTurma> cUtil = new CollectionUtil<AvaliacaoTurma>();
-		avaliacaoTurmas = cUtil.convertArrayStringToCollection(AvaliacaoTurma.class, avaliacaoTurmasCheck);
-		
-		turma.setAvaliacaoTurmas(avaliacaoTurmas);
+
 		turmaManager.updateTurmaDias(turma, diasCheck);
+		
+		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1231,5 +1237,25 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public boolean isContemCustosDetalhados() {
 		return contemCustosDetalhados;
+	}
+
+	public Collection<TurmaAvaliacaoTurma> getTurmaAvaliacaoTurmas() {
+		return turmaAvaliacaoTurmas;
+	}
+
+	public void setTurmaAvaliacaoTurmas(Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas) {
+		this.turmaAvaliacaoTurmas = turmaAvaliacaoTurmas;
+	}
+
+	public TurmaAvaliacaoTurma getTurmaAvaliacaoTurma() {
+		return turmaAvaliacaoTurma;
+	}
+
+	public void setTurmaAvaliacaoTurma(TurmaAvaliacaoTurma turmaAvaliacaoTurma) {
+		this.turmaAvaliacaoTurma = turmaAvaliacaoTurma;
+	}
+
+	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
+		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
 	}
 }

@@ -13,6 +13,7 @@ import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -85,6 +87,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private UsuarioDao usuarioDao;
 	private AvaliacaoTurmaDao avaliacaoTurmaDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
+	private TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -943,10 +946,16 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		avaliacaoTurma.setQuestionario(questionario);
 		avaliacaoTurmaDao.save(avaliacaoTurma);
 
+		
 		Turma turma = TurmaFactory.getEntity();
 		turma.setLiberada(true);
-		turma.setAvaliacaoTurmas(Arrays.asList(avaliacaoTurma));
 		turmaDao.save(turma);
+
+		TurmaAvaliacaoTurma turmaAvaliacaoTurma = new TurmaAvaliacaoTurma();
+		turmaAvaliacaoTurma.setTurma(turma);
+		turmaAvaliacaoTurma.setAvaliacaoTurma(avaliacaoTurma);
+		turmaAvaliacaoTurma.setLiberada(true);
+		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma);
 
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setColaborador(colaborador);
@@ -1065,5 +1074,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
+	}
+
+	public void setTurmaAvaliacaoTurmaDao(TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao) {
+		this.turmaAvaliacaoTurmaDao = turmaAvaliacaoTurmaDao;
 	}
 }

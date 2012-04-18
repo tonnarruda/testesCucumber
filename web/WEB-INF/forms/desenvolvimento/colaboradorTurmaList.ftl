@@ -25,9 +25,9 @@
     
     <script type="text/javascript">
 		var avaliacoes = new Array();
-		<#if turma.avaliacaoTurmas?exists>
-			<#list turma.avaliacaoTurmas as avaliacaoTurma>
-				avaliacoes.push({ turmaId: ${turma.id}, questionarioId: ${avaliacaoTurma.questionario.id}, questionarioTitulo: '${avaliacaoTurma.questionario.titulo}' });
+		<#if turma.turmaAvaliacaoTurmas?exists>
+			<#list turma.turmaAvaliacaoTurmas as turmaAvaliacaoTurma>
+				avaliacoes.push({ turmaId: ${turma.id}, questionarioId: ${turmaAvaliacaoTurma.avaliacaoTurma.questionario.id}, questionarioTitulo: '${turmaAvaliacaoTurma.avaliacaoTurma.questionario.titulo}' });
 			</#list>
 		</#if>
 		
@@ -102,7 +102,7 @@
 			<@display.column title="Ações" class="acao">
 
 				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
-					<#if turma.avaliacaoTurmas?exists && 0 < turma.avaliacaoTurmas?size>
+					<#if turma.turmaAvaliacaoTurmas?exists && 0 < turma.turmaAvaliacaoTurmas?size>
 						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Avaliações" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
 					<#else>
 						<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_edit.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
