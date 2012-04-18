@@ -198,7 +198,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Collection<Colaborador> colabCollection = new ArrayList<Colaborador>();
     	colabCollection.add(ColaboradorFactory.getEntity(1L));
     	
-    	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colabCollection));
+    	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colabCollection));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
@@ -215,7 +215,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	Collection<Colaborador> colabCollectionVazia = new ArrayList<Colaborador>();
     	
-    	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(colabCollectionVazia));
+    	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colabCollectionVazia));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));

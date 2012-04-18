@@ -2923,6 +2923,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setObservacaoDemissao("demissao");
 		colaborador.setNome("joao");
 		colaborador.setMatricula("123456");
+		colaborador.setNomeComercial("joao comercial");
 		colaboradorDao.save(colaborador);
 		
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
@@ -2937,7 +2938,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findColaboradoresByArea(new Long[]{area.getId()}, "joao", "123456", empresa.getId(), null).size());
+		assertEquals(1, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "comercial").size());
+		assertEquals(0, colaboradorDao.findColaboradoresByArea(null, null, null, empresa.getId(), "suporte").size());
 	}
 
 	public void testFindAllSelects() {

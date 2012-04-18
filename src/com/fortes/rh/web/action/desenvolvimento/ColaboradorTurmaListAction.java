@@ -176,7 +176,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String filtroHistoricoTreinamentos() throws Exception
 	{
-		colaboradors = colaboradorManager.findColaboradoresByArea(LongUtil.arrayStringToArrayLong(areasCheck), colaborador.getNome(), colaborador.getMatricula(), getEmpresaSistema().getId());
+		colaboradors = colaboradorManager.findColaboradoresByArea(LongUtil.arrayStringToArrayLong(areasCheck), colaborador.getNome(), colaborador.getMatricula(), getEmpresaSistema().getId(), colaborador.getNomeComercial());
 		
 		if (colaboradors == null || colaboradors.isEmpty())
 		{

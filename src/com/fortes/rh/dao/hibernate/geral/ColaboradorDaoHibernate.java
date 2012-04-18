@@ -2785,7 +2785,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula, Long empresaId)
+	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula, Long empresaId, String nomeComercial)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
@@ -2796,6 +2796,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(nome != null && !nome.trim().equals(""))
 			hql.append("and normalizar(upper(co.nome)) like normalizar(:nome) ");
+		if(nomeComercial != null && !nomeComercial.trim().equals(""))
+			hql.append("and normalizar(upper(co.nomeComercial)) like normalizar(:nomeComercial) ");
 		if(matricula != null && !matricula.trim().equals(""))
 			hql.append("and normalizar(upper(co.matricula)) like normalizar(:matricula) ");
 		if(areaIds != null && areaIds.length > 0)
@@ -2812,6 +2814,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(nome != null && !nome.trim().equals(""))
 			query.setString("nome", "%" + nome.toUpperCase() + "%");
+		if(nomeComercial != null && !nomeComercial.trim().equals(""))
+			query.setString("nomeComercial", "%" + nomeComercial.toUpperCase() + "%");
 		if(matricula != null && !matricula.trim().equals(""))
 			query.setString("matricula", "%" + matricula.toUpperCase() + "%");
 		if(areaIds != null && areaIds.length > 0)
