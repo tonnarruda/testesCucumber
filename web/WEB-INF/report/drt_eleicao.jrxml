@@ -32,6 +32,7 @@
 	<parameter name="ATIVIDADE" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="RISCO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TEXTO" isForPrompting="false" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 	</variable>
@@ -57,7 +58,7 @@
 					<graphicElement stretchType="RelativeToTallestObject"/>
 					<imageExpression class="java.lang.String"><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
 				</image>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="239"
@@ -68,7 +69,7 @@
 					<textElement textAlignment="Justified">
 						<font size="14"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["        A empresa "+ $P{EMPRESA}+" - "+$P{ESTABELECIMENTO}+", estabelecida no endereço "+$P{ENDERECO}+", com "+$P{TOTAL_EMPREGADOS}+" empregados cuja atividade é "+$P{ATIVIDADE}+", enquadrada no grupo de risco " +$P{RISCO}+ ", vem respeitosamente requerer a Vossa Senhoria o registro da Comissão Interna de Prevenção de Acidentes - CIPA, de acordo com o Art. 163 da CLT, da Norma Regulamentadora nº 05. Para tanto, anexamos os seguintes documentos: cópia da Ata de Eleição, Ata de Instalação e Posse e o Calendário anual de reuniões."]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TEXTO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

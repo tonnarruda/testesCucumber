@@ -151,6 +151,11 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		{
 			updateImprimirAtaEleicao();	
 			return "imprimirAtaEleicao";
+		}		
+		else if(imprimaRelatorio.equals("ataDRT"))
+		{
+			updateImprimirDRT();	
+			return "imprimirDRT";
 		}
 		
 		return INPUT;
@@ -188,6 +193,7 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		dataSource = new ArrayList<CandidatoEleicao>();
 		dataSource.add(null);//exibir os dados no pdf
 
+		parametros.put("TEXTO", eleicao.getTextoEditalInscricao());
 		parametros.put("PERIODO", "Período: " + DateUtil.formataDiaMesAno(eleicao.getInscricaoCandidatoIni()) + " a " + DateUtil.formataDiaMesAno(eleicao.getInscricaoCandidatoFim()));
 		parametros.put("LOCAL", "Local de inscrição: " + eleicao.getLocalInscricao());
 
@@ -200,11 +206,15 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		dataSource = new ArrayList<CandidatoEleicao>();
 		dataSource.add(null);//exibir os dados no pdf
 
+		String dataVotacaoIni = DateUtil.formataDiaMesAno(eleicao.getVotacaoIni());
+		String dataVotacaoFim = DateUtil.formataDiaMesAno(eleicao.getVotacaoFim());
+		
+		parametros.put("TEXTO", eleicao.getTextoSindicato().replace("#EMPRESA#", getEmpresaSistema().getNome()).replace("#DATA_VOTACAOINI#", dataVotacaoIni).replace("#DATA_VOTACAOFIM#", dataVotacaoFim));
 		parametros.put("DATA_ATUAL_FORMATADA", DateUtil.formataDataExtenso(new Date()));
 		parametros.put("SINDICATO", eleicao.getSindicato());
 		parametros.put("EMPRESA", getEmpresaSistema().getNome());
-		parametros.put("DATA_VOTACAOINI", DateUtil.formataDiaMesAno(eleicao.getVotacaoIni()));
-		parametros.put("DATA_VOTACAOFIM", DateUtil.formataDiaMesAno(eleicao.getVotacaoFim()));
+		parametros.put("DATA_VOTACAOINI", dataVotacaoIni);
+		parametros.put("DATA_VOTACAOFIM", dataVotacaoFim);
 		
 		parametros.put("LOCAL_VOTACAO", "Local da votação: " + eleicao.getLocalVotacao());
 		parametros.put("DATA_VOTACAO", DateUtil.formataDiaMesAno(eleicao.getVotacaoIni()) + " a " + DateUtil.formataDiaMesAno(eleicao.getVotacaoFim()));		
@@ -217,15 +227,15 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		return SUCCESS;
 	}
 
-	public String imprimirDRT() throws Exception
+	private void updateImprimirDRT()
 	{
+		prepareImpressaoComunicado("");
 		String estabelecimentoNome = "", estabelecimentoEndereco = "";
 		Integer totalEmpregados = null;
 
 		Empresa empresaSistema = getEmpresaSistema();
 		eleicao = eleicaoManager.findByIdProjection(eleicao.getId());
 
-		parametros = RelatorioUtil.getParametrosRelatorio("", empresaSistema, "");
 		dataSource = new ArrayList<CandidatoEleicao>();
 		dataSource.add(null);//exibir os dados no pdf
 
@@ -238,11 +248,23 @@ public class EleicaoEditAction extends MyActionSupportEdit
 			totalEmpregados = colaboradorManager.getCountAtivosEstabelecimento(eleicao.getEstabelecimento().getId());
 		}
 		
+		String totalEmp = "";
+		if(totalEmpregados != null)
+			totalEmp = String.valueOf(totalEmpregados);
+		
 		// Evita string "null" no pdf. Cabe ao usuário a percepção das informações que faltam para a empresa...
 		String cidadeNome = empresaSistema.getCidade() != null ? empresaSistema.getCidade().getNome() : "";
 		String ufSigla = empresaSistema.getUf() != null ? empresaSistema.getUf().getSigla() : "";
 		
-		parametros.put("ENDERECO", estabelecimentoEndereco + " - " + cidadeNome + " - " + ufSigla);
+		String endereco = estabelecimentoEndereco + " - " + cidadeNome + " - " + ufSigla;
+		
+		parametros.put("TEXTO",eleicao.getTextoDRT().replace("#EMPRESA#", empresaSistema.getNome())
+													.replace("#ESTABELECIMENTO#", estabelecimentoNome)
+													.replace("#ENDERECO#", endereco)
+													.replace("#TOTAL_EMPREGADOS#", totalEmp)
+													.replace("#ATIVIDADE#", getEmpresaSistema().getAtividade())
+													.replace("#RISCO#", empresaSistema.getGrauDeRisco()));
+		parametros.put("ENDERECO", endereco);
 		parametros.put("ATIVIDADE", getEmpresaSistema().getAtividade());
 
 		String dataFormatada = DateUtil.formataDataExtenso(hoje);
@@ -254,8 +276,6 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		parametros.put("EMPRESA", getEmpresaSistema().getNome());
 		parametros.put("ESTABELECIMENTO", estabelecimentoNome);
 		parametros.put("RISCO", empresaSistema.getGrauDeRisco());
-
-		return SUCCESS;
 	}
 		
 	private String updateImprimirLocalVotacao() throws Exception
@@ -277,6 +297,7 @@ public class EleicaoEditAction extends MyActionSupportEdit
 		else
 			parametros.put("DATA", "Data: " + DateUtil.formataDiaMesAno(eleicao.getVotacaoIni()) + " a " + DateUtil.formataDiaMesAno(eleicao.getVotacaoFim()));
 		
+		parametros.put("TEXTO", eleicao.getTextoChamadoEleicao());
 		parametros.put("HORARIO", "Horário: " + eleicao.getHorarioVotacaoIni() + " a " + eleicao.getHorarioVotacaoFim());
 		parametros.put("LOCAL", "Local: " + eleicao.getLocalVotacao());
 

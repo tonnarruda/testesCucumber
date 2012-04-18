@@ -59,6 +59,14 @@ public class Eleicao extends AbstractModel implements Serializable
 	private String descricao;
 	@Lob
 	private String textoAtaEleicao;
+	@Lob
+	private String textoEditalInscricao;
+	@Lob
+	private String textoChamadoEleicao;
+	@Lob
+	private String textoSindicato;
+	@Lob
+	private String textoDRT;
 
 	@Transient
 	private Integer somaVotos;
@@ -351,5 +359,37 @@ public class Eleicao extends AbstractModel implements Serializable
 
 	public void setTextoAtaEleicao(String textoAtaEleicao) {
 		this.textoAtaEleicao = textoAtaEleicao;
+	}
+
+	public String getTextoEditalInscricao() {
+		return textoEditalInscricao;
+	}
+
+	public void setTextoEditalInscricao(String textoEditalInscricao) {
+		this.textoEditalInscricao = textoEditalInscricao;
+	}
+
+	public String getTextoChamadoEleicao() {
+		return textoChamadoEleicao;
+	}
+
+	public void setTextoChamadoEleicao(String textoChamadoEleicao) {
+		this.textoChamadoEleicao = textoChamadoEleicao;
+	}
+
+	public String getTextoSindicato() {
+		return textoSindicato;
+	}
+
+	public void setTextoSindicato(String textoSindicato) {
+		this.textoSindicato = textoSindicato;
+	}
+
+	public String getTextoDRT() {
+		return textoDRT;
+	}
+
+	public void setTextoDRT(String textoDRT) {
+		this.textoDRT = textoDRT;
 	}
 }

@@ -146,16 +146,6 @@ public class EleicaoEditActionTest extends MockObjectTestCase
 		assertEquals("imprimirSindicado",action.updateImprimir());
 	}
 
-	public void testImprimirDRT() throws Exception
-	{
-		Eleicao eleicao = EleicaoFactory.getEntity(1L);
-		eleicao.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
-		action.setEleicao(eleicao);
-		manager.expects(once()).method("findByIdProjection").will(returnValue(eleicao));
-		colaboradorManager.expects(once()).method("getCountAtivosEstabelecimento");
-		assertEquals("success", action.imprimirDRT());
-	}
-
 	public void testUpdateImprimirLocalVotacao() throws Exception
 	{
 		Eleicao eleicao = EleicaoFactory.getEntity(1L);

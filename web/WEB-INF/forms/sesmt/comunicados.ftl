@@ -14,10 +14,8 @@
 	
 		function validaForm(imprima)
 		{
-
 			$('#imprimaRelatorio').val(imprima);
 			return validaFormularioEPeriodo('form', new Array(), new Array('inscricaoCandidatoIni','inscricaoCandidatoFim','votacaoIni','votacaoFim','apuracao'));
-			
 		}
 	</script>
 	
@@ -62,8 +60,8 @@
 	    <@ww.datepicker label="Início" name="eleicao.inscricaoCandidatoIni" id="inscricaoCandidatoIni" value="${dataInscInicio}"  cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 	    <@ww.datepicker label="Fim" name="eleicao.inscricaoCandidatoFim" id="inscricaoCandidatoFim" value="${dataInscFim}"  cssClass="mascaraData validaDataFim"/>
 
-	    <@ww.textfield label="Local de Inscrição" name="eleicao.localInscricao" id="localInscricao"  cssClass="inputNome" maxLength="100" />
-
+	    <@ww.textfield label="Local de inscrição" name="eleicao.localInscricao" id="localInscricao"  cssClass="inputNome" maxLength="100" />
+		<@ww.textarea label="Texto para edital de inscrição" name="eleicao.textoEditalInscricao" cssStyle="width:600px;"/>
 
 	<div class="buttonGroup">
 		<button onclick="return validaForm('localInscricao');" class="btnImprimirEdital"></button>
@@ -82,6 +80,7 @@
 
 	    <@ww.textfield label="Local da Votação" name="eleicao.localVotacao" id="localVotacao"  cssClass="inputNome" maxLength="100" />
 
+		<@ww.textarea label="Texto para chamado da eleição" name="eleicao.textoChamadoEleicao" cssStyle="width:600px;"/>
 	<div class="buttonGroup">
 		<button onclick="return validaForm('localVotacao');" class="btnImprimirChamadoEleicao"></button>
 	</div><br>
@@ -92,6 +91,7 @@
 		<@ww.textfield label="Horário da Apuração" name="eleicao.horarioApuracao" id="horarioApuracao"   cssStyle="width: 38px;" maxLength="5" onkeypress="return(somenteNumeros(event,':'));"/>
 		<@ww.textfield label="Local da Apuração" name="eleicao.localApuracao" id="localApuracao"  cssClass="inputNome" maxLength="100" />
 
+		<@ww.textarea label="Texto para comunicado ao sindicato (Utilize as tags: #EMPRESA# #DATA_VOTACAOINI# #DATA_VOTACAOFIM#, caso queira exibir o nome da empresa ou data da votação)" name="eleicao.textoSindicato" cssStyle="width:600px;"/>
 	<div class="buttonGroup">
 		<button onclick="return validaForm('chamadoEleicao');" class="btnImprimirSindicato"></button>
 	</div><br>
@@ -111,11 +111,12 @@
 		<@ww.hidden name="eleicao.estabelecimento.id"/>
 		<@ww.hidden name="imprimaRelatorio" id="imprimaRelatorio"/>
   	
+		<@ww.textarea label="Texto para DRT(Utilize as tags: #EMPRESA# #ESTABELECIMENTO# #ENDERECO# #TOTAL_EMPREGADOS# #ATIVIDADE# #RISCO#)" name="eleicao.textoDRT" cssStyle="width:600px;"/>
+		<div class="buttonGroup">
+			<button onclick="return validaForm('ataDRT');" class="btnImprimirAtaDRT"></button>
+		</div>
 	</@ww.form>
   	
-	<div class="buttonGroup">
-		<button onclick="window.location='imprimirDRT.action?eleicao.id=${eleicao.id}'" class="btnImprimirAtaDRT"></button>
-	</div>
 
 </body>
 </html>

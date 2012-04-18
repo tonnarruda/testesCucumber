@@ -83,6 +83,10 @@ public class EleicaoDaoHibernate extends GenericDaoHibernate<Eleicao> implements
 		p.add(Projections.property("eleicao.localApuracao"), "localApuracao");
 		p.add(Projections.property("eleicao.horarioApuracao"), "horarioApuracao");
 		p.add(Projections.property("eleicao.textoAtaEleicao"), "textoAtaEleicao");
+		p.add(Projections.property("eleicao.textoEditalInscricao"), "textoEditalInscricao");
+		p.add(Projections.property("eleicao.textoChamadoEleicao"), "textoChamadoEleicao");
+		p.add(Projections.property("eleicao.textoSindicato"), "textoSindicato");
+		p.add(Projections.property("eleicao.textoDRT"), "textoDRT");
 		p.add(Projections.property("eleicao.empresa.id"), "projectionEmpresaId");
 		p.add(Projections.property("estab.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("estab.nome"), "projectionEstabelecimentoNome");

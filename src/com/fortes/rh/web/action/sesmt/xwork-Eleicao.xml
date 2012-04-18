@@ -63,16 +63,13 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ata_eleicao.pdf</param>
 			</result>
-			<result name="input" type="redirect">prepareComunicados.action?eleicao.id=${eleicao.id}</result>
-		</action>
-		
-		<action name="imprimirDRT" class="com.fortes.rh.web.action.sesmt.EleicaoEditAction" method="imprimirDRT">
-			<result name="success" type="jasper">
+			<result name="imprimirDRT" type="jasper">
 				<param name="dataSource">dataSource</param>
 				<param name="location">WEB-INF/report/drt_eleicao.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">comunicadoDRTCipa.pdf</param>
 			</result>
+			<result name="input" type="redirect">prepareComunicados.action?eleicao.id=${eleicao.id}</result>
 		</action>
 	</package>
 </xwork>

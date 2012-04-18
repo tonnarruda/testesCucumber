@@ -1,0 +1,9 @@
+alter table eleicao add column textoeditalinscricao text;--.go
+alter table eleicao add column textoChamadoEleicao text;--.go
+alter table eleicao add column textoSindicato text;--.go
+alter table eleicao add column textoDRT text;--.go
+
+update eleicao set textoEditalInscricao='Convocamos os empregados que desejam se inscrever para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.';--.go
+update eleicao set textoChamadoEleicao='Convocamos os empregados para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho, a ser realizada em escrutínio secreto.';--.go
+update eleicao set textoSindicato='A empresa #EMPRESA# informa que a eleição da Comissão Interna de Prevenção de Acidentes - CIPA será realizada no período de #DATA_VOTACAOINI# a #DATA_VOTACAOFIM#, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.';--.go
+update eleicao set textoDRT='A empresa #EMPRESA# - #ESTABELECIMENTO#, estabelecida no endereço #ENDERECO#, com #TOTAL_EMPREGADOS# empregados cuja atividade é #ATIVIDADE#, enquadrada no grupo de risco #RISCO#, vem respeitosamente requerer a Vossa Senhoria o registro da Comissão Interna de Prevenção de Acidentes - CIPA, de acordo com o Art. 163 da CLT, da Norma Regulamentadora nº 05. Para tanto, anexamos os seguintes documentos: cópia da Ata de Eleição, Ata de Instalação e Posse e o Calendário anual de reuniões.';--.go

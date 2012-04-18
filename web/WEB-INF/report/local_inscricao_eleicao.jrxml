@@ -27,6 +27,7 @@
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 	<parameter name="LOCAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="PERIODO" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TEXTO" isForPrompting="false" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 	</variable>
@@ -52,19 +53,19 @@
 					<graphicElement stretchType="RelativeToTallestObject"/>
 					<imageExpression class="java.lang.String"><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
 				</image>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="184"
 						width="535"
 						height="174"
-						key="staticText-2"/>
+						key="textField-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified">
 						<font size="18"/>
 					</textElement>
-				<text><![CDATA[            Convocamos os empregados que desejam se inscrever para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TEXTO}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"

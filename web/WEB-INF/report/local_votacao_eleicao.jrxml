@@ -28,6 +28,7 @@
 	<parameter name="LOCAL" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DATA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="HORARIO" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TEXTO" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="candidato.nomeComercial" class="java.lang.String"/>
@@ -58,19 +59,19 @@
 					<graphicElement stretchType="RelativeToTallestObject"/>
 					<imageExpression class="java.lang.String"><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
 				</image>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="135"
+						y="126"
 						width="535"
-						height="128"
-						key="staticText-2"/>
+						height="135"
+						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Justified">
 						<font size="15"/>
 					</textElement>
-				<text><![CDATA[            Convocamos os empregados para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho, a ser realizada em escrutínio secreto.]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TEXTO}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -87,7 +88,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="278"
+						y="280"
 						width="535"
 						height="25"
 						key="textField"/>
@@ -100,7 +101,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="306"
+						y="308"
 						width="535"
 						height="25"
 						key="textField"/>
@@ -113,7 +114,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="334"
+						y="336"
 						width="535"
 						height="25"
 						key="textField-2"/>
@@ -126,7 +127,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="375"
+						y="377"
 						width="535"
 						height="25"
 						key="staticText-3"/>

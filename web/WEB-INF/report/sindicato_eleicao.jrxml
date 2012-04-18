@@ -36,6 +36,7 @@
 	<parameter name="HORARIO_APURACAO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="LOCAL_APURACAO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DATA_VOTACAOFIM" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="TEXTO" isForPrompting="false" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 	</variable>
@@ -72,7 +73,7 @@
 					<textElement textAlignment="Justified">
 						<font size="18"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["            A empresa "+$P{EMPRESA}+" informa que a eleição da Comissão Interna de Prevenção de Acidentes - CIPA será realizada no período de "+$P{DATA_VOTACAOINI}+" a "+$P{DATA_VOTACAOFIM}+", de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho."]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TEXTO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
