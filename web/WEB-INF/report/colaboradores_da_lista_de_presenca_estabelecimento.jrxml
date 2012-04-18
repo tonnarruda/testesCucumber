@@ -471,7 +471,7 @@
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Endereço:]]></text>
+				<text><![CDATA[Endereço do Estabelecimento:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
