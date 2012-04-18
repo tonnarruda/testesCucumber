@@ -1647,9 +1647,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados);
 	}
 
-	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula,Long empresaId) 
+	public Collection<Colaborador> findColaboradoresByArea(Long[] areaIds, String nome, String matricula,Long empresaId, String nomeComercial) 
 	{
-		return getDao().findColaboradoresByArea(areaIds, nome, matricula, empresaId);
+		return getDao().findColaboradoresByArea(areaIds, nome, matricula, empresaId, nomeComercial);
 	}
 
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)

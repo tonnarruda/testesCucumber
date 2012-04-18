@@ -33,6 +33,7 @@
 			<@ww.div cssClass="divInfo" cssStyle="width: 800px;">
 				<ul>
 					<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
+					<@ww.textfield label="Nome Comercial do Colaborador" id="nomeComercial" name="colaborador.nomeComercial" maxLength="100" cssStyle="width: 500px;"/>
 					<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 					<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 

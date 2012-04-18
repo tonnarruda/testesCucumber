@@ -7,6 +7,18 @@
 
 	<div id="perguntaResposta">
 		<p id="tituloPergunta" class="pergunta${pergunta.id}">${pergunta.ordem}) ${pergunta.texto}</p>
+
+		<#if pergunta.aspecto.nome?exists>
+			<#if pergunta.aspecto.nome != aspectoAnterior>
+				<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">${pergunta.aspecto.nome}</div>
+				<#assign aspectoAnterior="${pergunta.aspecto.nome}"/>
+			</#if>
+		<#else>
+			<#if aspectoAnterior != "Sem Aspecto">
+				<#assign aspectoAnterior="Sem Aspecto"/>
+				<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">Sem Aspecto</div>
+			</#if>
+		</#if>
 		
 		<#if pergunta.tipo == tipoPergunta.objetiva >
 			<#list pergunta.respostas as resposta>
