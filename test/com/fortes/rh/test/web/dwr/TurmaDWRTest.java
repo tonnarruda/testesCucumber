@@ -11,6 +11,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
@@ -32,6 +33,7 @@ public class TurmaDWRTest extends MockObjectTestCase
 	private Mock turmaManager;
 	private Mock avaliacaoTurmaManager;
 	private Mock turmaTipoDespesaManager;
+	private Mock turmaAvaliacaoTurmaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -46,6 +48,9 @@ public class TurmaDWRTest extends MockObjectTestCase
 
 		turmaTipoDespesaManager = new Mock(TurmaTipoDespesaManager.class);
 		turmaDWR.setTurmaTipoDespesaManager((TurmaTipoDespesaManager) turmaTipoDespesaManager.proxy());
+
+		turmaAvaliacaoTurmaManager = new Mock(TurmaAvaliacaoTurmaManager.class);
+		turmaDWR.setTurmaAvaliacaoTurmaManager((TurmaAvaliacaoTurmaManager) turmaAvaliacaoTurmaManager.proxy());
 	}
 
 	public void testGetTurmas()
@@ -263,9 +268,9 @@ public class TurmaDWRTest extends MockObjectTestCase
     	
     	AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
     	
-    	turmaTipoDespesaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
+    	turmaAvaliacaoTurmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
     	
-    	assertEquals("Turma liberada com sucesso.", turmaDWR.liberar(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
+    	assertEquals(new Long(1), turmaDWR.liberar(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
 	}
     
     public void testBloquear() 
@@ -277,9 +282,9 @@ public class TurmaDWRTest extends MockObjectTestCase
     	
     	AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
     	
-    	turmaTipoDespesaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
+    	turmaAvaliacaoTurmaManager.expects(once()).method("updateLiberada").with(eq(turma.getId()), ANYTHING, ANYTHING, ANYTHING);
     	
-    	assertEquals("Turma bloqueada com sucesso.", turmaDWR.bloquear(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
+    	assertEquals(new Long(1), turmaDWR.bloquear(turma.getId(), avaliacaoTurma.getId(), empresa.getId()));
     }
 	
 }

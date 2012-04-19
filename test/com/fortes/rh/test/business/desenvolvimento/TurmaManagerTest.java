@@ -302,12 +302,8 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
-		turmaTipoDespesaManager.expects(once()).method("save");
-
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		Exception ex = null;
 		try
@@ -331,11 +327,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
 		// gera exception
 		turmaManager.setDiaTurmaManager(null);
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception ex = null;
 		try

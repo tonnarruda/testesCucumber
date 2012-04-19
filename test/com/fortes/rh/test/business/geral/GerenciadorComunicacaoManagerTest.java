@@ -54,10 +54,12 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
@@ -976,6 +978,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 turma.setDataPrevFim(new Date());
 		 turma.setHorario("comercial");
 		 
+		 AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity(1L);
+		 avaliacaoTurma.setProjectionQuestionarioTitulo("avaliacao final");
+		 
 		 Contato contato = new Contato();
 		 contato.setEmail("email@email.com");
 		 
@@ -1000,7 +1005,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, null, empresa.getId());
+			 gerenciadorComunicacaoManager.enviarAvisoEmailLiberacao(turma, avaliacaoTurma, empresa.getId());
 		 } catch (Exception e) {
 			 exception = e;
 		 }
