@@ -109,9 +109,7 @@
 					
 					popupAvaliacoes += "</ul>";
 					
-					$('.popup').html(popupAvaliacoes);
-					
-					$('.popup').dialog({ modal: true, width: 600, position: [event.pageX, event.pageY] });
+					$('.popup').html(popupAvaliacoes).dialog({ modal: true, width: 600, position: [event.pageX, event.pageY] });
 				}
 			});
 		}
