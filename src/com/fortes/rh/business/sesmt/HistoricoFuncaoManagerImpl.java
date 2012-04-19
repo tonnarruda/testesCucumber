@@ -203,7 +203,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 
 	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws FortesException, Exception 
 	{
-		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId()) != null)
+		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId(), historicoFuncao.getFuncao().getId()) != null)
 			throw new FortesException("Já existe um histórico para a data informada");			
 		
 		historicoFuncao.setExames(addExames(examesChecked));
@@ -231,7 +231,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 			{
 				for (RiscoFuncao riscoFuncao : riscoFuncoes)
 				{
-					if (riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
+					if (riscoFuncao != null && riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
 					{
 						riscoFuncao.setHistoricoFuncao(historicoFuncao);
 						riscoFuncoesSelecionados.add(riscoFuncao);
@@ -275,9 +275,9 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 //		return examesRelatorios;
 //	}
 
-	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId) 
+	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId, Long funcaoId) 
 	{
-		return getDao().findByData(data, historicoFuncaoId);
+		return getDao().findByData(data, historicoFuncaoId, funcaoId);
 	}
 
 	public void removeByFuncoes(Long[] funcaoIds)

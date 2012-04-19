@@ -6,16 +6,22 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -26,6 +32,8 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 	private AmbienteDao ambienteDao;
 	private RiscoAmbienteDao riscoAmbienteDao;
 	private RiscoDao riscoDao;
+	private EmpresaDao empresaDao;
+	private EstabelecimentoDao estabelecimentoDao;
 
 	public HistoricoAmbiente getEntity()
 	{
@@ -199,8 +207,14 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 	{
 		Date hoje = DateUtil.criarDataMesAno(1, 1, 2000);
 		
-		Ambiente ambiente = new Ambiente();
-		ambiente.setNome("ambiente");
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity();
+		ambiente.setEmpresa(empresa);
 		ambienteDao.save(ambiente);
 		
 		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente();
@@ -208,9 +222,9 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		historicoAmbiente1.setAmbiente(ambiente);
 		historicoAmbienteDao.save(historicoAmbiente1);
 		
-		assertEquals("Inserção", historicoAmbiente1, historicoAmbienteDao.findByData(hoje, null));
-		assertEquals("Atualização própria", null, historicoAmbienteDao.findByData(hoje, historicoAmbiente1.getId()));
-		assertEquals("Atualização outra", historicoAmbiente1, historicoAmbienteDao.findByData(hoje, 0L));
+		assertEquals("Inserção", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, null, ambiente.getId()).getId());
+		assertEquals("Atualização própria", null, historicoAmbienteDao.findByData(hoje, historicoAmbiente1.getId(), historicoAmbiente1.getAmbiente().getId()));
+		assertEquals("Atualização outra", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, 0L, historicoAmbiente1.getAmbiente().getId()).getId());
 	}
 
 	public void setAmbienteDao(AmbienteDao ambienteDao) {
@@ -223,5 +237,17 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 
 	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
 		this.riscoAmbienteDao = riscoAmbienteDao;
+	}
+
+	
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
+		this.empresaDao = empresaDao;
+	}
+
+	
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
+	{
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

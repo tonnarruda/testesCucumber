@@ -31,7 +31,7 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 	
 	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws FortesException, Exception 
 	{
-		if (this.findByData(historicoAmbiente.getData(), historicoAmbiente.getId()) != null)
+		if (this.findByData(historicoAmbiente.getData(), historicoAmbiente.getId(), historicoAmbiente.getAmbiente().getId()) != null)
 			throw new FortesException("Já existe um histórico para a data informada");	
 		
 		Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
@@ -56,7 +56,7 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		{
 			for (RiscoAmbiente riscoAmbiente : riscosAmbientes)
 			{
-				if (riscoAmbiente.getRisco() != null && riscoId.equals(riscoAmbiente.getRisco().getId()))
+				if (riscoAmbiente != null && riscoAmbiente.getRisco() != null && riscoId.equals(riscoAmbiente.getRisco().getId()))
 				{
 					riscoAmbiente.setHistoricoAmbiente(historicoAmbiente);
 					riscoAmbientesSelecionados.add(riscoAmbiente);
@@ -73,9 +73,9 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 			update(historicoAmbiente);
 	}
 	
-	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId) 
+	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId) 
 	{
-		return getDao().findByData(data, historicoAmbienteId);
+		return getDao().findByData(data, historicoAmbienteId, ambienteId);
 	}
 
 	public boolean removeByAmbiente(Long ambienteId) 

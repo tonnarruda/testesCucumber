@@ -17,6 +17,7 @@ public class RiscoFuncao extends AbstractModel implements Serializable
 {
 	private boolean epcEficaz;
 	private Character periodicidadeExposicao;
+	private String medidaDeSeguranca;
 	
 	@ManyToOne
 	private HistoricoFuncao historicoFuncao;
@@ -85,5 +86,15 @@ public class RiscoFuncao extends AbstractModel implements Serializable
 
 	public void setHistoricoFuncao(HistoricoFuncao historicoFuncao) {
 		this.historicoFuncao = historicoFuncao;
+	}
+	
+	public String getMedidaDeSeguranca()
+	{
+		return medidaDeSeguranca;
+	}
+
+	public void setMedidaDeSeguranca(String medidaDeSeguranca)
+	{
+		this.medidaDeSeguranca = medidaDeSeguranca;
 	}
 }

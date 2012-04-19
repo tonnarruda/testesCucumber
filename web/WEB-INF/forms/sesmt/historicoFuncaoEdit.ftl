@@ -32,16 +32,19 @@
 	$(function() {
 		<#if historicoFuncao?exists && historicoFuncao.riscoFuncaos?exists>
 			<#list historicoFuncao.riscoFuncaos as riscoFuncao>
-				$('#check' + ${riscoFuncao.risco.id}).attr('checked', true).parent().parent().find('input, select').attr('disabled', false);
-				<#if riscoFuncao.periodicidadeExposicao?exists>
-					$('#perExposicao' + ${riscoFuncao.risco.id}).val('${riscoFuncao.periodicidadeExposicao}');
-				</#if>
-				<#if riscoFuncao.epcEficaz>
-					$('#epcEficaz' + ${riscoFuncao.risco.id}).attr('checked', true);
-				</#if>
-			</#list>
+					$('#check' + ${riscoFuncao.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
+					<#if riscoFuncao.periodicidadeExposicao?exists>
+						$('#perExposicao' + ${riscoFuncao.risco.id}).val('${riscoFuncao.periodicidadeExposicao}');
+					</#if>
+					<#if riscoFuncao.epcEficaz>
+						$('#epcEficaz' + ${riscoFuncao.risco.id}).attr('checked', true);
+					</#if>
+					<#if riscoFuncao.medidaDeSeguranca?exists>
+						$('#medidaDeSeguranca' + ${riscoFuncao.risco.id}).val('${riscoFuncao.medidaDeSeguranca}');
+					</#if>
+				</#list>
 		</#if>
-		
+
 		$('#md').click(function() {
 			var checked = $(this).attr('checked');
 			$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });
@@ -54,7 +57,7 @@
 	
 	function habilitarDesabilitarCamposLinha(campoRisco)
 	{
-		$(campoRisco).parent().parent().find('input, select').not(campoRisco).attr('disabled', !campoRisco.checked);
+		$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
 	}
 </script>
 
@@ -91,6 +94,9 @@
 					<@ww.checkbox id="epcEficaz${riscoFuncao.risco.id}" name="riscosFuncoes[${i}].epcEficaz" disabled="true"/>
 					<@ww.hidden name="riscosFuncoes[${i}].risco.id"/>
 				</@display.column>
+				<@display.column title="Medida de Segurança">
+					<@ww.textarea theme="simple" id="medidaDeSeguranca${riscoFuncao.risco.id}" name="riscosFuncoes[${i}].medidaDeSeguranca" cssStyle="width: 260px;height: 50px;" disabled="true"/>
+				</@display.column>
 				
 				<#assign i = i + 1/>
 			</@display.table>
@@ -99,6 +105,7 @@
 				<@ww.hidden name="riscosFuncoes[${i}].periodicidadeExposicao" />
 				<@ww.hidden name="riscosFuncoes[${i}].epcEficaz" />
 				<@ww.hidden name="riscosFuncoes[${i}].risco.id" />
+				<@ww.hidden name="riscosFuncoes[${i}].medidaDeSeguranca" />
 				<#assign i = i + 1/>
 			</#list> 
 		</#if>

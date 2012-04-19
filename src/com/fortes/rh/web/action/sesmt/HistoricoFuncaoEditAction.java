@@ -101,7 +101,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-//			historicoFuncaoManager.updateHistorico(historicoFuncao, examesChecked, episChecked);
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
 	
 			if(veioDoSESMT)

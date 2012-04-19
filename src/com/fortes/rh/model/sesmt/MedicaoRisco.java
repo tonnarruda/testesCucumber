@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -34,7 +35,7 @@ public class MedicaoRisco extends AbstractModel implements Serializable
     
 	@OneToMany(mappedBy="medicaoRisco", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos;
-	
+
 	public MedicaoRisco() {}
 
 	public MedicaoRisco(Long id, RiscoMedicaoRisco rmr, boolean epcEficaz, Date data) 

@@ -20,6 +20,7 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.util.DateUtil;
@@ -226,13 +227,16 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 
 	public void testSaveHistorico()
 	{
+		Funcao funcao = FuncaoFactory.getEntity(1L);
+		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
 
 		Long[] examesChecked = new Long[]{1L};
 		Long[] episChecked = new Long[]{1L};
 		Long[] riscosChecked = new Long[]{1L};
 		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
-		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId())).will(returnValue(null));
+		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId()), eq(funcao.getId())).will(returnValue(null));
 		historicoFuncaoDao.expects(once()).method("save").with(eq(historicoFuncao));
 
 		Exception exception = null;
@@ -248,14 +252,18 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 	
 	public void testUpdateHistorico()
 	{
+		Funcao funcao = FuncaoFactory.getEntity(1L);
+		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
 		historicoFuncao.setId(1L);
 		
 		Long[] examesChecked = new Long[]{1L};
 		Long[] episChecked = new Long[]{1L};
 		Long[] riscosChecked = new Long[]{1L};
 		Collection<RiscoFuncao> riscosFuncoes = new ArrayList<RiscoFuncao>();
-		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId())).will(returnValue(null));
+		
+		historicoFuncaoDao.expects(once()).method("findByData").with(eq(historicoFuncao.getData()), eq(historicoFuncao.getId()), eq(funcao.getId())).will(returnValue(null));
 		riscoFuncaoManager.expects(once()).method("removeByHistoricoFuncao").with(eq(historicoFuncao.getId())).will(returnValue(true));
 		historicoFuncaoDao.expects(once()).method("update").with(eq(historicoFuncao));
 		

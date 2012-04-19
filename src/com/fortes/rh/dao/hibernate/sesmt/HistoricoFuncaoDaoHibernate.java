@@ -179,17 +179,25 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		return historicosDistinct;
 	}
 
-	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId) 
+	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId, Long funcaoId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
 		
-		criteria.add(Expression.eq("historico.data", data));
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("hf.funcao.id", funcaoId));
+		criteria.add(Expression.eq("hf.data", data));
 		
 		if (historicoFuncaoId != null)
-			criteria.add(Expression.ne("historico.id", historicoFuncaoId));
+			criteria.add(Expression.ne("hf.id", historicoFuncaoId));
 		
 		criteria.setMaxResults(1);
 		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
 		return (HistoricoFuncao)criteria.uniqueResult();
 	}
 }

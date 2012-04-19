@@ -40,6 +40,8 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 	private boolean epcEficaz;
 	@Transient
 	private boolean naoAdicionar;
+	@Transient
+	private String medidaDeSeguranca;
 	
 	
 	public RiscoMedicaoRisco() {
@@ -51,7 +53,7 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 		this.risco = risco2;
 	}
 	
-	public RiscoMedicaoRisco(String descricaoPpra, String descricaoLtcat, String tecnicaUtilizada, String intensidadeMedida, String riscoDescricao, String riscoGrupoRisco, Risco risco, Date medicaoData) 
+	public RiscoMedicaoRisco(String descricaoPpra, String descricaoLtcat, String tecnicaUtilizada, String intensidadeMedida, String riscoDescricao, String riscoGrupoRisco, Risco risco, Date medicaoData, String medidaDeSeguranca) 
 	{
 		this.descricaoPpra = descricaoPpra;
 		this.descricaoLtcat = descricaoLtcat;
@@ -62,6 +64,7 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 		risco.setGrupoRisco(riscoGrupoRisco);
 		this.medicaoRisco = new MedicaoRisco();
 		this.medicaoRisco.setData(medicaoData);
+		this.medidaDeSeguranca = medidaDeSeguranca;
 	}
 	
 	//RiscoMedicaoRisco(rm.tecnicaUtilizada, rm.intensidadeMedida, m.data)
@@ -168,5 +171,15 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 
 	public void setNaoAdicionar(boolean naoAdicionar) {
 		this.naoAdicionar = naoAdicionar;
+	}
+
+	public String getMedidaDeSeguranca()
+	{
+		return medidaDeSeguranca;
+	}
+
+	public void setMedidaDeSeguranca(String medidaDeSeguranca)
+	{
+		this.medidaDeSeguranca = medidaDeSeguranca;
 	}
 }
