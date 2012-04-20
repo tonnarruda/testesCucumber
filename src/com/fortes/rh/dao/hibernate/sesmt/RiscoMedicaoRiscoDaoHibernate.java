@@ -29,12 +29,16 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data) ");
+		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, ra.medidaDeSeguranca) ");
 		hql.append("from RiscoMedicaoRisco rm ");
 		hql.append("	join rm.risco r ");
 		hql.append("	join rm.medicaoRisco m ");
+		hql.append("	inner join m.ambiente a ");
+		hql.append("	inner join a.historicoAmbientes ha ");
+		hql.append("	left join ha.riscoAmbientes ra with ra.risco.id = r.id ");
 		hql.append("where m.ambiente.id = :ambienteId ");
 		hql.append("	and m.data = ( select max(m2.data) from MedicaoRisco m2 where m2.data <= :data and m2.ambiente.id = m.ambiente.id) ");
+		hql.append("	and ha.data = ( select max(ha2.data) from HistoricoAmbiente ha2 where ha2.data <= :data and ha2.ambiente.id = m.ambiente.id) ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
@@ -77,13 +81,17 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 		
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data) ");
+		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, rf.medidaDeSeguranca) ");
 		hql.append("from RiscoMedicaoRisco rm ");
 		hql.append("	join rm.risco r ");
 		hql.append("	join rm.medicaoRisco m ");
+		hql.append("	inner join m.funcao f ");
+		hql.append("	inner join f.historicoFuncaos hf ");
+		hql.append("	left join hf.riscoFuncaos rf with rf.risco.id = r.id ");
 		hql.append("where m.funcao.id = :funcaoId ");
 		hql.append("	and m.data = ( select max(m2.data) from MedicaoRisco m2 where m2.data <= :data and m2.funcao.id = m.funcao.id) ");
-		
+		hql.append("	and hf.data = ( select max(hf2.data) from HistoricoFuncao hf2 where hf2.data <= :data and hf2.funcao.id = m.funcao.id) ");
+
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
 		query.setLong("funcaoId", funcaoId);

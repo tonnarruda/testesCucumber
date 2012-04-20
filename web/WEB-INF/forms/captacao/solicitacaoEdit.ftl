@@ -224,7 +224,7 @@
 			<@ww.div cssClass="divInfo">
 				<ul>
 					<#if nomeLiberador?exists>
-						Atulizado por: ${nomeLiberador} 
+						Atualizado por: ${nomeLiberador} 
 						<br><br>					
 					</#if>	
 					Status da solicitação (Inicia o processo de seleção de pessoal)<br><br>

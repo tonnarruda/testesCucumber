@@ -5,12 +5,16 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
+import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
@@ -29,6 +33,8 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 	private AmbienteDao ambienteDao;
 	private FuncaoDao funcaoDao;
 	private RiscoAmbienteDao riscoAmbienteDao;
+	private HistoricoFuncaoDao historicoFuncaoDao;
+	private HistoricoAmbienteDao historicoAmbienteDao;
 
 	@Override
 	public RiscoMedicaoRisco getEntity()
@@ -93,6 +99,11 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		ambienteDao.save(ambiente);
 		
+		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
+		historicoAmbiente.setAmbiente(ambiente);
+		historicoAmbiente.setData(new Date());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
 		Risco risco = RiscoFactory.getEntity(1L);
 		riscoDao.save(risco);
 		
@@ -118,6 +129,11 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 	{
 		Funcao funcao = new Funcao();
 		funcaoDao.save(funcao);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setData(new Date());
+		historicoFuncaoDao.save(historicoFuncao);
 		
 		Risco risco = RiscoFactory.getEntity(1L);
 		riscoDao.save(risco);
@@ -218,5 +234,17 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 
 	public void setFuncaoDao(FuncaoDao funcaoDao) {
 		this.funcaoDao = funcaoDao;
+	}
+
+	
+	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
+	{
+		this.historicoFuncaoDao = historicoFuncaoDao;
+	}
+
+	
+	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao)
+	{
+		this.historicoAmbienteDao = historicoAmbienteDao;
 	}
 }

@@ -175,9 +175,9 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		historicoFuncao1.setFuncao(funcao);
 		historicoFuncaoDao.save(historicoFuncao1);
 		
-		assertEquals("Inserção", historicoFuncao1, historicoFuncaoDao.findByData(hoje, null));
-		assertEquals("Atualização própria", null, historicoFuncaoDao.findByData(hoje, historicoFuncao1.getId()));
-		assertEquals("Atualização outra", historicoFuncao1, historicoFuncaoDao.findByData(hoje, 0L));
+		assertEquals("Inserção", historicoFuncao1.getId(), historicoFuncaoDao.findByData(hoje, null, funcao.getId()).getId());
+		assertEquals("Atualização própria", null, historicoFuncaoDao.findByData(hoje, historicoFuncao1.getId(), funcao.getId()));
+		assertEquals("Atualização outra", historicoFuncao1.getId(), historicoFuncaoDao.findByData(hoje, 0L, funcao.getId()).getId());
 	}
 
 	public void testFindHistoricoByFuncoesId()

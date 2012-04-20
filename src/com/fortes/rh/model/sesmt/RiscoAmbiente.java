@@ -17,6 +17,7 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 {
 	private boolean epcEficaz;
 	private Character periodicidadeExposicao;
+	private String medidaDeSeguranca;
 	
 	@ManyToOne
 	private HistoricoAmbiente historicoAmbiente;
@@ -85,5 +86,15 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 
 	public void setPeriodicidadeExposicao(Character periodicidadeExposicao) {
 		this.periodicidadeExposicao = periodicidadeExposicao;
+	}
+	
+	public String getMedidaDeSeguranca()
+	{
+		return medidaDeSeguranca;
+	}
+	
+	public void setMedidaDeSeguranca(String medidaDeSeguranca)
+	{
+		this.medidaDeSeguranca = medidaDeSeguranca;
 	}
 }

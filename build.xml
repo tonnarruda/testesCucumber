@@ -79,21 +79,41 @@
 			<http url="http://10.1.2.92:8080/hudson/job/RH/build"/>
 		</waitfor>
 	</target>
-	
+
 	<target name="clean-reports">
-		<delete>
-			<fileset dir="${project.dir}/web/WEB-INF/report" includes="*.jasper" />
-		</delete>
+		<taskdef resource="net/sf/antcontrib/antlib.xml">  
+	        <classpath>  
+	            <pathelement location="${project.dir}/web/WEB-INF/lib/backup/ant-contrib-1.0b3.jar"/>  
+	        </classpath>  
+		</taskdef> 
+		
+		<tstamp>
+	        <format property="vinteDiasAtras" pattern="MM/dd/yyyy" offset="-20" unit="day"/>
+	    </tstamp>
+
+		<for param="jrxml.file">  
+            <fileset dir="${project.dir}/web/WEB-INF/report">
+                <include name="*.jrxml" />
+                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
+            </fileset>	       
+			<sequential>  
+			    <propertyregex override="yes" property="jasper.file"  input="@{jrxml.file}" regexp=".jrxml" replace=".jasper"/>
+				<delete file="${jasper.file}"/>
+	        </sequential>  
+	    </for> 
 	</target>
 
 	<target name="jasper" depends="clean-reports">
+
 		<taskdef name="jaspercompile" classname="net.sf.jasperreports.ant.JRAntCompileTask">
 			<classpath refid="project.classpath.ireport"/>
 		</taskdef>
+		
 		<jaspercompile destdir="${project.dir}/web/WEB-INF/report">
 			<src>
 				<fileset dir="${project.dir}/web/WEB-INF/report">
 					<include name="*.jrxml" />
+	                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
 				</fileset>
 			</src>
 		</jaspercompile>

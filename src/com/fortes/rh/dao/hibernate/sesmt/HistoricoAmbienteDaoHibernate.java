@@ -17,10 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
-import com.fortes.rh.model.sesmt.HistoricoFuncao;
-import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.Ambiente;
-import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
@@ -149,17 +146,24 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		return historicosDistinct;
 	}
 
-	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId) 
+	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ha");
 		
-		criteria.add(Expression.eq("historico.data", data));
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ha.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ha.ambiente.id", ambienteId));
+		criteria.add(Expression.eq("ha.data", data));
 		
 		if (historicoAmbienteId != null)
-			criteria.add(Expression.ne("historico.id", historicoAmbienteId));
-		
+			criteria.add(Expression.ne("ha.id", historicoAmbienteId));
+
 		criteria.setMaxResults(1);
 		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
 		return (HistoricoAmbiente)criteria.uniqueResult();
 	}
 }

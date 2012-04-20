@@ -20,5 +20,5 @@ public interface HistoricoAmbienteManager extends GenericManager<HistoricoAmbien
 	List<DadosAmbienteRisco> findDadosNoPeriodo(Long id, Date dataIni, Date dataFim);
 	HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima);
 	Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data);
-	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId);
+	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId);
 }

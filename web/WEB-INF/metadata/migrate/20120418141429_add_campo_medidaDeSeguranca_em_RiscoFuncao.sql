@@ -1,0 +1,1 @@
+alter table riscofuncao add column medidadeseguranca text;--go

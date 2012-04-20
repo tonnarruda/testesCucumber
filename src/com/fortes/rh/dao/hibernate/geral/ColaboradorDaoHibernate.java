@@ -3923,65 +3923,72 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)
 	{
+		DetachedCriteria subQuerySe = DetachedCriteria.forClass(SolicitacaoEpi.class, "se")
+				.setProjection(Projections.id())
+				.add(Restrictions.eqProperty("se.colaborador.id", "c.id"));
 		
-		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as co ");
-		hql.append("inner join hc.funcao as f ");
-		hql.append("inner join f.historicoFuncaos as hf ");
-		hql.append("inner join hf.epis as e ");
-		hql.append("where ");
-		hql.append("		hc.data = (");
-		hql.append("			select max(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("		) ");
-		hql.append("		and hf.data = (");
-		hql.append("			select max(hf2.data) ");
-		hql.append("			from HistoricoFuncao as hf2 ");
-		hql.append("			where hf2.funcao.id = f.id ");
-		hql.append("			and hf2.data <= :hoje ");
-		hql.append("		) ");
-		hql.append("and not exists (select 1 from SolicitacaoEpi se where se.colaborador.id = co.id) ");
-		hql.append("and co.desligado = false ");
-		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and :hoje - co.dataAdmissao in (:dias) ");
+		DetachedCriteria subQueryHf = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+				.setProjection(Projections.max("hf2.data"))
+				.add(Restrictions.le("hf2.data", new Date()))
+				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"));
+		
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
-		query.setDate("hoje", new Date());
-		query.setParameterList("dias", dias);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("hc.funcao", "f");
+		criteria.createCriteria("f.historicoFuncaos", "hf");
+		criteria.createCriteria("hf.epis", "e");
 
-		return query.list();
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		criteria.setProjection(p);
+
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+		criteria.add(Property.forName("hf.data").eq(subQueryHf));
+		criteria.add( Subqueries.notExists(subQuerySe) );
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.sqlRestriction("(? - dataAdmissao) in ("+dias.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.desligado) ");
-		hql.append("from SolicitacaoEpi as se ");
-		hql.append("inner join se.colaborador as co ");
-		hql.append("inner join co.historicoColaboradors as hc ");
-		hql.append("where  hc.data = (");
-		hql.append("			select max(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("		) ");
-		hql.append("and co.desligado = false ");
-		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and :hoje - se.data in (:dias) ");
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
-		query.setDate("hoje", new Date());
-		query.setParameterList("dias", diasLembrete);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpi.class, "se");
+		criteria.createCriteria("se.colaborador", "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
 
-		return query.list();
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		criteria.setProjection(p);
+
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.sqlRestriction("(? - {alias}.data) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 	
 }

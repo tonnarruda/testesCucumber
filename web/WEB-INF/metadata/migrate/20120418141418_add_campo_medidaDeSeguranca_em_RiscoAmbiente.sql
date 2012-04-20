@@ -1,0 +1,1 @@
+alter table riscoambiente add column medidadeseguranca text;--go

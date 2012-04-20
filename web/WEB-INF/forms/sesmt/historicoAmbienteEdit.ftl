@@ -31,12 +31,15 @@
 		$(function() {
 			<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
 				<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
-					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select').attr('disabled', false);
+					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
 					<#if riscoAmbiente.periodicidadeExposicao?exists>
 						$('#perExposicao' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.periodicidadeExposicao}');
 					</#if>
 					<#if riscoAmbiente.epcEficaz>
 						$('#epcEficaz' + ${riscoAmbiente.risco.id}).attr('checked', true);
+					</#if>
+					<#if riscoAmbiente.medidaDeSeguranca?exists>
+						$('#medidaDeSeguranca' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.medidaDeSeguranca}');
 					</#if>
 				</#list>
 			</#if>
@@ -53,7 +56,7 @@
 		
 		function habilitarDesabilitarCamposLinha(campoRisco)
 		{
-			$(campoRisco).parent().parent().find('input, select').not(campoRisco).attr('disabled', !campoRisco.checked);
+			$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
 		}
 	</script>
 </head>
@@ -90,6 +93,9 @@
 					<@ww.checkbox id="epcEficaz${riscoAmbiente.risco.id}" name="riscosAmbientes[${i}].epcEficaz" disabled="true"/>
 					<@ww.hidden name="riscosAmbientes[${i}].risco.id"/>
 				</@display.column>
+				<@display.column title="Medida de Segurança">
+					<@ww.textarea theme="simple" id="medidaDeSeguranca${riscoAmbiente.risco.id}" name="riscosAmbientes[${i}].medidaDeSeguranca" cssStyle="width: 260px;height: 50px;" disabled="true"/>
+				</@display.column>
 				
 				<#assign i = i + 1/>
 			</@display.table>
@@ -97,6 +103,7 @@
 			<#list riscosAmbientes as riscoAmbiente>
 				<@ww.hidden name="riscosAmbientes[${i}].periodicidadeExposicao" />
 				<@ww.hidden name="riscosAmbientes[${i}].epcEficaz" />
+				<@ww.hidden name="riscosAmbientes[${i}].medidaDeSeguranca" />
 				<@ww.hidden name="riscosAmbientes[${i}].risco.id" />
 				<#assign i = i + 1/>
 			</#list> 
