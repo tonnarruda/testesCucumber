@@ -4692,6 +4692,56 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(1, colaboradorDao.findAdmitidosHaDiasSemEpi(Arrays.asList(40, 49), empresa.getId()).size());
 
+	}
+	
+	public void testFindAdmitidosHaDiasSemEpiComEpi()
+	{
+		Calendar quarentaDiasAtras = Calendar.getInstance();
+		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
+		
+		Calendar quarentaUmDiasAtras = Calendar.getInstance();
+		quarentaUmDiasAtras.add(Calendar.DAY_OF_YEAR, -50);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		Epi epi1 = EpiFactory.getEntity();
+		epiDao.save(epi1);
+		
+		Epi epi2 = EpiFactory.getEntity();
+		epiDao.save(epi2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setEpis(Arrays.asList(epi1, epi2));
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setFuncao(funcao);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDataAdmissao(quarentaUmDiasAtras.getTime());
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setFuncao(funcao);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador2);
+		
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi.setColaborador(colaborador1);
 		solicitacaoEpiDao.save(solicitacaoEpi);
@@ -4729,14 +4779,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoColaboradorDao.save(historicoColaborador2);
 		
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setColaborador(colaborador1);
+		solicitacaoEpi.setData(tresDiasAtras.getTime());
+		solicitacaoEpiDao.save(solicitacaoEpi);
+
 		SolicitacaoEpi solicitacaoEpi1 = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi1.setColaborador(colaborador1);
 		solicitacaoEpi1.setData(tresDiasAtras.getTime());
 		solicitacaoEpiDao.save(solicitacaoEpi1);
-
+		
 		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi2.setColaborador(colaborador2);
-		solicitacaoEpi2.setData(cincoDiasAtras.getTime());
+		solicitacaoEpi2.setData(tresDiasAtras.getTime());
 		solicitacaoEpiDao.save(solicitacaoEpi2);
 		
 		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
