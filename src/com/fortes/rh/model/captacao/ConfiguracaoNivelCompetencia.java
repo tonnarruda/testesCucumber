@@ -213,13 +213,21 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	public boolean isFaixaSalarial() {
-		return this.candidato == null && (this.configuracaoNivelCompetenciaColaborador == null || this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
+		return this.candidato == null 
+		&& (this.configuracaoNivelCompetenciaColaborador == null 
+				|| this.configuracaoNivelCompetenciaColaborador.getColaborador() == null 
+				|| this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() == null); 
 	}
 	
 	public boolean isColaborador() {
-		return this.configuracaoNivelCompetenciaColaborador != null && this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() != null; 
+		return this.configuracaoNivelCompetenciaColaborador != null 
+			&& this.configuracaoNivelCompetenciaColaborador.getColaborador() != null
+			&& this.configuracaoNivelCompetenciaColaborador.getColaborador().getId() != null; 
 	}
 	public Long getColaboradorId() {
-		return getConfiguracaoNivelCompetenciaColaborador().getColaborador().getId(); 
+		if(this.configuracaoNivelCompetenciaColaborador != null && this.configuracaoNivelCompetenciaColaborador.getColaborador() != null)
+			return getConfiguracaoNivelCompetenciaColaborador().getColaborador().getId();
+
+		return null;
 	}
 }

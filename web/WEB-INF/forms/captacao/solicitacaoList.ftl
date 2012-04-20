@@ -215,27 +215,26 @@
 					<a href="#" onclick="newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
 					<img border="0" title="Não é possível suspender a solicitação. Esta já foi encerrada." src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</#if>
-				<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
-
+			</@authz.authorize>
+			<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
+			
+			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
+				<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+			</@authz.authorize>
+		
+			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+				<#if solicitacao.status == 'A'>
+					<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_green.png"/></#assign>
+				<#elseif solicitacao.status == 'R'>
+					<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_red.png"/></#assign>
+				<#else>
+					<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_yellow.png"/></#assign>
+				</#if>
+				<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')"><img border="0" title="Alterar status (${solicitacao.statusFormatado})" src="${imgStatus}"></a>
 			</@authz.authorize>
 			
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
-			<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
-		</@authz.authorize>
-	
-		<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
-			<#if solicitacao.status == 'A'>
-				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_green.png"/></#assign>
-			<#elseif solicitacao.status == 'R'>
-				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_red.png"/></#assign>
-			<#else>
-				<#assign imgStatus><@ww.url includeParams="none" value="/imgs/status_yellow.png"/></#assign>
-			</#if>
-			<a href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')"><img border="0" title="Alterar status (${solicitacao.statusFormatado})" src="${imgStatus}"></a>
-		</@authz.authorize>
-		
 		</@display.column>
-
+	
 		<@display.column title="Código" property="id" class="${classe}"/>
 		<@display.column title="Cargo" class="${classe}">
 			<#if solicitacao.obsSuspensao?exists && solicitacao.obsSuspensao?trim != "">

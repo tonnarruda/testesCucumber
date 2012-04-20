@@ -290,7 +290,6 @@
 				/captacao/candidato/prepareExamePalografico*/** = ROLE_MOV_PALOGRAFICO
 				/captacao/candidato/prepareUpdateExamePalografico*/** = ROLE_MOV_PALOGRAFICO
 				/captacao/candidato/updateExamePalografico*/** = ROLE_MOV_PALOGRAFICO
-				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO
 				/captacao/candidato/showFoto*/**=ROLE_ANONYMOUS,ROLE_CAD_CANDIDATO
 				/captacao/formacao/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
 				/captacao/idioma/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
@@ -298,6 +297,10 @@
 				/captacao/candidatoSolicitacao/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO
 				/captacao/candidato/prepareRelatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
 				/captacao/candidato/relatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
+				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO, ROLE_INFORM_CANDIDATO_HISTORICO, ROLE_INFORM_CANDIDATO_COMPETENCIA
+				/captacao/candidato/verCurriculo*/**=ROLE_INFORM_CANDIDATO_CURRICULO
+				/captacao/candidato/verHistoricoCandidato*/**=ROLE_INFORM_CANDIDATO_HISTORICO
+				/captacao/candidato/visualizarCandidato*/**=ROLE_INFORM_CANDIDATO_COMPETENCIA
 				/captacao/candidato/*/**=ROLE_CAD_CANDIDATO
 				/captacao/empresaBds/*/**=ROLE_CAD_BDS_EMPRESA
 				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
