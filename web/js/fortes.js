@@ -63,7 +63,8 @@ var browsersCompativeis = {
 BrowserDetect.init( function ( informacaoesDesteBrowser ){
     var versaoMinimaDesteBrowserParaSerCompativelComSistema = browsersCompativeis[ informacaoesDesteBrowser.name ].versaoMinima;
     var isThisBrowserSupportted = ( informacaoesDesteBrowser.version >= versaoMinimaDesteBrowserParaSerCompativelComSistema );
-	if (location.href.indexOf('browsersCompativeis.action') == -1 && !isThisBrowserSupportted)
+    var url = window.location + '';
+	if (location.href.indexOf('browsersCompativeis.action') == -1 && !isThisBrowserSupportted && url.indexOf("pesquisa/trafego") == -1)
 	{
 		var patt = /\/\w*\//g;
 		window.location.href = patt.exec(window.location.pathname) + 'browsersCompativeis.action';
