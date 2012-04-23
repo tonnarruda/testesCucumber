@@ -169,6 +169,7 @@
       <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
       <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega" />
       <mapping class="com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma" />
+      <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
   </session-factory>
 
 

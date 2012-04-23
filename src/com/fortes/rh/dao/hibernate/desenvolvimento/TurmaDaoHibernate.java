@@ -1,5 +1,8 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -8,6 +11,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -210,23 +214,62 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
 	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId)
 	{
-		Criteria criteria = prepareCriteriaTurmas();
-
-		criteria.add(Expression.eq("c.id", cursoId));
-
-		if(pagingSize != 0)
-        {
-        	criteria.setFirstResult(((page - 1) * pagingSize));
-        	criteria.setMaxResults(pagingSize);
-        }
-
-		criteria.addOrder(Order.desc("t.dataPrevIni"));
-		criteria.addOrder(Order.asc("t.descricao"));
+		getSession().flush();
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Turma.class));
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.liberada, count(a.id) as qtdAvaliacoes, t.instrutor, t.realizada, sat.status ");
+		sql.append("from turma t ");
+		sql.append("inner join curso c on t.curso_id = c.id "); 
+		sql.append("left join turma_avaliacaoturma tat on tat.turma_id = t.id "); 
+		sql.append("left join avaliacaoturma a on tat.avaliacaoturma_id = a.id "); 
+		sql.append("left join questionario q on a.questionario_id = q.id ");
+		sql.append("left join situacaoavaliacaoturma sat on sat.turma_id = t.id "); 
+		sql.append("where c.id = :cursoId ");
+		sql.append("group by t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.liberada, t.instrutor, t.realizada, sat.status ");
+		sql.append("order by t.dataPrevIni desc, t.descricao ");
+		
+		if (pagingSize != 0)
+			sql.append("offset :offset limit :limit ");
+		
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setLong("cursoId", cursoId);
 
-		return criteria.list();
+		if (pagingSize != 0)
+		{
+			query.setInteger("offset", ((page - 1) * pagingSize));
+			query.setInteger("limit", pagingSize);
+		}
+		
+		List<Object[]> result = query.list();
+
+		SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+		Collection<Turma> turmas = new ArrayList<Turma>();
+		Turma turma;
+		int i;
+		
+		for (Object[] obj : result) {
+			i = 0;
+			
+			turma = new Turma();
+			turma.setId(new BigInteger(obj[i].toString()).longValue());
+			turma.setDescricao(((String)obj[++i]));
+			try {
+				turma.setDataPrevIni(sDF.parse(obj[++i].toString()));
+			} catch (Exception e) {e.printStackTrace();}
+			try {
+				turma.setDataPrevFim(sDF.parse(obj[++i].toString()));
+			} catch (Exception e) {e.printStackTrace();}
+			turma.setEmpresaId(new BigInteger(obj[++i].toString()).longValue());
+			turma.setLiberada(new Boolean((String)obj[++i]));
+			turma.setQtdAvaliacoes(new Integer((String)obj[++i]));
+			turma.setInstrutor((String)obj[++i]);
+			turma.setRealizada(new Boolean((String)obj[++i]));
+			turma.setStatus(((String)obj[++i]).charAt(0));			
+			
+			turmas.add(turma);
+		}
+		
+		return turmas;
 	}
 
 	private Criteria prepareCriteriaTurmas()

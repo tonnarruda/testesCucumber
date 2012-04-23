@@ -71,6 +71,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private String tipoDespesaDescricao;
 	@Transient
 	private Double despesaPorTipo;
+	@Transient
+	private char status;
 
 	public Turma()
 	{
@@ -414,5 +416,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setTurmaAvaliacaoTurmas(Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas) {
 		this.turmaAvaliacaoTurmas = turmaAvaliacaoTurmas;
+	}
+
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 }

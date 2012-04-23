@@ -10,23 +10,23 @@ import javax.persistence.Id;
 public class SituacaoAvaliacaoTurma implements Serializable 
 {
 	@Id
-	private long turmaId; 
+	private Turma turma;
 	
 	private char status;
 	
-	public long getTurmaId() {
-		return turmaId;
-	}
-	
-	public void setTurmaId(long turmaId) {
-		this.turmaId = turmaId;
-	}
-
 	public char getStatus() {
 		return status;
 	}
 
 	public void setStatus(char status) {
 		this.status = status;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
 	}
 }
