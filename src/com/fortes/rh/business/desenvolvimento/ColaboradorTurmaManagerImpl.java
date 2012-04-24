@@ -1,6 +1,7 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -688,25 +689,25 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		double resultado = 0.0;
 		Integer qtdDiasPresentes = 0;
-		Integer qtdColaboradoresTurma = 0;
-		Integer qtdDiasTurma = 0;
-
+		Integer qtdDiasTotal = 0;
+		Integer qtdColaboradoresTurma;
+		Integer qtdDiasTurma;
+		
 		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
 		Collection<Turma> turmas = turmaManager.findByFiltro(dataIni, dataFim, 'T', empresaId);
 		Collection<Long> turmaIds = LongUtil.collectionToCollectionLong(turmas);
 
-		qtdColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(turmaIds);
-		
 		diaTurmaManager = (DiaTurmaManager) SpringUtil.getBean("diaTurmaManager");
 		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
 		
 		for (Long turmaId : turmaIds) 
 		{
-			qtdDiasTurma += diaTurmaManager.qtdDiasDasTurmas(turmaId);
+			qtdColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(Arrays.asList(turmaId));
+			qtdDiasTurma = diaTurmaManager.qtdDiasDasTurmas(turmaId);
+			
+			qtdDiasTotal += qtdColaboradoresTurma * qtdDiasTurma;
 			qtdDiasPresentes += colaboradorPresencaManager.qtdDiaPresentesTurma(turmaId);
 		}
-
-		Integer qtdDiasTotal = (qtdColaboradoresTurma*qtdDiasTurma);
 
 		if (!qtdDiasTotal.equals(0))
 		{
