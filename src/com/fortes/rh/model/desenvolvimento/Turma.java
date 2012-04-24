@@ -46,7 +46,6 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	@ManyToOne
 	private Curso curso;
 	private boolean realizada = false;
-	private boolean liberada = false;
 	private Integer qtdParticipantesPrevistos;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas; 
@@ -400,14 +399,6 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public Double getDespesaPorTipo() {
 		return despesaPorTipo;
-	}
-
-	public boolean isLiberada() {
-		return liberada;
-	}
-
-	public void setLiberada(boolean liberada) {
-		this.liberada = liberada;
 	}
 
 	public Collection<TurmaAvaliacaoTurma> getTurmaAvaliacaoTurmas() {

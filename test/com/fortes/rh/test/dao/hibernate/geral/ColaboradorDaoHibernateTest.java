@@ -4791,7 +4791,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi2.setColaborador(colaborador2);
-		solicitacaoEpi2.setData(tresDiasAtras.getTime());
+		solicitacaoEpi2.setData(cincoDiasAtras.getTime());
 		solicitacaoEpiDao.save(solicitacaoEpi2);
 		
 		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());

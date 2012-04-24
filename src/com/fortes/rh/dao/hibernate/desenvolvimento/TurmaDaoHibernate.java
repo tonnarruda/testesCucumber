@@ -48,7 +48,6 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	p.add(Projections.property("t.instituicao"), "instituicao");
     	p.add(Projections.property("t.qtdParticipantesPrevistos"), "qtdParticipantesPrevistos");
     	p.add(Projections.property("t.realizada"), "realizada");
-    	p.add(Projections.property("t.liberada"), "liberada");
     	p.add(Projections.property("c.id"), "cursoId");
     	p.add(Projections.property("c.nome"), "cursoNome");
     	p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");

@@ -948,7 +948,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 		
 		Turma turma = TurmaFactory.getEntity();
-		turma.setLiberada(true);
 		turmaDao.save(turma);
 
 		TurmaAvaliacaoTurma turmaAvaliacaoTurma = new TurmaAvaliacaoTurma();

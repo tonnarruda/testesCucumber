@@ -141,6 +141,8 @@ public class EleicaoEditActionTest extends MockObjectTestCase
 		Eleicao eleicao = EleicaoFactory.getEntity(1L);
 		eleicao.setInscricaoCandidatoIni(new Date());
 		eleicao.setInscricaoCandidatoFim(new Date());
+		eleicao.setTextoSindicato("");
+		action.setEleicao(eleicao);
 		manager.expects(once()).method("update");
 
 		assertEquals("imprimirSindicado",action.updateImprimir());

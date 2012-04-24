@@ -840,7 +840,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		hql.append("inner join ct.colaborador c "); 
 		hql.append("left join c.colaboradorQuestionarios cq with cq.turma.id=t.id and cq.questionario.id=q.id and c.usuario.id = :usuarioId ");
 		hql.append("where c.usuario.id = :usuarioId ");
-		hql.append("and t.liberada = true "); 
+		hql.append("and tat.liberada = true "); 
 		hql.append("and (cq.respondida is null or cq.respondida=false) ");
 		hql.append("order by q.titulo ");
 
