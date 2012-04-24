@@ -287,16 +287,9 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 		//Se for o super-usuário ou papel especifico, carrega todas as áreas organizacionais
 		if(usuarioLogado.getId() == 1L || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
-		{
 			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
-		}
 		else
-		{
-			Colaborador colaborador = colaboradorManager.findByUsuario(usuarioLogado, empresaId);
-			
-			if(colaborador != null && colaborador.getId() != null)
-				areaOrganizacionals = areaOrganizacionalManager.findAllList(colaborador.getId(), empresaId, AreaOrganizacional.TODAS, null);
-		}
+			areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuarioLogado, empresaId);
 
 		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
 
