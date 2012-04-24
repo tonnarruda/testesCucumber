@@ -8,6 +8,15 @@ import java.util.TreeMap;
 
 public enum Operacao
 {
+	ALTERAR_STATUS_SOLICITACAO(5, "Alteração no status da solicitação de pessoal", "R&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.SOLICITANTE_SOLICITACAO);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	CADASTRO_CANDIDATO_MODULO_EXTERNO(1, "Aviso de cadastro de candidato pelo módulo externo", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
@@ -27,15 +36,6 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(3, "Exibir solicitações com candidatos do módulo externo", "R&S") {
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.CAIXA_MENSAGEM);
-			
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL);
-
-			return this.getListMeioComunicacao();
-		}
-	},
 	ENCERRAMENTO_SOLICITACAO(4, "Encerramento da solicitação de pessoal", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
@@ -45,20 +45,20 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	ALTERAR_STATUS_SOLICITACAO(5, "Alteração no status da solicitação de pessoal", "R&S"){
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.SOLICITANTE_SOLICITACAO);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
 	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(6, "Enviar lembrete avaliação desempenho", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	SOLICITACAO_CANDIDATOS_MODULO_EXTERNO(3, "Exibir solicitações com candidatos do módulo externo", "R&S") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -109,6 +109,15 @@ public enum Operacao
 			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	CADASTRO_OCORRENCIA(22, "Aviso de cadastro de ocorrência", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -261,6 +270,15 @@ public enum Operacao
 		{
 			if(o.getId() == id)
 				return o.getDescricao();
+		}
+		return "";
+	}
+	
+	public static final String getGrupoById(int id){
+		for (Operacao o : Operacao.values()) 
+		{
+			if(o.getId() == id)
+				return o.getGrupo();
 		}
 		return "";
 	}

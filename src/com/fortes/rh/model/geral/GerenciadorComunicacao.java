@@ -86,6 +86,9 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	public String getOperacaoDescricao() {
 		return Operacao.getDescricaoById(operacao);
 	}
+	public String getOperacaoGrupo() {
+		return Operacao.getGrupoById(operacao);
+	}
 	public String getDestinatarioFormatado() {
 		if(this.destinatario != null && this.destinatario.length() > 60)
 			return this.destinatario.substring(0, 57) + "...";

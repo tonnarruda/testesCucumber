@@ -132,7 +132,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			}
 
 			ocorrencia = ocorrenciaManager.findById(colaboradorOcorrencia.getOcorrencia().getId());
-			colaboradorOcorrencia.setOcorrencia(ocorrencia);
+			colaboradorOcorrencia.setOcorrencia(ocorrencia);//utilizado dentro dos metodos seguintes
 			
 			if(colaboradorOcorrencia.getProvidencia().getId() == null)
 				colaboradorOcorrencia.setProvidencia(null);

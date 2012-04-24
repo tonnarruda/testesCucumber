@@ -52,6 +52,7 @@ import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
@@ -77,6 +78,7 @@ import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
+import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
@@ -1053,6 +1055,45 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 }
 		 
 		 assertNull(exception);
+	}
+
+	public void testEnviaAvisoOcorrenciaCadastrada()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity(1L);
+		ocorrencia.setEmpresa(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Teo");
+		colaborador.setNomeComercial("Teo");
+		colaborador.setEmpresa(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		Collection<Usuario> usuarios = Arrays.asList(usuario);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao.setEmpresa(empresa);
+		gerenciadorComunicacao.setUsuarios(usuarios);
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(ANYTHING).will(returnValue(colaborador));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRO_OCORRENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
+		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+		
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(ocorrencia, colaborador.getId(), empresa.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
 	}
 	
 	public void testEnviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi()

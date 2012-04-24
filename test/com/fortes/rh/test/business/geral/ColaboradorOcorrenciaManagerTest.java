@@ -13,6 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManagerImpl;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
@@ -37,6 +38,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	Mock colaboradorManager;
 	Mock colaboradorAfastamentoManager;
 	Mock acPessoalClientColaboradorOcorrencia;
+	Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -56,6 +58,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrenciaManager.setColaboradorAfastamentoManager((ColaboradorAfastamentoManager)colaboradorAfastamentoManager.proxy());
 		acPessoalClientColaboradorOcorrencia = mock(AcPessoalClientColaboradorOcorrencia.class);
 		colaboradorOcorrenciaManager.setAcPessoalClientColaboradorOcorrencia((AcPessoalClientColaboradorOcorrencia)acPessoalClientColaboradorOcorrencia.proxy());
+		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+		colaboradorOcorrenciaManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
 	}
 
 	public void testFindByColaborador()
@@ -239,6 +243,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		setDadosOcorrenciaAC(empresa, ocorrencia, colaborador, colaboradorOcorrencia);
 
 		colaboradorOcorrenciaDao.expects(once()).method("save");
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoOcorrenciaCadastrada");
 
 		Exception exception = null;
 
@@ -272,6 +277,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		acPessoalClientColaboradorOcorrencia.expects(once()).method("criarColaboradorOcorrencia").will(returnValue(true));
 		colaboradorOcorrenciaDao.expects(once()).method("save");
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoOcorrenciaCadastrada");
 		
 		Exception exception = null;
 		

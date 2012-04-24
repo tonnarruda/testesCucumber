@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(21, Operacao.values().length);
+		assertEquals(22, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -23,6 +23,7 @@ public class OperacaoTest extends TestCase
 	{
 		int i = 0;
 		assertEquals("", Operacao.getDescricaoById(1212122121));
+		//manter a ordem dos ids das operações
 		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(++i));
 		assertEquals("Exibir solicitações com candidatos do módulo externo", Operacao.getDescricaoById(++i));
@@ -44,10 +45,19 @@ public class OperacaoTest extends TestCase
 		assertEquals("Notificação de não abertura de solicitação de EPI", Operacao.getDescricaoById(++i));
 		assertEquals("Notificação de não entrega da solicitação de EPI", Operacao.getDescricaoById(++i));
 		assertEquals("Cancelamento de Solicitação de Desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Aviso de cadastro de ocorrência", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
 
+	public void testGetGrupoById()
+	{
+		int i = 0;
+		assertEquals("", Operacao.getGrupoById(1212122121));
+		//manter a ordem dos ids das operações
+		assertEquals("R&S", Operacao.getGrupoById(++i));
+	}
+	
 	public void testGetMeioComunicacaoById()
 	{
 		int i = 0;
@@ -73,6 +83,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 19
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 20
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 21
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size());
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 		
@@ -103,6 +114,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId());       // 19
 		assertEquals(++i, Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId());        // 20
 		assertEquals(++i, Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId());    // 21
+		assertEquals(++i, Operacao.CADASTRO_OCORRENCIA.getId());
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -322,6 +334,17 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+	}
+	
+	public void testAvisoCadastroOcorrencia()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.CADASTRO_OCORRENCIA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);

@@ -44,6 +44,7 @@ import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
@@ -559,6 +560,26 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{	
 				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.PERIODOEXPERIENCIA);
+			}
+		}
+	}
+	
+	public void enviaAvisoOcorrenciaCadastrada(Ocorrencia ocorrencia, Long colaboradorId, Long empresaId) 
+	{
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+		
+		StringBuilder mensagem = new StringBuilder();
+		mensagem.append("Nova ocorrência cadastrada para "+ colaborador.getNomeMaisNomeComercial() +".\n");
+		mensagem.append("Ocorrência: " + ocorrencia.getDescricao());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_OCORRENCIA.getId(), ocorrencia.getEmpresa().getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+			{	
+				Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(),"RH", null, usuarioEmpresaPeriodoExperiencia, null, TipoMensagem.INDIFERENTE);
 			}
 		}
 	}

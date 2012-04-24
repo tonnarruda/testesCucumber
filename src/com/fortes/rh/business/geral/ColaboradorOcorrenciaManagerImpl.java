@@ -32,6 +32,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Collection<ColaboradorOcorrencia> findByColaborador(Long id)
 	{
@@ -179,7 +180,10 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 
 		if (colaboradorOcorrencia.getId() == null)
+		{
 			getDao().save(colaboradorOcorrencia);
+			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOcorrencia.getOcorrencia(), colaboradorOcorrencia.getColaborador().getId(), empresa.getId());
+		}
 		else
 			getDao().update(colaboradorOcorrencia);
 
@@ -307,5 +311,9 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
 		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }
