@@ -217,7 +217,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		getSession().flush();
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append("select t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.liberada, count(a.id) as qtdAvaliacoes, t.instrutor, t.realizada, sat.status ");
+		sql.append("select t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, count(a.id) as qtdAvaliacoes, t.instrutor, t.realizada, sat.status ");
 		sql.append("from turma t ");
 		sql.append("inner join curso c on t.curso_id = c.id "); 
 		sql.append("left join turma_avaliacaoturma tat on tat.turma_id = t.id "); 
@@ -225,7 +225,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		sql.append("left join questionario q on a.questionario_id = q.id ");
 		sql.append("left join situacaoavaliacaoturma sat on sat.turma_id = t.id "); 
 		sql.append("where c.id = :cursoId ");
-		sql.append("group by t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.liberada, t.instrutor, t.realizada, sat.status ");
+		sql.append("group by t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.empresa_id, t.instrutor, t.realizada, sat.status ");
 		sql.append("order by t.dataPrevIni desc, t.descricao ");
 		
 		if (pagingSize != 0)
@@ -251,50 +251,27 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 			i = 0;
 			
 			turma = new Turma();
-			turma.setId(new BigInteger(obj[i].toString()).longValue());
-			turma.setDescricao(((String)obj[++i]));
+			turma.setId(((BigInteger)obj[i++]).longValue());
+			turma.setDescricao(((String)obj[i++]));
+			
 			try {
-				turma.setDataPrevIni(sDF.parse(obj[++i].toString()));
+				turma.setDataPrevIni(sDF.parse(obj[i++].toString()));
 			} catch (Exception e) {e.printStackTrace();}
+			
 			try {
-				turma.setDataPrevFim(sDF.parse(obj[++i].toString()));
+				turma.setDataPrevFim(sDF.parse(obj[i++].toString()));
 			} catch (Exception e) {e.printStackTrace();}
-			turma.setEmpresaId(new BigInteger(obj[++i].toString()).longValue());
-			turma.setLiberada(new Boolean((String)obj[++i]));
-			turma.setQtdAvaliacoes(new Integer((String)obj[++i]));
-			turma.setInstrutor((String)obj[++i]);
-			turma.setRealizada(new Boolean((String)obj[++i]));
-			turma.setStatus(((String)obj[++i]).charAt(0));			
+			
+			turma.setEmpresaId(((BigInteger)obj[i++]).longValue());
+			turma.setQtdAvaliacoes(new Integer(obj[i++].toString()));
+			turma.setInstrutor((String)obj[i++]);
+			turma.setRealizada(new Boolean(obj[i++].toString()));
+			turma.setStatus(((String)obj[i++]).charAt(0));			
 			
 			turmas.add(turma);
 		}
 		
 		return turmas;
-	}
-
-	private Criteria prepareCriteriaTurmas()
-	{
-		Criteria criteria = getSession().createCriteria(Turma.class,"t");
-		criteria.createCriteria("t.curso", "c");
-		criteria.createCriteria("t.turmaAvaliacaoTurmas", "tat", Criteria.LEFT_JOIN);
-		criteria.createCriteria("tat.avaliacaoTurma", "a", Criteria.LEFT_JOIN);
-		criteria.createCriteria("a.questionario", "q", Criteria.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.groupProperty("t.id"), "id");
-		p.add(Projections.groupProperty("t.descricao"), "descricao");
-		p.add(Projections.groupProperty("t.dataPrevIni"), "dataPrevIni");
-		p.add(Projections.groupProperty("t.dataPrevFim"), "dataPrevFim");
-		p.add(Projections.groupProperty("t.empresa.id"), "projectionEmpresaId");
-		p.add(Projections.groupProperty("t.liberada"), "liberada");
-		p.add(Projections.alias(Projections.count("a.id"), "qtdAvaliacoes"));
-		
-		p.add(Projections.groupProperty("t.instrutor"), "instrutor");
-		p.add(Projections.groupProperty("t.realizada"), "realizada");
-
-		criteria.setProjection(p);
-
-		return criteria;
 	}
 
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, Boolean realizada)

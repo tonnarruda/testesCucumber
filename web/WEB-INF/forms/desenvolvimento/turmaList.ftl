@@ -82,11 +82,11 @@
 							if (avaliacaoTurma.liberada)
 							{
 								onClick = "bloquearAvaliacaoTurma(" + turmaId + ", " + avaliacaoTurma.id + ")";
-								urlIcone = "<@ww.url includeParams="none" value="/imgs/bloquear.gif"/>";
+								urlIcone = "<@ww.url includeParams="none" value="/imgs/cadeado_green.gif"/>";
 								title = "Bloquear";
 							} else {
 								onClick = "liberarAvaliacaoTurma(" + turmaId + ", " + avaliacaoTurma.id + ")";;
-								urlIcone = "<@ww.url includeParams="none" value="/imgs/liberar.gif"/>";
+								urlIcone = "<@ww.url includeParams="none" value="/imgs/cadeado_red.gif"/>";
 								title = "Liberar";
 							}
 						}
@@ -109,7 +109,14 @@
 					
 					popupAvaliacoes += "</ul>";
 					
-					$('.popup').html(popupAvaliacoes).dialog({ modal: true, width: 600, position: [event.pageX, event.pageY] });
+					$('.popup').html(popupAvaliacoes).dialog({ 	modal: true, 
+																width: 600, 
+																position: [event.pageX, event.pageY],
+																close: function(event, ui) {
+																	if (acao == 'liberar_bloquear')
+																		window.location.reload();
+																} 
+															});
 				}
 			});
 		}
@@ -131,7 +138,20 @@
 		
 			<@ww.hidden name="turma.id" value="" />
 			
-			<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id}, 'liberar_bloquear')"><img border="0" title="Liberar/Bloquear Avaliações" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+			<#if turma.status == 'P'>
+				<#assign iconeStatus><@ww.url includeParams="none" value="/imgs/cadeado_yellow.gif"/></#assign>
+				<#assign textoStatus>Parcialmente liberado</#assign>
+			<#elseif turma.status == 'L'>
+				<#assign iconeStatus><@ww.url includeParams="none" value="/imgs/cadeado_green.gif"/></#assign>
+				<#assign textoStatus>Liberado</#assign>
+			<#else>
+				<#assign iconeStatus><@ww.url includeParams="none" value="/imgs/cadeado_red.gif"/></#assign>
+				<#assign textoStatus>Bloqueado</#assign>
+			</#if>
+			
+			<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${turma.id}, ${curso.id}, 'liberar_bloquear')">
+				<img border="0" title="${textoStatus} - Clique para alterar os status" src="${iconeStatus}">
+			</a>
 			
 			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
