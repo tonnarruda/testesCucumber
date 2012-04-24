@@ -23,6 +23,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
 	
 	<script type="text/javascript">
 		function enviaForm(opcao)
@@ -44,7 +45,17 @@
 			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto });
+			
+	    	$('#tooltipHelpIndicadoresTeD').qtip({
+				content: ''
+				,
+				style: {
+		        	 width: '100px'
+		        }
+			});
+			
 		});
+
 		
 		function formataLegendaCusto(label, series)
 		{
@@ -80,7 +91,10 @@
 			<@ww.div>
 				<div id="gogDiv">
 					<div class="gogDivTotal">
-						<div class="gogDivTituloX">Indicadores de T&D</div>
+						<div class="gogDivTituloX">
+							Indicadores de T&D
+							<img id="tooltipHelpIndicadoresTeD" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+						</div>
 						<div class="gogDivFormulario">
 							<dl style="float:right;">
 								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
