@@ -484,6 +484,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.observacao = colaborador.getObservacao();
 		this.observacaoDemissao = colaborador.getObservacaoDemissao();
 		this.dataAdmissao = colaborador.getDataAdmissao();
+		this.foto = colaborador.getFoto();
 
 		this.areaOrganizacional = historicoColaborador.getAreaOrganizacional();
 		this.salario = historicoColaborador.getSalario();
