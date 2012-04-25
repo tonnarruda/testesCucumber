@@ -1092,34 +1092,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 //		assertNotNull(colaboradorTurmaDao.findAprovadosReprovados(1L, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome ", null));
 //	}
 
-	public void testFindAllSelectQuantidade()		
-	{
-		Calendar dataDoisMesesAtras = Calendar.getInstance();
-    	dataDoisMesesAtras.add(Calendar.MONTH, -2);
-    	Calendar dataTresMesesAtras = Calendar.getInstance();
-    	dataTresMesesAtras.add(Calendar.MONTH, -3);
-    	
-		Empresa empresa = new Empresa();
-		empresaDao.save(empresa);		
-		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setEmpresa(empresa);
-		turma.setDataPrevIni(dataTresMesesAtras.getTime());
-		turma.setDataPrevFim(dataDoisMesesAtras.getTime());
-		turmaDao.save(turma);
-		
-		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma1.setTurma(turma);
-		colaboradorTurmaDao.save(colaboradorTurma1);
-
-		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma2.setTurma(turma);
-		colaboradorTurmaDao.save(colaboradorTurma2);
-		
-		assertEquals(new Integer(2), colaboradorTurmaDao.findQuantidade(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId()));
-		assertEquals(new Integer(0), colaboradorTurmaDao.findQuantidade(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),1021L));
-	}
-
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;

@@ -112,9 +112,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		StringBuilder hql = new StringBuilder("select count(ct.id) ");
 		hql.append("from ColaboradorTurma ct ");
 		hql.append("join ct.turma t ");
-		hql.append("join ct.curso c ");
 		hql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim ");
-		hql.append("and c.empresa.id = :empresaId ");
+		hql.append("and t.empresa.id = :empresaId ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);

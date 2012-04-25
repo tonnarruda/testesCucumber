@@ -39,7 +39,6 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, boolean comHistColaboradorFuturo, Long... turmaIds);
 	ColaboradorTurma findByColaboradorAndTurma(Long turmaId, Long colaboradorId);
 	Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId);
-	Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId);
 	Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId);
 	Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean turmaRealizada);
 	Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId);

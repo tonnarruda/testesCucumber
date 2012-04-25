@@ -99,7 +99,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoFrequencia()
 	{
-		this.qtdTotalInscritosTurmas = colaboradorTurmaManager.findQuantidade(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		
 		Collection<DataGrafico> graficoFrequencia = new ArrayList<DataGrafico>();
@@ -183,7 +183,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	}
 	
 	public Integer getQtdTotalInscritosTurmas() {
-		return colaboradorTurmaManager.findQuantidade(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		return cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 	}
 
 	public void setQtdTotalInscritosTurmas(Integer qtdTotalInscritosTurmas) {

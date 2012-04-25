@@ -65,7 +65,7 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		cursoManager.expects(once()).method("findCustoMedioHora").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(empresa.getId()));
 		cursoManager.expects(once()).method("findCustoPerCapita").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(empresa.getId()));
 		cursoManager.expects(once()).method("findHorasPerCapita").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(empresa.getId()));
-		colaboradorTurmaManager.expects(once()).method("findQuantidade").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
+		cursoManager.expects(once()).method("findQtdColaboradoresInscritosTreinamentos").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new Double(0.0)));
 		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(empresa.getId())).will(returnValue(new ArrayList<TipoDespesa>()));

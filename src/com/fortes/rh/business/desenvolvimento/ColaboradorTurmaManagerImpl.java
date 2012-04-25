@@ -1014,11 +1014,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorByTurma(turmaId);
 	}
 	
-	public Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId) 
-	{
-		return getDao().findQuantidade(dataIni, dataFim, empresaId);
-	}
-
 	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) 
 	{
 		this.diaTurmaManager = diaTurmaManager;

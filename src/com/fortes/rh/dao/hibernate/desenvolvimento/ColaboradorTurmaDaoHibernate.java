@@ -870,24 +870,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Integer findQuantidade(Date dataIni, Date dataFim, Long empresaId)
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t");
-		criteria.createCriteria("t.empresa", "e");
-		
-        criteria.setProjection(Projections.count("ct.id"));
-        criteria.add(Expression.ge("t.dataPrevIni", dataIni));
-        criteria.add(Expression.le("t.dataPrevFim", dataFim));
-        criteria.add(Expression.eq("e.id", empresaId));
-
-        Integer valor = (Integer) criteria.uniqueResult();
-        if(valor == null)
-        	return 0;
-        else
-        	return valor;
-	}
-
 	public Collection<Long> findColaboradoresSemAvaliacao(Long empresaId, Date dataIni, Date dataFim)
 	{
 		StringBuilder hql = new StringBuilder("select ct.id from ColaboradorTurma ct ");

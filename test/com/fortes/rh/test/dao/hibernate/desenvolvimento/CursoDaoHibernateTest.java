@@ -218,11 +218,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
 		Curso curso1 = CursoFactory.getEntity();
-		curso1.setEmpresa(empresa);
-		curso1.setCargaHoraria(20);
 		cursoDao.save(curso1);
+		
 		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setEmpresa(empresa);
 		turma1.setCurso(curso1);
 		turma1.setCusto(200.0);
 		turma1.setDataPrevIni(dataDoisMesesDepois.getTime());
@@ -230,6 +231,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaDao.save(turma1);
 
 		Turma turmaForaDaConsulta = TurmaFactory.getEntity();
+		turmaForaDaConsulta.setEmpresa(empresa);
 		turmaForaDaConsulta.setCurso(curso1);
 		turmaForaDaConsulta.setDataPrevIni(dataTresMesesDepois.getTime());
 		turmaForaDaConsulta.setDataPrevFim(dataQuatroMesesDepois.getTime());
@@ -239,6 +241,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		colaboradorInscrito1.setCurso(curso1);
 		colaboradorInscrito1.setTurma(turma1);
 		colaboradorTurmaDao.save(colaboradorInscrito1);
+		
 		ColaboradorTurma colaboradorInscrito2 = ColaboradorTurmaFactory.getEntity();
 		colaboradorInscrito2.setCurso(curso1);
 		colaboradorInscrito2.setTurma(turma1);

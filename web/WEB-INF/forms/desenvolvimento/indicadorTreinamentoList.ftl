@@ -84,7 +84,6 @@
 			});
 			
 		});
-
 		
 		function formataLegendaCusto(label, series)
 		{
