@@ -47,7 +47,36 @@
 			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto });
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
-				content: ''
+				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
+						'<br/><br/>- Investimento médio da hora de treinamento (R$)<br/>'+
+						'&nbsp&nbsp custoMedioHora = somaCusto / somaHoras<br/>'+
+						'&nbsp&nbsp somaCusto e horas dos cursos no período e empresa.<br/>'+
+						'<br/>'+
+						'- Investimento per capita (R$)<br/>'+
+						'&nbsp&nbsp custoPerCapita = indicadorTreinamento.getCustoTotal() / qtdAtivos<br/>'+
+						'&nbsp&nbsp qtdAtivos -> colaboradores ativos na empresa com data admissao menor que a data fim do período e<br/>'+
+						'&nbsp&nbsp não esteja desligado ou com data de desligamento depois da data fim.<br/>'+
+						'<br/>'+
+						'- Horas de treinamento per capita<br/>'+
+						'&nbsp&nbsp horasPerCapita = ((qtdHoras / 60) * qtdParticipantes) / qtdAtivos<br/>'+
+						'&nbsp&nbsp qtdHoras -> soma das horas.<br/>'+
+						'&nbsp&nbsp qtdParticipantes -> colaboradores da turma que estejam dentro do período.<br/>'+
+						'&nbsp&nbsp qtdAtivos -> colaboradores ativos na empresa com data admissao menor que a data fim do período e<br/>'+
+						'&nbsp&nbsp não esteja desligado ou com data de desligamento depois da data fim.<br/>'+
+						'<br/>'+
+						'- Total de investimentos dos treinamentos realizados (R$)<br/>'+
+						'&nbsp&nbsp custo dos cursos em determinado período e empresa.<br/>'+
+						'<br/>'+
+						'- Percentual de investimentos em relação ao faturamento<br/>'+
+						'&nbsp&nbsp percentual = (custos / somafaturamentoPeriodo) * 100<br/>'+
+						'&nbsp&nbsp * apenas para faturamento maior que zero.<br/>'+
+						'&nbsp&nbsp somafaturamentoPeriodo -> total do faturamento no período e empresa.<br/>'+
+						'<br/>'+
+						'- Percentual de frequência (aprovados)<br/>'+
+						'&nbsp&nbsp resultado = (qtdDiasPresentes / qtdDiasTotal ) * 100<br/>'+
+						'&nbsp&nbsp qtdDiasTotal -> quantidade de colaboradores na turma vezes a quantidade de dias de curso.<br/>'+
+						'&nbsp&nbsp qtdDiasPresentes -> soma de todas as turmas do período.<br/>'+
+						'&nbsp&nbsp * apenas das turmas realizadas<br/>'
 				,
 				style: {
 		        	 width: '100px'
