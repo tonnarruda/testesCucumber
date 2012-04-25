@@ -26,6 +26,15 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="respostaManager">
+      <ref bean="respostaManager" />
+    </property>
+    <property name="questionarioManager">
+      <ref bean="questionarioManager" />
+    </property>
+    <property name="colaboradorRespostaManager">
+      <ref bean="colaboradorRespostaManager" />
+    </property>
   </bean>
   <bean id="avaliacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -9,7 +9,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/questionario.css"/>');
 	</style>
-	
+
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
@@ -71,6 +71,18 @@
 		{
 			var empresa = $('#empresa').val();
 			populaArea(empresa);
+			
+			$('#avaliacaoExperiencia').append('<optgroup label="Ativo">');
+			<#list avaliacaoExperienciasAtivas as avaliacaoAtiva>
+				$('#avaliacaoExperiencia').append('<option value="${avaliacaoAtiva.id}">&nbsp&nbsp${avaliacaoAtiva.titulo}</option>');
+			</#list>
+			$('#avaliacaoExperiencia').append('</optgroup>');
+
+			$('#avaliacaoExperiencia').append('<optgroup label="Inativo">');
+			<#list avaliacaoExperienciasInativas as avaliacaoInativa>
+				$('#avaliacaoExperiencia').append('<option value="${avaliacaoInativa.id}">&nbsp&nbsp${avaliacaoInativa.titulo}</option>');
+			</#list>
+			$('#avaliacaoExperiencia').append('</optgroup>');
 		});
 	</script>
 	
@@ -80,7 +92,10 @@
 	<@ww.actionmessage />
 
 		<@ww.form name="form" action="imprimeResultado.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="avaliacaoExperiencias" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
+			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
+	
+	
+
 			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
 

@@ -107,7 +107,8 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	parametrosDoSistema.setCompartilharColaboradores(true);
     	
     	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), eq(true), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), eq(false), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
     	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
@@ -133,7 +134,8 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
     	parametrosDoSistema.setCompartilharColaboradores(true);
     	
     	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(eq(1L), ANYTHING, eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), eq(true), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
+    	manager.expects(once()).method("findAllSelect").with(eq(1L), eq(false), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(new ArrayList<Avaliacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
     	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
@@ -170,7 +172,8 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
 		action.getDataSource();
 		action.getParametros();
 		action.getUrlVoltar();
-		action.getAvaliacaoExperiencias();
+		action.getAvaliacaoExperienciasAtivas();
+		action.getAvaliacaoExperienciasInativas();
 	}
 
 	public void setEmpresaManager(Mock empresaManager) {

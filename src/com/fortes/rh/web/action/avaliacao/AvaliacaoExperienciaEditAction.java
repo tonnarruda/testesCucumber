@@ -22,7 +22,6 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -38,7 +37,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	
 	private Avaliacao avaliacaoExperiencia;
 	
-	private Collection<Avaliacao> avaliacaoExperiencias;
+	private Collection<Avaliacao> avaliacaoExperienciasAtivas;
+	private Collection<Avaliacao> avaliacaoExperienciasInativas;
 	private Collection<Pergunta> perguntas;
 	
 	private String urlVoltar;
@@ -75,7 +75,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 
-		avaliacaoExperiencias = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, TipoModeloAvaliacao.DESEMPENHO, null);
+		avaliacaoExperienciasAtivas = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
+		avaliacaoExperienciasInativas = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), false, TipoModeloAvaliacao.DESEMPENHO, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
     	
@@ -141,11 +142,6 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
 	{
 		this.avaliacaoManager = avaliacaoManager;
-	}
-	
-	public Collection<Avaliacao> getAvaliacaoExperiencias()
-	{
-		return avaliacaoExperiencias;
 	}
 
 	public Collection<Pergunta> getPerguntas()
@@ -295,5 +291,13 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Collection<Avaliacao> getAvaliacaoExperienciasAtivas() {
+		return avaliacaoExperienciasAtivas;
+	}
+
+	public Collection<Avaliacao> getAvaliacaoExperienciasInativas() {
+		return avaliacaoExperienciasInativas;
 	}
 }
