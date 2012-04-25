@@ -23,15 +23,15 @@ rhhomologacao:
     FORTES_HOME_HOMOLOGACAO: /home/fortes/fortes/RHHOMOLOGACAO
 	
 rhcomercial_informatica:
-  host: 10.1.254.77
+  host: 10.1.254.247
   user: root
-  password: fortes$01
-  tomcat_home: /usr/local/apache-tomcat-6.0.26
+  password: 8KyHNnFT
+  tomcat_home: /usr/local/tomcat
   fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
   db_name: fortesrhcomercial
   backup_folder: /home/fortes/rhcomercial/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_65_58/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
     FORTES_HOME_COMERCIAL: /home/fortes/rhcomercial
     JRE_HOME: /usr
