@@ -117,7 +117,13 @@
 			<a href="javascript:enviarPrepareUpDate('${colaborador.id}')"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
-			<a href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}"><img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>"></a>
+
+			<#if colaborador.exibePerformanceProficional>
+				<a href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}"><img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>"></a>
+			<#else>
+				<img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+			</#if>
+			
 			<a href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
 			<#--<a href="../historicoColaboradorBeneficio/list.action?colaborador.id=${colaborador.id}"><img border="0" title="Benefícios" src="<@ww.url includeParams="none" value="/imgs/table.gif"/>"></a>-->
 

@@ -1711,6 +1711,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				colaborador.getCandidato().setId(((BigInteger)array[11]).longValue());
 
 			colaborador.setNaoIntegraAc((Boolean) array[12]);
+
+			if(array[13] != null)
+				colaborador.setDataSolicitacaoDesligamentoAc((Date) array[13]);
+
+			if(array[14] != null)
+				colaborador.setAreaOrganizacionalId(((BigInteger)array[14]).longValue());
 			
 			result.add(colaborador);
 		}
