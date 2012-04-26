@@ -330,7 +330,7 @@
 		
 					<#assign selected=""/>
 		
-					<@display.column title="Clínica" >
+					<@display.column title="Clínica / Médico" >
 		
 						<select name="selectClinicas" id="selectClinica_${lista[0].id}" disabled style="width:350px;" >
 		
