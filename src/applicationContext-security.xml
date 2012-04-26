@@ -508,6 +508,7 @@
 				/geral/cid/find.action*=ROLE_USER
 				/desenvolvimento/colaboradorTurma/findNotas.action*=ROLE_USER
 				/importacao/prepareImportarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
+				/importacao/carregarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
 				/importacao/importarAfastamentos.action*=ROLE_IMPORTACAO_AFASTAMENTO
 				
 				/backup/list.action=ROLE_BACKUP

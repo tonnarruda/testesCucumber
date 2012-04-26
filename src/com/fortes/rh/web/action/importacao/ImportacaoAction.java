@@ -1,10 +1,16 @@
 package com.fortes.rh.web.action.importacao;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.importacao.ImportacaoColaboradorManager;
+import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.model.sesmt.Afastamento;
+import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 
@@ -14,30 +20,42 @@ public class ImportacaoAction extends MyActionSupport
 	
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	private ImportacaoColaboradorManager importacaoColaboradorManager;
+	private AfastamentoManager afastamentoManager;
 	
 	private File arquivo;
+	
+	private String nomeArquivo;
+	
+	List<String> motivos = new ArrayList<String>();
+	Collection<Afastamento> afastamentos;
 	
 	public String prepareImportarAfastamentos()
 	{
 		return SUCCESS;
 	}
 	
-	public String importarAfastamentos()
+	public String carregarAfastamentos()
 	{
 		if(!arquivo.getName().toLowerCase().contains(".csv"))
 		{
 			addActionError("Formato do arquivo invalido.");
 			return INPUT;
 		}
-			
+		
 		java.io.File arquivoCriado = ArquivoUtil.salvaArquivo(null, arquivo, false);
 		
-		try {
 		
+		try {
 			if (arquivoCriado == null)
 				throw new Exception("Erro ao salvar o arquivo de importação no servidor.");
 		
-			colaboradorAfastamentoManager.importarCSV(arquivoCriado, getEmpresaSistema());
+			Collection<ColaboradorAfastamento> colaboradorAfastamentos = colaboradorAfastamentoManager.carregarCSV(arquivoCriado);
+			for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos) {
+				if (!motivos.contains(colaboradorAfastamento.getAfastamento().getDescricao()))
+					motivos.add(colaboradorAfastamento.getAfastamento().getDescricao());
+			}
+			
+			afastamentos = afastamentoManager.findToList(new String[]{"id","descricao"}, new String[]{"id","descricao"}, new String[]{"descricao"});
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -49,7 +67,30 @@ public class ImportacaoAction extends MyActionSupport
 			return INPUT;
 		}
 		
-		addMensagensAfastamentos();
+		
+		return SUCCESS;
+	}
+	
+	public String importarAfastamentos()
+	{
+//		try {
+//		
+//			if (arquivoCriado == null)
+//				throw new Exception("Erro ao salvar o arquivo de importação no servidor.");
+//		
+//			colaboradorAfastamentoManager.importarCSV(arquivoCriado, getEmpresaSistema());
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			addActionError("Erro na leitura do arquivo de importação.");
+//			return INPUT;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			addActionError("Erro ao executar a importação, verifique o formato e o conteúdo do arquivo CSV.");
+//			return INPUT;
+//		}
+//		
+//		addMensagensAfastamentos();
 		
 		return SUCCESS;
 	}
@@ -114,6 +155,48 @@ public class ImportacaoAction extends MyActionSupport
 
 	public void setImportacaoColaboradorManager(ImportacaoColaboradorManager importacaoColaboradorManager) {
 		this.importacaoColaboradorManager = importacaoColaboradorManager;
+	}
+
+	
+	public String getNomeArquivo()
+	{
+		return nomeArquivo;
+	}
+
+	
+	public void setNomeArquivo(String nomeArquivo)
+	{
+		this.nomeArquivo = nomeArquivo;
+	}
+
+	
+	public List<String> getMotivos()
+	{
+		return motivos;
+	}
+
+	
+	public void setMotivos(List<String> motivos)
+	{
+		this.motivos = motivos;
+	}
+
+	
+	public Collection<Afastamento> getAfastamentos()
+	{
+		return afastamentos;
+	}
+
+	
+	public void setAfastamentos(Collection<Afastamento> afastamentos)
+	{
+		this.afastamentos = afastamentos;
+	}
+
+	
+	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
+	{
+		this.afastamentoManager = afastamentoManager;
 	}
 	
 }

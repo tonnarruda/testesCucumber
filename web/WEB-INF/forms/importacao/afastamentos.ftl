@@ -2,10 +2,7 @@
 <head>
 <@ww.head/>
 
-<#assign validarCampos="return imprimir();"/>
 <title>Importação de Afastamentos</title>
-
-	
 	<#assign validarCampos="return validaFormulario('form', new Array('arquivo'), null)"/>
 
 	<#if dataDe?exists>
@@ -32,14 +29,13 @@
 	</fieldset>
 	<br/>
 
-	<@ww.form name="form" action="importarAfastamentos.action" validate="true" onsubmit="${validarCampos}" method="POST" enctype="multipart/form-data">
+	<@ww.form name="form" action="carregarAfastamentos.action" validate="true" onsubmit="${validarCampos}" method="POST" enctype="multipart/form-data">
 		<@ww.file label="Arquivo CSV" name="arquivo" id="arquivo"/>
 		<@ww.token/>
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnImportar" accesskey="I">
-		</button>
+		<button onclick="${validarCampos};" class="btnCarregar"></button>
 	</div>
 </body>
 </html>

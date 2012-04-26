@@ -139,15 +139,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		countAfastamentosImportados = 0;
 		countTiposAfastamentosCriados = 0;
 		
-		mapDescricaoAfastamento = getMapDescricaoAfastamentos();
-		
-		Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
-		
-		// importacao do CSV para colecao
-		ImportacaoCSVUtil importacaoCSVUtil = new ImportacaoCSVUtil();
-		
-		importacaoCSVUtil.importarCSV(arquivo, OpcaoImportacao.AFASTAMENTOS_TRU);
-		colaboradorAfastamentos = importacaoCSVUtil.getAfastamentos();
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = this.carregarCSV(arquivo);
 		
 		for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos)
 		{
@@ -166,7 +158,17 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 				}
 			}
 		}
+	}
+	
+	public Collection<ColaboradorAfastamento> carregarCSV(File arquivo) throws Exception 
+	{
+		mapDescricaoAfastamento = getMapDescricaoAfastamentos();
 		
+		// importacao do CSV para colecao
+		ImportacaoCSVUtil importacaoCSVUtil = new ImportacaoCSVUtil();
+		
+		importacaoCSVUtil.importarCSV(arquivo, OpcaoImportacao.AFASTAMENTOS_TRU);
+		return importacaoCSVUtil.getAfastamentos();
 	}
 	
 	// seta tipo afastamento que já existe no banco

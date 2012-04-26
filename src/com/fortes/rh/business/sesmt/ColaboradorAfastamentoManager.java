@@ -18,6 +18,7 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS) throws ColecaoVaziaException;
 	Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException;
 	void importarCSV(File arquivo, Empresa empresa) throws Exception;
+	Collection<ColaboradorAfastamento> carregarCSV(File arquivo) throws Exception;
 	Integer getCountAfastamentosImportados();
 	Integer getCountTiposAfastamentosCriados();
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);

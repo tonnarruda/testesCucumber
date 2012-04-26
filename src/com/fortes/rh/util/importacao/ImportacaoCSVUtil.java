@@ -83,7 +83,7 @@ public class ImportacaoCSVUtil
 		}
 		
 		if(naoAchouLinhaComAfastamento)
-			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, nenhum afastamentos encontrado.");
+			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, nenhum afastamento encontrado.");
 	}
 	
 	
