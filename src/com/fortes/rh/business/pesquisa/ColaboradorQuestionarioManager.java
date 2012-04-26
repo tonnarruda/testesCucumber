@@ -51,4 +51,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao);
 	Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId);
 	void removeByCandidato(Long candidatoId);
+	ColaboradorQuestionario findColaborador(Long colaboradorId, Long questionarioId, Long turmaId);
 }

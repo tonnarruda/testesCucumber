@@ -187,6 +187,11 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		return getDao().findColaboradorComEntrevistaDeDesligamento(colaboradorId);
 	}
+	
+	public ColaboradorQuestionario findColaborador(Long colaboradorId, Long questionarioId, Long turmaId)
+	{
+		return getDao().findColaborador(colaboradorId, questionarioId, turmaId);
+	}
 
 	public void removeByColaboradorETurma(Long colaboradorId, Long turmaId)
 	{

@@ -194,6 +194,30 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
+	
+	public ColaboradorQuestionario findColaborador(Long colaboradorId, Long questionarioId, Long turmaId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.property("cq.questionario.id"), "projectionQuestionarioId");
+		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("q.cabecalho"), "projectionQuestionarioCabecalho");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("q.id", questionarioId));
+		criteria.add(Expression.eq("cq.turma.id", turmaId));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (ColaboradorQuestionario) criteria.uniqueResult();
+	}
 
 	public void removeByColaboradorETurma(Long colaboradorId, Long turmaId)
 	{

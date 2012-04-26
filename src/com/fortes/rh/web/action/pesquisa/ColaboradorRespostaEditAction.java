@@ -216,6 +216,28 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 			return Action.INPUT;
 		}
     }
+    
+    public String imprimirAvaliacaoTurma()
+    {
+    	colaboradorQuestionario = colaboradorQuestionarioManager.findColaborador(colaborador.getId(), questionario.getId(), turmaId);
+    	try
+    	{
+    		prepareResponderQuestionario();
+    		perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas);
+    		
+    		parametros = new HashMap<String, Object>();//tem que ser aqui
+    		parametros.put("TITULO", questionario.getTitulo());
+    		parametros.put("RODAPE", colaboradorQuestionario.getQuestionario().getCabecalho());
+    		parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
+    		
+    		return Action.SUCCESS;
+    	}
+    	catch (Exception e)
+    	{
+    		e.printStackTrace();
+    		return Action.INPUT;
+    	}
+    }
 
     public Object getModel()
     {

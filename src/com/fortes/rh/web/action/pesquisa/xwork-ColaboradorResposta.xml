@@ -29,5 +29,13 @@
 				<param name="parametersMap">parametros</param>
 			</result>
 		</action>
+		<action name="imprimirAvaliacaoTurma" class="com.fortes.rh.web.action.pesquisa.ColaboradorRespostaEditAction" method="imprimirAvaliacaoTurma">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/avaliacaoTurmaRespondida.jasper</param>
+				<param name="dataSource">perguntasRespondidas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">avaliacaoTurmaRespondida.pdf</param>
+			</result>
+		</action>
 	</package>
 </xwork>

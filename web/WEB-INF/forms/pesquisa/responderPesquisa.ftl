@@ -218,6 +218,8 @@ function agrupaPerguntaseRespostas(formulario)
 
 		<#if exibirImprimir>
 			<button onclick="javascript:window.location='imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}'" class="btnImprimir"></button>
+		<#else>
+			<button onclick="javascript:window.location='imprimirAvaliacaoTurma.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}&turmaId=${turmaId}'" class="btnImprimir"></button>
 		</#if>
 		
 	</div>
