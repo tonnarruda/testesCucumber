@@ -11,12 +11,14 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
@@ -33,6 +35,7 @@ public class TurmaListAction extends MyActionSupportList
 	private CursoManager cursoManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 
 	private Collection<Turma> turmas;
 
@@ -44,6 +47,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<ColaboradorTurma> dataSource;
 	private Collection<Curso> cursos;
 	private Collection<AvaliacaoCurso> avaliacaoCursos;
+	private Collection<AvaliacaoTurma> avaliacaoTurmas;
 
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
@@ -180,6 +184,12 @@ public class TurmaListAction extends MyActionSupportList
 	
 	public String filtroCronogramaTreinamento() throws Exception
 	{
+		return Action.SUCCESS;
+	}
+	
+	public String popUpTurmaAvaliacaoAcao() throws Exception
+	{
+		avaliacaoTurmas = avaliacaoTurmaManager.findByTurma(turma.getId());
 		return Action.SUCCESS;
 	}
 
@@ -391,5 +401,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setExibirCustoDetalhado(boolean exibirCustoDetalhado) {
 		this.exibirCustoDetalhado = exibirCustoDetalhado;
+	}
+
+	public Collection<AvaliacaoTurma> getAvaliacaoTurmas() {
+		return avaliacaoTurmas;
+	}
+
+	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
+		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
 	}
 }
