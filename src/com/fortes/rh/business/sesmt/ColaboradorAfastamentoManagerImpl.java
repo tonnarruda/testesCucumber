@@ -134,21 +134,29 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	 * Cód. Empregado;Nome Completo;Nome de Escala;Doença(Tipo Afastamento);Data Inicial;Data Final;Médico;Descrição do Tipo
 	 * @throws Exception 
 	 */
-	public void importarCSV(File arquivo, Empresa empresa) throws Exception
+	public void importarCSV(File arquivo, Map<String, Long> afastamentos, Empresa empresa) throws Exception
 	{
 		countAfastamentosImportados = 0;
 		countTiposAfastamentosCriados = 0;
 		
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = this.carregarCSV(arquivo);
+		String descricao = null;
+		String codigoAC = null;
+		Colaborador colaborador = null;
 		
 		for (ColaboradorAfastamento colaboradorAfastamento : colaboradorAfastamentos)
 		{
-			String codigoAC = colaboradorAfastamento.getColaborador().getCodigoAC();
-			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigoAC, empresa);
+			descricao 	= colaboradorAfastamento.getAfastamento().getDescricao();
+			codigoAC 	= colaboradorAfastamento.getColaborador().getCodigoAC();
+			colaborador = colaboradorManager.findByCodigoAC(codigoAC, empresa);
 
 			if(colaborador != null)
 			{
-				setAfastamentoCadastrado(colaboradorAfastamento);
+				if (afastamentos != null && afastamentos.containsKey(descricao) && afastamentos.get(descricao) != null)
+					colaboradorAfastamento.setAfastamentoId(afastamentos.get(descricao));//usuário relacionou o afastamento correspondente no RH
+				else
+					setAfastamentoCadastrado(colaboradorAfastamento);
+				
 				colaboradorAfastamento.setColaborador(colaborador);
 				
 				if(!getDao().exists(colaboradorAfastamento))

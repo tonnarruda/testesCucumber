@@ -107,6 +107,14 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		return periodoFmtInt;
 	}
 	
+	public void setAfastamentoId(Long afastamentoId)
+	{
+		if (this.afastamento == null)
+			this.afastamento = new Afastamento();
+		
+		this.afastamento.setId(afastamentoId);
+	}
+	
 	public void setAfastamentoDescricao(String afastamentoDescricao)
 	{
 		if (this.afastamento == null)

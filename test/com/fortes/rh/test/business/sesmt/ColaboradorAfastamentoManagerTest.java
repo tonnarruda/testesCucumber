@@ -187,7 +187,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		colaboradorAfastamentoDao.expects(atLeastOnce()).method("exists").will(returnValue(false));
 		colaboradorAfastamentoDao.expects(atLeastOnce()).method("save");
 		
-		colaboradorAfastamentoManager.importarCSV(arquivo, empresa);
+		colaboradorAfastamentoManager.importarCSV(arquivo, null, empresa);
 		
 		assertEquals(1, colaboradorAfastamentoManager.getCountTiposAfastamentosCriados().intValue());
 		assertEquals(2, colaboradorAfastamentoManager.getCountAfastamentosImportados().intValue());

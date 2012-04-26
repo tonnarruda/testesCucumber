@@ -106,7 +106,12 @@ public class ArquivoUtil
 		String path = "";
 
 		if (pasta != null)
+		{
 			path = getRhHome() + java.io.File.separatorChar + "anexos" + java.io.File.separatorChar + pasta + java.io.File.separatorChar;
+			java.io.File dir = new java.io.File(path);
+			if (!dir.exists())
+				dir.mkdir();
+		}
 
 		String nomeArquivo = arquivo.getName();
 		java.io.File arquivoSalvo = null;

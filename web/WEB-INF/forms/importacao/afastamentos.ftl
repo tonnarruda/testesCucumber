@@ -21,11 +21,8 @@
 	<@ww.actionmessage />
 	
 	<fieldset class="fieldsetPadrao" style="width:860px;">
-		<ul>
 		<legend>Formato válido do Arquivo de Importação</legend>
-		<br/>
-		Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;Descrição do Tipo
-		</ul>
+		<span style="font-size:12px;">Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;Descrição do Tipo</span>
 	</fieldset>
 	<br/>
 
