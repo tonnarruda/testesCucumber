@@ -11,11 +11,11 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -50,5 +50,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void insereGerenciadorComunicacaoDefault(Empresa empresa);
 	void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem);
 	void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC);
-	void enviaAvisoOcorrenciaCadastrada(Ocorrencia ocorrencia, Long colaboradorId, Long empresaId);
+	void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId);
 }

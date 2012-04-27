@@ -22,6 +22,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -46,6 +47,7 @@ import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Contato;
@@ -54,6 +56,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -75,11 +78,13 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoLimiteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -104,6 +109,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock questionarioManager;
 	private Mock colaboradorManager;
 	private Mock solicitacaoManager;
+	private Mock providenciaManager;
 	private Mock mensagemManager;
 	private Mock empresaManager;
 	private Mock exameManager;
@@ -152,6 +158,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         solicitacaoManager = new Mock(SolicitacaoManager.class);
 		MockSpringUtil.mocks.put("solicitacaoManager", solicitacaoManager);
 
+		providenciaManager = new Mock(ProvidenciaManager.class);
+		gerenciadorComunicacaoManager.setProvidenciaManager((ProvidenciaManager) providenciaManager.proxy());
+		
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
 		
@@ -1073,6 +1082,14 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Usuario usuario = UsuarioFactory.getEntity();
 		Collection<Usuario> usuarios = Arrays.asList(usuario);
 		
+		Providencia providencia = ProvidenciaFactory.getEntity(1L);
+		
+		ColaboradorOcorrencia colaboradorOocorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOocorrencia.setColaborador(colaborador);
+		colaboradorOocorrencia.setOcorrencia(ocorrencia);
+		colaboradorOocorrencia.setProvidencia(providencia);
+		colaboradorOocorrencia.setDataIni(new Date());		
+		
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
 		gerenciadorComunicacao.setEmpresa(empresa);
 		gerenciadorComunicacao.setUsuarios(usuarios);
@@ -1082,13 +1099,14 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		
 		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(ANYTHING).will(returnValue(colaborador));
+		providenciaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(providencia));
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRO_OCORRENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		
 		Exception exception = null;
 		try {
-			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(ocorrencia, colaborador.getId(), empresa.getId());
+			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOocorrencia, empresa.getId());
 		} catch (Exception e) {
 			exception = e;
 		}

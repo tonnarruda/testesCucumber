@@ -40,12 +40,13 @@ import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -75,6 +76,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	MensagemManager mensagemManager;
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
+	ProvidenciaManager providenciaManager;
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{
@@ -564,16 +566,28 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaAvisoOcorrenciaCadastrada(Ocorrencia ocorrencia, Long colaboradorId, Long empresaId) 
+	public void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId) 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorOcorrencia.getColaborador().getId());
+		
+		String providenciaDescricao = "";
+		Providencia providencia = null;
+		if (colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() != null) {
+			providencia = providenciaManager.findById(colaboradorOcorrencia.getProvidencia().getId());
+			providenciaDescricao = providencia.getDescricao();
+		}
 		
 		StringBuilder mensagem = new StringBuilder();
-		mensagem.append("Nova ocorrência cadastrada para "+ colaborador.getNomeMaisNomeComercial() +".\n");
-		mensagem.append("Ocorrência: " + ocorrencia.getDescricao());
+		mensagem.append("Nova ocorrência cadastrada para "+ colaborador.getNomeMaisNomeComercial() +".");
+		mensagem.append("\nOcorrência      : " + colaboradorOcorrencia.getOcorrencia().getDescricao());
+		mensagem.append("\nData de Início  : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+		mensagem.append("\nData de Término : " + DateUtil.formataDiaMesAno(colaboradorOcorrencia.getDataIni()));
+		mensagem.append("\nProvidência     : " + providenciaDescricao);
+		mensagem.append("\nObservação      : ");
+		mensagem.append(colaboradorOcorrencia.getObservacao());
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_OCORRENCIA.getId(), ocorrencia.getEmpresa().getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
@@ -940,6 +954,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+	
+	public void setProvidenciaManager(ProvidenciaManager providenciaManager)
+	{
+		this.providenciaManager = providenciaManager;
 	}
 
 }

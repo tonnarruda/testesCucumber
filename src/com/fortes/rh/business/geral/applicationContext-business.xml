@@ -899,6 +899,9 @@
     <property name="cargoManager">
       <ref bean="cargoManager" />
     </property>
+    <property name="providenciaManager">
+      <ref bean="providenciaManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -182,7 +182,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		if (colaboradorOcorrencia.getId() == null)
 		{
 			getDao().save(colaboradorOcorrencia);
-			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOcorrencia.getOcorrencia(), colaboradorOcorrencia.getColaborador().getId(), empresa.getId());
+			gerenciadorComunicacaoManager.enviaAvisoOcorrenciaCadastrada(colaboradorOcorrencia, empresa.getId());
 		}
 		else
 			getDao().update(colaboradorOcorrencia);
