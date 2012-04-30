@@ -57,7 +57,7 @@ public class CargoEditAction extends MyActionSupportEdit
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private CodigoCBOManager codigoCBOManager;
 
-    private boolean exibirSalario;
+    private boolean exibirSalario;//padrão tem que ser falso
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
 	private Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
