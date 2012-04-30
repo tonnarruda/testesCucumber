@@ -391,7 +391,8 @@ CREATE TABLE colaborador (
 	camposextras_id bigint,
 	solicitacao_id bigint,
 	dataatualizacao date,
-	observacaodemissao text
+	observacaodemissao text,
+	dataSolicitacaoDesligamentoAc date
 );
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_pkey PRIMARY KEY (id);
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_candidato_uk UNIQUE (candidato_id);
@@ -1373,8 +1374,7 @@ CREATE TABLE turma (
 	horario character varying(20),
 	realizada boolean,
 	qtdparticipantesprevistos Integer,
-    curso_id bigint,
-    liberada boolean default false
+    curso_id bigint
 );
 ALTER TABLE turma ADD CONSTRAINT turma_pkey PRIMARY KEY (id);
 ALTER TABLE turma ADD CONSTRAINT turma_curso_fk FOREIGN KEY (curso_id) REFERENCES curso(id);
@@ -1382,11 +1382,14 @@ ALTER TABLE turma ADD CONSTRAINT turma_empresa_fk FOREIGN KEY (empresa_id) REFER
 CREATE SEQUENCE turma_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE turma_avaliacaoturma (
+	id bigint NOT NULL,
     turma_id bigint NOT NULL,
-    avaliacaoturmas_id bigint NOT NULL
+    avaliacaoturma_id bigint NOT NULL,
+    liberada boolean default false
 );
-ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_avaliacaoturma_fk FOREIGN KEY (avaliacaoturmas_id) REFERENCES avaliacaoturma(id);
+ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_avaliacaoturma_fk FOREIGN KEY (avaliacaoturma_id) REFERENCES avaliacaoturma(id);
 ALTER TABLE turma_avaliacaoturma ADD CONSTRAINT turma_avaliacaoturma_turma_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
+CREATE SEQUENCE turma_avaliacaoturma_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE diaturma (
     id bigint NOT NULL,
@@ -1603,7 +1606,7 @@ ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_historicoco
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_indice_fk FOREIGN KEY (indice_id) REFERENCES indice(id);
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
 ALTER TABLE historicocolaborador ADD CONSTRAINT historicocolaborador_reajustecolaborador_fk FOREIGN KEY (reajustecolaborador_id) REFERENCES reajustecolaborador(id);
-ALTER TABLE ONLY historicocolaborador ADD CONSTRAINT historicocolaborador_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);--.go
+ALTER TABLE ONLY historicocolaborador ADD CONSTRAINT historicocolaborador_candidatosolicitacao_fk FOREIGN KEY (candidatosolicitacao_id) REFERENCES candidatosolicitacao(id);
 CREATE SEQUENCE historicocolaborador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 
@@ -1791,7 +1794,11 @@ CREATE TABLE eleicao (
     localApuracao character varying(100),
     descricao character varying(100),
     textoAtaEleicao text,
-    estabelecimento_id bigint
+    estabelecimento_id bigint,
+    textoeditalinscricao text,
+	textoChamadoEleicao text,
+	textoSindicato text,
+	textoDRT text
 );
 
 ALTER TABLE eleicao ADD CONSTRAINT eleicao_pkey PRIMARY KEY(id);
@@ -2089,7 +2096,8 @@ CREATE TABLE riscoambiente (
     epceficaz boolean,
     historicoambiente_id bigint,
     risco_id bigint,
-    periodicidadeexposicao character(1)
+    periodicidadeexposicao character(1),
+    medidadeseguranca text
 );
 ALTER TABLE riscoambiente ADD CONSTRAINT riscoambiente_pkey PRIMARY KEY (id);
 ALTER TABLE riscoambiente ADD CONSTRAINT riscoambiente_historicoambiente_fk FOREIGN KEY (historicoambiente_id) REFERENCES historicoambiente(id);
@@ -2556,12 +2564,13 @@ ALTER TABLE turmaTipoDespesa ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FO
 CREATE SEQUENCE turmaTipoDespesa_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
 
 CREATE TABLE gerenciadorComunicacao (
-id bigint NOT NULL,
-operacao int,
-meioComunicacao int,
-enviarPara int,
-destinatario character varying(200),
-empresa_id bigint
+	id bigint NOT NULL,
+	operacao int,
+	meioComunicacao int,
+	enviarPara int,
+	destinatario character varying(200),
+	empresa_id bigint,
+	qtdDiasLembrete character varying(20)
 );
 
 ALTER TABLE gerenciadorComunicacao ADD CONSTRAINT gerenciadorComunicacao_pkey PRIMARY KEY(id);
@@ -2623,9 +2632,23 @@ CREATE TABLE riscofuncao (
     epceficaz boolean,
     historicofuncao_id bigint,
     risco_id bigint,
-    periodicidadeexposicao character(1)
+    periodicidadeexposicao character(1),
+    medidadeseguranca text
 );
 ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_pkey PRIMARY KEY (id);
 ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_historicofuncao_fk FOREIGN KEY (historicofuncao_id) REFERENCES historicofuncao(id);
 ALTER TABLE riscofuncao ADD CONSTRAINT riscofuncao_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);
 CREATE SEQUENCE riscofuncao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;
+
+CREATE OR REPLACE VIEW SituacaoAvaliacaoTurma AS  
+select totais.id as turma_id, 
+case 
+when totais.qtdAvaliacoes = totais.qtdLiberada then 'L'  
+when totais.qtdLiberada > 0 then 'P' 
+else 'B' end as status 
+from 
+(select t.id, count(a.id) as qtdAvaliacoes, (select count(tat3.id) from turma_avaliacaoturma tat3 where tat3.turma_id = t.id and tat3.liberada = true) as qtdLiberada 
+from turma t 
+left join turma_avaliacaoturma tat on tat.turma_id = t.id 
+left join avaliacaoturma a on tat.avaliacaoturma_id = a.id  
+group by t.id) as totais; 

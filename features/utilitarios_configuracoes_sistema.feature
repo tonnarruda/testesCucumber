@@ -15,8 +15,6 @@ Funcionalidade: Configurações do Sistema
     E eu preencho "Contexto da Aplicação" com "/fortesrh"
     E eu preencho "Atualizador" com "rubens"
     E eu preencho "Configuração do Autenticador" com "v1.14"
-    E eu preencho "diasLembretePesquisa" com "1&3&5"
-    E eu preencho "diasLembretePeriodoExperiencia" com "30&45&60"
     E eu seleciono "Usuário" de "Perfil Padrão"
     E eu marco "Forçar caixa alta nos campos do módulo externo"
     E eu desmarco "Compartilhar Candidatos entre empresas."

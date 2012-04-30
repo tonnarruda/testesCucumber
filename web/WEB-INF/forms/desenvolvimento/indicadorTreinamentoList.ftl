@@ -48,34 +48,34 @@
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
-						'<br/><br/>- Investimento médio da hora de treinamento (R$)<br/>'+
+						'<br/><br/><strong>- Investimento médio da hora de treinamento (R$)</strong><br/>'+
 						'&nbsp&nbsp custoMedioHora = somaCusto / somaHoras<br/>'+
-						'&nbsp&nbsp somaCusto e horas dos cursos no período e empresa.<br/>'+
+						'&nbsp&nbsp a somaCusto e Hora dos cursos é referente ao período e empresa selecionados no filtro.<br/>'+
 						'<br/>'+
-						'- Investimento per capita (R$)<br/>'+
-						'&nbsp&nbsp custoPerCapita = indicadorTreinamento.getCustoTotal() / qtdAtivos<br/>'+
-						'&nbsp&nbsp qtdAtivos -> colaboradores ativos na empresa com data admissao menor que a data fim do período e<br/>'+
-						'&nbsp&nbsp não esteja desligado ou com data de desligamento depois da data fim.<br/>'+
+						'<strong>- Investimento per capita (R$)</strong><br/>'+
+						'&nbsp&nbsp custoPerCapita (por pessoa) = CustoTotal / Qtd. Colaboradores Ativos e Inscritos<br/>'+
+						'&nbsp&nbsp Qtd. Colaboradores Ativos e inscritos: colaboradores ativos na empresa com data de admissão menor que a data fim do filtro e<br/>'+
+						'&nbsp&nbsp que não esteja desligado ou com data de desligamento depois da data fim do filtro.<br/>'+
 						'<br/>'+
-						'- Horas de treinamento per capita<br/>'+
-						'&nbsp&nbsp horasPerCapita = ((qtdHoras / 60) * qtdParticipantes) / qtdAtivos<br/>'+
-						'&nbsp&nbsp qtdHoras -> soma das horas.<br/>'+
-						'&nbsp&nbsp qtdParticipantes -> colaboradores da turma que estejam dentro do período.<br/>'+
-						'&nbsp&nbsp qtdAtivos -> colaboradores ativos na empresa com data admissao menor que a data fim do período e<br/>'+
-						'&nbsp&nbsp não esteja desligado ou com data de desligamento depois da data fim.<br/>'+
+						'<strong>- Horas de treinamento per capita</strong><br/>'+
+						'&nbsp&nbsp horasPerCapita = ((QtdHoras / 60) * QtdParticipantes) / QtdAtivos<br/><br/>'+
+						'&nbsp&nbsp QtdHoras: soma das horas.<br/>'+
+						'&nbsp&nbsp QtdParticipantes: colaboradores da turma que estejam dentro do período do filtro.<br/>'+
+						'&nbsp&nbsp QtdAtivos: colaboradores ativos na empresa com data admissao menor que a data fim do filtro e<br/>'+
+						'&nbsp&nbsp que não esteja desligado ou com data de desligamento depois da data fim do filtro.<br/>'+
 						'<br/>'+
-						'- Total de investimentos dos treinamentos realizados (R$)<br/>'+
-						'&nbsp&nbsp custo dos cursos em determinado período e empresa.<br/>'+
+						'<strong>- Total de investimentos dos treinamentos realizados (R$)</strong><br/>'+
+						'&nbsp&nbsp Soma de todos os custos lançados para os cursos em determinado período e empresa.<br/>'+
 						'<br/>'+
-						'- Percentual de investimentos em relação ao faturamento<br/>'+
-						'&nbsp&nbsp percentual = (custos / somafaturamentoPeriodo) * 100<br/>'+
+						'<strong>- Percentual de investimentos em relação ao faturamento</strong><br/>'+
+						'&nbsp&nbsp Percentual = (custos / somafaturamentoPeríodo) * 100<br/><br/>'+
+						'&nbsp&nbsp somafaturamentoPeriodo: total do faturamento no período e empresa.<br/>'+
 						'&nbsp&nbsp * apenas para faturamento maior que zero.<br/>'+
-						'&nbsp&nbsp somafaturamentoPeriodo -> total do faturamento no período e empresa.<br/>'+
 						'<br/>'+
-						'- Percentual de frequência (aprovados)<br/>'+
-						'&nbsp&nbsp resultado = (qtdDiasPresentes / qtdDiasTotal ) * 100<br/>'+
-						'&nbsp&nbsp qtdDiasTotal -> quantidade de colaboradores na turma vezes a quantidade de dias de curso.<br/>'+
-						'&nbsp&nbsp qtdDiasPresentes -> soma de todas as turmas do período.<br/>'+
+						'<strong>- Percentual de frequência (aprovados)</strong><br/>'+
+						'&nbsp&nbsp Resultado = (QtdDiasPresentes / QtdDiasTotal ) * 100<br/><br/>'+
+						'&nbsp&nbsp QtdDiasTotal: quantidade de colaboradores na turma x a quantidade de dias de curso.<br/>'+
+						'&nbsp&nbsp QtdDiasPresentes: soma de todas as turmas do período selecionado.<br/><br/>'+
 						'&nbsp&nbsp * apenas das turmas realizadas<br/>'
 				,
 				style: {

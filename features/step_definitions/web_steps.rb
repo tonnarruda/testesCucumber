@@ -70,7 +70,7 @@ end
 When /^(?:|I )select "([^"]*)" from "([^"]*)"(?: within "([^"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
   	select = find_field(field)
-    select.find(:xpath, "option[text()='" + value + "']").click
+    select.find(:xpath, "option[text()='" + value + "']|optgroup/option[text()='" + value + "']").click
   end
 end
 

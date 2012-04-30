@@ -57,11 +57,6 @@
 	
 	<br/>
 	
-	Alertar sobre Acompanhamento do Período de Experiência com 
-	<@ww.textfield theme="simple" name="parametrosDoSistema.diasLembretePeriodoExperiencia" onkeypress = "return(somenteNumeros(event,'&'));" id="diasLembretePeriodoExperiencia" maxLength="20" required="true" cssStyle="width:55px; text-align:right;" />
-	dias de antecedência. (Exemplo: 1&2&3)
-	<br/><br/>
-	
 	<@ww.select label="Perfil Padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil"/>
 	
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>

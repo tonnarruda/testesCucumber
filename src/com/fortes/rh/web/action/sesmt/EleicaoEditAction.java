@@ -128,6 +128,18 @@ public class EleicaoEditAction extends MyActionSupportEdit
 			
 			getEleicao().setTextoAtaEleicao(textoAtaEleicao);
 		}
+
+		if (StringUtils.isBlank(getEleicao().getTextoEditalInscricao()))
+			getEleicao().setTextoEditalInscricao("Convocamos os empregados que desejam se inscrever para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.");
+		
+		if (StringUtils.isBlank(getEleicao().getTextoChamadoEleicao()))
+			getEleicao().setTextoChamadoEleicao("Convocamos os empregados para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho, a ser realizada em escrutínio secreto.");
+		
+		if (StringUtils.isBlank(getEleicao().getTextoSindicato()))
+			getEleicao().setTextoSindicato("A empresa #EMPRESA# informa que a eleição da Comissão Interna de Prevenção de Acidentes - CIPA será realizada no período de #DATA_VOTACAOINI# a #DATA_VOTACAOFIM#, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.");
+
+		if (StringUtils.isBlank(getEleicao().getTextoDRT()))
+			getEleicao().setTextoDRT("A empresa #EMPRESA# - #ESTABELECIMENTO#, estabelecida no endereço #ENDERECO#, com #TOTAL_EMPREGADOS# empregados cuja atividade é #ATIVIDADE#, enquadrada no grupo de risco #RISCO#, vem respeitosamente requerer a Vossa Senhoria o registro da Comissão Interna de Prevenção de Acidentes - CIPA, de acordo com o Art. 163 da CLT, da Norma Regulamentadora nº 05. Para tanto, anexamos os seguintes documentos: cópia da Ata de Eleição, Ata de Instalação e Posse e o Calendário anual de reuniões.");
 	}
 
 	public String updateImprimir() throws Exception

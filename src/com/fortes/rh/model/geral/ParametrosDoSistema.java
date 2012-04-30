@@ -17,7 +17,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.util.DateUtil;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="parametrosDoSistema_sequence", allocationSize=1)

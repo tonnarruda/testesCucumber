@@ -163,7 +163,11 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (12, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (60, 'ROLE_CAD_MOTIVO_DEMISSAO', 'Motivos de Desligamento', '/geral/motivoDemissao/list.action', 4, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (402, 'ROLE_MOV_QUESTIONARIO', 'Modelos de Entrevistas de Desligamento', '/pesquisa/entrevista/list.action', 5, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (62, 'ROLE_CAD_OCORRENCIA', 'Tipos de Ocorrência', '/geral/ocorrencia/list.action', 6, true, 374);
+
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (8, 'ROLE_CAD_COLABORADOR', 'Colaboradores', '/geral/colaborador/list.action', 7, true, 374);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (541, 'ROLE_PERFORMANCE_TODAS_AREAS', 'Visualizar Performance Funcional de todas as áreas', '#', 1, false, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (542, 'ROLE_PERFORMANCE_GESTOR_AREA', 'Visualizar Performance Funcional apenas da área cujo gestor é responsável', '#', 2, false, 8);
+
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (412, 'ROLE_CAD_INFO_PESSOAL', 'Atualizar meus dados', '/geral/colaborador/prepareUpdateInfoPessoais.action', 8, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (537, 'ROLE_PROVIDENCIA', 'Providências', '/geral/providencia/list.action', 10, true, 374);
@@ -219,7 +223,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (485,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (514, 'ROLE_CONFIG_LIMITE_COLABORADOR', 'Limite de Colab. por Cargo', '/geral/configuracaoLimiteColaborador/list.action', 4, true, 41);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (540, 'ROLE_CAD_GERENCIADOR_COMUNICACAO', 'Gerenciador de Comunicação', '/geral/gerenciadorComunicacao/list.action', 5, true, 41);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (540, 'ROLE_CAD_GERENCIADOR_COMUNICACAO', 'Gerenciador de Comunicação', '/geral/gerenciadorComunicacao/list.action', 5, true, 41);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 'ROLE_UTI_AUDITORIA', 'Auditoria', '/security/auditoria/prepareList.action', 5, true, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 6, true, 37);
@@ -305,7 +309,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 541;
+alter sequence papel_sequence restart with 543;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -21223,9 +21227,25 @@ insert into migrations values('20120329164209');
 insert into migrations values('20120327183352');
 insert into migrations values('20120309105446');
 insert into migrations values('20120309110244');
+insert into migrations values('20120418141418');
+insert into migrations values('20120418141429');
+insert into migrations values('20120410172936');
+insert into migrations values('20120418104021');
+insert into migrations values('20120419172146');
+insert into migrations values('20120423164649');
+insert into migrations values('20120423170410');
+insert into migrations values('20120411150920');
+insert into migrations values('20120409110033');
+insert into migrations values('20120409161033');
+insert into migrations values('20120409172033');
+insert into migrations values('20120418141616');
+insert into migrations values('20120418111547');
+insert into migrations values('20120417165121');
+insert into migrations values('20120418180526');
+insert into migrations values('20120424100043');
 
-insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, diasLembretePeriodoExperiencia, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.72.66', '', '25', false, false, 2, '1.1.49.1', 3, 
+insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.73.67', '', '25', false, false, 2, '1.1.49.1', 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

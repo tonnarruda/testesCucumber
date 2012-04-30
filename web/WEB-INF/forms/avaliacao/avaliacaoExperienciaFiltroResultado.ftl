@@ -72,17 +72,16 @@
 			var empresa = $('#empresa').val();
 			populaArea(empresa);
 			
-			$('#avaliacaoExperiencia').append('<optgroup label="Ativo">');
-			<#list avaliacaoExperienciasAtivas as avaliacaoAtiva>
-				$('#avaliacaoExperiencia').append('<option value="${avaliacaoAtiva.id}">&nbsp&nbsp${avaliacaoAtiva.titulo}</option>');
-			</#list>
-			$('#avaliacaoExperiencia').append('</optgroup>');
+			$('#avaliacaoExperiencia').append('<optgroup id="grpAtivo" label="Ativo"></optgroup>');
+			$('#avaliacaoExperiencia').append('<optgroup id="grpInativo" label="Inativo"></optgroup>');
 
-			$('#avaliacaoExperiencia').append('<optgroup label="Inativo">');
-			<#list avaliacaoExperienciasInativas as avaliacaoInativa>
-				$('#avaliacaoExperiencia').append('<option value="${avaliacaoInativa.id}">&nbsp&nbsp${avaliacaoInativa.titulo}</option>');
+			<#list avaliacaoExperienciasAtivas as avaliacaoAtiva>
+				$('#grpAtivo').append('<option value="${avaliacaoAtiva.id}">${avaliacaoAtiva.titulo}</option>');
 			</#list>
-			$('#avaliacaoExperiencia').append('</optgroup>');
+
+			<#list avaliacaoExperienciasInativas as avaliacaoInativa>
+				$('#grpInativo').append('<option value="${avaliacaoInativa.id}">${avaliacaoInativa.titulo}</option>');
+			</#list>
 		});
 	</script>
 	

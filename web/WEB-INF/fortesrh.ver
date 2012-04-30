@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.73.67" data="30/04/2012"><![CDATA[
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Liberação individual de avaliações.
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Novo submenu com as opções de liberar/bloquear, exibir resultados e imprimir.
+        - T&D > Relatórios > Histórico de Treinamentos: Novo filtro por nome comercial do colaborador.
+        - T&D > Painel de Indicadores: Ícone de ajuda sobre os indicadores.
+        - Info. Funcionais > Cadastros > Colaboradores: Possibilidade de solicitação de desligamento do colaborador quando integrado ao AC Pessoal.
+        - SESMT > Cadastros > Ambientes > Histórico do Ambiente: Novo campo de Medida de Segurança na definição dos riscos, para a empresa que controla os riscos por Ambiente.
+        - SESMT > Cadastros > Funções > Histórico da Função: Novo campo de Medida de Segurança na definição dos riscos, para a empresa que controla os riscos por Função.
+        - Utilitários > Configurações > Gerenciador de comunicação: Definição dos dias de antecedência para os avisos na configuração de aviso automático das avaliações do período de experiência a vencer.
+        - Utilitários > Configurações > Gerenciador de comunicação: Definição dos dias de antecedência para os avisos na configuração de lembrete automático de pesquisa não liberada.
+        - Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de notificação de não abertura de solicitação de EPI.
+        - Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de notificação de não entrega da solicitação de EPI.
+        - Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de aviso de cadastro de ocorrência.
+        - Utilitários > Importar afastamentos: Nova funcionalidade de relacionamento de motivos de afastamento entre RH e TRU.
+        - Integração AC Pessoal e RH > Cancelamento de histórico do colaborador pelo AC Pessoal.
+    ]]></Versao>
 	<Versao id="1.1.72.66" data="28/03/2012"><![CDATA[
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Nova opção do filtro por nome do colaborador.
         - Info. Funcionais > Relatórios > Absenteísmo: Possibilidade de marcar os afastamentos que serão considerardos no cálculo do absenteismo.  

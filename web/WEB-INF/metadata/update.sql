@@ -18801,3 +18801,111 @@ ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configNivelCompetencia_c
 insert into migrations values('20120404144633');--.go
 
 update parametrosdosistema set appversao = '1.1.72.66';--.go
+-- versao 1.1.73.67
+
+alter table riscoambiente add column medidadeseguranca text;--go
+insert into migrations values('20120418141418');--.go
+
+alter table riscofuncao add column medidadeseguranca text;--go
+insert into migrations values('20120418141429');--.go
+
+alter table colaborador add column dataSolicitacaoDesligamentoAc date;--.go
+insert into migrations values('20120410172936');--.go
+
+alter table eleicao add column textoeditalinscricao text;--.go
+alter table eleicao add column textoChamadoEleicao text;--.go
+alter table eleicao add column textoSindicato text;--.go
+alter table eleicao add column textoDRT text;--.go
+update eleicao set textoEditalInscricao='Convocamos os empregados que desejam se inscrever para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.';--.go
+update eleicao set textoChamadoEleicao='Convocamos os empregados para a eleição dos membros da Comissão Interna de Prevenção de Acidentes - CIPA desta empresa, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho, a ser realizada em escrutínio secreto.';--.go
+update eleicao set textoSindicato='A empresa #EMPRESA# informa que a eleição da Comissão Interna de Prevenção de Acidentes - CIPA será realizada no período de #DATA_VOTACAOINI# a #DATA_VOTACAOFIM#, de acordo com a Norma Regulamentadora nº 05, aprovada pela Portaria nº 3.214 de 08 de Junho de 1978, baixada pelo Ministério do Trabalho.';--.go
+update eleicao set textoDRT='A empresa #EMPRESA# - #ESTABELECIMENTO#, estabelecida no endereço #ENDERECO#, com #TOTAL_EMPREGADOS# empregados cuja atividade é #ATIVIDADE#, enquadrada no grupo de risco #RISCO#, vem respeitosamente requerer a Vossa Senhoria o registro da Comissão Interna de Prevenção de Acidentes - CIPA, de acordo com o Art. 163 da CLT, da Norma Regulamentadora nº 05. Para tanto, anexamos os seguintes documentos: cópia da Ata de Eleição, Ata de Instalação e Posse e o Calendário anual de reuniões.';--.go
+insert into migrations values('20120418104021');--.go
+
+alter table turma_avaliacaoturma rename column avaliacaoturmas_id to avaliacaoturma_id;--.go
+insert into migrations values('20120418141616');--.go
+
+alter table turma_avaliacaoturma add column id bigint;--.go
+CREATE SEQUENCE turma_avaliacaoturma_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+update turma_avaliacaoturma set id = nextval('turma_avaliacaoturma_sequence');--.go
+alter table turma_avaliacaoturma alter column id set NOT NULL;--.go
+insert into migrations values('20120418111547');--.go
+
+alter table turma_avaliacaoturma add column liberada boolean default false;--.go
+insert into migrations values('20120417165121');--.go
+
+update turma_avaliacaoturma tat set liberada = (select t.liberada from turma t where t.id = tat.turma_id);--.go
+insert into migrations values('20120418180526');--.go
+
+alter table turma drop column liberada;--.go
+insert into migrations values('20120424100043');--.go
+
+create view SituacaoAvaliacaoTurma as 
+select 
+totais.id as turma_id, 
+case 
+when totais.qtdAvaliacoes = totais.qtdLiberada then 'L'  
+when totais.qtdLiberada > 0 then 'P' 
+else 'B' end as status 
+from 
+(select t.id, count(a.id) as qtdAvaliacoes, (select count(tat3.id) from turma_avaliacaoturma tat3 where tat3.turma_id = t.id and tat3.liberada = true) as qtdLiberada 
+from turma t 
+left join turma_avaliacaoturma tat on tat.turma_id = t.id 
+left join avaliacaoturma a on tat.avaliacaoturma_id = a.id  
+group by t.id) as totais;--.go 
+insert into migrations values('20120419172146');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (541, 'ROLE_PERFORMANCE_TODAS_AREAS', 'Visualizar Performance Funcional de todas as áreas', '#', 1, false, 8);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=541 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 541); --.go
+alter sequence papel_sequence restart with 542;--.go
+CREATE FUNCTION insert_perfil_padrao_visualizar_performance() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select perfil_id as perfilId from perfil_papel where papeis_id=8
+		LOOP
+			INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (mviews.perfilId, 541);
+		END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insert_perfil_padrao_visualizar_performance();--.go
+drop function insert_perfil_padrao_visualizar_performance();--.go 
+insert into migrations values('20120423164649');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (542, 'ROLE_PERFORMANCE_GESTOR_AREA', 'Visualizar Performance Funcional apenas da área cujo gestor é responsável', '#', 2, false, 8);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=542 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 542); --.go
+alter sequence papel_sequence restart with 543;--.go
+insert into migrations values('20120423170410');--.go
+
+CREATE FUNCTION insert_gerenciador_comunicao_cancel_solicitacao_desligamento_ac() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select e.id as empresaId from empresa e
+		LOOP
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 21, 1, 13);
+		END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insert_gerenciador_comunicao_cancel_solicitacao_desligamento_ac();--.go
+drop function insert_gerenciador_comunicao_cancel_solicitacao_desligamento_ac();--.go 
+insert into migrations values('20120411150920');--.go
+
+alter table GerenciadorComunicacao add column qtdDiasLembrete character varying(20);--.go
+insert into migrations values('20120409110033');--.go
+
+update GerenciadorComunicacao set qtddiaslembrete=(select p.diasLembretePesquisa from parametrosdosistema p) where operacao=8 and (qtddiaslembrete = '' or qtddiaslembrete is null);--.go
+alter table parametrosdosistema drop column diasLembretePesquisa;--.go
+insert into migrations values('20120409161033');--.go
+
+update GerenciadorComunicacao set qtddiaslembrete=(select p.diaslembreteperiodoexperiencia from parametrosdosistema p) where operacao=9 and (qtddiaslembrete = '' or qtddiaslembrete is null);--.go
+alter table parametrosdosistema drop column diaslembreteperiodoexperiencia;--.go
+insert into migrations values('20120409172033');--.go
+
+update parametrosdosistema set appversao = '1.1.73.67';--.go
