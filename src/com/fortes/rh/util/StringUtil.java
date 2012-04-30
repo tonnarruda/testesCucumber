@@ -495,4 +495,8 @@ public final class StringUtil
 
 		return pagina;
 	}
+
+	public static String replaceXml(String texto) {
+		return texto.replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;").replace("\"", "&quot;").replace("'", "&apos;");
+	}
 }
