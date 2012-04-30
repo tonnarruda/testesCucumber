@@ -22,6 +22,7 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDao> implements PerguntaManager
@@ -562,7 +563,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 				break;
 		}
 		
-		textoPergunta.append(textoPerguntaTmp.toString());
+		textoPergunta.append(StringUtil.replaceXml(textoPerguntaTmp.toString()));
 		if(pergunta.isComentario())
 			textoComentario.append(pergunta.getTextoComentario() + textoComentarioTmp.toString());
 	}

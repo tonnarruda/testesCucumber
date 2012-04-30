@@ -25,6 +25,12 @@ public class StringUtilTest extends TestCase
 		assertTrue(StringUtil.getHTML(url).contains("respostadestaque"));
 	}
 	
+	
+	public void testReplaceXml()
+	{
+		assertEquals("teste&amp;a&gt;b&lt;c&quot;d&apos;teste", StringUtil.replaceXml("teste&a>b<c\"d'teste"));
+	}
+	
 	public void testRemoveBreak()
 	{
 

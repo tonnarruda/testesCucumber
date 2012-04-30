@@ -80,7 +80,8 @@ function getPais(checkBox)
 				}
 				contador++;
 			}
-			if(irmaosDesmarcados && checkPai.checked == true)
+			
+			if($(checkBox).parent().parent().find('li').size() > 1 && irmaosDesmarcados && checkPai.checked == true)
 			{
 				checkPai.checked = false;
 				getPais(checkPai);

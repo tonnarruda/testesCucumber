@@ -51,7 +51,7 @@ public class PpraLtcatRelatorio
 				funcoes.append("\n");
 			
 			funcoes.append("<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">- ".concat(funcao.getNome())  +":</style> " +
-							funcao.getHistoricoAtual().getDescricao());
+							StringUtil.replaceXml(funcao.getHistoricoAtual().getDescricao()));
 		}
 		
 		cabecalho.setFuncoes(funcoes.toString());
@@ -111,12 +111,12 @@ public class PpraLtcatRelatorio
 			}
 		}
 		
-		ppra.setRiscosFisicos(riscosFisicos.toString());
-		ppra.setRiscosAcidentes(riscosAcidentes.toString());
-		ppra.setRiscosBiologicos(riscosBiologicos.toString());
-		ppra.setRiscosErgonomicos(riscosErgonomicos.toString());
-		ppra.setRiscosQuimicos(riscosQuimicos.toString());
-		ppra.setRiscosOcupacionais(riscosOcupacional.toString());
+		ppra.setRiscosFisicos(StringUtil.replaceXml(riscosFisicos.toString()));
+		ppra.setRiscosAcidentes(StringUtil.replaceXml(riscosAcidentes.toString()));
+		ppra.setRiscosBiologicos(StringUtil.replaceXml(riscosBiologicos.toString()));
+		ppra.setRiscosErgonomicos(StringUtil.replaceXml(riscosErgonomicos.toString()));
+		ppra.setRiscosQuimicos(StringUtil.replaceXml(riscosQuimicos.toString()));
+		ppra.setRiscosOcupacionais(StringUtil.replaceXml(riscosOcupacional.toString()));
 	}
 	
 	public void formataEpcs(Collection<Epc> epcsDoAmbiente) 
@@ -210,11 +210,11 @@ public class PpraLtcatRelatorio
 			}
 		}
 		
-		ltcat.setRiscosFisicos(riscosFisicos.toString());
-		ltcat.setRiscosAcidentes(riscosAcidentes.toString());
-		ltcat.setRiscosBiologicos(riscosBiologicos.toString());
-		ltcat.setRiscosErgonomicos(riscosErgonomicos.toString());
-		ltcat.setRiscosQuimicos(riscosQuimicos.toString());
+		ltcat.setRiscosFisicos(StringUtil.replaceXml(riscosFisicos.toString()));
+		ltcat.setRiscosAcidentes(StringUtil.replaceXml(riscosAcidentes.toString()));
+		ltcat.setRiscosBiologicos(StringUtil.replaceXml(riscosBiologicos.toString()));
+		ltcat.setRiscosErgonomicos(StringUtil.replaceXml(riscosErgonomicos.toString()));
+		ltcat.setRiscosQuimicos(StringUtil.replaceXml(riscosQuimicos.toString()));
 	}
 
 	public Ppra getPpra() {

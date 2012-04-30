@@ -136,7 +136,11 @@
 		
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
 		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" id="resumido" labelPosition="left" onchange="desabilitaOutroCheck('resumido', 'exibirSalario')"/>
-		<@ww.checkbox label="Exibir Salario" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
+		
+		<@authz.authorize ifAllGranted="EXIBIR_SALARIO_RELAT_COLAB_CARGO">
+			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
+		</@authz.authorize>
+		
 	</@ww.form>
 
 	<div class="buttonGroup">
