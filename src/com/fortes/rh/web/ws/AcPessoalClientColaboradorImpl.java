@@ -1,11 +1,7 @@
 package com.fortes.rh.web.ws;
 
-import static org.apache.axis.Constants.XSD_BOOLEAN;
-
 import java.util.Collection;
 
-
-import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 

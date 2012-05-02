@@ -3903,6 +3903,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.executeUpdate();
 	}
+	
+	public void removerMotivoDemissaoColaborador(Long colaboradorId) 
+	{
+		String hql = "update Colaborador set dataSolicitacaoDesligamentoAc = null, motivoDemissao.id = null where id = :colaboradorId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("colaboradorId", colaboradorId);
+		
+		query.executeUpdate();
+	}
 
 	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId) 
 	{
