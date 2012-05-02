@@ -544,7 +544,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 
 	public void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario)
 	{
-		StringBuilder textoPerguntaTmp = new StringBuilder("<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">"+pergunta.getTexto() + "</style>  ");
+		StringBuilder textoPerguntaTmp = new StringBuilder("<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">" + StringUtil.replaceXml(pergunta.getTexto()) + "</style>  ");
 		StringBuilder textoComentarioTmp = new StringBuilder();
 		
 		switch (pergunta.getTipo())
@@ -563,7 +563,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 				break;
 		}
 		
-		textoPergunta.append(StringUtil.replaceXml(textoPerguntaTmp.toString()));
+		textoPergunta.append(textoPerguntaTmp.toString());
 		if(pergunta.isComentario())
 			textoComentario.append(pergunta.getTextoComentario() + textoComentarioTmp.toString());
 	}
