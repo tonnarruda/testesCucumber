@@ -122,6 +122,14 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.colaborador.setNome(colaboradorNome);
 	}
 	
+	public void setColaboradorDesligado(boolean desligado)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setDesligado(desligado);
+	}
+	
 	public void setColaboradorStatus(int colaboradorStatus)
 	{
 		if (this.colaborador == null)

@@ -60,7 +60,7 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<h4> Colaborador: ${solicitacaoEpi.colaborador.nome}<br/>Data Solicitação: ${solicitacaoEpi.data?string('dd/MM/yyyy')}</h4>
+	<h4> Colaborador: ${solicitacaoEpi.colaborador.nomeDesligado}<br/>Data Solicitação: ${solicitacaoEpi.data?string('dd/MM/yyyy')}</h4>
 	<@ww.hidden name="solicitacaoEpi.colaborador.id" />
 	<div>EPIs:</div>
 

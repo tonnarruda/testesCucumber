@@ -91,7 +91,7 @@
 				</@authz.authorize>
 			</#if>
 		</@display.column>
-		<@display.column property="colaborador.nome" style="width: 320px;" title="Colaborador"/>
+		<@display.column property="colaborador.nomeDesligado" style="width: 320px;" title="Colaborador"/>
 		<@display.column property="data" title="Data Solicitação" style="width: 100px;" format="{0,date,dd/MM/yyyy}"/>
 		<@display.column property="cargo.nome" title="Cargo" style="width: 290px;"/>
 		<@display.column title="Situação" style="width: 90px;">

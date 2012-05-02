@@ -55,13 +55,14 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			solicitacaoEpi = new SolicitacaoEpi();
 			solicitacaoEpi.setId(new Long(o[0].toString()));
 			solicitacaoEpi.setColaboradorNome(o[3].toString());
-			solicitacaoEpi.setColaboradorStatus(new Integer(o[4].toString()));
+			solicitacaoEpi.setColaboradorDesligado(new Boolean(o[4].toString()));
+			solicitacaoEpi.setColaboradorStatus(new Integer(o[5].toString()));
 			try {
-				solicitacaoEpi.setData(sDF.parse(o[5].toString()));
+				solicitacaoEpi.setData(sDF.parse(o[6].toString()));
 			} catch (ParseException e) {e.printStackTrace();}
-			solicitacaoEpi.setCargoNome(o[6].toString());
-			solicitacaoEpi.setQtdEpiSolicitado(new Integer(o[7].toString()));
-			solicitacaoEpi.setQtdEpiEntregue(new Integer(o[8].toString()));
+			solicitacaoEpi.setCargoNome(o[7].toString());
+			solicitacaoEpi.setQtdEpiSolicitado(new Integer(o[8].toString()));
+			solicitacaoEpi.setQtdEpiEntregue(new Integer(o[9].toString()));
 			
 			solicitacoes.add(solicitacaoEpi);
 		}
@@ -84,7 +85,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql = new StringBuilder("select sub.* ");
 
 		sql.append("from ( ");
-		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
 		sql.append("from solicitacaoepi as se ");
 		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
 		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
@@ -104,7 +105,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (tipoEpi != null)
 			sql.append("and e.tipoepi_id = :tipoEpi ");
 
-		sql.append("group by se.id, c.matricula, c.id, c.nome, hc.status, se.data, ca.id, ca.nome, se.empresa_id ");
+		sql.append("group by se.id, c.matricula, c.id, c.nome, c.desligado, hc.status, se.data, ca.id, ca.nome, se.empresa_id ");
 		sql.append(") as sub ");
  
 		sql.append("where sub.empresa_id = :empresaId ");
