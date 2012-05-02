@@ -41,7 +41,7 @@ public class ImportacaoAction extends MyActionSupport
 			return INPUT;
 		}
 		
-		java.io.File arquivoCriado = ArquivoUtil.salvaArquivo("afastamentos", arquivo, true);
+		java.io.File arquivoCriado = ArquivoUtil.salvaArquivo(null, arquivo, true);
 		
 		
 		try {
