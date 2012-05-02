@@ -101,8 +101,8 @@ public class ImportacaoAction extends MyActionSupport
 
 	private void addMensagensAfastamentos() {
 		addActionMessage("Importação concluída. ");
-		addActionMessage(colaboradorAfastamentoManager.getCountAfastamentosImportados() + " Afastamentos de Colaboradores foram importados. ");
-		addActionMessage(colaboradorAfastamentoManager.getCountTiposAfastamentosCriados() + " novos Motivos de Afastamento foram criados. ");
+		addActionMessage(colaboradorAfastamentoManager.getCountAfastamentosImportados() + " afastamentos de colaboradores foram importados. ");
+		addActionMessage(colaboradorAfastamentoManager.getCountTiposAfastamentosCriados() + " novos motivos de afastamento foram criados. ");
 	}
 	
 	public String prepareImportarColaboradorDadosPessoais()
