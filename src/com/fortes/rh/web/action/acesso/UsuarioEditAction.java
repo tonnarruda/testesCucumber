@@ -62,6 +62,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	private String origem = "";
 	private Long usuarioId;
 	private String empresasNaoListadas;
+	private boolean colaboradorPertenceEmpresaLogada = true;
 
 	public String getOrigem()
 	{
@@ -99,6 +100,9 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		
 		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_USUARIO");
 		colaboradores = colaboradorManager.findSemUsuarios(getEmpresaSistema().getId(), usuario);
+		
+		if(colaboradorId != null)
+			colaboradorPertenceEmpresaLogada = colaboradorManager.pertenceEmpresa(colaboradorId, getEmpresaSistema().getId());
 
 		listaEmpresas = new Object[empresas.size()][2];
 		int i = 0;
@@ -518,5 +522,9 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 	public String getEmpresasNaoListadas() {
 		return empresasNaoListadas;
+	}
+
+	public boolean isColaboradorPertenceEmpresaLogada() {
+		return colaboradorPertenceEmpresaLogada;
 	}
 }

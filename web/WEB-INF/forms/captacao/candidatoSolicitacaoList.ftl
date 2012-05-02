@@ -117,7 +117,9 @@
 			</#if>
 		</@authz.authorize>
 
-		<a href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}"><img border="0" title="Competências" src="<@ww.url value="/imgs/competencias.gif"/>"></a>
+		<@authz.authorize ifAllGranted="EXIBIR_COMPETENCIA_SOLICITACAO">
+			<a href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}"><img border="0" title="Competências" src="<@ww.url value="/imgs/competencias.gif"/>"></a>
+		</@authz.authorize>
 
 		<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_CURRICULO">
         	<a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
@@ -207,7 +209,7 @@
 
 		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
 		
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">
+		<@authz.authorize ifAllGranted="EXIBIR_COMPETENCIA_SOLICITACAO">
 			<br /><br />
 			<#if existeCompetenciaParaFaixa>
 				<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}'" class="btnMatrizCompetencia"></button>
