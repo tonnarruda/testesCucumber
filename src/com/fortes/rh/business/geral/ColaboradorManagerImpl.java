@@ -2242,8 +2242,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		for (Colaborador colaborador : colaboradors) {
 			PendenciaAC pendenciaAC = new PendenciaAC();
 			
-			pendenciaAC.setPendencia("Solictação de Desligamento");
-			pendenciaAC.setDetalhes("Solictação de desligamento do colaborador "+colaborador.getNome());
+			pendenciaAC.setPendencia("Solicitação de Desligamento");
+			pendenciaAC.setDetalhes("Solicitação de desligamento do colaborador "+colaborador.getNome());
 			pendenciaAC.setStatus(StatusRetornoAC.getDescricao(StatusRetornoAC.AGUARDANDO));
 			
 			pendenciaACs.add(pendenciaAC);
