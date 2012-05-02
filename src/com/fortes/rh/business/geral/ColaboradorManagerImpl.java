@@ -2286,4 +2286,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
+
+	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 
+	{
+		Colaborador colaborador = findByIdProjectionEmpresa(colaboradorId);
+		return colaborador.getEmpresa().getId().equals(empresaId);
+	}
 }
