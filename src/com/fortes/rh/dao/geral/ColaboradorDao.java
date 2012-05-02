@@ -121,6 +121,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public String findCodigoACDuplicado(Long empresaId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
 	public void atualizaDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, Long colaboradorId);
+	public void removerMotivoDemissaoColaborador(Long colaboradorId);
 	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);

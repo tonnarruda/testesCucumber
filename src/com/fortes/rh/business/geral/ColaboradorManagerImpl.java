@@ -974,6 +974,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
 		historicoColaborador.setDataSolicitacaoDesligamento(dataSolicitacaoDesligamento);
+		historicoColaborador.setObsACPessoal(observacaoDemissao);
 		historicosColaborador.add(historicoColaborador);
 		
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
@@ -2253,7 +2254,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception
 	{
-		getDao().atualizaDataSolicitacaoDesligamentoAc(null, colaborador.getId());
+		getDao().removerMotivoDemissaoColaborador(colaborador.getId());
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem, empresaCodigoAC, grupoAC);
 	}
 	
