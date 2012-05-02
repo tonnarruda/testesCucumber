@@ -103,15 +103,10 @@ public class ArquivoUtil
 
 	public static java.io.File salvaArquivo(String pasta, File arquivo, boolean renomear)
 	{
-		String path = "";
+		String path = getRhHome() + java.io.File.separatorChar + "anexos" + java.io.File.separatorChar;
 
 		if (pasta != null)
-		{
-			path = getRhHome() + java.io.File.separatorChar + "anexos" + java.io.File.separatorChar + pasta + java.io.File.separatorChar;
-			java.io.File dir = new java.io.File(path);
-			if (!dir.exists())
-				dir.mkdir();
-		}
+			path += pasta + java.io.File.separatorChar;
 
 		String nomeArquivo = arquivo.getName();
 		java.io.File arquivoSalvo = null;
