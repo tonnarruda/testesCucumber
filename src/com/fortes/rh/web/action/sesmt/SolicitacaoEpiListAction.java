@@ -71,6 +71,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Collection<SolicitacaoEpiItemVO> dataSourceLista;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
+	private boolean exibirDesligados;
 	
 	private Map<String, String> situacoesDoColaborador = new SituacaoColaborador();
 	private String situacaoColaborador = SituacaoColaborador.TODOS;
@@ -167,7 +168,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor);
+			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor, exibirDesligados);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			
 			switch (agruparPor)
@@ -446,6 +447,14 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
+	}
+
+	public boolean isExibirDesligados() {
+		return exibirDesligados;
+	}
+
+	public void setExibirDesligados(boolean exibirDesligados) {
+		this.exibirDesligados = exibirDesligados;
 	}
 
 }

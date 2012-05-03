@@ -220,10 +220,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 
-	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor)
+	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, eh.vencimentoCA) ");
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, co.desligado, eh.vencimentoCA) ");
 		hql.append("from SolicitacaoEpiItemEntrega ent ");
 		hql.append("left join ent.epiHistorico eh ");
 		hql.append("join ent.solicitacaoEpiItem item ");
@@ -231,7 +231,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("join s.colaborador co ");
 		hql.append("join s.cargo ca ");
 		hql.append("join item.epi e ");
-		hql.append("where co.desligado = false ");
+		hql.append("where e.empresa.id = :empresaId ");
 		
 		if (dataIni != null && dataFim != null)
 			hql.append("and ent.dataEntrega between :dataIni and :dataFim ");
@@ -242,7 +242,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(colaboradorCheck != null && colaboradorCheck.length != 0)
 			hql.append("and co.id in (:colaboradorCheck) ");
 		
-		hql.append("and e.empresa.id = :empresaId ");
+		if (!exibirDesligados)
+			hql.append("and co.desligado = false ");
 
 		if (agruparPor == 'E')
 			hql.append("order by e.nome,co.nome,s.data ");
@@ -272,7 +273,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, sse.qtdentregue, sse.solicitacaoepisituacao ");
+		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, sse.qtdentregue, sse.solicitacaoepisituacao ");
 		sql.append("from situacaosolicitacaoepi sse ");
 		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
 		sql.append("join epi e on item.epi_id = e.id ");
@@ -351,6 +352,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setColaboradorId(((BigInteger) obj[++countCampo]).longValue());
 			vo.setColaboradorMatricula(((String) obj[++countCampo]));
 			vo.setColaboradorNome(((String) obj[++countCampo]));
+			vo.setColaboradorDesligado(new Boolean(obj[++countCampo].toString()));
 			vo.setEpiNome(((String) obj[++countCampo]));
 			try {
 				vo.setSolicitacaoEpiData(sDF.parse(obj[++countCampo].toString()));

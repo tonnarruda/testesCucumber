@@ -29,7 +29,7 @@
 	<field name="solicitacaoEpiItem.epi.nome" class="java.lang.String"/>
 	<field name="solicitacaoEpiItem.solicitacaoEpi.cargo.nome" class="java.lang.String"/>
 	<field name="solicitacaoEpiItem.epi.epiHistorico.vencimentoCA" class="java.util.Date"/>
-	<field name="solicitacaoEpiItem.solicitacaoEpi.colaborador.nome" class="java.lang.String"/>
+	<field name="solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado" class="java.lang.String"/>
 	<field name="qtdEntregue" class="java.lang.Integer"/>
 	<field name="dataEntrega" class="java.util.Date"/>
 	<field name="solicitacaoEpiItem.qtdSolicitado" class="java.lang.Integer"/>
@@ -43,7 +43,7 @@
 	</variable>
 
 		<group  name="grpColaborador" >
-			<groupExpression><![CDATA[$F{solicitacaoEpiItem.solicitacaoEpi.colaborador.nome}]]></groupExpression>
+			<groupExpression><![CDATA[$F{solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado}]]></groupExpression>
 			<groupHeader>
 			<band height="12"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -57,7 +57,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{solicitacaoEpiItem.solicitacaoEpi.colaborador.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
