@@ -494,7 +494,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         parametros.put("CABECALHOFICHAMEDICA", fichaMedica.getQuestionario().getCabecalho());
 
         
-        Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas);
+        Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas, false, false);
 
         return perguntasFormatadas;
     }
@@ -514,12 +514,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     	parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
     	
     	
-    	Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas);
+    	Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas, false, false);
     	
     	return perguntasFormatadas;
     }
 
-	public Collection<PerguntaFichaMedica> montaPerguntasComRespostas(Collection<Pergunta> perguntas, Collection<ColaboradorResposta> colaboradorRespostas) 
+	public Collection<PerguntaFichaMedica> montaPerguntasComRespostas(Collection<Pergunta> perguntas, Collection<ColaboradorResposta> colaboradorRespostas, boolean exibeNumeroQuestao, boolean quebraLinha) 
 	{
 		Collection<PerguntaFichaMedica> perguntasFormatadas = new ArrayList<PerguntaFichaMedica>();
     	for (Pergunta pergunta : perguntas)
@@ -527,7 +527,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     		StringBuilder perg = new StringBuilder();
     		StringBuilder coment = new StringBuilder();
     		
-    		perguntaManager.montaImpressaoPergunta(pergunta, colaboradorRespostas, perg, coment);
+    		perguntaManager.montaImpressaoPergunta(pergunta, colaboradorRespostas, perg, coment, exibeNumeroQuestao, quebraLinha);
     		
     		// Campos pergunta e comentario estão no mesmo campo texto, devido a problema de layout.
     		if (coment.length() > 0)

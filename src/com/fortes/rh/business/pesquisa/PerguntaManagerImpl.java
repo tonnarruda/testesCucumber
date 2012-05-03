@@ -542,41 +542,60 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		return getDao().findByQuestionario(questionarioId);
 	}
 
-	public void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario)
+	public void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario, boolean exibeNumeroQuestao, boolean quebraLinha)
 	{
-		StringBuilder textoPerguntaTmp = new StringBuilder("<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">"+pergunta.getTexto() + "</style>  ");
+		StringBuilder textoPerguntaTmp = new StringBuilder("<style isBold=\"true\" pdfFontName=\"Helvetica-Bold\">");
+		
+		if(exibeNumeroQuestao)
+			textoPerguntaTmp.append(StringUtil.replaceXml(pergunta.getOrdemMaisTexto()));
+		else
+			textoPerguntaTmp.append(StringUtil.replaceXml(pergunta.getTexto()));
+		
+		textoPerguntaTmp.append("</style>  ");
+		
+		if(quebraLinha)
+			textoPerguntaTmp.append("\n");
+		
 		StringBuilder textoComentarioTmp = new StringBuilder();
 		
 		switch (pergunta.getTipo())
 		{
 			case TipoPergunta.OBJETIVA:
-				montaImpressapPerguntaObjetiva(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp);							
+				montaImpressapPerguntaObjetiva(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp, quebraLinha);							
 				break;
 			case TipoPergunta.MULTIPLA_ESCOLHA:
-				montaImpressapPerguntaObjetiva(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp);							
+				montaImpressapPerguntaObjetiva(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp, quebraLinha);							
 				break;
 			case TipoPergunta.SUBJETIVA:
-				montaImpressapPerguntaSubjetiva(pergunta, colaboradorRespostas, textoComentarioTmp);							
+				montaImpressapPerguntaSubjetiva(pergunta, colaboradorRespostas, textoPerguntaTmp, quebraLinha);							
 				break;
 			case TipoPergunta.NOTA:
-				montaImpressapPerguntaNota(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp);							
+				montaImpressapPerguntaNota(pergunta, colaboradorRespostas, textoPerguntaTmp, textoComentarioTmp, quebraLinha);							
 				break;
 		}
 		
-		textoPergunta.append(StringUtil.replaceXml(textoPerguntaTmp.toString()));
+		textoPergunta.append(textoPerguntaTmp.toString());
 		if(pergunta.isComentario())
-			textoComentario.append(pergunta.getTextoComentario() + textoComentarioTmp.toString());
+		{
+			textoComentario.append(pergunta.getTextoComentario() + " " + textoComentarioTmp.toString());
+			if(quebraLinha)
+				textoComentario.append("\n");
+		}
 	}
 	
-	private void montaImpressapPerguntaNota(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, StringBuilder textoComentarioTmp)
+	private void montaImpressapPerguntaNota(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, StringBuilder textoComentarioTmp, boolean quebraLinha)
 	{
 		for (ColaboradorResposta respostaColaborador : colaboradorRespostas)
 		{
 			if(respostaColaborador.getPergunta().getId().equals(pergunta.getId()))
 			{
 				if(respostaColaborador.getValor() != null)
-					textoPerguntaTmp.append(respostaColaborador.getValor());
-
+				{
+					if(quebraLinha)
+						textoPerguntaTmp.append("     Nota: " + respostaColaborador.getValor() + "\n");
+					else
+						textoPerguntaTmp.append(respostaColaborador.getValor());
+				}
 				if(pergunta.isComentario() && respostaColaborador.getComentario() != null)
 					textoComentarioTmp.append("  " + respostaColaborador.getComentario());
 				
@@ -585,21 +604,26 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		}
 	}
 
-	private void montaImpressapPerguntaSubjetiva(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoComentarioTmp)
+	private void montaImpressapPerguntaSubjetiva(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, boolean quebraLinha)
 	{
 		for (ColaboradorResposta respostaColaborador : colaboradorRespostas)
 		{
 			if(respostaColaborador.getPergunta().getId().equals(pergunta.getId()))
 			{
-				if(pergunta.isComentario() && respostaColaborador.getComentario() != null)
-					textoComentarioTmp.append(respostaColaborador.getComentario());
+				if(respostaColaborador.getComentario() != null)
+				{
+					if(quebraLinha)
+						textoPerguntaTmp.append("Resp.: " + respostaColaborador.getComentario() + "\n");
+					else
+						textoPerguntaTmp.append(respostaColaborador.getComentario());
+				}
 				
 				break;
 			}
 		}
 	}
 
-	private void montaImpressapPerguntaObjetiva(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, StringBuilder textoComentarioTmp)
+	private void montaImpressapPerguntaObjetiva(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, StringBuilder textoComentarioTmp, boolean quebraLinha)
 	{
 		for (Resposta resposta: pergunta.getRespostas())
 		{
@@ -617,7 +641,12 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 				}
 			}
 			
-			textoPerguntaTmp.append("(" + marcada + ")" + resposta.getTexto() + "     ");
+			String resp = "(" + marcada + ")" + resposta.getTexto() + "     ";
+			
+			if(quebraLinha)
+				textoPerguntaTmp.append("     " + resp + "\n");
+			else
+				textoPerguntaTmp.append(resp);
 		}
 	}
 	

@@ -39,7 +39,7 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	void removerPerguntasDoQuestionario(Long questionarioId);
 	Collection<Long> findPerguntasDoQuestionario(Long questionarioId);
 	Collection<Pergunta> findByQuestionario(Long questionarioId);
-	void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario);
+	void montaImpressaoPergunta(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPergunta, StringBuilder textoComentario, boolean exibeNumeroQuestao, boolean quebraLinha);
 	void setAvaliadoNaPerguntaDeAvaliacaoDesempenho(Pergunta pergunta, String avaliadoNome);
 	Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
 	Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds);

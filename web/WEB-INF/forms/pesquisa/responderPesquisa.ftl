@@ -64,6 +64,7 @@
 </style>
 
 <script>
+
 function submete(formulario, validando)
 {
 	if(validando)
@@ -215,12 +216,14 @@ function agrupaPerguntaseRespostas(formulario)
 			<button onclick="${validarCampos}" class="${buttonClass}"></button>
 		</#if>
 		<button onclick="window.location='${retorno}'" class="btnVoltar"></button>
-
+		
 		<#if exibirImprimir>
 			<button onclick="javascript:window.location='imprimirEntrevistaDesligamento.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}'" class="btnImprimir"></button>
-		<#--<#else>
-			<button onclick="javascript:window.location='imprimirAvaliacaoTurma.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}&turmaId=${turmaId}'" class="btnImprimir"></button>
-		--></#if>
+		<#else>
+			<#if turmaId?exists && 0 < colaboradorRespostas?size>
+				<button onclick="javascript:window.location='imprimirAvaliacaoTurma.action?colaborador.id=${colaborador.id}&questionario.id=${questionario.id}&turmaId=${turmaId}'" class="btnImprimir"></button>
+			</#if>
+		</#if>
 		
 	</div>
 </body>

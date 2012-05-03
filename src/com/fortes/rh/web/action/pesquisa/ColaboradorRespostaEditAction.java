@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.struts.SpringBindingActionForm;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -24,6 +26,8 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -201,7 +205,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 		try
 		{
 			prepareResponderQuestionario();
-			perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas);
+			perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas, false, false);
 			
 			parametros = new HashMap<String, Object>();//tem que ser aqui
 			parametros.put("TITULO", "Entrevista de Desligamento");
@@ -223,12 +227,25 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     	try
     	{
     		prepareResponderQuestionario();
-    		perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas);
+    		perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas, true, true);
     		
-    		parametros = new HashMap<String, Object>();//tem que ser aqui
-    		parametros.put("TITULO", questionario.getTitulo());
-    		parametros.put("RODAPE", colaboradorQuestionario.getQuestionario().getCabecalho());
-    		parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
+    		StringBuilder filtro = new StringBuilder();
+    		filtro.append("Curso: ");
+    		filtro.append(colaboradorQuestionario.getTurma().getCurso().getNome());
+    		filtro.append("\n");
+    		filtro.append("Turma: ");
+    		filtro.append(colaboradorQuestionario.getTurma().getDescricao());
+    		filtro.append("\n");
+    		filtro.append("Colaborador: ");
+    		filtro.append(colaboradorQuestionario.getColaborador().getNome());
+    		filtro.append("\n");
+    		filtro.append("Data Respondida: ");
+    		filtro.append(DateUtil.formataDiaMesAno(colaboradorQuestionario.getRespondidaEm()));
+    		filtro.append("\n");
+    		
+    		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação da turma " + questionario.getTitulo(), getEmpresaSistema(), filtro.toString());
+    		
+    		parametros.put("OBSCABECALHO", questionario.getCabecalho());
     		
     		return Action.SUCCESS;
     	}
@@ -503,4 +520,5 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
 	}
+
 }
