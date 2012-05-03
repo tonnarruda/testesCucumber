@@ -90,19 +90,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{pergunta} + $F{comentario}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="217"
-						y="2"
-						width="83"
-						height="10"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Texto Estático]]></text>
-				</staticText>
 			</band>
 		</detail>
 		<columnFooter>

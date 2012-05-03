@@ -31,6 +31,8 @@
 		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" />
 		<@frt.checkListBox name="colaboradorCheck" label="Colaboradores" list="colaboradorCheckList" />
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'E':'Epi','C':'Colaborador'}" />
+		
+		<@ww.checkbox label="Exibir entregas a colaboradores desligados" id="exibirDesligados" name="exibirDesligados" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

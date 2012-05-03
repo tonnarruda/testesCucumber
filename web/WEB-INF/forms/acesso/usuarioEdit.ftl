@@ -105,7 +105,17 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();" method="POST">
 		<@ww.textfield label="Nome" name="usuario.nome" id="nome" cssStyle="width:445px;" required="true" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="Login" name="usuario.login" cssClass="inputLogin" maxLength="25" id="login" required="true"/>
-		<@ww.select label="Colaborador" name="colaboradorId" list="colaboradores"  listKey="id" listValue="nome"  headerKey="" headerValue="Nenhum" />
+		
+		
+		<#if colaboradorPertenceEmpresaLogada>
+			<@ww.select label="Colaborador" name="colaboradorId" list="colaboradores"  listKey="id" listValue="nome"  headerKey="" headerValue="Nenhum" />
+		<#else>
+			<br/>
+			* Colaborador cadastrado para esse usuário não pertence a essa empresa que você está logado(a).<br/><br/>
+			<@ww.hidden name="colaboradorId" />
+		</#if>
+		
+		
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>

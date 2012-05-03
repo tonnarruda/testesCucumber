@@ -224,7 +224,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] epiCheck = {epi.getId()};
 		char agruparPor = 'E';//agrupar por EPI
 		
-		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor);
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor, false);
 		
 		assertEquals(1, colecao.size());
 		assertEquals(vencCA, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
@@ -307,7 +307,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] colaboradorCheck = {colaborador.getId()};
 		char agruparPor = 'C';//agrupar por colaborador
 		
-		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data3, null, colaboradorCheck, agruparPor);
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data3, null, colaboradorCheck, agruparPor, false);
 		
 		assertEquals(3, colecao.size());
 		assertEquals(hoje, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());

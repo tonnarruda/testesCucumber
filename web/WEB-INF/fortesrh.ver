@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.73.67" data="30/04/2012"><![CDATA[
+	<Versao id="1.1.73.67" data="02/05/2012"><![CDATA[
+        - C&S > Relatórios > Colaboradores por Cargo: Nova opção de exibir salário, para os perfis configurados com 'Mostrar opção Exibir Salário'.
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Liberação individual de avaliações.
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Novo submenu com as opções de liberar/bloquear, exibir resultados e imprimir.
         - T&D > Relatórios > Histórico de Treinamentos: Novo filtro por nome comercial do colaborador.

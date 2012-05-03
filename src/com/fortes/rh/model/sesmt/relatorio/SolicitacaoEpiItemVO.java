@@ -16,6 +16,7 @@ public class SolicitacaoEpiItemVO
 	private Long colaboradorId;
 	private String colaboradorMatricula;
 	private String colaboradorNome;
+	private boolean colaboradorDesligado;
 	@Temporal(TemporalType.DATE)
 	private Date solicitacaoEpiData;
 	private String cargoNome;
@@ -69,9 +70,24 @@ public class SolicitacaoEpiItemVO
 	public String getColaboradorNome() {
 		return colaboradorNome;
 	}
+
+	public String getColaboradorNomeDesligado() {
+		if (this.colaboradorDesligado)
+			return colaboradorNome + " (Desligado)";
+		
+		return colaboradorNome;
+	}
 	
 	public void setColaboradorNome(String colaboradorNome) {
 		this.colaboradorNome = colaboradorNome;
+	}
+	
+	public boolean isColaboradorDesligado() {
+		return colaboradorDesligado;
+	}
+
+	public void setColaboradorDesligado(boolean colaboradorDesligado) {
+		this.colaboradorDesligado = colaboradorDesligado;
 	}
 	
 	public Date getSolicitacaoEpiData() {
@@ -150,6 +166,4 @@ public class SolicitacaoEpiItemVO
 	public void setColaboradorId(Long colaboradorId) {
 		this.colaboradorId = colaboradorId;
 	}
-
-
 }

@@ -394,6 +394,29 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         assertEquals(1, colaboradorManager.findByEstabelecimento(new Long[]{estabelecimento.getId()}).size());
     }
     
+    public void testPertenceEmpresa()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(2L);
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setEmpresa(empresa);
+    	
+    	colaboradorDao.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
+    	
+    	assertEquals(true, colaboradorManager.pertenceEmpresa(colaborador.getId(), empresa.getId()));
+    }
+    
+    public void testNaoPertenceEmpresa()
+    {
+    	Empresa outraEmpresa = EmpresaFactory.getEmpresa(1L);
+    	Empresa empresa = EmpresaFactory.getEmpresa(2L);
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setEmpresa(empresa);
+    	
+    	colaboradorDao.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
+    	
+    	assertEquals(false, colaboradorManager.pertenceEmpresa(colaborador.getId(), outraEmpresa.getId()));
+    }
+    
     public void testCalculaIndiceProcessoSeletivo()
     {
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(21));

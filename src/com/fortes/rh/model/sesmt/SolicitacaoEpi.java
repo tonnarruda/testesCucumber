@@ -19,7 +19,6 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
 @Entity
@@ -120,6 +119,14 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.colaborador = new Colaborador();
 
 		this.colaborador.setNome(colaboradorNome);
+	}
+	
+	public void setColaboradorDesligado(boolean desligado)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setDesligado(desligado);
 	}
 	
 	public void setColaboradorStatus(int colaboradorStatus)

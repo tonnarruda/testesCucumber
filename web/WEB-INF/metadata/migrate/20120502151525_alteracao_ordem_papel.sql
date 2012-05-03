@@ -1,0 +1,1 @@
+update papel set papelmae_id=359 where id in (22,45,496,522);--.go

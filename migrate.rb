@@ -40,7 +40,7 @@ elsif ARGV[0] == '--deploy'
   puts "migrate atual no update.sql #{last_migrate}"
   
   sql_migrates = ""
-  Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").each do |file|
+  Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").sort_by {|f| File.basename f}.each do |file|
     if (File.basename(file) =~ /^(\d{14})/ and $1 > last_migrate)
       print "Buscando migrate: #{$1}".ljust(80)
       sql_migrates << "\n" + File.read(file)
