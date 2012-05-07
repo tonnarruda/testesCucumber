@@ -73,6 +73,16 @@
 		{
 			addChecks('cargosCheck',data);
 		}
+		
+		function verificaCargoSemAreaRelacionada(empresaId)
+		{
+			CargoDWR.verificaCargoSemAreaRelacionada(exibeCheckCargoSemArea, empresaId);
+		}
+
+		function exibeCheckCargoSemArea(data)
+		{
+			$('#wwgrp_cargoSemArea').toggle(data);
+		}
 
 		function getAgruparPorMotivo()
 		{
@@ -95,6 +105,7 @@
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 			populaCargo(empresa);
+			verificaCargoSemAreaRelacionada(empresa);
 		});
 	</script>
 
@@ -118,13 +129,16 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioMotivoDemissao.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);" disabled="!compartilharColaboradores"/>
+		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);verificaCargoSemAreaRelacionada(this.value);" disabled="!compartilharColaboradores"/>
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
 		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" onClick="populaCargosByArea();" />
+		
+		<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
+		
 		<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" />
 
 		<@ww.select label="Exibir lista de Colaboradores" id="listaColaboradores" onchange="getAgruparPorMotivo()" name="listaColaboradores" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 96px;"/>

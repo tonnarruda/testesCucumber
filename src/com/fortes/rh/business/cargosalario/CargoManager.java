@@ -49,4 +49,6 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
 	public String nomeCargos(Long[] cargosIds);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
+
+	public boolean verificaCargoSemAreaRelacionada(Long empresaId);
 }

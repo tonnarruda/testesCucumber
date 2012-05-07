@@ -572,4 +572,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		getDao().deleteByAreaOrganizacional(areaIds);
 		
 	}
+
+	public boolean verificaCargoSemAreaRelacionada(Long empresaId) {
+		return getDao().existeCargoSemAreaRelacionada(empresaId);
+	}
 }

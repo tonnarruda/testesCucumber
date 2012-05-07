@@ -61,6 +61,14 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
 	}
 	
+	public boolean verificaCargoSemAreaRelacionada(Long empresaId)
+	{
+		if(empresaId == 0)
+			return cargoManager.verificaCargoSemAreaRelacionada(null);
+		else
+			return cargoManager.verificaCargoSemAreaRelacionada(empresaId);
+	}
+	
 	public Map getByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds)
 	{
 		return cargoManager.findByAreaDoHistoricoColaborador(areaOrganizacionalIds); 

@@ -326,6 +326,71 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 	
+	public void testExisteCargoSemAreaRelacionadaTodosRelacionados()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaOrganizacional);
+		
+		Cargo cobrador = CargoFactory.getEntity();
+		cobrador.setAreasOrganizacionais(areasOrganizacionais);
+		cobrador.setEmpresa(empresa);
+		cargoDao.save(cobrador);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+		
+		Collection<AreaOrganizacional> areasOrganizacionais2 = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais2.add(area1);
+		areasOrganizacionais2.add(area2);
+		
+		Cargo motorista = CargoFactory.getEntity();
+		motorista.setAreasOrganizacionais(areasOrganizacionais2);
+		motorista.setEmpresa(empresa);
+		cargoDao.save(motorista);
+		
+		assertEquals(false, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+	}
+	
+	public void testExisteCargoSemAreaRelacionada()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaOrganizacional);
+		
+		Cargo cobrador = CargoFactory.getEntity();
+		cobrador.setAreasOrganizacionais(areasOrganizacionais);
+		cobrador.setEmpresa(empresa);
+		cargoDao.save(cobrador);
+		
+		Cargo motorista = CargoFactory.getEntity();
+		motorista.setAreasOrganizacionais(null);
+		motorista.setEmpresa(empresa);
+		cargoDao.save(motorista);
+		
+		assertEquals(true, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+	}
+	
+	public void testExisteCargoSemAreaRelacionadaSemCargo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		assertEquals(false, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+	}
+	
 	public void testFindAllSelectDistinctNome()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
