@@ -4004,5 +4004,78 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
-	
+
+	public Collection<Colaborador> triar(Long empresaId, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade) 
+	{
+		StringBuilder hql = new StringBuilder();
+		if (exibeCompatibilidade)
+			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, sum(nc.ordem) as somaCompetencias) ");
+		else
+			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, 0) ");
+
+		hql.append("from HistoricoColaborador hc ");
+		hql.append("inner join hc.colaborador co  ");
+		hql.append("inner join hc.faixaSalarial fs ");
+		
+		if (exibeCompatibilidade)
+		{
+			hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
+			hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
+			hql.append("left join cnc.nivelCompetencia nc ");
+		}
+		
+		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = co.id and hc2.status = :status) "); 
+
+		if (exibeCompatibilidade)
+		{
+			hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
+			if (competenciasIds != null && competenciasIds.length > 0)
+				hql.append("and cnc.competencia.id in (:competenciasIds) ");
+		}
+
+		if (empresaId != null)
+			hql.append("and co.empresa.id = :empresaId ");
+		if (sexo != null)
+			hql.append("and co.pessoal.sexo = :sexo "); 
+		if (!StringUtil.isBlank(escolaridade))
+			hql.append("and co.pessoal.escolaridade = :escolaridade "); 
+		if (areasIds.length > 0)
+			hql.append("and hc.areaorganizacional.id in (:areasIds) ");
+		if (cargosIds.length > 0)
+			hql.append("and fs.cargo.id in (:cargosIds) ");
+		if (dataNascIni != null)
+			hql.append("and co.pessoal.dataNascimento >= :dataNascIni ");
+		if (dataNascFim != null)
+			hql.append("and co.pessoal.dataNascimento <= :dataNascFim ");
+		
+		hql.append("group by co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade ");
+		
+		if (exibeCompatibilidade)
+			hql.append("order by somaCompetencias desc, co.nome ");
+		else
+			hql.append("order by co.nome ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if (exibeCompatibilidade && competenciasIds != null && competenciasIds.length > 0)
+			query.setParameterList("competenciasIds", competenciasIds);
+		if (empresaId != null)
+			query.setLong("empresaId", empresaId);
+		if (sexo != null)
+			query.setString("sexo", sexo);
+		if (!StringUtil.isBlank(escolaridade))
+			query.setString("escolaridade", escolaridade);
+		if (areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds);
+		if (cargosIds.length > 0)
+			query.setParameterList("cargosIds", cargosIds);
+		if (dataNascIni != null)
+			query.setDate("dataNascIni", dataNascIni);
+		if (dataNascFim != null)
+			query.setDate("dataNascFim", dataNascFim);
+		
+		return query.list();
+	}
 }

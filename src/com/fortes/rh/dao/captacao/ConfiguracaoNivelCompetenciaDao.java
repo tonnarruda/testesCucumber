@@ -23,4 +23,6 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeColaborador(Colaborador colaborador);
 	void removeByConfiguracaoNivelColaborador(Long configuracaoNivelColaboradorId);
 	void removeByCandidato(Long candidatoId);
+	Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId);
+	Integer somaConfiguracoesByFaixa(Long faixaSalarialId);
 }

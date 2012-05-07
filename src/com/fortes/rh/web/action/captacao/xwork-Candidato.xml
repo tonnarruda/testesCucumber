@@ -102,6 +102,9 @@
 		<action name="prepareTriagemAutomatica" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareTriagemAutomatica">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemAutomatica.ftl</result>
 		</action>
+		<action name="prepareTriagemColaboradores" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="prepareTriagemColaboradores">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemColaboradores.ftl</result>
+		</action>
 		<action name="busca" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="busca">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoBusca.ftl</result>
@@ -117,6 +120,10 @@
 		<action name="triagemAutomatica" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="triagemAutomatica">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemAutomatica.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemAutomatica.ftl</result>
+		</action>
+		<action name="triagemColaboradores" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="triagemColaboradores">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemColaboradores.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemColaboradores.ftl</result>
 		</action>
 		<action name="insertCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatos">
 			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>

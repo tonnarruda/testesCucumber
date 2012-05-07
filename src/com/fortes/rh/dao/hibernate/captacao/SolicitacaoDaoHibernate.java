@@ -201,6 +201,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.idadeMaxima"), "idadeMaxima");
 		p.add(Projections.property("s.sexo"), "sexo");
 		p.add(Projections.property("c.id"), "cargoId");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("a.id"), "projectionAreaId");
 		p.add(Projections.property("ci.id"), "projectionCidadeId");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");

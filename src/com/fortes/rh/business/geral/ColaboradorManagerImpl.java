@@ -1,5 +1,7 @@
 package com.fortes.rh.business.geral;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Expression;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -33,6 +36,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -90,6 +94,7 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -129,6 +134,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private SolicitacaoManager solicitacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
@@ -2278,6 +2284,35 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findParentesByNome(nome, empresaId);
 	}
 	
+	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 
+	{
+		Colaborador colaborador = findByIdProjectionEmpresa(colaboradorId);
+		return colaborador.getEmpresa().getId().equals(empresaId);
+	}
+
+	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) 
+	{
+		Date dataNascIni = null;
+		Date dataNascFim = null;
+		Date hoje = new Date();
+		
+		if( isNotBlank(idadeMin) && !idadeMin.equals("0"))
+			dataNascIni = DateUtil.incrementaAno(hoje, (-1)*(Integer.parseInt(idadeMin)));
+
+		if( isNotBlank(idadeMax) && !idadeMax.equals("0"))
+			dataNascFim = DateUtil.incrementaAno(hoje, Integer.parseInt(idadeMax));
+		
+		Solicitacao solicitacao = solicitacaoManager.findByIdProjection(solicitacaoId);
+		Long faixaSolicitacaoId = solicitacao.getFaixaSalarial().getId();
+		
+		Long[] competenciasIdsFaixaSolicitacao = configuracaoNivelCompetenciaManager.findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSolicitacaoId);
+		Integer pontuacaoMaxima = configuracaoNivelCompetenciaManager.somaConfiguracoesByFaixa(faixaSolicitacaoId);
+		
+		Collection<Colaborador> colaboradores = getDao().triar(empresaId, escolaridade, sexo, dataNascIni, dataNascFim, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade);
+		
+		return colaboradores;
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -2287,9 +2322,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 
-	{
-		Colaborador colaborador = findByIdProjectionEmpresa(colaboradorId);
-		return colaborador.getEmpresa().getId().equals(empresaId);
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
 	}
 }

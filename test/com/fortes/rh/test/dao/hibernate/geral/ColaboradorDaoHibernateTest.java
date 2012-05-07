@@ -4817,6 +4817,50 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		solicitacaoEpiDao.save(solicitacaoEpi2);
 		
 		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
+	}
+	
+	public void testTriar() 
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Date data = DateUtil.criarDataMesAno(1, 1, 2012);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa1);
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador hist1 = new HistoricoColaborador();
+		hist1.setData(data);
+		hist1.setColaborador(colaborador1);
+		hist1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hist1.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(hist1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa2);
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador hist2 = new HistoricoColaborador();
+		hist2.setData(data);
+		hist2.setColaborador(colaborador2);
+		hist2.setStatus(StatusRetornoAC.CONFIRMADO);
+		hist2.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(hist2);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.triar(empresa1.getId(), null, null, null, null, new Long[]{}, new Long[]{}, null, false);
+		
+		assertEquals(1, colaboradores.size());
 		
 	}
 	

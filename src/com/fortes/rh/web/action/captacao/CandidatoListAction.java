@@ -32,6 +32,7 @@ import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.BairroManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -57,6 +58,7 @@ import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -81,6 +83,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 
 	private CandidatoManager candidatoManager;
+	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
 	private AnuncioManager anuncioManager;
 	private AreaInteresseManager areaInteresseManager;
@@ -107,6 +110,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
 	private Collection<Candidato> candidatos;
+	private Collection<Colaborador> colaboradores;
 	private Collection<Solicitacao> solicitacaos;
 	private Collection<Idioma> idiomas = new ArrayList<Idioma>();
 
@@ -202,6 +206,7 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private boolean exibeContratados = false; //exibir contratados na listagem
 	private boolean exibeExterno = false; //exibir somente os do módulo externo
+	private boolean exibeCompatibilidade; //exibir compatibilidade de competencias na triagem de colaboradores
 	
 	private boolean somenteCandidatosSemSolicitacao;
 	
@@ -404,6 +409,26 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String prepareTriagemColaboradores() throws Exception
+	{
+		solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
+		
+		percentualMinimo = (percentualMinimo == null) ? 50 : percentualMinimo;
+		escolaridades = new Escolaridade();
+		sexos = new Sexo();
+
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		
+		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+
+		populaEmpresas();
+	
+		setShowFilter(true);
+
+		return Action.SUCCESS;
+	}
+	
 	private void montaFiltroF2rh() 
 	{
 		escolaridades = new Escolaridade();
@@ -581,6 +606,21 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String triagemColaboradores() throws Exception
+	{
+		colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
+		
+
+		if(colaboradores == null || colaboradores.size() == 0)
+			addActionMessage("Não existem colaboradores a serem listados!");
+		else
+			setShowFilter(false);
+
+		prepareTriagemColaboradores();
+		
+		return Action.SUCCESS;
+	}
+	
 	public String selecionaDestinatariosBDS() throws Exception
 	{
 		prepareBuscaCandidato();
@@ -1642,5 +1682,21 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setPesos(Map<String, Integer> pesos) {
 		this.pesos = pesos;
+	}
+
+	public boolean isExibeCompatibilidade() {
+		return exibeCompatibilidade;
+	}
+
+	public void setExibeCompatibilidade(boolean exibeCompatibilidade) {
+		this.exibeCompatibilidade = exibeCompatibilidade;
+	}
+
+	public Collection<Colaborador> getColaboradores() {
+		return colaboradores;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }
