@@ -1552,7 +1552,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		if(origem == MOTIVODEMISSAO)
-			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.motivo, cg.nome, fs.nome, es.nome) ");
+			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.motivo, cg.nome, fs.nome, es.nome, ao.id, ao.nome) ");
 		else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append("select mo.motivo, count(mo.motivo) ");
 
@@ -1590,6 +1590,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append("order by es.nome, co.nomeComercial ");
 			} else if (agruparPor.equals("M")) {
 				hql.append("order by mo.motivo, co.nomeComercial ");
+			} else if (agruparPor.equals("A")) {
+				hql.append("order by ao.nome, co.nomeComercial ");
 			} else {
 				hql.append("order by co.nomeComercial ");
 			}

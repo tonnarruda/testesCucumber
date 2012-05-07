@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
@@ -31,6 +33,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Collection<MotivoDemissao> motivoDemissaos = null;
 	private Collection<Colaborador> colaboradores;
@@ -113,7 +116,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 			if(exibirObservacao)
 				return "successComObservacaoPorMotivo";
 			else
-				return Action.SUCCESS;			
+				return Action.SUCCESS;
 		} 
 		else if (agruparPor.equals("E"))
 		{
@@ -121,6 +124,19 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 				return "successComObservacaoPorEstabelecimento";
 			else
 				return "successPorEstabelecimento";			
+		} 
+		else if (agruparPor.equals("A"))
+		{
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(null, AreaOrganizacional.TODAS, null);
+			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+
+			for (Colaborador colaborador: colaboradores)
+				colaborador.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, colaborador.getAreaOrganizacional().getId()));
+			
+			if(exibirObservacao)
+				return "successComObservacaoPorArea";
+			else
+				return "successPorArea";			
 		} 
 		else
 		{
@@ -340,6 +356,10 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public void setAgruparPor(String agruparPor) {
 		this.agruparPor = agruparPor;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 }

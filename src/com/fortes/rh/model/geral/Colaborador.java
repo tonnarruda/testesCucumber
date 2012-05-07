@@ -290,7 +290,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setGrupoNomeProjection(grupoNome);
 	}
 	//usado em Relatório de Desligamento
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String motivoDemissao, String cargoNome, String faixaSalarialNome, String estabelecimentoNome)
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String motivoDemissao, String cargoNome, String faixaSalarialNome, String estabelecimentoNome, Long areaId, String areaNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -315,6 +315,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if(this.estabelecimento == null)
 			this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setNome(estabelecimentoNome);
+		
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setId(areaId);
+		this.areaOrganizacional.setNome(areaNome);
 	}
 
 	//usado no Relatório de Admitidos

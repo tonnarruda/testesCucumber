@@ -440,9 +440,6 @@
     <property name="estabelecimentoManager">
       <ref bean="estabelecimentoManager" />
     </property>
-    <property name="areaOrganizacionalManager">
-      <ref bean="areaOrganizacionalManager" />
-    </property>
   </bean>
   <bean id="motivoDemissaoManager" parent="parentManager">
     <property name="proxyInterfaces">
