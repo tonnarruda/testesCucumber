@@ -44,6 +44,8 @@ public class ArquivoUtil
 
 	public static String getRhHome()
 	{
+		System.getProperties();
+		
 		if(RH_HOME == null)
 		{
 			//Configuração feita para instalar mais de um RH no mesmo tomcat, basta criar fortes_home.properties com o "name" da var de ambiente 
@@ -54,11 +56,17 @@ public class ArquivoUtil
 			} catch (Exception e)
 			{
 			}
-
+			
 			RH_HOME = System.getenv(FORTES_HOME) + java.io.File.separatorChar + "RH";
 		}
-
+		
 		return RH_HOME;
+	}
+	
+	public static void setRhHome(String context)
+	{
+		System.getProperties();
+		RH_HOME = System.getenv(FORTES_HOME) + java.io.File.separatorChar + (context.equals("fortesrh") ? "RH": context.toUpperCase());
 	}
 	
 	public static String getLoggingPath() {

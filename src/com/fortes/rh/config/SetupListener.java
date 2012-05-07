@@ -33,7 +33,7 @@ public class SetupListener implements ServletContextListener
 
 	String syspath;
 
-	String systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
+	String systemConfigPath;
 
 	private Locale pt_BR = new Locale("pt", "BR");
 
@@ -42,9 +42,13 @@ public class SetupListener implements ServletContextListener
 	 */
 	public void contextInitialized(ServletContextEvent servletContextEvent)
 	{
-		
 		Locale.setDefault(pt_BR); // define idioma pt_BR como padrão
 		
+		String context = getContext(servletContextEvent);
+		
+		ArquivoUtil.setRhHome(context);
+		systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
+
 		logger.info("---------- FORTES RH ----------");
 		logger.info("Define Idioma Padrão para 'pt_BR'.");
 		logger.info("Arquivo de configuração local: " + systemConfigPath);
@@ -63,6 +67,19 @@ public class SetupListener implements ServletContextListener
 		{
 			logger.info("-------------------------------");
 		}
+	}
+
+	private String getContext(ServletContextEvent servletContextEvent)
+	{
+		String context = null;
+		try {
+			context = servletContextEvent.getServletContext().getAttribute("javax.servlet.context.tempdir").toString();
+			context = context.substring(context.lastIndexOf("\\")+1);
+		} catch (Exception e) {
+			logger.fatal("Erro ao identificar o contexto da aplicação. contexto = "+context);
+			System.exit(0);
+		}
+		return context;
 	}
 
 	/**
