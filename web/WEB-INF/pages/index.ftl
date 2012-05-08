@@ -188,7 +188,7 @@
 						<@display.column property="mensagem.remetente" title="De" style='${style} width: 80px;' />
 						<@display.column property="mensagem.data" title="Data" format="{0,date,dd/MM/yyyy HH:mm}" style='${style} width: 100px;' />
 						<@display.column title="Mensagem" style='${style}'>
-							<#if mensagem.mensagem.link?exists>
+							<#if mensagem.mensagem.link?exists && mensagem.mensagem.link != "">
 								<a href="${mensagem.mensagem.link}" title="${mensagem.mensagem.textoAbreviado}"  onclick="marcarMensagemLida(${mensagem.id});">${mensagem.mensagem.textoAbreviado}</a>
 							<#else>
 								${mensagem.mensagem.textoAbreviado}
