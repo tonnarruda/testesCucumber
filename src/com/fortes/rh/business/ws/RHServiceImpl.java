@@ -488,7 +488,7 @@ public class RHServiceImpl implements RHService
 		Colaborador colaborador = colaboradorManager.findByCodigoAC(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 		
 		if(empregado != null)
-			colaborador.setVinculo(String.valueOf(colaboradorManager.getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria())));
+			colaborador.setVinculo(colaboradorManager.getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria()));
 		
 		historicoColaborador.setColaborador(colaborador);
 		return historicoColaborador;

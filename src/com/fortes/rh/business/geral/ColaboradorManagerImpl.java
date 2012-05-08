@@ -65,6 +65,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
@@ -394,27 +395,42 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				empregado.setCtpsUFSigla(estado.getSigla());
 			}
 		}
+		
+		if(colaborador.getVinculo().equals(Vinculo.ESTAGIO))
+			empregado.setTipoAdmissao("00");
+		else{
+			if (colaborador.getVinculo().equals(Vinculo.TEMPORARIO))
+				empregado.setVinculo(50);
+			else{
+				if (colaborador.getVinculo().equals(Vinculo.APRENDIZ)){
+					empregado.setVinculo(55);
+					empregado.setCategoria(07);
+				}
+				else{
+					empregado.setTipoAdmissao("20");
+					empregado.setVinculo(10);
+				}
+			}
+		}
 
 		return empregado;
 	}
 	
-    public char getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
-        char colocacao;
-
+    public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
+        String colocacao;
         if (admissaoTipo!=null && admissaoTipo.equals("00")) {
-            colocacao = 'S';
+            colocacao = Vinculo.ESTAGIO;
         } else {
             if (admissaoVinculo!=null && admissaoVinculo == 50) {
-                colocacao = 'T';
+                colocacao = Vinculo.TEMPORARIO;
             } else {
                 if (admissaoCategoria!=null && admissaoCategoria == 7) {
-                    colocacao = 'A';
+                    colocacao = Vinculo.APRENDIZ;
                 } else {
-                    colocacao = 'E';
+                    colocacao = Vinculo.EMPREGO;
                 }
             }
         }
-
         return colocacao;
     }
 
@@ -1373,8 +1389,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
 
 		
-		char vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
-		colaborador.setVinculo(String.valueOf(vinculo));
+		String vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
+		colaborador.setVinculo(vinculo);
 		
 		return colaborador;
 	}
