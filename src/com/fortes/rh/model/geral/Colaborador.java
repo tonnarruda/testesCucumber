@@ -211,7 +211,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private boolean exibePerformanceProficional;
 	@Transient
-	private Integer somaCompetencias;
+	private int somaCompetencias = 0;
+	@Transient
+	private double percentualCompatibilidade = 0.0;
 
 	public Colaborador()
 	{
@@ -439,7 +441,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setNome(historicoEstabelecimentoNome);
 	}
 
-	public Colaborador(Long id, String nome, Date dataNascimento, Character sexo, String escolaridade, Integer somaCompetencias)
+	public Colaborador(Long id, String nome, Date dataNascimento, Character sexo, String escolaridade, int somaCompetencias)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -447,8 +449,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setProjectionSexo(sexo);
 		setPessoalEscolaridade(escolaridade);
 		this.somaCompetencias = somaCompetencias;
-	
 	}
+	
 	// usado em findByAreasOrganizacionaisEstabelecimentos
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
 	{
@@ -2444,11 +2446,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.exibePerformanceProficional = exibePerformanceProficional;
 	}
 
-	public Integer getSomaCompetencias() {
+	public int getSomaCompetencias() {
 		return somaCompetencias;
 	}
 
-	public void setSomaCompetencias(Integer somaCompetencias) {
+	public void setSomaCompetencias(int somaCompetencias) {
 		this.somaCompetencias = somaCompetencias;
 	}
 
@@ -2458,5 +2460,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setConfiguracaoNivelCompetenciaColaboradors(Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradors) {
 		this.configuracaoNivelCompetenciaColaboradors = configuracaoNivelCompetenciaColaboradors;
+	}
+
+	public double getPercentualCompatibilidade() {
+		return percentualCompatibilidade;
+	}
+
+	public void setPercentualCompatibilidade(double percentualCompatibilidade) {
+		this.percentualCompatibilidade = percentualCompatibilidade;
 	}
 }

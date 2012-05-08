@@ -19,7 +19,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.Expression;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -2300,7 +2299,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			dataNascIni = DateUtil.incrementaAno(hoje, (-1)*(Integer.parseInt(idadeMin)));
 
 		if( isNotBlank(idadeMax) && !idadeMax.equals("0"))
-			dataNascFim = DateUtil.incrementaAno(hoje, Integer.parseInt(idadeMax));
+			dataNascFim = DateUtil.incrementaAno(hoje, (-1)*Integer.parseInt(idadeMax));
 		
 		Solicitacao solicitacao = solicitacaoManager.findByIdProjection(solicitacaoId);
 		Long faixaSolicitacaoId = solicitacao.getFaixaSalarial().getId();
@@ -2309,8 +2308,30 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Integer pontuacaoMaxima = configuracaoNivelCompetenciaManager.somaConfiguracoesByFaixa(faixaSolicitacaoId);
 		
 		Collection<Colaborador> colaboradores = getDao().triar(empresaId, escolaridade, sexo, dataNascIni, dataNascFim, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade);
+		double compatibilidade;
 		
-		return colaboradores;
+		if (exibeCompatibilidade && pontuacaoMaxima > 0)
+		{
+			Collection<Colaborador> colabs = new ArrayList<Colaborador>();
+			for (Colaborador colaborador : colaboradores) 
+			{
+				compatibilidade = (Double.valueOf(colaborador.getSomaCompetencias()) / pontuacaoMaxima) * 100.0;
+				compatibilidade = (compatibilidade > 100.0) ? 100.0 : compatibilidade;
+				
+				if (compatibilidade >= percentualMinimo) 
+				{
+					colaborador.setPercentualCompatibilidade(compatibilidade);
+					colabs.add(colaborador);
+				}
+			}
+			
+			CollectionUtil<Colaborador> collectionUtil = new CollectionUtil<Colaborador>();
+			
+			return collectionUtil.sortCollectionDesc(colabs, "somaCompetencias");
+		
+		} else {
+			return colaboradores;
+		}
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

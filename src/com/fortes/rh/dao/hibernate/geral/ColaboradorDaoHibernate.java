@@ -4009,7 +4009,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 		if (exibeCompatibilidade)
-			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, sum(nc.ordem) as somaCompetencias) ");
+			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(nc.ordem),0) as somaCompetencias) ");
 		else
 			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, 0) ");
 
@@ -4022,38 +4022,32 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
 			hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
 			hql.append("left join cnc.nivelCompetencia nc ");
+			if (competenciasIds != null && competenciasIds.length > 0)
+				hql.append("with cnc.competenciaId in (:competenciasIds) ");
 		}
 		
 		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = co.id and hc2.status = :status) "); 
 
 		if (exibeCompatibilidade)
-		{
 			hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
-			if (competenciasIds != null && competenciasIds.length > 0)
-				hql.append("and cnc.competencia.id in (:competenciasIds) ");
-		}
 
-		if (empresaId != null)
+		if (empresaId != null && !empresaId.equals(-1L))
 			hql.append("and co.empresa.id = :empresaId ");
-		if (sexo != null)
+		if (sexo != null && !sexo.equals("I"))
 			hql.append("and co.pessoal.sexo = :sexo "); 
 		if (!StringUtil.isBlank(escolaridade))
-			hql.append("and co.pessoal.escolaridade = :escolaridade "); 
+			hql.append("and cast(co.pessoal.escolaridade as integer) >= :escolaridade "); 
 		if (areasIds.length > 0)
 			hql.append("and hc.areaorganizacional.id in (:areasIds) ");
 		if (cargosIds.length > 0)
 			hql.append("and fs.cargo.id in (:cargosIds) ");
 		if (dataNascIni != null)
-			hql.append("and co.pessoal.dataNascimento >= :dataNascIni ");
+			hql.append("and co.pessoal.dataNascimento <= :dataNascIni ");
 		if (dataNascFim != null)
-			hql.append("and co.pessoal.dataNascimento <= :dataNascFim ");
+			hql.append("and co.pessoal.dataNascimento >= :dataNascFim ");
 		
 		hql.append("group by co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade ");
-		
-		if (exibeCompatibilidade)
-			hql.append("order by somaCompetencias desc, co.nome ");
-		else
-			hql.append("order by co.nome ");
+		hql.append("order by co.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
@@ -4061,12 +4055,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if (exibeCompatibilidade && competenciasIds != null && competenciasIds.length > 0)
 			query.setParameterList("competenciasIds", competenciasIds);
-		if (empresaId != null)
+		if (empresaId != null && !empresaId.equals(-1L))
 			query.setLong("empresaId", empresaId);
-		if (sexo != null)
+		if (sexo != null && !sexo.equals("I"))
 			query.setString("sexo", sexo);
 		if (!StringUtil.isBlank(escolaridade))
-			query.setString("escolaridade", escolaridade);
+			query.setInteger("escolaridade", Integer.parseInt(escolaridade));
 		if (areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds);
 		if (cargosIds.length > 0)

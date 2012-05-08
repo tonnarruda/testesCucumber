@@ -429,6 +429,20 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String triagemColaboradores() throws Exception
+	{
+		colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
+
+		if(colaboradores == null || colaboradores.size() == 0)
+			addActionMessage("Não existem colaboradores a serem listados!");
+		else
+			setShowFilter(false);
+
+		prepareTriagemColaboradores();
+		
+		return Action.SUCCESS;
+	}
+	
 	private void montaFiltroF2rh() 
 	{
 		escolaridades = new Escolaridade();
@@ -606,21 +620,6 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String triagemColaboradores() throws Exception
-	{
-		colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
-		
-
-		if(colaboradores == null || colaboradores.size() == 0)
-			addActionMessage("Não existem colaboradores a serem listados!");
-		else
-			setShowFilter(false);
-
-		prepareTriagemColaboradores();
-		
-		return Action.SUCCESS;
-	}
-	
 	public String selecionaDestinatariosBDS() throws Exception
 	{
 		prepareBuscaCandidato();

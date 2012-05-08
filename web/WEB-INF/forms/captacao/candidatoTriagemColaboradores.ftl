@@ -25,6 +25,8 @@
 			$('#empresaSelect').change(function() {
 				populaCargosAreas($(this).val());
 			});
+			
+			exibeCampoPercentualMinimo();
 		});
 	
 		function populaCargosAreas(empresaId)
@@ -57,6 +59,23 @@
 			marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck', false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'areasCheck', false);
 		}
+		
+		function exibeCampoPercentualMinimo()
+		{
+			$('#campoPercMin').toggle( $('#exibeCompatibilidade').is(':checked') );
+		}
+		
+		function pesquisar() 
+		{
+			if ($('#percentualMinimo').val() > 100)
+			{
+				jAlert('Informe um percentual válido.');
+				$('#percentualMinimo').focus();
+				return false;
+			}
+		
+			document.formBusca.submit();
+		}
 	</script>
 
 	<#include "../ftl/showFilterImports.ftl" />
@@ -68,8 +87,6 @@
 		<#assign formas=""/>
 	</#if>
 	
-
-	<#assign validarCampos="return validaFormulario('formBusca', new Array('qtdRegistros'),  null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 
@@ -79,7 +96,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>		
 
-		<@ww.form name="formBusca" id="formBusca" action="buscaSimples.action" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="formBusca" id="formBusca" action="triagemColaboradores.action" method="POST">
 			
 			<@ww.hidden name="solicitacao.id"/>
 
@@ -88,50 +105,83 @@
 
 			<li style="clear:both;"></li>
 			<@ww.select label="Sexo" name="sexo" id="sexo" list="sexos" cssStyle="width: 130px;" liClass="liLeft"/>
-			<li>
-				<span>
-				Idade Preferencial:
-				</span>
-			</li>
+			
+			<li><span>Idade Preferencial:</span></li>
 			<@ww.textfield name="idadeMin" id="idadeIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.textfield name="idadeMax" id="idadeFim" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-			<@ww.label value="anos"/><div style="clear: both"></div>
+			<@ww.label value="anos"/>
 
-			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
+			<li style="clear:both;"></li>
+
+			<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" />
 			<@frt.checkListBox label="Área Organizacional" name="areasCheck" id="areasCheck" list="areasCheckList"/>
 			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pelo cargo \"${solicitacao.nomeDoCargoDaFaixaSalarial}\" com as competências do colaborador" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
 
-			<label>Percentual Mínimo de Compatibilidade: *<label>
-			<@ww.textfield theme="simple" name="percentualMinimo" id="percentualMinimo" onkeypress = "return somenteNumeros(event,'');" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
-			%
+			<li id="campoPercMin">
+				<label>Percentual Mínimo de Compatibilidade: *<label>
+				<@ww.textfield theme="simple" name="percentualMinimo" id="percentualMinimo" onkeypress = "return somenteNumeros(event,'');" maxLength="3" required="true" cssStyle="width: 30px; text-align:right;" />
+				%
+			</li>
 
 			<@ww.hidden name="filtro" value="true"/>
 			
 			<div class="buttonGroup">
-				<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
+				<input type="button" value="" class="btnPesquisar grayBGE" onclick="pesquisar();"/>
 			</div>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br />
 
-	<#if solicitacao?exists && solicitacao.id?exists>
-		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
-	</#if>
+	<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 
-
-	<#if candidatos?exists >
+	<#if colaboradores?exists >
 		<div id="legendas" align="right"></div>
-		<br>
+		<br />
 		
-		<#include "formListCandidatoSolicitacaoBusca.ftl" />
+		<@ww.form name="formColab" action="insertColaboradores.action" validate="true" method="POST">
 
-		<#if solicitacao?exists && solicitacao.id?exists>
-			<div class="buttonGroup">
-				<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
-				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
-			</div>
-		</#if>
+			<@ww.hidden name="solicitacao.id"/>
+		
+			<@display.table name="colaboradores" id="colaborador" class="dados">
+				
+				<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formColab);' />" style="width: 30px; text-align: center;">
+					<input type="checkbox" value="${colaborador.id?string}" name="colaboradoresIds" />
+				</@display.column>
+				
+				<@display.column title="Nome" property="nome"/>
+
+				<@display.column property="pessoal.sexo" title="Sexo" style="width:30px; text-align:center;"/>
+
+				<@display.column property="pessoal.idade" title="Idade" style="width:30px; text-align:center;"/>
+
+				<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width:300px;"/>
+				
+				<#if exibeCompatibilidade>
+					<@display.column title="Compatibilidade" style="width:100px; text-align:right;">
+						<#if colaborador.percentualCompatibilidade?exists> 
+							<#if 90 <= colaborador.percentualCompatibilidade?int>
+								<#assign color="green"/>
+							<#elseif 50 <= colaborador.percentualCompatibilidade?int> 
+								<#assign color="orange"/>
+							<#else>
+								<#assign color="red"/>
+							</#if>
+							
+							<div style="background-color: ${color}; width: ${colaborador.percentualCompatibilidade?int}px; height: 3px;"></div>
+							<div style="clear: both"></div>
+							${colaborador.percentualCompatibilidade?string(",##0.00")}%
+						</#if>
+					</@display.column>
+				</#if>
+			</@display.table>
+			<br>Total de Colaboradores: ${colaboradores?size}
+		</@ww.form>
+
+		<div class="buttonGroup">
+			<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
+			<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
+		</div>
 	</#if>
 </body>
 </html>
