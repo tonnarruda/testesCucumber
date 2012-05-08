@@ -74,7 +74,7 @@ public class SetupListener implements ServletContextListener
 		String context = null;
 		try {
 			context = servletContextEvent.getServletContext().getAttribute("javax.servlet.context.tempdir").toString();
-			context = context.substring(context.lastIndexOf("\\")+1);
+			context = context.substring(context.lastIndexOf(File.separatorChar)+1);
 		} catch (Exception e) {
 			logger.fatal("Erro ao identificar o contexto da aplicação. contexto = "+context);
 			System.exit(0);
