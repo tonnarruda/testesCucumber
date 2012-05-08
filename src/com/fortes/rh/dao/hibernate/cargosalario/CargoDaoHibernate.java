@@ -509,24 +509,26 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		}
 	}
 
-	public boolean existeCargoSemAreaRelacionada(Long empresaId) 
+	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId) 
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select c.id ");
+		hql.append("select new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
 		hql.append("from Cargo as c ");
 		hql.append("left join c.areasOrganizacionais as a ");
+		hql.append("left join c.empresa as e ");
 		
 		if(empresaId != null)
-			hql.append("where c.empresa.id = :empresaId ");
+			hql.append("where e.id = :empresaId ");
 		
-		hql.append("group by c.id ");
+		hql.append("group by c.id, c.nomeMercado, e.id, e.nome ");
 		hql.append("having count(a.id) = 0 ");
+		hql.append("order by e.nome, c.nomeMercado ");
 
 		Query query = getSession().createQuery(hql.toString());
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 
-		return query.list().size() != 0;
+		return query.list();
 	}
 }

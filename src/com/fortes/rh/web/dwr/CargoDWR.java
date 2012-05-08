@@ -22,12 +22,38 @@ public class CargoDWR
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
 	}
+	
+	private Collection<Cargo> getCargosByArea(String[] areaOrganizacionalIds, Long empresaId) {
+		Long [] idsLong = LongUtil.arrayStringToArrayLong(areaOrganizacionalIds);
+		
+		Collection<Cargo> cargos = cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, empresaId);
+		return cargos;
+	}
 
 	public Map getCargoByArea(String[] areaOrganizacionalIds, String label, Long empresaId)
 	{
-		Long [] idsLong = LongUtil.arrayStringToArrayLong(areaOrganizacionalIds);
-
-		Collection<Cargo> cargos = cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, empresaId);
+		Collection<Cargo> cargos = getCargosByArea(areaOrganizacionalIds, empresaId);
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
+	}
+	
+	public Map getCargoByAreaMaisSemAreaRelacionada(String[] areaOrganizacionalIds, String label, Long empresaId)
+	{
+		Collection<Cargo> cargos = getCargosByArea(areaOrganizacionalIds, empresaId);
+		
+		Collection<Cargo> cargosSemAreaRelacionada;
+		
+		if(empresaId == 0)
+			cargosSemAreaRelacionada = cargoManager.getCargosSemAreaRelacionada(null); 			
+		else
+			cargosSemAreaRelacionada = cargoManager.getCargosSemAreaRelacionada(empresaId); 						
+		
+		CollectionUtil<Cargo> cUtil = new CollectionUtil<Cargo>();
+		
+		if(cargosSemAreaRelacionada != null && cargosSemAreaRelacionada.size() > 0)
+		{
+			cargos.addAll(cargosSemAreaRelacionada);
+			cUtil.sortCollectionStringIgnoreCase(cargos, "nomeMercadoComEmpresa");
+		}
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
 	}
@@ -48,25 +74,54 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercado");
 	}
 	
-	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
-	{
+	private Collection<Cargo> getFindAllSelect(Long empresaId, Long[] empresaIds) {
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		String getParametro = "getId";
 		
 		if(empresaId == 0)
 			cargos = cargoManager.findAllSelect(empresaIds);
 		else
 			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
-					
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
+		return cargos;
+	}
+	
+	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
+	{
+		String getParametro = "getId";
+		Collection<Cargo> cargos = getFindAllSelect(empresaId, empresaIds);
+		
+		CollectionUtil<Cargo> cUtil = new CollectionUtil<Cargo>();
+		
+		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
+	}
+	
+	public Map getByEmpresasMaisSemAreaRelacionada(Long empresaId, Long[] empresaIds)
+	{
+		String getParametro = "getId";
+		Collection<Cargo> cargos = getFindAllSelect(empresaId, empresaIds);
+		Collection<Cargo> cargosSemAreaRelacionada;
+		
+		if(empresaId == 0)
+			cargosSemAreaRelacionada = cargoManager.getCargosSemAreaRelacionada(null); 			
+		else
+			cargosSemAreaRelacionada = cargoManager.getCargosSemAreaRelacionada(empresaId); 						
+		
+		CollectionUtil<Cargo> cUtil = new CollectionUtil<Cargo>();
+		
+		if(cargosSemAreaRelacionada != null && cargosSemAreaRelacionada.size() > 0)
+		{
+			cargos.addAll(cargosSemAreaRelacionada);
+			cUtil.sortCollectionStringIgnoreCase(cargos, "nomeMercadoComEmpresa");
+		}
+		
+		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
 	}
 	
 	public boolean verificaCargoSemAreaRelacionada(Long empresaId)
 	{
 		if(empresaId == 0)
-			return cargoManager.verificaCargoSemAreaRelacionada(null);
+			return cargoManager.existemCargosSemAreaRelacionada(null);
 		else
-			return cargoManager.verificaCargoSemAreaRelacionada(empresaId);
+			return cargoManager.existemCargosSemAreaRelacionada(empresaId);
 	}
 	
 	public Map getByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds)

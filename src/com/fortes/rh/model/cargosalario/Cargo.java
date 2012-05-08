@@ -102,6 +102,14 @@ public class Cargo extends AbstractModel implements Serializable
 		this.setId(id);
 		this.setNome(nome);
 	}
+	
+	public Cargo(Long id, String nomeMercado, Long empresaId, String empresaNome)
+	{
+		this.setId(id);
+		this.setNomeMercado(nomeMercado);
+		this.setEmpresaIdProjection(empresaId);
+		this.setEmpresaNomeProjection(empresaNome);
+	}
 
 	public Empresa getEmpresa()
 	{

@@ -51,9 +51,7 @@
 			var empresaId = $('#empresa').val();
 			
 			if(areasIds.length == 0)
-			{
 				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
-			}
 			else
 				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
 		}
@@ -84,6 +82,18 @@
 			$('#wwgrp_cargoSemArea').toggle(data);
 		}
 
+		function addCheckCargoSemArea()	
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
+			var empresaId = $('#empresa').val();
+			
+			if(areasIds.length == 0)
+				CargoDWR.getByEmpresasMaisSemAreaRelacionada(createListCargosByArea, empresaId, empresaIds);
+			else
+				CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+		}
+
 		function getAgruparPorMotivo()
 		{
 			elementLista = document.getElementById('listaColaboradores');
@@ -96,6 +106,16 @@
 			
 			elementAgrupar.style.display = display;
 		}
+
+		function changeEmpresa(value)
+		{
+			populaEstabelecimento(value);
+			populaArea(value);
+			populaCargo(value);
+			verificaCargoSemAreaRelacionada(value);
+			
+			$('#cargoSemArea').attr('checked', false);
+		}
 		
 		$(document).ready(function($)
 		{
@@ -106,6 +126,14 @@
 			populaEstabelecimento(empresa);
 			populaCargo(empresa);
 			verificaCargoSemAreaRelacionada(empresa);
+			
+			$('#cargoSemArea').click(function() {
+				if($(this).is(":checked"))
+					addCheckCargoSemArea();
+				else
+					populaCargosByArea();
+			});
+			
 		});
 	</script>
 
@@ -129,7 +157,7 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioMotivoDemissao.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);verificaCargoSemAreaRelacionada(this.value);" disabled="!compartilharColaboradores"/>
+		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="changeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>

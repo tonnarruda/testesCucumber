@@ -573,7 +573,12 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		
 	}
 
-	public boolean verificaCargoSemAreaRelacionada(Long empresaId) {
-		return getDao().existeCargoSemAreaRelacionada(empresaId);
+	public boolean existemCargosSemAreaRelacionada(Long empresaId) {
+		Collection<Cargo> cargos = getDao().getCargosSemAreaRelacionada(empresaId);
+		return cargos.size() != 0;
+	}
+
+	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId) {
+		return getDao().getCargosSemAreaRelacionada(empresaId);
 	}
 }

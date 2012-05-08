@@ -326,7 +326,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 	
-	public void testExisteCargoSemAreaRelacionadaTodosRelacionados()
+	public void testGetCargoSemAreaRelacionadaTodosRelacionados()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -356,10 +356,10 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		motorista.setEmpresa(empresa);
 		cargoDao.save(motorista);
 		
-		assertEquals(false, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+		assertEquals(0, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
-	public void testExisteCargoSemAreaRelacionada()
+	public void testGetCargoSemAreaRelacionada()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -380,15 +380,15 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		motorista.setEmpresa(empresa);
 		cargoDao.save(motorista);
 		
-		assertEquals(true, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+		assertEquals(1, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
-	public void testExisteCargoSemAreaRelacionadaSemCargo()
+	public void testGetCargoSemAreaRelacionadaSemCargo()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		assertEquals(false, cargoDao.existeCargoSemAreaRelacionada(empresa.getId()));
+		assertEquals(0, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
 	public void testFindAllSelectDistinctNome()
