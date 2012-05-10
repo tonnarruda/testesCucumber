@@ -20,19 +20,12 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new SolicitacaoEpiItemEntrega(se.id, se.qtdEntregue, se.dataEntrega, eh.CA)");
+		hql.append("select new SolicitacaoEpiItemEntrega(se.id, se.qtdEntregue, se.dataEntrega) ");
 		hql.append("  from SolicitacaoEpiItemEntrega se ");
 		hql.append("  left join se.solicitacaoEpiItem si ");
 		hql.append("  left join si.epi e ");
-		hql.append("  left join e.epiHistoricos eh ");
-		hql.append(" where (eh.data = (select max(eh2.data)");
-		hql.append("                    from EpiHistorico eh2");
-		hql.append("                   where eh2.epi.id = e.id");
-		hql.append("                     and eh2.data <= se.dataEntrega) ");
-		hql.append("   or  eh.data is null) ");
-		hql.append("   and se.solicitacaoEpiItem.id = :solicitacaoEpiItemId  ");
-		
-		hql.append(" order by se.dataEntrega ");
+		hql.append("where se.solicitacaoEpiItem.id = :solicitacaoEpiItemId  ");
+		hql.append("order by se.dataEntrega ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("solicitacaoEpiItemId", solicitacaoEpiItemId);
