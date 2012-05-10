@@ -13,7 +13,6 @@ rhhomologacao:
   user: fortes
   password: fortes$01
   tomcat_home: /home/fortes/apache-tomcat-6.0.33
-  fortes_home_properties: name=FORTES_HOME_HOMOLOGACAO
   app_name: fortesrhhomologacao
   db_name: homologacao
   run_migrates: true
