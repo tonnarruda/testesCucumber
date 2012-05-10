@@ -774,7 +774,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
 
 			if (!vincularCandidatoMesmoCpf)
-				candidato = candidatoManager.criarCandidatoByColaborador(colaborador);
+				candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
 			
 			colaborador.setCandidato(candidato);
 

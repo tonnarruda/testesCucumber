@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;

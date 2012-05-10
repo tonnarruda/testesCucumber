@@ -1041,7 +1041,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 
-    public void testCriarCandidatoByColaborador()
+    public void testSaveOrUpdateCandidatoByColaborador()
     {
     	Idioma i = new Idioma();
     	i.setId(1L);
@@ -1118,7 +1118,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
 
-    	candidato = candidatoManager.criarCandidatoByColaborador(c);
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
+    	candidatoDao.expects(once()).method("update").with(ANYTHING);
+    	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
 
     	assertTrue("Teste 1", candidatoTemIdioma(i, candidato.getCandidatoIdiomas()));
     	assertEquals("Teste 2", "85", candidato.getContato().getDdd());
@@ -1131,6 +1136,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	assertEquals("Teste 8", "nome", candidato.getNome());
     	assertEquals("Teste 9", pessoal, candidato.getPessoal());
 
+    	c.setCandidato(candidato);
+
+    	candidatoDao.expects(once()).method("update").with(ANYTHING);
+    	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	
+    	assertEquals("Teste 10", c.getCandidato().getId(), candidato.getId());    	
     }
 
     //método auxiliar

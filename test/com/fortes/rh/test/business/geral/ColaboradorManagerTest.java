@@ -26,6 +26,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorMa
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -41,9 +42,11 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -52,10 +55,14 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -66,10 +73,12 @@ import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -117,6 +126,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock configuracaoNivelCompetenciaManager;
     private Mock configuracaoNivelCompetenciaColaboradorManager;
     private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
+    private Mock solicitacaoManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -183,6 +193,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		
 		colaboradorPeriodoExperienciaAvaliacaoManager = new Mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
 		colaboradorManager.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
+
+		solicitacaoManager = new Mock(SolicitacaoManager.class);
+		colaboradorManager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
 		
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -416,6 +429,58 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	assertEquals(false, colaboradorManager.pertenceEmpresa(colaborador.getId(), outraEmpresa.getId()));
     }
+    
+    public void testTriar() 
+    {
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	solicitacao.setFaixaSalarial(faixaSalarial);
+    	
+    	solicitacaoManager.expects(once()).method("findByIdProjection").with(eq(solicitacao.getId())).will(returnValue(solicitacao));
+    	configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciasIdsConfiguradasByFaixaSolicitacao").with(ANYTHING).will(returnValue(new Long[] { 1L }));
+    	configuracaoNivelCompetenciaManager.expects(once()).method("somaConfiguracoesByFaixa").with(ANYTHING).will(returnValue(1));
+    	colaboradorDao.expects(once()).method("triar").with(new Constraint[] { eq(empresa.getId()), ANYTHING, eq(Sexo.INDIFERENTE), ANYTHING, ANYTHING, eq(new String[0]), eq(new String[0]), eq(new Long[] { 1L }), eq(false) }).will(returnValue(new ArrayList<Colaborador>()));
+    	
+    	Exception exception = null;
+    	
+    	try {
+			colaboradorManager.triar(solicitacao.getId(), empresa.getId(), null, Sexo.INDIFERENTE, null, null, new String[0], new String[0], false, null);
+		} catch (Exception e) {
+			exception = e;
+			e.printStackTrace();
+		}
+		
+		assertNull(exception);
+    }
+    
+    public void testInsertColaboradoresSolicitacao() 
+    {
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Candidato candidato = CandidatoFactory.getCandidato(1L);
+    	
+    	Long[] colaboradoresIds = new Long[] { 1L };
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+    	
+    	colaboradorDao.expects(atLeastOnce()).method("findByIdComHistorico").with(ANYTHING, eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(colaborador));
+    	colaboradorIdiomaManager.expects(atLeastOnce()).method("find").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorIdioma>()));
+    	experienciaManager.expects(atLeastOnce()).method("findByColaborador").with(ANYTHING).will(returnValue(new ArrayList<Experiencia>()));
+    	formacaoManager.expects(atLeastOnce()).method("findByColaborador").with(ANYTHING).will(returnValue(new ArrayList<Formacao>()));
+    	colaboradorDao.expects(atLeastOnce()).method("update").with(ANYTHING).isVoid();
+    	
+    	candidatoManager.expects(atLeastOnce()).method("saveOrUpdateCandidatoByColaborador").with(ANYTHING).will(returnValue(candidato));
+    	candidatoSolicitacaoManager.expects(atLeastOnce()).method("insertCandidatos").with(ANYTHING, eq(solicitacao), eq(StatusCandidatoSolicitacao.APROMOVER)).isVoid();
+    	
+    	Exception exception = null;
+    	try {
+			colaboradorManager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
+		} catch (Exception e) {
+			exception = e;
+			e.printStackTrace();
+		}
+		
+		assertNull(exception);
+	}
     
     public void testCalculaIndiceProcessoSeletivo()
     {

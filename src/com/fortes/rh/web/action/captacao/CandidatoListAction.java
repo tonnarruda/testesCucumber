@@ -172,6 +172,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private Long cargoId;
 
 	private String[] candidatosId;
+	private Long[] colaboradoresIds;
 
 	// Uso para exibir mensagen ao deletar candidato
 	// N - Não tem mensagem, E = Erro e O = Deu certo
@@ -439,6 +440,14 @@ public class CandidatoListAction extends MyActionSupportList
 			setShowFilter(false);
 
 		prepareTriagemColaboradores();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String insertColaboradores() throws Exception
+	{
+		if (colaboradoresIds != null && colaboradoresIds.length > 0)
+			colaboradorManager.insertColaboradoresSolicitacao(colaboradoresIds, solicitacao, StatusCandidatoSolicitacao.APROMOVER);
 		
 		return Action.SUCCESS;
 	}
@@ -1697,5 +1706,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public Long[] getColaboradoresIds() {
+		return colaboradoresIds;
+	}
+
+	public void setColaboradoresIds(Long[] colaboradoresIds) {
+		this.colaboradoresIds = colaboradoresIds;
 	}
 }

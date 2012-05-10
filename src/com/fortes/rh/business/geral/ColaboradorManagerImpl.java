@@ -2289,7 +2289,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador.getEmpresa().getId().equals(empresaId);
 	}
 
-	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) 
+	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) throws Exception 
 	{
 		Date dataNascIni = null;
 		Date dataNascFim = null;
@@ -2325,15 +2325,40 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				}
 			}
 			
-			CollectionUtil<Colaborador> collectionUtil = new CollectionUtil<Colaborador>();
-			
-			return collectionUtil.sortCollectionDesc(colabs, "somaCompetencias");
+			return colabs;
 		
 		} else {
 			return colaboradores;
 		}
 	}
 	
+	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception
+	{
+		Colaborador colaborador = null;
+		Candidato candidato = null;
+		Collection<String> candidatosIds = new ArrayList<String>();
+		
+		// Atualiza candidato do colaborador
+		for (Long colaboradorId : colaboradoresIds) {
+
+			colaborador = (Colaborador) findByIdComHistoricoConfirmados(colaboradorId);
+
+			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
+			colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
+			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
+
+			candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
+			candidatosIds.add(candidato.getId().toString());
+
+			colaborador.setCandidato(candidato);
+
+			update(colaborador);
+		}
+		
+		// Grava colaboradores na solicitação
+		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
+	}
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

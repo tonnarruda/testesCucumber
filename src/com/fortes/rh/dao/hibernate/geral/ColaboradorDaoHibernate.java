@@ -4008,28 +4008,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> triar(Long empresaId, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade) 
 	{
 		StringBuilder hql = new StringBuilder();
-		if (exibeCompatibilidade)
-			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(nc.ordem),0) as somaCompetencias) ");
-		else
-			hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, 0) ");
-
+		hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(nc.ordem),0) as somaCompetencias) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("inner join hc.colaborador co  ");
 		hql.append("inner join hc.faixaSalarial fs ");
-		
-		if (exibeCompatibilidade)
-		{
-			hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
-			hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
-			hql.append("left join cnc.nivelCompetencia nc ");
-			if (competenciasIds != null && competenciasIds.length > 0)
-				hql.append("with cnc.competenciaId in (:competenciasIds) ");
-		}
+		hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
+		hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
+		hql.append("left join cnc.nivelCompetencia nc ");
+		if (competenciasIds != null && competenciasIds.length > 0)
+			hql.append("with cnc.competenciaId in (:competenciasIds) ");
 		
 		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = co.id and hc2.status = :status) "); 
-
-		if (exibeCompatibilidade)
-			hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
+		hql.append("and co.desligado = false "); 
+		hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
 
 		if (empresaId != null && !empresaId.equals(-1L))
 			hql.append("and co.empresa.id = :empresaId ");
@@ -4047,13 +4038,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("and co.pessoal.dataNascimento >= :dataNascFim ");
 		
 		hql.append("group by co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade ");
-		hql.append("order by co.nome ");
+		
+		if (exibeCompatibilidade)
+			hql.append("order by coalesce(sum(nc.ordem), 0) desc, co.nome ");
+		else
+			hql.append("order by co.nome ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		if (exibeCompatibilidade && competenciasIds != null && competenciasIds.length > 0)
+		if (competenciasIds != null && competenciasIds.length > 0)
 			query.setParameterList("competenciasIds", competenciasIds);
 		if (empresaId != null && !empresaId.equals(-1L))
 			query.setLong("empresaId", empresaId);

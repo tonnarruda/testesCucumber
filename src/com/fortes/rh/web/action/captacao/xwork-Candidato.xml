@@ -125,6 +125,9 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemColaboradores.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoTriagemColaboradores.ftl</result>
 		</action>
+		<action name="insertColaboradores" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertColaboradores">
+			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
+		</action>
 		<action name="insertCandidatos" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="insertCandidatos">
 			<result name="success" type="redirect"><![CDATA[../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>

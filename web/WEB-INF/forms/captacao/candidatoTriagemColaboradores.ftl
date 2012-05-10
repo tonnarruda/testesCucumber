@@ -9,6 +9,8 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		
+		#campoPercMin { display: none; }
 	</style>
 	<style type="text/css">#menuBusca a.ativaTriagemColaboradores{color: #FFCB03;}</style>
 	
@@ -18,7 +20,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
 	<script type='text/javascript'>
 		$(function() {
@@ -31,6 +32,7 @@
 	
 		function populaCargosAreas(empresaId)
 		{
+			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
 			CargoDWR.getByEmpresa(createListCargo, empresaId);
@@ -76,6 +78,24 @@
 		
 			document.formBusca.submit();
 		}
+		
+		function inserirColaboradores() 
+		{
+			var qtdMarcado = $("input[name='colaboradoresIds']:checked").size();
+		
+			if (qtdMarcado < 1) 
+			{
+				jAlert("Nenhum Candidato selecionado!");
+				return false;
+			}
+		
+			document.formColab.submit();
+		}
+		
+		function marcarDesmarcar()
+		{
+			$("input[name='colaboradoresIds']").attr('checked', $('#md').attr('checked'));
+		}
 	</script>
 
 	<#include "../ftl/showFilterImports.ftl" />
@@ -116,7 +136,7 @@
 
 			<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" />
 			<@frt.checkListBox label="Área Organizacional" name="areasCheck" id="areasCheck" list="areasCheckList"/>
-			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pelo cargo \"${solicitacao.nomeDoCargoDaFaixaSalarial}\" com as competências do colaborador" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
+			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pelo cargo \"${solicitacao.nomeDoCargoDaFaixaSalarial}\" com as competências do colaborador" onclick="exibeCampoPercentualMinimo();" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
 
 			<li id="campoPercMin">
 				<label>Percentual Mínimo de Compatibilidade: *<label>
@@ -139,7 +159,7 @@
 		<div id="legendas" align="right"></div>
 		<br />
 		
-		<@ww.form name="formColab" action="insertColaboradores.action" validate="true" method="POST">
+		<@ww.form name="formColab" action="insertColaboradores.action" validate="true" method="post">
 
 			<@ww.hidden name="solicitacao.id"/>
 		
@@ -179,7 +199,7 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
+			<button onclick="inserirColaboradores();" class="btnInserirSelecionados"></button>
 			<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
 		</div>
 	</#if>

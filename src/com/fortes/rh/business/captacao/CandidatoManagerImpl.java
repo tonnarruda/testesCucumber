@@ -576,14 +576,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	public Candidato saveOrUpdateCandidatoByColaborador(Colaborador colaborador)
 	{
-		this.transactionManager = transactionManager;
-	}
-
-	public Candidato criarCandidatoByColaborador(Colaborador colaborador)
-	{
-		Candidato candidato = new Candidato();
+		Candidato candidato = null;
+		
+		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
+			candidato = new Candidato();
+		else
+			candidato = colaborador.getCandidato();
 
 		candidato.setPessoal(colaborador.getPessoal());
 		candidato.setDataAtualizacao(new Date());
@@ -612,8 +612,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	SocioEconomica socioEconomica = new SocioEconomica();
 	   	candidato.setSocioEconomica(socioEconomica);
 
-		candidato = save(candidato);
-
+	   	if(candidato.getId() == null)
+	   		candidato = save(candidato);
+	   	
     	Collection<Formacao> formacaos = colaborador.getFormacao();
     	for (Formacao formacao : formacaos)
 		{
@@ -1333,6 +1334,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return historicoCandidatoManager.findQtdAtendidos(empresaId, dataIni, dataFim);
 	}
 	
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
+
 	public void setEstadoManager(EstadoManager estadoManager) {
 		this.estadoManager = estadoManager;
 	}

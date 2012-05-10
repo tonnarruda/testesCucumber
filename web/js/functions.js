@@ -341,8 +341,15 @@ function validaCamposObrigatorios(campos, formulario)
 			//CUIDADO pegando a cor pelo rgb do #FFEEC2
 			$("input:text,textarea,select").each(function() {
 				var labelInput = $(this);
-				if(labelInput.css('background-color') == "rgb(255, 238, 194)" || labelInput.css('background-color') == "#ffeec2")
-					camposNaoPreenchidos.push(labelInput.closest('li').find('label').text().match(/(.+):/)[1].trim());
+				if(labelInput.css('background-color') == "rgb(255, 238, 194)" || labelInput.css('background-color') == "#ffeec2") {
+					//var campoId = labelInput.attr('i').find('label').text().match(/(.+):/);
+										
+					var campoId = labelInput.attr('id');
+					var label =	$("label[for='" + campoId + "']");
+					
+					if (label)
+						camposNaoPreenchidos.push(label.text().replace(':','').replace('*','').replace('\n','').trim());
+				}
 			});
 			
 			jAlert("Preencha os campos indicados:\n" + camposNaoPreenchidos.join(", "));		

@@ -40,7 +40,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<Candidato> findCandidatosById(Long[] longs);
 	public Collection<Candidato> populaCandidatos(Collection<Candidato> candidatos);
 	public void importaBDS(java.io.File arquivoSalvo, Solicitacao solicitacao) throws Exception;
-	public Candidato criarCandidatoByColaborador(Colaborador colaborador);
+	public Candidato saveOrUpdateCandidatoByColaborador(Colaborador colaborador);
 	public String recuperaSenha(String cpf, Empresa empresa);
 	public void enviaNovaSenha(Candidato candidato, Empresa empresa);
 	public void updateSetContratado(Long candidatoId);
