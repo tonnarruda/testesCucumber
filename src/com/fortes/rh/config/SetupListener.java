@@ -44,9 +44,9 @@ public class SetupListener implements ServletContextListener
 	{
 		Locale.setDefault(pt_BR); // define idioma pt_BR como padrão
 		
-		String context = getContext(servletContextEvent);
+		String pastaSystemConf = getContext(servletContextEvent);
 		
-		ArquivoUtil.setRhHome(context);
+		ArquivoUtil.setRhHome(pastaSystemConf);
 		systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
 
 		logger.info("---------- FORTES RH ----------");
@@ -74,7 +74,7 @@ public class SetupListener implements ServletContextListener
 		String context = null;
 		try {
 			context = servletContextEvent.getServletContext().getAttribute("javax.servlet.context.tempdir").toString();
-			context = context.substring(context.lastIndexOf(File.separatorChar)+1);
+			context = context.substring(context.lastIndexOf(File.separatorChar+"fortes")+7);
 		} catch (Exception e) {
 			logger.fatal("Erro ao identificar o contexto da aplicação. contexto = "+context);
 			System.exit(0);

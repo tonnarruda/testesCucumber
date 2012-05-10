@@ -66,7 +66,7 @@ public class ArquivoUtil
 	public static void setRhHome(String context)
 	{
 		System.getProperties();
-		RH_HOME = System.getenv(FORTES_HOME) + java.io.File.separatorChar + (context.equals("fortesrh") ? "RH": context.toUpperCase());
+		RH_HOME = System.getenv(FORTES_HOME) + java.io.File.separatorChar + context.toUpperCase();
 	}
 	
 	public static String getLoggingPath() {
