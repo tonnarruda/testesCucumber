@@ -18,19 +18,22 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 	@SuppressWarnings("unchecked")
 	public Collection<SolicitacaoEpiItemEntrega> findBySolicitacaoEpiItem(Long solicitacaoEpiItemId) 
 	{
-		StringBuilder hql = new StringBuilder();
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"seie");
+		criteria.createCriteria("seie.solicitacaoEpiItem", "sei", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sei.epi", "e", Criteria.LEFT_JOIN);
 
-		hql.append("select new SolicitacaoEpiItemEntrega(se.id, se.qtdEntregue, se.dataEntrega) ");
-		hql.append("  from SolicitacaoEpiItemEntrega se ");
-		hql.append("  left join se.solicitacaoEpiItem si ");
-		hql.append("  left join si.epi e ");
-		hql.append("where se.solicitacaoEpiItem.id = :solicitacaoEpiItemId  ");
-		hql.append("order by se.dataEntrega ");
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("seie.id"), "id");
+		p.add(Projections.property("seie.qtdEntregue"), "qtdEntregue");
+		p.add(Projections.property("seie.dataEntrega"), "dataEntrega");
 
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("solicitacaoEpiItemId", solicitacaoEpiItemId);
+		criteria.setProjection(p);
 
-		return query.list();
+		criteria.add(Expression.eq("sei.id", solicitacaoEpiItemId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
 	}
 
 	public int getTotalEntregue(Long solicitacaoEpiItemId, Long solicitacaoEpiItemEntregaId) 
