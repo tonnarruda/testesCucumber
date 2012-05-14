@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.73.68" data="10/05/2012"><![CDATA[
+        - R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova opção de triagem por Colaboradores.
+        - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Avaliações: Impressão da avaliação respondida.
+        - Info. Funcionais > Relatórios > Desligamentos: Novo filtro por Área Organizacional e nova opção de agrupamento por Área Organizacional.
+    ]]></Versao>
 	<Versao id="1.1.73.67" data="02/05/2012"><![CDATA[
         - C&S > Relatórios > Colaboradores por Cargo: Nova opção de exibir salário, para os perfis configurados com 'Mostrar opção Exibir Salário'.
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Liberação individual de avaliações.
