@@ -34,6 +34,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
+import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -1070,7 +1071,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim)
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1116,6 +1117,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("	and co.desligado = :desligado ");
 		hql.append("	and hc1.status = :status ");
+		
+		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
+			hql.append("	and co.pessoal.sexo = :sexo ");
 		
 		if(empresaId != null)
 			hql.append("	and emp.id = :empresaId ");
@@ -1174,6 +1178,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setBoolean("desligado", false);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
+			query.setString("sexo", sexo);
 		
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
@@ -1887,6 +1894,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append(" pessoal.pai = :pai ,");
 		hql.append(" pessoal.mae = :mae ,");
 		hql.append(" pessoal.conjuge = :conjuge ,");
+		hql.append(" pessoal.qtdFilhos = :qtdFilhos ,");
 		hql.append(" cursos = :cursos ,");
 		hql.append(" observacao = :observacao ,");
 		hql.append(" dataAtualizacao = :dataAtualizacao ");
@@ -1919,6 +1927,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("pai", colaborador.getPessoal().getPai());
 		query.setString("mae", colaborador.getPessoal().getMae());
 		query.setString("conjuge", colaborador.getPessoal().getConjuge());
+		query.setInteger("qtdFilhos", colaborador.getPessoal().getQtdFilhos());
 		query.setString("cursos", colaborador.getCursos());
 		query.setString("observacao", colaborador.getObservacao());
 		query.setDate("dataAtualizacao", colaborador.getDataAtualizacao());

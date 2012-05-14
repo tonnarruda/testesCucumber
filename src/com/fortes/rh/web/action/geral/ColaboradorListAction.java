@@ -24,6 +24,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Mes;
+import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaboradorIntegraAC;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -120,6 +121,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Long[] empresaIds;//repassado para o DWR
 
 	private CamposExtras camposExtras = new CamposExtras();;
+	private Map sexos = new Sexo();
+	private String sexo;
 
 	private Collection<DynaRecord> dataSource;
 	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
@@ -295,7 +298,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim);
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -382,7 +385,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, null);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -935,6 +938,18 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Map getSexos() {
+		return sexos;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 	

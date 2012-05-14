@@ -95,6 +95,7 @@
 
 		$(document).ready(function($)
 		{
+			DWREngine.setAsync(false);
 			$('#aviso').hide();
 		
 			var empresa = $('#empresa').val();
@@ -274,6 +275,8 @@
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+		
+		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos"  />
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 

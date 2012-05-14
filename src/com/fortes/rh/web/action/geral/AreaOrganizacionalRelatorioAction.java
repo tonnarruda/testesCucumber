@@ -88,7 +88,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 				
-			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), null, null, null);
+			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), null, null, null, null);
 			if(dataSource == null || dataSource.isEmpty())
 			{
 				ResourceBundle bundle = ResourceBundle.getBundle("application");
