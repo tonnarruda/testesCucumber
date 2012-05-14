@@ -570,4 +570,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		
 		 return resultadosObjetivas;
 	 }
+	 
+	public Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) {
+		return getDao().findRespostasAvaliacaoDesempenho(colaboradorQuestionarioId);
+	}
 }

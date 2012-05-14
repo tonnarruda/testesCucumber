@@ -30,4 +30,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId);
 	void removeFichas(Long[] colaboradorQuestionarioIds);
+	Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 }

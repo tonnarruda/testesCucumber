@@ -74,4 +74,5 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	void removeByCandidato(Long candidatoId);
 	
 	public ColaboradorQuestionario findColaborador(Long colaboradorId, Long questionarioId, Long turmaId);
+
 }

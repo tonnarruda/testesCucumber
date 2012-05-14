@@ -506,4 +506,39 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
+	public Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cr");
+		criteria.createCriteria("cr.colaboradorQuestionario", "cq");
+		criteria.createCriteria("cr.resposta", "resp", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.pergunta", "perg");
+		criteria.createCriteria("perg.aspecto", "asp", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cr.id"), "id");
+		p.add(Projections.property("cr.valor"), "valor");
+		p.add(Projections.property("cr.comentario"), "comentario");
+		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
+		p.add(Projections.property("cq.observacao"), "projectionColaboradorQuestionarioObservacao");
+		p.add(Projections.property("perg.id"), "projectionPerguntaId");
+		p.add(Projections.property("perg.ordem"), "projectionPerguntaOrdem");
+		p.add(Projections.property("perg.texto"), "projectionPerguntaTexto");
+		p.add(Projections.property("perg.comentario"), "projectionPerguntaComentario");
+		p.add(Projections.property("perg.tipo"), "projectionPerguntaTipo");
+		p.add(Projections.property("resp.id"), "projectionRespostaId");
+		p.add(Projections.property("resp.ordem"), "projectionRespostaOrdem");
+		p.add(Projections.property("resp.texto"), "projectionRespostaTexto");
+		p.add(Projections.property("resp.peso"), "projectionRespostaPeso");
+		p.add(Projections.property("asp.id"), "projectionPerguntaAspectoId");
+		p.add(Projections.property("asp.nome"), "projectionPerguntaAspectoNome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.id", colaboradorQuestionarioId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
 }

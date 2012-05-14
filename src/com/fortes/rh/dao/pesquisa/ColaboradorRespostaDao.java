@@ -47,4 +47,6 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	
 	List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId);
+
+	Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 }
