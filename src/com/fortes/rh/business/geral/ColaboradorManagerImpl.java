@@ -2307,6 +2307,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Long[] competenciasIdsFaixaSolicitacao = configuracaoNivelCompetenciaManager.findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSolicitacaoId);
 		Integer pontuacaoMaxima = configuracaoNivelCompetenciaManager.somaConfiguracoesByFaixa(faixaSolicitacaoId);
 		
+		if(exibeCompatibilidade && pontuacaoMaxima == null)
+			throw new Exception("Não existe configuração de nível de competência para a faixa salarial desta solictação.");
+		
 		Collection<Colaborador> colaboradores = getDao().triar(empresaId, escolaridade, sexo, dataNascIni, dataNascFim, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade);
 		double compatibilidade;
 		

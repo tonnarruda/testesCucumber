@@ -70,7 +70,9 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		p.add(Projections.property("c.nome"), "nomeCargo");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if (empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.asc("fs.nome"));
 
