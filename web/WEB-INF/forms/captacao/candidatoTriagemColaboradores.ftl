@@ -16,7 +16,7 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -24,24 +24,24 @@
 	<script type='text/javascript'>
 		$(function() {
 			$('#empresaSelect').change(function() {
-				populaCargosAreas($(this).val());
+				populaFaixasAreas($(this).val());
 			});
 			
 			exibeCampoPercentualMinimo();
 		});
 	
-		function populaCargosAreas(empresaId)
+		function populaFaixasAreas(empresaId)
 		{
 			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			CargoDWR.getByEmpresa(createListCargo, empresaId);
+			FaixaSalarialDWR.getByEmpresa(createListFaixa, empresaId);
 			AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
 		}
 		
-		function createListCargo(data)
+		function createListFaixa(data)
 		{
-			addChecks('cargosCheck',data);
+			addChecks('faixasCheck',data);
 		}
 
 		function createListArea(data)
@@ -56,9 +56,9 @@
 			$('#idadeIni').val('');
 			$('#idadeFim').val('');
 			$('#exibeCompatibilidade').removeAttr('checked');
-			$('#percentualMinimo').val('50');
+			$('#percentualMinimo').val('0');
 		
-			marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck', false);
+			marcarDesmarcarListCheckBox(document.forms[0], 'faixasCheck', false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'areasCheck', false);
 		}
 		
@@ -134,9 +134,9 @@
 
 			<li style="clear:both;"></li>
 
-			<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" />
+			<@frt.checkListBox label="Cargo / Faixa Salarial" name="faixasCheck" list="faixasCheckList" />
 			<@frt.checkListBox label="Área Organizacional" name="areasCheck" id="areasCheck" list="areasCheckList"/>
-			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pelo cargo \"${solicitacao.nomeDoCargoDaFaixaSalarial}\" com as competências do colaborador" onclick="exibeCampoPercentualMinimo();" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
+			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pela faixa salarial \"${solicitacao.nomeDoCargoDaFaixaSalarial} ${solicitacao.faixaSalarial.nome}\" com as competências do colaborador" onclick="exibeCampoPercentualMinimo();" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
 
 			<li id="campoPercMin">
 				<label>Percentual Mínimo de Compatibilidade: *<label>

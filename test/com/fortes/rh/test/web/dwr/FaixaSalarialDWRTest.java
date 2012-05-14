@@ -8,6 +8,8 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.web.dwr.FaixaSalarialDWR;
@@ -37,6 +39,24 @@ public class FaixaSalarialDWRTest extends MockObjectTestCase
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCargo").with(eq(cargo.getId())).will(returnValue(cargo.getFaixaSalarials()));
 
 		assertEquals(2, faixaSalarialDWR.getFaixas(cargo.getId().toString()).size());
+	}
+	
+	public void testGetByEmpresa() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Cargo cargo = CargoFactory.getEntity(1L);
+		cargo.setEmpresa(empresa);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		
+		cargo.setFaixaSalarials(new ArrayList<FaixaSalarial>());
+		cargo.getFaixaSalarials().add(faixaSalarial);
+		
+		faixaSalarialManager.expects(once()).method("findAllSelectByCargo").with(eq(empresa.getId())).will(returnValue(cargo.getFaixaSalarials()));
+		
+		assertEquals(1, faixaSalarialDWR.getByEmpresa(empresa.getId()).size());
 	}
 
 }

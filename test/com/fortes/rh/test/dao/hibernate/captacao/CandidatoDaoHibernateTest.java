@@ -2163,6 +2163,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		String indicadoPor = "júre";
 		String nomeBusca = "chicó";
 		String cpfBusca = "4544565634";
+		String escolaridade = "02";
+		
 		Estado estado = EstadoFactory.getEntity(1L);
 		Cidade cidade = CidadeFactory.getEntity(1L);
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
@@ -2173,7 +2175,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		String[] cargosCheck = new String[]{cargo.getNomeMercado()};
 		String[] conhecimentosCheck = new String[]{conhecimento.getNome()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosCheck, conhecimentosCheck, null, false, null, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidade.getId(), cargosCheck, conhecimentosCheck, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 
@@ -2185,6 +2187,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		String indicadoPor = "júre";
 		String nomeBusca = "chicó";
 		String cpfBusca = "4544565634";
+		String escolaridade = "02";
+		
 		Estado estado = EstadoFactory.getEntity(1L);
 		Cidade cidade = CidadeFactory.getEntity(1L);
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
@@ -2195,7 +2199,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Long[] cargosIds = new Long[]{cargo.getId()};
 		Long[] conhecimentosIds = new Long[]{conhecimento.getId()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, estado.getId(), cidade.getId(), cargosIds, conhecimentosIds, null, false, null, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidade.getId(), cargosIds, conhecimentosIds, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 	
@@ -2226,8 +2230,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoSolicitacao.setCandidato(candidatoComSolicitacao);
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), null, null, null, null, null, null, null, null, somenteCandidatosSemSolicitacao, null, null); 
+		
+		String escolaridade = null;
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), null, null, null, escolaridade, null, null, null, null, null, somenteCandidatosSemSolicitacao, null, null); 
 		assertEquals(2, resultados.size());
 		
 	}
@@ -2239,6 +2244,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		String nomeBusca = "chicó";
 		String cpfBusca = "4544565634";
+		String escolaridade = null;
 
 		Candidato candidato1 = getCandidato();
 		candidato1.setNome("Chico");
@@ -2255,7 +2261,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Long> candidatosJaSelecionados = new ArrayList<Long>();
 		candidatosJaSelecionados.add(candidato2.getId());
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), "", nomeBusca, cpfBusca, null, null, null, null, candidatosJaSelecionados, false, null, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(), "", nomeBusca, cpfBusca, escolaridade, null, null, null, null, candidatosJaSelecionados, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 
@@ -2280,6 +2286,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidato1.setNome("Chico");
 		candidato1.setCpf("4544565634");
 		candidato1.getPessoal().setIndicadoPor("Jurema");
+		candidato1.getPessoal().setEscolaridade("02");
 		candidato1.getEndereco().setCidade(cidade);
 		candidato1.getEndereco().setUf(estado);
 		candidato1.setConhecimentos(conhecimentos);

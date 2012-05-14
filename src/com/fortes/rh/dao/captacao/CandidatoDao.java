@@ -43,8 +43,8 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao);
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId);
 	public void migrarBairro(String bairro, String bairroDestino);
-	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosDaSolicitacao, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar);
-	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosDaSolicitacao, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar);
+	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosDaSolicitacao, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar);
+	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosDaSolicitacao, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar);
 	public void converteTodasAsFotosParaThumbnail();
 	public String getSenha(Long id);
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long colaboradorId);

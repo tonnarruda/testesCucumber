@@ -27,6 +27,7 @@ import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.IdiomaManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -46,6 +47,7 @@ import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Estado;
@@ -85,6 +87,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
+	private FaixaSalarialManager faixaSalarialManager;
 	private AnuncioManager anuncioManager;
 	private AreaInteresseManager areaInteresseManager;
 	private ConhecimentoManager conhecimentoManager;
@@ -131,6 +134,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
+	private Collection<CheckBox> faixasCheckList = new ArrayList<CheckBox>();
+	private String[] faixasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] conhecimentosCheck;
 	private Collection<CheckBox> conhecimentosCheckList = new ArrayList<CheckBox>();
@@ -386,7 +391,8 @@ public class CandidatoListAction extends MyActionSupportList
 		}
 
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
-
+		escolaridades = new Escolaridade();
+		
 		setShowFilter(true);
 		
 		return Action.SUCCESS;
@@ -414,14 +420,14 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
 		
-		percentualMinimo = (percentualMinimo == null) ? 50 : percentualMinimo;
+		percentualMinimo = (percentualMinimo == null) ? 0 : percentualMinimo;
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
-		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo((empresaId == null || empresaId == -1 ? null : empresaId));
+		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricao");
 
 		populaEmpresas();
 	
@@ -432,12 +438,18 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String triagemColaboradores() throws Exception
 	{
-		colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
+		percentualMinimo = (percentualMinimo == null) ? 0 : percentualMinimo;
+		
+		try {
+			colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
 
-		if(colaboradores == null || colaboradores.size() == 0)
-			addActionMessage("Não existem colaboradores a serem listados!");
-		else
-			setShowFilter(false);
+			if(colaboradores == null || colaboradores.size() == 0)
+				addActionMessage("Não existem colaboradores a serem listados!");
+			else
+				setShowFilter(false);
+		} catch (Exception e) {
+			addActionMessage(e.getMessage());
+		}
 
 		prepareTriagemColaboradores();
 		
@@ -596,7 +608,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
@@ -1714,5 +1726,25 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setColaboradoresIds(Long[] colaboradoresIds) {
 		this.colaboradoresIds = colaboradoresIds;
+	}
+
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
+	}
+
+	public Collection<CheckBox> getFaixasCheckList() {
+		return faixasCheckList;
+	}
+
+	public void setFaixasCheckList(Collection<CheckBox> faixasCheckList) {
+		this.faixasCheckList = faixasCheckList;
+	}
+
+	public String[] getFaixasCheck() {
+		return faixasCheck;
+	}
+
+	public void setFaixasCheck(String[] faixasCheck) {
+		this.faixasCheck = faixasCheck;
 	}
 }

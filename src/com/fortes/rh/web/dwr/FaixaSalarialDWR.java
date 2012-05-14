@@ -37,6 +37,22 @@ public class FaixaSalarialDWR
 
 		return new HashMap<String, String>();
 	}
+
+	public Map getByEmpresa(Long empresaId)
+	{
+		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
+		String getParametro = "getId";
+		
+		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os cargos/faixas 
+		{
+			faixas = faixaSalarialManager.findAllSelectByCargo(null);
+			getParametro = "getDescricao";
+		}
+		else
+			faixas = faixaSalarialManager.findAllSelectByCargo(empresaId);
+
+		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixas, getParametro, "getDescricao");
+	}
 	
 	public Map getByCargo(String cargoId)
 	{
