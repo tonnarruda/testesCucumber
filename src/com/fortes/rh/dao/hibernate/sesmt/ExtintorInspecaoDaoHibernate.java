@@ -49,7 +49,6 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 			hql.append("new ExtintorInspecao(ei, he) ");
 				
 		hql.append("FROM ExtintorInspecao ei ");
-		hql.append("LEFT JOIN ei.itens i ");
 		hql.append("LEFT JOIN ei.extintor e ");
 		hql.append("LEFT JOIN e.historicoExtintores he ");
 		hql.append("LEFT JOIN he.estabelecimento est ");
