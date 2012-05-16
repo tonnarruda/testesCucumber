@@ -390,6 +390,11 @@ public class RHServiceImpl implements RHService
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
 		try
 		{
+			Colaborador colaborador = colaboradorManager.findByIdComHistorico(new Long (empregado.getId()));
+			
+			if(colaborador == null)//Apagar contratações duplicadas na tabela temporária do ac Solicitado pela equipe ac
+				return new FeedbackWebService(true);
+			
 			HistoricoColaborador historico = historicoColaboradorManager.findById(Long.valueOf(situacao.getId()));
 
 			if(historico == null)

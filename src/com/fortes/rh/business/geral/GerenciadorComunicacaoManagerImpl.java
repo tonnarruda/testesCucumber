@@ -955,11 +955,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
 	}
-
 	
 	public void setProvidenciaManager(ProvidenciaManager providenciaManager)
 	{
 		this.providenciaManager = providenciaManager;
 	}
-
 }
