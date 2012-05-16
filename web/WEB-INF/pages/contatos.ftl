@@ -51,6 +51,7 @@ CEARÁ
 		Suporte Contábil: 365 dias/ano (85) 4005.1125
 		Suporte Fiscal: 365 dias/ano (85) 4005.1124
 		Suporte Pessoal: 365 dias/ano (85) 4005.1123
+		Suporte RH: (85) 4005.1114
 		Suporte AG: (85) 4005.1190
 		Suporte Ponto: (85) 4005.1127
 		Suporte Cargas: (85) 4005.1144
