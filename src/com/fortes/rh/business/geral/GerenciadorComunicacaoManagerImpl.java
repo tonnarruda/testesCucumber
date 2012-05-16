@@ -921,18 +921,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa) 
 	{
-		try {
-			ColaboradorAfastamentoManager colaboradorAfastamentoManager = (ColaboradorAfastamentoManager) SpringUtil.getBean("colaboradorAfastamentoManager");
-			ColaboradorAfastamento colaboradorAfastamento = colaboradorAfastamentoManager.findByColaboradorAfastamentoId(colaboradorAfastamentoId);
-			
-			enviaAvisoDeAfastamentoPorEmail(colaboradorAfastamento, empresa);
-			enviaAvisoDeAfastamentoPorMensagem(colaboradorAfastamento, empresa);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ColaboradorAfastamentoManager colaboradorAfastamentoManager = (ColaboradorAfastamentoManager) SpringUtil.getBean("colaboradorAfastamentoManager");
+		ColaboradorAfastamento colaboradorAfastamento = colaboradorAfastamentoManager.findByColaboradorAfastamentoId(colaboradorAfastamentoId);
+		
+		enviaAvisoDeAfastamentoPorEmail(colaboradorAfastamento, empresa);
+		enviaAvisoDeAfastamentoPorMensagem(colaboradorAfastamento, empresa);
+	
 	}
-
-	private void enviaAvisoDeAfastamentoPorEmail(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) throws AddressException, MessagingException 
+	private void enviaAvisoDeAfastamentoPorEmail(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) 
 	{
 		String subject = "[Fortes RH] Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial();
 		StringBuilder  body = new StringBuilder();
@@ -957,12 +953,17 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 				CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
 				Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
-				mail.send(empresa, subject, body.toString(), null, usuarioManager.findEmailsByUsuario(usuariosIds));
+				
+				try {
+					mail.send(empresa, subject, body.toString(), null, usuarioManager.findEmailsByUsuario(usuariosIds));
+				} catch (Exception e)	{
+					e.printStackTrace();
+				}
 			} 
 		}
 	}
 	
-	private void enviaAvisoDeAfastamentoPorMensagem(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) throws AddressException, MessagingException 
+	private void enviaAvisoDeAfastamentoPorMensagem(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) 
 	{
 		StringBuilder  mensagem = new StringBuilder();
 		mensagem.append("Foi inserido um afastamento para o colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());

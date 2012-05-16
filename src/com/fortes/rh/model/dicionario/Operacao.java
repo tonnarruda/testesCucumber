@@ -202,7 +202,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	AVISO_COLABORADOR_AFASTAMENTO(23, "Notificação ao inserir um afastamento.", "SESMT"){
+	AVISO_COLABORADOR_AFASTAMENTO(23, "Notificação ao inserir um afastamento", "SESMT"){
 		public TreeMap<Integer, String> meioComunicação(){
 
 			this.add(MeioComunicacao.EMAIL);

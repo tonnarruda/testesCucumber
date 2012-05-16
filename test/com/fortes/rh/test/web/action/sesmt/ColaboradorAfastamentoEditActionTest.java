@@ -10,6 +10,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -27,6 +28,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 	private Mock afastamentoManager;
 	private Mock colaboradorManager;
 	private Mock cidManager;
+	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -40,6 +42,9 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 
 		colaboradorManager = mock(ColaboradorManager.class);
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		
+		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+		action.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 
 		cidManager = mock(CidManager.class);
 		action.setCidManager((CidManager) cidManager.proxy());
@@ -74,6 +79,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 	{
 		ColaboradorAfastamento afastamento = ColaboradorAfastamentoFactory.getEntity(1L);
 		action.setColaboradorAfastamento(afastamento);
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDeAfastamento").withAnyArguments().isVoid();
 		manager.expects(once()).method("save").with(eq(afastamento)).will(returnValue(afastamento));
 
 		assertEquals("success", action.insert());
