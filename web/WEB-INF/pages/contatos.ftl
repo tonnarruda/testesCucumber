@@ -89,8 +89,8 @@ MATO GROSSO
 
 MINAS GERAIS
 	Fortes Belo Horizonte
-		Comercial: (31) 3679.4520 - 3679.4519
-		Suporte: (31) 3679.4504 - 3679.4506 - 3679.4527
+		Comercial: (31) 3679.4506
+		Suporte: (31) 3679.4520 e 3679.4518
 
 PARÁ
 	Fortes Belém
