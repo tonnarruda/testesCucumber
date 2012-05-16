@@ -1041,7 +1041,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 
-    public void testCriarCandidatoByColaborador()
+    public void testSaveOrUpdateCandidatoByColaborador()
     {
     	Idioma i = new Idioma();
     	i.setId(1L);
@@ -1118,7 +1118,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
 
-    	candidato = candidatoManager.criarCandidatoByColaborador(c);
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
+    	candidatoDao.expects(once()).method("update").with(ANYTHING);
+    	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
 
     	assertTrue("Teste 1", candidatoTemIdioma(i, candidato.getCandidatoIdiomas()));
     	assertEquals("Teste 2", "85", candidato.getContato().getDdd());
@@ -1131,6 +1136,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	assertEquals("Teste 8", "nome", candidato.getNome());
     	assertEquals("Teste 9", pessoal, candidato.getPessoal());
 
+    	c.setCandidato(candidato);
+
+    	candidatoDao.expects(once()).method("update").with(ANYTHING);
+    	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	
+    	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	
+    	assertEquals("Teste 10", c.getCandidato().getId(), candidato.getId());    	
     }
 
     //método auxiliar
@@ -1464,11 +1477,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		String[] cargosCheck = new String[]{"cargo"};
 		String[] conhecimentosCheck = new String[]{"conhecimento"};
 		boolean somenteSemSolicitacao = false;
+		String escolaridade = null;
 
-		Constraint[] parametros = new Constraint[]{eq("indicadoPor"), eq("nome"), eq("cpf"), eq(null), eq(null), eq(cargosCheck), eq(conhecimentosCheck), ANYTHING, eq(somenteSemSolicitacao), eq(100), ANYTHING};
+		Constraint[] parametros = new Constraint[]{eq("indicadoPor"), eq("nome"), eq("cpf"), eq(escolaridade), eq(null), eq(null), eq(cargosCheck), eq(conhecimentosCheck), ANYTHING, eq(somenteSemSolicitacao), eq(100), ANYTHING};
 		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(null));
 		candidatoDao.expects(once()).method("findCandidatosForSolicitacaoAllEmpresas").with(parametros).will(returnValue(new ArrayList<Candidato>()));
-		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, "indicadoPor", "nome", "cpf", null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null);
+		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, "indicadoPor", "nome", "cpf", escolaridade , null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null);
 		assertTrue(candidatos.isEmpty());
 	}
 
@@ -1480,11 +1494,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		String[] conhecimentosCheck = new String[]{"1"};
 		Long[] conhecimentosIds = StringUtil.stringToLong(conhecimentosCheck);
 		boolean somenteSemSolicitacao = false;
+		String escolaridade = null;
 
-		Constraint[] parametros = new Constraint[]{eq(empresaId), eq("indicadoPor"), eq("nome"), eq("cpf"), eq(null), eq(null), eq(cargosIds), eq(conhecimentosIds), eq(null), eq(false), eq(100), ANYTHING};
+		Constraint[] parametros = new Constraint[]{eq(empresaId), eq("indicadoPor"), eq("nome"), eq("cpf"), eq(escolaridade), eq(null), eq(null), eq(cargosIds), eq(conhecimentosIds), eq(null), eq(false), eq(100), ANYTHING};
 		candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(null));
 		candidatoDao.expects(once()).method("findCandidatosForSolicitacaoByEmpresa").with(parametros).will(returnValue(new ArrayList<Candidato>()));
-		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, "indicadoPor", "nome", "cpf", null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null);
+		Collection<Candidato> candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, "indicadoPor", "nome", "cpf", escolaridade, null, null, cargosCheck, conhecimentosCheck, null, somenteSemSolicitacao, 100, null);
 		assertTrue(candidatos.isEmpty());
 	}
 	

@@ -30,6 +30,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
@@ -164,6 +165,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradors;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<Cat> cats;
@@ -206,6 +210,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String avaliacaoDesempenhoTitulo;
 	@Transient
 	private boolean exibePerformanceProficional;
+	@Transient
+	private int somaCompetencias = 0;
+	@Transient
+	private double percentualCompatibilidade = 0.0;
 
 	public Colaborador()
 	{
@@ -432,6 +440,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setId(historicoEstabelecimentoId);
 		this.estabelecimento.setNome(historicoEstabelecimentoNome);
 	}
+
+	public Colaborador(Long id, String nome, Date dataNascimento, Character sexo, String escolaridade, int somaCompetencias)
+	{
+		this.setId(id);
+		this.nome = nome;
+		setProjectionDataNascimento(dataNascimento);
+		setProjectionSexo(sexo);
+		setPessoalEscolaridade(escolaridade);
+		this.somaCompetencias = somaCompetencias;
+	}
+	
 	// usado em findByAreasOrganizacionaisEstabelecimentos
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
 	{
@@ -2425,5 +2444,29 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setExibePerformanceProficional(boolean exibePerformanceProficional) {
 		this.exibePerformanceProficional = exibePerformanceProficional;
+	}
+
+	public int getSomaCompetencias() {
+		return somaCompetencias;
+	}
+
+	public void setSomaCompetencias(int somaCompetencias) {
+		this.somaCompetencias = somaCompetencias;
+	}
+
+	public Collection<ConfiguracaoNivelCompetenciaColaborador> getConfiguracaoNivelCompetenciaColaboradors() {
+		return configuracaoNivelCompetenciaColaboradors;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradors(Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradors) {
+		this.configuracaoNivelCompetenciaColaboradors = configuracaoNivelCompetenciaColaboradors;
+	}
+
+	public double getPercentualCompatibilidade() {
+		return percentualCompatibilidade;
+	}
+
+	public void setPercentualCompatibilidade(double percentualCompatibilidade) {
+		this.percentualCompatibilidade = percentualCompatibilidade;
 	}
 }

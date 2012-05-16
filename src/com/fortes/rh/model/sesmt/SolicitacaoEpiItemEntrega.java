@@ -56,12 +56,11 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		this.epiHistorico.setVencimentoCA(dataVencimentoCA);
 	}
 
-	public SolicitacaoEpiItemEntrega(Long id , Integer qtdEntregue, Date dataEntrega, String CA)
+	public SolicitacaoEpiItemEntrega(Long id , Integer qtdEntregue, Date dataEntrega)
 	{
 		setId(id);
 		setQtdEntregue(qtdEntregue);
 		setDataEntrega(dataEntrega);
-		setCA(CA);
 	}
 	
 	public void setProjectionSolicitacaoEpiItemId(Long solicitacaoEpiItemId) 

@@ -97,12 +97,28 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     	this.colaboradorQuestionario.setId(colaboradorQuestionarioId);
     }
 
+    public void setProjectionColaboradorQuestionarioObservacao(String colaboradorQuestionarioObservacao)
+    {
+    	if(this.colaboradorQuestionario == null)
+    		this.colaboradorQuestionario = new ColaboradorQuestionario();
+    	
+    	this.colaboradorQuestionario.setObservacao(colaboradorQuestionarioObservacao);
+    }
+
     public void setProjectionPerguntaTexto(String perguntaTexto)
     {
     	if (this.pergunta == null)
     		this.pergunta = new Pergunta();
 
     	this.pergunta.setTexto(perguntaTexto);
+    }
+    
+    public void setProjectionPerguntaComentario(boolean perguntaComentario)
+    {
+    	if (this.pergunta == null)
+    		this.pergunta = new Pergunta();
+    	
+    	this.pergunta.setComentario(perguntaComentario);
     }
 
     public void setProjectionPerguntaTipo(Integer perguntaTipo)

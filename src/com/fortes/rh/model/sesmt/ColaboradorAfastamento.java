@@ -130,6 +130,22 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		
 		this.colaborador.setCodigoAC(colaboradorCodigoAC);
 	}
+	
+	public void setProjectionColaboradorNome(String colaboradorNome)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setNome(colaboradorNome);
+	}
+
+	public void setProjectionColaboradorNomeComercial(String colaboradorNomeComercial)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setNomeComercial(colaboradorNomeComercial);
+	}
 
 	public Afastamento getAfastamento()
 	{

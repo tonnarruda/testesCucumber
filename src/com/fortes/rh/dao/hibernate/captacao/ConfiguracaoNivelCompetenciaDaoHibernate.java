@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -17,7 +18,10 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -255,5 +259,39 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	public void removeByCandidato(Long candidatoId) {
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.candidato.id = :candidatoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class, "cnc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p. add(Projections.property("cnc.competenciaId"), "faixaSalarialIdProjection");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cnc.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.isNull("cnc.candidato.id"));
+		criteria.add(Expression.isNull("cnc.configuracaoNivelCompetenciaColaborador.id"));
+		
+		Collection<Long> colIds = criteria.list();
+		Long[] compIds = new Long[colIds.size()];
+		
+		return colIds.toArray(compIds);
+	}
+
+	public Integer somaConfiguracoesByFaixa(Long faixaSalarialId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class, "cnc");
+		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.sum("nc.ordem"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cnc.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.isNull("cnc.candidato.id"));
+		criteria.add(Expression.isNull("cnc.configuracaoNivelCompetenciaColaborador.id"));
+		
+		return (Integer) criteria.uniqueResult();
 	}
 }

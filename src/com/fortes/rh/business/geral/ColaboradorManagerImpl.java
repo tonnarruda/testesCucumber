@@ -1,5 +1,7 @@
 package com.fortes.rh.business.geral;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -91,6 +94,7 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -130,6 +134,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private SolicitacaoManager solicitacaoManager;
 	
 	public void enviaEmailAniversariantes() throws Exception
 	{
@@ -900,9 +905,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionUsuario(colaboradorId);
 	}
 
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim)
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo)
 	{
-		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim);
+		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim, sexo);
 	}
 
 	public void setCidadeManager(CidadeManager cidadeManager)
@@ -2294,6 +2299,85 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findParentesByNome(nome, empresaId);
 	}
 	
+	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 
+	{
+		Colaborador colaborador = findByIdProjectionEmpresa(colaboradorId);
+		return colaborador.getEmpresa().getId().equals(empresaId);
+	}
+
+	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) throws Exception 
+	{
+		Date dataNascIni = null;
+		Date dataNascFim = null;
+		Date hoje = new Date();
+		
+		if( isNotBlank(idadeMin) && !idadeMin.equals("0"))
+			dataNascIni = DateUtil.incrementaAno(hoje, (-1)*(Integer.parseInt(idadeMin)));
+
+		if( isNotBlank(idadeMax) && !idadeMax.equals("0"))
+			dataNascFim = DateUtil.incrementaAno(hoje, (-1)*Integer.parseInt(idadeMax));
+		
+		Solicitacao solicitacao = solicitacaoManager.findByIdProjection(solicitacaoId);
+		Long faixaSolicitacaoId = solicitacao.getFaixaSalarial().getId();
+		
+		Long[] competenciasIdsFaixaSolicitacao = configuracaoNivelCompetenciaManager.findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSolicitacaoId);
+		Integer pontuacaoMaxima = configuracaoNivelCompetenciaManager.somaConfiguracoesByFaixa(faixaSolicitacaoId);
+		
+		if(exibeCompatibilidade && pontuacaoMaxima == null)
+			throw new Exception("Não existe configuração de nível de competência para a faixa salarial desta solictação.");
+		
+		Collection<Colaborador> colaboradores = getDao().triar(empresaId, escolaridade, sexo, dataNascIni, dataNascFim, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade);
+		double compatibilidade;
+		
+		if (exibeCompatibilidade && pontuacaoMaxima > 0)
+		{
+			Collection<Colaborador> colabs = new ArrayList<Colaborador>();
+			for (Colaborador colaborador : colaboradores) 
+			{
+				compatibilidade = (Double.valueOf(colaborador.getSomaCompetencias()) / pontuacaoMaxima) * 100.0;
+				compatibilidade = (compatibilidade > 100.0) ? 100.0 : compatibilidade;
+				
+				if (compatibilidade >= percentualMinimo) 
+				{
+					colaborador.setPercentualCompatibilidade(compatibilidade);
+					colabs.add(colaborador);
+				}
+			}
+			
+			return colabs;
+		
+		} else {
+			return colaboradores;
+		}
+	}
+	
+	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception
+	{
+		Colaborador colaborador = null;
+		Candidato candidato = null;
+		Collection<String> candidatosIds = new ArrayList<String>();
+		
+		// Atualiza candidato do colaborador
+		for (Long colaboradorId : colaboradoresIds) {
+
+			colaborador = (Colaborador) findByIdComHistoricoConfirmados(colaboradorId);
+
+			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
+			colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
+			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
+
+			candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
+			candidatosIds.add(candidato.getId().toString());
+
+			colaborador.setCandidato(candidato);
+
+			update(colaborador);
+		}
+		
+		// Grava colaboradores na solicitação
+		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
+	}
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -2303,9 +2387,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 
-	{
-		Colaborador colaborador = findByIdProjectionEmpresa(colaboradorId);
-		return colaborador.getEmpresa().getId().equals(empresaId);
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
 	}
 }

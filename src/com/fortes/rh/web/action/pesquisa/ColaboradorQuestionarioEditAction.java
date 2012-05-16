@@ -71,7 +71,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private ColaboradorQuestionario colaboradorQuestionario;
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
-	
 	private Collection<Pergunta> perguntas;
 	private Collection<Avaliacao> avaliacaoExperiencias = new ArrayList<Avaliacao>();
 	
@@ -216,6 +215,15 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		addActionMessage("Avaliação respondida com sucesso.");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirAvaliacaoDesempenhoRespondida()
+	{
+		colaboradorRespostas = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação da turma " + questionario.getTitulo(), getEmpresaSistema(), null);
 		
 		return Action.SUCCESS;
 	}

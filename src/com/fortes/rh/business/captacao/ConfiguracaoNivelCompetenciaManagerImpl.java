@@ -14,7 +14,8 @@ import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 
-public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager {
+public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetencia, ConfiguracaoNivelCompetenciaDao> implements ConfiguracaoNivelCompetenciaManager 
+{
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -263,5 +264,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);		
+	}
+
+	public Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId) {
+		return getDao().findCompetenciasIdsConfiguradasByFaixaSolicitacao(faixaSalarialId);
+	}
+
+	public Integer somaConfiguracoesByFaixa(Long faixaSalarialId) {
+		return getDao().somaConfiguracoesByFaixa(faixaSalarialId);
 	}
 }

@@ -32,11 +32,12 @@
 	</#if>
 <div id="menuBusca">
 	
-	<a href="../candidato/prepareBuscaSimples.action${solicitacaoId}" class="ativaSimples">Busca Simples</a>
-	<a href="../candidato/prepareBusca.action${solicitacaoId}" class="ativaAvancada">Busca Avançada</a>
-	<a href="../candidato/prepareBuscaF2rh.action${solicitacaoId}" class="ativaF2rh">Busca no F2rh</a>
+	<a href="../candidato/prepareBuscaSimples.action${solicitacaoId}" class="ativaSimples">Triagem Simples</a>
+	<a href="../candidato/prepareBusca.action${solicitacaoId}" class="ativaAvancada">Triagem Avançada</a>
+	<a href="../candidato/prepareBuscaF2rh.action${solicitacaoId}" class="ativaF2rh">Triagem no F2rh</a>
 	<#if solicitacao?exists && solicitacao.id?exists>
-		<a href="../candidato/prepareTriagemAutomatica.action${solicitacaoId}" class="ativaTriagemAutomatica">Busca Automática</a>
+		<a href="../candidato/prepareTriagemAutomatica.action${solicitacaoId}" class="ativaTriagemAutomatica">Triagem Automática</a>
+		<a href="../candidato/prepareTriagemColaboradores.action${solicitacaoId}" class="ativaTriagemColaboradores">Triagem de Colaboradores</a>
 	</#if>
 	<a style="border-right: none;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>

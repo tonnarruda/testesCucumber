@@ -282,6 +282,8 @@
 				<h4> Colaborador: ${solicitacaoExame.colaborador.nomeDesligado} </h4>
 				<@ww.hidden name="solicitacaoExame.colaborador.id" />
 			</#if>
+			
+			<@ww.hidden name="examesPara" />
 			<@ww.hidden name="solicitacaoExame.empresa.id" />
 			<@ww.hidden name="gravarEImprimir" value="true" />
 	

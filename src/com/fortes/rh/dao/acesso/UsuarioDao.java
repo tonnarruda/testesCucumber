@@ -32,5 +32,7 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	public Usuario findByIdProjection(Long usuarioId);
 	
 	public Collection<Usuario> findAllSelect(Long empresaId);
+	
+	public String[] findEmailsByUsuario(Long[] usuariosIds);
 
 }

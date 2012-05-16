@@ -1,10 +1,13 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +28,8 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	private FaixaSalarial faixaSalarial;
 	@Temporal(TemporalType.DATE)
 	private Date data;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="configuracaoNivelCompetenciaColaborador")
+	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
 	public ConfiguracaoNivelCompetenciaColaborador()
 	{
@@ -115,5 +120,13 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	{
 		if (faixaSalarial == null)
 			faixaSalarial = new FaixaSalarial();
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
+		return configuracaoNivelCompetencias;
+	}
+
+	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
+		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
 	}
 }

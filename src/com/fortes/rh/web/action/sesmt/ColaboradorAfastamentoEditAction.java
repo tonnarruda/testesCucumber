@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -22,6 +23,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	private ColaboradorManager colaboradorManager;
 	private AfastamentoManager afastamentoManager;
 	private CidManager cidManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Collection<Afastamento> afastamentos;
 
@@ -56,6 +58,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 		try
 		{
 			colaboradorAfastamentoManager.save(colaboradorAfastamento);
+			gerenciadorComunicacaoManager.enviaAvisoDeAfastamento(colaboradorAfastamento.getId(), getEmpresaSistema());
 			addActionMessage("Afastamento gravado com sucesso.");
 
 			return SUCCESS;
@@ -154,5 +157,10 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

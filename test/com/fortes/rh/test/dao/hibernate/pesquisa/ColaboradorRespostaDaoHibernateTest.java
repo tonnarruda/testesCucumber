@@ -605,6 +605,61 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
+	public void testFindRespostasAvaliacaoDesempenho()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionarioDao.save(questionario);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+
+		Aspecto aspecto = AspectoFactory.getEntity();
+		aspectoDao.save(aspecto);
+
+		Pergunta pergunta1 = PerguntaFactory.getEntity();
+		pergunta1.setTexto("Voce foi criado com a avo?");
+		pergunta1.setQuestionario(questionario);
+		perguntaDao.save(pergunta1);
+
+		Pergunta pergunta2 = PerguntaFactory.getEntity();
+		pergunta2.setTexto("Qual a nota do seu trabalho");
+		pergunta2.setQuestionario(questionario);
+		perguntaDao.save(pergunta2);
+
+		Resposta resposta1 = RespostaFactory.getEntity();
+		resposta1.setPergunta(pergunta1);
+		respostaDao.save(resposta1);
+
+		Resposta resposta2 = RespostaFactory.getEntity();
+		resposta2.setPergunta(pergunta2);
+		respostaDao.save(resposta2);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta1.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta1.setPergunta(pergunta1);
+		colaboradorResposta1.setResposta(resposta1);
+		colaboradorRespostaDao.save(colaboradorResposta1);
+
+		ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta2.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta2.setPergunta(pergunta2);
+		colaboradorResposta2.setResposta(resposta2);
+		colaboradorRespostaDao.save(colaboradorResposta2);
+
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		assertEquals(2, colaboradorRespostas.size());
+	}
+	
 	public void testFindByAvaliadoAndAvaliacaoDesempenho()
 	{
 		Colaborador avaliado = ColaboradorFactory.getEntity();

@@ -79,7 +79,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Collection<Colaborador> getColaboradoresIntegraAc(Collection<Colaborador> colaboradores);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim);
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo);
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	void atualizarUsuario(Long colaboradorId, Long usuarioId) throws Exception;
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
@@ -188,4 +188,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
 	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId);
+	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) throws Exception;
+	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception;
 }

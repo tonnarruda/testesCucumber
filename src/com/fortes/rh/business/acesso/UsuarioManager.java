@@ -50,5 +50,7 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	public void setUltimoLogin(Long id);
 	
 	public Collection<Usuario> findAllSelect(Long empresaId);
+	
+	public String[] findEmailsByUsuario(Long[] usuariosIds);
 
 }

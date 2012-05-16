@@ -339,4 +339,17 @@ public final class CollectionUtil<T>
 	{
 		return this.sortCollection(this.distinctCollection(col), ordenarPor);
 	}
+
+	public String[] convertCollectionToArrayString(Collection<T> col) {
+		int count = 0;
+		Collection<T> retornoCollection = col;
+		if(retornoCollection.size() > 0){
+			String[] retorno = new String[retornoCollection.size()];
+			for (T t : retornoCollection) 
+				retorno[count++] = t.toString();
+			return retorno;
+		}
+	
+		return new String[]{};
+	}
 }

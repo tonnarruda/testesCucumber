@@ -221,10 +221,16 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try
 		{   
-			if (examesPara == 'C') 
+			if (examesPara == 'C')
+			{				
 				solicitacaoExame.setColaborador(colaborador);
+				solicitacaoExame.setCandidato(null);
+			}
 			else
+			{
+				solicitacaoExame.setColaborador(null);				
 				solicitacaoExame.setCandidato(candidato);
+			}
 			
 			solicitacaoExame.setEmpresa(getEmpresaSistema());
 			solicitacaoExameManager.save(solicitacaoExame, examesId, selectClinicas, periodicidades);

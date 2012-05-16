@@ -101,6 +101,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	{
 		return faixaSalarial;
 	}
+
+	public Long getFaixaSalarialId() 
+	{
+		if (faixaSalarial == null)
+			return null;
+		
+		return faixaSalarial.getId();
+	}
 	
 	public void setFaixaSalarial(FaixaSalarial faixaSalarial) 
 	{

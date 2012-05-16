@@ -576,14 +576,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	public Candidato saveOrUpdateCandidatoByColaborador(Colaborador colaborador)
 	{
-		this.transactionManager = transactionManager;
-	}
-
-	public Candidato criarCandidatoByColaborador(Colaborador colaborador)
-	{
-		Candidato candidato = new Candidato();
+		Candidato candidato = null;
+		
+		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
+			candidato = new Candidato();
+		else
+			candidato = colaborador.getCandidato();
 
 		candidato.setPessoal(colaborador.getPessoal());
 		candidato.setDataAtualizacao(new Date());
@@ -612,8 +612,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	SocioEconomica socioEconomica = new SocioEconomica();
 	   	candidato.setSocioEconomica(socioEconomica);
 
-		candidato = save(candidato);
-
+	   	if(candidato.getId() == null)
+	   		candidato = save(candidato);
+	   	
     	Collection<Formacao> formacaos = colaborador.getFormacao();
     	for (Formacao formacao : formacaos)
 		{
@@ -1091,13 +1092,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar)
+	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
 		if(empresaId == -1L)
-			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
+			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidade, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
 		else
-			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
+			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidade, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
 	}
 
 	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 
@@ -1333,6 +1334,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return historicoCandidatoManager.findQtdAtendidos(empresaId, dataIni, dataFim);
 	}
 	
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
+
 	public void setEstadoManager(EstadoManager estadoManager) {
 		this.estadoManager = estadoManager;
 	}

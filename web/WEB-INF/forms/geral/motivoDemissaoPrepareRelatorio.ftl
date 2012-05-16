@@ -119,6 +119,8 @@
 		
 		$(document).ready(function($)
 		{
+			DWREngine.setAsync(false);
+		
 			getAgruparPorMotivo();	
 			var empresa = $('#empresa').val();
 			

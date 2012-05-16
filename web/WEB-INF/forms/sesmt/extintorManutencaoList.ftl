@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
@@ -72,7 +73,7 @@
 	<@ww.actionmessage />
 	
 	<#include "../util/topFiltro.ftl" />
-	<@ww.form name="form" id="form" action="list.action" method="POST">
+	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimentoId" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
 		<@ww.select label="Extintor" id="extintor" name="extintorId" list="extintors" listKey="id" listValue="descricao" headerValue="Todos" headerKey="" cssStyle="width:240px;"/>
@@ -86,12 +87,12 @@
 		<@ww.checkbox label="Exibir apenas extintores sem data de retorno" name="somenteSemRetorno" labelPosition="left"/>
 
 		<@ww.hidden id="pagina" name="page"/>
-		<input id="btnPesquisar" type="button" value="" class="btnPesquisar grayBGE" />
+		<input type="submit" id="btnPesquisar" value="" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br/>
 
-	<@display.table name="extintorManutencaos" id="extintorManutencao" pagesize=10 class="dados" defaultsort=2 sort="list">
+	<@display.table name="extintorManutencaos" id="extintorManutencao" class="dados" defaultsort=2 sort="list">
 		<@display.column title="Ações" class="acao" style="width:25px;">
 			<a href="prepareUpdate.action?extintorManutencao.id=${extintorManutencao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?extintorManutencao.id=${extintorManutencao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
@@ -107,7 +108,8 @@
 			</#if>
 		</@display.column>
 	</@display.table>
-
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
+	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
 		

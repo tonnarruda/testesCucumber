@@ -47,14 +47,13 @@
 
 	<@ww.form name="form" action="relatorioExamesRealizados.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
-		<@ww.checkbox label="Relatório resumido" id="relatorioExamesPrevistosResumido" name="relatorioExamesPrevistosResumido" labelPosition="left" onchange="filtrarOpcaoRelatorioResumido(this.value);" />
 		Período:*<br>
 		<@ww.datepicker name="inicio" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="fim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 		
 		<@ww.div id="divRelatResumido">
-			<@ww.select label="Vínculo" id="vinculo" name="vinculo" list=r"#{'CANDIDATO_COLABORADOR':'Candidato & Colaborador','COLABORADOR':'Colaborador'}" onchange="filtrarOpcao(this.value);"/>
+			<@ww.select label="Vínculo" id="vinculo" name="vinculo" list=r"#{'CANDIDATO':'Candidato', 'COLABORADOR':'Colaborador'}" onchange="filtrarOpcao(this.value);"/>
 			
 			<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 			
@@ -71,7 +70,7 @@
 		<@ww.div id="divRelatResumidoResultado">
 			<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Alterado','NAO_REALIZADO':'Não Informado'}" />
 		</@ww.div>
-		
+		<@ww.checkbox label="Relatório resumido" id="relatorioExamesPrevistosResumido" name="relatorioExamesPrevistosResumido" labelPosition="left" onchange="filtrarOpcaoRelatorioResumido(this.value);" />
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />
 		</div>

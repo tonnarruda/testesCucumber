@@ -19,7 +19,9 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.CollectionUtil;
 
 @SuppressWarnings("unchecked")
 public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements UsuarioDao
@@ -224,4 +226,21 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		Query query = getSession().createQuery(hql);
 		query.executeUpdate();
 	}
+	
+	public String[] findEmailsByUsuario(Long[] usuariosIds)
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.usuario", "u");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.in("u.id", usuariosIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
+	}
+
 }

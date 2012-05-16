@@ -202,6 +202,18 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	AVISO_COLABORADOR_AFASTAMENTO(23, "Notificação ao inserir um afastamento.", "SESMT"){
+		public TreeMap<Integer, String> meioComunicação(){
+
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	BACKUP_AUTOMATICO(16, "Aviso automático de backup", "Utilitários"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);

@@ -155,6 +155,9 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="solicitacaoManager">
+      <ref bean="solicitacaoManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -898,6 +901,9 @@
     </property>
     <property name="providenciaManager">
       <ref bean="providenciaManager" />
+    </property>
+    <property name="cidManager">
+      <ref bean="cidManager" />
     </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">

@@ -9,18 +9,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -52,10 +56,12 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.Cabecalho;
+import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
@@ -77,6 +83,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
 	ProvidenciaManager providenciaManager;
+	CidManager cidManager;
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{
@@ -911,6 +918,74 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.DESLIGAMENTO);
 		}
 	}
+	
+	public void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa) 
+	{
+		try {
+			ColaboradorAfastamentoManager colaboradorAfastamentoManager = (ColaboradorAfastamentoManager) SpringUtil.getBean("colaboradorAfastamentoManager");
+			ColaboradorAfastamento colaboradorAfastamento = colaboradorAfastamentoManager.findByColaboradorAfastamentoId(colaboradorAfastamentoId);
+			
+			enviaAvisoDeAfastamentoPorEmail(colaboradorAfastamento, empresa);
+			enviaAvisoDeAfastamentoPorMensagem(colaboradorAfastamento, empresa);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void enviaAvisoDeAfastamentoPorEmail(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) throws AddressException, MessagingException 
+	{
+		String subject = "[Fortes RH] Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial();
+		StringBuilder  body = new StringBuilder();
+		body.append("Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());
+		body.append("<br><br>");
+		body.append("Motivo: " + colaboradorAfastamento.getAfastamento().getDescricao());
+		body.append("<br>");
+		body.append("Período: " + colaboradorAfastamento.getPeriodoFormatado());
+		body.append("<br>"); 
+		body.append("CID: " + colaboradorAfastamento.getCid() + " - " + cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid()));
+		body.append("<br>"); 
+		body.append("Médico: " + colaboradorAfastamento.getMedicoNome());
+		body.append("<br>"); 
+		body.append("CRM: " + colaboradorAfastamento.getMedicoCrm());
+		body.append("<br>"); 
+		body.append("Observações: " + colaboradorAfastamento.getObservacao());
+
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+				CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
+				Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+				mail.send(empresa, subject, body.toString(), null, usuarioManager.findEmailsByUsuario(usuariosIds));
+			} 
+		}
+	}
+	
+	private void enviaAvisoDeAfastamentoPorMensagem(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) throws AddressException, MessagingException 
+	{
+		StringBuilder  mensagem = new StringBuilder();
+		mensagem.append("Foi inserido um afastamento para o colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());
+		mensagem.append("\n\n");
+		mensagem.append("Motivo: " + colaboradorAfastamento.getAfastamento().getDescricao());
+		mensagem.append("\n");
+		mensagem.append("Período: " + colaboradorAfastamento.getPeriodoFormatado());
+		mensagem.append("\n"); 
+		mensagem.append("CID: " + colaboradorAfastamento.getCid() + " - " + cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid()));
+		mensagem.append("\n"); 
+		mensagem.append("Médico: " + colaboradorAfastamento.getMedicoNome());
+		mensagem.append("\n"); 
+		mensagem.append("CRM: " + colaboradorAfastamento.getMedicoCrm());
+		mensagem.append("\n"); 
+		mensagem.append("Observações: " + colaboradorAfastamento.getObservacao());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.AFASTAMENTO);
+			} 
+		}
+	}
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
@@ -959,5 +1034,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void setProvidenciaManager(ProvidenciaManager providenciaManager)
 	{
 		this.providenciaManager = providenciaManager;
+	}
+
+	public void setCidManager(CidManager cidManager) {
+		this.cidManager = cidManager;
 	}
 }

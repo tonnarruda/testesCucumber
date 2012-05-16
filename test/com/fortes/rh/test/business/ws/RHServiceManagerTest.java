@@ -354,6 +354,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		empregado.setCodigoAC("00001");
 		empregado.setEmpresaCodigoAC("0001");
 		empregado.setGrupoAC("001");
+		empregado.setId(2);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
@@ -365,11 +366,25 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setGrupoAC("001");
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		
-		colaboradorManager.expects(once()).method("cancelarContratacaoNoAC").withAnyArguments().isVoid();
+
+		colaboradorManager.expects(once()).method("findByIdComHistorico").withAnyArguments().will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("findById").withAnyArguments().will(returnValue(historicoColaborador));;
+		colaboradorManager.expects(once()).method("cancelarContratacaoNoAC").withAnyArguments().isVoid();
 
 		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, situacao, "").isSucesso());
+	}
+	
+	public void testCancelarContratacaoColaboradorNaoEncontrado() throws Exception
+	{
+		TEmpregado empregado = new TEmpregado();
+		empregado.setCodigoAC("00001");
+		empregado.setEmpresaCodigoAC("0001");
+		empregado.setGrupoAC("001");
+		empregado.setId(2);
+		
+		colaboradorManager.expects(once()).method("findByIdComHistorico").withAnyArguments().will(returnValue(null));
+		
+		assertEquals(true, rHServiceManager.cancelarContratacao(empregado, null, "").isSucesso());
 	}
 
 	public void testCancelarSolicitacaoDesligamentoAC() throws Exception

@@ -192,6 +192,34 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertTrue(usuarioDoBanco.isAcessoSistema());
 	}
 	
+	
+	public void testFindEmailsByUsuario()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setLogin("babauuu1_");
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmailColaborador("teste@teste.com");
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuario2.setLogin("babauuu2_");
+		usuarioDao.save(usuario2);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmailColaborador("teste2@teste2.com");
+		colaborador2.setUsuario(usuario2);
+		colaboradorDao.save(colaborador2);
+		
+		Long[] usuariosIds = new Long[]{usuario.getId(), usuario2.getId()};
+		
+		String[] emails = usuarioDao.findEmailsByUsuario(usuariosIds);
+		assertEquals(2, emails.length);
+		assertEquals("teste@teste.com", emails[0]);
+	}
+	
 	public void testFindAllSelectEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

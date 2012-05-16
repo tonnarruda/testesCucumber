@@ -173,6 +173,34 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		return criteria.list();
 	}
 	
+	public ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ca");
+		criteria.createCriteria("ca.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("ca.afastamento", "a", CriteriaSpecification.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ca.id"), "id");
+		p.add(Projections.property("ca.inicio"), "inicio");
+		p.add(Projections.property("ca.fim"), "fim");
+		p.add(Projections.property("ca.medicoNome"), "medicoNome");
+		p.add(Projections.property("ca.cid"), "cid");
+		p.add(Projections.property("ca.medicoCrm"), "medicoCrm");
+		p.add(Projections.property("ca.observacao"), "observacao");
+		p.add(Projections.property("a.descricao"), "afastamentoDescricao");
+		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("co.nomeComercial"), "projectionColaboradorNomeComercial");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ca.id", colaboradorAfastamentoId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAfastamento.class));
+		
+		return (ColaboradorAfastamento) criteria.uniqueResult();
+	}
+	
 	public Collection<Afastamento> findQtdAfastamentosPorMotivo(Long empresaId, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ca");

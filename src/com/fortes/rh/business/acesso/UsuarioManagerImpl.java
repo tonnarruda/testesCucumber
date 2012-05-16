@@ -237,6 +237,10 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
 		}
 	}
+	
+	public String[] findEmailsByUsuario(Long[] usuariosIds){
+		return getDao().findEmailsByUsuario(usuariosIds);
+	}
 
 	public void setUltimoLogin(Long id) {
 		getDao().setUltimoLogin(id);

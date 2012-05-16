@@ -189,7 +189,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	{
 		String whereEstabelecimentos = "", whereExames = "", whereResultado="", whereClinica="", whereMotivo="";
 		
-		if (vinculo.equals("COLABORADOR") && estabelecimentosIds != null && estabelecimentosIds.length > 0)
+		if ( vinculo.equals("COLABORADOR") && estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and es.id in (:estabelecimentoIds) ";
 		
 		if (examesIds != null && examesIds.length > 0)
@@ -238,7 +238,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("			and hc2.data <= :hoje  and hc2.status = :status ");
 			hql.append("	) ");
 		}
-
+	
 		hql.append("ORDER BY clinica.id ASC,e.nome ASC,se.data ASC ");
 		
 		Query query = getSession().createQuery(hql.toString());
@@ -256,7 +256,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setDate("fim", fim);
 		query.setLong("empresaId", empresaId);
 		
-		if (vinculo.equals("COLABORADOR") && estabelecimentosIds != null && estabelecimentosIds.length > 0)
+		if (!vinculo.equals("CANDIDATO") && estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
 		
 		if (examesIds != null && examesIds.length > 0)
