@@ -35,6 +35,7 @@
 #menuDropDown > li > a[title="Blog"],
 #menuDropDown > li > a[title="Twitter"],
 #menuDropDown > li > a[title="Videoteca"],
+#menuDropDown > li > a[title="Contatos"],
 #menuDropDown > li > a[title="Suporte"]{
 	background: none;
 }

@@ -210,6 +210,12 @@ public class Index extends ActionSupport
 		return Action.SUCCESS;
 	}
 	
+	public String contatos() throws Exception
+	{
+		pgInicial = false;
+		return Action.SUCCESS;
+	}
+	
 	public String getCalculoHash()
 	{
 		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());

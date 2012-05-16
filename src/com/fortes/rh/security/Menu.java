@@ -1,16 +1,13 @@
 package com.fortes.rh.security;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.axis.utils.StringUtils;
 
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.StringUtil;
 
 public abstract class Menu 
 {
@@ -78,6 +75,10 @@ public abstract class Menu
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
 				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Suporte'>" 
 				+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
+		
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='contatos.action' title='Contatos'>" +
+				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("</ul>\n\n");
 
