@@ -34,7 +34,9 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -71,6 +73,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private ColaboradorQuestionario colaboradorQuestionario;
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
+	private Collection<RespostaQuestionarioVO> respostaQuestionarioVOs;
 	private Collection<Pergunta> perguntas;
 	private Collection<Avaliacao> avaliacaoExperiencias = new ArrayList<Avaliacao>();
 	
@@ -211,7 +214,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		if(colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
-		ExibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
+		exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
 		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
 		addActionMessage("Avaliação respondida com sucesso.");
@@ -221,14 +224,24 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String imprimirAvaliacaoDesempenhoRespondida()
 	{
-		colaboradorRespostas = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
+		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
+		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
-		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação da turma " + questionario.getTitulo(), getEmpresaSistema(), null);
+		respostaQuestionarioVOs = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		String filtro = "Avaliador: " + avaliador.getNome();
+		filtro += "\nAvaliado: " + colaborador.getNome();
+
+		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)
+			filtro += "\n\n" + colaboradorQuestionario.getAvaliacao().getCabecalho();
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação de Desempenho", getEmpresaSistema(), filtro);
+		parametros.put("observacoes", colaboradorQuestionario.getObservacao());
 		
 		return Action.SUCCESS;
 	}
 
-	private void ExibeResultadoAutoavaliacao() 
+	private void exibeResultadoAutoavaliacao() 
 	{
 		this.exibeResultadoAutoavaliacao =  colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() 
 		&& SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId().equals(colaboradorQuestionario.getColaborador().getId()) 
@@ -764,5 +777,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setPreview(boolean preview) {
 		this.preview = preview;
+	}
+
+	public Collection<RespostaQuestionarioVO> getRespostaQuestionarioVOs() {
+		return respostaQuestionarioVOs;
 	}
 }

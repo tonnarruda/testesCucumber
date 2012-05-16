@@ -31,6 +31,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.util.ConverterUtil;
 
 public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
@@ -571,7 +572,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		 return resultadosObjetivas;
 	 }
 	 
-	public Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) {
+	public Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
+	{
 		return getDao().findRespostasAvaliacaoDesempenho(colaboradorQuestionarioId);
 	}
 }

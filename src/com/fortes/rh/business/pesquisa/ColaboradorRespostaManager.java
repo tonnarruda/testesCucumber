@@ -9,6 +9,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorRespostaManager extends GenericManager<ColaboradorResposta>
@@ -30,5 +31,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId);
 	void removeFichas(Long[] colaboradorQuestionarioIds);
-	Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
+	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 }

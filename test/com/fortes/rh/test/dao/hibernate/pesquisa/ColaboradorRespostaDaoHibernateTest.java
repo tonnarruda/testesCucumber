@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -17,6 +18,7 @@ import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.dao.pesquisa.PesquisaDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -32,8 +34,10 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -61,6 +65,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 	private TurmaDao turmaDao;
 	private CandidatoDao candidatoDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	private AvaliacaoDao avaliacaoDao;
 
 	public ColaboradorResposta getEntity()
 	{
@@ -610,12 +615,12 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 
-		Questionario questionario = QuestionarioFactory.getEntity();
-		questionarioDao.save(questionario);
-
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(colaborador);
-		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 
 		Aspecto aspecto = AspectoFactory.getEntity();
@@ -623,12 +628,12 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 		Pergunta pergunta1 = PerguntaFactory.getEntity();
 		pergunta1.setTexto("Voce foi criado com a avo?");
-		pergunta1.setQuestionario(questionario);
+		pergunta1.setAvaliacao(avaliacao);
 		perguntaDao.save(pergunta1);
 
 		Pergunta pergunta2 = PerguntaFactory.getEntity();
 		pergunta2.setTexto("Qual a nota do seu trabalho");
-		pergunta2.setQuestionario(questionario);
+		pergunta2.setAvaliacao(avaliacao);
 		perguntaDao.save(pergunta2);
 
 		Resposta resposta1 = RespostaFactory.getEntity();
@@ -639,24 +644,21 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		resposta2.setPergunta(pergunta2);
 		respostaDao.save(resposta2);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-
 		ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity();
-		colaboradorResposta1.setAreaOrganizacional(areaOrganizacional);
 		colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
 		colaboradorResposta1.setPergunta(pergunta1);
 		colaboradorResposta1.setResposta(resposta1);
 		colaboradorRespostaDao.save(colaboradorResposta1);
 
 		ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity();
-		colaboradorResposta2.setAreaOrganizacional(areaOrganizacional);
 		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
 		colaboradorResposta2.setPergunta(pergunta2);
 		colaboradorResposta2.setResposta(resposta2);
 		colaboradorRespostaDao.save(colaboradorResposta2);
 
-		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		colaboradorRespostaDao.findEntidadeComAtributosSimplesById(colaboradorResposta1.getId());
+		
+		Collection<RespostaQuestionarioVO> colaboradorRespostas = colaboradorRespostaDao.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
@@ -780,6 +782,10 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) {
 		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
+	}
+
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+		this.avaliacaoDao = avaliacaoDao;
 	}
 
 }

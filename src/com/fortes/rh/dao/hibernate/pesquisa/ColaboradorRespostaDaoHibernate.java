@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.pesquisa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -20,6 +22,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
@@ -506,39 +509,50 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
-	public Collection<ColaboradorResposta> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
+	public Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "cr");
-		criteria.createCriteria("cr.colaboradorQuestionario", "cq");
-		criteria.createCriteria("cr.resposta", "resp", Criteria.LEFT_JOIN);
-		criteria.createCriteria("cr.pergunta", "perg");
-		criteria.createCriteria("perg.aspecto", "asp", Criteria.LEFT_JOIN);
+		StringBuffer hql = new StringBuffer();
+		hql.append("select cq.id, p.id as pergunta_id, p.ordem as pergunta_ordem, p.texto as pergunta_texto, p.comentario as pergunta_comentario, p.tipo as pergunta_tipo, ");
+		hql.append("r.id as resposta_id, r.ordem as resposta_ordem, r.texto as resposta_texto, r.peso as resposta_peso, ");
+		hql.append("a.id as aspecto_id, a.nome as aspecto_nome, cq.observacao, ");
+		hql.append("cr.resposta_id as cr_resposta_id, cr.valor as cr_resposta_valor, cr.comentario as cr_comentario ");  
+		hql.append("from colaboradorquestionario cq ");
+		hql.append("inner join avaliacao av on cq.avaliacao_id = av.id "); 
+		hql.append("inner join pergunta p on p.avaliacao_id = av.id ");
+		hql.append("left join resposta r on r.pergunta_id = p.id ");
+		hql.append("left  join aspecto a on a.id = p.aspecto_id ");
+		hql.append("left join colaboradorresposta cr on cr.pergunta_id = p.id and (r.id = cr.resposta_id or cr.resposta_id is null) and cq.id = cr.colaboradorquestionario_id "); 
+		hql.append("where cq.id = :colaboradorQuestionarioId ");
+		hql.append("order by p.ordem, r.ordem");
 		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cr.id"), "id");
-		p.add(Projections.property("cr.valor"), "valor");
-		p.add(Projections.property("cr.comentario"), "comentario");
-		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
-		p.add(Projections.property("cq.observacao"), "projectionColaboradorQuestionarioObservacao");
-		p.add(Projections.property("perg.id"), "projectionPerguntaId");
-		p.add(Projections.property("perg.ordem"), "projectionPerguntaOrdem");
-		p.add(Projections.property("perg.texto"), "projectionPerguntaTexto");
-		p.add(Projections.property("perg.comentario"), "projectionPerguntaComentario");
-		p.add(Projections.property("perg.tipo"), "projectionPerguntaTipo");
-		p.add(Projections.property("resp.id"), "projectionRespostaId");
-		p.add(Projections.property("resp.ordem"), "projectionRespostaOrdem");
-		p.add(Projections.property("resp.texto"), "projectionRespostaTexto");
-		p.add(Projections.property("resp.peso"), "projectionRespostaPeso");
-		p.add(Projections.property("asp.id"), "projectionPerguntaAspectoId");
-		p.add(Projections.property("asp.nome"), "projectionPerguntaAspectoNome");
 		
-		criteria.setProjection(p);
+		SQLQuery query = getSession().createSQLQuery(hql.toString());
+		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
 		
-		criteria.add(Expression.eq("cq.id", colaboradorQuestionarioId));
+		query.addScalar("id", Hibernate.LONG);
+		query.addScalar("pergunta_id", Hibernate.LONG);
+		query.addScalar("pergunta_ordem", Hibernate.INTEGER);
+		query.addScalar("pergunta_texto", Hibernate.STRING);
+		query.addScalar("pergunta_comentario", Hibernate.BOOLEAN);
+		query.addScalar("pergunta_tipo", Hibernate.INTEGER);
+		query.addScalar("resposta_id", Hibernate.LONG);
+		query.addScalar("resposta_ordem", Hibernate.INTEGER);
+		query.addScalar("resposta_texto", Hibernate.STRING);
+		query.addScalar("resposta_peso", Hibernate.INTEGER);
+		query.addScalar("aspecto_id", Hibernate.LONG);
+		query.addScalar("aspecto_nome", Hibernate.STRING);
+		query.addScalar("observacao", Hibernate.STRING);
+		query.addScalar("cr_resposta_id", Hibernate.LONG);
+		query.addScalar("cr_resposta_valor", Hibernate.INTEGER);
+		query.addScalar("cr_comentario", Hibernate.STRING);
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-		
-		return criteria.list();
+		Collection<RespostaQuestionarioVO> vos = new ArrayList<RespostaQuestionarioVO>();
+		Collection<Object[]> lista = query.list();
+		int i;
+		for (Object[] obj : lista) {
+			i = 0;
+			vos.add(new RespostaQuestionarioVO((Long)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Boolean)obj[i++], (Integer)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (String)obj[i++], (String)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++]));
+		}
+		return vos;
 	}
 }
