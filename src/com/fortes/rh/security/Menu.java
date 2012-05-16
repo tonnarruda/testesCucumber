@@ -60,6 +60,10 @@ public abstract class Menu
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='contatos.action' title='Contatos'>" +
+				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
+
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
 				"<a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter'>" +
 				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		
@@ -76,9 +80,6 @@ public abstract class Menu
 				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Suporte'>" 
 				+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		
-		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='contatos.action' title='Contatos'>" +
-				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("</ul>\n\n");
 
