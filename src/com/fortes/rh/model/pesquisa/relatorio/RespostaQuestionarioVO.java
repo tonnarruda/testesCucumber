@@ -12,6 +12,7 @@ public class RespostaQuestionarioVO
 	private Integer perguntaOrdem;
 	private String perguntaTexto;
 	private Boolean perguntaHasComentario;
+	private String perguntaTextoComentario;
 	private Integer perguntaTipo;
 	private Long respostaId;
 	private Integer respostaOrdem;
@@ -26,7 +27,7 @@ public class RespostaQuestionarioVO
 	
 	public RespostaQuestionarioVO() {}
 	
-	public RespostaQuestionarioVO(Long colaboradorQuestionarioId, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, Integer perguntaTipo, Long respostaId,
+	public RespostaQuestionarioVO(Long colaboradorQuestionarioId, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, String perguntaTextoComentario, Integer perguntaTipo, Long respostaId,
 			Integer respostaOrdem, String respostaTexto, Integer respostaPeso, Long aspectoId, String aspectoNome, String colaboradorQuestionarioObservacao, Long colaboradorRespostaRespostaId,
 			Integer colaboradorRespostaValor, String colaboradorRespostaComentario) {
 		super();
@@ -35,6 +36,7 @@ public class RespostaQuestionarioVO
 		this.perguntaOrdem = perguntaOrdem;
 		this.perguntaTexto = perguntaTexto;
 		this.perguntaHasComentario = perguntaHasComentario;
+		this.perguntaTextoComentario = perguntaTextoComentario;
 		this.perguntaTipo = perguntaTipo;
 		this.respostaId = respostaId;
 		this.respostaOrdem = respostaOrdem;
@@ -210,5 +212,13 @@ public class RespostaQuestionarioVO
 
 	public void setColaboradorRespostaComentario(String colaboradorRespostaComentario) {
 		this.colaboradorRespostaComentario = colaboradorRespostaComentario;
+	}
+
+	public String getPerguntaTextoComentario() {
+		return perguntaTextoComentario;
+	}
+
+	public void setPerguntaTextoComentario(String perguntaTextoComentario) {
+		this.perguntaTextoComentario = perguntaTextoComentario;
 	}
 }

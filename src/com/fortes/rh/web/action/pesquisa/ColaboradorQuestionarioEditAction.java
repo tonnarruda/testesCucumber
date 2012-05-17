@@ -229,7 +229,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
 		respostaQuestionarioVOs = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
-		String filtro = "Avaliador: " + avaliador.getNome();
+		String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
+		filtro += "\nAvaliador: " + avaliador.getNome();
 		filtro += "\nAvaliado: " + colaborador.getNome();
 
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)

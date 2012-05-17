@@ -42,6 +42,7 @@
 	<field name="colaboradorRespostaValor" class="java.lang.Integer"/>
 	<field name="colaboradorRespostaComentario" class="java.lang.String"/>
 	<field name="pathImage" class="java.lang.String"/>
+	<field name="perguntaTextoComentario" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 	</variable>
@@ -75,11 +76,11 @@
 		<group  name="grp_pergunta" >
 			<groupExpression><![CDATA[$F{perguntaId}]]></groupExpression>
 			<groupHeader>
-			<band height="18"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="15"
-						y="4"
+						y="14"
 						width="519"
 						height="14"
 						key="textField"/>
@@ -92,7 +93,7 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="false" >
 			</band>
 			</groupFooter>
 		</group>
@@ -125,14 +126,15 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="16"  isSplitAllowed="false" >
+			<band height="48"  isSplitAllowed="false" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="31"
 						y="2"
 						width="197"
 						height="14"
-						key="textField"/>
+						key="textField"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
@@ -145,44 +147,51 @@
 						y="4"
 						width="9"
 						height="9"
-						key="image-1">
+						key="image-1"
+						positionType="Float">
 							<printWhenExpression><![CDATA[new Boolean($F{pathImage} != null)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.lang.String"><![CDATA[$F{pathImage}]]></imageExpression>
 				</image>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="36"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($P{observacoes} != null)]]></printWhenExpression>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="14"
-						y="14"
-						width="520"
-						height="22"
-						key="textField"/>
-					<box topBorder="Thin" topBorderColor="#000000" topPadding="5" leftBorder="Thin" leftBorderColor="#000000" leftPadding="5" rightBorder="Thin" rightBorderColor="#000000" rightPadding="5" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="5"/>
+						x="31"
+						y="30"
+						width="503"
+						height="18"
+						key="textField-3"
+						positionType="Float"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($F{perguntaTipo}.intValue() != 3 && $F{colaboradorRespostaComentario} != null && $F{colaboradorRespostaComentario} != "")]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="Thin" topBorderColor="#000000" topPadding="2" leftBorder="Thin" leftBorderColor="#000000" leftPadding="2" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{observacoes}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaboradorRespostaComentario}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="15"
-						y="-1"
-						width="116"
+						x="31"
+						y="16"
+						width="503"
 						height="14"
-						key="staticText-1"/>
+						key="textField"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean($F{perguntaTipo}.intValue() != 3 && $F{colaboradorRespostaComentario} != null && $F{colaboradorRespostaComentario} != "")]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
+					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Observações:]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{perguntaTextoComentario}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
@@ -216,7 +225,34 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="44"  isSplitAllowed="false" >
+				<printWhenExpression><![CDATA[new Boolean($P{observacoes} != null)]]></printWhenExpression>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="28"
+						width="532"
+						height="16"
+						key="textField"/>
+					<box topBorder="Thin" topBorderColor="#000000" topPadding="2" leftBorder="Thin" leftBorderColor="#000000" leftPadding="2" rightBorder="Thin" rightBorderColor="#000000" rightPadding="2" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{observacoes}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="2"
+						y="13"
+						width="116"
+						height="14"
+						key="staticText-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[Observações:]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>
