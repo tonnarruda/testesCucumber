@@ -534,6 +534,16 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		colaborador.getEmpresa().setId(id);
 	}
 
+	public void setEmpresaNome(String nomeEmpresa)
+	{
+		inicializaColaborador();
+		
+		if (colaborador.getEmpresa() == null)
+			colaborador.setEmpresa(new Empresa());
+		
+		colaborador.getEmpresa().setNome(nomeEmpresa);
+	}
+	
 	public void setAmbienteId(Long id)
 	{
 		if (ambiente == null)

@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,6 +20,7 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
@@ -946,21 +945,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		body.append("<br>"); 
 		body.append("Observações: " + colaboradorAfastamento.getObservacao());
 
-		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId(), empresa.getId());
-		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
-				UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-				CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
-				Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
-				
-				try {
-					mail.send(empresa, subject, body.toString(), null, usuarioManager.findEmailsByUsuario(usuariosIds));
-				} catch (Exception e)	{
-					e.printStackTrace();
-				}
-			} 
-		}
+		enviaEmailsUsuarios(gerenciadorComunicacaos, empresa, subject, body.toString());
 	}
 	
 	private void enviaAvisoDeAfastamentoPorMensagem(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) 
@@ -988,6 +974,71 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 
+
+	public void enviaAvisoContratacao(HistoricoColaborador historicoColaborador)
+	{
+		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
+		historicoColaborador = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		
+		StringBuilder  mensagem = new StringBuilder();
+		mensagem.append("Contratação efetuada para o colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial());
+		mensagem.append("\n\n");
+		mensagem.append("Data da Admissão: " + historicoColaborador.getColaborador().getDataAdmissaoFormatada());
+		mensagem.append("\n");
+		mensagem.append("Empresa: " + historicoColaborador.getColaborador().getEmpresa().getNome());
+		mensagem.append("\n");
+		mensagem.append("Estabelecimento: " + historicoColaborador.getEstabelecimento().getNome());
+		mensagem.append("\n"); 
+		mensagem.append("Área Organizacional: " + historicoColaborador.getAreaOrganizacional().getDescricao());
+		mensagem.append("\n");
+		mensagem.append("Cargo: " + historicoColaborador.getFaixaSalarial().getCargo().getNomeMercado());
+		mensagem.append("\n"); 
+		mensagem.append("Função: " + StringUtils.trimToEmpty(historicoColaborador.getFuncao().getNome()));
+		mensagem.append("\n"); 
+		mensagem.append("Ambiente: " + StringUtils.trimToEmpty(historicoColaborador.getAmbiente().getNome()));
+
+		enviaAvisoContratacaoEmail(historicoColaborador, mensagem.toString());
+		enviaAvisoContratacaoMensagem(historicoColaborador, mensagem.toString());
+		
+	}
+
+	private void enviaAvisoContratacaoEmail(HistoricoColaborador historicoColaborador, String mensagem)
+	{
+		mensagem = mensagem.replace("\n", "<br />");
+		String subject = "[Fortes RH] Contração do colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial();
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		enviaEmailsUsuarios(gerenciadorComunicacaos, historicoColaborador.getColaborador().getEmpresa(), subject, mensagem);
+	}
+
+	private void enviaAvisoContratacaoMensagem(HistoricoColaborador historicoColaborador, String mensagem)
+	{
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.CONTRATACAO);
+			} 
+		}
+	}
+	
+	private void enviaEmailsUsuarios(Collection<GerenciadorComunicacao> gerenciadorComunicacaos, Empresa empresa, String subject, String mensagem)
+	{
+		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+		CollectionUtil<Usuario> cul = new CollectionUtil<Usuario>();
+		
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
+				Long[] usuariosIds = cul.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+				
+				try {
+					mail.send(empresa, subject, mensagem, null, usuarioManager.findEmailsByUsuario(usuariosIds));
+				} catch (Exception e)	{
+					e.printStackTrace();
+				}
+			} 
+		}
+	}
+	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

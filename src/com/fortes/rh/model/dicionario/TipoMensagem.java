@@ -11,4 +11,5 @@ public class TipoMensagem extends LinkedHashMap<Object, Object>
 	public static final char HISTORICOCOLABORADOR = 'H';
 	public static final char INDIFERENTE = 'I';
 	public static final char AFASTAMENTO = 'A';
+	public static final char CONTRATACAO = 'C';
 }

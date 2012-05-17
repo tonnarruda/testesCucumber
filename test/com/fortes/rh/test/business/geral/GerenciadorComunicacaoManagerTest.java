@@ -11,6 +11,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -112,6 +113,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock providenciaManager;
 	private Mock mensagemManager;
 	private Mock empresaManager;
+	private Mock usuarioManager;
 	private Mock exameManager;
 	private Mock cargoManager;
 	private Mock mail;
@@ -163,6 +165,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		usuarioManager = new Mock(UsuarioManager.class);
+		MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
 		
 		questionarioManager = new Mock(QuestionarioManager.class);
 		MockSpringUtil.mocks.put("questionarioManager", questionarioManager);
@@ -893,6 +898,54 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 	 
+	 
+	 public void testEnviaAvisoContratacao() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setCodigoAC("0001");
+		 
+		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		 faixaSalarial.setCargo(CargoFactory.getEntity());
+		 
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Teo");
+		 colaborador.setEmpresa(empresa);
+		 
+		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
+		 historico.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity());
+		 historico.setFaixaSalarial(faixaSalarial);
+		 historico.setColaborador(colaborador);
+
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 gerenciadorComunicacao.setUsuarios(Arrays.asList(usuario));
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao2.setEmpresa(empresa);
+		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 gerenciadorComunicacao2.setUsuarios(Arrays.asList(usuario));
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacoes = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2); 
+		 
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacoes));
+		 usuarioEmpresaManager.expects(atLeastOnce()).method("findUsuariosAtivo").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 usuarioManager.expects(atLeastOnce()).method("findEmailsByUsuario").withAnyArguments().will(returnValue(new String[]{}));
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 assertNull(exception);
+	 }
 	 public void testEnviaEmailConfiguracaoLimiteColaborador() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);

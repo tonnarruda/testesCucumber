@@ -122,7 +122,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador", "Info. Funcionais") {
+	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador no AC Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -159,7 +159,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC", "Info. Funcionais") {
+	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -177,6 +177,19 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	AVISO_COLABORADOR_CONTRATACAO(24, "Notificação de contratação de colaborador", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+
 	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "SESMT"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);

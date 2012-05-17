@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(23, Operacao.values().length);
+		assertEquals(24, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -47,6 +47,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Cancelamento de Solicitação de Desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso de cadastro de ocorrência", Operacao.getDescricaoById(++i));
 		assertEquals("Notificação ao inserir um afastamento", Operacao.getDescricaoById(++i));
+		assertEquals("Notificação de contratação de colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -86,6 +87,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 21
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 22
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 23 
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 24 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 		
@@ -118,6 +120,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId());    // 21
 		assertEquals(++i, Operacao.CADASTRO_OCORRENCIA.getId());					 // 22
 		assertEquals(++i, Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId());			 // 23
+		assertEquals(++i, Operacao.AVISO_COLABORADOR_CONTRATACAO.getId());			 // 24
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -359,6 +362,18 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.AVISO_COLABORADOR_AFASTAMENTO;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testAvisoColaboradorContratacao()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.AVISO_COLABORADOR_CONTRATACAO;
 		
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);

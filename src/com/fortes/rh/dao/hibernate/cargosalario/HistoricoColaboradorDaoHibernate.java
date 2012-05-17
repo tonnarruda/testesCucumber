@@ -544,10 +544,13 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "co", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("co.empresa", "emp", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo","ca", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.funcao", "fu", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.ambiente", "am", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("hc.id"), "id");
@@ -565,15 +568,19 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("ca.nomeMercado"), "cargoNomeMercado");
 		p.add(Projections.property("hc.historicoAnterior.id"), "historicoAnteriorId");
 		p.add(Projections.property("hc.funcao.id"), "funcaoId");
+		p.add(Projections.property("fu.nome"), "funcaoNome");
 		p.add(Projections.property("hc.ambiente.id"), "ambienteId");
+		p.add(Projections.property("am.nome"), "ambienteNome");
 		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("ao.id"), "areaId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
 		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("co.id"), "colaboradorId");
 		p.add(Projections.property("co.nome"), "colaboradorNome");
 		p.add(Projections.property("co.nomeComercial"), "colaboradorNomeComercial");
+		p.add(Projections.property("co.dataAdmissao"), "colaboradorDataAdmissao");
 		p.add(Projections.property("co.codigoAC"), "projectionColaboradorCodigoAC");
 		p.add(Projections.property("co.naoIntegraAc"), "projectionColaboradorNaoIntegraAc");
 		p.add(Projections.property("hc.reajusteColaborador.id"), "projectionReajusteColaboradorId");
