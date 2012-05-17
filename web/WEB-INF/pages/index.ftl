@@ -46,6 +46,16 @@
 		}
 		a:active {text-decoration: none}
 		
+		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
+		#fecharSplash {
+			 position: absolute; 
+			 cursor: pointer; 
+			 border: none; 
+			 text-decoration: none; 
+			 width: 75px; 
+			 height: 25px; 
+			 left: 490px;
+		}
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
@@ -60,21 +70,15 @@
 				autoOpen: false,
 				modal: true,
 				zIndex: 9999,
-				title: 'Aviso',
-				minWidth: 462,
-				minHeight: 572,
-			  	close: function() {
-			  	}
+				minWidth: 578,
+				create: function (event, ui) { $(".ui-dialog-titlebar").hide(); },
+			  	close: function() { $.cookie("pgInicialSplashChat", false, { expires: 30 }); }
 			});
 			
-			<#--
-			//TODO remprot
-			if($.cookie("pgInicialSplashAutenticador") != 'false')
+			if($.cookie("pgInicialSplashChat") != 'false')
 			{
 				$("#splash").dialog("open");
-				$.cookie("pgInicialSplashAutenticador", false, { expires: 30 });
 			}
-			-->
 		});
 		
 		function marcarMensagemLida(usuarioMensagemId)
@@ -247,8 +251,11 @@
 	</@authz.authorize>
 	
 	<div id="splash">
-		<a href="http://www.entetecnologia.com.br/" target="_blank" >
-			<img border="0" title="Acesse o novo site"  src="<@ww.url includeParams="none" value="/imgs/splashAutenticador.jpg"/>">
+		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');">
+			&nbsp;
+		</a>
+		<a href="http://www.fortesinformatica.com.br/i/mails/chat_grupoFortes/html_chat.html" target="_blank" >
+			<img border="0" title="Acesse o novo chat"  src="<@ww.url includeParams="none" value="/imgs/splashChat.jpg"/>">
 		</a>
 	</div>
 
