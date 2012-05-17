@@ -16,6 +16,7 @@ import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -63,6 +64,7 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -73,8 +75,10 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -101,6 +105,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private GerenciadorComunicacaoManagerImpl gerenciadorComunicacaoManager = new GerenciadorComunicacaoManagerImpl();
 	private Mock gerenciadorComunicacaoDao;
 	private Mock candidatoSolicitacaoManager;
+	private Mock historicoColaboradorManager;
 	private Mock parametrosDoSistemaManager;
 	private Mock periodoExperienciaManager;
 	private Mock areaOrganizacionalManager;
@@ -165,6 +170,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+		MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
 		
 		usuarioManager = new Mock(UsuarioManager.class);
 		MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -904,6 +912,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		 empresa.setCodigoAC("0001");
 		 
+		 Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		 
 		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		 faixaSalarial.setCargo(CargoFactory.getEntity());
 		 
@@ -914,7 +924,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
 		 historico.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity());
 		 historico.setFaixaSalarial(faixaSalarial);
+		 historico.setEstabelecimento(estabelecimento);
 		 historico.setColaborador(colaborador);
+		 historico.setFuncao(FuncaoFactory.getEntity());
+		 historico.setAmbiente(AmbienteFactory.getEntity());
 
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 
@@ -932,6 +945,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacoes = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2); 
 		 
+		 historicoColaboradorManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(historico));
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacoes));
 		 usuarioEmpresaManager.expects(atLeastOnce()).method("findUsuariosAtivo").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 usuarioManager.expects(atLeastOnce()).method("findEmailsByUsuario").withAnyArguments().will(returnValue(new String[]{}));

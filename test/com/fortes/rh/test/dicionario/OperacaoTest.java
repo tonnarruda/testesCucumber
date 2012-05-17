@@ -35,9 +35,9 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(++i));
 		assertEquals("Liberar turma", Operacao.getDescricaoById(++i));
-		assertEquals("Contratação de Colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Contratação de Colaborador no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Desligar colaborador no AC", Operacao.getDescricaoById(++i));
+		assertEquals("Desligar colaborador no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso ao responder período de experiência", Operacao.getDescricaoById(++i));
