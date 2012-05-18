@@ -35,12 +35,13 @@ if ARGV.empty? || ARGV[0] == '--db'
 	end	
 elsif ARGV[0] == '--deploy'
   version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
+  fortesrh_home = ARGV[2] || '.'
   
-  last_migrate = File.readlines("./web/WEB-INF/metadata/update.sql").grep(/insert into migrations values\('(\d{14})'\);--.go/){$1}.last
+  last_migrate = File.readlines("#{fortesrh_home}/web/WEB-INF/metadata/update.sql").grep(/insert into migrations values\('(\d{14})'\);--.go/){$1}.last
   puts "migrate atual no update.sql #{last_migrate}"
   
   sql_migrates = ""
-  Dir.glob("./web/WEB-INF/metadata/migrate/*.sql").sort_by {|f| File.basename f}.each do |file|
+  Dir.glob("#{fortesrh_home}/web/WEB-INF/metadata/migrate/*.sql").sort_by {|f| File.basename f}.each do |file|
     if (File.basename(file) =~ /^(\d{14})/ and $1 > last_migrate)
       print "Buscando migrate: #{$1}".ljust(80)
       sql_migrates << "\n" + File.read(file)
@@ -54,7 +55,7 @@ elsif ARGV[0] == '--deploy'
   else
     close_version = "\nupdate parametrosdosistema set appversao = '#{version}';--.go"
     
-    File.open("./web/WEB-INF/metadata/update.sql",'a'){|f| f.write "\n-- versao #{version}\n" + sql_migrates + close_version}
+    File.open("#{fortesrh_home}/web/WEB-INF/metadata/update.sql",'a'){|f| f.write "\n-- versao #{version}\n" + sql_migrates + close_version}
     puts "update editado com sucesso."
   end
 else
