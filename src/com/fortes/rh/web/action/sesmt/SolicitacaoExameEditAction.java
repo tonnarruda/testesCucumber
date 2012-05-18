@@ -61,7 +61,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	
 	private Exame exameAso;
 
-	private char examesPara = 'C';
+	private char examesPara;
 	private String nomeBusca;
 	private String matriculaBusca;
 

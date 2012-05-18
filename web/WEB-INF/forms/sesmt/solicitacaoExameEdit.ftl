@@ -273,7 +273,7 @@
 	
 		<@ww.form name="form" action="${formAction}" method="post">
 			<@ww.hidden id = "solicitacaoId" name="solicitacaoExame.id" />
-	
+			<@ww.hidden name="examesPara" />
 			<#if solicitacaoExame.candidato?exists && solicitacaoExame.candidato.id?exists>
 				<h4> Candidato: ${solicitacaoExame.candidato.nome} </h4>
 				<@ww.hidden name="solicitacaoExame.candidato.id" />
@@ -282,8 +282,6 @@
 				<h4> Colaborador: ${solicitacaoExame.colaborador.nomeDesligado} </h4>
 				<@ww.hidden name="solicitacaoExame.colaborador.id" />
 			</#if>
-			
-			<@ww.hidden name="examesPara" />
 			<@ww.hidden name="solicitacaoExame.empresa.id" />
 			<@ww.hidden name="gravarEImprimir" value="true" />
 	
