@@ -108,7 +108,7 @@
 		</copy>
 	</target>
 	
-	<target name="war" depends="compiler, update-file-update-sql">
+	<target name="war" depends="compiler, update-file-update-sql, recreate-bd">
 		
 		<mkdir dir="${ant.project.name}/dist" />
 		<property name="tmpweb" value="${ant.project.name}/dist/tmpweb" />
@@ -193,6 +193,46 @@
 		</exec>
 	</target>
 	
+	<target name="recreate-bd-vazio">
+		<sql driver="org.postgresql.Driver"
+			url="jdbc:postgresql://localhost:5432/template1"
+			userid="postgres"
+			password="1234"
+			classpath="${lib.dir}/postgresql-9.0-801.jdbc3.jar"
+			autocommit="true">
+			<transaction>
+				alter database fortesrh rename to fortesrh_dev;
+				create database fortesrh with encoding = 'UTF-8';
+			</transaction>
+		</sql>
+				
+		<echo message="Banco criado com sucesso" />
+	</target>
+
+	<target name="recreate-bd" depends="recreate-bd-vazio">
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/create.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+
+		<!-- o update deve ser executado somente a partir da versão atual-->
+		<exec failonerror="true" executable="psql"
+			input="${metadados.dir}/update.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="fortesrh" />
+		</exec>
+		<exec executable="pg_dump"
+			output="${metadados.dir}/create.sql">
+			<arg value="fortesrh" />
+			<arg value="-U" />
+			<arg value="postgres" />
+		</exec>			
+		<echo message="Banco atualizado com sucesso" />
+	</target>
+
 	<!-- Gera Atualizador -->
 	<target name="build_atualizador">
 		<ant dir="FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
