@@ -35,7 +35,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(++i));
 		assertEquals("Liberar turma", Operacao.getDescricaoById(++i));
-		assertEquals("Contratação de Colaborador no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Avisar contratação de colaborador (Integração com AC Pessoal)", Operacao.getDescricaoById(++i));
 		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Desligar colaborador no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(++i));
@@ -47,7 +47,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Cancelamento de Solicitação de Desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Aviso de cadastro de ocorrência", Operacao.getDescricaoById(++i));
 		assertEquals("Notificação ao inserir um afastamento", Operacao.getDescricaoById(++i));
-		assertEquals("Notificação de contratação de colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Avisar contratação de colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}

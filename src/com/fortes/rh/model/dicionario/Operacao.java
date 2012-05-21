@@ -63,6 +63,27 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	CONTRATAR_COLABORADOR(12, "Avisar contratação de colaborador (Integração com AC Pessoal)", "R&S") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_SETOR_PESSOAL);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	AVISO_COLABORADOR_CONTRATACAO(24, "Avisar contratação de colaborador", "R&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	LIBERAR_QUESTIONARIO(7, "Liberar pesquisa", "Pesquisa"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
@@ -122,15 +143,6 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CONTRATAR_COLABORADOR(12, "Contratação de Colaborador no AC Pessoal", "Info. Funcionais") {
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_SETOR_PESSOAL);
-			
-			return this.getListMeioComunicacao();
-		}
-	}, 
 	CANCELAR_SITUACAO_AC(13, "Cancelamento de Situação no AC Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
@@ -177,19 +189,6 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	AVISO_COLABORADOR_CONTRATACAO(24, "Notificação de contratação de colaborador", "Info. Funcionais"){
-		public TreeMap<Integer, String> meioComunicação(){
-			
-			this.add(MeioComunicacao.EMAIL);
-			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
-			
-			this.add(MeioComunicacao.CAIXA_MENSAGEM);
-			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
-
 	EXAMES_PREVISTOS(10, "Aviso automático de exames previstos", "SESMT"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
