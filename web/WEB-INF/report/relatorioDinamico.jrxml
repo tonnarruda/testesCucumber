@@ -618,9 +618,9 @@
 				</rectangle>
 				<staticText>
 					<reportElement
-						x="723"
+						x="3"
 						y="1"
-						width="23"
+						width="79"
 						height="11"
 						key="staticText-5"
 						isPrintInFirstWholeBand="true"/>
@@ -628,11 +628,11 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Total:]]></text>
+				<text><![CDATA[Total de Registros:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="746"
+						x="82"
 						y="1"
 						width="25"
 						height="11"

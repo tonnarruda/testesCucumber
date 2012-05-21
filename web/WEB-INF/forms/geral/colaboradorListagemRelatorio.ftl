@@ -178,7 +178,7 @@
 				$('#orderField').val(order);
 				
 				$('#colunas option').attr('selected', true);
-				return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
+				return validaFormulario('form', new Array('dataIni','dataFim'), new Array('naoApague' ${validaDataCamposExtras}));
 			}
 		}
 
@@ -297,7 +297,7 @@
 					<img border="0" onClick="next();" title="Baixar campo(s) selecionado(s)" src="<@ww.url value="/imgs/down.gif"/>">
 				</div>
 
-				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar layout do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
+				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar campo do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
 				<div style="clear: both"></div>
 				<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Utilize o relatório em Excel.</div>
 			</ul>
