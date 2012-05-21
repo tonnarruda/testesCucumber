@@ -208,6 +208,10 @@
 				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
 					verificaParentes(this.value);
 				});
+				
+				if ($('#estabelecimento').val()) {
+					populaAmbiente($('#estabelecimento').val(), null);
+				}
 			</#if>
 		});
 	
