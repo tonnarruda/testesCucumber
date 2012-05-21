@@ -69,10 +69,13 @@
 			$( "#splash" ).dialog({
 				autoOpen: false,
 				modal: true,
-				zIndex: 9999,
+				zIndex: 99999,
 				minWidth: 578,
 				create: function (event, ui) { $(".ui-dialog-titlebar").hide(); },
-			  	close: function() { $.cookie("pgInicialSplashChat", false, { expires: 30 }); }
+			  	close: function() {
+			  		if ( $('#naoExibirMsg').is(':checked') ) 
+			  			$.cookie("pgInicialSplashChat", false, { expires: 30 }); 
+			  	}
 			});
 			
 			if($.cookie("pgInicialSplashChat") != 'false')
@@ -257,6 +260,8 @@
 		<a href="http://www.fortesinformatica.com.br/i/mails/chat_grupoFortes/html_chat.html" target="_blank" >
 			<img border="0" title="Acesse o novo chat"  src="<@ww.url includeParams="none" value="/imgs/splashChat.jpg"/>">
 		</a>
+		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
+		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
 	</div>
 
 	<script type="text/javascript">
