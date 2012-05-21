@@ -564,7 +564,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 				 QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
 				 resultado.setQtdRespostas((Integer)qtdResposta[1]);
 				 resultado.setRespostaId((Long)qtdResposta[3]);
-				resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
+				 resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
 				 resultadosObjetivas.add(resultado);
 			 }
 		 }
@@ -574,6 +574,20 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	 
 	public Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
 	{
-		return getDao().findRespostasAvaliacaoDesempenho(colaboradorQuestionarioId);
+		Collection<RespostaQuestionarioVO> respostas = getDao().findRespostasAvaliacaoDesempenho(colaboradorQuestionarioId);
+		String comentarioPorPergunta = null;
+		Long perguntaId = null;
+		
+		for (RespostaQuestionarioVO respostaQuestionarioVO : respostas) {
+			if (StringUtils.isNotBlank(respostaQuestionarioVO.getColaboradorRespostaComentario())) {
+				perguntaId = respostaQuestionarioVO.getPerguntaId();
+				comentarioPorPergunta = respostaQuestionarioVO.getColaboradorRespostaComentario();
+			}
+			
+			if (respostaQuestionarioVO.getPerguntaId().equals(perguntaId))
+				respostaQuestionarioVO.setComentarioResposta(comentarioPorPergunta);
+		}
+		
+		return respostas;
 	}
 }

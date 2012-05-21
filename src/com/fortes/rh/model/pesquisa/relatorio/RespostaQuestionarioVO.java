@@ -1,6 +1,8 @@
 package com.fortes.rh.model.pesquisa.relatorio;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 import com.fortes.rh.model.dicionario.TipoPergunta;
 
@@ -8,6 +10,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 public class RespostaQuestionarioVO 
 {
 	private Long colaboradorQuestionarioId;
+	private Double colaboradorQuestionarioPerformance;
 	private Long perguntaId;
 	private Integer perguntaOrdem;
 	private String perguntaTexto;
@@ -24,14 +27,17 @@ public class RespostaQuestionarioVO
 	private Long colaboradorRespostaRespostaId;
 	private Integer colaboradorRespostaValor;
 	private String colaboradorRespostaComentario;
+
+	private String comentarioResposta;
 	
 	public RespostaQuestionarioVO() {}
 	
-	public RespostaQuestionarioVO(Long colaboradorQuestionarioId, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, String perguntaTextoComentario, Integer perguntaTipo, Long respostaId,
+	public RespostaQuestionarioVO(Long colaboradorQuestionarioId, Double colaboradorQuestionarioPerformance, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, String perguntaTextoComentario, Integer perguntaTipo, Long respostaId,
 			Integer respostaOrdem, String respostaTexto, Integer respostaPeso, Long aspectoId, String aspectoNome, String colaboradorQuestionarioObservacao, Long colaboradorRespostaRespostaId,
 			Integer colaboradorRespostaValor, String colaboradorRespostaComentario) {
 		super();
 		this.colaboradorQuestionarioId = colaboradorQuestionarioId;
+		this.colaboradorQuestionarioPerformance = colaboradorQuestionarioPerformance;
 		this.perguntaId = perguntaId;
 		this.perguntaOrdem = perguntaOrdem;
 		this.perguntaTexto = perguntaTexto;
@@ -220,5 +226,33 @@ public class RespostaQuestionarioVO
 
 	public void setPerguntaTextoComentario(String perguntaTextoComentario) {
 		this.perguntaTextoComentario = perguntaTextoComentario;
+	}
+
+	public String getComentarioResposta() {
+		return comentarioResposta;
+	}
+
+	public void setComentarioResposta(String comentarioResposta) {
+		this.comentarioResposta = comentarioResposta;
+	}
+
+	public Double getColaboradorQuestionarioPerformance() {
+		return colaboradorQuestionarioPerformance;
+	}
+	
+	public String getColaboradorQuestionarioPerformanceFormatada() {
+		if (colaboradorQuestionarioPerformance == null)
+			return "0%";
+
+	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
+	    df.applyPattern("0.##");
+         
+		String performanceFmt = df.format((colaboradorQuestionarioPerformance * 100)) + "%";
+		
+		return performanceFmt;
+	}
+
+	public void setColaboradorQuestionarioPerformance(Double colaboradorQuestionarioPerformance) {
+		this.colaboradorQuestionarioPerformance = colaboradorQuestionarioPerformance;
 	}
 }
