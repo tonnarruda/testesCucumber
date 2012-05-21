@@ -25,12 +25,14 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
@@ -47,16 +49,16 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
 {
-    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado)
+    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado, boolean verificaColaborador)
     {
-        Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+    	Criteria criteria = getSession().createCriteria(Candidato.class, "c");
         
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("c.id"), "id");
@@ -65,7 +67,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
         
         criteria.setProjection(p);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
 		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
 
 		if (candidatoId != null)
@@ -76,10 +77,24 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (contratado != null )
 			criteria.add(Expression.eq("c.contratado", contratado));
+
+		if (verificaColaborador)
+		{
+			DetachedCriteria subQuery = DetachedCriteria.forClass(Colaborador.class, "col");
+			
+			ProjectionList pSub = Projections.projectionList().create();
+			pSub.add(Projections.property("col.candidato.id"), "id");
+			
+			subQuery.setProjection(pSub);
+			subQuery.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			criteria.add(Subqueries.propertyNotIn("c.id", subQuery));
+		}
 		
 		criteria.addOrder(Order.desc("c.id"));
 		criteria.setMaxResults(1);
         
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+
 		return (Candidato) criteria.uniqueResult();
     }
 

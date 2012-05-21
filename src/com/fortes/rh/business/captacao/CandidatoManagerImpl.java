@@ -1107,12 +1107,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(cpfSemMascara.equals(""))
 			return null;
 		else
-			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId, contratado);
+			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId, contratado, false);
 	}
 	
-	public Candidato findByCPF(String cpf, Long empresaId)
+	public Candidato findByCPF(String cpf, Long empresaId, boolean verificaColaborador)
     {
-			return getDao().findByCPF(cpf, empresaId, null, null);
+			return getDao().findByCPF(cpf, empresaId, null, null, false);
     }
 
 	public void ajustaSenha(Candidato candidato) 
@@ -1208,7 +1208,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			candidato.setEmpresa(empresa);
 			bind(candidato, curriculo);
 			
-			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null);
+			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null, false);
 			if(candidatoJaGravado == null)
 				candidatos.add(getDao().save(candidato));
 			else

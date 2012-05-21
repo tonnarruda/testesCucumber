@@ -765,7 +765,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
 		{
-			candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId());
+			candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId(), true);
 			if (candidato != null && checarCandidatoMesmoCpf)
 				return Action.INPUT;
 			

@@ -69,7 +69,7 @@ public class ExternoAction extends MyActionSupport
 		}
 
 		Map session = ActionContext.getContext().getSession();
-		candidato = candidatoManager.findByCPF(cpf, empresaId);
+		candidato = candidatoManager.findByCPF(cpf, empresaId, false);
 
 		if (candidato == null)
 		{

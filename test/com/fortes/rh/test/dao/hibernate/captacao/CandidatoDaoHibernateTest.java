@@ -63,6 +63,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
@@ -121,11 +122,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		c3 = candidatoDao.save(c3);
 
-		Candidato candidato = candidatoDao.findByCPF("0000000000", null, null, null);
+		Candidato candidato = candidatoDao.findByCPF("0000000000", null, null, null, false);
 		assertEquals(c3.getId(), candidato.getId());
 
-		candidato = candidatoDao.findByCPF("00000", null, null, null);
+		candidato = candidatoDao.findByCPF("00000", null, null, null, false);
 		assertNull(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+
+		candidato = candidatoDao.findByCPF("0000000000", null, null, null, false);
+		assertNotNull("Ignora verificacao de colaborador vinculado ao candidato", candidato);
+
+		candidato = candidatoDao.findByCPF("0000000000", null, null, null, true);
+		assertNull("Verifica se existe colaborador vinculado ao candidato", candidato);
 	}
 	
 	public void testFindQtdCadastradosByOrigem()
