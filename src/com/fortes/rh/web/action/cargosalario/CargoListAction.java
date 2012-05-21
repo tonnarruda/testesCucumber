@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.Collection;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -61,15 +63,17 @@ public class CargoListAction extends MyActionSupportList
 			cargoManager.remove(cargo.getId(), getEmpresaSistema());
 			addActionMessage("Cargo excluído com sucesso.");
 		} catch (Exception e) {
-			String message = "O Cargo não pode ser excluído, pois possui dependencia.\n";
+			String message = "Erro ao excluir Cargo.<br/>";
 			
-			if(e.getMessage() != null)
+			if(e.getCause().getClass() == ConstraintViolationException.class)
+				message = "O Cargo não pode ser excluído, pois possui dependência.";
+			else if(e.getMessage() != null)
 				message += e.getMessage();
 			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
 				message += e.getCause().getLocalizedMessage();
 			
 			addActionError(message);
-
+			
 			list();
 		}
 
