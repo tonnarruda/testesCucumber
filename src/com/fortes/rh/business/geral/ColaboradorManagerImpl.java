@@ -1247,9 +1247,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		StringBuffer mensagem = new StringBuffer();
 		
-		mensagem.append("<b>Dados originais:</b> \n\n");
-		if(!colaboradorOriginal.getEndereco().getEnderecoFormatado().equals(colaboradorAtualizado.getEndereco().getEnderecoFormatado()) ) 
-			mensagem.append("Endereço: " + colaboradorOriginal.getEndereco().getEnderecoFormatado() + "\n");
+		mensagem.append("Dados originais: \n");
+		if(!colaboradorOriginal.getEndereco().getLogradouro().equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
+			mensagem.append("Logradouro: " + colaboradorOriginal.getEndereco().getLogradouro() + "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getNumero().equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
+			mensagem.append("Número: " + colaboradorOriginal.getEndereco().getNumero() + "\n");
+
+		if(!colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
+			mensagem.append("Complemento: " + colaboradorOriginal.getEndereco().getComplemento() + "\n");
 			
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
 			mensagem.append("Bairro: " + colaboradorOriginal.getEndereco().getBairro()+ "\n");
@@ -1286,24 +1292,30 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		mensagem.append("\n\n");
 				
-		mensagem.append("<br>Dados atualizados:</b>\n\n");		
-		if(!colaboradorOriginal.getEndereco().getEnderecoFormatado().equals(colaboradorAtualizado.getEndereco().getEnderecoFormatado()) ) 
-		mensagem.append("Endereço: " + colaboradorAtualizado.getEndereco().getEnderecoFormatado() + "\n");
+		mensagem.append("Dados atualizados:\n");		
+		if(!colaboradorOriginal.getEndereco().getLogradouro().equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
+			mensagem.append("Logradouro: " + colaboradorAtualizado.getEndereco().getLogradouro() + "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getNumero().equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
+			mensagem.append("Número: " + colaboradorAtualizado.getEndereco().getNumero() + "\n");
+
+		if(!colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
+			mensagem.append("Complemento: " + colaboradorAtualizado.getEndereco().getComplemento() + "\n");
 		
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + colaboradorAtualizado.getEndereco().getBairro());
+			mensagem.append("Bairro: " + colaboradorAtualizado.getEndereco().getBairro() + "\n");
 		
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Cidade: " + colaboradorAtualizado.getEndereco().getCidade().getNome());
+			mensagem.append("Cidade: " + colaboradorAtualizado.getEndereco().getCidade().getNome() + "\n");
 		
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("UF: " + colaboradorAtualizado.getEndereco().getUf().getSigla());
+			mensagem.append("UF: " + colaboradorAtualizado.getEndereco().getUf().getSigla() + "\n");
 		
 		if(!colaboradorOriginal.getEndereco().getCepFormatado().equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
 		mensagem.append("CEP: " + colaboradorAtualizado.getEndereco().getCepFormatado() + "\n");
 		
 		if(!colaboradorOriginal.getContato().getEmail().equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + colaboradorOriginal.getContato().getEmail() + "\n");
+			mensagem.append("Email: " + colaboradorAtualizado.getContato().getEmail() + "\n");
 
 		if(!colaboradorOriginal.getContato().getFoneFixo().equals(colaboradorAtualizado.getContato().getFoneFixo())) 
 			mensagem.append("Telefone Fixo: " + colaboradorAtualizado.getContato().getFoneFixo() + "\n");
