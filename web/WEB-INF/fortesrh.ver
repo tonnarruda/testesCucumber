@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
- 	<Versao id="1.1.73.69" data="10/05/2012"><![CDATA[
+	<Versao id="1.1.73.68" data="21/05/2012"><![CDATA[
 		- Barra do menu: Novo ícone para visualizar os contatos do grupo fortes.
         - R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova opção de triagem por colaboradores.
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Avaliações: Impressão da avaliação respondida.
         - Aval. Desempenho > Movimentações > Respoder Avaliações de Desempenho: Novo ícone com opção para imprimir respostas.
         - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Avaliações: Possibilidade de imprimir avaliação respondida.
         - Info. Funcionais > Cadastros > Atualizar meus dados: Nova opção de editar a quantidade de filhos.
-        - Info. Funcionais > Relatórios > Desligamentos: Novo filtro por área organizacional e nova opção de agrupamento por área Organizacional.
+        - Info. Funcionais > Relatórios > Desligamentos: Novo filtro por área organizacional e nova opção de agrupamento por área organizacional.
         - Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de filtro por sexo.
         - SESMT > Relatórios > EPIs Entregues: Nova opção de filtro para exibir entregas de colaboradores desligados.
         - Utilitários > Cadastros > Perfis: Nova configuração para visualizar competência dos candidatos na solicitação.
         - Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de notificação ao cadastrar um novo afastamento.
         - Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de notificação ao contratar um colaborador.
-     ]]></Versao>
-	<Versao id="1.1.73.68" data="10/05/2012"><![CDATA[
-        - R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova opção de triagem por Colaboradores.
-        - T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Avaliações: Impressão da avaliação respondida.
-        - Info. Funcionais > Relatórios > Desligamentos: Novo filtro por Área Organizacional e nova opção de agrupamento por Área Organizacional.
     ]]></Versao>
 	<Versao id="1.1.73.67" data="02/05/2012"><![CDATA[
         - C&S > Relatórios > Colaboradores por Cargo: Nova opção de exibir salário, para os perfis configurados com 'Mostrar opção Exibir Salário'.

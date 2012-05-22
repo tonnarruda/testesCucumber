@@ -18921,3 +18921,41 @@ update parametrosdosistema set acversaowebservicecompativel='1.1.50.1';--.go
 insert into migrations values('20120502105522');--.go
 
 update parametrosdosistema set appversao = '1.1.73.67';--.go
+-- versao 1.1.73.68
+
+update papel set papelmae_id=359 where id in (22,45,496,522);--.go
+insert into migrations values('20120502151525');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (544, 'EXIBIR_COMPETENCIA_SOLICITACAO', 'Visualizar competência dos candidatos da solicitação', '#', 11, false, 359);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=544 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 544); --.go
+alter sequence papel_sequence restart with 545;--.go
+insert into migrations values('20120502152130');--.go
+
+DROP VIEW SituacaoSolicitacaoEpi;--.go
+
+CREATE OR REPLACE VIEW situacaosolicitacaoepi AS 
+ SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, 
+        CASE
+            WHEN sub.qtdsolicitado <= sub.qtdentregue THEN 'E'::text
+            WHEN sub.qtdentregue > 0 AND sub.qtdentregue < sub.qtdsolicitado THEN 'P'::text
+            WHEN sub.qtdentregue = 0 THEN 'A'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacao
+   FROM ( SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, ( SELECT sum(sei2.qtdsolicitado) AS sum
+                   FROM solicitacaoepi_item sei2
+                  WHERE sei2.solicitacaoepi_id = se.id) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), 0::bigint) AS qtdentregue
+           FROM solicitacaoepi se
+      LEFT JOIN solicitacaoepi_item sei ON sei.solicitacaoepi_id = se.id
+   LEFT JOIN solicitacaoepiitementrega seie ON seie.solicitacaoepiitem_id = sei.id
+   LEFT JOIN colaborador c ON se.colaborador_id = c.id
+   LEFT JOIN historicocolaborador hc ON c.id = hc.colaborador_id
+   LEFT JOIN estabelecimento est ON hc.estabelecimento_id = est.id
+   LEFT JOIN cargo ca ON se.cargo_id = ca.id
+  WHERE hc.data = (( SELECT max(hc2.data) AS max
+   FROM historicocolaborador hc2
+  WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= current_date)) AND hc.status = 1
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+insert into migrations values('20120503095212');--.go
+
+update parametrosdosistema set appversao = '1.1.73.68';--.go

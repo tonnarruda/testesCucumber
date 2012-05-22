@@ -119,18 +119,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Candidato c3 = getCandidato();
 		c3.setNome("bobinho");
 		c3.getPessoal().setCpf("0000000000");
+		candidatoDao.save(c3);
 
-		c3 = candidatoDao.save(c3);
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(c3);
+		colaboradorDao.save(colaborador);
 
 		Candidato candidato = candidatoDao.findByCPF("0000000000", null, null, null, false);
 		assertEquals(c3.getId(), candidato.getId());
 
 		candidato = candidatoDao.findByCPF("00000", null, null, null, false);
 		assertNull(candidato);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setCandidato(candidato);
-		colaboradorDao.save(colaborador);
 
 		candidato = candidatoDao.findByCPF("0000000000", null, null, null, false);
 		assertNotNull("Ignora verificacao de colaborador vinculado ao candidato", candidato);
