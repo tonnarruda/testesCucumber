@@ -1246,23 +1246,82 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private void criarMensagemAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId)
 	{
 		StringBuffer mensagem = new StringBuffer();
-		mensagem.append(colaboradorOriginal.getPessoal().getSexo() == 'F' ? "A colaboradora " : "O colaborador ");
-		mensagem.append("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seu endereço:\n\n");
-		mensagem.append("Endereço original:\n");
-		mensagem.append(colaboradorOriginal.getEndereco().getEnderecoFormatado() + "\n");
-		mensagem.append(colaboradorOriginal.getEndereco().getBairro() + ", " 
-												+ colaboradorOriginal.getEndereco().getCidade().getNome() + "-"
-												+ colaboradorOriginal.getEndereco().getUf().getSigla() + "\n");
+		
+		mensagem.append("<b>Dados originais:</b> \n\n");
+		if(!colaboradorOriginal.getEndereco().getEnderecoFormatado().equals(colaboradorAtualizado.getEndereco().getEnderecoFormatado()) ) 
+			mensagem.append("Endereço: " + colaboradorOriginal.getEndereco().getEnderecoFormatado() + "\n");
+			
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
+			mensagem.append("Bairro: " + colaboradorOriginal.getEndereco().getBairro()+ "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro())) 
+			mensagem.append("Cidade: " + colaboradorOriginal.getEndereco().getCidade().getNome()+ "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro())) 
+			mensagem.append("UF: " + colaboradorOriginal.getEndereco().getUf().getSigla() + "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getCepFormatado().equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
 		mensagem.append("CEP: " + colaboradorOriginal.getEndereco().getCepFormatado() + "\n");
 		
-		mensagem.append("\n");
+		if(!colaboradorOriginal.getContato().getEmail().equals(colaboradorAtualizado.getContato().getEmail())) 
+			mensagem.append("Email: " + colaboradorOriginal.getContato().getEmail() + "\n");
 		
-		mensagem.append("Endereço atualizado:\n");
-		mensagem.append(colaboradorAtualizado.getEndereco().getEnderecoFormatado() + "\n");
-		mensagem.append(colaboradorAtualizado.getEndereco().getBairro() + ", " 
-												+ colaboradorAtualizado.getEndereco().getCidade().getNome() + "-"
-												+ colaboradorAtualizado.getEndereco().getUf().getSigla() + "\n");
+		if(!colaboradorOriginal.getContato().getFoneFixo().equals(colaboradorAtualizado.getContato().getFoneFixo())) 
+			mensagem.append("Telefone Fixo: " + colaboradorOriginal.getContato().getFoneFixo() + "\n");
+
+		if(!colaboradorOriginal.getContato().getFoneCelular().equals(colaboradorAtualizado.getContato().getFoneCelular())) 
+			mensagem.append("Fone celular: " + colaboradorOriginal.getContato().getFoneCelular() + "\n");
+		
+		if(!colaboradorOriginal.getPessoal().getEscolaridade().equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
+			mensagem.append("Escolaridade: " + colaboradorOriginal.getPessoal().getEscolaridadeDescricao() + "\n");
+
+		if(!colaboradorOriginal.getPessoal().getEstadoCivil().equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
+			mensagem.append("Estado civil: " + colaboradorOriginal.getPessoal().getEstadoCivilDescricao() + "\n");
+		
+		if(!colaboradorOriginal.getPessoal().getConjuge().equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
+			mensagem.append("Nome do conjuge: " + colaboradorOriginal.getPessoal().getConjuge() + "\n");
+		
+		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
+			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
+		
+		mensagem.append("\n\n");
+				
+		mensagem.append("<br>Dados atualizados:</b>\n\n");		
+		if(!colaboradorOriginal.getEndereco().getEnderecoFormatado().equals(colaboradorAtualizado.getEndereco().getEnderecoFormatado()) ) 
+		mensagem.append("Endereço: " + colaboradorAtualizado.getEndereco().getEnderecoFormatado() + "\n");
+		
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
+			mensagem.append("Bairro: " + colaboradorAtualizado.getEndereco().getBairro());
+		
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
+			mensagem.append("Cidade: " + colaboradorAtualizado.getEndereco().getCidade().getNome());
+		
+		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
+			mensagem.append("UF: " + colaboradorAtualizado.getEndereco().getUf().getSigla());
+		
+		if(!colaboradorOriginal.getEndereco().getCepFormatado().equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
 		mensagem.append("CEP: " + colaboradorAtualizado.getEndereco().getCepFormatado() + "\n");
+		
+		if(!colaboradorOriginal.getContato().getEmail().equals(colaboradorAtualizado.getContato().getEmail())) 
+			mensagem.append("Email: " + colaboradorOriginal.getContato().getEmail() + "\n");
+
+		if(!colaboradorOriginal.getContato().getFoneFixo().equals(colaboradorAtualizado.getContato().getFoneFixo())) 
+			mensagem.append("Telefone Fixo: " + colaboradorAtualizado.getContato().getFoneFixo() + "\n");
+		
+		if(!colaboradorOriginal.getContato().getFoneFixo().equals(colaboradorAtualizado.getContato().getFoneFixo())) 
+			mensagem.append("Fone celular: " + colaboradorAtualizado.getContato().getFoneCelular() + "\n");
+
+		if(!colaboradorOriginal.getPessoal().getEscolaridade().equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
+			mensagem.append("Escolaridade: " + colaboradorAtualizado.getPessoal().getEscolaridadeDescricao() + "\n");
+
+		if(!colaboradorOriginal.getPessoal().getEstadoCivil().equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
+			mensagem.append("Estado civil: " + colaboradorAtualizado.getPessoal().getEstadoCivilDescricao() + "\n");
+
+		if(!colaboradorOriginal.getPessoal().getConjuge().equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
+			mensagem.append("Nome do conjuge: " + colaboradorAtualizado.getPessoal().getConjuge() + "\n");
+
+		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
+			mensagem.append("Quantidade de filhos: " + colaboradorAtualizado.getPessoal().getQtdFilhos() + "\n");
 		
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresaId, "ROLE_VISUALIZAR_MSG");
 		
