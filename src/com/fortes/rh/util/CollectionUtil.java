@@ -271,6 +271,20 @@ public final class CollectionUtil<T>
 
 		return col;
 	}
+	
+	public Collection<T> sortCollectionDouble(Collection<T> col, String ordenarPor)
+	{
+		Comparator comp = new BeanComparator(ordenarPor, new Comparator() {
+			public int compare(Object o1, Object o2)
+			{
+				return ((Double)o2).compareTo((Double)o1);
+			}
+		});
+		
+		Collections.sort((List) col, comp);
+		
+		return col;
+	}
 
 	public Collection<T> sortCollectionDate(Collection<T> col, String ordenarPor, final String ascOrDesc)
 	{

@@ -336,6 +336,39 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         assertEquals(1, colaboradorManager.findByAreaEstabelecimento(areaOrganizacional.getId(), estabelecimento.getId()).size());
     }
+    
+    public void testOrdenaByMediaPerformance()
+    {
+    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    	Colaborador joao1 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 20.20, false, "prova", "vega");
+    	Colaborador joao2 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 55.00, false, "prova II", "vega");
+    	
+    	colaboradores.add(joao1);
+    	colaboradores.add(joao2);
+    	
+    	Colaborador chico1 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 15.00, false, "prova II", "vega");
+    	Colaborador chico2 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 75.00, false, "prova III", "vega");
+    	colaboradores.add(chico1);
+    	colaboradores.add(chico2);
+    	
+    	Collection<Colaborador> ordenadosPorMediaPerformance = colaboradorManager.ordenaByMediaPerformance(colaboradores);
+    	assertEquals(4, ordenadosPorMediaPerformance.size());
+    	
+    	Colaborador testChico1 = (Colaborador) ordenadosPorMediaPerformance.toArray()[0];
+    	Colaborador testChico2 = (Colaborador) ordenadosPorMediaPerformance.toArray()[1];
+    	Colaborador testJoao1 = (Colaborador) ordenadosPorMediaPerformance.toArray()[2];
+    	Colaborador testJoao2 = (Colaborador) ordenadosPorMediaPerformance.toArray()[3];
+    	
+    	assertEquals(chico1, testChico1);
+    	assertEquals(45.0, testChico1.getMediaPerformance());
+    	assertEquals(chico2, testChico2);
+    	assertEquals(45.0, testChico2.getMediaPerformance());
+    	
+    	assertEquals(joao1, testJoao1);
+    	assertEquals(37.6, testJoao1.getMediaPerformance());
+    	assertEquals(joao2, testJoao2);
+    	assertEquals(37.6, testJoao1.getMediaPerformance());
+    }
 
     public void testFindByAreasOrganizacionaisEstabelecimentos()
     {

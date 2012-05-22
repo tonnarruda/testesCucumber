@@ -102,6 +102,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Double performance;
 	@Transient
+	private Double mediaPerformance;
+	@Transient
 	private String titulo;
 	@Transient
 	private String nomeAvaliador;
@@ -818,8 +820,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.titulo = titulo;
 	}
 
-	public Colaborador(String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
+	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
 	{
+		this.setId(id);
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 		if(anonima)
@@ -2468,5 +2471,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setPercentualCompatibilidade(double percentualCompatibilidade) {
 		this.percentualCompatibilidade = percentualCompatibilidade;
+	}
+
+	
+	public Double getMediaPerformance()
+	{
+		return mediaPerformance;
+	}
+	
+	public String getMediaPerformanceFormatada()
+	{
+		Double result = (mediaPerformance * 100);
+		
+		NumberFormat formata = new DecimalFormat("#0.00");
+		return formata.format(result).toString() + " %";
+	}
+
+	
+	public void setMediaPerformance(Double mediaPerformance)
+	{
+		this.mediaPerformance = mediaPerformance;
 	}
 }

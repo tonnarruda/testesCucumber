@@ -10,9 +10,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -2450,6 +2452,29 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		candidatoSolicitacaoManager.insertCandidatos(candidatosIds.toArray(new String[candidatosIds.size()]), solicitacao, statusCandidatoSolicitacao);
 	}
 
+	//sou feio mais tenho teste, heheheh
+	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores)
+	{
+		HashMap<Long, Double> performaces = new HashMap<Long, Double>();
+		HashMap<Long, Double> qtdColaboradores = new HashMap<Long, Double>();
+				
+		for (Colaborador colaborador : colaboradores) 
+		{
+			
+			Double mediaColab = performaces.get(colaborador.getId()) == null ? 0.0: performaces.get(colaborador.getId());
+			Double qtdColab = qtdColaboradores.get(colaborador.getId()) == null ? 0.0: qtdColaboradores.get(colaborador.getId());
+			
+			performaces.put(colaborador.getId(), mediaColab + colaborador.getPerformanceDouble());
+			qtdColaboradores.put(colaborador.getId(), qtdColab + 1.0);
+		}
+
+		for (Colaborador colaborador : colaboradores)
+			colaborador.setMediaPerformance(performaces.get(colaborador.getId()) / qtdColaboradores.get(colaborador.getId()) );
+			
+		CollectionUtil<Colaborador> cul = new CollectionUtil<Colaborador>();
+		return cul.sortCollectionDouble(colaboradores, "mediaPerformance");
+	}
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -2462,4 +2487,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
 	}
+
 }

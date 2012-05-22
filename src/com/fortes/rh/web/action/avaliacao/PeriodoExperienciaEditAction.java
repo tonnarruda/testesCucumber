@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -256,12 +257,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		try 
 		{
 			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			colaboradores = colaboradorManager.ordenaByMediaPerformance(colaboradores);
 			reportTitle = "Ranking de Performance de Avaliação de Desempenho";
 
 			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim);
 
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
-		
 		}
 		catch (Exception e)
 		{
