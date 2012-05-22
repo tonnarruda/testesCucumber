@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 public enum Operacao
 {
-	ALTERAR_STATUS_SOLICITACAO(5, "Alteração no status da solicitação de pessoal", "R&S"){
+	ALTERAR_STATUS_SOLICITACAO(5, "Alterar status da solicitação de pessoal", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -17,7 +17,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CADASTRO_CANDIDATO_MODULO_EXTERNO(1, "Aviso de cadastro de candidato pelo módulo externo", "R&S"){
+	CADASTRO_CANDIDATO_MODULO_EXTERNO(1, "Cadastrar candidato pelo módulo externo", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -27,7 +27,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	QTD_CURRICULOS_CADASTRADOS(2, "Aviso automático da quantidade de currículos cadastros por mês", "R&S"){
+	QTD_CURRICULOS_CADASTRADOS(2, "Quantidade mensal de currículos cadastrados", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -36,7 +36,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	ENCERRAMENTO_SOLICITACAO(4, "Encerramento da solicitação de pessoal", "R&S"){
+	ENCERRAMENTO_SOLICITACAO(4, "Encerrar solicitação de pessoal", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -45,7 +45,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(6, "Enviar lembrete avaliação desempenho", "R&S"){
+	ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO(6, "Liberar avaliação desempenho", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -63,7 +63,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CONTRATAR_COLABORADOR(12, "Avisar contratação de colaborador (Integração com AC Pessoal)", "R&S") {
+	CONTRATAR_COLABORADOR(12, "Contratar colaborador (Integração com AC Pessoal)", "R&S") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -72,7 +72,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	AVISO_COLABORADOR_CONTRATACAO(24, "Avisar contratação de colaborador", "R&S"){
+	AVISO_COLABORADOR_CONTRATACAO(24, "Contratar colaborador", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			
 			this.add(MeioComunicacao.EMAIL);

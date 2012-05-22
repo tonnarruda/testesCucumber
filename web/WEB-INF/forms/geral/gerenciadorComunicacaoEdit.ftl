@@ -5,11 +5,11 @@
 		<#assign validarCampos="return validaFormulario('form', new Array('destinatario'))"/>
 		<@ww.head/>
 		<#if gerenciadorComunicacao.id?exists>
-			<title>Editar Gerenciador de Comunicação</title>
+			<title>Editar configuração do gerenciador de comunicação</title>
 			<#assign formAction="update.action"/>
 			<#assign edicao=true/>
 		<#else>
-			<title>Inserir Gerenciador de Comunicação</title>
+			<title>Configurar gerenciador de comunicação</title>
 			<#assign formAction="insert.action"/>
 			<#assign edicao=false/>
 		</#if>
@@ -225,7 +225,7 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<li id="wwgrp_operacao" class="wwgrp">    
 				<div id="wwlbl_operacao" class="wwlbl">
-					<label for="operacao" class="desc">Operação:</label>
+					<label for="operacao" class="desc">Notificar quando:</label>
 				</div> 
 				<div id="wwctrl_operacao" class="wwctrl">
 					<select name="gerenciadorComunicacao.operacao" id="operacao" class="campo" style="width: 600px;" onchange="populaMeioComunicacao(this.value);exibeCampoQtdDiasLembrete(this.value);">
@@ -241,8 +241,8 @@
 				</div>
 			</li>			
 			
-			<@ww.select label="Meio de Comunicação" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
-			<@ww.select label="Enviar Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);" />
+			<@ww.select label="Através de" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
+			<@ww.select label="Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vírgula para inserir mais de um email. 
