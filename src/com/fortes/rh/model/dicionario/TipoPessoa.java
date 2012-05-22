@@ -17,9 +17,19 @@ public enum TipoPessoa
 	{
 		return chave;
 	}
+	
 	public String getDescricao()
 	{
 		return descricao;
 	}
 
+	public static String getDescricaoByChave(char chave)
+	{
+		for (TipoPessoa tipoPessoa : TipoPessoa.values())
+		{
+			if (tipoPessoa.getChave() == chave)
+				return tipoPessoa.getDescricao();
+		}
+		return null;
+	}
 }

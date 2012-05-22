@@ -24,14 +24,19 @@
 
 	<script type="text/javascript">
 		$(function() {
-			filtrarOpcao('CANDIDATO');
+			filtrarOpcao('T');
 			filtrarOpcaoRelatorioResumido();
 		});
 	
 		function filtrarOpcao(opcao)
 		{
-			$('#divEstabelecimento').toggle(opcao == 'COLABORADOR');
-			$("label[for='nomeBusca']").text(opcao=='COLABORADOR' ? 'Colaborador:' : 'Candidato:');	
+			var label = "Candidato/Colaborador:";
+			if (opcao=='A')
+				label = 'Candidato:';
+			else if (opcao=='C')
+				label = 'Colaborador:';
+			
+			$("label[for='nomeBusca']").text(label);	
 		}
 
 		function filtrarOpcaoRelatorioResumido()
@@ -60,7 +65,7 @@
 		<@ww.checkbox label="Relatório resumido" id="relatorioExamesPrevistosResumido" name="relatorioExamesPrevistosResumido" labelPosition="left" onchange="filtrarOpcaoRelatorioResumido();" />
 		
 		<div class="divRelatResumido">
-			<@ww.select label="Vínculo" id="vinculo" name="vinculo" list=r"#{'CANDIDATO':'Candidato', 'COLABORADOR':'Colaborador'}" onchange="filtrarOpcao(this.value);"/>
+			<@ww.select label="Vínculo" id="tipoPessoa" name="tipoPessoa" list=r"#{'T':'Todos', 'A':'Candidato', 'C':'Colaborador'}" onchange="filtrarOpcao(this.value);"/>
 			
 			<@ww.textfield label="Candidato" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 			
@@ -70,9 +75,7 @@
 		<@ww.select label="Clínica" name="clinicaAutorizada.id" id="clinica" list="clinicas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" />
 		
 		<div class="divRelatResumido">
-			<@ww.div id="divEstabelecimento">
-				<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
-			</@ww.div>
+			<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
 		</div>
 		
 		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />

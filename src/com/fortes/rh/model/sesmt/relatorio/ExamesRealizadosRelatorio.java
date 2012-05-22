@@ -12,28 +12,32 @@ public class ExamesRealizadosRelatorio
 	private Long exameId;
 	private Long clinicaId;
 	private Exame exame;
-	private String colaboradorNome;
-	private String candidatoNome;
+	private String nome;
+	private Character tipo;
 	private String exameNome;
 	private String clinicaNome;
 	private String resultado;
 	private String motivoSolicitacaoExame;
 	private Date data;
 	private Integer qtdExamesRealizados;
+	private Long estabelecimentoId;
+	private String estabelecimentoNome;
 
 	public ExamesRealizadosRelatorio() {
 	}
 	
-	public ExamesRealizadosRelatorio(Long exameId, String colaboradorNome, String candidatoNome, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame)
+	public ExamesRealizadosRelatorio(Long exameId, String nome, Character tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome)
 	{
 		this.exameId = exameId;
 		this.clinicaId = clinicaId;
-		this.colaboradorNome = colaboradorNome;
-		this.candidatoNome = candidatoNome;
+		this.nome = nome;
+		this.tipo = tipoPessoa;
 		this.exameNome = exameNome;
-		this.clinicaNome = clinicaNome;
+		this.clinicaNome = StringUtils.isEmpty(clinicaNome) ? "(Sem clínica definida)" : clinicaNome.trim();
 		this.data = realizacaoData;
 		this.motivoSolicitacaoExame = motivoSolicitacaoExame;
+		this.estabelecimentoId = estabelecimentoId;
+		this.estabelecimentoNome = StringUtils.isEmpty(estabelecimentoNome) ? "(Sem estabelecimento definido)" : estabelecimentoNome.trim();
 		if(exameResultado == null)
 			this.resultado = ResultadoExame.NAO_REALIZADO.toString();
 		else
@@ -45,16 +49,8 @@ public class ExamesRealizadosRelatorio
 		this.exameId = exameId;
 		this.exameNome = exameNome;
 		this.clinicaId = clinicaId;
-		this.clinicaNome = clinicaNome;
+		this.clinicaNome = StringUtils.isEmpty(clinicaNome) ? "(Sem clínica definida)" : clinicaNome.trim();
 		this.qtdExamesRealizados = qtdExamesRealizados;
-	}
-	
-	public String getNome()
-	{
-		if (StringUtils.isNotBlank(colaboradorNome))
-			return colaboradorNome;
-		else
-			return candidatoNome;
 	}
 	
 	public String getResultado() {
@@ -97,4 +93,35 @@ public class ExamesRealizadosRelatorio
 		return exame;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEstabelecimentoNome() {
+		return estabelecimentoNome;
+	}
+
+	public void setEstabelecimentoNome(String estabelecimentoNome) {
+		this.estabelecimentoNome = estabelecimentoNome;
+	}
+
+	public Long getEstabelecimentoId() {
+		return estabelecimentoId;
+	}
+
+	public void setEstabelecimentoId(Long estabelecimentoId) {
+		this.estabelecimentoId = estabelecimentoId;
+	}
+
+	public Character getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Character tipo) {
+		this.tipo = tipo;
+	}
 }

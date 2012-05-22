@@ -194,7 +194,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clinicaNome} != "" ? $F{clinicaNome} : "Nenhuma clínica"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clinicaNome}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

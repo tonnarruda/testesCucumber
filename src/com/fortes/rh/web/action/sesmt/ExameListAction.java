@@ -17,6 +17,8 @@ import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
+import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
@@ -93,7 +95,7 @@ public class ExameListAction extends MyActionSupportList
 	private boolean imprimirAfastados = false;
 	private boolean imprimirDesligados = false;
 
-	private String vinculo;
+	private Character tipoPessoa = 'T';
 	private boolean relatorioExamesPrevistosResumido;
 	private String nomeBusca;
 
@@ -268,9 +270,27 @@ public class ExameListAction extends MyActionSupportList
 			if (relatorioExamesPrevistosResumido)
 				examesRealizados = exameManager.findRelatorioExamesRealizadosResumido(getEmpresaSistema().getId(), inicio, fim, clinicaAutorizada, examesIds);
 			else
-				examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, vinculo);
+				examesRealizados = exameManager.findRelatorioExamesRealizados(getEmpresaSistema().getId(), nomeBusca, inicio, fim, motivo, resultado, clinicaAutorizada.getId(), examesIds, estabelecimentosIds, tipoPessoa);
 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), "Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim) + "\n" + nomeEstabelecimento);
+			StringBuffer filtros = new StringBuffer();
+			filtros.append("Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim));
+			
+			if (!tipoPessoa.equals(TipoPessoa.TODOS))
+				filtros.append("\nVínculo: " + TipoPessoa.getDescricaoByChave(tipoPessoa));
+			
+			if (MotivoSolicitacaoExame.getInstance().get(motivo) != null)
+				filtros.append("\nMotivo: " + MotivoSolicitacaoExame.getInstance().get(motivo));
+			
+			if (clinicaAutorizada != null && clinicaAutorizada.getId() != null) {
+				ClinicaAutorizada clinica = clinicaAutorizadaManager.findEntidadeComAtributosSimplesById(clinicaAutorizada.getId());
+				filtros.append("\nClínica: " + clinica.getNome());
+			}
+			
+			if (resultado != null && !resultado.isEmpty())
+				filtros.append("\nResultado: " + ResultadoExame.valueOf(resultado).getDescricao());
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), filtros.toString());
+			parametros.put("TIPO_PESSOA", tipoPessoa);
 			
 			return relatorioExamesPrevistosResumido ? "successRelatResumido" : SUCCESS;
 		}
@@ -534,16 +554,6 @@ public class ExameListAction extends MyActionSupportList
 		this.imprimirAfastados = imprimirAfastados;
 	}
 
-	public String getVinculo()
-	{
-		return vinculo;
-	}
-
-	public void setVinculo(String vinculo)
-	{
-		this.vinculo = vinculo;
-	}
-
 	public String getNomeBusca() {
 		return nomeBusca;
 	}
@@ -570,5 +580,13 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setAgruparPor(char agruparPor) {
 		this.agruparPor = agruparPor;
+	}
+
+	public Character getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(Character tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 }

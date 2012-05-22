@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.captacao;
 import java.util.Date;
 
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 
 public class SolicitacaoFactory
 {
@@ -23,6 +24,7 @@ public class SolicitacaoFactory
 		solicitacao.setSolicitante(null);
 		solicitacao.setEncerrada(false);
 		solicitacao.setEmpresa(null);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
 
 		return solicitacao;
 	}

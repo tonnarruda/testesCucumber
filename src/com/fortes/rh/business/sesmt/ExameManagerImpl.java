@@ -1,6 +1,5 @@
 package com.fortes.rh.business.sesmt;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,21 +18,16 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
-import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
-import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 
@@ -215,9 +209,15 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return colecaoResultado;
 	}
 
-	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, String vinculo) throws ColecaoVaziaException
+	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa) throws ColecaoVaziaException
 	{
-		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizados(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, vinculo);
+		Collection<ExamesRealizadosRelatorio> examesRealizados = new ArrayList<ExamesRealizadosRelatorio>();
+		
+		if (!tipoPessoa.equals(TipoPessoa.CANDIDATO.getChave()))
+			examesRealizados.addAll(getDao().findExamesRealizadosColaboradores(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds));
+
+		if (!tipoPessoa.equals(TipoPessoa.COLABORADOR.getChave()))
+			examesRealizados.addAll(getDao().findExamesRealizadosCandidatos(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds));
 		
 		if (examesRealizados == null || examesRealizados.isEmpty())
 			throw new ColecaoVaziaException("Não existem exames realizados para os filtros informados.");
@@ -227,6 +227,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		examesRealizados = collectionUtil.sortCollectionDate(examesRealizados, "data", "asc");
 		examesRealizados = collectionUtil.sortCollectionStringIgnoreCase(examesRealizados, "nome");
 		examesRealizados = collectionUtil.sortCollectionStringIgnoreCase(examesRealizados, "clinicaNome");
+		examesRealizados = collectionUtil.sortCollectionStringIgnoreCase(examesRealizados, "estabelecimentoNome");
 		
 		return examesRealizados;
 	}
