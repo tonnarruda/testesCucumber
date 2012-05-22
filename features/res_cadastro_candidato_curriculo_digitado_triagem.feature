@@ -26,18 +26,18 @@ Funcionalidade: Cadastrar Candidato
     Quando eu clico no botão "Triagem"
     Então eu devo ver o título "Triagem de currículos"
    
-    Quando eu clico "Busca Simples"
+    Quando eu clico "Triagem Simples"
     E eu clico no botão "Pesquisar"
     Então eu devo ver "maria"
     E eu devo ver "Total de Candidatos: 1"
    
-    Quando eu clico "Busca Avançada"
+    Quando eu clico "Triagem Avançada"
     E eu clico no botão "Pesquisar"
     Então eu devo ver "maria"
     E eu devo ver "Total de Candidatos: 1"
 
 	#busca no F2rh de verdade
-    Quando eu clico "Busca no F2rh"
+    Quando eu clico "Triagem no F2rh"
     E eu clico no botão "Pesquisar"
     E eu espero 4 segundos
     Então eu devo ver "Fortaleza/CE"

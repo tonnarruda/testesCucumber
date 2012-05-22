@@ -142,7 +142,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu seleciono "Nome do Pai" de "from_colunas"
     E eu aperto "b_to_colunas"
 
-    Então eu clico na imagem com o título "Salvar layout do relatório"
+    Então eu clico na imagem com o título "Salvar campo do relatório"
     E eu devo ver o alert "Layout do relatório salvo com sucesso." e clico no ok
 
 

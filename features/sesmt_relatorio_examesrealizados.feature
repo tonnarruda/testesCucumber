@@ -13,7 +13,7 @@ Funcionalidade: Relatório de Exames Realizados
 
     Então eu preencho o campo (JS) "dataIni" com "01/01/2011"
     E eu preencho o campo (JS) "dataFim" com "29/07/2011"
-    E eu seleciono "Candidato & Colaborador" de "Vínculo"
+    E eu seleciono "Colaborador" de "Vínculo"
     E eu preencho "Colaborador" com "agnaldo"
     E eu seleciono "Todos" de "Motivo do Atendimento"
     E eu seleciono "Todas" de "Clínica"
