@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="rankingPerformaceExperienciaAgrupadoPorModelo"
+		 name="rankingPerformanceAvDesempenho"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -33,6 +33,7 @@
 	<field name="respondidaEm" class="java.util.Date"/>
 	<field name="nomeAvaliador" class="java.lang.String"/>
 	<field name="avaliacaoDesempenhoTitulo" class="java.lang.String"/>
+	<field name="mediaPerformanceFormatada" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
@@ -86,7 +87,7 @@
 					<textElement textAlignment="Right">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($V{mediaPerformace}.doubleValue() / 100.0)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mediaPerformanceFormatada}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
