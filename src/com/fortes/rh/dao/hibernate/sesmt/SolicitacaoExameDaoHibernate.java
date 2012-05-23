@@ -210,7 +210,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	 */
 	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome)
 	{
-		StringBuilder hql = new StringBuilder("select new SolicitacaoExame(se.id, se.data, se.motivo, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome) ");
+		StringBuilder hql = new StringBuilder("select new SolicitacaoExame(se.id, se.data, se.motivo, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome, co.matricula) ");
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.candidato ca ");
 		

@@ -373,6 +373,7 @@ import com.fortes.rh.test.model.sesmt.ComissaoTest;
 import com.fortes.rh.test.model.sesmt.EtapaProcessoEleitoralTest;
 import com.fortes.rh.test.model.sesmt.ExamesPrevistosRelatorioTest;
 import com.fortes.rh.test.model.sesmt.PppRelatorioTest;
+import com.fortes.rh.test.model.sesmt.SolicitacaoExameTest;
 import com.fortes.rh.test.security.MenuTest;
 import com.fortes.rh.test.security.UserDetailsImplTest;
 import com.fortes.rh.test.util.ArquivoUtilTest;
@@ -1282,6 +1283,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(PendenciaACTest.class);
         suite.addTestSuite(AreaOrganizacionalTest.class);
         suite.addTestSuite(ReportColumnTest.class);
+        suite.addTestSuite(SolicitacaoExameTest.class);
 
         suite.addTestSuite(ResultadoPesquisaTest.class);
         suite.addTestSuite(ProgressaoColaboradorTest.class);

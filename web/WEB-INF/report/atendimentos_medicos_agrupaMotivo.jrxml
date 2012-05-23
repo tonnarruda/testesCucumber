@@ -33,6 +33,7 @@
 	<field name="cargoNome" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
 	<field name="pessoa.nome" class="java.lang.String"/>
+	<field name="pessoaMatricula" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{motivoDic}]]></variableExpression>
@@ -116,9 +117,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="64"
+						x="121"
 						y="22"
-						width="206"
+						width="314"
 						height="13"
 						key="staticText-6"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -168,16 +169,16 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="274"
+						x="64"
 						y="22"
-						width="159"
+						width="53"
 						height="13"
 						key="staticText-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Nome Comercial]]></text>
+				<text><![CDATA[Matrícula]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -198,19 +199,6 @@
 						</reportElement>
 					<graphicElement stretchType="RelativeToBandHeight" pen="None"/>
 				</rectangle>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="64"
-						y="1"
-						width="206"
-						height="11"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{pessoa.nome}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="9"
@@ -252,16 +240,29 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="274"
+						x="121"
 						y="1"
-						width="159"
+						width="314"
 						height="11"
 						key="textField-11"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[!$F{pessoa.nome}.equalsIgnoreCase($F{pessoaNomeComercial}) ? $F{pessoaNomeComercial} : ""]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{pessoaNomeComercial}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="64"
+						y="1"
+						width="53"
+						height="11"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{pessoaMatricula}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

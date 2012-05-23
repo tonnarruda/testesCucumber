@@ -77,7 +77,7 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     }
     
     //usado em relatorio de atendimentos
-    public SolicitacaoExame(Long id, Date data, String motivo, String observacao, String medicoCoordenadorNome, String colaboradorNome, String colaboradorNomeComercial, String candidatoNome, String colaboradorCargoNome, String candidatoCargoNome)
+    public SolicitacaoExame(Long id, Date data, String motivo, String observacao, String medicoCoordenadorNome, String colaboradorNome, String colaboradorNomeComercial, String candidatoNome, String colaboradorCargoNome, String candidatoCargoNome, String colaboradorMatricula)
     {
         setId(id);
         this.data = data;
@@ -87,6 +87,7 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
         setCandidatoNome(candidatoNome);
         setMedicoCoordenadorNome(medicoCoordenadorNome);
         setColaboradorNomeComercial(colaboradorNomeComercial);
+        setColaboradorMatricula(colaboradorMatricula);
         
         if (StringUtils.isNotBlank(colaboradorCargoNome))
         	this.cargoNome = colaboradorCargoNome;
@@ -114,22 +115,36 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     public String getPessoaNomeComercial()
     {
     	AbstractModel pessoa = getPessoa();
-    	
-    	String pessoaNome = "";
-    	
+    	String retorno = "";
+    	    	
     	if (pessoa instanceof Candidato)
     	{
-    		pessoaNome = "CANDIDATO";
+    		Candidato candidato = (Candidato) pessoa;
+    		retorno = candidato.getNome() + " (candidato)";
     	}
     	
     	else if (pessoa instanceof Colaborador)
     	{
     		Colaborador colaborador = (Colaborador) pessoa; 
+    		retorno = colaborador.getNome();
     		
-    		pessoaNome = colaborador.getNomeComercial();
+    		if(StringUtils.isNotBlank(colaborador.getNomeComercial()) && !colaborador.getNome().equals(colaborador.getNomeComercial()))
+    			retorno += " (" + colaborador.getNomeComercial() + ")";
     	}
     	
-    	return pessoaNome;
+    	return retorno;
+    }
+
+    @NaoAudita
+    public String getPessoaMatricula()
+    {
+    	AbstractModel pessoa = getPessoa();
+    	
+    	String pessoaMatricula = "";
+    	if (pessoa instanceof Colaborador)
+    		pessoaMatricula = ((Colaborador) pessoa).getMatricula();
+    	
+    	return pessoaMatricula;
     }
 
     public String getMotivo()
@@ -234,6 +249,17 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
              this.colaborador.setNomeComercial(colaboradorNomeComercial);
          }
 	}
+    
+    public void setColaboradorMatricula(String colaboradorMatricula) {
+    	
+    	if (StringUtils.isNotBlank(colaboradorMatricula))
+    	{
+    		if (this.colaborador == null)
+    			this.colaborador = new Colaborador();
+    		
+    		this.colaborador.setMatricula(colaboradorMatricula);
+    	}
+    }
 
     public Candidato getCandidato()
     {
