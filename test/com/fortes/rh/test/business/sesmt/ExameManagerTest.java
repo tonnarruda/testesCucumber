@@ -20,6 +20,7 @@ import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
@@ -226,12 +227,14 @@ public class ExameManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	Collection<ExamesRealizadosRelatorio> colecao = new ArrayList<ExamesRealizadosRelatorio>();
-    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio();
+    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio(1L, "do dedo", 'C', "Toque", new Date(), 1L, "Socorro", "Passou não", "problema", 1L, "estabelecimento");
+    	
     	colecao.add(examesPrevistosRelatorio);
     	
-    	exameDao.expects(once()).method("findExamesRealizados").will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesRealizadosColaboradores").will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesRealizadosCandidatos").will(returnValue(colecao));
     	
-    	assertEquals(1,exameManager.findRelatorioExamesRealizados(empresa.getId(), null, new Date(), new Date(), null, null, null, null, null, 'T').size());
+    	assertEquals(2, exameManager.findRelatorioExamesRealizados(empresa.getId(), null, new Date(), new Date(), null, null, null, null, null, TipoPessoa.TODOS.getChave()).size());
     }
 
     public void testFindRelatorioExamesRealizadosResumido() throws ColecaoVaziaException
@@ -253,13 +256,14 @@ public class ExameManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	exameDao.expects(once()).method("findExamesRealizados").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
-
+    	exameDao.expects(once()).method("findExamesRealizadosColaboradores").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	exameDao.expects(once()).method("findExamesRealizadosCandidatos").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	
     	Exception exception = null;
 
     	try
 		{
-			exameManager.findRelatorioExamesRealizados(empresa.getId(), null, null, null, null, null, null,null,null, 'T');
+			exameManager.findRelatorioExamesRealizados(empresa.getId(), null, null, null, null, null, null,null,null, TipoPessoa.TODOS.getChave());
 		}
 		catch (ColecaoVaziaException e)
 		{

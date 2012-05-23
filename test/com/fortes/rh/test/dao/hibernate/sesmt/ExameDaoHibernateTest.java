@@ -28,6 +28,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -557,16 +558,18 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
     	estabelecimentoDao.save(estabelecimento);
     	
-    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-    	historicoColaborador.setStatus(1);
-    	historicoColaborador.setData(hoje);
-    	historicoColaborador.setEstabelecimento(estabelecimento);
-    	historicoColaboradorDao.save(historicoColaborador);
 
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setNome("Colaborador 1");
-		colaborador1.setHistoricoColaboradors(Arrays.asList(historicoColaborador));
+//		colaborador1.setHistoricoColaboradors(Arrays.asList(historicoColaborador));
 		colaboradorDao.save(colaborador1);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setData(hoje);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setColaborador(colaborador1);
+		historicoColaboradorDao.save(historicoColaborador);
 
 		Exame exame1 = ExameFactory.getEntity();
 		exameDao.save(exame1);
