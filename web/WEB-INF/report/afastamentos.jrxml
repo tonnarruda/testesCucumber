@@ -33,6 +33,7 @@
 	<field name="colaborador.areaOrganizacional.descricao" class="java.lang.String"/>
 	<field name="afastamento.descricao" class="java.lang.String"/>
 	<field name="dias" class="java.lang.Integer"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -68,9 +69,9 @@
 			<band height="40"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="0"
+						x="50"
 						y="24"
-						width="203"
+						width="166"
 						height="16"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -81,9 +82,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="347"
+						x="359"
 						y="24"
-						width="98"
+						width="86"
 						height="16"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -94,7 +95,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="207"
+						x="219"
 						y="24"
 						width="107"
 						height="16"
@@ -146,7 +147,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="316"
+						x="328"
 						y="24"
 						width="29"
 						height="16"
@@ -156,6 +157,19 @@
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Dias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="2"
+						y="24"
+						width="46"
+						height="16"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Matrícula]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -178,9 +192,9 @@
 				</rectangle>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
+						x="50"
 						y="2"
-						width="203"
+						width="166"
 						height="15"
 						key="textField"
 						positionType="Float"/>
@@ -192,9 +206,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="347"
+						x="359"
 						y="2"
-						width="98"
+						width="86"
 						height="15"
 						key="textField"
 						positionType="Float"/>
@@ -219,7 +233,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="207"
+						x="219"
 						y="2"
 						width="107"
 						height="15"
@@ -260,7 +274,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="316"
+						x="328"
 						y="2"
 						width="29"
 						height="15"
@@ -270,6 +284,20 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{dias}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="2"
+						width="46"
+						height="15"
+						key="textField-5"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
