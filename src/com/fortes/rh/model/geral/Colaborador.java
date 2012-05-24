@@ -552,7 +552,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
+						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  String cidadeNome, String ufSigla,
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
@@ -600,12 +600,19 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				
 		if (this.endereco == null)
 			this.endereco = new Endereco();
-				
+		
+		Cidade cidade = new Cidade();
+		cidade.setNome(cidadeNome);
+		Estado uf = new Estado();
+		uf.setSigla(ufSigla);
+		
 		this.getEndereco().setLogradouro(logradouro);
 		this.getEndereco().setComplemento(complemento);
 		this.getEndereco().setNumero(numero);
 		this.getEndereco().setBairro(bairro);
 		this.getEndereco().setCep(cep);
+		this.getEndereco().setCidade(cidade);
+		this.getEndereco().setUf(uf);
 		
 		if (contato == null)
 			this.contato = new Contato();
@@ -642,8 +649,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome 
-			) 
+			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
+			String cidadeNome, String ufSigla) 
 	{
 		this.setEstabelecimentoNomeProjection(esNome);
 		this.setAreaOrganizacionalId(aoId);
@@ -696,12 +703,19 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		if (this.endereco == null)
 			this.endereco = new Endereco();
+
+		Cidade cidade = new Cidade();
+		cidade.setNome(cidadeNome);
+		Estado uf = new Estado();
+		uf.setSigla(ufSigla);
 		
 		this.getEndereco().setLogradouro(logradouro);
 		this.getEndereco().setComplemento(complemento);
 		this.getEndereco().setNumero(numero);
 		this.getEndereco().setBairro(bairro);
 		this.getEndereco().setCep(cep);
+		this.getEndereco().setCidade(cidade);
+		this.getEndereco().setUf(uf);
 		
 		if (contato == null)
 			this.contato = new Contato();

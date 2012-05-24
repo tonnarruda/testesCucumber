@@ -63,6 +63,20 @@ public class Endereco implements Serializable
 		return endereco;
 	}
 
+	@NaoAudita
+	public String getCidadeEstado()
+	{
+		String cidadeEstado = "";
+		
+		if (StringUtils.isNotBlank(this.cidade.getNome()))
+			cidadeEstado = this.cidade.getNome();
+
+		if (StringUtils.isNotBlank(this.uf.getSigla()))
+			cidadeEstado += "/" + this.uf.getSigla();
+		
+		return cidadeEstado;
+	}
+
 	public void setCep(String cep)
 	{
 		this.cep = cep;

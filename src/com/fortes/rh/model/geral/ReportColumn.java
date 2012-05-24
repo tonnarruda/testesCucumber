@@ -58,10 +58,11 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Emissão da Habilitação", "habilitacao.emissaoFormatada", "co.habilitacao.emissao", 50, false));
 		columns.add(new ReportColumn("Vencimento da Habilit.", "habilitacao.vencimentoFormatada", "co.habilitacao.vencimento", 50, false));
 		columns.add(new ReportColumn("Categoria da Habilit.", "habilitacao.categoria", "co.habilitacao.categoria", 60, false));
-		columns.add(new ReportColumn("Logradouro", "endereco.logradouro", "co.endereco.logradouro", 120, true));
-		columns.add(new ReportColumn("Comp. do Logradouro", "endereco.complemento", "co.endereco.complemento", 120, true));
-		columns.add(new ReportColumn("Número do Logradouro", "endereco.numero", "co.endereco.numero", 60, false));
+		columns.add(new ReportColumn("Logradouro", "endereco.enderecoFormatado", "co.endereco.enderecoFormatado", 200, true));
+//		columns.add(new ReportColumn("Comp. do Logradouro", "endereco.complemento", "co.endereco.complemento", 120, true));
+//		columns.add(new ReportColumn("Número do Logradouro", "endereco.numero", "co.endereco.numero", 60, false));
 		columns.add(new ReportColumn("Bairro", "endereco.bairro", "co.endereco.bairro", 100, false));
+		columns.add(new ReportColumn("Cidade/Estado", "endereco.cidadeEstado", "co.endereco.cidadeEstado", 80, false));
 		columns.add(new ReportColumn("Cep", "endereco.cepFormatado", "co.endereco.cep", 60, false));
 		columns.add(new ReportColumn("Email", "contato.email", "co.contato.email", 150, false));
 		columns.add(new ReportColumn("Celular", "contato.foneCelularFormatado", "co.contato.foneCelular", 40, false));
