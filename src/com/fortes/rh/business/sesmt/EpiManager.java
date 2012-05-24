@@ -13,6 +13,8 @@ import com.fortes.web.tags.CheckBox;
 
 public interface EpiManager extends GenericManager<Epi>
 {
+	Integer getCount(Long empresaId, String epiNome, Boolean ativo);
+	Collection<Epi> findEpis(int page, int pagingSize, Long empresaId, String epiNome, Boolean ativo);
 	Collection<CheckBox> populaCheckToEpi(Long id);
 	Collection<Epi> populaEpi(String[] episCheck);
 	Epi findByIdProjection(Long epiId);
@@ -27,5 +29,5 @@ public interface EpiManager extends GenericManager<Epi>
 	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	String findFabricantesDistinctByEmpresa(Long empresaId);
 	Collection<Epi> findAllSelect(Long empresaId);
-	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId);
+	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos);
 }

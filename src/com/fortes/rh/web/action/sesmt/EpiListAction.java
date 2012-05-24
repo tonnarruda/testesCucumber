@@ -10,6 +10,7 @@ import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -32,6 +33,9 @@ public class EpiListAction extends MyActionSupportList
 	private Date venc;
 	private Collection<Epi> dataSource;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
+	
+	private String epiNome;
+	private char ativo;
 
 	public String execute() throws Exception
 	{
@@ -40,15 +44,9 @@ public class EpiListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		String[] keys = new String[]{"empresa"};
-		Object[] values = new Object[]{getEmpresaSistema()};
-		String[] orders = new String[]{"nome"};
-
-		setTotalSize(epiManager.getCount(keys, values));
-		epis = epiManager.find(getPage(), getPagingSize(), keys, values, orders);
-
-		if(!msgAlert.equals(""))
-			addActionError(msgAlert);
+		Boolean valueCombo = BooleanUtil.getValueCombo(ativo);
+		setTotalSize(epiManager.getCount(getEmpresaSistema().getId(), epiNome, valueCombo ));
+		epis = epiManager.findEpis(getPage(), getPagingSize(), getEmpresaSistema().getId(), epiNome, valueCombo);
 
 		return Action.SUCCESS;
 	}
@@ -172,6 +170,22 @@ public class EpiListAction extends MyActionSupportList
 
 	public void setTipoEPICheckList(Collection<CheckBox> tipoEPICheckList) {
 		this.tipoEPICheckList = tipoEPICheckList;
+	}
+
+	public String getEpiNome() {
+		return epiNome;
+	}
+
+	public void setEpiNome(String epiNome) {
+		this.epiNome = epiNome;
+	}
+
+	public char getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(char ativo) {
+		this.ativo = ativo;
 	}
 
 }

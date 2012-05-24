@@ -79,6 +79,12 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		inicializaEpi();
 		this.epi.setEpiHistorico(epiHistorico);
 	}
+	
+	public void setProjectionEpiAtivo(boolean epiAtivo)
+	{
+		inicializaEpi();
+		this.epi.setAtivo(epiAtivo);
+	}
 
 	public Epi getEpi()
 	{

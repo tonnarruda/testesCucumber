@@ -228,7 +228,7 @@
 					</@display.column>
 	
 					<@display.column title="EPI" style="width:400px;">
-						<label for="check${lista[0].id}" class="${class}">${lista[0].nome}</label>
+						<label for="check${lista[0].id}" class="${class}">${lista[0].nomeInativo}</label>
 					</@display.column>
 	
 					<@display.column title="Fabricante">

@@ -3,12 +3,12 @@ package com.fortes.rh.util;
 
 public class BooleanUtil
 {
-	public static Boolean getValueCombo(char respondida) 
+	public static Boolean getValueCombo(char valueCombo) 
 	{
 		Boolean value = null;
-		if (respondida == 'S' || respondida == 's' )
+		if (valueCombo == 'S' || valueCombo == 's' )
 			value = true;
-		if (respondida == 'N' || respondida == 'n')
+		if (valueCombo == 'N' || valueCombo == 'n')
 			value = false;
 		
 		return value;

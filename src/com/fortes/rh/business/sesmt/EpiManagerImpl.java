@@ -36,6 +36,16 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	public Integer getCount(Long empresaId, String epiNome, Boolean ativo) 
+	{
+		return getDao().getCount(empresaId, epiNome, ativo);
+	}
+	
+	public Collection<Epi> findEpis(int page, int pagingSize, Long empresaId, String epiNome, Boolean ativo) 
+	{
+		return getDao().findEpis(page, pagingSize, empresaId, epiNome, ativo);
+	}
 
 	public Collection<CheckBox> populaCheckToEpi(Long empresaId)
 	{
@@ -263,8 +273,8 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return getDao().findByHistoricoFuncao(historicoFuncaoId);
 	}
 
-	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId) 
+	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos) 
 	{
-		return getDao().findPriorizandoEpiRelacionado(empresaId, colaboradorId);
+		return getDao().findPriorizandoEpiRelacionado(empresaId, colaboradorId, somenteAtivos);
 	}
 }

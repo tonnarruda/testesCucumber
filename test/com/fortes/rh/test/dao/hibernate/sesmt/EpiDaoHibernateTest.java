@@ -76,6 +76,45 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 
 		return epi;
 	}
+	
+	public void testFindEpisGetCount() 
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Epi epi1 = EpiFactory.getEntity();
+		epi1.setEmpresa(empresa1);
+		epiDao.save(epi1);
+		
+		Epi epi2 = EpiFactory.getEntity();
+		epi2.setEmpresa(empresa1);
+		epiDao.save(epi2);
+		
+		Epi epi3 = EpiFactory.getEntity();
+		epi3.setEmpresa(empresa1);
+		epiDao.save(epi3);
+		
+		Epi epi4 = EpiFactory.getEntity();
+		epi4.setEmpresa(empresa1);
+		epiDao.save(epi4);
+		
+		Epi epi5 = EpiFactory.getEntity();
+		epi5.setEmpresa(empresa1);
+		epiDao.save(epi5);
+		
+		Epi epi6 = EpiFactory.getEntity();
+		epi6.setEmpresa(empresa2);
+		epiDao.save(epi6);
+		
+		assertEquals(new Integer(5), epiDao.getCount(empresa1.getId(), null, null));
+
+		assertEquals(5, epiDao.findEpis(1, 10, empresa1.getId(), null, null).size());
+		assertEquals(2, epiDao.findEpis(1, 2, empresa1.getId(), null, null).size());
+		assertEquals(1, epiDao.findEpis(3, 2, empresa1.getId(), null, null).size());
+	}
 
 	public void testFindByIdProjection()
 	{
@@ -388,7 +427,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		eh3.setEpi(epi2);
 		epiHistoricoDao.save(eh3);
 
-		Collection<Epi> colecao = epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId());
+		Collection<Epi> colecao = epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId(), somenteAtivos);
 		assertEquals(2, colecao.size());
 	}
 	

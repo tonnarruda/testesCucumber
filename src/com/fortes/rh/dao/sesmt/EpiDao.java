@@ -8,6 +8,8 @@ import com.fortes.rh.model.sesmt.Epi;
 
 public interface EpiDao extends GenericDao<Epi>
 {
+	Integer getCount(Long empresaId, String epiNome, Boolean ativo);
+	Collection<Epi> findEpis(int page, int pagingSize, Long empresaId, String epiNome, Boolean ativo);
 	Epi findByIdProjection(Long epiId);
 	Collection<Epi> findAllSelect(Long empresaId);
 	Collection<Epi> findByVencimentoCa(Date data, Long empresaId, Long[] tipoEPIIds);
@@ -17,5 +19,5 @@ public interface EpiDao extends GenericDao<Epi>
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Epi> findSincronizarEpiInteresse(Long empresaOrigemId);
 	Collection<String> findFabricantesDistinctByEmpresa(Long empresaId);
-	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId);
+	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos);
 }

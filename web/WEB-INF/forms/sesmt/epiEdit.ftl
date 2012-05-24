@@ -84,6 +84,8 @@
   		<@ww.checkbox theme="simple" id="fardamento" name="epi.fardamento" onclick="setCamposObrigatorios(this);" /> 
   		Fardamento
 		<img id="help_fardamento" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle"/>
+		<@ww.checkbox id="ativo" name="epi.ativo" label="Ativo" labelPosition="left"/>
+		
 		<@ww.hidden name="epi.id" />
 		<@ww.token/>
 

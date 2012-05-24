@@ -30,6 +30,7 @@ public class Epi extends AbstractModel implements Serializable
     private TipoEPI tipoEPI;
 
     private boolean fardamento;
+    private boolean ativo;
     
     @Transient
     private boolean relacionadoAoColaborador;
@@ -102,6 +103,14 @@ public class Epi extends AbstractModel implements Serializable
 	{
 		this.fabricante = fabricante;
 	}
+	public String getNomeInativo()
+	{
+		if(!ativo)
+			return getNome() + " (Inativo)";
+		else
+			return getNome();
+	}
+
 	public String getNome()
 	{
 		return nome;
@@ -149,5 +158,13 @@ public class Epi extends AbstractModel implements Serializable
 
 	public void setRelacionadoAoColaborador(boolean relacionadoAoColaborador) {
 		this.relacionadoAoColaborador = relacionadoAoColaborador;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

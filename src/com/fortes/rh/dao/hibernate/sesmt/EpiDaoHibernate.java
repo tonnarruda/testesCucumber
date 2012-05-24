@@ -11,6 +11,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -20,10 +21,47 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 {
+	public Integer getCount(Long empresaId, String epiNome, Boolean ativo)
+	{
+		Criteria criteria = montaConsulta(empresaId, epiNome, ativo);
+		
+		criteria.setProjection(Projections.rowCount());
+
+		return (Integer) criteria.list().get(0);
+	}
+
+	public Collection<Epi> findEpis(int page, int pagingSize, Long empresaId, String epiNome, Boolean ativo)
+	{
+		Criteria criteria = montaConsulta(empresaId, epiNome, ativo);
+
+		criteria.addOrder(Order.asc("e.nome"));
+
+		criteria.setFirstResult(((page - 1) * pagingSize));
+		criteria.setMaxResults(pagingSize);
+
+		return criteria.list();
+	}
+
+	private Criteria montaConsulta(Long empresaId, String epiNome, Boolean ativo)
+	{
+		Criteria criteria = getSession().createCriteria(Epi.class, "e");
+		
+		criteria.add(Expression.eq("e.empresa.id",empresaId));
+
+		if(epiNome != null && !StringUtil.isBlank(epiNome))
+			criteria.add(Expression.ilike("e.nome", epiNome, MatchMode.ANYWHERE));
+
+		if(ativo != null)
+			criteria.add(Expression.eq("e.ativo", ativo));
+		
+		return criteria;
+	}
+	
 	public Epi findByIdProjection(Long epiId)
 	{
 		Criteria criteria = getSession().createCriteria(Epi.class, "e");
@@ -230,12 +268,12 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		return criteria.list();
 	}
 
-	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId) 
+	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos) 
 	{
 		getSession().flush();
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA, true as relacionadoAoColaborador ");
+		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, true as relacionadoAoColaborador ");
 		sql.append("from historicofuncao_epi hfe ");
 		sql.append("inner join epi e on hfe.epis_id = e.id ");
 		sql.append("inner join epihistorico eh on eh.epi_id = e.id ");
@@ -246,10 +284,12 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id=hc.colaborador_id ) ");
 		sql.append("and eh.data = (select max(eh2.data) from epihistorico eh2 where eh2.epi_id=e.id group by eh2.id order by eh2.id desc limit 1) ");
 		sql.append("union ");
-		sql.append("select e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA, false as relacionadoAoColaborador ");
+		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, false as relacionadoAoColaborador ");
 		sql.append("from epi e ");
 		sql.append("inner join epihistorico eh on eh.epi_id = e.id ");
 		sql.append("where e.empresa_id = :empresaId ");
+		if (somenteAtivos)
+			sql.append("and e.ativo = true ");
 		sql.append("and e.id not in (select e.id ");
 		sql.append("				from historicofuncao_epi hfe ");
 		sql.append("				inner join epi e on hfe.epis_id = e.id ");
@@ -274,6 +314,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 			epi.setId(new BigInteger(obj[i].toString()).longValue());
 			epi.setNome(obj[++i].toString());
 			epi.setFabricante(obj[++i].toString());
+			epi.setAtivo(new Boolean(obj[++i].toString()));
 			epi.setEpiHistorico(new EpiHistorico());
 			if (obj[++i] != null)
 				epi.getEpiHistorico().setCA(obj[i].toString());

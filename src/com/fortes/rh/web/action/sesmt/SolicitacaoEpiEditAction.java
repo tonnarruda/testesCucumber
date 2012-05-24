@@ -58,15 +58,18 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	private void prepare() throws Exception
 	{
+		boolean somenteAtivos = true;
+		
 		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
 		{
+			somenteAtivos = false;
 			solicitacaoEpi = (SolicitacaoEpi) solicitacaoEpiManager.findById(solicitacaoEpi.getId());
 			colaborador = solicitacaoEpi.getColaborador(); 
 		}
 
 		if (colaborador != null && colaborador.getId() != null)
 		{
-			Collection<Epi> epis = epiManager.findPriorizandoEpiRelacionado(getEmpresaSistema().getId(), colaborador.getId());
+			Collection<Epi> epis = epiManager.findPriorizandoEpiRelacionado(getEmpresaSistema().getId(), colaborador.getId(), somenteAtivos);
 	
 			listaEpis = new Object[epis.size()][2];
 			int i=0;
