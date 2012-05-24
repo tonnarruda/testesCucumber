@@ -39,7 +39,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Colaborador", EnviarPara.COLABORADOR.getDescricao());
 		assertEquals("Responsável do RH", EnviarPara.RESPONSAVEL_RH.getDescricao());
 		assertEquals("Responsável do setor pessoal", EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getDescricao());
-		assertEquals("Responsável Tecnico", EnviarPara.RESPONSAVEL_TECNICO.getDescricao());
+		assertEquals("Responsável Técnico", EnviarPara.RESPONSAVEL_TECNICO.getDescricao());
 		assertEquals("Usuários com perfil de receber mensagem do AC Pessoal", EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getDescricao());
 		assertEquals("Usuários com permissão de visualizar solicitação pessoal", EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getDescricao());
 		assertEquals("Responsável pelo limite de colaboradores por cargo", EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getDescricao());
@@ -58,7 +58,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Colaborador", EnviarPara.getDescricaoById(6));
 		assertEquals("Responsável do RH", EnviarPara.getDescricaoById(7));
 		assertEquals("Responsável do setor pessoal", EnviarPara.getDescricaoById(8));
-		assertEquals("Responsável Tecnico", EnviarPara.getDescricaoById(12));
+		assertEquals("Responsável Técnico", EnviarPara.getDescricaoById(12));
 		assertEquals("Usuários com perfil de receber mensagem do AC Pessoal", EnviarPara.getDescricaoById(13));
 		assertEquals("Usuários com permissão de visualizar solicitação pessoal", EnviarPara.getDescricaoById(14));
 		assertEquals("Responsável pelo limite de colaboradores por cargo", EnviarPara.getDescricaoById(15));

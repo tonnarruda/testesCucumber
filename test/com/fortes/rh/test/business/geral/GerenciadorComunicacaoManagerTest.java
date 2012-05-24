@@ -352,7 +352,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_QUESTIONARIO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_PESQUISA.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
 		 Exception exception = null;
@@ -391,7 +391,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
 		 questionarioManager.expects(atLeastOnce()).method("findQuestionarioNaoLiberados").with(ANYTHING).will(returnValue(questionarios));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId()), eq(null)).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.PESQUISA_NAO_LIBERADA.getId()), eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
@@ -418,7 +418,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
 		 empresaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(empresa));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
@@ -644,7 +644,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.BACKUP_AUTOMATICO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.GERAR_BACKUP.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
@@ -676,7 +676,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CONTRATAR_COLABORADOR.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CONTRATAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
@@ -787,7 +787,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		 empresa.setNome("Empresa I");
-		 Object[] valores = new Object[] {Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresa.getId()};
+		 Object[] valores = new Object[] {Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresa.getId()};
 		 gerenciadorComunicacaoDao.expects(once())
 		 									.method("verifyExists")
 		 									.with(eq(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}),eq(valores))
@@ -946,7 +946,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacoes = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2); 
 		 
 		 historicoColaboradorManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(historico));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacoes));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.CONTRATAR_COLABORADOR.getId()),ANYTHING).will(returnValue(gerenciadorComunicacoes));
 		 usuarioEmpresaManager.expects(atLeastOnce()).method("findUsuariosAtivo").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 usuarioManager.expects(atLeastOnce()).method("findEmailsByUsuario").withAnyArguments().will(returnValue(new String[]{}));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
@@ -991,7 +991,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 		 areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(configuracaoLimiteColaborador.getAreaOrganizacional().getId())).will(returnValue(areaOrganizacional));
 		 cargoManager.expects(once()).method("findByIdProjection").with(eq(configuracaoLimiteColaborador.getAreaOrganizacional().getId())).will(returnValue(cargo));
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		 
 		 Exception exception = null;
@@ -1076,7 +1076,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_TURMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_AVALIACAO_TURMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
@@ -1118,7 +1118,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
-		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 colaboradorManager.expects(once()).method("findAdmitidosHaDiasSemEpi").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador, colaborador2)));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
@@ -1167,7 +1167,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(ANYTHING).will(returnValue(colaborador));
 		providenciaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(providencia));
-		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRO_OCORRENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_OCORRENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		
@@ -1207,7 +1207,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		
-		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		colaboradorManager.expects(once()).method("findAguardandoEntregaEpi").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador, colaborador2)));
 		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
