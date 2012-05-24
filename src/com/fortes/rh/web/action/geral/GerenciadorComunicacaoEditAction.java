@@ -133,7 +133,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	
 	public int getLembreteQuestionarioNaoLiberadoId()
 	{
-		return Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId();
+		return Operacao.PESQUISA_NAO_LIBERADA.getId();
 	}
 
 	public int getAvaliacaoPeriodoExperienciaVencendoId()
@@ -143,12 +143,12 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	
 	public int getLembreteAberturaSolicitacaoEpiId()
 	{
-		return Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId();
+		return Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId();
 	}
 	
 	public int getLembreteEntregaSolicitacaoEpiId()
 	{
-		return Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId();
+		return Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId();
 	}
 	
 	public GerenciadorComunicacao getGerenciadorComunicacao()

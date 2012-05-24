@@ -24,30 +24,30 @@ public class OperacaoTest extends TestCase
 		int i = 0;
 		assertEquals("", Operacao.getDescricaoById(1212122121));
 		//manter a ordem dos ids das operações
-		assertEquals("Aviso de cadastro de candidato pelo módulo externo", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso automático da quantidade de currículos cadastros por mês", Operacao.getDescricaoById(++i));
-		assertEquals("Exibir solicitações com candidatos do módulo externo", Operacao.getDescricaoById(++i));
-		assertEquals("Encerramento da solicitação de pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Alteração no status da solicitação de pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Enviar lembrete avaliação desempenho", Operacao.getDescricaoById(++i));
+		assertEquals("Cadastrar candidato pelo módulo externo", Operacao.getDescricaoById(++i));
+		assertEquals("Quantidade mensal de currículos cadastrados (Notificação automática)", Operacao.getDescricaoById(++i));
+		assertEquals("Existir currículo aguardando aprovação para participar de seleção (triagem do módulo externo)", Operacao.getDescricaoById(++i));
+		assertEquals("Encerrar solicitação de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Alterar status da solicitação de pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Liberar avaliação de desempenho", Operacao.getDescricaoById(++i));
 		assertEquals("Liberar pesquisa", Operacao.getDescricaoById(++i));
-		assertEquals("Lembrete automático de pesquisa não liberada", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso automático das avaliações do período de experiência a vencer", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso automático de exames previstos", Operacao.getDescricaoById(++i));
-		assertEquals("Liberar turma", Operacao.getDescricaoById(++i));
-		assertEquals("Avisar contratação de colaborador (Integração com AC Pessoal)", Operacao.getDescricaoById(++i));
-		assertEquals("Cancelamento de Situação no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Houver pesquisa a ser liberada (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Houver avaliações do período de experiência a vencer (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Houver exames previstos (Notificação automática)", Operacao.getDescricaoById(++i));
+		assertEquals("Liberar avaliação da turma", Operacao.getDescricaoById(++i));
+		assertEquals("Contratar colaborador (Integração com AC Pessoal)", Operacao.getDescricaoById(++i));
+		assertEquals("Cancelar situação no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Desligar colaborador no AC Pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Configuração do limite de colaboradores por cargo", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso automático de backup", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso ao responder período de experiência", Operacao.getDescricaoById(++i));
-		assertEquals("Cancelamento da Contratação no AC Pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Notificação de não abertura de solicitação de EPI", Operacao.getDescricaoById(++i));
-		assertEquals("Notificação de não entrega da solicitação de EPI", Operacao.getDescricaoById(++i));
-		assertEquals("Cancelamento de Solicitação de Desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Aviso de cadastro de ocorrência", Operacao.getDescricaoById(++i));
-		assertEquals("Notificação ao inserir um afastamento", Operacao.getDescricaoById(++i));
-		assertEquals("Avisar contratação de colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Cadastrar limite de colaboradores por cargo", Operacao.getDescricaoById(++i));
+		assertEquals("Gerar backup (Notificação automática)", Operacao.getDescricaoById(++i));
+		assertEquals("Responder avaliação do período de experiência", Operacao.getDescricaoById(++i));
+		assertEquals("Cancelar contratação no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Não houver abertura de solicitação de EPI (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Não houver entrega da solicitação de EPI (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Cancelar solicitação de desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Cadastrar ocorrência", Operacao.getDescricaoById(++i));
+		assertEquals("Cadastrar afastamento", Operacao.getDescricaoById(++i));
+		assertEquals("Contratar colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -97,30 +97,30 @@ public class OperacaoTest extends TestCase
 	public void testChave()
 	{
 		int i = 0;
-		assertEquals(++i, Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId());       // 1 
+		assertEquals(++i, Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId());       // 1 
 		assertEquals(++i, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());              // 2 
-		assertEquals(++i, Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId());   // 3 
-		assertEquals(++i, Operacao.ENCERRAMENTO_SOLICITACAO.getId());                // 4 
+		assertEquals(++i, Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId());   // 3 
+		assertEquals(++i, Operacao.ENCERRAR_SOLICITACAO.getId());                // 4 
 		assertEquals(++i, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());              // 5 
-		assertEquals(++i, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId());    // 6 
-		assertEquals(++i, Operacao.LIBERAR_QUESTIONARIO.getId());                    // 7 
-		assertEquals(++i, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId());      // 8 
+		assertEquals(++i, Operacao.LIBERAR_AVALIACAO_DESEMPENHO.getId());    // 6 
+		assertEquals(++i, Operacao.LIBERAR_PESQUISA.getId());                    // 7 
+		assertEquals(++i, Operacao.PESQUISA_NAO_LIBERADA.getId());      // 8 
 		assertEquals(++i, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());  // 9 
 		assertEquals(++i, Operacao.EXAMES_PREVISTOS.getId());                        // 10
-		assertEquals(++i, Operacao.LIBERAR_TURMA.getId());                           // 11
-		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR.getId());                   // 12
+		assertEquals(++i, Operacao.LIBERAR_AVALIACAO_TURMA.getId());                           // 11
+		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR_AC.getId());                   // 12
 		assertEquals(++i, Operacao.CANCELAR_SITUACAO_AC.getId());                    // 13
 		assertEquals(++i, Operacao.DESLIGAR_COLABORADOR_AC.getId());                 // 14
-		assertEquals(++i, Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId());         // 15
-		assertEquals(++i, Operacao.BACKUP_AUTOMATICO.getId());                       // 16
+		assertEquals(++i, Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO.getId());         // 15
+		assertEquals(++i, Operacao.GERAR_BACKUP.getId());                       // 16
 		assertEquals(++i, Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()); // 17
 		assertEquals(++i, Operacao.CANCELAR_CONTRATACAO_AC.getId());                 // 18
-		assertEquals(++i, Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId());       // 19
-		assertEquals(++i, Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId());        // 20
+		assertEquals(++i, Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId());       // 19
+		assertEquals(++i, Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId());        // 20
 		assertEquals(++i, Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId());    // 21
-		assertEquals(++i, Operacao.CADASTRO_OCORRENCIA.getId());					 // 22
-		assertEquals(++i, Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId());			 // 23
-		assertEquals(++i, Operacao.AVISO_COLABORADOR_CONTRATACAO.getId());			 // 24
+		assertEquals(++i, Operacao.CADASTRAR_OCORRENCIA.getId());					 // 22
+		assertEquals(++i, Operacao.CADASTRAR_AFASTAMENTO.getId());			 // 23
+		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR.getId());			 // 24
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -129,8 +129,8 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		assertEquals(2, Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENCERRAMENTO_SOLICITACAO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.ENCERRAR_SOLICITACAO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENCERRAR_SOLICITACAO.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
@@ -147,8 +147,8 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		assertEquals(2, Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.LIBERAR_AVALIACAO_DESEMPENHO.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
@@ -157,8 +157,8 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		assertEquals(2, Operacao.LIBERAR_QUESTIONARIO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_QUESTIONARIO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.LIBERAR_PESQUISA.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_PESQUISA.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
@@ -166,8 +166,8 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		assertEquals(2, Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.PESQUISA_NAO_LIBERADA.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.PESQUISA_NAO_LIBERADA.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
@@ -176,11 +176,10 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO;
+		Operacao operacao = Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
-//		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testAvisoQtdCurriculosCadastrados()
@@ -221,7 +220,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.BACKUP_AUTOMATICO;
+		Operacao operacao = Operacao.GERAR_BACKUP;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -262,7 +261,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO;
+		Operacao operacao = Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -273,7 +272,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.CONFIGURACAO_LIMITE_COLABORADOR;
+		Operacao operacao = Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -284,7 +283,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.LIBERAR_TURMA;
+		Operacao operacao = Operacao.LIBERAR_AVALIACAO_TURMA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -295,7 +294,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.CONTRATAR_COLABORADOR;
+		Operacao operacao = Operacao.CONTRATAR_COLABORADOR_AC;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -317,7 +316,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI;
+		Operacao operacao = Operacao.NAO_ABERTURA_SOLICITACAO_EPI;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -328,7 +327,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI;
+		Operacao operacao = Operacao.NAO_ENTREGA_SOLICITACAO_EPI;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -350,7 +349,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.CADASTRO_OCORRENCIA;
+		Operacao operacao = Operacao.CADASTRAR_OCORRENCIA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
@@ -361,7 +360,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.AVISO_COLABORADOR_AFASTAMENTO;
+		Operacao operacao = Operacao.CADASTRAR_AFASTAMENTO;
 		
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
@@ -373,7 +372,7 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		Operacao operacao = Operacao.AVISO_COLABORADOR_CONTRATACAO;
+		Operacao operacao = Operacao.CONTRATAR_COLABORADOR;
 		
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);

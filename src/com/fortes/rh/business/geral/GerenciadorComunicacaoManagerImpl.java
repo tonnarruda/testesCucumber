@@ -86,24 +86,24 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{
-		save(new GerenciadorComunicacao(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		save(new GerenciadorComunicacao(Operacao.QTD_CURRICULOS_CADASTRADOS, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
-		save(new GerenciadorComunicacao(Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
-		save(new GerenciadorComunicacao(Operacao.ENCERRAMENTO_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.CANDIDATO_NAO_APTO, empresa));
+		save(new GerenciadorComunicacao(Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.ENCERRAR_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.CANDIDATO_NAO_APTO, empresa));
 		save(new GerenciadorComunicacao(Operacao.ALTERAR_STATUS_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_SOLICITACAO, empresa));
-		save(new GerenciadorComunicacao(Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO, empresa));
-		save(new GerenciadorComunicacao(Operacao.LIBERAR_QUESTIONARIO, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
-		save(new GerenciadorComunicacao(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.LIBERAR_AVALIACAO_DESEMPENHO, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO, empresa));
+		save(new GerenciadorComunicacao(Operacao.LIBERAR_PESQUISA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
+		save(new GerenciadorComunicacao(Operacao.PESQUISA_NAO_LIBERADA, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR_AVALIADO, empresa));
 		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA, empresa));
-		save(new GerenciadorComunicacao(Operacao.LIBERAR_TURMA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
-		save(new GerenciadorComunicacao(Operacao.CONTRATAR_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_SETOR_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.LIBERAR_AVALIACAO_TURMA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
+		save(new GerenciadorComunicacao(Operacao.CONTRATAR_COLABORADOR_AC, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_SETOR_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.DESLIGAR_COLABORADOR_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
-		save(new GerenciadorComunicacao(Operacao.CONFIGURACAO_LIMITE_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO, empresa));
-		save(new GerenciadorComunicacao(Operacao.BACKUP_AUTOMATICO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
+		save(new GerenciadorComunicacao(Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO, empresa));
+		save(new GerenciadorComunicacao(Operacao.GERAR_BACKUP, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 	}
 	
@@ -118,7 +118,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 			if (emails.length > 0) {
 
-				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ENCERRAMENTO_SOLICITACAO.getId(), empresa.getId());
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ENCERRAR_SOLICITACAO.getId(), empresa.getId());
 
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.CANDIDATO_NAO_APTO.getId())){
@@ -181,7 +181,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				StringBuilder corpo = new StringBuilder();
 				corpo.append("ATENÇÃO:<br>");
 				corpo.append("Existe Avaliação de Desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">RH</a>") ;
-				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.ENVIAR_LEMBRETE_AVALIACAO_DESEMPENHO.getId(), empresa.getId());
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_AVALIACAO_DESEMPENHO.getId(), empresa.getId());
 
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId())){
@@ -199,7 +199,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
     public void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios)
     {
-     	Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_QUESTIONARIO.getId(), empresa.getId());
+     	Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_PESQUISA.getId(), empresa.getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
 				enviaEmailQuestionario(empresa, questionario, colaboradorQuestionarios);
@@ -252,7 +252,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaLembreteDeQuestionarioNaoLiberado() 
 	{
 		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBeanOld("questionarioManager");
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_QUESTIONARIO_NAO_LIBERADO.getId(), null);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.PESQUISA_NAO_LIBERADA.getId(), null);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			try
@@ -305,7 +305,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 		try
 		{
-    		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_CANDIDATO_MODULO_EXTERNO.getId(), empresaId);
+    		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId(), empresaId);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
     				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
@@ -593,7 +593,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mensagem.append("\nObservação      : ");
 		mensagem.append(colaboradorOcorrencia.getObservacao());
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRO_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_OCORRENCIA.getId(), colaboradorOcorrencia.getOcorrencia().getEmpresa().getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
@@ -614,7 +614,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		Collection<Integer> diasLembrete;
 		Collection<Colaborador> colaboradors;
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ENTREGA_SOLICITACAO_EPI.getId(), null);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId(), null);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
@@ -641,7 +641,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LEMBRETE_ABERTURA_SOLICITACAO_EPI.getId(), null);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId(), null);
 		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
@@ -669,7 +669,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		String body = "<br>O candidato <b>" + colaboradorNome + "</b> foi contratado e seus dados "
 		+ "estão disponíveis no <b>AC Pessoal</b> para complemento de suas informações.<br><br>";
 
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR.getId(), empresa.getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR_AC.getId(), empresa.getId());
 		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
@@ -724,7 +724,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try {
 			logger.info("Enviando e-mail para responsável (" + email + ") sobre backup do banco de dados.");
 			
-			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.BACKUP_AUTOMATICO.getId(), null);
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.GERAR_BACKUP.getId(), null);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_TECNICO.getId())){
     				mail.send(null, titulo, corpo, null, email);
@@ -774,7 +774,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			
 			body.append("</tbody></table>");
 			
-			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONFIGURACAO_LIMITE_COLABORADOR.getId(), null);
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO.getId(), null);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId())){
     				mail.send(empresa, "Novo Contrato ("+configuracaoLimiteColaborador.getDescricao()+") com limite de Colaboradores por Cargo adicionado.", body.toString(), null, emails);
@@ -793,13 +793,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public boolean existeConfiguracaoParaCandidatosModuloExterno(Long empresaId) 
 	{
-		Object[] valores = new Object[] {Operacao.SOLICITACAO_CANDIDATOS_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresaId};
+		Object[] valores = new Object[] {Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId(), MeioComunicacao.CAIXA_MENSAGEM.getId(), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId(), empresaId};
 
 		return getDao().verifyExists(new String[]{"operacao", "meioComunicacao", "enviarPara", "empresa.id"}, valores);
 	}
 
 	public void enviarAvisoEmailLiberacao(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId) {
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_TURMA.getId(), empresaId);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_AVALIACAO_TURMA.getId(), empresaId);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
 				enviarAvisoAvaliacaoEmail(turma, avaliacaoTurma, empresaId);
@@ -945,7 +945,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		body.append("<br>"); 
 		body.append("Observações: " + colaboradorAfastamento.getObservacao());
 
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId(), empresa.getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_AFASTAMENTO.getId(), empresa.getId());
 		enviaEmailsUsuarios(gerenciadorComunicacaos, empresa, subject, body.toString());
 	}
 	
@@ -966,7 +966,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mensagem.append("\n"); 
 		mensagem.append("Observações: " + colaboradorAfastamento.getObservacao());
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_AFASTAMENTO.getId(), empresa.getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_AFASTAMENTO.getId(), empresa.getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.AFASTAMENTO);
@@ -1007,13 +1007,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mensagem = mensagem.replace("\n", "<br />");
 		String subject = "[Fortes RH] Contração do colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial();
 		
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
 		enviaEmailsUsuarios(gerenciadorComunicacaos, historicoColaborador.getColaborador().getEmpresa(), subject, mensagem);
 	}
 
 	private void enviaAvisoContratacaoMensagem(HistoricoColaborador historicoColaborador, String mensagem)
 	{
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVISO_COLABORADOR_CONTRATACAO.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())){
 				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao), null, TipoMensagem.CONTRATACAO);

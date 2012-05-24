@@ -23,21 +23,21 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		empresaDao.save(empresa);
 		
 		GerenciadorComunicacao gerenciadorComunicacao1 = getEntity();
-		gerenciadorComunicacao1.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
+		gerenciadorComunicacao1.setOperacao(Operacao.ENCERRAR_SOLICITACAO.getId());
 		gerenciadorComunicacao1.setEmpresa(empresa);
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao1);
 		
 		GerenciadorComunicacao gerenciadorComunicacao2 = getEntity();
-		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
+		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAR_SOLICITACAO.getId());
 		gerenciadorComunicacao2.setEmpresa(empresa);
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao2);
 		
 		GerenciadorComunicacao gerenciadorComunicacao3 = getEntity();
-		gerenciadorComunicacao3.setOperacao(Operacao.BACKUP_AUTOMATICO.getId());
+		gerenciadorComunicacao3.setOperacao(Operacao.GERAR_BACKUP.getId());
 		gerenciadorComunicacao3.setEmpresa(empresa);
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao3);
 		
-		assertEquals(2 , gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAMENTO_SOLICITACAO.getId(), empresa.getId()).size());
+		assertEquals(2 , gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_SOLICITACAO.getId(), empresa.getId()).size());
 	}
 	
 	public void testVerifyExists() 
@@ -46,7 +46,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		empresaDao.save(empresa);
 		
 		GerenciadorComunicacao gerenciadorComunicacao1 = getEntity();
-		gerenciadorComunicacao1.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
+		gerenciadorComunicacao1.setOperacao(Operacao.ENCERRAR_SOLICITACAO.getId());
 		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		gerenciadorComunicacao1.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao1.setEmpresa(empresa);
@@ -56,7 +56,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao1);
 		
 		GerenciadorComunicacao gerenciadorComunicacao2 = getEntity();
-		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAMENTO_SOLICITACAO.getId());
+		gerenciadorComunicacao2.setOperacao(Operacao.ENCERRAR_SOLICITACAO.getId());
 		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao2.setEmpresa(empresa);
