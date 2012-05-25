@@ -12,27 +12,17 @@
 	
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-
-	<script type="text/javascript">
-		function pesquisar()
-		{
-			$('#pagina').val(1);
-			$('#formBusca').attr('action','list.action');
-			$('#formBusca').submit();
-		}
-	</script>
-
 </head>
 <body>
 	<@ww.actionerror/>
 	<@ww.actionmessage/>
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
+		<@ww.form name="formBusca" action="list.action" validate="false" method="POST" id="formBusca" onsubmit="$('#pagina').val(1);">
 			<@ww.textfield label="Nome" name="epiNome" cssStyle="width: 350px;"/>
 			<@ww.select label="Status" name="ativo" list=r"#{'':'Todos', 'S':'Ativo','N':'Inativo'}"/>
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
-			<input type="button" value="" onclick="pesquisar();" class="btnPesquisar grayBGE">
+			<input type="submit" value="" class="btnPesquisar grayBGE">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
