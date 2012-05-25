@@ -16,6 +16,8 @@ public class TurmaAvaliacaoTurmaManagerImpl extends GenericManagerImpl<TurmaAval
 	
 	public void salvarAvaliacaoTurmas(Long turmaId, Long[] avaliacaoTurmaIds) 
 	{
+		getDao().removeByTurma(turmaId);
+		
 		if (avaliacaoTurmaIds != null)
 		{
 			for (Long avaliacaoTurmaId : avaliacaoTurmaIds) 

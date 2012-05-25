@@ -39,4 +39,13 @@ public class TurmaAvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<TurmaAv
 
 		query.executeUpdate();
 	}
+
+	public void removeByTurma(Long turmaId) {
+		String hql = "delete from TurmaAvaliacaoTurma where turma.id = :turmaId ";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("turmaId", turmaId);
+
+		query.executeUpdate();
+	}
 }

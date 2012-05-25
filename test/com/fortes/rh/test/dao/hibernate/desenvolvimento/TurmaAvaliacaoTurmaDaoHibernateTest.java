@@ -1,5 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
+import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -52,6 +54,36 @@ public class TurmaAvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest
 		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma2);
 		
 		assertFalse(turmaAvaliacaoTurmaDao.verificaAvaliacaoliberada(turma2.getId()));
+	}
+	
+	public void testRemoveByTurma()
+	{
+		AvaliacaoTurma avaliacaoTurma = AvaliacaoTurmaFactory.getEntity();
+		avaliacaoTurmaDao.save(avaliacaoTurma);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turmaDao.save(turma2);
+		
+		TurmaAvaliacaoTurma turmaAvaliacaoTurma1 = new TurmaAvaliacaoTurma();
+		turmaAvaliacaoTurma1.setTurma(turma1);
+		turmaAvaliacaoTurma1.setLiberada(true);
+		turmaAvaliacaoTurma1.setAvaliacaoTurma(avaliacaoTurma );
+		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma1);
+		
+		TurmaAvaliacaoTurma turmaAvaliacaoTurma2 = new TurmaAvaliacaoTurma();
+		turmaAvaliacaoTurma2.setTurma(turma2);
+		turmaAvaliacaoTurma2.setLiberada(false);
+		turmaAvaliacaoTurma2.setAvaliacaoTurma(avaliacaoTurma );
+		turmaAvaliacaoTurmaDao.save(turmaAvaliacaoTurma2);
+		
+		Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas1 = turmaAvaliacaoTurmaDao.find(new String[]{"turma.id"},new Object[]{turma1.getId()});
+		assertEquals("Turma 1", 0, turmaAvaliacaoTurmas1.size());
+		
+		Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas2 = turmaAvaliacaoTurmaDao.find(new String[]{"turma.id"},new Object[]{turma2.getId()});
+		assertEquals("Turma 2", 1, turmaAvaliacaoTurmas2.size());
 	}
 
 	public void setTurmaAvaliacaoTurmaDao(TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao) {

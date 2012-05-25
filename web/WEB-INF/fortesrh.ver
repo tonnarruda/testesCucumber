@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.74.69" data="25/05/2012"><![CDATA[
+		- Aval.Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Relatório ordenado por ranking de performance.
+        - Info. Funcionais > Cadastros > Atualizar meus dados: Nova opção de editar a quantidade de filhos.
+        - SESMT > Cadastros > EPI: Nova opção para ativar ou inativar EPI.
+        - SESMT > Cadastros > EPI: Novo filtro para pesquisar por nome e status (Todas, Ativa, Inativa) de EPI.
+        - SESMT > Relatórios > Afastamentos: Nova coluna de matrícula de colaborador.
+        - SESMT > Relatórios > Atendimentos Médicos: Nova coluna de matrícula de colaborador.
+        - SESMT > Relatórios > Exames Realizados: Exibição do relatório agrupado por estabelecimento.
+    ]]></Versao>
 	<Versao id="1.1.73.68" data="21/05/2012"><![CDATA[
 		- Barra do menu: Novo ícone para visualizar os contatos do grupo fortes.
         - R&S > Movimentações > Solicitação de Pessoal > Triagem: Nova opção de triagem por colaboradores.

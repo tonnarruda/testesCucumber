@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -177,9 +178,8 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 		p.add(Projections.sqlProjection("(select count(*) from colaboradorquestionario cq where cq.questionario_id = q3_.id) as qtdColaboradorQuestionario" , 
 				                        new String[] {"qtdColaboradorQuestionario"}, 
 				                        new Type[] {Hibernate.INTEGER}));
-		
-		criteria.setProjection(p);
 
+		criteria.setProjection(Projections.distinct(p));
 		criteria.add(Expression.eq("t.id", turmaId));
 
 		criteria.addOrder(Order.asc("q.titulo"));

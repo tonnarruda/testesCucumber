@@ -1209,7 +1209,8 @@ CREATE TABLE epi (
     fabricante character varying(100),
     empresa_id bigint,
     tipoepi_id bigint,
-    fardamento boolean NOT NULL
+    fardamento boolean NOT NULL,
+    ativo boolean default true
 );
 ALTER TABLE epi ADD CONSTRAINT epi_pkey PRIMARY KEY (id);
 ALTER TABLE epi ADD CONSTRAINT epi_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);

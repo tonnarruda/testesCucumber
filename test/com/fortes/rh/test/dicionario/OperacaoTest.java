@@ -42,7 +42,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Gerar backup (Notificação automática)", Operacao.getDescricaoById(++i));
 		assertEquals("Responder avaliação do período de experiência", Operacao.getDescricaoById(++i));
 		assertEquals("Cancelar contratação no AC Pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Não houver abertura de solicitação de EPI (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Não houver abertura de solicitação de EPI após contratação (Notificação periódica)", Operacao.getDescricaoById(++i));
 		assertEquals("Não houver entrega da solicitação de EPI (Notificação periódica)", Operacao.getDescricaoById(++i));
 		assertEquals("Cancelar solicitação de desligamento no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar ocorrência", Operacao.getDescricaoById(++i));
