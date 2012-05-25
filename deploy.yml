@@ -16,7 +16,7 @@ rhhomologacao:
   app_name: fortesrhhomologacao
   db_name: homologacao
   run_migrates: true
-  backup_folder: /home/fortes/fortes/RHHOMOLOGACAO
+  backup_folder: /home/fortes/fortes/RHHOMOLOGACAO/backup_db
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
     FORTES_HOME_HOMOLOGACAO: /home/fortes/fortes/RHHOMOLOGACAO

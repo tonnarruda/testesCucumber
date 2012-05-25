@@ -199,7 +199,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	NAO_ABERTURA_SOLICITACAO_EPI(19, "Não houver abertura de solicitação de EPI (Notificação periódica)", "SESMT"){
+	NAO_ABERTURA_SOLICITACAO_EPI(19, "Não houver abertura de solicitação de EPI após contratação (Notificação periódica)", "SESMT"){
 		public TreeMap<Integer, String> meioComunicação(){
 
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
