@@ -125,7 +125,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(cargo.getId())).will(returnValue(cargo));
     	funcaoManager.expects(once()).method("findByIdProjection").with(eq(funcaoRetorno.getId())).will(returnValue(funcaoRetorno));
     	exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
-    	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId())).will(returnValue(new ArrayList<Epi>()));
+    	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	riscoManager.expects(once()).method("findRiscosFuncoesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoFuncao>()));
 
     	assertEquals(action.prepareInsert(), "success");
@@ -161,7 +161,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	examesCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null);
 
     	exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
-    	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId())).will(returnValue(new ArrayList<Epi>()));
+    	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	cargoManager.expects(once()).method("findByIdProjection").with(eq(cargo.getId())).will(returnValue(cargo));
     	funcaoManager.expects(once()).method("findByIdProjection").with(eq(funcaoRetorno.getId())).will(returnValue(funcaoRetorno));
     	historicoFuncaoManager.expects(once()).method("findToList").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicoFuncaos));

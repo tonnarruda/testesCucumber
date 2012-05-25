@@ -86,7 +86,7 @@ public class CatEditActionTest extends MockObjectTestCase
 
 		action.setColaborador(colaborador);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L), ANYTHING);
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
     	manager.expects(once()).method("findById").with(eq(cat.getId())).will(returnValue(cat));
@@ -108,7 +108,7 @@ public class CatEditActionTest extends MockObjectTestCase
 
 		action.setColaborador(colaborador);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L), ANYTHING);
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
     	manager.expects(once()).method("findById").with(eq(cat.getId())).will(returnValue(cat));
@@ -214,7 +214,7 @@ public class CatEditActionTest extends MockObjectTestCase
 		Collection<Colaborador> colecao = new ArrayList<Colaborador>();
 		colecao.add(colaborador);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L), ANYTHING);
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
 
@@ -232,7 +232,7 @@ public class CatEditActionTest extends MockObjectTestCase
 		colaborador.setPessoal(pessoal);
 		action.setColaborador(colaborador);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L), ANYTHING);
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
 

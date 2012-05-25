@@ -44,7 +44,7 @@ public class RiscoEditAction extends MyActionSupportList
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), true);
 
 		return SUCCESS;
 	}
@@ -59,7 +59,7 @@ public class RiscoEditAction extends MyActionSupportList
 			return ERROR;
 		}
 
-		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
 		episCheckList = CheckListBoxUtil.marcaCheckListBox(episCheckList, riscoManager.findEpisByRisco(risco.getId()), "getId");
 
 		return SUCCESS;

@@ -41,8 +41,11 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 
 		criteria.addOrder(Order.asc("e.nome"));
 
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
+		if(page > 0 && pagingSize > 0)
+		{
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
 
 		return criteria.list();
 	}

@@ -36,6 +36,7 @@
 				<param name="dataSource">dataSourceFichaEpi</param>
 				<param name="location">WEB-INF/report/ficha_epi.jasper</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichaEpi.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/imprimirFichaEpi.ftl</result>
 		</action>
@@ -44,6 +45,7 @@
 				<param name="dataSource">fichaEpiRelatorio</param>
 				<param name="location">WEB-INF/report/ficha_epi_verso.jasper</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">fichaEpi.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/imprimirFichaEpi.ftl</result>
 		</action>

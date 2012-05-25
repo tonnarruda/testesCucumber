@@ -45,6 +45,9 @@
 		<@display.column property="nome" title="Nome"/>
 		<@display.column property="tipoEPI.nome" title="Categoria de EPI"/>
 		<@display.column property="fabricante" title="Fabricante"/>
+		<@display.column title="Ativo" style="width:50px; text-align:center;">
+			<#if epi.ativo>Sim<#else>Não</#if>
+		</@display.column>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

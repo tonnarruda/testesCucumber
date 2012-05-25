@@ -47,13 +47,13 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return getDao().findEpis(page, pagingSize, empresaId, epiNome, ativo);
 	}
 
-	public Collection<CheckBox> populaCheckToEpi(Long empresaId)
+	public Collection<CheckBox> populaCheckToEpi(Long empresaId, Boolean epiAtivo)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<Epi> epis = find(new String[]{"empresa.id"}, new Object[]{empresaId}, new String[]{"nome"});
-			checks = CheckListBoxUtil.populaCheckListBox(epis, "getId", "getNome");
+			Collection<Epi> epis = findEpis(0, 0, empresaId, null, epiAtivo);
+			checks = CheckListBoxUtil.populaCheckListBox(epis, "getId", "getNomeInativo");
 		}
 		catch (Exception e)
 		{

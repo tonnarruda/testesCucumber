@@ -142,10 +142,14 @@ public class CatEditAction extends MyActionSupportList
 
 	private void prepare() throws Exception
 	{
-		if(cat != null && cat.getId() != null)
+		Boolean epiAtivo = true;
+		
+		if(cat != null && cat.getId() != null) {
 			cat = (Cat) catManager.findById(cat.getId());
+			epiAtivo = null;
+		}
 
-		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
 		
 		ambientes = ambienteManager.findByEmpresa(getEmpresaSistema().getId());
 		naturezaLesaos = naturezaLesaoManager.findAllSelect(getEmpresaSistema().getId());

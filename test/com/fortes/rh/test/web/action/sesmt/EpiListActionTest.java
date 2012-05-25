@@ -63,16 +63,16 @@ public class EpiListActionTest extends MockObjectTestCase
 
     	action.setMsgAlert("deletando");
     	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(true));
-    	manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(1));
-		manager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Epi>()));
+    	manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(1));
+		manager.expects(once()).method("findEpis").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Epi>()));
     	manager.expects(once()).method("removeEpi").with(ANYTHING);
 
     	assertEquals("success", action.delete());
     	assertFalse(action.getActionMessages().isEmpty());
 
     	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(false));
-    	manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(1));
-    	manager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Epi>()));
+    	manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(1));
+    	manager.expects(once()).method("findEpis").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Epi>()));
 
     	assertEquals("success", action.delete());
     	assertFalse(action.getActionErrors().isEmpty());
@@ -88,8 +88,8 @@ public class EpiListActionTest extends MockObjectTestCase
 
 		epis.add(epi);
 
-		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(epis.size()));
-		manager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(epis));
+		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(epis.size()));
+		manager.expects(once()).method("findEpis").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(epis));
 
     	assertEquals("success", action.list());
     	assertEquals(epis, action.getEpis());

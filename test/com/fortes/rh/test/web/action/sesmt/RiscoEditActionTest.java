@@ -66,7 +66,7 @@ public class RiscoEditActionTest extends MockObjectTestCase
 
 		Collection<CheckBox> episCheckList = new ArrayList<CheckBox>();
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(risco.getEmpresa().getId())).will(returnValue(episCheckList));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(risco.getEmpresa().getId()),eq(null)).will(returnValue(episCheckList));
 
 		episCheckList = MockCheckListBoxUtil.marcaCheckListBox(null, null, null);
 
@@ -133,7 +133,7 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		Risco risco = RiscoFactory.getEntity();
 		action.setRisco(risco);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L),eq(true)).will(returnValue(new ArrayList<CheckBox>()));
 
 		assertEquals(action.prepareInsert(), "success");
 	}
@@ -165,7 +165,7 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		MockSecurityUtil.getEmpresaSession(null);
 		epiManager.expects(once()).method("populaEpi").with(eq(episCheck)).will(returnValue(new ArrayList<Epi>()));
 		manager.expects(once()).method("save").with(eq(risco)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
+		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L),eq(true)).will(returnValue(new ArrayList<CheckBox>()));
 		
 		assertEquals(action.insert(), "input");
 		assertNotNull(action.getActionErrors());

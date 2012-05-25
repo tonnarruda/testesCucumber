@@ -159,7 +159,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String prepareRelatorioEntregaEpi()
 	{
-		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
 		colaboradorCheckList = colaboradorManager.populaCheckBox(getEmpresaSistema().getId());
 		return SUCCESS;
 	}

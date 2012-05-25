@@ -83,7 +83,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 
 		Collection<Exame> exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
-		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), true);
 	}
 
 	public String prepareInsert() throws Exception

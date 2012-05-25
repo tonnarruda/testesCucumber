@@ -9,6 +9,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -78,15 +79,15 @@ public class EpiManagerTest extends MockObjectTestCase
 		Collection<Epi> epis = new ArrayList<Epi>();
 		Collection<CheckBox> ids = new ArrayList<CheckBox>();
 		
-		epiDao.expects(once()).method("find").with(eq(new String[]{"empresa.id"}),eq(new Object[]{empresaId}),eq(new String[]{"nome"}) ).will(returnValue(epis));
+		epiDao.expects(once()).method("findEpis").with(new Constraint[] { eq(0),eq(0),eq(empresaId),eq(null),eq(null) }).will(returnValue(epis));
 		
-		assertEquals(ids, epiManager.populaCheckToEpi(empresaId));
+		assertEquals(ids, epiManager.populaCheckToEpi(empresaId, null));
 	}
 
 	public void testPopulaCheckToEpiException() throws Exception
 	{
-		epiDao.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING ).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		assertEquals(new ArrayList<Epi>(), epiManager.populaCheckToEpi(1L));
+		epiDao.expects(once()).method("findEpis").with(new Constraint[] { eq(0), eq(0), ANYTHING, ANYTHING, ANYTHING }).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		assertEquals(new ArrayList<Epi>(), epiManager.populaCheckToEpi(1L, null));
 	}
 
 	public void testSaveEpi() throws Exception

@@ -15,7 +15,7 @@ public interface EpiManager extends GenericManager<Epi>
 {
 	Integer getCount(Long empresaId, String epiNome, Boolean ativo);
 	Collection<Epi> findEpis(int page, int pagingSize, Long empresaId, String epiNome, Boolean ativo);
-	Collection<CheckBox> populaCheckToEpi(Long id);
+	Collection<CheckBox> populaCheckToEpi(Long id, Boolean epiAtivo);
 	Collection<Epi> populaEpi(String[] episCheck);
 	Epi findByIdProjection(Long epiId);
 	void saveEpi(Epi epi, EpiHistorico epiHistorico) throws Exception;

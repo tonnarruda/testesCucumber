@@ -390,11 +390,13 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		Epi epi = EpiFactory.getEntity();
 		epi.setTipoEPI(tipoEPI);
 		epi.setEmpresa(empresa);
+		epi.setAtivo(true);
 		epiDao.save(epi);
 
 		Epi epi2 = EpiFactory.getEntity();
 		epi2.setTipoEPI(tipoEPI);
 		epi2.setEmpresa(empresa);
+		epi2.setAtivo(false);
 		epiDao.save(epi2);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
@@ -427,8 +429,8 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		eh3.setEpi(epi2);
 		epiHistoricoDao.save(eh3);
 
-		Collection<Epi> colecao = epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId(), somenteAtivos);
-		assertEquals(2, colecao.size());
+		assertEquals("Todos os EPIs", 2, epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId(), false).size());
+		assertEquals("Somente os EPIs ativos", 1, epiDao.findPriorizandoEpiRelacionado(empresa.getId(), colaborador.getId(), true).size());
 	}
 	
 	private void setEmpresa()

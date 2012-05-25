@@ -72,7 +72,7 @@
 	<@ww.actionmessage />
 
 	<@display.table name="solicitacaoEpis" id="solicitacaoEpi" class="dados" >
-		<@display.column title="Ações" class="acao">
+		<@display.column title="Ações" class="acao" style="width: 60px;">
 			<#if solicitacaoEpi.situacao == 'E' || solicitacaoEpi.situacao == 'P'>
 				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
@@ -92,9 +92,9 @@
 			</#if>
 		</@display.column>
 		<@display.column property="colaborador.nomeDesligado" style="width: 320px;" title="Colaborador"/>
-		<@display.column property="data" title="Data Solicitação" style="width: 100px;" format="{0,date,dd/MM/yyyy}"/>
-		<@display.column property="cargo.nome" title="Cargo" style="width: 290px;"/>
-		<@display.column title="Situação" style="width: 90px;">
+		<@display.column property="data" title="Data" style="width: 70px; text-align: center;" format="{0,date,dd/MM/yyyy}"/>
+		<@display.column property="cargo.nome" title="Cargo" style="width: 220px;"/>
+		<@display.column title="Situação" style="width: 160px;">
 			 ${solicitacaoEpi.situacaoDescricao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
 		</@display.column>
 	</@display.table>

@@ -49,12 +49,17 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	private void prepare() throws Exception
 	{
+		Boolean epiAtivo = true;
+		
 		if(historicoFuncao != null && historicoFuncao.getId() != null)
+		{
 			historicoFuncao = historicoFuncaoManager.findById(historicoFuncao.getId());
+			epiAtivo = null;
+		}
 
 		Collection<Exame> exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
-		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId());
+		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
 		
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 	}
