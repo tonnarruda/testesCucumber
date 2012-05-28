@@ -116,7 +116,13 @@
 
 			<a href="javascript:enviarPrepareUpDate('${colaborador.id}')"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
+			
+			<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
+				<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
+			</@authz.authorize>
+			<@authz.authorize ifNotGranted="ROLE_CAD_HISTORICOCOLABORADOR">
+				<img border="0" title="Seu perfil não está autorizado a visualizar progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>" style="opacity:0.3;filter:alpha(opacity=30);"/>
+			</@authz.authorize>
 
 			<#if colaborador.exibePerformanceProficional>
 				<a href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}"><img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>"></a>

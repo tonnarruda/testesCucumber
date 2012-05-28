@@ -344,6 +344,12 @@
 				/cargosalario/historicoColaborador/imprimirRelatorioUltimasPromocoes*/**=ROLE_REL_COLAB_SEM_REAJUSTE
 				/cargosalario/historicoColaborador/relatorioSituacoes.action*=ROLE_REL_SITUACOES
 				/cargosalario/historicoColaborador/painelIndicadores.action*=ROLE_INFO_PAINEL_IND
+				/cargosalario/historicoColaborador/list.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/historicoColaboradorList.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/prepareInsert.action.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/insert.action.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/prepareUpdate.action.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/update.action.action*=ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
 				/cargosalario/indice/*/**=ROLE_CAD_INDICE
 				/cargosalario/indiceHistorico/*/**=ROLE_CAD_INDICE
