@@ -87,7 +87,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 	public Collection<Epi> findAllSelect(Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Epi(epi.id, epi.nome, epi.fabricante, hist.CA, hist.vencimentoCA) ");
+		hql.append("select new Epi(epi.id, epi.nome, epi.ativo, epi.fabricante, hist.CA, hist.vencimentoCA) ");
 		hql.append("from Epi as epi ");
 		hql.append("left join epi.epiHistoricos as hist "); 
 		hql.append("where epi.empresa.id = :empresaId ");
@@ -104,7 +104,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Epi(e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA)");
+		hql.append("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA)");
 		hql.append("  from Epi e");
 		hql.append("  left join e.epiHistoricos eh");
 		hql.append(" where eh.data = (select max(eh2.data)");
@@ -134,7 +134,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		StringBuilder hql = new StringBuilder();
 		
 		
-		hql.append("select new Epi(e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA) ");
+		hql.append("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA) ");
 
 		hql.append("from HistoricoAmbiente ha ");
 		hql.append("join ha.riscoAmbientes ra ");
@@ -164,7 +164,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Epi(e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA) ");
+		hql.append("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA) ");
 		hql.append("  from RiscoAmbiente ra");
 		hql.append("  join ra.risco r");
 		hql.append("  join ra.historicoAmbiente ha");
@@ -203,7 +203,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Epi(e.id, e.nome, e.fabricante, eh.CA, eh.vencimentoCA) ");
+		hql.append("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA) ");
 		hql.append("  from RiscoAmbiente ra");
 		hql.append("  join ra.risco r");
 		hql.append("  join r.epis e");

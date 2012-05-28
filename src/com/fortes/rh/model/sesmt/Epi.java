@@ -47,10 +47,11 @@ public class Epi extends AbstractModel implements Serializable
     public Epi()
     { }
 
-    public Epi(Long id, String nome, String fabricante, String CA, Date vencimento)
+    public Epi(Long id, String nome, Boolean ativo, String fabricante, String CA, Date vencimento)
     {
     	setId(id);
     	this.nome = nome;
+    	this.ativo = ativo;
     	this.fabricante = fabricante;
     	this.epiHistorico = new EpiHistorico();
     	this.epiHistorico.setCA(CA);
@@ -106,7 +107,7 @@ public class Epi extends AbstractModel implements Serializable
 	public String getNomeInativo()
 	{
 		if(!ativo)
-			return getNome() + " (Inativo)";
+			return getNome() + " (inativo)";
 		else
 			return getNome();
 	}

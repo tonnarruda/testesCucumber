@@ -64,11 +64,12 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.data = new Date();
 	}
 
-	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
+	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, Boolean epiAtivo, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
 	{
 		epi = new Epi();
 		epi.setId(epiId);
 		epi.setNome(epiNome);
+		epi.setAtivo(epiAtivo);
 		setColaboradorNome(colaboradorNome);
 		colaborador.setId(colaboradorId);
 		setCargoNome(cargoNome);

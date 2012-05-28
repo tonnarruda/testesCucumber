@@ -174,7 +174,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds, char agruparPor)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new SolicitacaoEpi(e.id, co.id, e.nome, co.nome, ca.nome, se.data, eh.validadeUso, ent.dataEntrega, ent.qtdEntregue, eh.vencimentoCA) ");
+		hql.append("select distinct new SolicitacaoEpi(e.id, co.id, e.nome, e.ativo, co.nome, ca.nome, se.data, eh.validadeUso, ent.dataEntrega, ent.qtdEntregue, eh.vencimentoCA) ");
 		hql.append("from SolicitacaoEpi se ");
 		hql.append("join se.solicitacaoEpiItems item ");
 		hql.append("join item.solicitacaoEpiItemEntregas ent ");
@@ -223,7 +223,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, ca.nome, co.nome, co.desligado, eh.vencimentoCA) ");
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, e.ativo, ca.nome, co.nome, co.desligado, eh.vencimentoCA) ");
 		hql.append("from SolicitacaoEpiItemEntrega ent ");
 		hql.append("left join ent.epiHistorico eh ");
 		hql.append("join ent.solicitacaoEpiItem item ");

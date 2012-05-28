@@ -74,18 +74,18 @@
 		<defaultValueExpression ><![CDATA[new Boolean(false)]]></defaultValueExpression>
 	</parameter>
 
-	<field name="epi.nome" class="java.lang.String"/>
+	<field name="epi.nomeInativo" class="java.lang.String"/>
 	<field name="cargo.nome" class="java.lang.String"/>
 	<field name="dataVencimentoEpi" class="java.util.Date"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="vencimentoCA" class="java.util.Date"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
-		<variableExpression><![CDATA[$F{epi.nome}]]></variableExpression>
+		<variableExpression><![CDATA[$F{epi.nomeInativo}]]></variableExpression>
 	</variable>
 
 		<group  name="grp_Epi" >
-			<groupExpression><![CDATA[$F{epi.nome}]]></groupExpression>
+			<groupExpression><![CDATA[$F{epi.nomeInativo}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -99,7 +99,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{epi.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{epi.nomeInativo}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
