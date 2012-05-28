@@ -18,9 +18,9 @@
 			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?gerenciadorComunicacao.id=${gerenciadorComunicacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="operacaoGrupo" title="Grupo"/>
-		<@display.column property="operacaoDescricao" title="Operação"/>
-		<@display.column property="meioComunicacaoDescricao" title="Meio de Comunicação"/>
-		<@display.column property="enviarParaDescricao" title="Enviar para"/>
+		<@display.column property="operacaoDescricao" title="Notificar quando"/>
+		<@display.column property="meioComunicacaoDescricao" title="Através de"/>
+		<@display.column property="enviarParaDescricao" title="Para"/>
 		<@display.column property="destinatarioFormatado" title="Destinatário(s)"/>
 	</@display.table>
 	
