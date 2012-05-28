@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -286,7 +288,7 @@ public class ExameListAction extends MyActionSupportList
 				filtros.append("\nClínica: " + clinica.getNome());
 			}
 			
-			if (resultado != null && !resultado.isEmpty())
+			if (resultado != null && StringUtils.isNotEmpty(resultado))
 				filtros.append("\nResultado: " + ResultadoExame.valueOf(resultado).getDescricao());
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), filtros.toString());
