@@ -18960,9 +18960,9 @@ insert into migrations values('20120503095212');--.go
 
 update parametrosdosistema set appversao = '1.1.73.68';--.go
 
--- versao 1.1.73.69
+-- versao 1.1.74.69
 
 alter table epi add column ativo boolean default true;--.go
 insert into migrations values('20120524100533');--.go
 
-update parametrosdosistema set appversao = '1.1.73.69';--.go
+update parametrosdosistema set appversao = '1.1.74.69';--.go
