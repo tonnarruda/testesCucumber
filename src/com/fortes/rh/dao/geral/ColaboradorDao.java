@@ -88,12 +88,12 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page);
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId);
 	public Collection<Colaborador> findColaboradoresEleicao(Long empresaId, Long estabelecimentosIds, Date data);
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacoesCheck, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao);
 	public void setCandidatoNull(Long idCandidato);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public String[] findEmailsByPapel(Collection<Long> usuarioEmpresaIds);
-	public Collection<Colaborador> findComAvaliacoesExperiencias(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
+	public Collection<Colaborador> findComAvaliacoesExperiencias(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer diasDeAcompanhamento, int menorPeriodo);
 	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds);
 	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaId, Long[] areasIds);
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds);

@@ -19,7 +19,6 @@
 		        $("input[name='periodoCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
 		}
 	</script> 
-
 	<#assign DataAtual = "${dataDoDia}"/>
 	<#assign validarCampos="return validaFormulario('form', new Array('data','tempoDeEmpresa','@periodoCheck'), new Array('data'))"/>
 </head>
@@ -30,9 +29,8 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 		<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
-		
-			<@ww.datepicker label="Data de Referência" id="data" name="dataReferencia" required="true" value="${DataAtual}" cssClass="mascaraData"/>
 
+			<@ww.datepicker label="Data de Referência" id="data" name="dataReferencia" required="true" value="${DataAtual}" cssClass="mascaraData"/>
 			<br>
 			Considerar colaboradores com até  
 			<@ww.textfield theme="simple" name="tempoDeEmpresa" id="tempoDeEmpresa" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 

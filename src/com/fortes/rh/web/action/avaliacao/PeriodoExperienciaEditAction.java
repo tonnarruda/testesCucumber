@@ -145,6 +145,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String prepareRelatorioAcompanhamentoExperienciaPrevisto() throws Exception{
 		prepare();
 		
+		periodoFim = new Date();
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
     	periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
@@ -154,7 +155,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
 		prepare();
-		
+				
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
@@ -195,16 +196,21 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto() throws Exception 
     {
 		try {
-			dataReferencia = getDataReferencia();
+			//dataReferencia = getDataReferencia();
 
 			if(periodoCheck == null || !(periodoCheck.length > 0))
 				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 			else
 				periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
 			
-			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, diasDeAcompanhamento, periodoExperiencias);
-			
-			String filtro = "Data de Referência " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			colaboradores = colaboradorManager.getAvaliacoesExperienciaPendentes(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, null, periodoExperiencias);
+			String filtro = "";
+			if (periodoIni != null) 
+				filtro = "Período: " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) +"\n";
+			else 
+				filtro = "Data de Referência: " + DateUtil.formataDiaMesAno(periodoFim) +"\n";
+				
+				
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório De Acompanhamento De Experiência Previsto", getEmpresaSistema(), filtro);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 

@@ -3489,7 +3489,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setData(data);
 		historicoColaboradorDao.save(historicoColaborador);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2009), DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
 		assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
@@ -3703,7 +3703,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioPesquisa.setRespondidaEm(respondidaEm);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioPesquisa);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findComAvaliacoesExperiencias(DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		Collection<Colaborador> colaboradores = colaboradorDao.findComAvaliacoesExperiencias(null, DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
 		assertEquals(1, colaboradores.size());
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
