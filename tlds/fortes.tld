@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+" http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>Tags</shortname>
+  <info>Tag's Customizadas</info>
+
+  <tag>
+    <name>checkGroup</name>
+    <tagclass>com.fortes.web.tags.CheckListBoxTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>Cria um CheckGroup</info>
+
+    <attribute>
+    	<name>name</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>label</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>list</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>onClick</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>form</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>width</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>height</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>valueString</name>
+    	<required>false</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>fortesPaging</name>
+    <tagclass>com.fortes.web.tags.FortesPagingTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>Cria uma Paginação</info>
+
+    <attribute>
+    	<name>url</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>totalSize</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>pagingSize</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>link</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>initialPage</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>idFormulario</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>limpaCampos</name>
+    	<required>false</required>
+    </attribute>
+  </tag>
+
+
+</taglib>
