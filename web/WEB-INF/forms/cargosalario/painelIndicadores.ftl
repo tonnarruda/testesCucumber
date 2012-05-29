@@ -37,10 +37,11 @@
 				montaPie(${grfFaixaEtarias}, "#faixaEtaria");
 				montaPie(${grfSexo}, "#sexo", {percentMin:0});
 				montaPie(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02});
+				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190, combinePercentMin: 0.01});
+				montaPie(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190});
 				montaPie(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03});
 				montaPie(${grfColocacao}, "#colocacao", {percentMin: 0.02});
 				montaPie(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190});
-				
 				
 				var absenteismo = ${grfEvolucaoAbsenteismo};
 				var turnover = ${grfEvolucaoTurnover};
@@ -147,6 +148,14 @@
 	    <div class="fieldGraph">
 			<h1>Colocação</h1>
 	    	<div id="colocacao" class="graph"></div>
+	    </div>
+	    <div class="fieldGraph">
+			<h1>Ocorrências</h1>
+	    	<div id="ocorrencia" class="graph"></div>
+	    </div>
+	    <div class="fieldGraph">
+			<h1>Providências</h1>
+	    	<div id="providencia" class="graph"></div>
 	    </div>
 		<div class="fieldGraph medium">
 			<h1>Formação Escolar</h1>

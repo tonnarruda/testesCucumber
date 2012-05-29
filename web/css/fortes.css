@@ -99,6 +99,17 @@ span.botao
 	color: #900000;
 	font-weight: bold;
 }
+.warnMessage
+{
+	border: 1px solid #F3E2A9;
+	background-color: #FFFCE9;
+	text-align: center;
+	font-weight: bold;
+	font-size: 11px;
+	padding: 0.7em;
+	margin: 3em 1em;
+	color: #333;
+}
 #iframeZone
 {
 	position : absolute;

@@ -3605,6 +3605,93 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return dataGraficos;
 	}
+	
+	public Collection<DataGrafico> countOcorrencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("o.descricao, count(co.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
+		hql.append("left join c.colaboradorOcorrencia as co ");
+		hql.append("left join co.ocorrencia as o ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			hql.append(" and c.empresa.id in (:empresaIds) ");
+		
+		subSelectHistoricoAtual(hql, areasIds);
+		
+		hql.append("group by o.descricao order by o.descricao ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			String ocorrencia = (String) res[0];
+			int qtd = (Integer) res[1];
+		
+			dataGraficos.add(new DataGrafico(null, ocorrencia, qtd, ""));
+		}
+		return dataGraficos;
+	}
+	
+	public Collection<DataGrafico> countProvidencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	{
+		StringBuilder hql = new StringBuilder();		
+		
+		hql.append("select ");
+		hql.append("p.descricao, count(co.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
+		hql.append("left join c.colaboradorOcorrencia as co ");
+		hql.append("left join co.providencia as p ");
+		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			hql.append(" and c.empresa.id in (:empresaIds) ");
+		
+		hql.append(" and co.providencia is not null ");
+		subSelectHistoricoAtual(hql, areasIds);
+		
+		hql.append("group by p.descricao order by p.descricao ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		if(LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		query.setDate("data", data);
+		query.setBoolean("desligado", false);
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			String providencia = (String) res[0];
+			int qtd = (Integer) res[1];
+			
+			dataGraficos.add(new DataGrafico(null, providencia, qtd, ""));
+		}
+		return dataGraficos;
+	}
 
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) 
 	{

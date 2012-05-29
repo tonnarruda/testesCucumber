@@ -110,9 +110,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfEvolucaoTurnover = "";
 	private String grfPromocaoHorizontal = "";
 	private String grfPromocaoVertical = "";
+	private String grfColocacao = "";
+	private String grfOcorrencia = "";
+	private String grfProvidencia = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
-	private String grfColocacao = "";
 	private Integer countAdmitidos;
 	private Integer countDemitidos;
 	private Double turnover;
@@ -168,6 +170,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresaIds, qtdItensDesligamento, areasIds);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataBase, empresaIds, areasIds);
 		
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
@@ -182,7 +186,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfEstadoCivil = StringUtil.toJSON(graficoEstadoCivil, null);
 		grfDeficiencia = StringUtil.toJSON(graficoDeficiencia, null);
 		grfDesligamento = StringUtil.toJSON(graficoDesligamento, null);
-		grfColocacao  = StringUtil.toJSON(graficoColocacao, null);
+		grfColocacao = StringUtil.toJSON(graficoColocacao, null);
+		grfOcorrencia = StringUtil.toJSON(graficoOcorrencia, null);
+		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
 		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, 1);
@@ -878,6 +884,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setEmpresasCheck(String[] empresasCheck) {
 		this.empresasCheck = empresasCheck;
+	}
+
+	public String getGrfOcorrencia() {
+		return grfOcorrencia;
+	}
+
+	public String getGrfProvidencia() {
+		return grfProvidencia;
 	}
 
 }

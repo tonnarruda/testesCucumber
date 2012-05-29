@@ -40,6 +40,7 @@ import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
+import com.fortes.rh.dao.geral.ProvidenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
@@ -87,6 +88,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -125,6 +127,7 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.MotivoDemissaoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
+import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
@@ -169,6 +172,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private HistoricoFuncaoDao historicoFuncaoDao;
 	private EpiDao epiDao;
 	private SolicitacaoEpiDao solicitacaoEpiDao;
+	private ProvidenciaDao providenciaDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -4864,6 +4868,109 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradores.size());
 		
 	}
+
+	public void testCountOcorrencia() 
+	{
+		Date hoje = new Date();
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = getColaborador();
+		colaborador.setNome("Xica ");
+		colaborador.setDesligado(false);
+		colaborador.setDataAdmissao(hoje);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setAreaOrganizacional(area);
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoColaboradorAtual);
+		
+		Ocorrencia ocorrencia1 = OcorrenciaFactory.getEntity();
+		ocorrencia1.setDescricao("falta");
+		ocorrenciaDao.save(ocorrencia1);
+		
+		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
+		ocorrencia2.setDescricao("matou");
+		ocorrenciaDao.save(ocorrencia2);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
+		colaboradorOcorrencia1.setColaborador(colaborador);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
+		colaboradorOcorrencia2.setColaborador(colaborador);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia3.setOcorrencia(ocorrencia2);
+		colaboradorOcorrencia3.setColaborador(colaborador);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
+		
+		assertEquals(2, colaboradorDao.countOcorrencia(hoje, Arrays.asList(empresa.getId()), null).size());
+	}
+	
+	public void testCountProvidencia() 
+	{
+		Date hoje = new Date();
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = getColaborador();
+		colaborador.setNome("Xica ");
+		colaborador.setDesligado(false);
+		colaborador.setDataAdmissao(hoje);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setAreaOrganizacional(area);
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoColaboradorAtual);
+		
+		Ocorrencia ocorrencia1 = OcorrenciaFactory.getEntity();
+		ocorrencia1.setDescricao("falta");
+		ocorrenciaDao.save(ocorrencia1);
+		
+		Providencia providencia1 = ProvidenciaFactory.getEntity();
+		providencia1.setDescricao("não faltar");
+		providenciaDao.save(providencia1);
+		
+		Providencia providencia2 = ProvidenciaFactory.getEntity();
+		providencia2.setDescricao("não gaziar");
+		providenciaDao.save(providencia2);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
+		colaboradorOcorrencia1.setColaborador(colaborador);
+		colaboradorOcorrencia1.setProvidencia(providencia1);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia2.setOcorrencia(ocorrencia1);
+		colaboradorOcorrencia2.setColaborador(colaborador);
+		colaboradorOcorrencia2.setProvidencia(providencia2);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia3.setOcorrencia(ocorrencia1);
+		colaboradorOcorrencia3.setColaborador(colaborador);
+		colaboradorOcorrencia3.setProvidencia(providencia2);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
+		
+		assertEquals(2, colaboradorDao.countProvidencia(hoje, Arrays.asList(empresa.getId()), null).size());
+	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
@@ -5056,6 +5163,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao)
 	{
 		this.solicitacaoEpiDao = solicitacaoEpiDao;
+	}
+
+	public void setProvidenciaDao(ProvidenciaDao providenciaDao) {
+		this.providenciaDao = providenciaDao;
 	}
 
 }

@@ -271,12 +271,16 @@ More detail and specific examples can be found in the included HTML file.
 		
 		function draw(plot, newCtx)
 		{
-			if (!target) return; // if no series were passed
+			if (!target) { // if no series were passed
+				$(newCtx.canvas.parentElement).prepend("<div class='warnMessage'>Não existem dados para o gráfico.</div>");
+				return;
+			}
 			ctx = newCtx;
 		
 			setupPie();
 			var slices = plot.getData();
 		
+			
 			var attempts = 0;
 			while (redraw && attempts<redrawAttempts)
 			{
