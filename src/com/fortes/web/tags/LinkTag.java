@@ -11,10 +11,11 @@ import com.opensymphony.xwork.ActionContext;
 public class LinkTag extends TagSupport
 {
 	private String href = "";
+	private String onclick = "";
 	private String imgTitle = "";
 	private String imgName = "";
 	private String verifyRole = "";
-	private String onclick = "";
+	private boolean opacity = false;
 	
 	public LinkTag()
 	{
@@ -26,6 +27,17 @@ public class LinkTag extends TagSupport
 		try {
 		StringBuffer link = new StringBuffer("");
 
+		pageContext.getOut().print(montaLink(link));
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	public StringBuffer montaLink(StringBuffer link) 
+	{
 		if(verifyRole.equals("") || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{verifyRole}))
 		{
 			link.append("<a");
@@ -40,25 +52,23 @@ public class LinkTag extends TagSupport
 			
 			if(!imgName.equals(""))
 			{
-				link.append(" <img border=\"0\" ");
+				link.append("<img border=\"0\" ");
 				
 				if(!imgTitle.equals(""))
 					link.append(" title=\"" + imgTitle + "\" ");
 				
-				link.append(" src=\"/fortesrh/imgs/" + imgName + "\"");				
+				link.append(" src=\"/fortesrh/imgs/" + imgName + "\"");	
+				
+				if(opacity)
+					link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
+				
 				link.append(" >");
 			}
 			
 			link.append("</a>");
 		}
 
-		pageContext.getOut().print(link);
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return 0;
+		return link;
 	}
 
 	public String getHref() {
@@ -99,5 +109,13 @@ public class LinkTag extends TagSupport
 
 	public void setVerifyRole(String verifyRole) {
 		this.verifyRole = verifyRole;
+	}
+
+	public boolean isOpacity() {
+		return opacity;
+	}
+
+	public void setOpacity(boolean opacity) {
+		this.opacity = opacity;
 	}
 }

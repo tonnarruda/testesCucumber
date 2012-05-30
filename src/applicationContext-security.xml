@@ -248,6 +248,15 @@
 				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/prepareRelatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
 				/geral/colaborador/relatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
+				
+				/geral/colaborador/list.action*=ROLE_COLAB_LIST
+				/geral/colaborador/prepareEdit.action*=ROLE_COLAB_LIST_EDITAR
+				/geral/colaborador/edit.action*=ROLE_COLAB_LIST_EDITAR
+				/geral/colaborador/excluir.action*=ROLE_COLAB_LIST_EXCLUIR
+				/geral/colaborador/prepareDesliga.action*=ROLE_COLAB_LIST_DESLIGAR
+				/geral/colaborador/prepareDesligaAC.action*=ROLE_COLAB_LIST_DESLIGAR				
+				/pesquisa/entrevista/prepareResponderEntrevista*=ROLE_COLAB_LIST_ENTREVISTA
+				
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
 				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO

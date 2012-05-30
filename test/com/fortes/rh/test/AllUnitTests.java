@@ -598,6 +598,7 @@ import com.fortes.rh.test.web.dwr.UtilDWRTest;
 import com.fortes.rh.test.web.service.AcPessoalClientCargoTest;
 import com.fortes.rh.test.web.service.AcPessoalClientColaboradorOcorrenciaTest;
 import com.fortes.rh.test.web.service.AcPessoalClientOcorrenciaTest;
+import com.fortes.test.web.tags.LinkTagTest;
 
 public class AllUnitTests extends TestSuite
 {
@@ -1334,6 +1335,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
         suite.addTestSuite(ManagerAuditaTest.class);
+
+        suite.addTestSuite(LinkTagTest.class);
         
         suite.addTestSuite(F2rhFacadeTest.class);
         

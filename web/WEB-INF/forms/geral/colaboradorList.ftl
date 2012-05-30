@@ -86,43 +86,43 @@
 			<#if !colaborador.desligado>
 				<#if integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
-						<img border="0" title="Solicitação de desligamento aguardando confirmação no AC Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="#" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
 					<#else>
-						<a href="prepareDesligaAC.action?colaborador.id=${colaborador.id}"><img border="0" title="Solicitação de Desligamento do Colaborador no Ac Pessoal" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}"
+						 imgTitle="Solicitação de Desligamento do Colaborador no Ac Pessoal" imgName="desliga_colab.gif"/>
 					</#if>
 				<#else>
-					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Desligar colaborador" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
 				</#if>
 
-				<img border="0" title="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" src="<@ww.url includeParams="none" value="/imgs/entrevistaBalaoDesligaNova.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="#" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
 			<#else>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
 					<#if integraAc && !colaborador.naoIntegraAc>
-						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Inserir motivo de desligamento" src="<@ww.url includeParams="none" value="/imgs/desligadoAC5.gif"/>"></a>
+						<#assign imgMotivoDeslig="desligadoAC5.gif"/>
+						<#assign titleMotivoDeslig="Inserir motivo de desligamento"/>
 					<#else>
-						<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Inserir motivo de desligamento" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>"></a>
-					</#if>			
+						<#assign imgMotivoDeslig="desliga_colab.gif"/>
+						<#assign titleMotivoDeslig="Desligar colaborador"/>
+					</#if>
+					
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="${titleMotivoDeslig}" imgName="${imgMotivoDeslig}"/>
 				<#else>
-					<a href="javascript:enviarPrepareDesliga('${colaborador.id}')"><img border="0" title="Colaborador já desligado" src="<@ww.url includeParams="none" value="/imgs/desliga_colab.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);"></a>
+					
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
-
+	
 				<#if colaborador.respondeuEntrevista?exists && colaborador.respondeuEntrevista>
-					<a href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Entrevista de desligamento" src="<@ww.url includeParams="none" value="/imgs/entrevistaBalaoDesligaEdita.gif"/>"></a>
+					<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaEdita.gif"/>
 				<#else>
-					<a href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Entrevista de desligamento" src="<@ww.url includeParams="none" value="/imgs/entrevistaBalaoDesligaNova.gif"/>"></a>
+					<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaNova.gif"/>
 				</#if>
-
+					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action" 
+					imgTitle="Entrevista de desligamento" imgName="${imgRespondeuEntrevista}"/>
 			</#if>
 
-			<!--<a href="javascript:enviarPrepareUpDate('${colaborador.id}')"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>-->
-			
-			
-			
-			<@frt.link verifyRole="" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
-			
-			
-			
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
 			
 			<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
 
