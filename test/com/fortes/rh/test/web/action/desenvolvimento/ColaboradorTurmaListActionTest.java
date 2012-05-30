@@ -226,7 +226,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testRelatorioColaboradorSemTreinamento() throws Exception
     {
     	Curso curso = CursoFactory.getEntity(1L);
-    	curso.setNome("Como Raparigar");
+    	curso.setNome("Como programar");
     	action.setCurso(curso);
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
@@ -252,7 +252,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testRelatorioColaboradorSemTreinamentoExceptionCllectioVazia() throws Exception
     {
     	Curso curso = CursoFactory.getEntity(1L);
-    	curso.setNome("Como Raparigar");
+    	curso.setNome("Como programar");
     	action.setCurso(curso);
     	
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
@@ -270,7 +270,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 //    public void testRelatorioColaboradorComTreinamento() throws Exception
 //    {
 //    	Curso curso = CursoFactory.getEntity(1L);
-//    	curso.setNome("Como Raparigar");
+//    	curso.setNome("Como programar");
 //    	action.setCurso(curso);
 //    	
 //    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));    	
@@ -297,7 +297,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testRelatorioColaboradorComTreinamentoExceptionCllectioVazia() throws Exception
     {
     	Curso curso = CursoFactory.getEntity(1L);
-    	curso.setNome("Como Raparigar");
+    	curso.setNome("Como programar");
     	action.setCurso(curso);
 
 		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
@@ -436,7 +436,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testRelatorioHistoricoTreinamentos() throws Exception
     {
     	Cargo cargo = CargoFactory.getEntity(1L);
-    	cargo.setNome("Rapariga");
+    	cargo.setNome("Desenvolvedor");
     	
     	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
     	faixaSalarial.setCargo(cargo);
@@ -456,7 +456,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
     	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
     	certificacaoManager.expects(once()).method("montaMatriz").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<MatrizTreinamento>()));
     	
     	assertEquals("success", action.relatorioHistoricoTreinamentos());
@@ -465,7 +465,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testRelatorioHistoricoTreinamentosException() throws Exception
     {
     	Cargo cargo = CargoFactory.getEntity(1L);
-    	cargo.setNome("Rapariga");
+    	cargo.setNome("Desenvolvedor");
     	
     	Collection<Curso> cursoCollection = new ArrayList<Curso>();
     	cursoCollection.add(new Curso());
@@ -480,9 +480,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
     	colaboradorTurma.setColaborador(colaborador);
     	
-    	Collection<ColaboradorTurma> colabTurmaCollection = new ArrayList<ColaboradorTurma>();
-    	colabTurmaCollection.add(colaboradorTurma);
-    	
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
     	parametrosDoSistema.setUpperCase(true);
     	parametrosDoSistema.setCompartilharCandidatos(true);
@@ -491,42 +488,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
     	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
 
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
-    	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colabTurmaCollection));
-    	
-    	assertEquals("input", action.relatorioHistoricoTreinamentos());
-    }
-
-    public void testRelatorioHistoricoTreinamentosExceptionCollectionVazia() throws Exception
-    {
-    	Cargo cargo = CargoFactory.getEntity(1L);
-    	cargo.setNome("Rapariga");
-    	
-    	Collection<Curso> cursoCollection = new ArrayList<Curso>();
-    	cursoCollection.add(new Curso());
-    	
-    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
-    	faixaSalarial.setDescricao("faixaSalarial");
-    	
-    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-    	colaborador.setNome("Karina");
-    	colaborador.setFaixaSalarial(faixaSalarial);
-    	
-    	action.setColaborador(colaborador);
-    	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
-    	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
-
-       	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(colaborador.getId()), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
-    	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(null));
+    	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
     	
     	assertEquals("input", action.relatorioHistoricoTreinamentos());
     }

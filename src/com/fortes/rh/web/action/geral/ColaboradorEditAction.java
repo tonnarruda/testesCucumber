@@ -819,7 +819,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			idiomasColaborador =  colaboradorIdiomaManager.findByColaborador(colaborador.getId());
 			formacaos = formacaoManager.findByColaborador(colaborador.getId());
 			
-			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(empresaDoColaborador.getId(), colaborador.getId(), null, null);
+			cursosColaborador = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(empresaDoColaborador.getId(), null, null, colaborador.getId());
 			
 			ocorrenciasColaborador = colaboradorOcorrenciaManager.findByColaborador(colaborador.getId());
 			pontuacao = 0;

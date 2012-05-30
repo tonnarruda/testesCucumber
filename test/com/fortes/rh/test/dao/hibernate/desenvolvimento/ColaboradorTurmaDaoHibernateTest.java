@@ -1028,7 +1028,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma.setTurma(turmaCursoConcluido);
     	colaboradorTurmaDao.save(colaboradorTurma);
 
-    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findHistoricoTreinamentosByColaborador(empresa.getId(), colaborador.getId(), null, null);
+    	Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaDao.findHistoricoTreinamentosByColaborador(empresa.getId(), null, null, colaborador.getId());
     	assertEquals(1, colaboradorTurmas.size());
     }
 

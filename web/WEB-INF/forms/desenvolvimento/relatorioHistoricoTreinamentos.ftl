@@ -46,27 +46,21 @@
 
 	</@ww.form>
 	<br>
-	<#assign validarCampos="return validaFormularioEPeriodo('formRelatorio',new Array('colaborador'), new Array('dataIni','dataFim'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('formRelatorio',new Array('@colaboradoresCheck'), new Array('dataIni','dataFim'))"/>
 
-	<#if (colaboradors?exists && colaboradors?size > 0)>
-		<#assign headerValue = "Selecione..." />
-	<#else>
-		<#assign headerValue = "Utilize o Filtro acima." />
-	</#if>
-			
-		<@ww.form name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
-			
-			<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeComercialDesligado" headerKey="" headerValue="${headerValue}"/>
-			
-			Período:<br>
-			<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
-			<@ww.label value="a" liClass="liLeft" />
-			<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+	<@ww.form id="formRelatorio" name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" >
+		
+		<@frt.checkListBox label="Colaboradores" id="colaboradoresCheck" name="colaboradoresCheck" list="colaboradoresCheckList" form="document.getElementById('formRelatorio')"/>
+		
+		Período:<br>
+		<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+		<@ww.label value="a" liClass="liLeft" />
+		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 
-			<@ww.checkbox label="Imprimir matriz comparativa dos cursos exigidos pelo cargo" name="imprimirMatriz" labelPosition="left"/>
-			<div class="buttonGroup">
-				<button onclick="${validarCampos};" class="btnRelatorio" ></button>
-			</div>
-		</@ww.form>
+		<@ww.checkbox label="Imprimir matriz comparativa dos cursos exigidos pelo cargo" name="imprimirMatriz" labelPosition="left"/>
+		<div class="buttonGroup">
+			<button onclick="${validarCampos};" class="btnRelatorio" ></button>
+		</div>
+	</@ww.form>
 </body>
 </html>

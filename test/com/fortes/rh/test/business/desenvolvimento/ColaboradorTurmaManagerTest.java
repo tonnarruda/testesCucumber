@@ -562,7 +562,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	public void testFindHistoricoTreinamentosByColaborador() throws Exception
 	{
 		colaboradorTurmaDao.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
-		assertNotNull(colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, 100L, null, null));
+		assertNotNull(colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 100L));
 	}
 
 	public void testFindRelatorioHistoricoTreinamentos() throws Exception
@@ -625,7 +625,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
-		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, 1L, null, null);
+		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 1L);
 		
 		assertEquals(1, colaboradorTurmasResposta.size());
 	}
@@ -728,7 +728,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
 		
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
-		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, 1L, null, null);
+		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 1L);
 		
 		assertEquals(1, colaboradorTurmasResposta.size());
 	}

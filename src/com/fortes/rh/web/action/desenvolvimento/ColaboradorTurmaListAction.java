@@ -29,6 +29,7 @@ import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
+import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -63,7 +64,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
-	private Collection<Colaborador> colaboradors;
+	private Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios; 
 	private Turma turma;
 	private ColaboradorTurma colaboradorTurma;
@@ -91,6 +92,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Long[] colaboradoresCheck;
+	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
 
 	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
@@ -170,7 +173,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
 		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
-
+		
 		return SUCCESS;
 	}
 
@@ -184,7 +187,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			prepareFiltroHistoricoTreinamentos();
 			return Action.INPUT;
 		}
+		colaboradoresCheckList = populaCheckListBox(colaboradors, "getId", "getNome");
 
+		
 		return prepareFiltroHistoricoTreinamentos();
 	}
 
@@ -192,29 +197,25 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaborador.getId(), dataIni, dataFim);
-			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), colaborador.getNome());
-			String[] faixaSalarialId = new String[]{};
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaboradoresCheck, dataIni, dataFim);
+			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), null);
 			
 			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty())
 			{
-				colaborador = ((ColaboradorTurma)colaboradorTurmas.toArray()[0]).getColaborador();
-				parametros.put("COLAB_CARGO", colaborador.getFaixaSalarial().getCargo().getNome());
-				parametros.put("COLAB_FAIXA", colaborador.getFaixaSalarial().getNome());
-				faixaSalarialId = new String[]{colaborador.getFaixaSalarial().getId().toString()};
+				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+					
+					String[] faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
+					
+					Collection<MatrizTreinamento> matrizTreinamentos = certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas);
+					
+					colaboradorTurma.setMatrizTreinamentos(matrizTreinamentos);
+				}
+			} else {
+				addActionMessage("Não existe treinamento para os colaboradores selecionados");
+				prepareFiltroHistoricoTreinamentos();
+				return INPUT;
 			}
-			else
-			{
-				colaborador = colaboradorManager.findByIdComHistorico(colaborador.getId());
-				parametros.put("COLAB_CARGO", colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNome());
-				parametros.put("COLAB_FAIXA", colaborador.getHistoricoColaborador().getFaixaSalarial().getNome());
-				faixaSalarialId = new String[]{colaborador.getHistoricoColaborador().getFaixaSalarial().getId().toString()};
-			}
-			
-			String colaboradorNome = colaborador.getNome();
-			parametros.put("COLAB_NOME", colaboradorNome);
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
-			parametros.put("COLECAO_MATRIZ", certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas));
 
 			return SUCCESS;
 		}
@@ -801,5 +802,20 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setNomeBusca(String nomeBusca) {
 		this.nomeBusca = nomeBusca;
+	}
+
+	public Long[] getColaboradoresCheck()
+	{
+		return colaboradoresCheck;
+	}
+
+	public void setColaboradoresCheck(Long[] colaboradoresCheck)
+	{
+		this.colaboradoresCheck = colaboradoresCheck;
+	}
+
+	public Collection<CheckBox> getColaboradoresCheckList()
+	{
+		return colaboradoresCheckList;
 	}
 }

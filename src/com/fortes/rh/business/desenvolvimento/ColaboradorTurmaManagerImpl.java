@@ -627,16 +627,16 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 	
-	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long colaboradorId, Date dataIni, Date dataFim) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long[] colaboradorIds, Date dataIni, Date dataFim) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = findHistoricoTreinamentosByColaborador(empresaId, colaboradorId, dataIni, dataFim);
+		Collection<ColaboradorTurma> colaboradorTurmas = findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
 
 		return colaboradorTurmas;
 	}
 	
-	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Long colaboradorId, Date dataIni, Date dataFim) throws Exception
+	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findHistoricoTreinamentosByColaborador(empresaId, colaboradorId, dataIni, dataFim);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
 		
 		if(colaboradorTurmas != null)
 			setAprovacoesDosColaboradoresTurmas(colaboradorTurmas);

@@ -18,6 +18,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
@@ -73,6 +74,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Integer qtdAvaliacoesAprovadasPorNota;
 	@Transient
 	private Double nota;
+	@Transient
+	private Collection<MatrizTreinamento> matrizTreinamentos;
 	
 	public ColaboradorTurma() {	}
 
@@ -730,5 +733,17 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public void setColuna03RelatorioPresenca(String coluna03RelatorioPresenca)
 	{
 		this.coluna03RelatorioPresenca = coluna03RelatorioPresenca;
+	}
+
+	
+	public Collection<MatrizTreinamento> getMatrizTreinamentos()
+	{
+		return matrizTreinamentos;
+	}
+
+	
+	public void setMatrizTreinamentos(Collection<MatrizTreinamento> matrizTreinamentos)
+	{
+		this.matrizTreinamentos = matrizTreinamentos;
 	}
 }
