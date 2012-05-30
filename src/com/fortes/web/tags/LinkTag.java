@@ -2,9 +2,6 @@ package com.fortes.web.tags;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
-
 import com.fortes.rh.security.SecurityUtil;
 import com.opensymphony.xwork.ActionContext;
 
