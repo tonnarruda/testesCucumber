@@ -6,7 +6,13 @@
   <jspversion>1.1</jspversion>
   <shortname>Tags</shortname>
   <info>Tag's Customizadas</info>
-
+  
+  <tag>
+    <name>link</name>
+    <tagclass>com.fortes.web.tags.LinkTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>Cria um link</info>
+  </tag>
   <tag>
     <name>checkListBox</name>
     <tagclass>com.fortes.web.tags.CheckListBoxTag</tagclass>

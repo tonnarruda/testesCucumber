@@ -114,7 +114,14 @@
 
 			</#if>
 
-			<a href="javascript:enviarPrepareUpDate('${colaborador.id}')"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			<!--<a href="javascript:enviarPrepareUpDate('${colaborador.id}')"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>-->
+			
+			
+			
+			<@frt.link verifyRole="" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
+			
+			
+			
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			
 			<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
