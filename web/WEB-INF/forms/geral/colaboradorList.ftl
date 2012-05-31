@@ -84,6 +84,7 @@
 		<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:250px;">
 			<#if !colaborador.desligado>
+				<#assign statusSolicitacao="A"/>
 				<#if integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="#" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
@@ -97,6 +98,7 @@
 
 				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="#" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
 			<#else>
+				<#assign statusSolicitacao="I"/>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
 					<#if integraAc && !colaborador.naoIntegraAc>
 						<#assign imgMotivoDeslig="desligadoAC5.gif"/>
@@ -122,39 +124,29 @@
 			</#if>
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
+			
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
 			
-			<a href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')"><img border="0" title="Visualizar Progressão" src="<@ww.url includeParams="none" value="/imgs/progressao.gif"/>"></a>
+			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
 
-			<#if colaborador.exibePerformanceProficional>
-				<a href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}"><img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>"></a>
-			<#else>
-				<img border="0" title="Performance Profissional" src="<@ww.url includeParams="none" value="/imgs/medalha.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-			</#if>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_PERFORMANCE" href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" imgTitle="Performance Profissional" imgName="medalha.gif"/>
 			
-			<a href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
-			<#--<a href="../historicoColaboradorBeneficio/list.action?colaborador.id=${colaborador.id}"><img border="0" title="Benefícios" src="<@ww.url includeParams="none" value="/imgs/table.gif"/>"></a>-->
+			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}" imgTitle="Competências" imgName="competencias.gif"/>
 
-			<#if !colaborador.desligado>
-				<a href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=A&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif"/>
+
+			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+
+			<#if colaborador.usuario.id?exists>
+				<@frt.link verifyRole="ROLE_USER" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
 			<#else>
-				<a href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=I&voltarPara=../../geral/colaborador/list.action"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+				<@frt.link verifyRole="ROLE_USER" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${colaborador.nomeComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
 			</#if>
-
-			<a href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}"><img border="0" title="Documentos do Colaborador" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
-
-			<@authz.authorize ifAnyGranted="ROLE_USER">
-				<#if colaborador.usuario.id?exists>
-					<a href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}"><img border="0" title="Editar Acesso ao Sistema" src="<@ww.url includeParams="none" value="/imgs/key.gif"/>"></a>
-				<#else>
-					<a href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${colaborador.nomeComercial}"><img border="0" title="Criar Acesso ao Sistema" src="<@ww.url includeParams="none" value="/imgs/key_add.gif"/>"></a>
-				</#if>
-			</@authz.authorize>
-			
+		
 			<#if colaborador.candidato?exists && colaborador.candidato.id?exists>
-				<a href="javascript:popup('../../captacao/candidato/infoCandidato.action?candidato.id=${colaborador.candidato.id}', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" href="javascript:popup('../../captacao/candidato/infoCandidato.action?candidato.id=${colaborador.candidato.id}', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif"/>
 			<#else>
-				<img border="0" title="Não é possível visualizar currículo, este colaborador não é candidato." src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);">
+				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" imgTitle="Não é possível visualizar currículo, este colaborador não é candidato." imgName="page_curriculo.gif" opacity=true/>
 			</#if>
 		</@display.column>
 

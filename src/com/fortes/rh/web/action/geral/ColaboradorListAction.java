@@ -180,34 +180,10 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		if (colaboradors == null || colaboradors.size() == 0)
 			addActionMessage("Não existem colaboradores a serem listados.");
-		else
-			exibePerformanceProficional();
 		
 		integraAc = getEmpresaSistema().isAcIntegra();
 		
 		return Action.SUCCESS;
-	}
-	
-	public void exibePerformanceProficional() throws Exception
-	{
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_PERFORMANCE_TODAS_AREAS"}))
-		{
-			for (Colaborador colab : colaboradors) 
-				colab.setExibePerformanceProficional(true);
-		}	
-		else if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_PERFORMANCE_GESTOR_AREA"}))
-		{
-			Collection<AreaOrganizacional> areasResponsaveis = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-			if (areasResponsaveis.size() > 0)
-			{
-				Long[] areaIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasResponsaveis);
-				Collection<Long> areaIdsCollection = new CollectionUtil<Long>().convertArrayToCollection(areaIds);
-
-				for (Colaborador colab : colaboradors)
-					if(colab.getAreaOrganizacional() != null && colab.getAreaOrganizacional().getId() != null && areaIdsCollection.contains(colab.getAreaOrganizacional().getId()))
-						colab.setExibePerformanceProficional(true);
-			} 
-		}
 	}
 
 	public String delete() throws Exception
