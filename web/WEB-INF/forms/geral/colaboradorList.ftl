@@ -124,6 +124,7 @@
 			</#if>
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
+			
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
 			
 			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
