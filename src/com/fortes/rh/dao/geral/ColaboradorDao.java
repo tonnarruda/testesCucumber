@@ -99,10 +99,10 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds);
 	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds);
 	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds);
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, int qtdItens, Long[] areasIds);
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens);
 	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds);
-	public Collection<DataGrafico> countOcorrencia(Date data, Collection<Long> empresaIds, Long[] areasIds);
-	public Collection<DataGrafico> countProvidencia(Date data, Collection<Long> empresaIds, Long[] areasIds);
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens);
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens);
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds);
 	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, boolean isAdmitidos);
 //	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);	

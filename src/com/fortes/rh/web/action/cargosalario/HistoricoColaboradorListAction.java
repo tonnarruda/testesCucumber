@@ -167,11 +167,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresaIds, qtdItensDesligamento, areasIds);
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
+		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
 		
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);

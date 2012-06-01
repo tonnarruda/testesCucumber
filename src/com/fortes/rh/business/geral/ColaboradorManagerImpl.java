@@ -2007,9 +2007,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countDeficiencia(data, empresaIds, areasIds);
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, int qtdItens, Long[] areasIds) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
-		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, qtdItens, areasIds);
+		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, qtdItens);
 	}
 
 	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) 
@@ -2017,14 +2017,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countColocacao(dataBase, empresaIds, areasIds);
 	}
 	
-	public Collection<DataGrafico> countOcorrencia(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
-		return getDao().countOcorrencia(dataBase, empresaIds, areasIds);
+		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItens);
 	}
 	
-	public Collection<DataGrafico> countProvidencia(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
-		return getDao().countProvidencia(dataBase, empresaIds, areasIds);
+		return getDao().countProvidencia(dataIni, dataFim, empresaIds, areasIds, 0);
 	}
 
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) {

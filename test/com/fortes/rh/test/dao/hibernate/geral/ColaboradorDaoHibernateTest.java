@@ -1303,10 +1303,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2003), motivoPediuPraSair, null, area);
 		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2010), motivoPediuPraSair, null, area);
 
-		Collection<DataGrafico> motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), 2, null);
+		Collection<DataGrafico> motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), null, 2);
 		assertEquals(2, motivos.size());
 		//passando area
-		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), 2, new Long[]{area.getId()});
+		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), new Long[]{area.getId()}, 2);
 		assertEquals(2, motivos.size());
 
 		DataGrafico motivo1 = (DataGrafico) motivos.toArray()[0];
@@ -1318,7 +1318,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Pediu pra Sair", motivo2.getLabel());
 		assertEquals(1.0, motivo2.getData());
 		
-		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), null, 2, new Long[]{area.getId()});
+		motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), null, new Long[]{area.getId()}, 2);
 		assertEquals(2, motivos.size());
 	}
 
@@ -4872,6 +4872,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testCountOcorrencia() 
 	{
 		Date hoje = new Date();
+		Date dataFim = DateUtil.incrementaMes(hoje, 1);
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -4902,24 +4903,31 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
 		colaboradorOcorrencia1.setColaborador(colaborador);
+		colaboradorOcorrencia1.setDataIni(hoje);
+		colaboradorOcorrencia1.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
 		colaboradorOcorrencia2.setColaborador(colaborador);
+		colaboradorOcorrencia2.setDataIni(hoje);
+		colaboradorOcorrencia2.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia3.setOcorrencia(ocorrencia2);
 		colaboradorOcorrencia3.setColaborador(colaborador);
+		colaboradorOcorrencia3.setDataIni(hoje);
+		colaboradorOcorrencia3.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
 		
-		assertEquals(2, colaboradorDao.countOcorrencia(hoje, Arrays.asList(empresa.getId()), null).size());
+		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, 2).size());
 	}
 	
 	public void testCountProvidencia() 
 	{
 		Date hoje = new Date();
+		Date dataFim = DateUtil.incrementaMes(hoje, 1);
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -4955,21 +4963,27 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrencia1.setOcorrencia(ocorrencia1);
 		colaboradorOcorrencia1.setColaborador(colaborador);
 		colaboradorOcorrencia1.setProvidencia(providencia1);
+		colaboradorOcorrencia1.setDataIni(hoje);
+		colaboradorOcorrencia1.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia2.setOcorrencia(ocorrencia1);
 		colaboradorOcorrencia2.setColaborador(colaborador);
 		colaboradorOcorrencia2.setProvidencia(providencia2);
+		colaboradorOcorrencia2.setDataIni(hoje);
+		colaboradorOcorrencia2.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia3.setOcorrencia(ocorrencia1);
 		colaboradorOcorrencia3.setColaborador(colaborador);
 		colaboradorOcorrencia3.setProvidencia(providencia2);
+		colaboradorOcorrencia3.setDataIni(hoje);
+		colaboradorOcorrencia3.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
 		
-		assertEquals(2, colaboradorDao.countProvidencia(hoje, Arrays.asList(empresa.getId()), null).size());
+		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, 2).size());
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

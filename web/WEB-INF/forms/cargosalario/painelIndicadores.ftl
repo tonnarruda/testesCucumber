@@ -37,7 +37,7 @@
 				montaPie(${grfFaixaEtarias}, "#faixaEtaria");
 				montaPie(${grfSexo}, "#sexo", {percentMin:0});
 				montaPie(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02});
-				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190, combinePercentMin: 0.01});
+				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190, combinePercentMin: 0.05});
 				montaPie(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190});
 				montaPie(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03});
 				montaPie(${grfColocacao}, "#colocacao", {percentMin: 0.02});
@@ -112,7 +112,7 @@
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
 				
 				<li>&nbsp;</li>
-				<li><strong>Indicadores de Motivos de Desligamento e Turnover</strong></li>
+				<li><strong>Indicadores de Motivos de Desligamento, Turnover, Ocorrências e Providêcias</strong></li>
 				<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>

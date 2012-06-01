@@ -3518,7 +3518,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, int qtdItens, Long[] areasIds) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
@@ -3606,7 +3606,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 	
-	public Collection<DataGrafico> countOcorrencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
@@ -3620,9 +3620,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append(" and c.empresa.id in (:empresaIds) ");
 		
+		hql.append(" and (co.dataIni between :data and :dataFim or (co.dataIni < :data and co.dataFim is null) ) ");
 		subSelectHistoricoAtual(hql, areasIds);
 		
-		hql.append("group by o.descricao order by o.descricao ");
+		hql.append("group by o.descricao order by count(co.id), o.descricao ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
@@ -3630,10 +3631,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		query.setDate("data", data);
+		query.setDate("data", dataIni);
+		query.setDate("dataFim", dataFim);
 		query.setBoolean("desligado", false);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		query.setMaxResults(qtdItens);
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		List resultado = query.list();
@@ -3649,7 +3653,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 	
-	public Collection<DataGrafico> countProvidencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
 		StringBuilder hql = new StringBuilder();		
 		
@@ -3663,10 +3667,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append(" and c.empresa.id in (:empresaIds) ");
 		
+		hql.append(" and (co.dataIni between :data and :dataFim or (co.dataIni < :data and co.dataFim is null)) ");
 		hql.append(" and co.providencia is not null ");
 		subSelectHistoricoAtual(hql, areasIds);
 		
-		hql.append("group by p.descricao order by p.descricao ");
+		hql.append("group by p.descricao order by count(co.id), p.descricao ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
@@ -3674,10 +3679,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		query.setDate("data", data);
+		query.setDate("data", dataIni);
+		query.setDate("dataFim", dataFim);
 		query.setBoolean("desligado", false);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		query.setMaxResults(qtdItens);
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		List resultado = query.list();
