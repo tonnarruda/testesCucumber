@@ -201,7 +201,7 @@
 			classpath="${lib.dir}/postgresql-9.0-801.jdbc3.jar"
 			autocommit="true">
 			<transaction>
-				alter database fortesrh rename to fortesrh_dev;
+				alter database fortesrh rename to fortesrh_dev_temp;
 				create database fortesrh with encoding = 'UTF-8';
 			</transaction>
 		</sql>
@@ -209,7 +209,8 @@
 		<echo message="Banco criado com sucesso" />
 	</target>
 
-	<target name="recreate-bd" depends="recreate-bd-vazio">
+	<!-- <target name="recreate-bd" depends="recreate-bd-vazio"> -->
+	<target name="recreate-bd" depends="update-file-update-sql,recreate-bd-vazio">
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create.sql">
 			<arg value="-U" />
@@ -218,19 +219,38 @@
 		</exec>
 
 		<!-- o update deve ser executado somente a partir da versão atual-->
-		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/update.sql">
-			<arg value="-U" />
-			<arg value="postgres" />
-			<arg value="fortesrh" />
+		<exec executable="ruby">
+			<arg value="${ant.project.name}/migrate.rb" />
+			<arg value="--update-db-vazio" />
+			<arg value="${versao.atualizador}" />
+			<arg value="${ant.project.name}" />
 		</exec>
+				
 		<exec executable="pg_dump"
 			output="${metadados.dir}/create.sql">
-			<arg value="fortesrh" />
 			<arg value="-U" />
 			<arg value="postgres" />
-		</exec>			
+			<arg value="--column-inserts" />
+			<arg value="fortesrh" />
+		</exec>
+		
+		<antcall target="final-recreate-bd"></antcall>
+		
 		<echo message="Banco atualizado com sucesso" />
+	</target>
+
+	<target name="final-recreate-bd">
+		<sql driver="org.postgresql.Driver"
+			url="jdbc:postgresql://localhost:5432/template1"
+			userid="postgres"
+			password="1234"
+			classpath="${lib.dir}/postgresql-9.0-801.jdbc3.jar"
+			autocommit="true">
+			<transaction>
+				drop database fortesrh;
+				alter database fortesrh_dev_temp rename to fortesrh;
+			</transaction>
+		</sql>
 	</target>
 
 	<!-- Gera Atualizador -->
