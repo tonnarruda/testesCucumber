@@ -1,4 +1,5 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -83,10 +84,10 @@
 		</script>
 	</#if>
 		<div class="buttonGroup">
-			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar">
-			</button>
-			<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos">
-			</button>
+			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar"></button>
+			<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
+				<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
+			</@authz.authorize>
 		</div>
 </body>
 </html>
