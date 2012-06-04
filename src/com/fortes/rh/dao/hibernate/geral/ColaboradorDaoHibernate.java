@@ -1133,8 +1133,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 		
-		if(dataAdmissaoIni != null && dataAdmissaoFim != null)
-			hql.append(" and co.dataAdmissao between :dataAdmissaoIni and :dataAdmissaoFim  ");
+		if(dataAdmissaoIni != null)
+			hql.append(" and :dataAdmissaoIni <= co.dataAdmissao");
+
+		if(dataAdmissaoFim != null)
+			hql.append(" and co.dataAdmissao <= :dataAdmissaoFim  ");
 
 		if(habilitaCampoExtra && camposExtras != null)
 		{
@@ -1194,11 +1197,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
 		
-		if(dataAdmissaoIni != null && dataAdmissaoFim != null)
-		{
+		if(dataAdmissaoIni != null)
 			query.setDate("dataAdmissaoIni", dataAdmissaoIni);
+
+		if(dataAdmissaoFim != null)
 			query.setDate("dataAdmissaoFim", dataAdmissaoFim);
-		}
 		
 		if(habilitaCampoExtra && camposExtras != null)
 		{

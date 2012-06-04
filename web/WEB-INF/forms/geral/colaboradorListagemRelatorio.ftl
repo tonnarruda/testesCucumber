@@ -178,7 +178,7 @@
 				$('#orderField').val(order);
 				
 				$('#colunas option').attr('selected', true);
-				return validaFormulario('form', new Array('dataIni','dataFim'), new Array('naoApague' ${validaDataCamposExtras}));
+				return validaFormulario('form', new Array(), new Array('dataIni','dataFim','naoApague' ${validaDataCamposExtras}));
 			}
 		}
 
@@ -271,7 +271,7 @@
 			</li>
 		</#if>
 		
-		<div>Período de Admissão:*</div>
+		<div>Período de Admissão:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
