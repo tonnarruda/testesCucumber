@@ -2019,6 +2019,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
 	{
+			
 		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItens);
 	}
 	

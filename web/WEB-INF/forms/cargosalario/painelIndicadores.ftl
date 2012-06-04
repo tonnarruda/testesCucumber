@@ -33,12 +33,12 @@
 					content: 'São consideradas faltas as Ocorrências cujo o tipo está marcado como Absenteísmo e os Afastamentos cujo o motivo está marcado como Absenteísmo.'
 				});
 			
-				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar");
+				montaPie(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190});
 				montaPie(${grfFaixaEtarias}, "#faixaEtaria");
 				montaPie(${grfSexo}, "#sexo", {percentMin:0});
 				montaPie(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02});
-				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190, combinePercentMin: 0.05});
-				montaPie(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9, pieLeft:-190});
+				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.02});
+				montaPie(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9});
 				montaPie(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03});
 				montaPie(${grfColocacao}, "#colocacao", {percentMin: 0.02});
 				montaPie(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190});
@@ -135,35 +135,51 @@
 		
 		<div class="fieldGraph">
 			<h1>Faixa Etária</h1>
-		    <div id="faixaEtaria" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="faixaEtaria" class="graph"></div>
+		    </div>
 	    </div>
 		<div class="fieldGraph">
 			<h1>Estado Civil</h1>
-	    	<div id="estadoCivil" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="estadoCivil" class="graph"></div>
+		    </div>
 	    </div>
 	    <div class="fieldGraph">
 			<h1>Deficiência</h1>
-	    	<div id="deficiencia" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="deficiencia" class="graph"></div>
+		    </div>
 	    </div>
 	    <div class="fieldGraph">
 			<h1>Colocação</h1>
-	    	<div id="colocacao" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="colocacao" class="graph"></div>
+		    </div>
 	    </div>
 	    <div class="fieldGraph">
 			<h1>Ocorrências</h1>
-	    	<div id="ocorrencia" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="ocorrencia" class="graph"></div>
+		    </div>
 	    </div>
 	    <div class="fieldGraph">
 			<h1>Providências</h1>
-	    	<div id="providencia" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="providencia" class="graph"></div>
+		    </div>
 	    </div>
 		<div class="fieldGraph medium">
 			<h1>Formação Escolar</h1>
-		    <div id="formacaoEscolar" class="graph" ></div>
+			<div class="graphWrapper">
+			    <div id="formacaoEscolar" class="graph" ></div>
+			</div>
 		</div>
    		<div class="fieldGraph small">
 			<h1>Sexo</h1>
-	    	<div id="sexo" class="graph"></div>
+			<div class="graphWrapper">
+		    	<div id="sexo" class="graph"></div>
+		    </div>
 	    </div>
 	    
 		<div class="fieldGraph bigger">
@@ -173,7 +189,7 @@
 	    	
 		<div class="fieldGraph bigger">
 			<h1>Turnover</h1>
-	   		<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
+   			<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
 
 			<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
 	    

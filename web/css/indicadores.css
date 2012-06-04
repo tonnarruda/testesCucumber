@@ -1,5 +1,10 @@
+div.graphWrapper {
+	height: 185px;
+	overflow-y: auto;
+}
+
 div.graph {
-	width: 466px !important;
+	width: 95% !important;
 	height: 180px;
 	float: left;
 }
