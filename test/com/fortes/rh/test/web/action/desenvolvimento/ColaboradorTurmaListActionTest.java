@@ -462,39 +462,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	assertEquals("success", action.relatorioHistoricoTreinamentos());
     }
 
-    public void testRelatorioHistoricoTreinamentosException() throws Exception
-    {
-    	Cargo cargo = CargoFactory.getEntity(1L);
-    	cargo.setNome("Desenvolvedor");
-    	
-    	Collection<Curso> cursoCollection = new ArrayList<Curso>();
-    	cursoCollection.add(new Curso());
-    	
-    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
-    	faixaSalarial.setDescricao("faixaSalarial");
-    	
-    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-    	colaborador.setNome("Karina");
-    	colaborador.setFaixaSalarial(faixaSalarial);
-    	
-    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
-    	colaboradorTurma.setColaborador(colaborador);
-    	
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-    	parametrosDoSistema.setUpperCase(true);
-    	parametrosDoSistema.setCompartilharCandidatos(true);
-    	
-    	action.setColaborador(colaborador);
-    	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
-    	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
-
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(null));
-    	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
-    	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
-    	
-    	assertEquals("input", action.relatorioHistoricoTreinamentos());
-    }
 
     public void testDeleteComDnt() throws Exception
     {

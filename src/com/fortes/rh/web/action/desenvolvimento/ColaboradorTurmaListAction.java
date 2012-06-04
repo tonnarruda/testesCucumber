@@ -200,20 +200,28 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaboradoresCheck, dataIni, dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), null);
 			
-			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty())
-			{
+			String[] faixaSalarialId;
+			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty()){
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
 					
-					String[] faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
+					faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
 					
 					Collection<MatrizTreinamento> matrizTreinamentos = certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas);
 					
 					colaboradorTurma.setMatrizTreinamentos(matrizTreinamentos);
 				}
 			} else {
-				addActionMessage("Não existe treinamento para os colaboradores selecionados");
-				prepareFiltroHistoricoTreinamentos();
-				return INPUT;
+				
+				for (Long colaboradorId : colaboradoresCheck) {
+
+					colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
+					colaborador.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
+					
+					ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+					colaboradorTurma.setColaborador(colaborador);
+					colaboradorTurma.setMatrizTreinamentos(null);
+					colaboradorTurmas.add(colaboradorTurma);
+				}
 			}
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
 
