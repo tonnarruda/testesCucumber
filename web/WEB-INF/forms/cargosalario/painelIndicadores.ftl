@@ -37,7 +37,7 @@
 				montaPie(${grfFaixaEtarias}, "#faixaEtaria");
 				montaPie(${grfSexo}, "#sexo", {percentMin:0});
 				montaPie(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02});
-				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.02});
+				montaPie(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03});
 				montaPie(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9});
 				montaPie(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03});
 				montaPie(${grfColocacao}, "#colocacao", {percentMin: 0.02});

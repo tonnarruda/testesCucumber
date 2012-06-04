@@ -96,7 +96,7 @@ function montaPie(data, clazz, options) {
 			hoverable: config.hoverable,
             clickable: config.clickable
 		},
-		colors : [ "#edc240", "#afeef8", "#cb4b4b", "#4da74d", "#8B5A2B" ],//"#D7ECFC","#DECD99","#226FA5","#8080FF"
+		colors : [ "#edc240", "#afeef8", "#cb4b4b", "#4da74d", "#9440ed" ],//"#D7ECFC","#DECD99","#226FA5","#8080FF"
 		legend : {
 			margin : 2,
 			noColumns: config.noColumns,
