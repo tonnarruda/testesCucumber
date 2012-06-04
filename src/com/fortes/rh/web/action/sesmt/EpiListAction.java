@@ -35,7 +35,7 @@ public class EpiListAction extends MyActionSupportList
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	private String epiNome;
-	private char ativo;
+	private char ativo = 'S';
 
 	public String execute() throws Exception
 	{
