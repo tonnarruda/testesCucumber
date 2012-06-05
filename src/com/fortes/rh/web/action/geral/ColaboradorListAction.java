@@ -162,7 +162,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 		if(situacao == null)
 			situacao = "A";
-
+		
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("nomeBusca", nomeBusca);
 		parametros.put("nomeComercialBusca", nomeComercialBusca);
@@ -173,7 +173,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("estabelecimentoId", estabelecimento.getId());
 		parametros.put("cargoId", cargo.getId());
 		parametros.put("situacao", situacao);
-
+		parametros.put("colaboradorId", colaboradorManager.findByUsuario(getUsuarioLogado().getId()));
+		
 		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
 		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
 		colaboradors = colaboradorManager.findComHistoricoFuturoSQL(getPage(), getPagingSize(), parametros);
