@@ -171,6 +171,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (62, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (8, 'ROLE_CAD_COLABORADOR', 'Colaboradores', '/geral/colaborador/list.action', 7, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (541, 'ROLE_PERFORMANCE_TODAS_AREAS', 'Visualizar Performance Funcional de todas as áreas', '#', 1, false, 8);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (542, 'ROLE_PERFORMANCE_GESTOR_AREA', 'Visualizar Performance Funcional apenas da área cujo gestor é responsável', '#', 2, false, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (545, 'ROLE_CAD_HISTORICOCOLABORADOR', 'Situações do Colaborador', '#', 3, false, 8);
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (412, 'ROLE_CAD_INFO_PESSOAL', 'Atualizar meus dados', '/geral/colaborador/prepareUpdateInfoPessoais.action', 8, true, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, 374);
@@ -313,7 +314,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (74, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, null);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, null);
 
-alter sequence papel_sequence restart with 545;
+alter sequence papel_sequence restart with 546;
 
 insert into public."perfil" ("id", "nome") values (1, 'Administrador');
 
@@ -499,6 +500,7 @@ insert into perfil_papel(perfil_id, papeis_id) values (1, 541);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 542);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 543);
 insert into perfil_papel(perfil_id, papeis_id) values (1, 544);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 545);
 
 insert into public."perfil" ("id", "nome") values (2, 'Usuário');
 
@@ -21258,9 +21260,10 @@ insert into migrations values('20120502151525');
 insert into migrations values('20120502152130');
 insert into migrations values('20120503095212');
 insert into migrations values('20120524100533');
+insert into migrations values('20120528144454');
 
 insert into parametrosdosistema (id, appurl, appcontext, appversao, servidorremprot, emailport, uppercase, enviaremail, perfilpadrao_id, acversaowebservicecompativel, camposCandidatoVisivel, camposCandidatoObrigatorio, camposCandidatoTabs)
-values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.74.69', '', '25', false, false, 2, '1.1.50.1', 
+values (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.75.70', '', '25', false, false, 2, '1.1.50.1', 
 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps',
 'nome,cpf,escolaridade,ende,num,cidade,fone',
 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo'

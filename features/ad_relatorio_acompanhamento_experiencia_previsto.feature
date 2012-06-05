@@ -13,7 +13,6 @@ Funcionalidade: Relatório Acompanhamento de Experiência Previsto
     Então eu devo ver o alert do valida campos e clico no ok
 
     E eu preencho "tempoDeEmpresa" com "2"
-    E eu preencho "diasDeAcompanhamento" com "3"
     E eu marco "geral"
     E eu marco "centro"
 

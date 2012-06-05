@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.75.70" data="25/05/2012"><![CDATA[
+        - Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo filtro por período
+        - T&D > Relatórios > Histórico de Treinamentos: Possibilidade de filtrar por vários colaboradores. 
+        - Info. Funcionais > Painel de Indicadores: Novos gráficos de ocorrências e providências.
+        - Utilitários > Cadastros > Perfis: Nova configuração para editar situações do colaborador. 
+    ]]></Versao>
 	<Versao id="1.1.74.69" data="25/05/2012"><![CDATA[
 		- Aval.Desempenho > Relatórios > Ranking de Performance das Avaliações de Desempenho: Relatório ordenado por ranking de performance.
         - Info. Funcionais > Cadastros > Atualizar meus dados: Nova opção de editar a quantidade de filhos.
