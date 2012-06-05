@@ -52,7 +52,7 @@ public class PerguntaAuditorCallbackImpl implements AuditorCallback {
 		
 		String dados = new GeraDadosAuditados(new Object[]{perguntaAnterior}, null).gera();
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), perguntaAnterior.getTexto(), dados);
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), StringUtil.subStr(perguntaAnterior.getTexto(), 255), dados);
 	}
 	
 	private Pergunta carregaEntidade(MetodoInterceptado metodo, Pergunta pergunta) {
