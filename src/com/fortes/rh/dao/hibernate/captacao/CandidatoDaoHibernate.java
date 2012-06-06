@@ -269,7 +269,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("uf.sigla"), "sigla");
 		p.add(Projections.property("c.experiencias"), "experiencias");
 		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
-		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id)) as inscritoSolicitacao", 
+		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id and cs2.triagem = false)) as inscritoSolicitacao", 
         		new String []  {"inscritoSolicitacao"}, 
         		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
 
