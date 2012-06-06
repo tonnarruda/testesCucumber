@@ -173,7 +173,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("estabelecimentoId", estabelecimento.getId());
 		parametros.put("cargoId", cargo.getId());
 		parametros.put("situacao", situacao);
-		parametros.put("colaboradorId", colaboradorManager.findByUsuario(getUsuarioLogado().getId()));
+		
+		if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}) )
+			parametros.put("colaboradorId", colaboradorManager.findByUsuario(getUsuarioLogado().getId()));
 		
 		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
 		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));
