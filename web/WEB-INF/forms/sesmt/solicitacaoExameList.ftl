@@ -26,7 +26,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script>
-
+	
 		function filtrarOpcao()
 		{
 			value = document.getElementById('vinculo').value;
@@ -181,8 +181,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='prepareInsert.action'" accesskey="N" class="btnInserir">
-		</button>
+		<button onclick="window.location='prepareInsert.action?nomeBusca='+escape($('#nomeBusca').val()) + '&vinculo=' +$('#vinculo').val()" accesskey="N" class="btnInserir"></button>
 	</div>
 	<script>
 		filtrarOpcao();

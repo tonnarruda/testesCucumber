@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -63,6 +64,15 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private char examesPara;
 	private String nomeBusca;
+	private String vinculo;
+	public String getVinculo() {
+		return vinculo;
+	}
+
+	public void setVinculo(String vinculo) {
+		this.vinculo = vinculo;
+	}
+
 	private String matriculaBusca;
 
 	//Selecionar exames e clinicas
@@ -182,6 +192,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public String filtroSolicitacaoExames() throws Exception
 	{
 		prepare();
+		showFilter = true;
 		solicitacaoExame = new SolicitacaoExame();
 		solicitacaoExame.setData(new Date());
 		solicitacaoExame.setMedicoCoordenador(solicitacaoExameManager.setMedicoByQuantidade(medicoCoordenadors));

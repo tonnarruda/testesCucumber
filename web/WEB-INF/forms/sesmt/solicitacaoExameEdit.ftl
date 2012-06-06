@@ -31,6 +31,17 @@
 <#if exameAso?exists>
 	<script>
 		$(function() {
+		
+			<#if (vinculo?exists && vinculo == "COLABORADOR")>
+				$('#examesPara').val('C');
+				$('#nomeColaborador').val('${nomeBusca}');
+				filtrarOpcao();
+			<#elseif (vinculo?exists && vinculo == "CANDIDATO")>
+				$('#examesPara').val('A');
+				$('#nomeCandidato').val('${nomeBusca}');
+				filtrarOpcao();
+			</#if>
+			
 			<#if (listaExames?exists && listaExames?size > 0)>
 				filtrarOpcao();
 				configuraCampos();
@@ -254,6 +265,8 @@
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfColaborador" cssClass="mascaraCpf"/>
 			<@ww.hidden id="colaboradorId" name="colaborador.id" />
 		</span>
+		<@ww.hidden id="nomeBusca" name="nomeBusca" />
+		<@ww.hidden id="vinculo" name="vinculo" />
 	
 		<div class="buttonGroup">
 			<button onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>
