@@ -140,6 +140,7 @@
 	<bean id="solicitacaoExameDWR" class="com.fortes.rh.web.dwr.SolicitacaoExameDWR">
 		<property name="exameSolicitacaoExameManager" ref="exameSolicitacaoExameManager"/>
 		<property name="realizacaoExameManager" ref="realizacaoExameManager"/>
+		<property name="solicitacaoExameManager" ref="solicitacaoExameManager"/>
 		<property name="transactionManager" ref="transactionManager"/>
 	</bean>
 	<bean id="utilDWR" class="com.fortes.rh.web.dwr.UtilDWR">

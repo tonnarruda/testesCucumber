@@ -1,0 +1,1 @@
+alter table solicitacaoexame add column ordem integer not null default 1;--.go

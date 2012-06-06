@@ -230,4 +230,20 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		getDao().removeByCandidato(candidatoId);
 	}
 
+	public Integer findProximaOrdem(Date data) 
+	{
+		return getDao().findProximaOrdem(data);
+	}
+
+	public void ajustaOrdem(Date data, Integer ordemAnterior, Integer novaOrdem) 
+	{
+		if (ordemAnterior != null)
+		{
+			if (ordemAnterior < novaOrdem)
+				getDao().ajustaOrdem(data, ordemAnterior, novaOrdem, -1);
+			
+			else if (ordemAnterior > novaOrdem)
+				getDao().ajustaOrdem(data, novaOrdem, ordemAnterior, 1);
+		}
+	}
 }

@@ -23,4 +23,6 @@ public interface SolicitacaoExameDao extends GenericDao<SolicitacaoExame>
 	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome);
 	public SolicitacaoExame findByIdProjection(Long id);
 	public void removeByCandidato(Long candidatoId);
+	public Integer findProximaOrdem(Date data);
+	public void ajustaOrdem(Date data, Integer ordemInicial, Integer ordemFinal, Integer ajuste);
 }

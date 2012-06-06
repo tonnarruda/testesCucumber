@@ -106,6 +106,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private String[] motivosCheck;
 	private Collection<CheckBox> motivosCheckList = new ArrayList<CheckBox>();
 	
+	private Integer ordemAnterior;
+	
 	public Exame getExameAso() {
 		return exameAso;
 	}
@@ -148,6 +150,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			solicitacaoExame = solicitacaoExameManager.findByIdProjection(solicitacaoExame.getId());
 			colaborador = solicitacaoExame.getColaborador();
 			candidato = solicitacaoExame.getCandidato();
+			
+			ordemAnterior = solicitacaoExame.getOrdem();
 		}
 
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
@@ -244,6 +248,9 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			}
 			
 			solicitacaoExame.setEmpresa(getEmpresaSistema());
+			
+			solicitacaoExameManager.ajustaOrdem(solicitacaoExame.getData(), null, solicitacaoExame.getOrdem());
+			
 			solicitacaoExameManager.save(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}
 		catch (Exception e)
@@ -261,6 +268,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try
 		{
+			solicitacaoExameManager.ajustaOrdem(solicitacaoExame.getData(), ordemAnterior, solicitacaoExame.getOrdem());
+			
 			solicitacaoExameManager.update(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}
 		catch (Exception e)
@@ -683,5 +692,13 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public void setDatasRealizacaoExames(Date[] datasRealizacaoExames) {
 		this.datasRealizacaoExames = datasRealizacaoExames;
+	}
+
+	public Integer getOrdemAnterior() {
+		return ordemAnterior;
+	}
+
+	public void setOrdemAnterior(Integer ordemAnterior) {
+		this.ordemAnterior = ordemAnterior;
 	}
 }

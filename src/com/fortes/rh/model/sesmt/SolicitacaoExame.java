@@ -32,6 +32,7 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
 {
     @Temporal(TemporalType.DATE)
 	private Date data;
+    private Integer ordem;
 
     @Column(length=20)
     private String motivo;
@@ -338,5 +339,13 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 }

@@ -27,4 +27,6 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors);
 	SolicitacaoExame findByIdProjection(Long id);
 	void removeByCandidato(Long candidatoId);
+	Integer findProximaOrdem(Date data);
+	void ajustaOrdem(Date data, Integer ordemAnterior, Integer novaOrdem);
 }

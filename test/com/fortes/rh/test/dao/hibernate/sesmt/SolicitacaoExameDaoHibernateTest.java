@@ -274,6 +274,90 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		assertNull(solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())) ;
 		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
 	}
+	
+	public void testFindProximaOrdem() 
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		medicoCoordenadorDao.save(medicoCoordenador);
+		
+		Date data = DateUtil.criarDataMesAno(1, 1, 2012);
+		Date data2 = DateUtil.criarDataMesAno(2, 1, 2012);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setCandidato(candidato);
+		solicitacaoExame1.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame1.setData(data);
+		solicitacaoExame1.setOrdem(5);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame2.setCandidato(candidato);
+		solicitacaoExame2.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame2.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame2.setData(data);
+		solicitacaoExame2.setOrdem(6);
+		solicitacaoExameDao.save(solicitacaoExame2);
+		
+		SolicitacaoExame solicitacaoExame3 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame3.setCandidato(candidato);
+		solicitacaoExame3.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame3.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame3.setData(data2);
+		solicitacaoExame3.setOrdem(2);
+		solicitacaoExameDao.save(solicitacaoExame3);
+		
+		assertEquals(new Integer(7), solicitacaoExameDao.findProximaOrdem(data));
+	}
+	
+	public void testAjustaOrdem() 
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		medicoCoordenadorDao.save(medicoCoordenador);
+		
+		Date data = DateUtil.criarDataMesAno(1, 1, 2012);
+		Date data2 = DateUtil.criarDataMesAno(2, 1, 2012);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setCandidato(candidato);
+		solicitacaoExame1.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame1.setData(data);
+		solicitacaoExame1.setOrdem(5);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame2.setCandidato(candidato);
+		solicitacaoExame2.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame2.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame2.setData(data);
+		solicitacaoExame2.setOrdem(6);
+		solicitacaoExameDao.save(solicitacaoExame2);
+		
+		SolicitacaoExame solicitacaoExame3 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame3.setCandidato(candidato);
+		solicitacaoExame3.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame3.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExame3.setData(data2);
+		solicitacaoExame3.setOrdem(2);
+		solicitacaoExameDao.save(solicitacaoExame3);
+		
+		solicitacaoExameDao.ajustaOrdem(data, solicitacaoExame1.getOrdem(), solicitacaoExame2.getOrdem(), 1);
+		solicitacaoExameDao.getHibernateTemplateByGenericDao().flush();
+		
+		solicitacaoExame1 = solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId());
+		solicitacaoExame2 = solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId());
+		
+		assertEquals(new Integer(6), solicitacaoExame1.getOrdem());
+		assertEquals(new Integer(7), solicitacaoExame2.getOrdem());
+	}
+	
 	public void setMedicoCoordenadorDao(MedicoCoordenadorDao medicoCoordenadorDao) {
 		this.medicoCoordenadorDao = medicoCoordenadorDao;
 	}

@@ -11,6 +11,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
@@ -21,6 +22,7 @@ public class SolicitacaoExameDWR
 {
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	private RealizacaoExameManager realizacaoExameManager;
+	private SolicitacaoExameManager solicitacaoExameManager;
 	private PlatformTransactionManager transactionManager;
 	
 	public String[] marcarNaoInformadosComoNormal(Long solicitacaoExameId)
@@ -126,6 +128,12 @@ public class SolicitacaoExameDWR
 		return textoResult;
 	}
 	
+	public Integer findProximaOrdem(String data)
+	{
+		Date dataSolicitacaoExame = DateUtil.montaDataByString(data);
+		return solicitacaoExameManager.findProximaOrdem(dataSolicitacaoExame);
+	}
+	
 	public void setExameSolicitacaoExameManager(ExameSolicitacaoExameManager exameSolicitacaoExameManager) {
 		this.exameSolicitacaoExameManager = exameSolicitacaoExameManager;
 	}
@@ -136,6 +144,10 @@ public class SolicitacaoExameDWR
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+
+	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
+		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
 }
  

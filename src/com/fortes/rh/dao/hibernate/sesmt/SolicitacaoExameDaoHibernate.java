@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -281,6 +282,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		ProjectionList projectionList = Projections.projectionList().create();
 		projectionList.add(Projections.property("se.id"), "id");
 		projectionList.add(Projections.property("se.data"), "data");
+		projectionList.add(Projections.property("se.ordem"), "ordem");
 		projectionList.add(Projections.property("se.observacao"), "observacao");
 		projectionList.add(Projections.property("se.motivo"), "motivo");
 		projectionList.add(Projections.property("medico.id"), "medicoCoordenadorId");
@@ -307,5 +309,38 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	
 		queryHQL = "delete from SolicitacaoExame se where se.candidato.id = :candidatoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
+
+	public Integer findProximaOrdem(Date data) 
+	{
+		Criteria criteria = getSession().createCriteria(SolicitacaoExame.class, "se");
+		criteria.setProjection(Projections.max("se.ordem"));
+		criteria.add(Expression.eq("se.data", data));
+
+		return criteria.uniqueResult() == null ? 1 : ((Integer) criteria.uniqueResult()) + 1;  
+	}
+	
+	public void ajustaOrdem(Date data, Integer ordemInicial, Integer ordemFinal, Integer ajuste) 
+	{
+		String hql = "update SolicitacaoExame set ordem = ordem + :ajuste where data = :data";
+		
+		if (ordemInicial != null)
+			hql += " and ordem >= :ordemInicial";
+		
+		if (ordemFinal != null)
+			hql += " and ordem <= :ordemFinal";
+		
+		Query query = getSession().createQuery(hql);
+
+		query.setInteger("ajuste", ajuste);
+		query.setDate("data", data);
+		
+		if (ordemInicial != null)
+			query.setInteger("ordemInicial", ordemInicial);
+		
+		if (ordemFinal != null)
+			query.setInteger("ordemFinal", ordemFinal);
+
+		query.executeUpdate();
 	}
 }
