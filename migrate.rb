@@ -61,11 +61,14 @@ elsif ARGV[0] == '--deploy'
 elsif ARGV[0] == '--update-db-vazio'
   	version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
   	fortesrh_home = ARGV[2] || '.'
-  	imprime = false
+  	$db_name = ARGV[3]
+  	comandos = ""
+  	executa = false
 	File.readlines("#{fortesrh_home}/web/WEB-INF/metadata/update.sql").each do |line|
-		imprime = true if line.start_with?("-- versao #{version}")
-		exec_sql line if imprime
+		executa = true if line.start_with?("-- versao #{version}")
+		comandos << line if executa
 	end
+	exec_sql comandos if comandos != ""
 else
 	file_name = ARGV[0]
 	content = ARGV[1] || ''
