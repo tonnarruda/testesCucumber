@@ -13,6 +13,7 @@ public class SolicitacaoExameFactory
 		SolicitacaoExame solicitacaoExame = new SolicitacaoExame();
 
 		solicitacaoExame.setData(new Date());
+		solicitacaoExame.setOrdem(1);
 
 		return solicitacaoExame;
 	}
@@ -21,6 +22,7 @@ public class SolicitacaoExameFactory
 	{
 		SolicitacaoExame solicitacaoExame = getEntity();
 		solicitacaoExame.setId(id);
+		
 
 		return solicitacaoExame;
 	}
