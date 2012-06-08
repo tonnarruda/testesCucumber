@@ -230,7 +230,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	}
 
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, String faixaSalarialNome, String cargoNome, Long areaOrganizacionalId, String responsavelDaArea, Integer diasDeEmpresa)
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, String faixaSalarialNome, String cargoNome, Long areaOrganizacionalId, String responsavelDaArea, Integer diasDeEmpresa, String areaNome, String estabelecimentoNome)
 	{
 		this.setId(id);
 		this.setNome(nome);
@@ -246,6 +246,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		setFaixaSalarialNomeProjection(faixaSalarialNome);
 		setCargoNomeProjection(cargoNome);
+		setAreaOrganizacionalNome(areaNome);
+		setEstabelecimentoNomeProjection(estabelecimentoNome);
 	}
 
 	public Colaborador(Long id, String matricula, String nome, Date dataAdmissao, String responsavelDaArea, Integer diasDeEmpresa, Long areaId, String cargoNome)
