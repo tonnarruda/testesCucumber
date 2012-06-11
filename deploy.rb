@@ -19,7 +19,7 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		if backup_folder 
 		  bkpfile = "#{backup_folder}/#{config['db_name']}_#{Time.now.strftime('%Y%m%d%H%M')}.sql"
 		  puts "Gerando backup \"#{bkpfile}\""
-		  conn.exec "pg_dump -U postgres #{config['db_name']} > #{bkpfile}"
+		  conn.exec "/usr/lib/postgresql/9.0/bin/pg_dump -U postgres #{config['db_name']} > #{bkpfile}"
 		end
 		
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/shutdown.sh"

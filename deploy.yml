@@ -26,13 +26,12 @@ rhcomercial_informatica:
   user: root
   password: 8KyHNnFT
   tomcat_home: /usr/local/tomcat
-  fortes_home_properties: name=FORTES_HOME_COMERCIAL
   app_name: fortesrhcomercial
   db_name: fortesrhcomercial
-  backup_folder: /home/fortes/rhcomercial/RH/backup_db
+  backup_folder: /home/fortes/RHCOMERCIAL/backup_db
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
-    FORTES_HOME_COMERCIAL: /home/fortes/rhcomercial
+    FORTES_HOME_COMERCIAL: /home/fortes/RHCOMERCIAL
     JRE_HOME: /usr
 	
 rhoficial_informatica:
