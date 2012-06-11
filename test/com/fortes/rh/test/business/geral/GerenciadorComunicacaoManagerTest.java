@@ -575,6 +575,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		 empresa.setNome("Empresa I");
 
+		 Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		 estabelecimento.setNome("Estabelecimento");
+		 
 		 PeriodoExperiencia periodoexperiencia = PeriodoExperienciaFactory.getEntity();
 		 periodoexperiencia.setDias(30);
 		 periodoexperiencia.setEmpresa(empresa);
@@ -593,6 +596,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 teo.setAreaOrganizacional(area);
 		 teo.setFaixaSalarial(faixa1);
 		 teo.setEmpresa(empresa);
+		 teo.setEstabelecimento(estabelecimento);
 		 Collection<Colaborador> colaboradors = Arrays.asList(teo);
 		 
 		 Usuario usuario = UsuarioFactory.getEntity();

@@ -217,8 +217,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	String[] areasCheck = new String[1];
     	String[] estabelecimentoCheck = new String[1];
 
-    	Colaborador colaborador1 = new Colaborador(1L, "joao", "", dataReferencia, "", "", null, "pedro", 40, "areaNome", "estabelecimentoNome");
-    	Colaborador colaborador2 = new Colaborador(2L, "maria", "", dataReferencia, "", "", null, "pedro", 12,  "areaNome", "estabelecimentoNome");
+    	Colaborador colaborador1 = new Colaborador(1L, "joao", "", dataReferencia, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria", "", dataReferencia, "", "", null, "pedro", 12,  "areaNome", "areaMaeNome", "estabelecimentoNome");
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(colaborador1);
@@ -264,9 +264,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	String[] areasCheck = new String[1];
     	String[] estabelecimentoCheck = new String[1];
     	
-    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataReferencia, "", "", null, "pedro", 40, "areaNome", "estabelecimentoNome");
+    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataReferencia, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
     	colaborador1.setMatricula("1232456");
-    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataReferencia, "", "", null, "pedro", 12, "areaNome", "estabelecimentoNome");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataReferencia, "", "", null, "pedro", 12, "areaNome", "areaMaeNome", "estabelecimentoNome");
     	colaborador2.setMatricula("9999999");
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();

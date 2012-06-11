@@ -230,7 +230,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	}
 
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, String faixaSalarialNome, String cargoNome, Long areaOrganizacionalId, String responsavelDaArea, Integer diasDeEmpresa, String areaNome, String estabelecimentoNome)
+	//Construtor usado por findAdmitidosNoPeriodo
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, String faixaSalarialNome, String cargoNome, Long areaOrganizacionalId, String responsavelDaArea, Integer diasDeEmpresa, String areaNome, String areaMaeNome, String estabelecimentoNome)
 	{
 		this.setId(id);
 		this.setNome(nome);
@@ -241,6 +242,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.areaOrganizacional = new AreaOrganizacional();
 		this.areaOrganizacional.setId(areaOrganizacionalId);
 		this.areaOrganizacional.setResponsavelNome(responsavelDaArea);
+		this.areaOrganizacional.setAreaMae(new AreaOrganizacional());
+		this.areaOrganizacional.getAreaMae().setNome(areaMaeNome);
 		
 		this.diasDeEmpresa = diasDeEmpresa;
 		
@@ -883,7 +886,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//Construtor usado por findAdmitidosHaDias
-	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId)
+	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, String estabelecimentoNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -898,9 +901,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.areaOrganizacional.setId(areaId);
 		this.areaOrganizacional.setAreaMaeId(areaMaeId);
 		this.areaOrganizacional.setAreaMaeNome(areaMaeNome);
+		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
 	}
 	
-	//Construtor usado por findAdmitidosNoPeriodo
 	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, Date admissao)
 	{
 		this.setId(id);

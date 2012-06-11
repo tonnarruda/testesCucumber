@@ -3466,6 +3466,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
@@ -3475,9 +3479,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador);
 
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa);
+		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		
 		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa).size());
+		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
+		
 	}
 
 	public void testFindAdmitidosNoPeriodo() {
@@ -3486,15 +3496,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
 
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity();
+		areaMae.setNome("areaMae");
+		areaOrganizacionalDao.save(areaMae);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		area.setNome("area");
+		area.setAreaMae(areaMae);
+		areaOrganizacionalDao.save(area);
+		
 		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, data);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(data);
+		historicoColaborador.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2009), DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		Colaborador colabRetorno = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(1, colaboradores.size());
+		assertEquals("areaMae > area", colabRetorno.getAreaOrganizacional().getDescricao());
+		
 
 		Colaborador colaboradorTmp = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(new Integer(31), colaboradorTmp.getDiasDeEmpresa());

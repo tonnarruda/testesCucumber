@@ -2581,11 +2581,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
 		hql.append("where ");
@@ -3121,10 +3122,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
 	{		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) as int), ao.nome, e.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) as int), ao.nome, aoMae.nome, e.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join ao.areaMae as aoMae ");
 		hql.append("left join hc.estabelecimento as e ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");

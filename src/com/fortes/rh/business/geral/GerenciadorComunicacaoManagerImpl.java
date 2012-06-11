@@ -519,7 +519,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						if (StringUtils.isNotBlank(colaborador.getNomeComercial()))
 							mensagem.append(" (").append(colaborador.getNomeComercial()).append(") ");
 						
-						mensagem.append("\nCargo: ").append(colaborador.getFaixaSalarial().getDescricao())
+						mensagem.append("\nEstabelecimento: ").append(colaborador.getEstabelecimento().getNome())
+								.append("\nCargo: ").append(colaborador.getFaixaSalarial().getDescricao())
 								.append("\nÁrea: ").append(colaborador.getAreaOrganizacional().getDescricao())
 								.append("\nData da avaliação: ").append(data);
 						
