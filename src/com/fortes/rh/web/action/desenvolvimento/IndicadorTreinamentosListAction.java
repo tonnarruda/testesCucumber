@@ -46,7 +46,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Collection<String> colecao = new ArrayList<String>();
 
 	private String grfTreinamento="";
-	private String grfFrequencia="";
+	private String grfFrequenciaParticipantes="";
+	private String grfFrequenciaInscritos="";
 	private String grfDesempenho="";
 	private String grfCusto="";
 
@@ -99,13 +100,17 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoFrequencia()
 	{
-		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		Object[] inscritos = new Object[]{1, qtdTotalInscritosTurmas};
+		Collection<Object[]>  graficoInscritos = new ArrayList<Object[]>();
+		graficoInscritos.add(inscritos);
+		grfFrequenciaInscritos = StringUtil.toJSON(graficoInscritos, null);
 		
-		Collection<DataGrafico> graficoFrequencia = new ArrayList<DataGrafico>();
-		graficoFrequencia.add(new DataGrafico(null, "Participantes", this.qtdParticipantesPrevistos, ""));
-		graficoFrequencia.add(new DataGrafico(null, "Inscritos", this.qtdTotalInscritosTurmas, ""));
-		grfFrequencia = StringUtil.toJSON(graficoFrequencia, null);
+		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		Object[] participantes = new Object[]{2, qtdParticipantesPrevistos};
+		Collection<Object[]>  graficoParticipantes = new ArrayList<Object[]>();
+		graficoParticipantes.add(participantes);
+		grfFrequenciaParticipantes = StringUtil.toJSON(graficoParticipantes, null);
 	}
 
 	private void prepareGraficoCumprimentoPlanoTreinamento()
@@ -210,10 +215,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		return grfTreinamento;
 	}
 
-	public String getGrfFrequencia() {
-		return grfFrequencia;
-	}
-
 	public String getGrfDesempenho() {
 		return grfDesempenho;
 	}
@@ -224,5 +225,15 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
+
+	public String getGrfFrequenciaParticipantes()
+	{
+		return grfFrequenciaParticipantes;
+	}
+	
+	public String getGrfFrequenciaInscritos()
+	{
+		return grfFrequenciaInscritos;
 	}
 }

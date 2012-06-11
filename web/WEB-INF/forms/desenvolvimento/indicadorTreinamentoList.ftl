@@ -9,9 +9,10 @@
 		
 		.gogDivEsq div.legend > table, .gogDivDir div.legend > table {
 		    border-spacing: 0 !important;
-		    left: 240px;
-		    width: 240px;
 		}
+		
+		.legendColorBox { width: 20px; border: none; }
+		.legendColorBox > div { border: 1px solid #fff !important; }
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
@@ -41,8 +42,61 @@
 		}
 		
 		$(function () {
+	        var participantes = ${grfFrequenciaParticipantes};
+	        var inscritos = ${grfFrequenciaInscritos};
+		    
+		    $.plot($("#frequencia"), 
+		    		[
+				        {label: 'Participantes (' + participantes[0][1] + ')', data: participantes},
+				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos}
+				    ], 
+		    		{
+		    			series: {
+			                bars: {
+			                	show: true, 
+			                 	align: 'left',
+			                 	barWidth: 0.5
+			                }
+				        },
+				        grid: { hoverable: true },
+				        xaxis: {
+				        	ticks: [],
+				        	autoscaleMargin: 0.6
+				        }
+			    	});
+	    
+	    			    
+		    $("#frequencia").bind("plothover", function (event, pos, item) {
+	            if (item) 
+	            {
+            		previousPoint = item.dataIndex;
+                    $("#tooltip").remove();
+                    var y = item.datapoint[1].toFixed(0);		                    
+                    showTooltip(item.pageX, item.pageY, y);
+	            }
+				else 
+				{
+                	$("#tooltip").remove();
+                	previousPoint = null;            
+	            }
+			});
+			
+			function showTooltip(x, y, contents) 
+			{
+		        $('<div id="tooltip">' + contents + '</div>').css( {
+		            position: 'absolute',
+		            display: 'none',
+		            top: y - 30,
+		            left: x + 5,
+		            border: '1px solid #fdd',
+		            padding: '2px',
+		            'background-color': '#fee',
+		            opacity: 0.80,
+		            'z-index': 20000
+		        }).appendTo("body").fadeIn(0);
+		    }
+			
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfFrequencia}, "#frequencia", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto });
 			
