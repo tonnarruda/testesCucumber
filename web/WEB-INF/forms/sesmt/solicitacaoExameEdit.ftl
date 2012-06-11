@@ -320,7 +320,7 @@
 	
 			<#if (listaExames?exists && listaExames?size > 0)>
 				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem()" onblur="findProxOrdem()"/>
-				<@ww.textfield label="Ordem" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="2" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
+				<@ww.textfield label="Ordem de Atendimento" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="3" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
 				<@ww.hidden name="ordemAnterior" id="ordemAnterior"/>
 				<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
 			 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />

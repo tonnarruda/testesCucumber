@@ -140,7 +140,10 @@
 				<img border="0" title="Não é possível imprimir ASO para este tipo de atendimento" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">				
 			</#if>
 		</@display.column>
-		<@display.column property="dataFormatada" style="width: 70px;vertical-align: top;" title="Data"/>
+		
+		<@display.column property="dataFormatada" style="width: 70px; vertical-align: top;" title="Data"/>
+		
+		<@display.column property="ordem" style="width: 30px; vertical-align: top; text-align: right;" title="Ordem"/>
 
 		<@display.column style="width: 330px;" title="Nome" style="vertical-align: top;">
 			<#if solicitacaoExame.colaborador?exists>
@@ -151,7 +154,7 @@
 			</#if>
 		</@display.column>
 
-		<@display.column title="Vinculo" style="vertical-align: top;">
+		<@display.column title="Vínculo" style="vertical-align: top;">
 			<#if solicitacaoExame.colaborador?exists && solicitacaoExame.cargoNome?exists >
 				${solicitacaoExame.cargoNome}
 			</#if>

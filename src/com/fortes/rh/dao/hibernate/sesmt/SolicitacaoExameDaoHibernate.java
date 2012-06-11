@@ -33,7 +33,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 {
 	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
 	{
-		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cg.nome, co.desligado) ");		
+		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.ordem, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cg.nome, co.desligado) ");		
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.colaborador co ");
 		hql.append("left join se.candidato ca ");
@@ -88,7 +88,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		
 		//hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador as hc2 where hc2.colaborador.id = co.id )");
 
-		hql.append("ORDER BY se.data DESC, co.nome ASC");
+		hql.append("ORDER BY se.data DESC, se.ordem, co.nome ASC");
 		
 		Query query = getSession().createQuery(hql.toString());
 
@@ -241,18 +241,15 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 
 		hql.append("and se.data between :inicio and :fim ");
 
+		hql.append("order by ");
 		
-		if (agruparPorMotivo){
-			if (ordenarPorNome)
-				hql.append("order by se.motivo ASC, co.nome ASC, ca.nome, se.data ASC, se.id ASC");
-			else
-				hql.append("order by se.motivo ASC,se.data ASC, se.id ASC");
-		}else{
-			if (ordenarPorNome)
-				hql.append("order by co.nome, ca.nome, se.id ASC, se.data ASC");
-			else
-				hql.append("order by se.id ASC, se.data ASC");
-		}
+		if (agruparPorMotivo)
+			hql.append("se.motivo ASC, ");
+
+		if (ordenarPorNome)
+			hql.append("co.nome, ca.nome, se.data, se.ordem");
+		else
+			hql.append("se.data, se.ordem, co.nome, ca.nome");
 		
 		Query query = getSession().createQuery(hql.toString());
 

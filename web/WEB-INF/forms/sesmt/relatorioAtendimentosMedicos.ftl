@@ -43,7 +43,7 @@
 		
 		<@ww.checkbox label="Agrupar por motivo" id="agruparPorMotivo" name="agruparPorMotivo" labelPosition="left"/>
 		
-		<@ww.select label="Ordenar por" name="ordenarPorNome" id="ordenarPorNome" list=r"#{false:'Ordem de Cadastro',true:'Nome'}"/>
+		<@ww.select label="Ordenar por" name="ordenarPorNome" id="ordenarPorNome" list=r"#{false:'Ordem de Atendimento',true:'Nome'}"/>
 		
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />

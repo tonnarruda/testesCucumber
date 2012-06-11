@@ -142,7 +142,8 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public Collection<SolicitacaoExame> getRelatorioAtendimentos(Date inicio, Date fim, SolicitacaoExame solicitacaoExame, Empresa empresa, boolean agruparPorMotivo, boolean ordenarPorNome, String[] motivos) throws ColecaoVaziaException
 	{
 		Collection<SolicitacaoExame> resultado = getDao().findAtendimentosMedicos(inicio, fim, motivos, solicitacaoExame.getMedicoCoordenador(), empresa.getId(), agruparPorMotivo, ordenarPorNome);
-		if(resultado==null || resultado.isEmpty())
+		
+		if (resultado == null || resultado.isEmpty())
 			throw new ColecaoVaziaException("Não existe Atendimento Médico para os filtros informados.");
 		
 		return resultado;
