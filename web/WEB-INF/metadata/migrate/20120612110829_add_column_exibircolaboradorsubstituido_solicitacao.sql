@@ -1,0 +1,1 @@
+alter table empresa add column exibircolaboradorsubstituido boolean not null default false;--.go

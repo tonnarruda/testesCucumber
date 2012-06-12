@@ -138,17 +138,6 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(true, empresaDao.getIntegracaoAC(empresa.getId()));
 	}
 	
-	public void testFindExibirSalarioById()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setExibirSalario(false);
-		empresa = empresaDao.save(empresa);
-		
-		boolean exibir = empresaDao.findExibirSalarioById(empresa.getId());
-		
-		assertFalse(exibir);
-	}
-	
 	public void testFindByUsuarioPermissao()
 	{
 		Usuario joao = UsuarioFactory.getEntity();

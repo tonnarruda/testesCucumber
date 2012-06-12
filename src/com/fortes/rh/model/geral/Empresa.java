@@ -56,6 +56,7 @@ public class Empresa extends AbstractModel implements Serializable
     private String endereco;
 
 	private boolean exibirSalario;
+	private boolean exibirColaboradorSubstituido;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncaoColaborador;
@@ -473,6 +474,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setControlaRiscoPor(char controlaRiscoPor) {
 		this.controlaRiscoPor = controlaRiscoPor;
+	}
+
+	public boolean isExibirColaboradorSubstituido() {
+		return exibirColaboradorSubstituido;
+	}
+
+	public void setExibirColaboradorSubstituido(boolean exibirColaboradorSubstituido) {
+		this.exibirColaboradorSubstituido = exibirColaboradorSubstituido;
 	}
 
 }

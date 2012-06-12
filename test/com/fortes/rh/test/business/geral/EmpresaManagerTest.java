@@ -155,17 +155,6 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	assertEquals(null, empresaManager.getEmpresasNaoListadas(usuarioEmpresas, empresasExibidas));
     }
 
-    public void testFindExibirSalarioById() throws Exception
-    {
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-    	empresaDao.expects(once()).method("findExibirSalarioById").with(eq(empresa.getId())).will(returnValue(false));
-
-    	boolean exibir = empresaManager.findExibirSalarioById(empresa.getId());
-
-    	assertFalse(exibir);
-    }
-    
     public void testSelecionaEmpresa() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(null);

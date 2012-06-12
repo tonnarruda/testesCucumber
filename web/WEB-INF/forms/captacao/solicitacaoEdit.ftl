@@ -118,7 +118,12 @@
 		
 		function validacaoFormulario()
 		{
-			if(validaFormulario('form', new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId'), new Array ('dataSol')))
+			var camposObg = new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId');
+			<#if exibeColaboradorSubstituido>
+				camposObg.push('colaboradorSubstituido');
+			</#if>
+		
+			if(validaFormulario('form', camposObg, new Array ('dataSol')))
 			{
 				$('#gravar').attr('disabled', true);
 				return true;
@@ -179,6 +184,10 @@
 		
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
+		
+		<#if exibeColaboradorSubstituido>
+			<@ww.textfield label="Colaborador Substituído" id="colaboradorSubstituido" name="solicitacao.colaboradorSubstituido" required="true" maxLength="100" cssClass="inputNome"/>
+		</#if>
 		
 		<#if !solicitacao.id?exists>
 			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Comunicar responsáveis da Área Organizacional" list="emailsCheckList" />

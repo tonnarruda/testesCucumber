@@ -47,6 +47,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -127,6 +128,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private Estado estado;
 	private Cidade cidade;
 
+	private boolean exibeColaboradorSubstituido;
 	private boolean exibeSalario;
 	private boolean clone;
 	private boolean somenteLeitura;
@@ -137,8 +139,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     private void prepare() throws Exception
     {
-    	exibeSalario = empresaManager.findExibirSalarioById(getEmpresaSistema().getId());
+    	Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
 
+    	exibeSalario = empresa.isExibirSalario();
+    	exibeColaboradorSubstituido = empresa.isExibirColaboradorSubstituido();
+    	
     	this.estados = estadoManager.findAll(new String[]{"sigla"});
 		Long faixaInativaId = null;
 		Long areaInativaId = null;
@@ -335,8 +340,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String imprimirSolicitacaoPessoal() throws Exception
     {
+    	Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
+    	
         solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
     	parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Solicitação Pessoal", getEmpresaSistema(), "");
+    	parametros.put("EXIBIR_COLABORADOR_SUBSTITUIDO", empresa.isExibirColaboradorSubstituido());
 
 		SolicitacaoPessoalRelatorio solicitacaoPessoal = new SolicitacaoPessoalRelatorio(solicitacao);
 
@@ -769,5 +777,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setNomeLiberador(String nomeLiberador) {
 		this.nomeLiberador = nomeLiberador;
+	}
+
+	public boolean isExibeColaboradorSubstituido() {
+		return exibeColaboradorSubstituido;
 	}
 }

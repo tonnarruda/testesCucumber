@@ -133,11 +133,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().getIntegracaoAC(id);
 	}
 
-	public boolean findExibirSalarioById(Long empresaId)
-	{
-		return getDao().findExibirSalarioById(empresaId);
-	}
-
 	public boolean criarEmpresa(TEmpresa empresaAC)
 	{
 		Empresa empresa = new Empresa();

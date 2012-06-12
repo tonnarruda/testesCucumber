@@ -124,6 +124,7 @@
 				<param name="location">WEB-INF/report/solicitacaoPessoal.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">solicitacaoPessoal.pdf</param>
 			</result>
 		</action>
 

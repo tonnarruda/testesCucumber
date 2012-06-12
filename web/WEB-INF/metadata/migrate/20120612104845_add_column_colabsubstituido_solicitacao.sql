@@ -1,0 +1,1 @@
+alter table solicitacao add column colaboradorsubstituido character varying(100);--.go

@@ -47,13 +47,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return (Boolean) query.uniqueResult();
 	}
 
-	public boolean findExibirSalarioById(Long empresaId)
-	{
-		Query query = getSession().createQuery("select e.exibirSalario from Empresa e where e.id = :id");
-		query.setLong("id", empresaId);
-		return (Boolean) query.uniqueResult();
-	}
-
 	public Collection<Empresa> verifyExistsCnpj(String cnpj)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"e");
@@ -115,6 +108,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.cnae"), "cnae");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.grupoAC"), "grupoAC");
+		p.add(Projections.property("e.exibirSalario"), "exibirSalario");
+		p.add(Projections.property("e.exibirColaboradorSubstituido"), "exibirColaboradorSubstituido");
 		p.add(Projections.property("e.turnoverPorSolicitacao"), "turnoverPorSolicitacao");
 		p.add(Projections.property("e.logoUrl"), "logoUrl");
 		p.add(Projections.property("e.campoExtraColaborador"), "campoExtraColaborador");

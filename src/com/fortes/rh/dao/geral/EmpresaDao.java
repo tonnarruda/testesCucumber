@@ -12,7 +12,6 @@ public interface EmpresaDao extends GenericDao<Empresa>
 {
 	Empresa findByCodigo(String codigo, String grupoAC);
 	boolean getIntegracaoAC(Long id);
-	boolean findExibirSalarioById(Long empresaId);
 	Collection<Empresa> verifyExistsCnpj(String cnpj);
 	String findCidade(Long id);
 	Collection<Empresa> findDistinctEmpresaByQuestionario(Long questionarioId);

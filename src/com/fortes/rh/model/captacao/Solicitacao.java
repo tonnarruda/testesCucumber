@@ -66,6 +66,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private char status = StatusAprovacaoSolicitacao.ANALISE;
 	@ManyToOne
 	private MotivoSolicitacao motivoSolicitacao;
+	@Column(length=100)
+	private String colaboradorSubstituido;
 	@ManyToOne
 	private AreaOrganizacional areaOrganizacional;
 	@ManyToOne
@@ -690,5 +692,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setObservacaoLiberador(String observacaoLiberador) {
 		this.observacaoLiberador = observacaoLiberador;
+	}
+
+	public String getColaboradorSubstituido() {
+		return colaboradorSubstituido;
+	}
+
+	public void setColaboradorSubstituido(String colaboradorSubstituido) {
+		this.colaboradorSubstituido = colaboradorSubstituido;
 	}
 }

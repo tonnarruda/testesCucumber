@@ -23,7 +23,6 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String saveLogo(File logo, String local) throws Exception;
 	Empresa setLogo(Empresa empresa, File logo, String local, File logoCertificado, File imgAniversariante) throws Exception;
 	boolean findIntegracaoAC(Long id);
-	boolean findExibirSalarioById(Long empresaId);
 	boolean criarEmpresa(TEmpresa empresa);
 	boolean verifyExistsCnpj(Long id, String cnpj);
 	String findCidade(Long id);
