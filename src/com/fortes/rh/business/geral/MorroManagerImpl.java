@@ -54,7 +54,7 @@ public class MorroManagerImpl implements MorroManager
 	        method.addParameter("Description", clienteCnpj + " " + clienteNome + " - " + usuario );
 	        method.addParameter("Att", "suporte.rh@grupofortes.com.br" );
 	        method.addParameter("ReplyTo", "" );
-	        method.addPart( new FilePart( "File", zip, "multipart/form-data", "ISO-8859-1" ) );
+	        method.addParameter("File", "zip", zip);
 	        
 	        int status = client.executeMethod( method );
 	        String response = method.getResponseBodyAsString( );

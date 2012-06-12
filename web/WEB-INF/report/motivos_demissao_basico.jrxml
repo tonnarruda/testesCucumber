@@ -98,7 +98,7 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="535"
+						width="536"
 						height="11"
 						forecolor="#000000"
 						backcolor="#EEEEEE"
@@ -124,7 +124,7 @@
 					<reportElement
 						x="491"
 						y="0"
-						width="46"
+						width="43"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="1" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
