@@ -2,6 +2,7 @@ package com.fortes.rh.test;
 
 import junit.framework.TestSuite;
 
+import com.fortes.rh.test.business.ws.RHServiceManagerTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientCargoTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientColaboradorOcorrenciaTest;
 import com.fortes.rh.test.web.acpessoal.AcPessoalClientColaboradorTest;
@@ -17,6 +18,10 @@ public class IntegracaoACTests extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
+        // Testes do serviço WS do RH
+        suite.addTestSuite(RHServiceManagerTest.class);
+
+        // Testes dos Clientes do WS do AC Pessoal
         suite.addTestSuite(AcPessoalClientCargoTest.class);
         suite.addTestSuite(AcPessoalClientColaboradorOcorrenciaTest.class);
         suite.addTestSuite(AcPessoalClientColaboradorTest.class);

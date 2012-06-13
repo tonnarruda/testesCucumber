@@ -161,7 +161,6 @@ import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
-import com.fortes.rh.test.business.ws.RHServiceManagerTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PapelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PerfilDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioDaoHibernateTest;
@@ -595,9 +594,6 @@ import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
-import com.fortes.rh.test.web.service.AcPessoalClientCargoTest;
-import com.fortes.rh.test.web.service.AcPessoalClientColaboradorOcorrenciaTest;
-import com.fortes.rh.test.web.service.AcPessoalClientOcorrenciaTest;
 import com.fortes.test.web.tags.LinkTagTest;
 
 public class AllUnitTests extends TestSuite
@@ -1288,14 +1284,6 @@ public class AllUnitTests extends TestSuite
 
         suite.addTestSuite(ResultadoPesquisaTest.class);
         suite.addTestSuite(ProgressaoColaboradorTest.class);
-
-        // Testes do serviço WS do RH
-        suite.addTestSuite(RHServiceManagerTest.class);
-
-        // Testes dos Clientes do WS do AC Pessoal
-        suite.addTestSuite(AcPessoalClientOcorrenciaTest.class);
-        suite.addTestSuite(AcPessoalClientColaboradorOcorrenciaTest.class);
-        suite.addTestSuite(AcPessoalClientCargoTest.class);
 
         suite.addTestSuite(AuditorialDaoHibernateTest.class);
         suite.addTestSuite(CoberturaGetSetTest.class);
