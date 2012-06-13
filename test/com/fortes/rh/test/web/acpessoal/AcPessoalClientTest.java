@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.acpessoal;
 
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ import com.fortes.rh.web.ws.AcPessoalClientImpl;
 
 public abstract class AcPessoalClientTest extends MockObjectTestCase
 {
-	protected static final String baseAcUrl = "http://10.1.3.214:1024";
+	private String ip;
 
 	protected AcPessoalClientImpl acPessoalClientImpl;
 
@@ -29,7 +30,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:10.1.3.214/3052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
+		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:"+ip+"/3052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
 		conexao.setAutoCommit(true);
 		
 		return conexao;
@@ -39,6 +40,9 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	protected void setUp() throws Exception
 	{
 		super.setUp();
+		
+		ip = InetAddress.getLocalHost().getHostAddress();
+		String baseAcUrl = "http://"+ip+":1024";
 
 		acPessoalClientImpl = new AcPessoalClientImpl();
 		acPessoalClientImpl.setService(new Service());
