@@ -26,7 +26,7 @@
 		</fileset>
 	</path>
 
-	<target name="init" depends="jasper, war">
+	<target name="init" depends="war, update-file-update-sql, recreate-bd">
 		<mkdir dir="${ant.project.name}/dist" />
 		<copy file="${metadados.dir}/update.sql" todir="${ant.project.name}/dist" />
 		<delete file="${ant.project.name}/dist/update.sql" />
@@ -104,7 +104,7 @@
 		</copy>
 	</target>
 	
-	<target name="war" depends="compiler, update-file-update-sql, recreate-bd">
+	<target name="war" depends="jasper, compiler">
 		
 		<mkdir dir="${ant.project.name}/dist" />
 		<property name="tmpweb" value="${ant.project.name}/dist/tmpweb" />
