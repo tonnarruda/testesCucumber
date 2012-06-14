@@ -79,10 +79,10 @@ public class PpraLtcatRelatorio
 			String quebraDeLinha="\n";
 			
 			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat(riscoMedicao.getIntensidadeMedida()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoPpra()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat(riscoMedicao.getMedidaDeSeguranca()).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoPpra()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
 			
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
@@ -111,12 +111,12 @@ public class PpraLtcatRelatorio
 			}
 		}
 		
-		ppra.setRiscosFisicos(StringUtil.replaceXml(riscosFisicos.toString()));
-		ppra.setRiscosAcidentes(StringUtil.replaceXml(riscosAcidentes.toString()));
-		ppra.setRiscosBiologicos(StringUtil.replaceXml(riscosBiologicos.toString()));
-		ppra.setRiscosErgonomicos(StringUtil.replaceXml(riscosErgonomicos.toString()));
-		ppra.setRiscosQuimicos(StringUtil.replaceXml(riscosQuimicos.toString()));
-		ppra.setRiscosOcupacionais(StringUtil.replaceXml(riscosOcupacional.toString()));
+		ppra.setRiscosFisicos(riscosFisicos.toString());
+		ppra.setRiscosAcidentes(riscosAcidentes.toString());
+		ppra.setRiscosBiologicos(riscosBiologicos.toString());
+		ppra.setRiscosErgonomicos(riscosErgonomicos.toString());
+		ppra.setRiscosQuimicos(riscosQuimicos.toString());
+		ppra.setRiscosOcupacionais(riscosOcupacional.toString());
 	}
 	
 	public void formataEpcs(Collection<Epc> epcsDoAmbiente) 
@@ -178,10 +178,10 @@ public class PpraLtcatRelatorio
 			String quebraDeLinha="\n";
 			
 			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat(riscoMedicao.getIntensidadeMedida()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat(riscoMedicao.getTecnicaUtilizada()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat(riscoMedicao.getDescricaoLtcat()).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat(riscoMedicao.getMedidaDeSeguranca()).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoLtcat()) ).concat(". ") : "");
+			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
 			
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
@@ -210,11 +210,11 @@ public class PpraLtcatRelatorio
 			}
 		}
 		
-		ltcat.setRiscosFisicos(StringUtil.replaceXml(riscosFisicos.toString()));
-		ltcat.setRiscosAcidentes(StringUtil.replaceXml(riscosAcidentes.toString()));
-		ltcat.setRiscosBiologicos(StringUtil.replaceXml(riscosBiologicos.toString()));
-		ltcat.setRiscosErgonomicos(StringUtil.replaceXml(riscosErgonomicos.toString()));
-		ltcat.setRiscosQuimicos(StringUtil.replaceXml(riscosQuimicos.toString()));
+		ltcat.setRiscosFisicos(riscosFisicos.toString());
+		ltcat.setRiscosAcidentes(riscosAcidentes.toString());
+		ltcat.setRiscosBiologicos(riscosBiologicos.toString());
+		ltcat.setRiscosErgonomicos(riscosErgonomicos.toString());
+		ltcat.setRiscosQuimicos(riscosQuimicos.toString());
 	}
 
 	public Ppra getPpra() {

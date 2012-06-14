@@ -364,7 +364,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, null);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
