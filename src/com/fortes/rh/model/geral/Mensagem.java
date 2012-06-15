@@ -27,7 +27,7 @@ public class Mensagem extends AbstractModel implements Serializable
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Colaborador colaborador;
-	private char tipo = TipoMensagem.INDIFERENTE;
+	private Character tipo = TipoMensagem.INDIFERENTE;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
@@ -95,11 +95,11 @@ public class Mensagem extends AbstractModel implements Serializable
 		this.colaborador = colaborador;
 	}
 
-	public char getTipo() {
+	public Character getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(char tipo) {
+	public void setTipo(Character tipo) {
 		this.tipo = tipo;
 	}
 }

@@ -54,6 +54,7 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 		p.add(Projections.property("m.remetente"), "projectionMensagemRemetente");
 		p.add(Projections.property("m.data"), "projectionMensagemData");
 		p.add(Projections.property("m.texto"), "projectionMensagemTexto");
+		p.add(Projections.property("m.tipo"), "projectionMensagemTipo");
 		p.add(Projections.property("um.usuario.id"), "projectionUsuarioId");
 		p.add(Projections.property("um.empresa.id"), "projectionEmpresaId");
 

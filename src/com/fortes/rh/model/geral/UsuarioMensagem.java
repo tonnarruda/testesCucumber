@@ -132,4 +132,11 @@ public class UsuarioMensagem extends AbstractModel implements Serializable
 		mensagem.setLink(projectionMensagemLink);
 	}
 
+	public void setProjectionMensagemTipo(Character mensagemTipo)
+	{
+		if(mensagem == null)
+			mensagem = new Mensagem();
+		
+		mensagem.setTipo(mensagemTipo);
+	}
 }
