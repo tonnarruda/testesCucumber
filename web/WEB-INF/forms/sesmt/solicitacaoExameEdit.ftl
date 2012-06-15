@@ -32,14 +32,19 @@
 <#if exameAso?exists>
 	<script>
 		$(function() {
-		
-			<#if (vinculo?exists && vinculo == "COLABORADOR")>
+			<#if primeiraExecucao  && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
+				<@ww.hidden name="primeiraExecucao" value="false"/>
 				$('#examesPara').val('C');
 				$('#nomeColaborador').val('${nomeBusca}');
 				filtrarOpcao();
-			<#elseif (vinculo?exists && vinculo == "CANDIDATO")>
+				$('#btnPesquisar').click();
+			<#elseif primeiraExecucao &&  vinculo?exists && vinculo == "CANDIDATO">
+				<@ww.hidden name="primeiraExecucao" value="false"/>
 				$('#examesPara').val('A');
 				$('#nomeCandidato').val('${nomeBusca}');
+				filtrarOpcao();
+				$('#btnPesquisar').click();
+			<#else>
 				filtrarOpcao();
 			</#if>
 			
@@ -281,7 +286,7 @@
 		<@ww.hidden id="vinculo" name="vinculo" />
 	
 		<div class="buttonGroup">
-			<button onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>
+			<button id="btnPesquisar" onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>
 			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"> </button>
 		</div>
 		<br/>

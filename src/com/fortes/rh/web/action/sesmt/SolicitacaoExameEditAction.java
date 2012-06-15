@@ -64,14 +64,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private char examesPara;
 	private String nomeBusca;
 	private String vinculo;
-	public String getVinculo() {
-		return vinculo;
-	}
-
-	public void setVinculo(String vinculo) {
-		this.vinculo = vinculo;
-	}
-
+	private boolean primeiraExecucao;
+	
 	private String matriculaBusca;
 
 	//Selecionar exames e clinicas
@@ -699,5 +693,23 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public void setOrdemAnterior(Integer ordemAnterior) {
 		this.ordemAnterior = ordemAnterior;
+	}
+
+	public String getVinculo() {
+		return vinculo;
+	}
+
+	public void setVinculo(String vinculo) {
+		this.vinculo = vinculo;
+	}
+
+	public boolean isPrimeiraExecucao()
+	{
+		return primeiraExecucao;
+	}
+	
+	public void setPrimeiraExecucao(boolean primeiraExecucao)
+	{
+		this.primeiraExecucao = primeiraExecucao;
 	}
 }
