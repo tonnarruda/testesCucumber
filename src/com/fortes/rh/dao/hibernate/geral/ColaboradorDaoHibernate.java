@@ -3675,12 +3675,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.colaborador as c ");
 		hql.append("left join c.colaboradorOcorrencia as co ");
 		hql.append("left join co.providencia as p ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
+		hql.append("where co.providencia is not null ");
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append(" and c.empresa.id in (:empresaIds) ");
 		
 		hql.append(" and (co.dataIni between :data and :dataFim or (co.dataIni < :data and co.dataFim is null)) ");
-		hql.append(" and co.providencia is not null ");
 		subSelectHistoricoAtual(hql, areasIds);
 		
 		hql.append("group by p.descricao order by count(co.id), p.descricao ");
@@ -3693,7 +3692,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setDate("data", dataIni);
 		query.setDate("dataFim", dataFim);
-		query.setBoolean("desligado", false);
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 		
