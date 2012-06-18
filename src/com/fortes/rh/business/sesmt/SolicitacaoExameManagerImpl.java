@@ -245,6 +245,8 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			
 			else if (ordemAnterior > novaOrdem)
 				getDao().ajustaOrdem(data, novaOrdem, ordemAnterior, 1);
+		}else{
+			getDao().ajustaOrdem(data, novaOrdem, ordemAnterior, 1);
 		}
 	}
 }

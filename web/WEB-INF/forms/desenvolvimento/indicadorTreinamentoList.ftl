@@ -9,6 +9,8 @@
 		
 		.gogDivEsq div.legend > table, .gogDivDir div.legend > table {
 		    border-spacing: 0 !important;
+		    left: 240px;
+            width: 240px;
 		}
 		
 		.legendColorBox { width: 20px; border: none; }
