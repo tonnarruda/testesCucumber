@@ -157,7 +157,9 @@
 
 			<#if colaborador?exists && colaborador.id?exists>
 				<#list colaboradorQuestionariosTeD as colaboradorQuestionarioTeD>
-					<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">${colaboradorQuestionarioTeD.questionario.titulo} / ${colaboradorQuestionarioTeD.turma.curso.nome} / ${colaboradorQuestionarioTeD.turma.descricao}</a></p>
+					<a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">
+						${colaboradorQuestionarioTeD.questionario.titulo} (Curso ${colaboradorQuestionarioTeD.turma.curso.nome}, turma ${colaboradorQuestionarioTeD.turma.descricao})
+					</a>
 				</#list>
 			</#if>
 			

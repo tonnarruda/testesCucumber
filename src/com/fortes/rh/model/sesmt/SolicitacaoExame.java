@@ -79,11 +79,12 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     }
     
     //usado em relatorio de atendimentos
-    public SolicitacaoExame(Long id, Date data, String motivo, String observacao, String medicoCoordenadorNome, String colaboradorNome, String colaboradorNomeComercial, String candidatoNome, String colaboradorCargoNome, String candidatoCargoNome, String colaboradorMatricula)
+    public SolicitacaoExame(Long id, Date data, String motivo, Integer ordem, String observacao, String medicoCoordenadorNome, String colaboradorNome, String colaboradorNomeComercial, String candidatoNome, String colaboradorCargoNome, String candidatoCargoNome, String colaboradorMatricula)
     {
         setId(id);
         this.data = data;
         this.motivo = motivo;
+        this.ordem = ordem;
         this.observacao = observacao;
         setColaboradorNome(colaboradorNome);
         setCandidatoNome(candidatoNome);

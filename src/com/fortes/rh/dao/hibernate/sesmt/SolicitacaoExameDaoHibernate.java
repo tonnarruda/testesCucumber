@@ -211,7 +211,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	 */
 	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome)
 	{
-		StringBuilder hql = new StringBuilder("select new SolicitacaoExame(se.id, se.data, se.motivo, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome, co.matricula) ");
+		StringBuilder hql = new StringBuilder("select new SolicitacaoExame(se.id, se.data, se.motivo, se.ordem, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome, co.matricula) ");
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.candidato ca ");
 		
@@ -226,9 +226,9 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("left join fs.cargo cargo ");
 		hql.append("where se.empresa.id = :empresaId ");
 		
-		hql.append("and (ca != null and (sol = null or sol.data = (select max(s2.data) from CandidatoSolicitacao cs2 ");
+		hql.append("and (ca != null and (sol = null or sol.id = (select max(s2.id) from CandidatoSolicitacao cs2 ");
 		hql.append(" 								join cs2.solicitacao s2 join cs2.candidato ca2 ");
-		hql.append(" 								where ca2.id=ca.id and s2.data <= :fim )) ");
+		hql.append(" 								where ca2.id=ca.id and s2.data <= :fim)) ");
 		hql.append("  or hc.data = (select max(hc2.data) from HistoricoColaborador hc2 ");
 		hql.append("				where hc2.colaborador.id = co.id ");
 		hql.append("				and hc2.data <= :hoje) ) ");
