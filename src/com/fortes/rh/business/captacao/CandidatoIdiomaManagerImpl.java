@@ -44,6 +44,7 @@ public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdio
 			CandidatoIdioma ci = new CandidatoIdioma();
 			ci.setCandidato(candidato);
 			ci.setIdioma(idioma.getIdioma());
+			ci.setNivel(idioma.getNivel());
 
 			save(ci);
 
