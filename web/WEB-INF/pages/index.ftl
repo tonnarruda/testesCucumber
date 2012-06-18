@@ -160,6 +160,7 @@
 					<a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">
 						${colaboradorQuestionarioTeD.questionario.titulo} (Curso ${colaboradorQuestionarioTeD.turma.curso.nome}, turma ${colaboradorQuestionarioTeD.turma.descricao})
 					</a>
+					<br />
 				</#list>
 			</#if>
 			
