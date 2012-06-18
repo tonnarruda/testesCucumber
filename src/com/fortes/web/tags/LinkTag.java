@@ -6,6 +6,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.opensymphony.xwork.ActionContext;
 
 public class LinkTag extends TagSupport
@@ -57,7 +58,7 @@ public class LinkTag extends TagSupport
 				if(!imgTitle.equals(""))
 					link.append(" title=\"" + imgTitle + "\" ");
 				
-				link.append(" src=\"/fortesrh/imgs/" + imgName + "\"");	
+				link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
 				
 				if(opacity)
 					link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");

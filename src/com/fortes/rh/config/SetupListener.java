@@ -44,8 +44,9 @@ public class SetupListener implements ServletContextListener
 	{
 		Locale.setDefault(pt_BR); // define idioma pt_BR como padrão
 		
-		String pastaSystemConf = getContext(servletContextEvent);
+		String pastaSystemConf = getPastaSystemConf(servletContextEvent);
 		
+		ArquivoUtil.setContextName("fortes"+getPastaSystemConf(servletContextEvent));
 		ArquivoUtil.setRhHome(pastaSystemConf);
 		systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
 
@@ -69,7 +70,7 @@ public class SetupListener implements ServletContextListener
 		}
 	}
 
-	private String getContext(ServletContextEvent servletContextEvent)
+	private String getPastaSystemConf(ServletContextEvent servletContextEvent)
 	{
 		String context = null;
 		try {

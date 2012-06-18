@@ -41,6 +41,7 @@ public class ArquivoUtil
 {
 	private static String FORTES_HOME = "FORTES_HOME";
 	private static String RH_HOME = null;
+	private static String CONTEXT_NAME = null;
 
 	public static String getRhHome()
 	{
@@ -389,6 +390,16 @@ public class ArquivoUtil
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+	public static String getContextName()
+	{
+		return CONTEXT_NAME;
+	}
+	
+	public static void setContextName(String contextName)
+	{
+		CONTEXT_NAME = contextName;
 	}
 	
 }
