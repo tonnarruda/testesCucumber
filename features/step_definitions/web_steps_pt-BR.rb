@@ -519,6 +519,7 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
     fabricante 'apiguana'
     tipoepi :nome => tipoepi_nome
     empresa :nome => 'Empresa Padrão'
+    ativo true
   end
   
   insert :epihistorico do
