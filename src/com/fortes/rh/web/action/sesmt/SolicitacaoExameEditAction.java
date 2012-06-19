@@ -63,7 +63,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private char examesPara;
 	private String nomeBusca;
-	private String vinculo;
+	private String vinculo = "TODOS";
 	private boolean primeiraExecucao;
 	
 	private String matriculaBusca;
