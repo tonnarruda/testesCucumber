@@ -394,7 +394,7 @@ public class ArquivoUtil
 
 	public static String getContextName()
 	{
-		return CONTEXT_NAME;
+		return CONTEXT_NAME == null ? "fortesrh" : CONTEXT_NAME;
 	}
 	
 	public static void setContextName(String contextName)
