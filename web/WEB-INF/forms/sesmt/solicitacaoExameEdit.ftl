@@ -32,14 +32,12 @@
 <#if exameAso?exists>
 	<script>
 		$(function() {
-			<#if primeiraExecucao  && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
-				<@ww.hidden name="primeiraExecucao" value="false"/>
+			<#if primeiraExecucao && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
 				$('#examesPara').val('C');
 				$('#nomeColaborador').val('${nomeBusca}');
 				filtrarOpcao();
 				$('#btnPesquisar').click();
 			<#elseif primeiraExecucao &&  vinculo?exists && vinculo == "CANDIDATO">
-				<@ww.hidden name="primeiraExecucao" value="false"/>
 				$('#examesPara').val('A');
 				$('#nomeCandidato').val('${nomeBusca}');
 				filtrarOpcao();
@@ -53,7 +51,7 @@
 				configuraCampos();
 			</#if>
 			
-			<#if !edicao>
+			<#if !edicao && !primeiraExecucao>
 				findProxOrdem();
 			</#if>
 		});
@@ -294,7 +292,8 @@
 		</span>
 		<@ww.hidden id="nomeBusca" name="nomeBusca" />
 		<@ww.hidden id="vinculo" name="vinculo" />
-	
+		<@ww.hidden id="primeiraExecucao" name="primeiraExecucao" value="false"/>
+		
 		<div class="buttonGroup">
 			<button id="btnPesquisar" onclick="pesquisar();" class="btnPesquisar grayBGE"> </button>
 			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"> </button>
