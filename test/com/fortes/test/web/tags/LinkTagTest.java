@@ -6,6 +6,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.web.tags.LinkTag;
 
 public class LinkTagTest extends MockObjectTestCase
@@ -27,7 +28,7 @@ public class LinkTagTest extends MockObjectTestCase
 		linkTag.setImgTitle("Editar");
 		linkTag.setOnclick("newConfirm('Edite?', function(){window.location='edite'});");
 		
-		assertEquals("<a href=\"#\" onclick=\"newConfirm('Edite?', function(){window.location='edite'});\" ><img border=\"0\"  title=\"Editar\"  src=\"/fortesrh/imgs/edit.git\" ></a>", linkTag.montaLink(link).toString());
+		assertEquals("<a href=\"#\" onclick=\"newConfirm('Edite?', function(){window.location='edite'});\" ><img border=\"0\"  title=\"Editar\"  src=\"/"+ArquivoUtil.getContextName()+"/imgs/edit.git\" ></a>", linkTag.montaLink(link).toString());
 	}
 	
 	public void testMontaLinkComParametrosRole()
@@ -43,6 +44,6 @@ public class LinkTagTest extends MockObjectTestCase
 		linkTag.setOnclick("newConfirm('Edite?', function(){window.location='edite'});");
 		linkTag.setVerifyRole("ROLE_COLAB_LIST_EDITAR");
 				
-		assertEquals("<a href=\"#\" onclick=\"newConfirm('Edite?', function(){window.location='edite'});\" ><img border=\"0\"  title=\"Editar\"  src=\"/fortesrh/imgs/edit.git\" ></a>", linkTag.montaLink(link).toString());
+		assertEquals("<a href=\"#\" onclick=\"newConfirm('Edite?', function(){window.location='edite'});\" ><img border=\"0\"  title=\"Editar\"  src=\"/"+ArquivoUtil.getContextName()+"/imgs/edit.git\" ></a>", linkTag.montaLink(link).toString());
 	}
 }

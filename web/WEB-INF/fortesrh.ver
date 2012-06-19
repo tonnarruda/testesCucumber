@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.76.71" data="18/06/2012"><![CDATA[
+        - R&S > Movimentações > Solicitação de Pessoal: Novo campo de colaborador substituído.
+		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Novas colunas de estabelecimento e área organizacional.
+		- T&D > Painel de Indicadores: Mudança no gráfico de Qtd. Prevista de Participantes x Inscritos de pizza para barra. 
+        - SESMT > Movimentações > Solicitações/Atendimentos Médicos: Novo campo de ordem de atendimento.
+        - SESMT > Relatórios > Exames Previstos: Novas colunas de estabelecimento e área organizacional.
+        - Utilitários > Cadastros > Empresas: Nova opção para exibir o campo colaborador substuído na solicitação de pessoal.
+        - Utilitários > Cadastros > Perfis: Novas configurações de acesso para cada ação na listagem de colaboradores.  
+    ]]></Versao>
 	<Versao id="1.1.75.70" data="05/06/2012"><![CDATA[
         - Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo filtro por período
         - T&D > Relatórios > Histórico de Treinamentos: Possibilidade de filtrar por vários colaboradores. 
