@@ -137,7 +137,7 @@
 				{
 					if (elements[i].name == 'examesId' && elements[i].type == 'checkbox')
 					{
-						if (!motivoExameEhAso || (motivoExameEhAso && elements[i].value != ${exameAso.id}))
+						if (!motivoExameEhAso || (motivoExameEhAso && elements[i].value != ${exameAso.id}) || (motivoExameEhAso && elements[i].value == ${exameAso.id} && alterouMotivo(motivo.value)))
 						{
 							elements[i].checked = vMarcar;
 							document.getElementById("selectClinica_" + elements[i].value).disabled = !vMarcar;
@@ -146,6 +146,16 @@
 					}
 				}
 			}
+		}
+		
+		function alterouMotivo(motivo)
+		{
+			<#if edicao>
+				if (motivo == '${solicitacaoExame.motivo}')
+					return false;
+			</#if>
+		
+			return true;
 		}
 		
 		function mudarClinica(elementCheck)
@@ -162,7 +172,7 @@
 			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}'&& motivo.value != '');
 		 	
 		 	// quando motivo nao for um dos ASOs, o exame ASO nao eh obrigatorio 
-			if (elementCheck.value == ${exameAso.id} && motivoExameEhAso)
+			if (elementCheck.value == ${exameAso.id} && motivoExameEhAso && !alterouMotivo(motivo.value))
 			{
 				elementCheck.checked = true;
 				jAlert('O exame ASO é obrigatório.');
