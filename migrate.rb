@@ -65,7 +65,7 @@ elsif ARGV[0] == '--update-db-vazio'
   	comandos = ""
   	executa = false
 	File.readlines("#{fortesrh_home}/web/WEB-INF/metadata/update.sql").each do |line|
-    unless (line =~ /^UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe.+/)
+    unless (line =~ /^UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe.+/i)
   		executa = true if line.start_with?("-- versao #{version}")
   		comandos << line if executa
     end 
