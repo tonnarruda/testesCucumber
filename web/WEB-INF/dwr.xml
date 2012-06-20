@@ -46,6 +46,9 @@
 		<create creator="spring" javascript="TurmaDWR">
 			<param name="beanName" value="turmaDWR"/>
 		</create>
+		<create creator="spring" javascript="CursoDWR">
+			<param name="beanName" value="cursoDWR"/>
+		</create>
 		<create creator="spring" javascript="ColaboradorDWR">
 			<param name="beanName" value="colaboradorDWR"/>
 		</create>

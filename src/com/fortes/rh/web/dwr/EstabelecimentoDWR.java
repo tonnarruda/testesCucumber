@@ -44,7 +44,7 @@ public class EstabelecimentoDWR
 	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Estabelecimento> estabelecimentos;
-		if(empresaId == 0 || empresaId == -1 )
+		if(empresaId == null || empresaId == 0 || empresaId == -1 )
 			estabelecimentos = estabelecimentoManager.findAllSelect(empresaIds);
 		else
 			estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);

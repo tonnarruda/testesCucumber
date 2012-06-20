@@ -62,6 +62,9 @@
 		<property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager"/>
 		<property name="turmaTipoDespesaManager" ref="turmaTipoDespesaManager"/>
 	</bean>
+	<bean id="cursoDWR" class="com.fortes.rh.web.dwr.CursoDWR">
+		<property name="cursoManager" ref="cursoManager"/>
+	</bean>
 	<bean id="colaboradorDWR" class="com.fortes.rh.web.dwr.ColaboradorDWR">
 		<property name="colaboradorManager" ref="colaboradorManager"/>
 		<property name="empresaManager" ref="empresaManager"/>

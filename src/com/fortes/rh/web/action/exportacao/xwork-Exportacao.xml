@@ -6,5 +6,9 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
 			<result name="erro">/error.jsp</result>
 		</action>
+		<action name="gerarArquivoExportacao" class="com.fortes.rh.web.action.exportacao.ExportacaoAction" method="gerarArquivoExportacao">
+			<result name="success" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
+		</action>
 	</package>
 </xwork>
