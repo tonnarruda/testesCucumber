@@ -1,21 +1,20 @@
 package com.fortes.rh.web.action.exportacao;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import com.fortes.rh.business.desenvolvimento.CursoManager;
+import org.apache.commons.lang.StringUtils;
+
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.ActionContext;
@@ -23,12 +22,17 @@ import com.opensymphony.xwork.ActionContext;
 public class ExportacaoAction extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
-	private final String PATH = ArquivoUtil.getRhHome() + File.separatorChar;
 	
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EmpresaManager empresaManager;
-	private CursoManager cursoManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
 	
+	private Date dataIni;
+	private Date dataFim;
+
+	private Collection<Ocorrencia> ocorrencias; 
+	private Long ocorrenciaId;
+
 	private Long empresaId;
 	private Collection<Empresa> empresas;
 	
@@ -46,8 +50,8 @@ public class ExportacaoAction extends MyActionSupport
 	private String[] turmasCheck;
 	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
 	
-	private Date dataIni;
-	private Date dataFim;
+	
+	private String trDataSource;
 	
 	public String prepareExportacaoTreinamentos() throws Exception
 	{
@@ -63,15 +67,25 @@ public class ExportacaoAction extends MyActionSupport
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
 	}
 
-	public String gerarArquivoExportacao() throws Exception{
-		File logErro = new File(PATH + "TRU.txt");
-		FileOutputStream fos = new FileOutputStream(logErro);  
+	public String gerarArquivoExportacao() throws Exception
+	{
+		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, dataIni, dataFim, estabelecimentosCheck, areasCheck, turmasCheck);
 		
+		String ocorrenciaCodigoAc = ocorrenciaId.toString();
+		
+		//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
 		StringBuffer texto = new StringBuffer();
-		texto.append("TRU");
+		texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
+		texto.append("0" + ocorrenciaCodigoAc + "Treinamentos                 1N\n");
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+			texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + ocorrenciaCodigoAc + 
+					DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
+					DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
+					StringUtils.rightPad(" ", 270)+ "\n");
+		}
+		texto.append("T");
 		
-		fos.write(texto.toString().getBytes());  
-		fos.close();
+		trDataSource = texto.toString();
 		
 		prepareExportacaoTreinamentos();
 		return  SUCCESS;
@@ -104,10 +118,6 @@ public class ExportacaoAction extends MyActionSupport
 	public void setParametrosDoSistemaManager(
 			ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
-	public void setCursoManager(CursoManager cursoManager) {
-		this.cursoManager = cursoManager;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
@@ -201,5 +211,34 @@ public class ExportacaoAction extends MyActionSupport
 
 	public void setTurmasCheckList(Collection<CheckBox> turmasCheckList) {
 		this.turmasCheckList = turmasCheckList;
+	}
+
+	public void setColaboradorTurmaManager(
+			ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+
+	public String getTrDataSource() {
+		return trDataSource;
+	}
+
+	public void setTrDataSource(String trDataSource) {
+		this.trDataSource = trDataSource;
+	}
+
+	public Long getOcorrenciaId() {
+		return ocorrenciaId;
+	}
+
+	public void setOcorrenciaId(Long ocorrenciaId) {
+		this.ocorrenciaId = ocorrenciaId;
+	}
+
+	public Collection<Ocorrencia> getOcorrencias() {
+		return ocorrencias;
+	}
+
+	public void setOcorrencias(Collection<Ocorrencia> ocorrencias) {
+		this.ocorrencias = ocorrencias;
 	}
 }

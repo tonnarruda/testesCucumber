@@ -1047,4 +1047,52 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return criteria.list();
 	}
 
+	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds,	Long[] turmasIds) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, t.dataPrevIni, t.dataPrevFim) ");
+		hql.append("from ColaboradorTurma as ct ");
+		hql.append("left join ct.colaborador as co ");
+		hql.append("left join co.historicoColaboradors as hc ");
+		hql.append("left join ct.turma as t ");
+		hql.append("where t.id in (:turmasIds) ");
+		hql.append("and t.dataPrevIni >=  :dataIni ");
+		hql.append("and t.dataPrevFim <= :dataFim ");
+		
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
+		
+		if (areasIds != null && areasIds.length > 0)
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and co.codigoAC is not null ");
+		hql.append("and co.codigoAC <> '' ");
+
+		hql.append("	and hc.data = ( ");
+		hql.append("		select max(hc2.data) " );
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("		where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.status = :status ");
+		hql.append("	) ");
+		
+		hql.append("order by co.codigoAC asc");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
+		
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		
+		if (areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+
+		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
+
+		return colaboradorTurmas;	
+	}
 }

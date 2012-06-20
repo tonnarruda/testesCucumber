@@ -40,6 +40,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.ibm.icu.math.BigDecimal;
 
 @SuppressWarnings("unchecked")
@@ -1094,6 +1095,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	
 	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId) {
 		return getDao().findColaboradoresComEmailByTurma(turmaId);
+	}
+	
+	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Date dataIni,	Date dataFim, String[] estabelecimentosCheck, String[] areasCheck,String[] turmasCheck)
+	{
+		return getDao().findColabTreinamentos(empresaId, dataIni, dataFim, StringUtil.stringToLong(estabelecimentosCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(turmasCheck));
 	}
 	
 	public void setMail(Mail mail) 

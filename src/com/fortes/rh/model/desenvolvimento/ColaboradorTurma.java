@@ -327,6 +327,15 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.setCustoRateado(custoRateado);
 	}
 	
+	//	findColabTreinamentos	
+	public ColaboradorTurma(Long Id, String colabCodigoAc, Date turmaDataIni, Date turmaDataFim)
+	{
+		setId(Id);
+		setColaboradorCodigoAc(colabCodigoAc);
+		setTurmaDataPrevFim(turmaDataFim);
+		setTurmaDataPrevIni(turmaDataIni);
+	}
+	
 	public void setTurmaRealizada(Boolean turmaRealizada)
 	{
 		if (this.turma == null)
@@ -393,6 +402,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	{
 		inicializaColaborador();
 		colaborador.setMatricula(matricula);
+	}
+	
+	public void setColaboradorCodigoAc(String codigoAc) 
+	{
+		inicializaColaborador();
+		colaborador.setCodigoAC(codigoAc);
 	}
 	
 	private void inicializaTurma() {
