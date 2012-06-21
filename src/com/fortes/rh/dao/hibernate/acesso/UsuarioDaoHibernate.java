@@ -237,6 +237,8 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		criteria.setProjection(p);
 		criteria.add(Expression.in("u.id", usuariosIds));
+		
+		criteria.addOrder(Order.asc("c.contato.email"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 

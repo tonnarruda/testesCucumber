@@ -65,10 +65,9 @@
 		<@ww.checkbox label="Relatório resumido" id="relatorioExamesPrevistosResumido" name="relatorioExamesPrevistosResumido" labelPosition="left" onchange="filtrarOpcaoRelatorioResumido();" />
 		
 		<div class="divRelatResumido">
+			<@ww.checkbox label="Exibir campo observação" id="exibirCampoObservacao" name="exibirCampoObservacao" labelPosition="left" />
 			<@ww.select label="Vínculo" id="tipoPessoa" name="tipoPessoa" list=r"#{'T':'Todos', 'A':'Candidato', 'C':'Colaborador'}" onchange="filtrarOpcao(this.value);"/>
-			
 			<@ww.textfield label="Candidato" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
-			
 			<@ww.select label="Motivo do Atendimento" name="motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Todos" />
 		</div>
 		

@@ -200,7 +200,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioDao.save(usuario);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmailColaborador("teste@teste.com");
+		colaborador.setEmailColaborador("teste1@teste1.com");
 		colaborador.setUsuario(usuario);
 		colaboradorDao.save(colaborador);
 
@@ -217,7 +217,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 		String[] emails = usuarioDao.findEmailsByUsuario(usuariosIds);
 		assertEquals(2, emails.length);
-		assertEquals("teste@teste.com", emails[0]);
+		assertEquals(colaborador.getContato().getEmail(), emails[0]);
 	}
 	
 	public void testFindAllSelectEmpresa()

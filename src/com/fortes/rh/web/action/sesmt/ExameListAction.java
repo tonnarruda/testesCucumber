@@ -88,6 +88,7 @@ public class ExameListAction extends MyActionSupportList
 	private String nomeEstabelecimento = "";
 	private Map<String, String> motivos;
 	private ClinicaAutorizada clinicaAutorizada = new ClinicaAutorizada();
+	private boolean exibirCampoObservacao = false;
 	
 	private Collection<ExamesRealizadosRelatorio> examesRealizados;
 	private Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos;
@@ -294,7 +295,12 @@ public class ExameListAction extends MyActionSupportList
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Exames Realizados", getEmpresaSistema(), filtros.toString());
 			parametros.put("TIPO_PESSOA", tipoPessoa);
 			
-			return relatorioExamesPrevistosResumido ? "successRelatResumido" : SUCCESS;
+			if (relatorioExamesPrevistosResumido)
+				return "successRelatResumido";
+			else if (exibirCampoObservacao)
+				return "successRelatObservacao";
+			else
+				return SUCCESS;
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -590,5 +596,13 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setTipoPessoa(Character tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
+	}
+
+	public boolean isExibirCampoObservacao() {
+		return exibirCampoObservacao;
+	}
+
+	public void setExibirCampoObservacao(boolean exibirCampoObservacao) {
+		this.exibirCampoObservacao = exibirCampoObservacao;
 	}
 }

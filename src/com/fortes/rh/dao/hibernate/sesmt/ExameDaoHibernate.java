@@ -210,7 +210,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 				whereResultado = "and re.resultado = :resultado ";
 		}
 		
-		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,co.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome) ");
+		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,co.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, se.observacao) ");
 		hql.append("from ExameSolicitacaoExame ese ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
@@ -291,7 +291,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 				whereResultado = "and re.resultado = :resultado ";
 		}
 		
-		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,ca.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome) ");
+		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,ca.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, se.observacao) ");
 		hql.append("from ExameSolicitacaoExame ese ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
@@ -315,10 +315,9 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("				inner join cs2.solicitacao as s2 ");
 		hql.append("				where cs2.candidato.id = ca.id ");
 		hql.append("				and s2.data <= se.data ");
-		hql.append("				and s2.empresa.id = :empresaId ");
-		hql.append("				order by s.id desc ) or s.data is null) ");
+		hql.append("				and s2.empresa.id = :empresaId) or s.data is null) ");
 	
-		hql.append("ORDER BY e.nome ASC, clinica.id ASC, se.data ASC ");
+		hql.append("ORDER BY e.nome, clinica.id, se.data ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setCharacter("tipoPessoa", 'A');

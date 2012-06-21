@@ -227,7 +227,7 @@ public class ExameManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	Collection<ExamesRealizadosRelatorio> colecao = new ArrayList<ExamesRealizadosRelatorio>();
-    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio(1L, "do dedo", 'C', "Toque", new Date(), 1L, "Socorro", "Passou não", "problema", 1L, "estabelecimento");
+    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio(1L, "do dedo", 'C', "Toque", new Date(), 1L, "Socorro", "Passou não", "problema", 1L, "estabelecimento", "observação");
     	
     	colecao.add(examesPrevistosRelatorio);
     	

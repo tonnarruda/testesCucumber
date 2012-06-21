@@ -22,11 +22,12 @@ public class ExamesRealizadosRelatorio
 	private Integer qtdExamesRealizados;
 	private Long estabelecimentoId;
 	private String estabelecimentoNome;
+	private String solicitacaoExameObservacao;
 
 	public ExamesRealizadosRelatorio() {
 	}
 	
-	public ExamesRealizadosRelatorio(Long exameId, String nome, Character tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome)
+	public ExamesRealizadosRelatorio(Long exameId, String nome, Character tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome, String solicitacaoExameObservacao)
 	{
 		this.exameId = exameId;
 		this.clinicaId = clinicaId;
@@ -38,10 +39,8 @@ public class ExamesRealizadosRelatorio
 		this.motivoSolicitacaoExame = motivoSolicitacaoExame;
 		this.estabelecimentoId = estabelecimentoId;
 		this.estabelecimentoNome = StringUtils.isEmpty(estabelecimentoNome) ? "(Sem estabelecimento definido)" : estabelecimentoNome.trim();
-		if(exameResultado == null)
-			this.resultado = ResultadoExame.NAO_REALIZADO.toString();
-		else
-			this.resultado = exameResultado;
+		this.solicitacaoExameObservacao = solicitacaoExameObservacao;
+		this.resultado = exameResultado == null ? ResultadoExame.NAO_REALIZADO.toString() : exameResultado;
 	}
 
 	public ExamesRealizadosRelatorio(Long exameId, String exameNome, Long clinicaId, String clinicaNome, Integer qtdExamesRealizados)
@@ -123,5 +122,13 @@ public class ExamesRealizadosRelatorio
 
 	public void setTipo(Character tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getSolicitacaoExameObservacao() {
+		return solicitacaoExameObservacao;
+	}
+
+	public void setSolicitacaoExameObservacao(String solicitacaoExameObservacao) {
+		this.solicitacaoExameObservacao = solicitacaoExameObservacao;
 	}
 }
