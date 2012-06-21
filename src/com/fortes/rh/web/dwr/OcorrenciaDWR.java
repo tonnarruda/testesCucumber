@@ -24,6 +24,13 @@ public class OcorrenciaDWR
 
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getId", "getDescricaoComEmpresa");
 	}
+
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> getByEmpresaComCodigoAc(Long empresaId) throws Exception
+	{
+		Collection<Ocorrencia> ocorrencias  = ocorrenciaManager.findComCodigoAC(empresaId);
+		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getCodigoAC", "getDescricao");
+	}
 	
 	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager)
 	{

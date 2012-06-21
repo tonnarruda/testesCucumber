@@ -7,9 +7,9 @@
 			<result name="erro">/error.jsp</result>
 		</action>
 		<action name="gerarArquivoExportacao" class="com.fortes.rh.web.action.exportacao.ExportacaoAction" method="gerarArquivoExportacao">
-			<result name="success" type="tr">
-				<param name="dataSource">trDataSource</param>
-				<param name="fileName">exportacaoTreinamentosRHParaTRU.tr</param>
+			<result name="success" type="txt">
+				<param name="dataSource">textoTru</param>
+				<param name="nomeArquivoComExtencao">exportacaoTreinamentosRHParaTRU.tr</param>
 			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
 		</action>

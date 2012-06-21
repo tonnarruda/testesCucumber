@@ -175,6 +175,28 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		
 		return criteria.list();	
 	}
+	
+	public Collection<Ocorrencia> findComCodigoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "o");
+		criteria.createCriteria("o.empresa", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("o.codigoAC"), "codigoAC");
+		p.add(Projections.property("o.descricao"), "descricao");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.isNotNull("o.codigoAC"));
+		criteria.add(Expression.eq("o.integraAC", true));
+		
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		criteria.addOrder(Order.asc("o.descricao"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
+	}
 
 	public String findCodigoACDuplicado(Long empresaId) {
 		StringBuilder hql = new StringBuilder();

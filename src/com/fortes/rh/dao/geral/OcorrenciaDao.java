@@ -16,4 +16,5 @@ public interface OcorrenciaDao extends GenericDao<Ocorrencia>
 	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
 	Collection<Ocorrencia> findSemCodigoAC(Long empresaId);
 	String findCodigoACDuplicado(Long empresaId);
+	public Collection<Ocorrencia> findComCodigoAC(Long empresaId);
 }

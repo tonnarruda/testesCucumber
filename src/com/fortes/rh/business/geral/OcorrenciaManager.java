@@ -20,4 +20,5 @@ public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
 	Collection<Ocorrencia> findSemCodigoAC(Long empresaId);
 	String findCodigoACDuplicado(Long empresaId);
+	Collection<Ocorrencia> findComCodigoAC(Long empresaId);
 }

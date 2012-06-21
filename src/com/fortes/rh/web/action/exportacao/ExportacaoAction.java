@@ -17,6 +17,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
 public class ExportacaoAction extends MyActionSupport
@@ -31,7 +32,7 @@ public class ExportacaoAction extends MyActionSupport
 	private Date dataFim;
 
 	private Collection<Ocorrencia> ocorrencias; 
-	private Long ocorrenciaId;
+	private String ocorrenciaId;
 
 	private Long empresaId;
 	private Collection<Empresa> empresas;
@@ -50,8 +51,7 @@ public class ExportacaoAction extends MyActionSupport
 	private String[] turmasCheck;
 	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
 	
-	
-	private String trDataSource;
+	private String textoTru;
 	
 	public String prepareExportacaoTreinamentos() throws Exception
 	{
@@ -69,26 +69,38 @@ public class ExportacaoAction extends MyActionSupport
 
 	public String gerarArquivoExportacao() throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, dataIni, dataFim, estabelecimentosCheck, areasCheck, turmasCheck);
+		try{
+			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, dataIni, dataFim, estabelecimentosCheck, areasCheck, turmasCheck);
+			
+			if(colaboradorTurmas.isEmpty())
+				throw new Exception ("Não existem dados com os filtros selecionados" );
+			
+			//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
+			StringBuffer texto = new StringBuffer();
+			texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
+			texto.append("0" + ocorrenciaId + "Treinamentos                 1N\n");
+			
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+				texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + ocorrenciaId + 
+						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
+						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
+						StringUtils.rightPad(" ", 270)+ "\n");
+			}
+			
+			texto.append("T");
+			
+			textoTru = texto.toString();
+			
+			prepareExportacaoTreinamentos();
+			return  SUCCESS;
 		
-		String ocorrenciaCodigoAc = ocorrenciaId.toString();
-		
-		//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
-		StringBuffer texto = new StringBuffer();
-		texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
-		texto.append("0" + ocorrenciaCodigoAc + "Treinamentos                 1N\n");
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-			texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + ocorrenciaCodigoAc + 
-					DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
-					DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
-					StringUtils.rightPad(" ", 270)+ "\n");
+		}catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareExportacaoTreinamentos();
+			return Action.INPUT;
 		}
-		texto.append("T");
-		
-		trDataSource = texto.toString();
-		
-		prepareExportacaoTreinamentos();
-		return  SUCCESS;
 	}
 
 	public Collection<Empresa> getEmpresas() {
@@ -218,27 +230,27 @@ public class ExportacaoAction extends MyActionSupport
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-	public String getTrDataSource() {
-		return trDataSource;
-	}
-
-	public void setTrDataSource(String trDataSource) {
-		this.trDataSource = trDataSource;
-	}
-
-	public Long getOcorrenciaId() {
-		return ocorrenciaId;
-	}
-
-	public void setOcorrenciaId(Long ocorrenciaId) {
-		this.ocorrenciaId = ocorrenciaId;
-	}
-
 	public Collection<Ocorrencia> getOcorrencias() {
 		return ocorrencias;
 	}
 
 	public void setOcorrencias(Collection<Ocorrencia> ocorrencias) {
 		this.ocorrencias = ocorrencias;
+	}
+
+	public String getTextoTru() {
+		return textoTru;
+	}
+
+	public void setTextoTru(String textoTru) {
+		this.textoTru = textoTru;
+	}
+
+	public String getOcorrenciaId() {
+		return ocorrenciaId;
+	}
+
+	public void setOcorrenciaId(String ocorrenciaId) {
+		this.ocorrenciaId = ocorrenciaId;
 	}
 }

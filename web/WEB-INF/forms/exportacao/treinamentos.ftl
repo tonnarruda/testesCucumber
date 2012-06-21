@@ -1,10 +1,20 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
 
 <title>Exportação de Treinamentos</title>
-	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim','@turmasCheck'), new Array('inicio','fim'))"/>
+
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim','@turmasCheck', 'ocorrencias'), new Array('inicio','fim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<#if dataIni?exists>
@@ -18,26 +28,30 @@
 		<#assign fim="" />
 	</#if>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	
 	<script type='text/javascript'>
-		var empresaIds = new Array();
-		<#if empresas?exists>
-			<#list empresas as empresa>
-				empresaIds.push(${empresa.id});
-			</#list>
-		</#if>
+		$(function(){
+			
+			$('input[name="cursosCheck"]').bind(function(){
+					alert('a');
+					
+				if (this.checked)
+					alert('checked');
+				else
+					alert('não checked');
+			});
+			
+			var empresaValue = $('#empresaId').val();
+			populaArea(empresaValue);
+			populaEstabelecimento(empresaValue);
+			populaCurso(empresaValue);
+			populaOcorrencia(empresaValue);
+		});
 		
 		function populaEstabelecimento(empresaId)
 		{
+			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, null);
 		}
 	
 		function createListEstabelecimento(data)
@@ -47,13 +61,28 @@
 			
 		function populaArea(empresaId)
 		{
+			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, null);
 		}
 
 		function createListArea(data)
 		{
 			addChecks('areasCheck',data);
+		}
+		
+		function populaCurso(empresaId)
+		{
+			DWREngine.setAsync(false);
+			DWRUtil.useLoadingMessage('Carregando...');
+			
+			CursoDWR.getCursosByEmpresa(populaCursos, empresaId);
+		}
+
+		function populaCursos(data)
+		{
+			addChecks('cursosCheck', data);
+			$('#cursosCheck').append('onClick', '');
 		}
 		
 		function getTurmasByFiltro()
@@ -68,37 +97,25 @@
 			addChecks('turmasCheck', data);
 		}
 		
-		function populaCurso(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CursoDWR.getCursosByEmpresa(populaCursos, empresaId);
-		}
-
-		function populaCursos(data)
-		{
-			addChecks('cursosCheck', data);
-		}
-		
 		function populaOcorrencia(empresaId)
 		{
+			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			OcorrenciaDWR.getByEmpresas(populaOcorrencias, empresaId, null);
+			OcorrenciaDWR.getByEmpresaComCodigoAc(populaOcorrencias, empresaId);
 		}
 
 		function populaOcorrencias(data)
 		{
 			DWRUtil.removeAllOptions("ocorrencias");
+			
+			var mensagem = "Selecione..."; 
+			
+			if(data.toSource() === "({})")
+				mensagem = "Não existe ocorrencias para essa empresa"; 
+			
+			$('#ocorrencias').append('<option value=\"\">'+mensagem+'</option>');
 			DWRUtil.addOptions("ocorrencias", data);
 		}
-		
-		$(function(){
-			var empresaValue = $('#empresaId').val();
-			
-			populaArea(empresaValue);
-			populaEstabelecimento(empresaValue);
-			populaCurso(empresaValue);
-			populaOcorrencia(empresaValue);
-		});
 	</script>
 	
 </head>
@@ -107,7 +124,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
-	<@ww.form name="form" action="gerarArquivoExportacao.action" validate="true" onsubmit="${validarCampos}" method="POST" enctype="multipart/form-data">
+	<@ww.form name="form" action="gerarArquivoExportacao.action" validate="true" onsubmit="${validarCampos}" method="POST" >
 		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCurso(this.value);populaOcorrencia(this.value);" disabled="!compartilharColaboradores"/>		
 		<@ww.select label="Ocorrencia" name="ocorrenciaId" id="ocorrencias" list="ocorrencias" listKey="id" listValue="descricaoComEmpresa"/>		
 		
@@ -119,6 +136,9 @@
 
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmasByFiltro();" width="600" />
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas *" list="turmasCheckList" width="600" />
+		
+
+		
 	</@ww.form>
 	
 	<div class="buttonGroup">

@@ -1,4 +1,4 @@
-package com.fortes.webwork.views.tr;
+package com.fortes.webwork.views.txt;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -17,11 +17,11 @@ import com.opensymphony.webwork.dispatcher.WebWorkResultSupport;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.util.OgnlValueStack;
 
-public class TrResult extends WebWorkResultSupport {
+public class TxtResult extends WebWorkResultSupport {
 
 	private final String PATH = ArquivoUtil.getRhHome() + File.separatorChar;
     protected String dataSource;
-    protected String fileName;
+    protected String nomeArquivoComExtencao;
     
 	@Override
 	protected void doExecute(String finalLocation, ActionInvocation invocation) throws Exception 
@@ -32,7 +32,7 @@ public class TrResult extends WebWorkResultSupport {
 			HttpServletResponse response = (HttpServletResponse) invocation.getInvocationContext().get(ServletActionContext.HTTP_RESPONSE);
 			
 			String text = (String) stack.findString(dataSource);
-			File file = new File(PATH + "TRUTemp.txt");
+			File file = new File(PATH + "Temp.txt");
 			
 			Writer writer = new BufferedWriter(new FileWriter(file));
 			writer.write(text);
@@ -41,7 +41,7 @@ public class TrResult extends WebWorkResultSupport {
 			ServletOutputStream stream = null;
 			InputStream inputStream = null;
 
-			inputStream = new FileInputStream(PATH + "TRUTemp.txt");
+			inputStream = new FileInputStream(PATH + "Temp.txt");
 
 			byte[] buffer = new byte[8192];
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -51,7 +51,7 @@ public class TrResult extends WebWorkResultSupport {
 			   baos.write(buffer, 0, bytesRead);
 
 			response.setContentType("text/plain");
-			response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+			response.addHeader("Content-Disposition", "attachment; filename=" + nomeArquivoComExtencao);
 
 			byte[] outBuf = baos.toByteArray();
 			stream = response.getOutputStream();
@@ -67,7 +67,7 @@ public class TrResult extends WebWorkResultSupport {
 		this.dataSource = dataSource;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setNomeArquivoComExtencao(String nomeArquivoComExtencao) {
+		this.nomeArquivoComExtencao = nomeArquivoComExtencao;
 	}
 }

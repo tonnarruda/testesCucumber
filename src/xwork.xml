@@ -8,7 +8,7 @@
       <result-type name="jasper" class="com.fortes.webwork.views.jasperreports.MyJasperReportsResult" />
       <result-type name="chart" class="com.fortes.xwork.result.ChartResult" />
       <result-type name="xls" class="com.fortes.webwork.views.xls.XlsResult" />
-      <result-type name="tr" class="com.fortes.webwork.views.tr.TrResult" />
+      <result-type name="txt" class="com.fortes.webwork.views.txt.TxtResult" />
     </result-types>
     <interceptors>
       <interceptor name="reference-resolver" class="com.opensymphony.xwork.interceptor.ExternalReferencesInterceptor" />
