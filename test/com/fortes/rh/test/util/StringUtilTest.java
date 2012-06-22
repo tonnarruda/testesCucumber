@@ -14,18 +14,14 @@ import com.fortes.rh.util.StringUtil;
 public class StringUtilTest extends TestCase
 {
 
+	/**
+	 * O teste do método testGetHTML está no arquivo TestsNoIncludeAllUnitTest.java
+	 */
+
 	protected void setUp()
 	{
 	}
 
-//	public void testGetHTML()
-//	{
-//		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60743-760&tipoCep=&cepTemp=&metodo=buscarCep";
-//		
-//		assertTrue(StringUtil.getHTML(url).contains("respostadestaque"));
-//	}
-	
-	
 	public void testReplaceXml()
 	{
 		assertEquals("teste&amp;a&gt;b&lt;c&quot;d&apos;teste", StringUtil.replaceXml("teste&a>b<c\"d'teste"));
