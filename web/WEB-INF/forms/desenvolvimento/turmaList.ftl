@@ -80,7 +80,7 @@
 							}).load('<@ww.url includeParams="none" value="/desenvolvimento/turma/popUpTurmaAvaliacaoAcao.action"/>', { 'turma.id': turmaId });
 		}
 	</script>
-<title>Turmas - ${curso.nome}</title>
+<title>Turmas do curso ${curso.nome}</title>
 </head>
 <body>
 
