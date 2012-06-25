@@ -35,6 +35,7 @@
 	<field name="dias" class="java.lang.Integer"/>
 	<field name="mesAno" class="java.lang.String"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
+	<field name="medicoNome" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -126,7 +127,7 @@
 					<reportElement
 						x="59"
 						y="22"
-						width="199"
+						width="155"
 						height="16"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -137,7 +138,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="387"
+						x="342"
 						y="22"
 						width="98"
 						height="16"
@@ -150,7 +151,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="261"
+						x="216"
 						y="22"
 						width="93"
 						height="16"
@@ -176,9 +177,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="488"
+						x="442"
 						y="22"
-						width="197"
+						width="155"
 						height="16"
 						key="staticText-7"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -202,7 +203,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="356"
+						x="311"
 						y="22"
 						width="29"
 						height="16"
@@ -225,6 +226,19 @@
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Matrícula]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="599"
+						y="22"
+						width="86"
+						height="16"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Médico]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -249,7 +263,7 @@
 					<reportElement
 						x="59"
 						y="2"
-						width="199"
+						width="155"
 						height="15"
 						key="textField"
 						positionType="Float"/>
@@ -261,7 +275,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="387"
+						x="342"
 						y="2"
 						width="98"
 						height="15"
@@ -275,7 +289,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="261"
+						x="216"
 						y="2"
 						width="93"
 						height="15"
@@ -288,9 +302,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="488"
+						x="442"
 						y="2"
-						width="197"
+						width="155"
 						height="15"
 						key="textField-1"
 						positionType="Float"/>
@@ -316,7 +330,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="356"
+						x="311"
 						y="2"
 						width="29"
 						height="15"
@@ -340,6 +354,20 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="599"
+						y="2"
+						width="86"
+						height="15"
+						key="textField-7"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{medicoNome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

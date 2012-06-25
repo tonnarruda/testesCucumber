@@ -54,12 +54,13 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	
 	public ColaboradorAfastamento() { }
 
-	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid)
+	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid, String medicoNome)
 	{
 		setId(id);
 		this.inicio = inicio;
 		this.fim = fim;
 		this.cid = cid;
+		this.medicoNome = medicoNome;
 		
 		afastamento = new Afastamento();
 		afastamento.setDescricao(afastamentoDescricao);
