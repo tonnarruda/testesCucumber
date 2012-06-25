@@ -1,6 +1,5 @@
 package com.fortes.rh.business.sesmt;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -77,12 +76,9 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		getDao().removeAllBySolicitacaoEpi(solicitacaoEpiId);
 	}
 
-	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long[] solicitacaoEpiIds)
+	public Collection<SolicitacaoEpiItem> findAllEntregasBySolicitacaoEpi(Long solicitacaoEpiId)
 	{
-		if (solicitacaoEpiIds == null || solicitacaoEpiIds.length == 0)
-			return new ArrayList<SolicitacaoEpiItem>();
-
-		return getDao().findBySolicitacaoEpi(solicitacaoEpiIds);
+		return getDao().findAllEntregasBySolicitacaoEpi(solicitacaoEpiId);
 	}
 
 	public SolicitacaoEpiItem findByIdProjection(Long id) 

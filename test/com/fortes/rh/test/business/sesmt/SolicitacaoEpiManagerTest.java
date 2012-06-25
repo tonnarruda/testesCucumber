@@ -49,7 +49,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
         solicitacaoEpiManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
-	public void testFindAllSelect()
+	public void FindAllSelect()
 	{
 		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();

@@ -15,6 +15,7 @@ import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.util.LongUtil;
@@ -26,7 +27,48 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 
 	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador)
 	{
-		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador);
+		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador); 
+
+		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis) 
+			solicitacaoEpi.setInformativo(montaInformacaoDeEntregas(solicitacaoEpi));
+		
+		return solicitacaoEpis;
+	}
+
+	private String montaInformacaoDeEntregas(SolicitacaoEpi solicitacaoEpi) 
+	{
+		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findAllEntregasBySolicitacaoEpi(solicitacaoEpi.getId());
+		
+		StringBuffer epiEntregues = new StringBuffer();
+
+		StringBuffer epiNaoEntregues = new StringBuffer();
+
+		for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
+		{
+			
+			if(solicitacaoEpiItem.getTotalEntregue() > 0){
+				
+				if(epiEntregues.length()  == 0)
+					epiEntregues.append("Etregues:<br>");
+
+				epiEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				if(solicitacaoEpiItem.getTotalEntregue() > solicitacaoEpiItem.getQtdSolicitado())
+				{
+					if(epiNaoEntregues.length()  == 0)
+						epiNaoEntregues.append("A Etregar:<br>");
+				
+					epiNaoEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				}
+			}else
+			{
+				if(epiNaoEntregues.length()  == 0)
+					epiNaoEntregues.append("A Etregar:<br>");
+				
+				epiNaoEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+			}
+		}
+
+		return epiEntregues.toString() + epiNaoEntregues.toString();
 	}
 
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador)

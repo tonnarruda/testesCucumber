@@ -128,7 +128,10 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		return totalEntregue;
 	}
 
-	public void setTotalEntregue(int totalEntregue) {
+	public void setTotalEntregue(Integer totalEntregue) {
+		if(totalEntregue == null)
+			totalEntregue = 0;
+		
 		this.totalEntregue = totalEntregue;
 	}
 }

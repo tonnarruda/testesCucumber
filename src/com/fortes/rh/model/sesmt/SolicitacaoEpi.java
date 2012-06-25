@@ -53,6 +53,8 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private Date dataEpiEntrega;
 	@Transient
 	private Date vencimentoCA;
+	@Transient
+	private String informativo;
 //	@Transient
 //	private Estabelecimento estabelecimento;
 //	@Transient
@@ -225,5 +227,13 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public void setQtdEpiEntregue(Integer qtdEpiEntregue) {
 		this.qtdEpiEntregue = qtdEpiEntregue;
+	}
+
+	public String getInformativo() {
+		return informativo;
+	}
+
+	public void setInformativo(String informativo) {
+		this.informativo = informativo;
 	}
 }

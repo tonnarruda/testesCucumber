@@ -95,7 +95,9 @@
 		<@display.column property="data" title="Data" style="width: 70px; text-align: center;" format="{0,date,dd/MM/yyyy}"/>
 		<@display.column property="cargo.nome" title="Cargo" style="width: 220px;"/>
 		<@display.column title="Situação" style="width: 160px;">
-			 ${solicitacaoEpi.situacaoDescricao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+			 <span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${solicitacaoEpi.informativo?j_string}');return false">
+			 	${solicitacaoEpi.situacaoDescricao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+			 </span>
 		</@display.column>
 	</@display.table>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>

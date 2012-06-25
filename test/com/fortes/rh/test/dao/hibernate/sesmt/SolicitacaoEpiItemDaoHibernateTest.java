@@ -1,6 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
+
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -88,25 +91,20 @@ public class SolicitacaoEpiItemDaoHibernateTest extends GenericDaoHibernateTest<
 		solicitacaoEpi.setEmpresa(empresa);
 		solicitacaoEpiDao.save(solicitacaoEpi);
 
-		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi2.setEmpresa(empresa);
-		solicitacaoEpiDao.save(solicitacaoEpi2);
-
 		SolicitacaoEpiItem epiSolicitacaoEpi = new SolicitacaoEpiItem();
 		epiSolicitacaoEpi.setEpi(epi);
 		epiSolicitacaoEpi.setSolicitacaoEpi(solicitacaoEpi);
 		solicitacaoEpiItemDao.save(epiSolicitacaoEpi);
 
-		SolicitacaoEpiItem epiSolicitacaoEpi2 = new SolicitacaoEpiItem();
-		epiSolicitacaoEpi2.setEpi(epi);
-		epiSolicitacaoEpi2.setSolicitacaoEpi(solicitacaoEpi2);
-		solicitacaoEpiItemDao.save(epiSolicitacaoEpi2);
+		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		solicitacaoEpiItemEntrega.setSolicitacaoEpiItem(epiSolicitacaoEpi);
+		solicitacaoEpiItemEntregaDao.save(solicitacaoEpiItemEntrega);
 
-		Long[] ids = new Long[]{solicitacaoEpi.getId(),solicitacaoEpi2.getId()};
+		Long id = solicitacaoEpi.getId();
 
-		Collection<SolicitacaoEpiItem> resultado = solicitacaoEpiItemDao.findBySolicitacaoEpi(ids);
+		Collection<SolicitacaoEpiItem> resultado = solicitacaoEpiItemDao.findAllEntregasBySolicitacaoEpi(id);
 
-		assertEquals(2, resultado.size());
+		assertEquals(1, resultado.size());
 	}
 
 	public void testFindBySolicitacaoEpiAndEpi()

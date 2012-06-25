@@ -38,14 +38,10 @@ public class SolicitacaoEpiItemManagerTest extends MockObjectTestCase
 	public void testFindBySolicitacaoEpiArray()
 	{
 		Collection<SolicitacaoEpiItem> colecao = new ArrayList<SolicitacaoEpiItem>();
-		Long[] solicitacaoEpiIds = new Long[]{1L,2L};
-		solicitacaoEpiItemDao.expects(once()).method("findBySolicitacaoEpi").with(eq(solicitacaoEpiIds)).will(returnValue(colecao));
+		Long solicitacaoEpiId = 1L;
+		solicitacaoEpiItemDao.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(eq(solicitacaoEpiId)).will(returnValue(colecao));
 
-		assertEquals(colecao, solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpiIds));
-
-		//teste com array vazio
-		solicitacaoEpiIds = null;
-		assertTrue(solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpiIds).isEmpty());
+		assertEquals(colecao, solicitacaoEpiItemManager.findAllEntregasBySolicitacaoEpi(solicitacaoEpiId));
 	}
 	
 	public void testRemoveAllBySolicitacaoEpi()
