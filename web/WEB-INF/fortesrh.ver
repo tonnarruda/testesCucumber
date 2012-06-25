@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.76.72" data="25/06/2012"><![CDATA[
+        - SESMT > Relatórios > Exames Realizados: Nova opção para exibir o campo observação no relatório de exames realizados.
+    ]]></Versao>
 	<Versao id="1.1.76.71" data="19/06/2012"><![CDATA[
         - R&S > Movimentações > Solicitação de Pessoal: Novo campo de colaborador substituído.
 		- Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Novas colunas de estabelecimento e área organizacional.

@@ -19042,3 +19042,24 @@ insert into migrations values('20120612104845');--.go
 alter table empresa add column exibircolaboradorsubstituido boolean not null default false;--.go
 insert into migrations values('20120612110829');--.go
 update parametrosdosistema set appversao = '1.1.76.71';--.go
+-- versao 1.1.76.72
+
+update papel set ordem = ordem+1 where papelmae_id = 37 and ordem > 10;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (558, 'ROLE_EXPORTACAO_TREINAMENTOS_TRU', 'Exportar Treinamentos para o TRU', '/exportacao/prepareExportacaoTreinamentos.action', 11, false, NULL, 37);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 558); --.go
+alter sequence papel_sequence restart with 559; --.go
+
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=558 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+
+insert into migrations values('20120619143637');--.go
+CREATE OR REPLACE FUNCTION normalizar(a_string text)
+  RETURNS text AS '
+BEGIN
+  RETURN TRANSLATE(a_string, ''áéíóúàèìòùãõâêîôûäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ'', ''aeiouaeiouaoaeiouaeioucAEIOUAEIOUAOAEIOUAEIOUC'');
+END' LANGUAGE plpgsql;--.go
+
+ALTER FUNCTION normalizar(text) OWNER TO postgres;--.go
+
+insert into migrations values('20120625093650');--.go
+update parametrosdosistema set appversao = '1.1.76.72';--.go
