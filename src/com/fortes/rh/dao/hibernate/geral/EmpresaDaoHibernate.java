@@ -299,6 +299,22 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return criteria.list();
 	}
 	
+	public Collection<Empresa> findEmpresasIntegradas()
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("e.acIntegra", true));
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+	
 	public Empresa findEmailsEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");

@@ -127,9 +127,16 @@
 	background-image:url(../imgs/btnSalvarArquivos.gif);
 	width: 139px !important;
 }
+
 .btnAplicar
 {
 	background-image:url(../imgs/btnAplicar.gif);
+	width: 83px !important;
+}
+
+.btnExportar
+{
+	background-image:url(../imgs/btnExportar.gif);
 	width: 83px !important;
 }
 
@@ -579,6 +586,7 @@
 	width: 169px !important;
 }
 
+.btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
 .btnExcluirDesabilitado,

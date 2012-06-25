@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CollectionUtil;
 
@@ -37,7 +38,10 @@ public class EstabelecimentoDWR
 		else
 			estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);
 
-		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getNome");
+		CollectionUtil<Estabelecimento> cu1 = new CollectionUtil<Estabelecimento>();
+		estabelecimentos = cu1.sortCollectionStringIgnoreCase(estabelecimentos, "nome");
+		
+		return cu1.convertCollectionToMap(estabelecimentos, "getId", "getNome");
 	}
 
 	@SuppressWarnings("unchecked")

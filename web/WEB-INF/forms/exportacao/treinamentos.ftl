@@ -4,8 +4,9 @@
 <head>
 <@ww.head/>
 
-<title>Exportação de Treinamentos</title>
+<title>Exportar Treinamentos para o TRU</title>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -29,17 +30,9 @@
 	</#if>
 	
 	<script type='text/javascript'>
+		var cursosIds = [];
+
 		$(function(){
-			
-			$('input[name="cursosCheck"]').bind(function(){
-					alert('a');
-					
-				if (this.checked)
-					alert('checked');
-				else
-					alert('não checked');
-			});
-			
 			var empresaValue = $('#empresaId').val();
 			populaArea(empresaValue);
 			populaEstabelecimento(empresaValue);
@@ -51,7 +44,7 @@
 		{
 			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, null);
+			EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
 		}
 	
 		function createListEstabelecimento(data)
@@ -63,7 +56,7 @@
 		{
 			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, null);
+			AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
 		}
 
 		function createListArea(data)
@@ -82,14 +75,23 @@
 		function populaCursos(data)
 		{
 			addChecks('cursosCheck', data);
-			$('#cursosCheck').append('onClick', '');
+					
+			$("input[name='cursosCheck']").each(function() {
+				$(this).click(function() {
+					if($(this).is(':checked'))
+						cursosIds.push($(this).val());
+					else
+					  cursosIds.splice(cursosIds.indexOf($(this).val()),1);
+					
+					getTurmasByFiltro();	
+				});
+			});
 		}
 		
 		function getTurmasByFiltro()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
-			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
+			TurmaDWR.getTurmasByCursos(populaTurmas, cursosIds);
 		}
 
 		function populaTurmas(data)
@@ -109,7 +111,6 @@
 			DWRUtil.removeAllOptions("ocorrencias");
 			
 			var mensagem = "Selecione..."; 
-			
 			if(data.toSource() === "({})")
 				mensagem = "Não existe ocorrencias para essa empresa"; 
 			
@@ -125,8 +126,8 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="gerarArquivoExportacao.action" validate="true" onsubmit="${validarCampos}" method="POST" >
-		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCurso(this.value);populaOcorrencia(this.value);" disabled="!compartilharColaboradores"/>		
-		<@ww.select label="Ocorrencia" name="ocorrenciaId" id="ocorrencias" list="ocorrencias" listKey="id" listValue="descricaoComEmpresa"/>		
+		<@ww.select label="Empresas Integradas" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCurso(this.value);populaOcorrencia(this.value);"/>		
+		<@ww.select label="Selecione o tipo de ocorrência existente no TRU" name="ocorrenciaId" id="ocorrencias" list="ocorrencias" listKey="id" listValue="descricaoComEmpresa"/>		
 		
 		<@ww.datepicker label="Período" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
 		<@ww.datepicker label="" value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
@@ -136,13 +137,10 @@
 
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmasByFiltro();" width="600" />
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas *" list="turmasCheckList" width="600" />
-		
-
-		
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnSalvarArquivos"></button>
+		<button onclick="${validarCampos};" class="btnExportar"></button>
 	</div>
 </body>
 </html>

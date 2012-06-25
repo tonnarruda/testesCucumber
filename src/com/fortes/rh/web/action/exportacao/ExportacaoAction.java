@@ -8,23 +8,18 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 
+@SuppressWarnings("serial")
 public class ExportacaoAction extends MyActionSupport
 {
-	private static final long serialVersionUID = 1L;
-	
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	
@@ -37,7 +32,6 @@ public class ExportacaoAction extends MyActionSupport
 	private Long empresaId;
 	private Collection<Empresa> empresas;
 	
-	private Boolean compartilharColaboradores;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
 
@@ -55,18 +49,25 @@ public class ExportacaoAction extends MyActionSupport
 	
 	public String prepareExportacaoTreinamentos() throws Exception
 	{
-		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		populaEmpresa("ROLE_EXPORTACAO_TREINAMENTOS_TRU");
+		try
+		{
+			empresaId = getEmpresaSistema().getId();
+			empresas = empresaManager.findEmpresasIntegradas();
+			
+			if(empresas.isEmpty())
+				throw new Exception ("Não existe empresa Integrada." );
+			
+			return SUCCESS;
 		
-		return SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 	}
 	
-	private void populaEmpresa(String... roles)
-	{
-		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
-	}
-
 	public String gerarArquivoExportacao() throws Exception
 	{
 		try{
@@ -127,11 +128,6 @@ public class ExportacaoAction extends MyActionSupport
 		this.cursos = cursos;
 	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
@@ -167,14 +163,6 @@ public class ExportacaoAction extends MyActionSupport
 	public void setEstabelecimentosCheckList(
 			Collection<CheckBox> estabelecimentosCheckList) {
 		this.estabelecimentosCheckList = estabelecimentosCheckList;
-	}
-
-	public Boolean getCompartilharColaboradores() {
-		return compartilharColaboradores;
-	}
-
-	public void setCompartilharColaboradores(Boolean compartilharColaboradores) {
-		this.compartilharColaboradores = compartilharColaboradores;
 	}
 
 	public Collection<CheckBox> getCursosCheckList() {

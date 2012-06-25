@@ -49,4 +49,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	@Audita(operacao="Integração com AC", auditor=EmpresaAuditorCallbackImpl.class)
 	void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC);
 	boolean isControlaRiscoPorAmbiente(Long empresaId);
+	Collection<Empresa> findEmpresasIntegradas() ;
 }
