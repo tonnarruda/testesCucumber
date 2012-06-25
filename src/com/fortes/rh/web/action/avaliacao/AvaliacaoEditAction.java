@@ -16,6 +16,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -51,6 +52,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private Collection<PeriodoExperiencia> periodoExperiencias;
 	private boolean telaInicial;
 	private String titulo;
+	private char ativos = 'T';
 	
 	private void prepare() throws Exception
 	{
@@ -112,7 +114,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), null, modeloAvaliacao, titulo);
+		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
@@ -256,5 +258,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public char getAtivos() {
+		return ativos;
+	}
+
+	public void setAtivos(char ativos) {
+		this.ativos = ativos;
 	}
 }
