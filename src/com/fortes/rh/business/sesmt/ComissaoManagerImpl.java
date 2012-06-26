@@ -118,7 +118,7 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 		
 		return participacoesNaCipa;
 	}
-	
+
 	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager)
 	{
 		this.comissaoPeriodoManager = comissaoPeriodoManager;
@@ -134,4 +134,5 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
 		this.comissaoMembroManager = comissaoMembroManager;
 	}
+
 }

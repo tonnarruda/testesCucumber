@@ -257,6 +257,33 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		Collection<Colaborador> colabCollection = comissaoMembroDao.findColaboradoresNaComissao(comissao.getId(), colaboradorIds);
 		assertEquals(1, colabCollection.size());
 	}
+	
+	public void testFindDataColaboradorComissaoMembro()
+	{
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+
+		Comissao comissao = ComissaoFactory.getEntity();
+		Date dataPeriodo1 = DateUtil.criarDataMesAno(10, 12, 2009);
+		Date dataPeriodo2 = DateUtil.criarDataMesAno(9, 3, 2010);
+		comissao.setDataIni(dataPeriodo1);
+		comissao.setDataFim(dataPeriodo2);
+		comissaoDao.save(comissao);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodo.setaPartirDe(dataPeriodo1);
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity();
+		comissaoMembro.setColaborador(colaborador);
+		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
+		comissaoMembroDao.save(comissaoMembro);
+		
+		Comissao comissaoResult = comissaoMembroDao.findComissaoByColaborador(colaborador.getId());
+		assertEquals(comissao.getDataFim(), comissaoResult.getDataFim());
+	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{

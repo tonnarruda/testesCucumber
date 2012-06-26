@@ -6,8 +6,17 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	</style>
-		<#include "../ftl/mascarasImports.ftl" />
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	
+	<#include "../ftl/mascarasImports.ftl" />
+
 	<script>
 		function enviarPrepareUpDate(colaborador)
 		{
@@ -17,13 +26,50 @@
 					"&page="+document.getElementById('pagina').value;
 			window.location = link;
 		}
-
-		function enviarPrepareDesliga(colaborador)
+		
+		
+		function verificaComissaoByColaborador(colaboradorId, colaboradorNome)
 		{
-			link = "prepareDesliga.action?colaborador.id="+colaborador+
+			DWRUtil.useLoadingMessage('Carregando...');
+			ComissaoDWR.dataEstabilidade(               function(data){
+															resultComissaoByColaborador(data, colaboradorId, colaboradorNome);
+														}, colaboradorId);
+		}
+		
+		function resultComissaoByColaborador(data, colaboradorId, colaboradorNome)
+		{
+			link = "prepareDesliga.action?colaborador.id="+colaboradorId+
 					"&nomeBusca="+document.getElementById('nomeBusca').value+
 					"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
-			window.location=link;
+			
+			if (data != null){
+				enviarPrepareDesliga(colaboradorId, colaboradorNome, link, data);
+			} else {
+				window.location=link; 
+			}
+		}
+		
+		function enviarPrepareDesliga(colaboradorId, colaboradorNome, link, data)
+		{
+			var msg = 'O Colaborador '+ colaboradorNome +', faz parte <br>da CIPA e possui estabilidade até o dia ' + data + '.' +
+						'<br> Deseja realmente desligá-lo?';
+			
+			$('<div>'+ msg +'</div>').dialog({title: 'Alerta!',
+													modal: true, 
+													height: 150,
+													width: 500,
+													buttons: [
+													    {
+													        text: "Sim",
+													        click: function() { window.location=link; }
+													    },
+													    {
+													        text: "Não",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													] 
+													});
+			
 		}
 
 		function enviarPrepareProgressaoColaborador(colaborador)
@@ -93,7 +139,7 @@
 						 imgTitle="Solicitação de Desligamento do Colaborador no Ac Pessoal" imgName="desliga_colab.gif"/>
 					</#if>
 				<#else>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
 				</#if>
 
 				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="#" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
@@ -108,10 +154,10 @@
 						<#assign titleMotivoDeslig="Desligar colaborador"/>
 					</#if>
 					
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="${titleMotivoDeslig}" imgName="${imgMotivoDeslig}"/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="${titleMotivoDeslig}" imgName="${imgMotivoDeslig}"/>
 				<#else>
 					
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:enviarPrepareDesliga('${colaborador.id}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
 	
 				<#if colaborador.respondeuEntrevista?exists && colaborador.respondeuEntrevista>

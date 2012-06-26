@@ -131,6 +131,9 @@
 	<bean id="comissaoPeriodoDWR" class="com.fortes.rh.web.dwr.ComissaoPeriodoDWR">
 		<property name="comissaoPeriodoManager" ref="comissaoPeriodoManager"/>
 	</bean>
+	<bean id="comissaoDWR" class="com.fortes.rh.web.dwr.ComissaoDWR">
+		<property name="comissaoMembroManager" ref="comissaoMembroManager"/>
+	</bean>
 	<bean id="afastamentoDWR" class="com.fortes.rh.web.dwr.AfastamentoDWR">
 		<property name="afastamentoManager" ref="afastamentoManager"/>
 	</bean>

@@ -8,8 +8,11 @@ import java.util.Date;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
+import com.fortes.rh.business.sesmt.ComissaoManager;
+import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
+import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -20,7 +23,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	private static final long serialVersionUID = 1L;
 	private ColaboradorManager colaboradorManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
-
+	private ComissaoMembroManager comissaoMembroManager;
 	private Colaborador colaborador;
 	private Collection<MotivoDemissao> motivoDemissaos;
 
@@ -28,6 +31,8 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	private Date dataDesligamento;
 	private String observacaoDemissao;
 	private MotivoDemissao motDemissao;
+	
+	private Comissao comissao;
 
 	private String nomeBusca;
 	private String cpfBusca;
@@ -43,6 +48,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		integraAc = getEmpresaSistema().isAcIntegra();
 		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		comissao = comissaoMembroManager.findComissaoByColaborador(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
 		return Action.SUCCESS;
 	}
@@ -202,5 +208,16 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public Date getDataAtual() {
 		return new Date();
 	}
-	
+
+	public Comissao getComissao() {
+		return comissao;
+	}
+
+	public void setComissao(Comissao comissao) {
+		this.comissao = comissao;
+	}
+
+	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
+		this.comissaoMembroManager = comissaoMembroManager;
+	}
 }

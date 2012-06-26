@@ -54,7 +54,6 @@
 	
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/>
 		<br>
-	
 		<@ww.hidden label="Desligado" name="desligado" fieldValue="true" value="true" />
 		<#if integraAc && !colaborador.naoIntegraAc>
 			Data de Desligamento: ${dataDesligamento}<br><br>
