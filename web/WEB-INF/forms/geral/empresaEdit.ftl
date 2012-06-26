@@ -154,7 +154,7 @@
 		
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
-		<@ww.checkbox label="Exibir o campo Colaborador Substuído na Solicitação de Pessoal" name="empresa.exibirColaboradorSubstituido" id="exibirColaboradorSubstituido" labelPosition="right" /><br>
+		<@ww.checkbox label="Exibir o campo Colaborador Substituído na Solicitação de Pessoal" name="empresa.exibirColaboradorSubstituido" id="exibirColaboradorSubstituido" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
 		<li>
