@@ -21,6 +21,7 @@ public class Comissao extends AbstractModel implements Serializable
 {
 	@Temporal(TemporalType.DATE)
 	private Date dataIni;
+
 	@Temporal(TemporalType.DATE)
 	private Date dataFim;
 
@@ -32,6 +33,17 @@ public class Comissao extends AbstractModel implements Serializable
 	@Lob
 	private String ataPosseTexto2;
 	
+	public Comissao() {
+		super();
+	}
+
+	public Comissao(Date dataIni, Date dataFim) {
+		super();
+		this.dataIni = dataIni;
+		this.dataFim = dataFim;
+	}
+	
+
 	@NaoAudita
 	public String getPeriodoFormatado()
 	{

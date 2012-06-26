@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.util.CollectionUtil;
@@ -84,5 +85,9 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 	{
 		return getDao().findColaboradoresNaComissao(comissaoId, colaboradorIds);
 	}
-	
+
+	public Comissao findComissaoByColaborador(Long colaboradorId) 
+	{
+		return getDao().findComissaoByColaborador(colaboradorId) ;
+	}
 }

@@ -17,6 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 
 @SuppressWarnings("unchecked")
@@ -140,6 +141,27 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		
 		return query.list();
 	}
+	
+	
+	public Comissao findComissaoByColaborador(Long colaboradorId) {
+		
+		StringBuilder hql = new StringBuilder("select new Comissao(comissao.dataIni, comissao.dataFim) ");
+		hql.append("from ComissaoMembro cm ");
+		hql.append("join cm.comissaoPeriodo cp ");
+		hql.append("join cp.comissao comissao ");
+		hql.append("where cm.colaborador.id = :colaboradorId ");
+		hql.append("and cp.aPartirDe = (select max(cp2.aPartirDe) from ComissaoPeriodo cp2 ");
+		hql.append("				where cp2.comissao.id = comissao.id ");
+		hql.append("				and cp2.aPartirDe <= :hoje ) ");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("colaboradorId", colaboradorId);
+		query.setDate("hoje", new Date());
+		
+		return (Comissao) query.uniqueResult();
+	}
+	
 
 	public Collection<ComissaoMembro> findByColaborador(Long colaboradorId) 
 	{
