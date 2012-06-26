@@ -9,7 +9,8 @@
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
-
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 		<#assign validarCampos="return validaFormulario('form', null, new Array('dataIni','dataFim'), true)"/>
 
@@ -27,11 +28,16 @@
 
 	<#if entrega>
 		<title>Entrega de EPIs</title>
-	<#else>
+	<#else><script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		<title>Solicitações de EPIs</title>
 	</#if>
 	
 	<script type="text/javascript">
+		$(function() {
+			insereHelp(4);			
+		});
+		
+		
 		function imprimir()
 		{
 			$('#form').attr('action','imprimir.action').submit();
@@ -42,6 +48,17 @@
 			$('#pagina').val(1);
 			$('#form').attr('action','list.action').submit();
 		}
+	
+		function insereHelp(posicao)
+		{
+			var id = "tooltipHelp" + posicao;
+			$("#solicitacaoEpi th:eq(" + posicao + ")" ).append('<img id="' + id + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />');
+			
+			$('#' + id).qtip({
+				content: 'Para exibir informações de EPIs Entregues e A Entregar, coloque o ponteiro do mouse sobre a situação desejada.'
+			});
+		}
+		
 	</script>
 </head>
 <body>

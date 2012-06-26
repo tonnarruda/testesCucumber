@@ -23,6 +23,7 @@ import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
@@ -49,12 +50,13 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
         solicitacaoEpiManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
-	public void FindAllSelect()
+	public void testFindAllSelect()
 	{
 		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
 		colecao.add(new SolicitacaoEpi());
 		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiItemManager.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
 
 		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS));
 	}

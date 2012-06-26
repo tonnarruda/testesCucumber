@@ -38,33 +38,30 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private String montaInformacaoDeEntregas(SolicitacaoEpi solicitacaoEpi) 
 	{
 		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findAllEntregasBySolicitacaoEpi(solicitacaoEpi.getId());
-		
 		StringBuffer epiEntregues = new StringBuffer();
-
 		StringBuffer epiNaoEntregues = new StringBuffer();
 
 		for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
 		{
-			
 			if(solicitacaoEpiItem.getTotalEntregue() > 0){
 				
 				if(epiEntregues.length()  == 0)
 					epiEntregues.append("Etregues:<br>");
 
-				epiEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				epiEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 				if(solicitacaoEpiItem.getTotalEntregue() > solicitacaoEpiItem.getQtdSolicitado())
 				{
 					if(epiNaoEntregues.length()  == 0)
 						epiNaoEntregues.append("A Etregar:<br>");
 				
-					epiNaoEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+					epiNaoEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 				}
 			}else
 			{
 				if(epiNaoEntregues.length()  == 0)
 					epiNaoEntregues.append("A Etregar:<br>");
 				
-				epiNaoEntregues.append("   " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				epiNaoEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 			}
 		}
 

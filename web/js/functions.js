@@ -82,7 +82,7 @@ function showTooltip(e,tooltipTxt)
 	if(navigator.userAgent.toLowerCase().indexOf('safari')>=0)
 		st=0;
 
-	var leftPos = e.clientX + 10;
+	var leftPos = e.clientX + 30;
 
 	dhtmlgoodies_tooltip.style.width = null;	// Reset style width if it's set
 	dhtmlgoodies_tooltip.innerHTML = tooltipTxt;
