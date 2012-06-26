@@ -38,6 +38,7 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -220,6 +221,112 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradoresComEmailByTurma(java.getId());
     	assertEquals(1, retorno.size());
+    }
+    
+    public void testFindColabTreinamentos()
+    {
+        Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+
+    	Empresa empresaFora = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresaFora);
+    	
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+
+        Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+        estabelecimentoDao.save(estabelecimento);
+    	
+    	Turma java = TurmaFactory.getEntity();
+    	java.setDataPrevIni(DateUtil.criarDataMesAno(01, 06, 2010));
+    	java.setDataPrevFim(DateUtil.criarDataMesAno(01, 07, 2010));
+    	turmaDao.save(java);
+    	
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setDesligado(false);
+    	joao.setEmailColaborador("b@b.com.br");
+    	joao.setEmpresa(empresa);
+    	joao.setCodigoAC("000001");
+    	colaboradorDao.save(joao);
+    	
+        HistoricoColaborador htJoao = HistoricoColaboradorFactory.getEntity();
+        htJoao.setColaborador(joao);
+        htJoao.setEstabelecimento(estabelecimento);
+        htJoao.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+        htJoao.setAreaOrganizacional(areaOrganizacional);
+        htJoao.setStatus(StatusRetornoAC.CONFIRMADO);
+        htJoao = historicoColaboradorDao.save(htJoao);
+    	
+    	Colaborador maria = ColaboradorFactory.getEntity();
+    	maria.setDesligado(true);
+    	maria.setEmailColaborador("teste@b.com.br");
+    	maria.setEmpresa(empresa);
+    	maria.setCodigoAC("000002");
+    	colaboradorDao.save(maria);
+    	
+    	HistoricoColaborador htMaria = HistoricoColaboradorFactory.getEntity();
+        htMaria.setColaborador(maria);
+        htMaria.setEstabelecimento(estabelecimento);
+        htMaria.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+        htMaria.setAreaOrganizacional(areaOrganizacional);
+        htMaria.setStatus(StatusRetornoAC.CONFIRMADO);
+        htMaria = historicoColaboradorDao.save(htMaria);
+    	
+    	Colaborador pedro = ColaboradorFactory.getEntity();
+    	pedro.setDesligado(false);
+    	pedro.setEmailColaborador("");
+    	pedro.setEmpresa(empresaFora);
+    	pedro.setCodigoAC("000003");
+    	colaboradorDao.save(pedro);
+    	
+    	HistoricoColaborador htPedro = HistoricoColaboradorFactory.getEntity();
+        htPedro.setColaborador(pedro);
+        htPedro.setEstabelecimento(estabelecimento);
+        htPedro.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+        htPedro.setAreaOrganizacional(areaOrganizacional);
+        htPedro.setStatus(StatusRetornoAC.CONFIRMADO);
+        htPedro = historicoColaboradorDao.save(htPedro);
+    	
+    	Colaborador debora = ColaboradorFactory.getEntity();
+    	debora.setDesligado(false);
+    	debora.setEmailColaborador(null);
+    	debora.setEmpresa(empresa);
+    	debora.setCodigoAC("000004");
+    	colaboradorDao.save(debora);
+    	
+    	HistoricoColaborador htDebora = HistoricoColaboradorFactory.getEntity();
+        htDebora.setColaborador(debora);
+        htDebora.setEstabelecimento(estabelecimento);
+        htDebora.setData(DateUtil.criarDataMesAno(30, 01, 2030));
+        htDebora.setAreaOrganizacional(areaOrganizacional);
+        htDebora.setStatus(StatusRetornoAC.CONFIRMADO);
+        htDebora = historicoColaboradorDao.save(htDebora);
+        
+    	ColaboradorTurma colaboradorTurmaJoao = getEntity();
+    	colaboradorTurmaJoao.setColaborador(joao);
+    	colaboradorTurmaJoao.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaJoao);
+    	
+    	ColaboradorTurma colaboradorTurmaMaria = getEntity();
+    	colaboradorTurmaMaria.setColaborador(maria);
+    	colaboradorTurmaMaria.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaMaria);
+    	
+    	ColaboradorTurma colaboradorTurmaPedro = getEntity();
+    	colaboradorTurmaPedro.setColaborador(pedro);
+    	colaboradorTurmaPedro.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaPedro);
+    	
+    	ColaboradorTurma colaboradorTurmaDebora = getEntity();
+    	colaboradorTurmaDebora.setColaborador(debora);
+    	colaboradorTurmaDebora.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaDebora);
+    	
+    	Date dataInicial = DateUtil.criarDataMesAno(01, 01, 2010);
+    	Date dataFinal = DateUtil.criarDataMesAno(01, 01, 2012);
+    	
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),dataInicial , dataFinal, null, new Long[]{areaOrganizacional.getId()},new Long[]{java.getId()});
+    	assertEquals(2, retorno.size());
     }
     
     public void testFindEmpresaDoColaborador()

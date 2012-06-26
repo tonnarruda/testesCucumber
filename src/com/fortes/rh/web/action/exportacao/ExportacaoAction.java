@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -11,7 +13,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
@@ -25,12 +26,13 @@ public class ExportacaoAction extends MyActionSupport
 	
 	private Date dataIni;
 	private Date dataFim;
-
-	private Collection<Ocorrencia> ocorrencias; 
-	private String ocorrenciaId;
+	
+	private String codigoTRU;
+	private String descricaoTRU;
 
 	private Long empresaId;
 	private Collection<Empresa> empresas;
+	private char escala; 
 	
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
@@ -58,7 +60,6 @@ public class ExportacaoAction extends MyActionSupport
 				throw new Exception ("Não existe empresa Integrada." );
 			
 			return SUCCESS;
-		
 		}
 		catch (Exception e)
 		{
@@ -79,10 +80,10 @@ public class ExportacaoAction extends MyActionSupport
 			//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
 			StringBuffer texto = new StringBuffer();
 			texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
-			texto.append("0" + ocorrenciaId + "Treinamentos                 1N\n");
+			texto.append("0" + codigoTRU + StringUtils.rightPad(descricaoTRU, 30, " ") + "1" + escala +"\n");
 			
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-				texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + ocorrenciaId + 
+				texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + codigoTRU + 
 						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
 						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
 						StringUtils.rightPad(" ", 270)+ "\n");
@@ -218,14 +219,6 @@ public class ExportacaoAction extends MyActionSupport
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-	public Collection<Ocorrencia> getOcorrencias() {
-		return ocorrencias;
-	}
-
-	public void setOcorrencias(Collection<Ocorrencia> ocorrencias) {
-		this.ocorrencias = ocorrencias;
-	}
-
 	public String getTextoTru() {
 		return textoTru;
 	}
@@ -234,11 +227,27 @@ public class ExportacaoAction extends MyActionSupport
 		this.textoTru = textoTru;
 	}
 
-	public String getOcorrenciaId() {
-		return ocorrenciaId;
+	public String getCodigoTRU() {
+		return codigoTRU;
 	}
 
-	public void setOcorrenciaId(String ocorrenciaId) {
-		this.ocorrenciaId = ocorrenciaId;
+	public void setCodigoTRU(String codigoTRU) {
+		this.codigoTRU = codigoTRU;
+	}
+
+	public String getDescricaoTRU() {
+		return descricaoTRU;
+	}
+
+	public void setDescricaoTRU(String descricaoTRU) {
+		this.descricaoTRU = descricaoTRU;
+	}
+
+	public char getEscala() {
+		return escala;
+	}
+
+	public void setEscala(char escala) {
+		this.escala = escala;
 	}
 }

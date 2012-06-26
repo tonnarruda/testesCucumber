@@ -11,11 +11,10 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('inicio','fim','@turmasCheck', 'ocorrencias'), new Array('inicio','fim'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('@turmasCheck', 'descricaoTRU', 'codigoTRU'), new Array('inicio','fim'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<#if dataIni?exists>
@@ -98,25 +97,7 @@
 		{
 			addChecks('turmasCheck', data);
 		}
-		
-		function populaOcorrencia(empresaId)
-		{
-			DWREngine.setAsync(false);
-			DWRUtil.useLoadingMessage('Carregando...');
-			OcorrenciaDWR.getByEmpresaComCodigoAc(populaOcorrencias, empresaId);
-		}
 
-		function populaOcorrencias(data)
-		{
-			DWRUtil.removeAllOptions("ocorrencias");
-			
-			var mensagem = "Selecione..."; 
-			if(data.toSource() === "({})")
-				mensagem = "Não existe ocorrencias para essa empresa"; 
-			
-			$('#ocorrencias').append('<option value=\"\">'+mensagem+'</option>');
-			DWRUtil.addOptions("ocorrencias", data);
-		}
 	</script>
 	
 </head>
@@ -126,12 +107,15 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="gerarArquivoExportacao.action" validate="true" onsubmit="${validarCampos}" method="POST" >
-		<@ww.select label="Empresas Integradas" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCurso(this.value);populaOcorrencia(this.value);"/>		
-		<@ww.select label="Selecione o tipo de ocorrência existente no TRU" name="ocorrenciaId" id="ocorrencias" list="ocorrencias" listKey="id" listValue="descricaoComEmpresa"/>		
-		
-		<@ww.datepicker label="Período" required="true" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
+		<@ww.select label="Empresas Integradas" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCurso(this.value);"/>		
+
+		<@ww.datepicker label="Período" value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
 		<@ww.datepicker label="" value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
 
+		<@ww.textfield label="Cód. da Ocorrência no TRU" name="codigoTRU" id="codigoTRU" onkeypress="return(somenteNumeros(event,''));" size="3"  maxLength="3"/>
+		<@ww.textfield label="Nomeclatura da Ocorrência no TRU" name="descricaoTRU" id="descricaoTRU" cssStyle="width: 250px;" maxLength="30"/>		
+		<@ww.select label="Tirar o colaborador da escala?" name="escala" list=r"#{'S':'Sim','N':'Não'}"/>
+		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos"  list="estabelecimentosCheckList" width="600"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"  width="600"/>
 

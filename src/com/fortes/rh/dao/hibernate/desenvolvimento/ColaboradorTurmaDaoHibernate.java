@@ -1056,8 +1056,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join ct.turma as t ");
 		hql.append("where t.id in (:turmasIds) ");
-		hql.append("and t.dataPrevIni >=  :dataIni ");
-		hql.append("and t.dataPrevFim <= :dataFim ");
+		
+		if(dataIni != null && dataFim != null){
+			hql.append("and t.dataPrevIni >=  :dataIni ");
+			hql.append("and t.dataPrevFim <= :dataFim ");
+		}
 		
 		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
@@ -1073,6 +1076,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
+		hql.append("		and hc2.data <= :dataFim ");
 		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 		
@@ -1081,8 +1085,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		Query query = getSession().createQuery(hql.toString());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("empresaId", empresaId);
-		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
+		
+		if(dataIni != null && dataFim != null){
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}else
+			query.setDate("dataFim", new Date());
+		
 		query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
 		
 		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
