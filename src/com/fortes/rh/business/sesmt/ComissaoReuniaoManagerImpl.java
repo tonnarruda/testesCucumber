@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoDao;
@@ -96,10 +98,27 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 	{
 		ComissaoReuniao comissaoReuniaoTmp = getDao().findByIdProjection(comissaoReuniao.getId());
 		
-		//
 		Collection<ComissaoPeriodo> comissaoPeriodos = comissaoPeriodoManager.findByComissao(comissaoId);
 		
+		Collection<ComissaoReuniaoPresenca> comissaoReuniaoPresencas = comissaoReuniaoPresencaManager.findByReuniao(comissaoReuniaoTmp.getId());
+		
+		Map<Long, String> presencaDosColaboradores = new HashMap<Long, String>();
+		for (ComissaoReuniaoPresenca comissaoReuniaoPresenca : comissaoReuniaoPresencas) {
+			if(!comissaoReuniaoPresenca.getPresente()){
+				presencaDosColaboradores.put(comissaoReuniaoPresenca.getColaborador().getId(), comissaoReuniaoPresenca.getJustificativaFalta());
+			}
+		}
+		
 		Collection<ComissaoMembro> comissaoMembros = getMembrosNoPeriodo(comissaoReuniaoTmp.getData(), comissaoPeriodos);
+		
+		for (ComissaoMembro comissaoMembro : comissaoMembros) {
+			if(presencaDosColaboradores.get(comissaoMembro.getColaborador().getId()) != null){
+				comissaoMembro.setPresente(Boolean.FALSE);
+				comissaoMembro.setJustificativaFalta(presencaDosColaboradores.get(comissaoMembro.getColaborador().getId()));
+			} else {
+				comissaoMembro.setPresente(Boolean.TRUE);
+			}
+		}
 
 		// Os dados da reunião sao passados por referência
 		comissaoReuniao.setDados(comissaoReuniaoTmp.getId(), comissaoReuniaoTmp.getDescricao(), comissaoReuniaoTmp.getTipo(), comissaoReuniaoTmp.getData(), comissaoReuniaoTmp.getHorario(), comissaoReuniaoTmp.getLocalizacao(), comissaoReuniaoTmp.getAta());

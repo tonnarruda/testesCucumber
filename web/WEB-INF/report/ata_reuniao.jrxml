@@ -39,6 +39,7 @@
 	<field name="localizacao" class="java.lang.String"/>
 	<field name="percentualVotoFmt" class="java.lang.String"/>
 	<field name="tipoDic" class="java.lang.String"/>
+	<field name="justificativaFalta" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -220,19 +221,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{funcaoDic} + ", " + $F{tipoDic} + ")"]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="377"
-						y="2"
+						y="1"
 						width="159"
 						height="14"
-						key="staticText-3"/>
+						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
+					<textElement verticalAlignment="Bottom">
 						<font size="9"/>
 					</textElement>
-				<text><![CDATA[]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{justificativaFalta} != null ? $F{justificativaFalta} : ""]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

@@ -34,6 +34,10 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 	private final FuncaoComissao funcaoMap = FuncaoComissao.getInstance();
 	@Transient
 	private final TipoMembroComissao tipoMap = TipoMembroComissao.getInstance();
+	@Transient
+	private Boolean presente;
+	@Transient
+	private String justificativaFalta;
 
 	public ComissaoMembro()
 	{
@@ -145,5 +149,24 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 
 		return false;
 	}
+	
+	public Boolean getPresente()
+	{
+		return presente;
+	}
+	
+	public String getJustificativaFalta()
+	{
+		return justificativaFalta;
+	}
 
+	public void setPresente(Boolean presente)
+	{
+		this.presente = presente;
+	}
+	
+	public void setJustificativaFalta(String justificativaFalta)
+	{
+		this.justificativaFalta = justificativaFalta;
+	}
 }

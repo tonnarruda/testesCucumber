@@ -99,6 +99,7 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		
 		p.add(Projections.distinct(Projections.property("co.id")), "id");
 		
+		p.add(Projections.property("co.id"), "projectionColaboradorId");
 		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("cm.tipo"), "tipo");
 		p.add(Projections.property("cm.funcao"), "funcao");
