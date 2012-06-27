@@ -25,7 +25,7 @@
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-	<title>Resultados de Exames</title>
+	<title>Resultados dos Exames de ${solicitacaoExame.colaborador.nome}</title>
 	<#assign formAction="saveResultados.action"/>
 
 </head>
@@ -36,9 +36,10 @@
 	<@ww.form name="form" action="${formAction}" method="post" onsubmit="limpaData();">
 		<@ww.hidden name="solicitacaoExame.id" />
 		<@ww.hidden name="solicitacaoExameData" />
+		<@ww.hidden name="solicitacaoExame.colaborador.nome" />
 
 		<div>Resultados:</div>
-
+		
 		<#assign i = 0/>
 		<@display.table name="listaExamesResultados" id="lista" class="dados">
 
