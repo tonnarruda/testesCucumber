@@ -3513,7 +3513,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2009), DateUtil.criarDataMesAno(01, 06, 2010), empresa, null, null, 200, 0);
+		Collection<Colaborador> colaboradores = colaboradorDao.findAdmitidosNoPeriodo(DateUtil.criarDataMesAno(01, 06, 2009), DateUtil.criarDataMesAno(31, 05, 2010), empresa, null, null, 200, 0);
 		Colaborador colabRetorno = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(1, colaboradores.size());
 		assertEquals("areaMae > area", colabRetorno.getAreaOrganizacional().getDescricao());
@@ -3707,7 +3707,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		empresaDao.save(empresa);
 
 		Date data = DateUtil.criarDataMesAno(01, 05, 2010);
-		Date respondidaEm = DateUtil.criarDataMesAno(16, 05, 2010);
+		Date respondidaEm = DateUtil.criarDataMesAno(15, 05, 2010);
 
 		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, data);
 
