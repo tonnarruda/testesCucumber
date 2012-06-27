@@ -193,7 +193,7 @@
 				});
 			});
 			
-			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas)
+			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas, titulo, divTitulo)
 			{
 				montaPie(dados, divGrafico, {
 					radiusLabel:0.9, 
@@ -210,6 +210,9 @@
 				
 				$(divGrafico).bind("plothover", plotPieHover)
 							 .bind("plotclick", pieClick);
+							 
+				if (titulo && divTitulo)
+					$(divTitulo).text(titulo);
 				
 				if (btnImprimir) 
 					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
@@ -229,7 +232,7 @@
 						
 					popup.document.getElementById('info').innerHTML = infoPopup;
 					
-					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 2);
+					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 1, 'Salário por Área Organizacional', popup.document.getElementById('popupTitulo'));
 					popup.window.print();
 					popup.window.close();
 				}

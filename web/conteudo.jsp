@@ -13,15 +13,14 @@
 <html>
 <head>
 	<!--[if lte IE 8]><script type='text/javascript' src='<ww:url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
-	
 	<style type="text/css">
+		@import url('<ww:url includeParams="none" value="/css/displaytag.css"/>');
+		
 		* { font-family: Arial, Helvetica, sans-serif; }
 		h3 { font-size: 16px; }
-		table { width: 100%; }
+		table { width: 100%; margin-bottom: 10px; }
 		table tr td { vertical-align: top; }
 		table tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
-		#popupGrafico { width: 500px; height: 300px; }
-		#popupGraficoLegenda { width: 500px; height: 300px; }
 	</style>
 </head>
 <body>
@@ -38,8 +37,6 @@
 		</tr>
 	</table>
 
-	<div id="info"></div>
-	<div id="popupGrafico"></div>
-	<div id="popupGraficoLegenda"></div>
+	<div id="popupConteudo"></div>	
 </body>
 </html>
