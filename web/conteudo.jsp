@@ -14,17 +14,18 @@
 <head>
 	<!--[if lte IE 8]><script type='text/javascript' src='<ww:url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 	<style type="text/css">
-		@import url('<ww:url includeParams="none" value="/css/displaytag.css"/>');
-		
-		* { font-family: Arial, Helvetica, sans-serif; }
+		* { font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
 		h3 { font-size: 16px; }
-		table { width: 100%; margin-bottom: 10px; }
-		table tr td { vertical-align: top; }
-		table tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
+		table.cabecalho { width: 100%; margin-bottom: 10px; }
+		table.cabecalho tr td { vertical-align: top; }
+		table.cabecalho tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
+
+		table.dados { width: 100%; border-collapse: collapse; }
+		table.dados tr td, table.dados tr th { border: 1px solid #000; padding: 3px; }
 	</style>
 </head>
 <body>
-	<table>
+	<table class="cabecalho">
 		<tr>
 			<td>
 				<h3 id="popupTitulo"></h3>
