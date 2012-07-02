@@ -28,4 +28,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public Curso saveClone(Curso curso, Long empresaId);
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public String somaCargaHoraria(Collection<Turma> turmas);
+	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 }

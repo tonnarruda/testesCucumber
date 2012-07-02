@@ -22,4 +22,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public Integer getCount(Curso curso, Long empresaId);
 	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds);
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
+	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 }
