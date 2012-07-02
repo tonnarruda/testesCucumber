@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.77.73" data="02/07/2012"><![CDATA[
+		- R&S > Painel de Indicadores: Novos botões para imprimir gráficos e tabelas.
+        - Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Nova opção de filtro pelo campo [Ativo].
+        - Info. Funcionais > Cadastros > Colaboradores > Inserir motivo de desligamento/Desligar colaborador/Colaborador já desligado: Alerta para colaboradores que estejam no período de estabilidade na CIPA.
+        - SESMT > Movimentações > Solicitação de EPIs: Mensagem de ajuda no título da coluna [Situação] e em cada situação das solicitações de EPIs.
+        - SESMT > Relatórios > Afastamentos: Exibição do nome do médico na impressão do relatório.
+    ]]></Versao>
 	<Versao id="1.1.76.72" data="25/06/2012"><![CDATA[
         - SESMT > Relatórios > Exames Realizados: Nova opção para exibir o campo observação no relatório de exames realizados.
     ]]></Versao>

@@ -46,20 +46,20 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 			if(solicitacaoEpiItem.getTotalEntregue() > 0){
 				
 				if(epiEntregues.length()  == 0)
-					epiEntregues.append("Etregues:<br>");
+					epiEntregues.append("Entregues:<br>");
 
 				epiEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 				if(solicitacaoEpiItem.getTotalEntregue() > solicitacaoEpiItem.getQtdSolicitado())
 				{
 					if(epiNaoEntregues.length()  == 0)
-						epiNaoEntregues.append("A Etregar:<br>");
+						epiNaoEntregues.append("A Entregar:<br>");
 				
 					epiNaoEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 				}
 			}else
 			{
 				if(epiNaoEntregues.length()  == 0)
-					epiNaoEntregues.append("A Etregar:<br>");
+					epiNaoEntregues.append("A Entregar:<br>");
 				
 				epiNaoEntregues.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
 			}
@@ -125,7 +125,7 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findVencimentoEpi(empresaId, vencimento, exibirVencimentoCA, LongUtil.arrayStringToArrayLong(tipoEPICheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentoCheck), agruparPor);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
-			throw new ColecaoVaziaException("Não existem EPIs com Prazo a Vencer para os filtros informados.");
+			throw new ColecaoVaziaException("Não existem EPIs com prazo a vencer para os filtros informados.");
 
 		return solicitacaoEpis;
 	}
