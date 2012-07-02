@@ -25,6 +25,22 @@ def reload_db
   end
 end
 
+def teste
+  conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
+  tables = conn.exec("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');")
+  tables.each { |table|
+    #puts table
+    linhas = File.read("./web/WEB-INF/metadata/create_data.sql").gsub(/[^insert into #{table['table_name']}.*\\n$]{3}/i,'\n') 
+    puts linhas
+    puts '---------------------------'
+    
+  } 
+end
+
+if ARGV[0] == 'a'
+  teste
+end
+
 if ARGV[0] == '--start'
   reload_db
 end

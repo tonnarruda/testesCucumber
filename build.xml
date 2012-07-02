@@ -221,12 +221,27 @@
 			output="${metadados.dir}/create.sql">
 			<arg value="-U" />
 			<arg value="postgres" />
+			<arg value="--schema-only" />
+			<arg value="fortesrh_create_temp" />
+		</exec>
+		
+		<echo message="Criando create_data.sql" />
+		<exec executable="pg_dump" failonerror="true" 
+			output="${metadados.dir}/create_data.sql">
+			<arg value="-U" />
+			<arg value="postgres" />
+			<arg value="--disable-triggers" />
+			<arg value="--data-only" />
+			<arg value="--blobs" />
 			<arg value="--column-inserts" />
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
-		<copy file="${metadados.dir}/create.sql" todir="${project.dir}/dist" />
-		
+		<concat encoding="UTF-8" outputencoding="UTF-8" destfile="${project.dir}/dist/create.sql">
+			<fileset file="${project.dir}/dist/create.sql" />
+			<fileset file="${project.dir}/dist/create_data.sql" />
+		</concat>
+
 		<antcall target="drop-temp-db"></antcall>
 		
 		<echo message="Banco atualizado com sucesso" />
