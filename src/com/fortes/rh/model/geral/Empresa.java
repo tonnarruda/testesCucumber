@@ -60,6 +60,7 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncaoColaborador;
+    private boolean codigoTruCurso; 
     private char verificaParentesco = 'N';
     @Column(length=400)
 	private String mensagemModuloExterno;
@@ -482,6 +483,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setExibirColaboradorSubstituido(boolean exibirColaboradorSubstituido) {
 		this.exibirColaboradorSubstituido = exibirColaboradorSubstituido;
+	}
+
+	public boolean isCodigoTruCurso() {
+		return codigoTruCurso;
+	}
+
+	public void setCodigoTruCurso(boolean codigoTruCurso) {
+		this.codigoTruCurso = codigoTruCurso;
 	}
 
 }

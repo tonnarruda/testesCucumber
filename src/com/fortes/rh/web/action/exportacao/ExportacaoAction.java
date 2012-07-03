@@ -2,18 +2,19 @@ package com.fortes.rh.web.action.exportacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -23,13 +24,9 @@ public class ExportacaoAction extends MyActionSupport
 {
 	private EmpresaManager empresaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private CursoManager cursoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	private Date dataIni;
-	private Date dataFim;
-	
-	private String codigoTRU;
-	private String descricaoTRU;
-
 	private Long empresaId;
 	private Collection<Empresa> empresas;
 	private char escala; 
@@ -44,8 +41,6 @@ public class ExportacaoAction extends MyActionSupport
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	private String[] cursosCheck;
 	
-	private String[] turmasCheck;
-	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
 	
 	private String textoTru;
 	
@@ -72,26 +67,44 @@ public class ExportacaoAction extends MyActionSupport
 	public String gerarArquivoExportacao() throws Exception
 	{
 		try{
-			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, dataIni, dataFim, estabelecimentosCheck, areasCheck, turmasCheck);
+			Long[] estabelecimentoIds = StringUtil.stringToLong(estabelecimentosCheck);
+			Long[] areaIds = StringUtil.stringToLong(areasCheck);
+			Long[] cursosIds = StringUtil.stringToLong(cursosCheck);
 			
-			if(colaboradorTurmas.isEmpty())
-				throw new Exception ("Não existem dados com os filtros selecionados" );
-			
+			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 			//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
+			StringBuffer erro = new StringBuffer();
 			StringBuffer texto = new StringBuffer();
 			texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
-			texto.append("0" + codigoTRU + StringUtils.rightPad(descricaoTRU, 30, " ") + "1" + escala +"\n");
-			
-			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-				texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + codigoTRU + 
-						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
-						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
-						StringUtils.rightPad(" ", 270)+ "\n");
-			}
-			
-			texto.append("T");
-			
-			textoTru = texto.toString();
+				Collection<Curso> cursos = cursoManager.findByIdProjection(cursosIds);
+				
+				for (Curso curso : cursos)
+				{
+					if(curso.getCodigoTru() == null)
+					{
+						erro.append(curso.getNome());
+						erro.append("<br>");
+					} 
+				}
+						
+				if(erro.length() > 0){
+					throw new Exception ("Existem cursos sem código TRU:<br><br>" + erro.toString() );
+				} else {
+					for (Curso curso : cursos)
+					{
+						texto.append("0" + curso.getCodigoTru() + StringUtils.rightPad(curso.getNome(), 30, " ") + "1" + escala +"\n");
+						Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()});
+						for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+							texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + curso.getCodigoTru() + 
+									DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
+									DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
+									StringUtils.rightPad(" ", 270)+ "\n");
+						}
+						texto.append("T");
+						textoTru = texto.toString();
+					}
+				}
+					
 			
 			prepareExportacaoTreinamentos();
 			return  SUCCESS;
@@ -182,38 +195,6 @@ public class ExportacaoAction extends MyActionSupport
 		this.cursosCheck = cursosCheck;
 	}
 
-	public Date getDataIni() {
-		return dataIni;
-	}
-
-	public void setDataIni(Date dataIni) {
-		this.dataIni = dataIni;
-	}
-
-	public Date getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(Date dataFim) {
-		this.dataFim = dataFim;
-	}
-
-	public String[] getTurmasCheck() {
-		return turmasCheck;
-	}
-
-	public void setTurmasCheck(String[] turmasCheck) {
-		this.turmasCheck = turmasCheck;
-	}
-
-	public Collection<CheckBox> getTurmasCheckList() {
-		return turmasCheckList;
-	}
-
-	public void setTurmasCheckList(Collection<CheckBox> turmasCheckList) {
-		this.turmasCheckList = turmasCheckList;
-	}
-
 	public void setColaboradorTurmaManager(
 			ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
@@ -227,27 +208,20 @@ public class ExportacaoAction extends MyActionSupport
 		this.textoTru = textoTru;
 	}
 
-	public String getCodigoTRU() {
-		return codigoTRU;
-	}
-
-	public void setCodigoTRU(String codigoTRU) {
-		this.codigoTRU = codigoTRU;
-	}
-
-	public String getDescricaoTRU() {
-		return descricaoTRU;
-	}
-
-	public void setDescricaoTRU(String descricaoTRU) {
-		this.descricaoTRU = descricaoTRU;
-	}
-
 	public char getEscala() {
 		return escala;
 	}
 
 	public void setEscala(char escala) {
 		this.escala = escala;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

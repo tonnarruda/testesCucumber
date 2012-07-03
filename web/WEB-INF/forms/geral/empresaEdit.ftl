@@ -29,6 +29,12 @@
 				content: '<div style="text-align:justify">Nos cadastros de candidato e colaborador, após preencher os campos Nome do Cônjuge, Nome do Pai ou Nome da Mãe, é realizada uma checagem se há colaboradores com os nomes informados, exibindo um popup com a lista caso seja encontrado.</div>',
 				style: { width: 400 }
 			});
+
+			$('#CodigoTruCursoHelp').qtip({
+				content: '<div style="text-align:justify">Esta opção serve somente para mapear afastamentos do TRU com o curso.</div>',
+				style: { width: 400 }
+			});
+			
 			
 			$('#nomeHomonimoEmpresa').change(function() {
 				if ($(this).is(":checked"))
@@ -157,6 +163,11 @@
 		<@ww.checkbox label="Exibir o campo Colaborador Substituído na Solicitação de Pessoal" name="empresa.exibirColaboradorSubstituido" id="exibirColaboradorSubstituido" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
+		<li>
+			<@ww.checkbox label="Exibir campo do código TRU ao cadastrar curso" id="CodigoTruCurso" name="empresa.codigoTruCurso" liClass="liLeft" labelPosition="left"/>
+			<img id='CodigoTruCursoHelp' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 351px;margin-top: -25px;vertical-align: top;' />
+			<br />
+		<li>
 		<li>
 			<label>Busca de possíveis parentes nos cadastros de candidatos e colaboradores:</label>
 			<img id="verificaParentescoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />

@@ -117,11 +117,18 @@
 	<br/><br/>
 
 	<@display.table name="solicitacaoExames" id="solicitacaoExame" class="dados" >
+
+		<#if solicitacaoExame.colaborador?exists>
+			<#assign nomeColaborador = solicitacaoExame.colaborador.nomeComercialDesligado />
+		<#elseif solicitacaoExame.candidato?exists>
+			<#assign nomeColaborador = solicitacaoExame.candidato.nome />
+		</#if>
+	
 		<@display.column title="Ações" class="acao" style="vertical-align: top;width: 120px;">
 			<#if solicitacaoExame.semExames>
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			<#else>
-				<a href="prepareResultados.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="Resultados" src="<@ww.url value="/imgs/cliper.gif"/>"></a>
+				<a href="prepareResultados.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.colaboradorNome=${nomeColaborador}"><img border="0" title="Resultados" src="<@ww.url value="/imgs/cliper.gif"/>"></a>
 			</#if>
 			<a href="prepareUpdate.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoExame.id=${solicitacaoExame.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
@@ -146,12 +153,7 @@
 		<@display.column property="ordem" style="width: 30px; vertical-align: top; text-align: right;" title="Ordem"/>
 
 		<@display.column style="width: 330px;" title="Nome" style="vertical-align: top;">
-			<#if solicitacaoExame.colaborador?exists>
-				${solicitacaoExame.colaborador.nomeComercialDesligado}
-			</#if>
-			<#if solicitacaoExame.candidato?exists>
-				${solicitacaoExame.candidato.nome}
-			</#if>
+			${nomeColaborador}
 		</@display.column>
 
 		<@display.column title="Vínculo" style="vertical-align: top;">

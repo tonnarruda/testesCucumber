@@ -49,7 +49,7 @@
 		    
 		    $.plot($("#frequencia"), 
 		    		[
-				        {label: 'Participantes (' + participantes[0][1] + ')', data: participantes},
+				        {label: 'Qtd. Prev. de Participantes (' + participantes[0][1] + ')', data: participantes},
 				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos}
 				    ], 
 		    		{

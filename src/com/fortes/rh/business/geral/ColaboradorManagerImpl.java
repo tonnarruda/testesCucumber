@@ -1844,7 +1844,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
-				String dataSugerida = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colaborador.getDataAdmissao(), periodoExperiencia.getDias()));
+				String dataSugerida = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colaborador.getDataAdmissao(), periodoExperiencia.getDias()-1));
 				String msg = periodoExperiencia.getDias() + " dias, não respondida";
 
 				if(colaborador.getDiasDeEmpresa() >= (periodoExperiencia.getDias() - gordura))

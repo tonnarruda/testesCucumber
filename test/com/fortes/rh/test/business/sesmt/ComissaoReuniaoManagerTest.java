@@ -149,12 +149,15 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		periodo2DentroDaDataDaReuniao.setFim(DateUtil.montaDataByString("30/12/2010"));
 		
 		Collection<ComissaoPeriodo> periodos = Arrays.asList(periodo1Fora, periodo2DentroDaDataDaReuniao);
+		Collection<ComissaoReuniaoPresenca> comissaoReuniaoPresencas = new ArrayList<ComissaoReuniaoPresenca>();
 		
 		Collection<ComissaoMembro> comissaoMembros = new ArrayList<ComissaoMembro>();
 
 		comissaoReuniaoDao.expects(once()).method("findByIdProjection").with(eq(comissaoId)).will(returnValue(comissaoReuniao));
 		
 		comissaoPeriodoManager.expects(once()).method("findByComissao").with(eq(comissaoId)).will(returnValue(periodos));
+		
+		comissaoReuniaoPresencaManager.expects(once()).method("findByReuniao").with(eq(comissaoReuniao.getId())).will(returnValue(comissaoReuniaoPresencas));
 		
 		comissaoMembroManager.expects(once()).method("findDistinctByComissaoPeriodo").with(eq(periodo2DentroDaDataDaReuniao.getId())).will(returnValue(comissaoMembros));
 

@@ -3122,7 +3122,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
 	{		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) as int), ao.nome, aoMae.nome, e.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) + 1 as int), ao.nome, aoMae.nome, e.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
@@ -3146,7 +3146,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and co.dataAdmissao <= :periodoFim ");
 		
 		if(tempoDeEmpresa != null)
-			hql.append("and :periodoFim - co.dataAdmissao  <= :tempoDeEmpresa and :periodoFim - co.dataAdmissao >= :menorPeriodo ");
+			hql.append("and (:periodoFim - co.dataAdmissao) + 1  <= :tempoDeEmpresa and (:periodoFim - co.dataAdmissao) + 1 >= :menorPeriodo ");
 
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");
@@ -3183,7 +3183,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findComAvaliacoesExperiencias(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, cq.respondidaEm, cq.performance, cast((cq.respondidaEm - co.dataAdmissao) as int), av.periodoExperiencia.id) ");
+		hql.append("select new Colaborador(co.id, cq.respondidaEm, cq.performance, cast((cq.respondidaEm - co.dataAdmissao) + 1 as int), av.periodoExperiencia.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join co.colaboradorQuestionarios as cq ");
@@ -3205,7 +3205,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and cq.respondidaEm <= :periodoFim ");
 			
 		if(tempoDeEmpresa != null)
-			hql.append("and :periodoFim - co.dataAdmissao  <= :tempoDeEmpresa and :periodoFim - co.dataAdmissao >= :menorPeriodo ");
+			hql.append("and (:periodoFim - co.dataAdmissao) + 1  <= :tempoDeEmpresa and (:periodoFim - co.dataAdmissao) + 1 >= :menorPeriodo ");
 
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");

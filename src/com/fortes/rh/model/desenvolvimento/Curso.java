@@ -38,7 +38,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
     private Collection<AvaliacaoCurso> avaliacaoCursos;
     @Column(length=20)
     private Double percentualMinimoFrequencia;
-
+    @Column(length=3)
+    private Integer codigoTru;
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="cursos")
 	private Collection<Certificacao> certificacaos;
 
@@ -199,5 +200,11 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 			
 			setCargaHoraria(hora*60 + minutos);
 		}
+	}
+	public Integer getCodigoTru() {
+		return codigoTru;
+	}
+	public void setCodigoTru(Integer codigoTru) {
+		this.codigoTru = codigoTru;
 	}
 }

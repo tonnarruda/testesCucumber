@@ -33,6 +33,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		return getDao().findByIdProjection(cursoId);
 	}
+	
+	public Collection<Curso> findByIdProjection(Long[] cursoIds)
+	{
+		return getDao().findByIdProjection(cursoIds);
+	}
 
 	public Collection<Curso> findAllSelect(Long empresaId)
 	{

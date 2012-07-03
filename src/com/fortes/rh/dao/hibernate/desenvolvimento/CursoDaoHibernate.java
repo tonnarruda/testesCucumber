@@ -42,6 +42,24 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 		return (Curso) criteria.uniqueResult();
 	}
+	
+	public Collection<Curso> findByIdProjection(Long[] cursoIds)
+	{
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.codigoTru"), "codigoTru");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("c.id", cursoIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+
+		return criteria.list();
+	}
 
 	public Collection<Curso> findAllSelect(Long empresaId)
 	{
@@ -60,6 +78,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 		return criteria.list();
 	}
+	
 
 	public String getConteudoProgramatico(Long id)
 	{

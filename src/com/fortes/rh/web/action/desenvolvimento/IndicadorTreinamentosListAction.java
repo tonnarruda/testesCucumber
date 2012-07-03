@@ -100,13 +100,13 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoFrequencia()
 	{
-		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		Object[] inscritos = new Object[]{1, qtdTotalInscritosTurmas};
 		Collection<Object[]>  graficoInscritos = new ArrayList<Object[]>();
 		graficoInscritos.add(inscritos);
 		grfFrequenciaInscritos = StringUtil.toJSON(graficoInscritos, null);
 		
-		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
 		Object[] participantes = new Object[]{2, qtdParticipantesPrevistos};
 		Collection<Object[]>  graficoParticipantes = new ArrayList<Object[]>();
 		graficoParticipantes.add(participantes);

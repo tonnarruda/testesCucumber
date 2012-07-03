@@ -236,13 +236,19 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
         Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
         estabelecimentoDao.save(estabelecimento);
-    	
+        
+        Curso curso = CursoFactory.getEntity();
+    	curso.setNome("Como Programar");
+        cursoDao.save(curso);
+        
     	Turma java = TurmaFactory.getEntity();
+    	java.setCurso(curso);
     	java.setDataPrevIni(DateUtil.criarDataMesAno(01, 06, 2010));
     	java.setDataPrevFim(DateUtil.criarDataMesAno(01, 07, 2010));
     	turmaDao.save(java);
     	
     	Colaborador joao = ColaboradorFactory.getEntity();
+    	java.setCurso(curso);
     	joao.setDesligado(false);
     	joao.setEmailColaborador("b@b.com.br");
     	joao.setEmpresa(empresa);
@@ -258,6 +264,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htJoao = historicoColaboradorDao.save(htJoao);
     	
     	Colaborador maria = ColaboradorFactory.getEntity();
+    	java.setCurso(curso);
     	maria.setDesligado(true);
     	maria.setEmailColaborador("teste@b.com.br");
     	maria.setEmpresa(empresa);
@@ -273,6 +280,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htMaria = historicoColaboradorDao.save(htMaria);
     	
     	Colaborador pedro = ColaboradorFactory.getEntity();
+    	java.setCurso(curso);
     	pedro.setDesligado(false);
     	pedro.setEmailColaborador("");
     	pedro.setEmpresa(empresaFora);
@@ -288,6 +296,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htPedro = historicoColaboradorDao.save(htPedro);
     	
     	Colaborador debora = ColaboradorFactory.getEntity();
+    	java.setCurso(curso);
     	debora.setDesligado(false);
     	debora.setEmailColaborador(null);
     	debora.setEmpresa(empresa);
@@ -325,7 +334,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Date dataInicial = DateUtil.criarDataMesAno(01, 01, 2010);
     	Date dataFinal = DateUtil.criarDataMesAno(01, 01, 2012);
     	
-    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),dataInicial , dataFinal, null, new Long[]{areaOrganizacional.getId()},new Long[]{java.getId()});
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()});
     	assertEquals(2, retorno.size());
     }
     
