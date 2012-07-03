@@ -33,14 +33,14 @@ public class EstabelecimentoDWR
 	{
 		Collection<Estabelecimento> estabelecimentos;
 		
-		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos
+		if(empresaId == null || empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos
 			estabelecimentos = estabelecimentoManager.findAll();
 		else
 			estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);
 
 		CollectionUtil<Estabelecimento> cu1 = new CollectionUtil<Estabelecimento>();
 		estabelecimentos = cu1.sortCollectionStringIgnoreCase(estabelecimentos, "nome");
-		
+
 		return cu1.convertCollectionToMap(estabelecimentos, "getId", "getNome");
 	}
 

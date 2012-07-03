@@ -4,12 +4,11 @@
 <head>
 <@ww.head/>
 
-<title>Exportar Treinamentos para o TRU</title>
+<title>Exportar Curso/Turma como ocorrência para o TRU</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -18,27 +17,20 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<script type='text/javascript'>
-		var cursosIds = [];
-
 		$(function(){
-			var empresaValue = $('#empresaId').val();
-			populaEstabelecimento(empresaValue);
-			populaEstabelecimento(empresaValue);
-			populaCurso(empresaValue);
-			populaArea(empresaValue);
+			populaFiltros($('#empresaId').val());
 			
 			$('#empresaId').change(function(){
-				populaEstabelecimento($(this).val());
-				populaCurso($(this).val());
-				populaArea($(this).val());
+				populaFiltros($(this).val());
 			});
-			
-			
-			$('#cursosCheck').click(function(){
-				getTurmasByFiltro();
-			});
-			
 		});
+		
+		function populaFiltros(empresaId)
+		{
+			populaEstabelecimento(empresaId);
+			populaCurso(empresaId);
+			populaArea(empresaId);
+		}
 		
 		function populaEstabelecimento(empresaId)
 		{
@@ -79,22 +71,17 @@
 	</script>
 	
 </head>
-
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
-	
 	<@ww.form name="form" action="gerarArquivoExportacao.action" validate="true" onsubmit="${validarCampos}" method="POST" >
 		<@ww.select label="Empresas Integradas" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" />		
-
-		<@ww.select label="Tirar o colaborador da escala?" name="escala" list=r"#{'S':'Sim','N':'Não'}"/>
+		<@ww.select label="Tirar o colaborador da escala" name="escala" list=r"#{'S':'Sim','N':'Não'}"/>
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos"  list="estabelecimentosCheckList" width="600"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"  width="600"/>
-
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList"  width="600" />
 	</@ww.form>
-	
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnExportar"></button>
 	</div>
