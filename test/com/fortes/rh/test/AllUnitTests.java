@@ -594,6 +594,7 @@ import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
+import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
 
 public class AllUnitTests extends TestSuite
@@ -1323,11 +1324,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
         suite.addTestSuite(ManagerAuditaTest.class);
-
         suite.addTestSuite(LinkTagTest.class);
-        
         suite.addTestSuite(F2rhFacadeTest.class);
-        
+        suite.addTestSuite(ExportacaoActionTest.class);
 
         return suite;
     }

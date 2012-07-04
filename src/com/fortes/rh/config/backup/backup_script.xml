@@ -29,7 +29,7 @@
 			<arg value="UTF-8" />
 			<arg value="-h" />
 			<arg value="${postgres.host}" />
-			<arg value="fortesrh" />
+			<arg value="${db_name}" />
 		</exec>
 
 		<echo message="Banco de dados fortesrh criado com sucesso.." />
@@ -43,21 +43,7 @@
 			<arg value="-h" />
 			<arg value="${postgres.host}" />
 			<arg value="--dbname" />
-			<arg value="fortesrh" />
-		</exec>
-		
-		<echo message="Tabelas do banco de dados fortesrh criada com sucesso.." />
-				
-		<exec failifexecutionfails="true" failonerror="true" 
-			executable="${postgres.dir}/bin/psql"
-			input="${sys.path}/WEB-INF/metadata/create_data.sql" >
-			<env key="PGPASSWORD" value="${postgres.password}" />
-			<arg value="-U" />
-			<arg value="${postgres.user}" />
-			<arg value="-h" />
-			<arg value="${postgres.host}" />
-			<arg value="--dbname" />
-			<arg value="fortesrh" />
+			<arg value="${db_name}" />
 		</exec>
 		
 		<echo message="Banco de dados fortesrh populado com sucesso.." />

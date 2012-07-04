@@ -24,7 +24,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private Curso curso;
 	private String[] avaliacaoCursoCheck;
 	private Collection<CheckBox> avaliacaoCursoCheckList = new ArrayList<CheckBox>();
-
+	private boolean codigoTRUCurso;
 	private String nomeCursoBusca;
 	private int page;
 
@@ -38,6 +38,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		if(curso != null && curso.getId() != null)
 			curso = (Curso) cursoManager.findById(curso.getId());
 		
+		codigoTRUCurso = getEmpresaSistema().isCodigoTruCurso();
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
 		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
 	}
@@ -154,5 +155,13 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	public void setNomeCursoBusca(String nomeCursoBusca)
 	{
 		this.nomeCursoBusca = nomeCursoBusca;
+	}
+
+	public boolean isCodigoTRUCurso() {
+		return codigoTRUCurso;
+	}
+
+	public void setCodigoTRUCurso(boolean codigoTRUCurso) {
+		this.codigoTRUCurso = codigoTRUCurso;
 	}
 }

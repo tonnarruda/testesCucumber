@@ -12,6 +12,7 @@ import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -111,7 +112,12 @@ public class LoginAction extends MyActionSupport
 	{
 		try
 		{
+			String dbName = ArquivoUtil.getSystemConf().getProperty("db.name");
+			if(dbName == null || dbName.equals(""))
+				dbName = "fortesrh";
+
 			RunAntScript runAntScript = new RunAntScript(null, "create-bd");
+			runAntScript.addProperty("db_name", dbName);
 			runAntScript.launch();
 			addActionMessage("Banco gerado com sucesso, reinicie a aplicação Fortes RH.");
 		} catch (Exception e)

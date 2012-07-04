@@ -118,6 +118,22 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(curso, cursoDao.findByIdProjection(curso.getId()));
 
 	}
+	
+	public void testFindByIdProjectionByIds()
+	{
+		Curso curso1 = CursoFactory.getEntity();
+		curso1 = cursoDao.save(curso1);
+		
+		Curso curso2 = CursoFactory.getEntity();
+		curso2 = cursoDao.save(curso2);
+
+		Curso curso3 = CursoFactory.getEntity();
+		curso3 = cursoDao.save(curso3);
+		Long[] cursoIds = new Long[]{ curso1.getId(), curso2.getId(), curso3.getId() };
+		assertTrue(cursoDao.findByIdProjection(cursoIds).size() == 3);
+
+	}
+	
 
 	public void testFindByCertificacao()
 	{

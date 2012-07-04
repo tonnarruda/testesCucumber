@@ -1,0 +1,1 @@
+alter table curso add column codigotru integer;--.go

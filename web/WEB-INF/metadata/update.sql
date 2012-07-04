@@ -19063,3 +19063,6 @@ ALTER FUNCTION normalizar(text) OWNER TO postgres;--.go
 
 insert into migrations values('20120625093650');--.go
 update parametrosdosistema set appversao = '1.1.76.72';--.go
+-- versao 1.1.77.73
+
+update parametrosdosistema set appversao = '1.1.77.73';--.go

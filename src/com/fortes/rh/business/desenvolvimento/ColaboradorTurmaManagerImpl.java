@@ -38,9 +38,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
-import com.fortes.rh.util.StringUtil;
 import com.ibm.icu.math.BigDecimal;
 
 @SuppressWarnings("unchecked")
@@ -57,7 +55,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
-	private Mail mail;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -1097,14 +1094,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradoresComEmailByTurma(turmaId);
 	}
 	
-	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Date dataIni,	Date dataFim, String[] estabelecimentosCheck, String[] areasCheck,String[] turmasCheck)
+	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds,	Long[] areaIds, Long[] cursoIds)
 	{
-		return getDao().findColabTreinamentos(empresaId, dataIni, dataFim, StringUtil.stringToLong(estabelecimentosCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(turmasCheck));
+		return getDao().findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, cursoIds);
 	}
-	
-	public void setMail(Mail mail) 
+	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds) 
 	{
-		this.mail = mail;
+		return getDao().findColaboradorByCursos(cursosIds);
 	}
-	
 }

@@ -1,0 +1,1 @@
+alter table empresa add column codigoTruCurso boolean default false;--.go

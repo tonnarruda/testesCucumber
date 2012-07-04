@@ -27,7 +27,12 @@
 
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" id="form" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" liClass="liLeft" cssStyle="width:409px;" maxLength="100"/><br><br><br>
+		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" cssStyle="width:409px;" maxLength="100"/>
+	
+		<#if codigoTRUCurso>
+			<@ww.textfield label="Código da Ocorrência no TRU" name="curso.codigoTru" id="codigoTRU" onkeypress="return(somenteNumeros(event,''));" size="3"  maxLength="3"/>
+		</#if>
+	
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
 		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		<@ww.textarea label="Conteúdo Programático" name="curso.conteudoProgramatico" cssStyle="width:500px;"/>
@@ -36,7 +41,6 @@
 
 		<@ww.hidden name="curso.id" />
 		<@ww.hidden name="curso.empresa.id" />
-
 		<@ww.hidden name="nomeCursoBusca" />
 		<@ww.hidden name="page" />
 	</@ww.form>

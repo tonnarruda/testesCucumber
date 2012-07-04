@@ -2,18 +2,18 @@ package com.fortes.rh.web.action.exportacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -23,13 +23,8 @@ public class ExportacaoAction extends MyActionSupport
 {
 	private EmpresaManager empresaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private CursoManager cursoManager;
 	
-	private Date dataIni;
-	private Date dataFim;
-	
-	private String codigoTRU;
-	private String descricaoTRU;
-
 	private Long empresaId;
 	private Collection<Empresa> empresas;
 	private char escala; 
@@ -43,10 +38,6 @@ public class ExportacaoAction extends MyActionSupport
 	private Collection<Curso> cursos = new ArrayList<Curso>();
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	private String[] cursosCheck;
-	
-	private String[] turmasCheck;
-	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
-	
 	private String textoTru;
 	
 	public String prepareExportacaoTreinamentos() throws Exception
@@ -57,7 +48,10 @@ public class ExportacaoAction extends MyActionSupport
 			empresas = empresaManager.findEmpresasIntegradas();
 			
 			if(empresas.isEmpty())
-				throw new Exception ("Não existe empresa Integrada." );
+			{
+				empresas = new ArrayList<Empresa>();
+				throw new Exception ("Não existe(m) empresa(s) Integrada(s)." );
+			}
 			
 			return SUCCESS;
 		}
@@ -69,33 +63,54 @@ public class ExportacaoAction extends MyActionSupport
 		}
 	}
 	
+	//para maiores informações ver Layout de importação do Tráfego Urbano (TRU) em FortesRH\web\WEB-INF\temp\layoutImportaçãoTrafegoUrbano.txt
 	public String gerarArquivoExportacao() throws Exception
 	{
 		try{
-			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, dataIni, dataFim, estabelecimentosCheck, areasCheck, turmasCheck);
+			checaCursosSemCodigoTRU();
+			checaColaboradoresSemCodigoAC();
 			
-			if(colaboradorTurmas.isEmpty())
-				throw new Exception ("Não existem dados com os filtros selecionados" );
-			
-			//Espaços importantes, favor não alterar quantidadde de espaços, ver documento do TRU em FortesRH\extras\importacaoTRU.txt
+			Long[] estabelecimentoIds = StringUtil.stringToLong(estabelecimentosCheck);
+			Long[] areaIds = StringUtil.stringToLong(areasCheck);
 			StringBuffer texto = new StringBuffer();
-			texto.append("H1TRAFEGO   RH        Importação do RH para o TRU            \n");
-			texto.append("0" + codigoTRU + StringUtils.rightPad(descricaoTRU, 30, " ") + "1" + escala +"\n");
-			
-			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-				texto.append("1" + colaboradorTurma.getColaborador().getCodigoAC() + codigoTRU + 
-						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", "") +
-						DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", "") +
-						StringUtils.rightPad(" ", 270)+ "\n");
+
+			//Cabeçalho
+			texto.append("H1");
+			texto.append(StringUtils.rightPad("TRAFEGO", 10, " "));
+			texto.append(StringUtils.rightPad("RH", 10, " "));
+			texto.append(StringUtils.rightPad("Importação do RH para o TRU", 40, " "));
+			texto.append("\n");
+
+			for (Curso curso : cursos)
+			{
+				//Indicação do tipo de Ocorrencia
+				texto.append("0");
+				texto.append(curso.getCodigoTru());
+				texto.append(StringUtils.rightPad(curso.getNome(), 30, " "));
+				texto.append("1");
+				texto.append(escala);
+				texto.append("\n");
+				
+				//Ocorrências dos colaboradores
+				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()});
+				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+				{
+					texto.append("1"); 
+					texto.append(colaboradorTurma.getColaborador().getCodigoAC()); 
+					texto.append(curso.getCodigoTru()); 
+					texto.append(DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", ""));
+					texto.append(DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", ""));
+					texto.append(StringUtils.rightPad(" ", 270));
+					texto.append("\n");
+				}
 			}
-			
+
 			texto.append("T");
-			
 			textoTru = texto.toString();
 			
 			prepareExportacaoTreinamentos();
 			return  SUCCESS;
-		
+
 		}catch (Exception e)
 		{
 			addActionMessage(e.getMessage());
@@ -103,6 +118,33 @@ public class ExportacaoAction extends MyActionSupport
 			prepareExportacaoTreinamentos();
 			return Action.INPUT;
 		}
+	}
+
+	private void checaCursosSemCodigoTRU() throws Exception 
+	{
+		Long[] cursosIds = StringUtil.stringToLong(cursosCheck);
+		cursos = cursoManager.findByIdProjection(cursosIds);
+
+		StringBuffer erro = new StringBuffer();
+		for (Curso curso : cursos)
+			if(curso.getCodigoTru() == null)
+				erro.append(" -" + curso.getNome() + "<br>");
+		
+		if(erro.length() > 0)
+			throw new Exception ("Impossível exportar arquivo.<br>Existem cursos sem código TRU:<br>" + erro.toString() );
+	}
+
+	private void checaColaboradoresSemCodigoAC() throws Exception 
+	{
+		Collection<Colaborador> colaboradors = colaboradorTurmaManager.findColaboradorByCurso(StringUtil.stringToLong(cursosCheck));
+		
+		StringBuffer erro = new StringBuffer();
+		for (Colaborador colaborador : colaboradors)
+			if(colaborador.getCodigoAC() == null || colaborador.getCodigoAC().equals(""))
+				erro.append(" -" + colaborador.getNomeMaisNomeComercial() + "<br>");
+		
+		if(erro.length() > 0)
+			throw new Exception ("Impossível exportar arquivo.<br>Existem Colaboradores sem código AC (Matrícula):<br>" + erro.toString() );
 	}
 
 	public Collection<Empresa> getEmpresas() {
@@ -182,38 +224,6 @@ public class ExportacaoAction extends MyActionSupport
 		this.cursosCheck = cursosCheck;
 	}
 
-	public Date getDataIni() {
-		return dataIni;
-	}
-
-	public void setDataIni(Date dataIni) {
-		this.dataIni = dataIni;
-	}
-
-	public Date getDataFim() {
-		return dataFim;
-	}
-
-	public void setDataFim(Date dataFim) {
-		this.dataFim = dataFim;
-	}
-
-	public String[] getTurmasCheck() {
-		return turmasCheck;
-	}
-
-	public void setTurmasCheck(String[] turmasCheck) {
-		this.turmasCheck = turmasCheck;
-	}
-
-	public Collection<CheckBox> getTurmasCheckList() {
-		return turmasCheckList;
-	}
-
-	public void setTurmasCheckList(Collection<CheckBox> turmasCheckList) {
-		this.turmasCheckList = turmasCheckList;
-	}
-
 	public void setColaboradorTurmaManager(
 			ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
@@ -227,27 +237,15 @@ public class ExportacaoAction extends MyActionSupport
 		this.textoTru = textoTru;
 	}
 
-	public String getCodigoTRU() {
-		return codigoTRU;
-	}
-
-	public void setCodigoTRU(String codigoTRU) {
-		this.codigoTRU = codigoTRU;
-	}
-
-	public String getDescricaoTRU() {
-		return descricaoTRU;
-	}
-
-	public void setDescricaoTRU(String descricaoTRU) {
-		this.descricaoTRU = descricaoTRU;
-	}
-
 	public char getEscala() {
 		return escala;
 	}
 
 	public void setEscala(char escala) {
 		this.escala = escala;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 }
