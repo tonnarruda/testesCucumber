@@ -131,7 +131,7 @@ public class ExportacaoAction extends MyActionSupport
 				erro.append(" -" + curso.getNome() + "<br>");
 		
 		if(erro.length() > 0)
-			throw new Exception ("Impossível exportar arquivo.<br>Existem cursos sem código TRU:<br>" + erro.toString() );
+			throw new Exception ("Impossível exportar.<br>Existem cursos sem código TRU:<br>" + erro.toString() );
 	}
 
 	private void checaColaboradoresSemCodigoAC() throws Exception 
@@ -144,7 +144,7 @@ public class ExportacaoAction extends MyActionSupport
 				erro.append(" -" + colaborador.getNomeMaisNomeComercial() + "<br>");
 		
 		if(erro.length() > 0)
-			throw new Exception ("Impossível exportar arquivo.<br>Existem Colaboradores sem código AC (Matrícula):<br>" + erro.toString() );
+			throw new Exception ("Impossível exportar.<br>Existem Colaboradores sem código AC (Matrícula):<br>" + erro.toString() );
 	}
 
 	public Collection<Empresa> getEmpresas() {

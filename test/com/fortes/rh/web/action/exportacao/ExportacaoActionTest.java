@@ -45,7 +45,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
     	assertEquals("input",action.gerarArquivoExportacao());
-    	assertEquals("Impossível exportar arquivo.<br>Existem cursos sem código TRU:<br> -curso<br>",action.getActionMessages().toArray()[0]);
+    	assertEquals("Impossível exportar.<br>Existem cursos sem código TRU:<br> -curso<br>",action.getActionMessages().toArray()[0]);
     }
     
     public void testGerarArquivoExportacaoColaboradorSemCodigoAC() throws Exception
@@ -60,7 +60,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
     	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING).will(returnValue(Arrays.asList(colaborador)));
     	assertEquals("input",action.gerarArquivoExportacao());
-    	assertEquals("Impossível exportar arquivo.<br>Existem Colaboradores sem código AC (Matrícula):<br> -colaborador (nome comercial colaborador)<br>",action.getActionMessages().toArray()[0]);
+    	assertEquals("Impossível exportar.<br>Existem Colaboradores sem código AC (Matrícula):<br> -colaborador (nome comercial colaborador)<br>",action.getActionMessages().toArray()[0]);
     }
     
     public void testGerarArquivoExportacao() throws Exception
