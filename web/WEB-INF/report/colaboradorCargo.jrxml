@@ -50,19 +50,6 @@
 			<groupExpression><![CDATA[$F{faixaSalarial.descricao}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="false" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="1"
-						width="537"
-						height="12"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{faixaSalarial.descricao}]]></textFieldExpression>
-				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -80,6 +67,55 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $V{grpCargo_COUNT}]]></textFieldExpression>
 				</textField>
+				<elementGroup><!--  Start: 5 !-->
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="0"
+						width="71"
+						height="11"
+						key="textField-13">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
+				</textField>
+				</elementGroup><!-- End 5 !-->
+				<elementGroup><!--  Start: 6 !-->
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="284"
+						y="1"
+						width="103"
+						height="11"
+						key="textField-11">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.tempoDeServico}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="386"
+						y="1"
+						width="73"
+						height="11"
+						key="textField-12">
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
+				</textField>
+				</elementGroup><!-- End 6 !-->
 			</band>
 			</groupFooter>
 		</group>
@@ -209,7 +245,7 @@
 		</pageHeader>
 		<columnHeader>
 			<band height="32"  isSplitAllowed="true" >
-				<elementGroup><!--  Start: 2 !-->
+				<elementGroup><!--  Start: 1 !-->
 				<staticText>
 					<reportElement
 						x="404"
@@ -240,12 +276,12 @@
 					</textElement>
 				<text><![CDATA[Contratado há]]></text>
 				</staticText>
-				</elementGroup><!-- End 2 !-->
-				<elementGroup><!--  Start: 1 !-->
+				</elementGroup><!-- End 1 !-->
+				<elementGroup><!--  Start: 2 !-->
 				<staticText>
 					<reportElement
 						x="284"
-						y="15"
+						y="-1"
 						width="103"
 						height="12"
 						key="staticText-9">
@@ -259,8 +295,8 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="389"
-						y="15"
+						x="386"
+						y="-1"
 						width="73"
 						height="12"
 						key="staticText-10">
@@ -274,8 +310,8 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="464"
-						y="15"
+						x="461"
+						y="0"
 						width="71"
 						height="12"
 						key="staticText-13">
@@ -287,7 +323,7 @@
 					</textElement>
 				<text><![CDATA[Salário]]></text>
 				</staticText>
-				</elementGroup><!-- End 1 !-->
+				</elementGroup><!-- End 2 !-->
 				<staticText>
 					<reportElement
 						x="12"
@@ -331,22 +367,7 @@
 		</columnHeader>
 		<detail>
 			<band height="13"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="10"
-						y="-1"
-						width="527"
-						height="14"
-						backcolor="#EEEEEE"
-						key="rectangle-1"
-						stretchType="RelativeToTallestObject"
-						isRemoveLineWhenBlank="true"
-						isPrintWhenDetailOverflows="true">
-							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) != 1)]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="RelativeToTallestObject" pen="None"/>
-				</rectangle>
-				<elementGroup><!--  Start: 8 !-->
+				<elementGroup><!--  Start: 3 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="284"
@@ -362,8 +383,8 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.tempoDeServico}]]></textFieldExpression>
 				</textField>
-				</elementGroup><!-- End 8 !-->
-				<elementGroup><!--  Start: 5 !-->
+				</elementGroup><!-- End 3 !-->
+				<elementGroup><!--  Start: 4 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="404"
@@ -379,56 +400,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
 				</textField>
-				</elementGroup><!-- End 5 !-->
-				<elementGroup><!--  Start: 7 !-->
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="464"
-						y="1"
-						width="71"
-						height="11"
-						key="textField-13">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{salarioCalculado}]]></textFieldExpression>
-				</textField>
-				</elementGroup><!-- End 7 !-->
-				<elementGroup><!--  Start: 9 !-->
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="284"
-						y="1"
-						width="103"
-						height="11"
-						key="textField-11">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.tempoDeServico}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="389"
-						y="1"
-						width="73"
-						height="11"
-						key="textField-12">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.dataAdmissaoFormatada}]]></textFieldExpression>
-				</textField>
-				</elementGroup><!-- End 9 !-->
+				</elementGroup><!-- End 4 !-->
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="12"
