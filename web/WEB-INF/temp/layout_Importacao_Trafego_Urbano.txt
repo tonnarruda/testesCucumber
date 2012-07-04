@@ -1,0 +1,71 @@
+/******************************************************
+* Layout de importacao do Fortes Tráfego Urbano
+*
+* Layout: 1
+* Formato do arquivo: Texto (line sequential)
+* Nome do arquivo: <nome-do-arquivo>.TR
+*
+*******************************************************/
+
+Registro Header de Arquivo
+
+Pos Tam Formato  Valor      Exemplo                 Descricao
+--- --- -------- ---------- ----------------------- ----------------------
+  1   1 9        H - Header                         Registro Header
+  2   1 9        1 - layout                         Layout do arquivo
+  3  10 X(10)    TRAFEGO                            Sistema destino
+ 13  10 X(10)               ESCALA                  Sistema origem
+ 23  40 X(40)               Teste de Comentario     Comentario
+
+
+Registro Tipos de Ocorrências dos Empregados
+
+Pos Tam Formato  Valor      Exemplo                   Descricao
+--- --- -------- ---------- -----------------------   ----------------------
+  1   1 X(1)                0                         Constante - Identificador de registro "Tipos de Ocorrências de Empregados"
+  2   3 X(3)                005                       Codigo (*)																	Este código é o mesmo do AC, e se for, se a empresa não tiver ou for integrada com AC?
+  5  30 X(30)               Doença                    Descrição (*)
+ 35   1 X(1)                1 ou 2 ou 3 ou 4          Parâmetro de Lançamento (Período-1, Data-2, Dias-3, Horas-4) (*)				O que isso?
+ 36   1 X(1)                S ou N                    Tira o Empregado da Escala (*)
+
+
+Registro Ocorrências dos Empregados
+
+Pos Tam Formato  Valor      Exemplo                   Descricao
+--- --- -------- ---------- -----------------------   ----------------------
+  1   1 X(1)                1                         Constante - Identificador de registro "Ocorrências dos Empregados"
+  2   6 X(6)                000005                    Codigo do Empregado (Matrícula) (*)
+  8   3 X(3)                001                       Tipo de Ocorrência (*)
+ 11   8 ddmmaaaa            31122006                  Data Inicial (*) Obrigatório se tipo de ocorrência for 1 ou 2
+ 19   8 ddmmaaaa            31122006                  Data Final (*) Obrigatório se tipo de ocorrência for 1
+ 27  15 9(12).99                     132.20           Valor (*) Obrigatório se tipo de ocorrência for 3 ou 4 (Para tipo Horas-4 veja exemplo abaixo)
+ 42 255 X(255)		    Problemas particulares    Observações
+
+Exemplo de Conversão de Horas: Para informar um campo valor do tipo hora, deve-se tranformá-lo em decimal.
+Por exemplo, para indicar 02:45h, basta informar 2.75 (quantidade de horas somada à divisão dos minutos por 60).
+
+
+Registro Trailer
+
+Pos Tam Formato  Valor      Exemplo                 Descricao
+--- --- -------- ---------- ----------------------- ----------------------
+  1   1 X(1)     T                                  Registro Trailer
+
+
+Obs: Os campos que contém (*) são obrigatórios.
+
+Exemplo de Arquivo de Teste:
+H1TRAFEGO   ESCALA    Comentário de Importação
+0010Tipo de Ocorrência 10         1S
+0002Tipo de Ocorrência 2          1S
+0003Tipo de Ocorrência 3          2N
+0011Tipo de Ocorrência 11         3N
+100000200331122006			 Ocorrência de teste1
+10000020100112200631122006		 Ocorrência de teste2
+1000002011                           2.00Ocorrência de teste3
+T
+
+H1TRAFEGO   RH    Importação do RH para o TRU
+0999Treinamentos                  1N
+10808909993112200631122006 (+ 270 caracteres em branco)
+T

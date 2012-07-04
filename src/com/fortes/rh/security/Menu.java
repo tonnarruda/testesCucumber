@@ -8,12 +8,13 @@ import org.apache.axis.utils.StringUtils;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 public abstract class Menu 
 {
 	private static Collection<Papel> roles;
 	
-	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario)
+	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada)
 	{
 		roles = new ArrayList<Papel>();
         for (Papel papel : rolesPapel)
@@ -51,7 +52,12 @@ public abstract class Menu
 					menu.append("</ul>\n");
 				}
 
-				menu.append(getFilhos(papel.getId(), contexto, empresasDoUsuario) + "</ul>\n</li>\n");
+				menu.append(getFilhos(papel.getId(), contexto, empresasDoUsuario));
+				
+				if(empresaLogada.isCodigoTruCurso())
+					menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
+				
+				menu.append("</ul>\n</li>\n");
 			}
 		}
 

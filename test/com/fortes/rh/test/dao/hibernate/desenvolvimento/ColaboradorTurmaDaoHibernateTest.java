@@ -512,6 +512,39 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradorByTurma(turma.getId());
     	assertEquals(1, retorno.size());
     }
+    
+    public void testFindColaboradorByCursos()
+    {
+    	Curso curso = CursoFactory.getEntity();
+    	cursoDao.save(curso);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setCurso(curso);
+    	turmaDao.save(turma);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setCodigoAC("123445");
+    	colaborador = colaboradorDao.save(colaborador);
+    	
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity();
+    	colaborador2 = colaboradorDao.save(colaborador2);
+    	
+    	ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setCurso(curso);
+    	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	ColaboradorTurma colaboradorTurma2 = getEntity();
+    	colaboradorTurma2.setColaborador(colaborador2);
+    	colaboradorTurma2.setTurma(turma);
+    	colaboradorTurma2.setCurso(curso);
+    	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
+    	
+    	Collection<Colaborador> colaboradors = colaboradorTurmaDao.findColaboradorByCursos(new Long[]{curso.getId()});
+    	
+    	assertEquals(1, colaboradors.size());
+    }
 
     public void testFindByTurmaSemPresenca()
     {

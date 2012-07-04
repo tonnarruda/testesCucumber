@@ -1095,4 +1095,20 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return colaboradorTurmas;	
 	}
+
+	public Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.nome, co.nomeComercial) ");
+		hql.append("from ColaboradorTurma as ct ");
+		hql.append("left join ct.colaborador as co ");
+		hql.append("where ct.curso.id in (:cursoIds) ");
+		hql.append("and (co.codigoAC is null ");
+		hql.append("or co.codigoAC = '') ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("cursoIds", cursosIds, Hibernate.LONG);
+
+		return query.list();	
+	}
 }

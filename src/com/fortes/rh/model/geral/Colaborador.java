@@ -227,7 +227,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
+	}
 	
+	public Colaborador(String nome, String nomeComercial)
+	{
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
 	}
 
 	//Construtor usado por findAdmitidosNoPeriodo

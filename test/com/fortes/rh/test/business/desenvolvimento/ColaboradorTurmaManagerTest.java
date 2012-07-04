@@ -116,9 +116,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
 		
-        mail = mock(Mail.class);
-        colaboradorTurmaManager.setMail((Mail) mail.proxy());
-        
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		
 	}
