@@ -138,6 +138,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			reajustes = reajusteColaboradorManager.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), null, null, null, 0);
+			tabelaReajusteColaboradorManager.verificaDataHistoricoColaborador(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
 			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, getEmpresaSistema(), reajustes);
 			
 			return Action.SUCCESS;
@@ -167,7 +168,12 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		{
 			e.printStackTrace();
 			visualizar();
-			addActionError("Inserção do Planejamento de Realinhamento falhou.");
+			
+			if(e.getMessage() != null)
+				addActionError("Inserção do Planejamento de Realinhamento falhou.<br>" + e.getMessage() );
+			else
+				addActionError("Inserção do Planejamento de Realinhamento falhou." );
+			
 			return Action.INPUT;
 		}
 	}

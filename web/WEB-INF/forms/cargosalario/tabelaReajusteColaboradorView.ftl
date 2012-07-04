@@ -38,7 +38,7 @@
 				return false;
 			}
 			
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});
 		}
 	</script>
 
@@ -60,6 +60,7 @@
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="form" action="" method="POST">
 				<@ww.hidden name="tabelaReajusteColaborador.id" id="id"/>
+				<@ww.hidden name="tabelaReajusteColaborador.data" id="id"/>
 
 				<!-- Filtro -->
 				<@ww.select id="optFiltro" label="Filtrar Por" name="filtro" required="true"  list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt();" headerKey="1"/>
