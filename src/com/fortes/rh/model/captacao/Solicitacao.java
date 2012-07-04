@@ -485,11 +485,12 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public String getDescricaoFormatada()
 	{
+    	String codigo = getId().toString();
 		String nomeDoCargo = this.getNomeDoCargoDaFaixaSalarial();
 		String data = DateUtil.formataDate(this.getData(),"dd/MM/yyyy");
 		String descricaoDaAreaOrg = this.getDescricaoDaAreaOrganizacional();
 		
-		return this.descricao + " - " + nomeDoCargo +" - "+ data +" - " + descricaoDaAreaOrg;
+		return codigo +" - " + this.descricao + " - " + nomeDoCargo +" - "+ data +" - " + descricaoDaAreaOrg;
 	}
 
 	public String getValorPromocao()
