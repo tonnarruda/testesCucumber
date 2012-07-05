@@ -8,7 +8,6 @@ import org.apache.axis.utils.StringUtils;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 public abstract class Menu 
 {
@@ -32,6 +31,7 @@ public abstract class Menu
 				String accesskey = "";
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				String nome = papel.getNome();
+				boolean exibeMenuTru = nome.equals("Utilitários") && empresaLogada.isCodigoTruCurso();
 				
 				if(papel.getAccesskey() != null)
 				{					
@@ -54,7 +54,7 @@ public abstract class Menu
 
 				menu.append(getFilhos(papel.getId(), contexto, empresasDoUsuario));
 				
-				if(empresaLogada.isCodigoTruCurso())
+				if(exibeMenuTru)
 					menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
 				
 				menu.append("</ul>\n</li>\n");

@@ -31,7 +31,7 @@
 			});
 
 			$('#CodigoTruCursoHelp').qtip({
-				content: '<div style="text-align:justify">Esta opção serve somente para mapear afastamentos do TRU com o curso.</div>',
+				content: '<div style="text-align:justify">Esta opção possibilita a exportação do curso/turma como ocorrência para o sistema Tráfego Urbano (TRU).</div>',
 				style: { width: 400 }
 			});
 			
@@ -164,8 +164,8 @@
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
 		<li>
-			<@ww.checkbox label="Exibir campo do código TRU ao cadastrar curso" id="CodigoTruCurso" name="empresa.codigoTruCurso" liClass="liLeft" labelPosition="left"/>
-			<img id='CodigoTruCursoHelp' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 351px;margin-top: -25px;vertical-align: top;' />
+			<@ww.checkbox label="Exibir campo código TRU (Tráfego Urbano) ao cadastrar curso e exibir a opção de exportar curso/turma como ocorrência para o TRU em Utilitários." id="CodigoTruCurso" name="empresa.codigoTruCurso" liClass="liLeft" labelPosition="left"/>
+			<img id='CodigoTruCursoHelp' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 65px;margin-top: -25px;vertical-align: top;' />
 			<br />
 		<li>
 		<li>
