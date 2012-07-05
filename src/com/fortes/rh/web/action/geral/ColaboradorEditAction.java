@@ -38,7 +38,6 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
-import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
@@ -48,7 +47,6 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
-import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
@@ -133,8 +131,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
-	private UsuarioMensagemManager usuarioMensagemManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private AvaliacaoManager avaliacaoManager;
@@ -1620,14 +1616,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setObsACPessoal(String obsACPessoal) {
 		this.obsACPessoal = obsACPessoal;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
-		this.usuarioMensagemManager = usuarioMensagemManager;
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
 	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {

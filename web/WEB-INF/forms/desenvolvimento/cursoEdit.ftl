@@ -31,6 +31,8 @@
 	
 		<#if codigoTRUCurso>
 			<@ww.textfield label="Código da Ocorrência no TRU" name="curso.codigoTru" id="codigoTRU" onkeypress="return(somenteNumeros(event,''));" size="3"  maxLength="3"/>
+		<#else>
+			<@ww.hidden name="curso.codigoTru" />
 		</#if>
 	
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
