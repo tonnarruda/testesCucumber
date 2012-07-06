@@ -67,9 +67,9 @@ public class SolicitacaoDWRTest extends MockObjectTestCase
 		
 		Map<Long, String> result = solicitacoaDWR.getSolicitacoes(empresa.getId());
 		
-		assertEquals("Um -  - "+ DateUtil.formataDiaMesAno(dataSol1)+" - ", result.get(1L));	
-		assertEquals("Dois -  - "+ DateUtil.formataDiaMesAno(dataSol2)+" - ", result.get(2L));	
-		assertEquals("Três -  - "+ DateUtil.formataDiaMesAno(dataSol3)+" - ", result.get(3L));	
+		assertEquals("1 - Um -  - "+ DateUtil.formataDiaMesAno(dataSol1)+" - ", result.get(1L));	
+		assertEquals("2 - Dois -  - "+ DateUtil.formataDiaMesAno(dataSol2)+" - ", result.get(2L));	
+		assertEquals("3 - Três -  - "+ DateUtil.formataDiaMesAno(dataSol3)+" - ", result.get(3L));	
 	}
 }
 	

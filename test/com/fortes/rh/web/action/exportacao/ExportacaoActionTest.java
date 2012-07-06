@@ -76,7 +76,6 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	
     	action.setEstabelecimentosCheck(new String[]{"1"});
     	action.setAreasCheck(new String[]{"1"});
-    	action.setEscala('S');
     	
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
     	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING).will(returnValue(Arrays.asList(colaborador)));
@@ -96,14 +95,6 @@ public class ExportacaoActionTest extends MockObjectTestCase
 		texto.append(StringUtils.rightPad("Importação do RH para o TRU", 40, " "));
 		texto.append("\n");
 
-		//Indicação do tipo de Ocorrencia
-		texto.append("0");
-		texto.append(curso.getCodigoTru());
-		texto.append(StringUtils.rightPad(curso.getNome(), 30, " "));
-		texto.append("1");
-		texto.append(action.getEscala());
-		texto.append("\n");
-		
 		texto.append("T");
 		return texto.toString();
     }

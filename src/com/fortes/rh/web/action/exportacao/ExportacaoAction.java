@@ -27,7 +27,6 @@ public class ExportacaoAction extends MyActionSupport
 	
 	private Long empresaId;
 	private Collection<Empresa> empresas;
-	private char escala; 
 	
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
@@ -83,14 +82,6 @@ public class ExportacaoAction extends MyActionSupport
 
 			for (Curso curso : cursos)
 			{
-				//Indicação do tipo de Ocorrencia
-				texto.append("0");
-				texto.append(curso.getCodigoTru());
-				texto.append(StringUtils.rightPad(curso.getNome(), 30, " "));
-				texto.append("1");
-				texto.append(escala);
-				texto.append("\n");
-				
 				//Ocorrências dos colaboradores
 				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()});
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
@@ -235,14 +226,6 @@ public class ExportacaoAction extends MyActionSupport
 
 	public void setTextoTru(String textoTru) {
 		this.textoTru = textoTru;
-	}
-
-	public char getEscala() {
-		return escala;
-	}
-
-	public void setEscala(char escala) {
-		this.escala = escala;
 	}
 
 	public void setCursoManager(CursoManager cursoManager) {
