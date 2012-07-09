@@ -1,5 +1,6 @@
 package com.fortes.rh.business.sesmt;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 {
 	private CandidatoEleicaoManager candidatoEleicaoManager;
 	private ComissaoMembroManager comissaoMembroManager;
+	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
 
 	public void save(Long comissaoId, Long eleicaoId, Date aPartirDe)
 	{
@@ -67,6 +69,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 			comissaoPeriodo.setFim(this.getDataFim(comissaoPeriodo));
 		}
 
+		Collection<Long> colaboradorIds = new ArrayList<Long>();
 		CollectionUtil<ComissaoPeriodo> collectionUtil = new CollectionUtil<ComissaoPeriodo>();
 		Long[] comissaoPeriodoIds =  collectionUtil.convertCollectionToArrayIds(comissaoPeriodos);
 
@@ -78,9 +81,14 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 			for (ComissaoMembro comissaoMembro : comissaoMembros)
 			{
 				if (comissaoMembro.getComissaoPeriodo().getId().equals(comissaoPeriodo.getId()))
+				{
 					comissaoPeriodo.addMembro(comissaoMembro);
+					colaboradorIds.add(comissaoMembro.getColaborador().getId());
+				}
 			}
+			comissaoPeriodo.setPermitirExcluir(!comissaoReuniaoPresencaManager.existeReuniaoPresensa(comissaoId, colaboradorIds));
 		}
+		
 
 		return comissaoPeriodos;
 	}
@@ -184,5 +192,9 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		}
 		
 		return false;
+	}
+
+	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
+		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 }

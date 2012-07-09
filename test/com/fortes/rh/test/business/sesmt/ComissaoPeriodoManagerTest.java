@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.sesmt.CandidatoEleicaoManager;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ComissaoPeriodoManagerImpl;
+import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
 import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.model.sesmt.Eleicao;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoMembroFactory;
@@ -33,6 +35,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 	private Mock comissaoPeriodoDao;
 	private Mock candidatoEleicaoManager;
 	private Mock comissaoMembroManager;
+	private Mock comissaoReuniaoPresencaManager;
 
 	protected void setUp() throws Exception
     {
@@ -45,6 +48,9 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 
         comissaoMembroManager = new Mock(ComissaoMembroManager.class);
         comissaoPeriodoManager.setComissaoMembroManager((ComissaoMembroManager)comissaoMembroManager.proxy());
+        
+        comissaoReuniaoPresencaManager = new Mock(ComissaoReuniaoPresencaManager.class);
+        comissaoPeriodoManager.setComissaoReuniaoPresencaManager((ComissaoReuniaoPresencaManager)comissaoReuniaoPresencaManager.proxy());
     }
 
 	public void testSave()
@@ -77,6 +83,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissao.setDataIni(new Date());
 		comissao.setDataFim(new Date());
 		
+		Colaborador joao = ColaboradorFactory.getEntity(1L);
 		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity(1L);
 		comissaoPeriodo.setComissao(comissao);
 		ComissaoPeriodo comissaoPeriodo2 = ComissaoPeriodoFactory.getEntity(2L);
@@ -86,6 +93,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoPeriodos.add(comissaoPeriodo2);
 		Collection<ComissaoMembro> comissaoMembros = new ArrayList<ComissaoMembro>();
 		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity(1L);
+		comissaoMembro.setColaborador(joao);
 		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
 		comissaoMembros.add(comissaoMembro);
 
@@ -94,6 +102,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodo.getId())).will(returnValue(comissaoPeriodo));
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodo2.getId())).will(returnValue(comissaoPeriodo2));
 		comissaoPeriodoDao.expects(atLeastOnce()).method("findProximo");
+		comissaoReuniaoPresencaManager.expects(atLeastOnce()).method("existeReuniaoPresensa").will(returnValue(false));
 		
 		comissaoMembroManager.expects(once()).method("findByComissaoPeriodo").with(ANYTHING).will(returnValue(comissaoMembros));
 

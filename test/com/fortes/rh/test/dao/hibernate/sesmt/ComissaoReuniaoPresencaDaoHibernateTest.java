@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -127,6 +128,51 @@ public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[0]).getColaborador());
 		assertEquals(jose, ((ComissaoReuniaoPresenca)resultado.toArray()[1]).getColaborador());
 		assertEquals(antonio, ((ComissaoReuniaoPresenca)resultado.toArray()[2]).getColaborador());
+	}
+	
+	public void testTexistePresencaNaReuniao()
+	{
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissaoDao.save(comissao);
+		
+		ComissaoReuniao comissaoReuniao1 = new ComissaoReuniao();
+		comissaoReuniao1.setComissao(comissao);
+		comissaoReuniao1.setData(DateUtil.criarDataMesAno(07, 07, 2011));
+		comissaoReuniaoDao.save(comissaoReuniao1);
+		
+		ComissaoReuniao comissaoReuniao2 = new ComissaoReuniao();
+		comissaoReuniao2.setComissao(comissao);
+		comissaoReuniao2.setData(DateUtil.criarDataMesAno(10, 10, 2011));
+		comissaoReuniaoDao.save(comissaoReuniao2);
+		
+		Colaborador antonio = ColaboradorFactory.getEntity();
+		antonio.setNome("antonio");
+		colaboradorDao.save(antonio);
+		
+		Colaborador jose = ColaboradorFactory.getEntity();
+		jose.setNome("jose");
+		colaboradorDao.save(jose);
+		
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca1 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca1.setComissaoReuniao(comissaoReuniao1);
+		comissaoReuniaoPresenca1.setColaborador(antonio);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca1);
+		
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca2 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca2.setComissaoReuniao(comissaoReuniao1);
+		comissaoReuniaoPresenca2.setColaborador(jose);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca2);
+		
+		ComissaoReuniaoPresenca comissaoReuniaoPresenca3 = new ComissaoReuniaoPresenca();
+		comissaoReuniaoPresenca3.setComissaoReuniao(comissaoReuniao2);
+		comissaoReuniaoPresenca3.setColaborador(antonio);
+		comissaoReuniaoPresencaDao.save(comissaoReuniaoPresenca3);
+		
+		Collection<Long> colaboradorIds = new ArrayList<Long>();
+		colaboradorIds.add(antonio.getId());
+		colaboradorIds.add(jose.getId());
+		
+		assertTrue(comissaoReuniaoPresencaDao.existeReuniaoPresensa(comissao.getId(), colaboradorIds));
 	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

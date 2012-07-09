@@ -81,4 +81,16 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
 	}
+
+	public boolean existeReuniaoPresensa(Long comissaoId,	Collection<Long> colaboradorIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"presenca");
+		criteria.createCriteria("presenca.comissaoReuniao", "cr");
+		criteria.createCriteria("presenca.colaborador", "co");
+
+		criteria.add(Expression.eq("cr.comissao.id", comissaoId));
+		criteria.add(Expression.in("presenca.colaborador.id", colaboradorIds));
+
+		return criteria.list().size() > 0;
+	}
 }

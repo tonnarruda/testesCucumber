@@ -55,7 +55,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 
 			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		}
-
 		return SUCCESS;
 	}
 

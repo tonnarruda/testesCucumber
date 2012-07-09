@@ -33,6 +33,9 @@ public class ComissaoPeriodo extends AbstractModel implements Serializable
 
 	@OneToMany(mappedBy="comissaoPeriodo")
 	private Collection<ComissaoMembro> comissaoMembros;
+	
+	@Transient
+	private boolean permitirExcluir;
 
 	public ComissaoPeriodo()
 	{
@@ -121,5 +124,13 @@ public class ComissaoPeriodo extends AbstractModel implements Serializable
 
 	public void setFim(Date fim) {
 		this.fim = fim;
+	}
+
+	public boolean isPermitirExcluir() {
+		return permitirExcluir;
+	}
+
+	public void setPermitirExcluir(boolean permitirExcluir) {
+		this.permitirExcluir = permitirExcluir;
 	}
 }

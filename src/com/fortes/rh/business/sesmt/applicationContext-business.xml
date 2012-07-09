@@ -570,6 +570,9 @@
     <property name="comissaoMembroManager">
       <ref bean="comissaoMembroManager" />
     </property>
+    <property name="comissaoReuniaoPresencaManager">
+      <ref bean="comissaoReuniaoPresencaManager" />
+    </property>
   </bean>
   <bean id="comissaoPeriodoManager" parent="parentManager">
     <property name="proxyInterfaces">
