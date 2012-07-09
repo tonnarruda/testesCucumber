@@ -19066,3 +19066,14 @@ update parametrosdosistema set appversao = '1.1.76.72';--.go
 -- versao 1.1.77.73
 
 update parametrosdosistema set appversao = '1.1.77.73';--.go
+-- versao 1.1.78.74
+
+alter table empresa add column codigoTruCurso boolean default false;--.go
+insert into migrations values('20120702104504');--.go
+alter table curso add column codigotru integer;--.go
+insert into migrations values('20120702113736');--.go
+alter table curso alter column codigotru TYPE character varying(3);--.go
+delete from perfil_papel where papeis_id=558;--.go
+delete from papel where id = 558;--.go
+insert into migrations values('20120703181421');--.go
+update parametrosdosistema set appversao = '1.1.78.74';--.go
