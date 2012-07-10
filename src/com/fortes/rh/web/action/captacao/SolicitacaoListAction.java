@@ -160,6 +160,9 @@ public class SolicitacaoListAction extends MyActionSupportList
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
     	}
     	
+    	if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
+    		return "successSolicitacao";
+    	
     	verSolicitacoes();
     	
     	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
