@@ -273,6 +273,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findByCargo(cargoId);
 	}
 	
+	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) throws Exception
+	{
+		return getDao().findByCargoComCompetencia(cargoId);
+	}
+
 	public Collection<Long> findByCargos(Collection<Long> cargoIds)
 	{
 		return getDao().findByCargos(cargoIds);
@@ -360,5 +365,4 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		// TODO Auto-generated method stub
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
-
 }

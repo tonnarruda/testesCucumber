@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -53,6 +54,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String empresaCodigoAC;
 	@Transient
 	private String empresaGrupoAC;
+	@Transient
+	private Collection<Competencia> competencias;
 
 	public FaixaSalarial()
 	{
@@ -355,5 +358,15 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 			this.cargo.setEmpresa(new Empresa());
 		
 		this.cargo.getEmpresa().setNome(empresaNome);
+	}
+
+	public Collection<Competencia> getCompetencias()
+	{
+		return competencias;
+	}
+
+	public void setCompetencias(Collection<Competencia> competencias)
+	{
+		this.competencias = competencias;
 	}
 }

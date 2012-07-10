@@ -87,7 +87,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return cargos;
 	}
 
-	public Collection<Cargo> getCargosByIds(Long[] cargoIds, Long empresaId)
+	public Collection<Cargo> getCargosByIds(Long[] cargoIds, Long empresaId) throws Exception
 	{
 		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		
@@ -113,7 +113,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			Collection<Atitude> atitudes = atitudeManager.findByCargo(cargo.getId());
 			cargo.setAtitudes(atitudes);
 			
-			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findByCargo(cargo.getId());
+			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findByCargoComCompetencia(cargo.getId());
 			cargo.setFaixaSalarials(faixaSalarials);
 		}
 

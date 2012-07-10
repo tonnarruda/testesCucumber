@@ -25,7 +25,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo);
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
-	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId);
+	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;
 	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor);
 	public Cargo findByIdProjection(Long id);
 	public Collection<Cargo> populaCargos(String[] cargosCheck);

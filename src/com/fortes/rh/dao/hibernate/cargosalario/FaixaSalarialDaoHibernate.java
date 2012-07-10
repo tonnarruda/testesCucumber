@@ -1,10 +1,15 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -13,6 +18,8 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
@@ -263,6 +270,69 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
 
 		return criteria.list();
+	}
+	
+	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select fs.id as faixaId, fs.nome as faixaNome, comp.nome as compNome, nc.descricao ");
+		sql.append("from faixasalarial fs "); 
+		sql.append("   left join configuracaonivelcompetencia cnc on cnc.faixasalarial_id = fs.id "); 
+		sql.append("   left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia "); 
+		sql.append("   left join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id "); 
+		sql.append("where  fs.cargo_id = :cargoId "); 
+		sql.append("   and cnc.candidato_id is null "); 
+		sql.append("   and cnc.configuracaoNivelCompetenciaColaborador_id is null "); 
+		sql.append("order by fs.nome, comp.nome "); 
+		
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+
+		query.setLong("cargoId", cargoId);
+		
+		Collection<Object[]> faixasalarialObjects = query.list();
+		
+		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
+		
+		Map<Long, FaixaSalarial> mapFaixa = new HashMap<Long, FaixaSalarial>();
+		
+		for (Object[] faixa : faixasalarialObjects) {
+			
+			Long id = ((BigInteger) faixa[0]).longValue();
+			
+			FaixaSalarial faixaSalarial;
+			// Define a faixa salarial que tera uma competencia inserida, numa nova ou numa que ja havia sido criada.   
+			if (mapFaixa.get(id) != null){
+				// Faixa que ja tenha competencia inserida.
+				faixaSalarial = mapFaixa.get(id); 
+			} else {
+				// Nova faixa
+				faixaSalarial = new FaixaSalarial(); 
+				faixaSalarial.setId(((BigInteger)faixa[0]).longValue());
+				faixaSalarial.setNome((String)faixa[1]);
+				faixaSalarial.setCompetencias(new ArrayList<Competencia>());
+				
+				// Insere uma faixa salarial num map para que esta nao seja criada novamente.
+				mapFaixa.put(faixaSalarial.getId(), faixaSalarial);
+				
+				// Insere faixa salarial na collection de retorno(inserida somente uma vez ao ser criada)
+				faixaSalarials.add(faixaSalarial);
+			}
+			
+			// Adiciona competência somente quando a mesma não for nula
+			if ((String)faixa[2] != null) {
+				NivelCompetencia nivelCompetencia = new NivelCompetencia();
+				Competencia comp = new Competencia();
+				comp.setNome((String)faixa[2]);
+				nivelCompetencia.setDescricao((String)faixa[3]);
+				comp.setNivelCompetencia(nivelCompetencia);
+
+				faixaSalarial.getCompetencias().add(comp);
+			}
+			
+		}
+		
+		return faixaSalarials;
+		
 	}
 
 	public Collection<Long> findByCargos(Collection<Long> cargoIds)

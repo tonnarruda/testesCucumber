@@ -439,7 +439,13 @@ public class CargoManagerTest extends MockObjectTestCase
 		habilidadeManager.expects(atLeastOnce()).method("findByCargo");
 		atitudeManager.expects(atLeastOnce()).method("findByCargo");
 		
-		Collection<Cargo> cargosRetorno = cargoManager.getCargosByIds(idsLong, null);
+		Collection<Cargo> cargosRetorno = new ArrayList<Cargo>();
+		try {
+			cargosRetorno = cargoManager.getCargosByIds(idsLong, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		assertEquals(1, cargosRetorno.size());
 	}

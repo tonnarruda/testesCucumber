@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Habilidade;
@@ -439,9 +440,15 @@ public class Cargo extends AbstractModel implements Serializable
 	{
 		StringBuilder descricao = new StringBuilder();
 
-		if(this.faixaSalarials != null)
-			for (FaixaSalarial faixaSalarial : this.faixaSalarials)
+		if(this.faixaSalarials != null){
+			for (FaixaSalarial faixaSalarial : this.faixaSalarials){
 				descricao.append(faixaSalarial.getNome() + "\n");
+				
+				for (Competencia competencia : faixaSalarial.getCompetencias()){
+					descricao.append("     "+competencia.getNome() +" : "+ competencia.getNivelCompetencia().getDescricao() + "\n");	
+				}
+			}
+		}
 		
 		return descricao.toString();
 	}

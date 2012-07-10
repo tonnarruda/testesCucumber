@@ -29,6 +29,9 @@ public class Competencia
 	private String observacao;
 	private Character tipo;
 
+	@Transient
+	private NivelCompetencia nivelCompetencia;
+	
 	public Long getId() 
 	{
 		return id;
@@ -77,5 +80,15 @@ public class Competencia
 	public void setTipo(Character tipo) 
 	{
 		this.tipo = tipo;
+	}
+
+	public NivelCompetencia getNivelCompetencia()
+	{
+		return nivelCompetencia;
+	}
+	
+	public void setNivelCompetencia(NivelCompetencia nivelCompetencia)
+	{
+		this.nivelCompetencia = nivelCompetencia;
 	}
 }

@@ -35,6 +35,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Map<Object, Object> findByCargo(String cargoId);
 	Collection<Long> findByCargos(Collection<Long> cargoIds);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
+	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) throws Exception;
 	void sincronizar(Map<Long, Long> cargoIds);
 	FaixaSalarial montaFaixa(TCargo tCargo);
 	void updateAC(TCargo tCargo);
