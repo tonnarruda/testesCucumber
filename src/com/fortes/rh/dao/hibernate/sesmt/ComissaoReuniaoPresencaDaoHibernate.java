@@ -82,7 +82,7 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		return criteria.list();
 	}
 
-	public boolean existeReuniaoPresensa(Long comissaoId,	Collection<Long> colaboradorIds) 
+	public boolean existeReuniaoPresenca(Long comissaoId,	Collection<Long> colaboradorIds) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"presenca");
 		criteria.createCriteria("presenca.comissaoReuniao", "cr");

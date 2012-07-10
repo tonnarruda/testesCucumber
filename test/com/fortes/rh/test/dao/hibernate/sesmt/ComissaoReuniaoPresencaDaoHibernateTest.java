@@ -172,7 +172,7 @@ public class ComissaoReuniaoPresencaDaoHibernateTest extends GenericDaoHibernate
 		colaboradorIds.add(antonio.getId());
 		colaboradorIds.add(jose.getId());
 		
-		assertTrue(comissaoReuniaoPresencaDao.existeReuniaoPresensa(comissao.getId(), colaboradorIds));
+		assertTrue(comissaoReuniaoPresencaDao.existeReuniaoPresenca(comissao.getId(), colaboradorIds));
 	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

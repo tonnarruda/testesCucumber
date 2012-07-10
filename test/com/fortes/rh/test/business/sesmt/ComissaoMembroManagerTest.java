@@ -34,9 +34,6 @@ public class ComissaoMembroManagerTest extends MockObjectTestCase
 		comissaoMembroManager.findByComissaoPeriodo(new Long[]{1L});
 
 		comissaoMembroManager.findByComissaoPeriodo(new Long[0]);
-		
-		comissaoMembroDao.expects(once()).method("findByComissaoPeriodo").with(ANYTHING).will(returnValue(new ArrayList<ComissaoMembro>()));
-		comissaoMembroManager.findByComissaoPeriodo(1L);
 	}
 
 	public void testFindColaboradorByComissao()

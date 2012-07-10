@@ -15,6 +15,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
+	<#assign validarCampos="return validaFormulario('formComissaoPeriodo',new Array('aPartirDe'),new Array('aPartirDe'))"/>
+
 	<script type="text/javascript">
 		function pesquisar()
 		{
@@ -45,9 +47,9 @@
 			validaFormulario('formList', null, null);
 		}
 		
-		function validaPeriodo(aPartirDe)
+		function validaPeriodoClonado(aPartirDe)
 		{
-			ComissaoPeriodoDWR.validaDataDaComissao(processaValidacao, aPartirDe, ${comissaoPeriodo.id});
+			ComissaoPeriodoDWR.validaDataDaComissao(processaValidacao, aPartirDe, ${comissaoPeridoIdAnterior});
 		}
 		function processaValidacao(data)
 		{
@@ -55,12 +57,20 @@
 			{
 				jAlert('Data inválida, ou fora do período válido da comissão.');
 				document.formComissaoPeriodo.aPartirDe.value = '  /  /    ';
+			}else{
+				${validarCampos};
 			}
 		}
 	</script>
-
+	
+	<#if clonar>
+		<#assign msgClonar="(clonado)"/>
+	<#else>
+		<#assign msgClonar=""/>
+	</#if>	
+	
 	<#if comissaoPeriodo.id?exists>
-		<title>Editar Período da Comissão</title>
+		<title>Editar Período da Comissão ${msgClonar}</title>
 		<#assign formAction="update.action"/>
 	<#else>
 		<title>Novo Período da Comissão</title>
@@ -73,7 +83,6 @@
 	<#if comissaoPeriodo.aPartirDe?exists>
 		<#assign date = comissaoPeriodo.aPartirDe?date/>
 	</#if>
-	<#assign validarCampos="return validaFormulario('formComissaoPeriodo',new Array('aPartirDe'),new Array('aPartirDe'))"/>
 	<#assign validarCamposModal="return validaFormulario('form', new Array('@colaboradorsCheck'), null)"/>
 
 </head>
@@ -93,6 +102,7 @@
 			<@frt.checkListBox label="Colaboradores" name="colaboradorsCheck" list="colaboradorsCheckList"/>
 			<@ww.hidden name="comissaoPeriodo.id"/>
 			<@ww.hidden name="comissao.id"/>
+			<@ww.hidden name="clonar"/>
 			<@ww.token/>
 		</@ww.form>
 
@@ -103,11 +113,15 @@
 	</div>
 
 	<@ww.form name="formComissaoPeriodo" action="${formAction}" method="POST">
-		<@ww.datepicker label="A partir de" required="true" value="${date}" id="aPartirDe" name="comissaoPeriodo.aPartirDe" cssClass="mascaraData" onchange="validaPeriodo(this.value)"/>
+		<@ww.datepicker label="A partir de" required="true" value="${date}" id="aPartirDe" name="comissaoPeriodo.aPartirDe" cssClass="mascaraData"/>
 		<br/>Membros da comissão:
 		<@display.table name="comissaoMembros" id="comissaoMembro" class="dados">
 			<@display.column title="Ações" class="acao" style="width: 40px;">
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<#if clonar || comissaoMembro.permitirExcluir>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteComissaoMembro.action?comissaoMembro.id=${comissaoMembro.id}&comissaoPeriodo.id=${comissaoPeriodo.id}&clonar=true'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<#else>
+					<img border="0" title="Não é possível excluir o membro da comissão, pois o mesmo já participou de uma reuniao da comissão." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				</#if>
 			</@display.column>
 			<@display.column property="colaborador.nome" title="Nome"/>
 			<@display.column title="Função" style="width: 280px;text-align:center;">
@@ -126,8 +140,11 @@
 	<div class="buttonGroup">
 		<button class="btnInserirMembro" onclick="limpaForm();openbox('Inserir Comissão', 'nomeBusca');"></button>
 		<br/>
-		<button onclick="${validarCampos}" class="btnGravar"></button>
-		<button onclick="window.location='list.action?comissao.id=${comissao.id}'" class="btnVoltar" accesskey="V"></button>
+		<button onclick="validaPeriodoClonado($('#aPartirDe').val());" class="btnGravar"></button>
+
+		<#if !clonar>
+			<button onclick="window.location='list.action?comissao.id=${comissao.id}'" class="btnVoltar" accesskey="V"></button>
+		</#if>
 	</div>
 
 	<#list comissaoMembros as comissaoM>

@@ -102,7 +102,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodo.getId())).will(returnValue(comissaoPeriodo));
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodo2.getId())).will(returnValue(comissaoPeriodo2));
 		comissaoPeriodoDao.expects(atLeastOnce()).method("findProximo");
-		comissaoReuniaoPresencaManager.expects(atLeastOnce()).method("existeReuniaoPresensa").will(returnValue(false));
+		comissaoReuniaoPresencaManager.expects(atLeastOnce()).method("existeReuniaoPresenca").withAnyArguments().will(returnValue(false));
 		
 		comissaoMembroManager.expects(once()).method("findByComissaoPeriodo").with(ANYTHING).will(returnValue(comissaoMembros));
 
@@ -121,6 +121,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 	{
 		Long comissaoPeriodoId=10L;
 		ComissaoPeriodo comissaoPeriodo=ComissaoPeriodoFactory.getEntity(comissaoPeriodoId);
+		comissaoPeriodo.setaPartirDe(new Date());
 		Collection<ComissaoMembro> comissaoMembros = new ArrayList<ComissaoMembro>();
 		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity(12L);
 		comissaoMembros.add(comissaoMembro);

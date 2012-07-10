@@ -37,6 +37,8 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 	@Transient
 	private Boolean presente;
 	@Transient
+	private boolean permitirExcluir;
+	@Transient
 	private String justificativaFalta;
 
 	public ComissaoMembro()
@@ -168,5 +170,13 @@ public class ComissaoMembro extends AbstractModel implements Serializable
 	public void setJustificativaFalta(String justificativaFalta)
 	{
 		this.justificativaFalta = justificativaFalta;
+	}
+
+	public boolean isPermitirExcluir() {
+		return permitirExcluir;
+	}
+
+	public void setPermitirExcluir(boolean permitirExcluir) {
+		this.permitirExcluir = permitirExcluir;
 	}
 }

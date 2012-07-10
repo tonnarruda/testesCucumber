@@ -41,7 +41,8 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	private String[] colaboradorsCheck;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private String nomeBusca;
-
+	private boolean clonar = false;
+	private Long comissaoPeridoIdAnterior;
 	private ComissaoMembro comissaoMembro;
 
 
@@ -51,8 +52,11 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 		{
 			comissaoPeriodo = (ComissaoPeriodo) comissaoPeriodoManager.findByIdProjection(comissaoPeriodo.getId());
 			comissao = comissaoPeriodo.getComissao();
-			comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodo.getId());
-
+			comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodo);
+			
+			if(comissaoPeridoIdAnterior == null)
+				comissaoPeridoIdAnterior = comissaoPeriodo.getId();
+			
 			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		}
 		return SUCCESS;
@@ -111,14 +115,16 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	{
 		try
 		{
-			comissaoPeriodoManager.clonar(comissaoPeriodo.getId());
+			comissaoPeridoIdAnterior = comissaoPeriodo.getId();
+			comissaoPeriodo = comissaoPeriodoManager.clonar(comissaoPeriodo.getId());
+			clonar = true;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			addActionError("Erro ao clonar Período da Comissão.");
 		}
-		return list();
+		return prepare();
 	}
 
 	/**
@@ -258,5 +264,21 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public boolean isClonar() {
+		return clonar;
+	}
+
+	public void setClonar(boolean clonar) {
+		this.clonar = clonar;
+	}
+
+	public Long getComissaoPeridoIdAnterior() {
+		return comissaoPeridoIdAnterior;
+	}
+
+	public void setComissaoPeridoIdAnterior(Long comissaoPeridoIdAnterior) {
+		this.comissaoPeridoIdAnterior = comissaoPeridoIdAnterior;
 	}
 }

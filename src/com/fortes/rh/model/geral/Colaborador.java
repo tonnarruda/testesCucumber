@@ -234,6 +234,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 	}
+	
+	public Colaborador(String nome, Long id)
+	{
+		setId(id);
+		this.nome = nome;
+	}
 
 	//Construtor usado por findAdmitidosNoPeriodo
 	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, String faixaSalarialNome, String cargoNome, Long areaOrganizacionalId, String responsavelDaArea, Integer diasDeEmpresa, String areaNome, String areaMaeNome, String estabelecimentoNome)

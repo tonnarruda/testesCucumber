@@ -244,6 +244,7 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		
 		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
 		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodo.setaPartirDe(new Date());
 		comissaoPeriodoDao.save(comissaoPeriodo);
 		
 		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity();

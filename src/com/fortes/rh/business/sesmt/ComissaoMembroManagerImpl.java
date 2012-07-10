@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
@@ -14,6 +15,8 @@ import com.fortes.rh.util.LongUtil;
 
 public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro, ComissaoMembroDao> implements ComissaoMembroManager
 {
+	private ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager;
+	
 	public Collection<ComissaoMembro> findByComissaoPeriodo(Long[] comissaoPeriodoIds)
 	{
 		if (comissaoPeriodoIds == null || comissaoPeriodoIds.length == 0)
@@ -22,9 +25,15 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 		return getDao().findByComissaoPeriodo(comissaoPeriodoIds);
 	}
 
-	public Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodoId)
+	public Collection<ComissaoMembro> findByComissaoPeriodo(ComissaoPeriodo comissaoPeriodo)
 	{
-		return getDao().findByComissaoPeriodo(new Long[]{comissaoPeriodoId});
+		Collection<ComissaoMembro> comissaoMembros = getDao().findByComissaoPeriodo(new Long[]{comissaoPeriodo.getId()});
+		
+		if(comissaoPeriodo.getComissao() != null && comissaoPeriodo.getComissao().getId() != null)
+			for (ComissaoMembro comissaoMembro : comissaoMembros) 
+				comissaoMembro.setPermitirExcluir(!comissaoReuniaoPresencaManager.existeReuniaoPresenca(comissaoPeriodo.getComissao().getId(), Arrays.asList(comissaoMembro.getColaborador().getId())));
+		
+		return comissaoMembros;
 	}
 
 	public void updateFuncaoETipo(String[] comissaoMembroIds, String[] funcaoComissaos, String[] tipoComissaos) throws Exception
@@ -48,7 +57,7 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 	{
 		CollectionUtil<Colaborador> util = new CollectionUtil<Colaborador>();
 		Collection<Colaborador> colaboradores = util.convertArrayStringToCollection(Colaborador.class, colaboradorsCheck);
-		Collection<ComissaoMembro> comissaoMembrosJaExistentes = findByComissaoPeriodo(comissaoPeriodo.getId());
+		Collection<ComissaoMembro> comissaoMembrosJaExistentes = findByComissaoPeriodo(comissaoPeriodo);
 
 		for (Colaborador colaborador : colaboradores)
 		{
@@ -89,5 +98,9 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 	public Comissao findComissaoByColaborador(Long colaboradorId) 
 	{
 		return getDao().findComissaoByColaborador(colaboradorId) ;
+	}
+
+	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
+		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 }

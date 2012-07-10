@@ -81,8 +81,8 @@ public class ComissaoReuniaoPresencaManagerImpl extends GenericManagerImpl<Comis
 		return getDao().findByComissao(comissaoId, ordenarPorDataNome);
 	}
 
-	public boolean existeReuniaoPresensa(Long comissaoId,	Collection<Long> colaboradorIds) 
+	public boolean existeReuniaoPresenca(Long comissaoId,	Collection<Long> colaboradorIds) 
 	{
-		return getDao().existeReuniaoPresensa(comissaoId, colaboradorIds);
+		return getDao().existeReuniaoPresenca(comissaoId, colaboradorIds);
 	}
 }

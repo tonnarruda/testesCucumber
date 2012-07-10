@@ -8,17 +8,22 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
+import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
+import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 
 @SuppressWarnings("unchecked")
 public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMembro> implements ComissaoMembroDao
@@ -30,6 +35,7 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("colab.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.funcao"), "funcao");
 		p.add(Projections.property("c.tipo"), "tipo");
@@ -188,22 +194,19 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 
 	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId, Collection<Long> colaboradorIds) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "cm");
-		criteria = criteria.createCriteria("cm.colaborador", "colab");
-		criteria = criteria.createCriteria("cm.comissaoPeriodo", "cp");
-		criteria = criteria.createCriteria("cp.comissao", "c");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("colab.id"), "id");
-		p.add(Projections.property("colab.nome"), "nome");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("c.id", comissaoId));
-		criteria.add(Expression.in("cm.colaborador.id", colaboradorIds));
+		StringBuilder hql = new StringBuilder("select distinct new Colaborador(co.nome, co.id) ");
+		hql.append("from ComissaoMembro cm ");
+		hql.append("left join cm.comissaoPeriodo cp ");
+		hql.append("left join cm.colaborador co ");
+		hql.append("where cm.colaborador.id in (:colaboradorId) ");
+		hql.append("and cp.comissao.id = :comissaoId ");
+		hql.append("and cp.aPartirDe = (select max(cp2.aPartirDe) from ComissaoPeriodo cp2 ");
+		hql.append("				where cp2.comissao.id = :comissaoId )");
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
-
-		return criteria.list();
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("comissaoId", comissaoId);
+		query.setParameterList("colaboradorId", colaboradorIds, Hibernate.LONG);
+		
+		return query.list();
 	}
 }

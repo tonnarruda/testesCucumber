@@ -586,6 +586,9 @@
     <property name="dao">
       <ref bean="comissaoMembroDao" />
     </property>
+    <property name="comissaoReuniaoPresencaManager">
+      <ref bean="comissaoReuniaoPresencaManager" />
+    </property>
   </bean>
   <bean id="comissaoMembroManager" parent="parentManager">
     <property name="proxyInterfaces">

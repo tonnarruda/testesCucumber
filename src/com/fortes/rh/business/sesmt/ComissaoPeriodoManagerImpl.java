@@ -42,14 +42,15 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		}
 	}
 
-	public void clonar(Long comissaoPeriodoId) throws Exception
+	public ComissaoPeriodo clonar(Long comissaoPeriodoId) throws Exception
 	{
 		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
-		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodoId);
+		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodo);
 
 		comissaoPeriodo.setId(null);
-		super.save(comissaoPeriodo);
-
+		comissaoPeriodo.setaPartirDe(DateUtil.incrementaMes(comissaoPeriodo.getaPartirDe(), 1));
+		ComissaoPeriodo comissaoPeridoClonado = super.save(comissaoPeriodo);
+		
 		for (ComissaoMembro comissaoMembro : comissaoMembros)
 		{
 
@@ -59,6 +60,8 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 
 			comissaoMembroManager.save(comissaoMembro);
 		}
+		
+		return comissaoPeridoClonado;
 	}
 
 	public Collection<ComissaoPeriodo> findByComissao(Long comissaoId)
@@ -86,7 +89,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 					colaboradorIds.add(comissaoMembro.getColaborador().getId());
 				}
 			}
-			comissaoPeriodo.setPermitirExcluir(!comissaoReuniaoPresencaManager.existeReuniaoPresensa(comissaoId, colaboradorIds));
+			comissaoPeriodo.setPermitirExcluir(!comissaoReuniaoPresencaManager.existeReuniaoPresenca(comissaoId, colaboradorIds));
 		}
 		
 
@@ -169,8 +172,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
 		
 		//data fora do período da CIPA
-		if (!DateUtil.between(data, comissaoPeriodo.getComissao().getDataIni(), 
-									comissaoPeriodo.getComissao().getDataFim()))
+		if (!DateUtil.between(data, comissaoPeriodo.getComissao().getDataIni(), comissaoPeriodo.getComissao().getDataFim()))
 			return false;
 		
 		// outra comissão na mesma data
@@ -186,8 +188,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		
 		for (ComissaoPeriodo comissaoPeriodo2 : periodos) {
 			
-			if (!comissaoPeriodo.getId().equals(comissaoPeriodo2.getId())
-					&& DateUtil.equals(comissaoPeriodo.getaPartirDe(), comissaoPeriodo2.getaPartirDe()))
+			if (!comissaoPeriodo.getId().equals(comissaoPeriodo2.getId()) && DateUtil.equals(comissaoPeriodo.getaPartirDe(), comissaoPeriodo2.getaPartirDe()))
 				return true;
 		}
 		

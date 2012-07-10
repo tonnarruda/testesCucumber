@@ -11,7 +11,7 @@ import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 public interface ComissaoMembroManager extends GenericManager<ComissaoMembro>
 {
 	Collection<ComissaoMembro> findByComissaoPeriodo(Long[] comissaoPeriodoIds);
-	Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodoId);
+	Collection<ComissaoMembro> findByComissaoPeriodo(ComissaoPeriodo comissaoPeriodo);
 	void updateFuncaoETipo(String[] comissaoMembroIds, String[] funcaoComissaos, String[] tipoComissaos) throws Exception;
 	void removeByComissaoPeriodo(Long[] comissaoPeriodoIds);
 	void save(String[] colaboradorsCheck, ComissaoPeriodo comissaoPeriodo) throws Exception;

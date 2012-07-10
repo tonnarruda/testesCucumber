@@ -155,9 +155,9 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 		for (Colaborador colaborador : colaboradores) 
 			colaboradorIds.add(colaborador.getId());
 		
-		Collection<Colaborador> colaboradoresNaComissao = comissaoMembroManager.findColaboradoresNaComissao(comissaoId, colaboradorIds);
+		Collection<Colaborador> colaboradoresNaUltimaComissao = comissaoMembroManager.findColaboradoresNaComissao(comissaoId, colaboradorIds);
 		
-		Collection<ComissaoReuniaoPresencaMatriz> matriz = montaMatriz(colaboradores, colaboradoresNaComissao, presencas);
+		Collection<ComissaoReuniaoPresencaMatriz> matriz = montaMatriz(colaboradores, colaboradoresNaUltimaComissao, presencas);
 		return matriz;
 	}
 

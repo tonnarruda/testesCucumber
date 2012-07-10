@@ -11,5 +11,5 @@ public interface ComissaoReuniaoPresencaManager extends GenericManager<ComissaoR
 	Collection<ComissaoReuniaoPresenca> findByReuniao(Long comissaoReuniaoId);
 	void removeByReuniao(Long comissaoReuniaoId);
 	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
-	boolean existeReuniaoPresensa(Long comissaoId, Collection<Long> colaboradorIds);
+	boolean existeReuniaoPresenca(Long comissaoId, Collection<Long> colaboradorIds);
 }
