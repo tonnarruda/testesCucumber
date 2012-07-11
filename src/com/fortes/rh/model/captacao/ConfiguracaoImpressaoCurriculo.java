@@ -28,6 +28,7 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 	private boolean exibirInformacaoSocioEconomica;
 	private boolean exibirExamePalografico;
 	private boolean exibirTextoOCR;
+	private boolean exibirSolicitacaoPessoal;
 	
 	private boolean exibirAssinatura1;
 	@Column(length = 50)
@@ -50,110 +51,137 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 	{
 		return exibirConhecimento;
 	}
+
 	public void setExibirConhecimento(boolean exibirConhecimento)
 	{
 		this.exibirConhecimento = exibirConhecimento;
 	}
+
 	public boolean isExibirCurso()
 	{
 		return exibirCurso;
 	}
+
 	public void setExibirCurso(boolean exibirCurso)
 	{
 		this.exibirCurso = exibirCurso;
 	}
+
 	public boolean isExibirExperiencia()
 	{
 		return exibirExperiencia;
 	}
+
 	public void setExibirExperiencia(boolean exibirExperiencia)
 	{
 		this.exibirExperiencia = exibirExperiencia;
 	}
+
 	public boolean isExibirInformacao()
 	{
 		return exibirInformacao;
 	}
+
 	public void setExibirInformacao(boolean exibirInformacao)
 	{
 		this.exibirInformacao = exibirInformacao;
 	}
+
 	public boolean isExibirObservacao()
 	{
 		return exibirObservacao;
 	}
+
 	public void setExibirObservacao(boolean exibirObservacao)
 	{
 		this.exibirObservacao = exibirObservacao;
 	}
+
 	public boolean isExibirHistorico()
 	{
 		return exibirHistorico;
 	}
+
 	public void setExibirHistorico(boolean exibirHistorico)
 	{
 		this.exibirHistorico = exibirHistorico;
 	}
+
 	public boolean isExibirAssinatura1()
 	{
 		return exibirAssinatura1;
 	}
+
 	public void setExibirAssinatura1(boolean exibirAssinatura1)
 	{
 		this.exibirAssinatura1 = exibirAssinatura1;
 	}
+
 	public String getAssinatura1()
 	{
 		return assinatura1;
 	}
+
 	public void setAssinatura1(String assinatura1)
 	{
 		this.assinatura1 = assinatura1;
 	}
+
 	public boolean isExibirAssinatura2()
 	{
 		return exibirAssinatura2;
 	}
+
 	public void setExibirAssinatura2(boolean exibirAssinatura2)
 	{
 		this.exibirAssinatura2 = exibirAssinatura2;
 	}
+
 	public String getAssinatura2()
 	{
 		return assinatura2;
 	}
+
 	public void setAssinatura2(String assinatura2)
 	{
 		this.assinatura2 = assinatura2;
 	}
+
 	public boolean isExibirAssinatura3()
 	{
 		return exibirAssinatura3;
 	}
+
 	public void setExibirAssinatura3(boolean exibirAssinatura3)
 	{
 		this.exibirAssinatura3 = exibirAssinatura3;
 	}
+
 	public String getAssinatura3()
 	{
 		return assinatura3;
 	}
+
 	public void setAssinatura3(String assinatura3)
 	{
 		this.assinatura3 = assinatura3;
 	}
+
 	public Empresa getEmpresa()
 	{
 		return empresa;
 	}
+
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
 	}
+
 	public Usuario getUsuario()
 	{
 		return usuario;
 	}
+
 	public void setUsuario(Usuario usuario)
 	{
 		this.usuario = usuario;
@@ -177,31 +205,39 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 		parametros.put("exibirFormacao", this.exibirFormacao);
 		parametros.put("exibirInformacaoSocioEconomica", this.exibirInformacaoSocioEconomica);
 		parametros.put("exibirTextoOCR", this.exibirTextoOCR);
+		parametros.put("exibirSolicitacaoPessoal", this.exibirSolicitacaoPessoal);
 	}
+
 	public boolean isExibirIdioma()
 	{
 		return exibirIdioma;
 	}
+
 	public void setExibirIdioma(boolean exibirIdioma)
 	{
 		this.exibirIdioma = exibirIdioma;
 	}
+
 	public boolean isExibirFormacao()
 	{
 		return exibirFormacao;
 	}
+
 	public void setExibirFormacao(boolean exibirFormacao)
 	{
 		this.exibirFormacao = exibirFormacao;
 	}
+
 	public boolean isExibirInformacaoSocioEconomica()
 	{
 		return exibirInformacaoSocioEconomica;
 	}
+
 	public void setExibirInformacaoSocioEconomica(boolean exibirInformacaoSocioEconomica)
 	{
 		this.exibirInformacaoSocioEconomica = exibirInformacaoSocioEconomica;
 	}
+
 	@Override
 	public int hashCode()
 	{
@@ -292,16 +328,34 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 			return false;
 		return true;
 	}
-	public void setExibirExamePalografico(boolean exibirExamePalografico) {
+
+	public void setExibirExamePalografico(boolean exibirExamePalografico)
+	{
 		this.exibirExamePalografico = exibirExamePalografico;
 	}
-	public boolean isExibirExamePalografico() {
+
+	public boolean isExibirExamePalografico()
+	{
 		return exibirExamePalografico;
 	}
-	public boolean isExibirTextoOCR() {
+
+	public boolean isExibirTextoOCR()
+	{
 		return exibirTextoOCR;
 	}
-	public void setExibirTextoOCR(boolean exibirTextoOCR) {
+
+	public void setExibirTextoOCR(boolean exibirTextoOCR)
+	{
 		this.exibirTextoOCR = exibirTextoOCR;
+	}
+
+	public boolean isExibirSolicitacaoPessoal()
+	{
+		return exibirSolicitacaoPessoal;
+	}
+
+	public void setExibirSolicitacaoPessoal(boolean exibirSolicitacaoPessoal)
+	{
+		this.exibirSolicitacaoPessoal = exibirSolicitacaoPessoal;
 	}
 }

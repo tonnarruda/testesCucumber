@@ -1,0 +1,1 @@
+alter table configuracaoimpressaocurriculo add column exibirSolicitacaoPessoal boolean default false;--.go

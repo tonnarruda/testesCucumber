@@ -226,6 +226,8 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private Map<String, Integer> pesos;
 
+	private boolean mostraOpcaoSolicitacaoPessoal;
+
 	public String list() throws Exception
 	{
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
@@ -754,8 +756,11 @@ public class CandidatoListAction extends MyActionSupportList
 		historicoCandidatos = historicoCandidatoManager.findByCandidato(candidato);
 		historicos = historicoCandidatoManager.montaMapaHistorico(historicoCandidatos);
 
+		solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
+		
 		CurriculoCandidatoRelatorio curriculo = new CurriculoCandidatoRelatorio();
 		curriculo.setCandidatos(candidato);
+		curriculo.setSolicitacao(solicitacao);
 		curriculo.setHistoricos(historicos);
 
 		dataSource = new ArrayList<CurriculoCandidatoRelatorio>();
@@ -764,6 +769,9 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros = RelatorioUtil.getParametrosRelatorio("", getEmpresaSistema(), "");
 		configuracaoImpressaoCurriculo.populaParametros(parametros);
 
+		mostraOpcaoSolicitacaoPessoal = (solicitacao != null && solicitacao.getId() != null);
+		parametros.put("mostraOpcaoSolicitacaoPessoal", mostraOpcaoSolicitacaoPessoal);
+		
 		return Action.SUCCESS;
 	}
 
@@ -843,7 +851,8 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String infoCandidato() throws Exception
 	{
-		configuracaoImpressaoCurriculo = configuracaoImpressaoCurriculoManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId(), getEmpresaSistema().getId()); 
+		configuracaoImpressaoCurriculo = configuracaoImpressaoCurriculoManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId(), getEmpresaSistema().getId());
+		mostraOpcaoSolicitacaoPessoal = (solicitacao != null && solicitacao.getId() != null);
 		return Action.SUCCESS;
 	}
 	
@@ -1746,5 +1755,11 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setFaixasCheck(String[] faixasCheck) {
 		this.faixasCheck = faixasCheck;
+	}
+
+	
+	public boolean isMostraOpcaoSolicitacaoPessoal()
+	{
+		return mostraOpcaoSolicitacaoPessoal;
 	}
 }

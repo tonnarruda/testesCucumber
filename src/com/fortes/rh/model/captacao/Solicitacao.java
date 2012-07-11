@@ -1,6 +1,7 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
@@ -383,6 +385,12 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.quantidade = quantidade;
 	}
 
+	public String getRemuneracaoFormatada()
+	{
+		DecimalFormat format = new DecimalFormat("#,###.##");
+		return format.format(remuneracao);
+	}
+	
 	public Double getRemuneracao()
 	{
 		return remuneracao;
@@ -411,6 +419,12 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setSolicitante(Usuario solicitante)
 	{
 		this.solicitante = solicitante;
+	}
+	
+	public String getVinculoDescricao()
+	{
+		Vinculo vinculoDicionario = new Vinculo(); 
+		return (String)vinculoDicionario.get(vinculo);
 	}
 
 	public String getVinculo()

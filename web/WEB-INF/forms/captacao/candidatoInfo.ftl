@@ -20,10 +20,10 @@
 		
 		#box
 		{
-			top: -450px !important;
+			top: -500px !important;
 			left: 20% !important;
 			width: 400px !important;
-			height: 400px !important;
+			height: 420px !important;
 		}
 		#boxtitle
 		{
@@ -73,6 +73,7 @@
 
 		function popUp(caminho)
 		{
+		alert(1);
 			path = caminho;
 			window.open(caminho,'Currículo','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,menubar=no,left=10,top=10')
 		}
@@ -200,6 +201,11 @@
 						<@ww.checkbox label="Observações do RH" name="configuracaoImpressaoCurriculo.exibirObservacao" labelPosition="left"/>
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
 						<@ww.checkbox label="Texto Digitalizado" name="configuracaoImpressaoCurriculo.exibirTextoOCR" labelPosition="left"/>
+						<#if mostraOpcaoSolicitacaoPessoal>
+							<@ww.checkbox label="Solicitação de Pessoal" name="configuracaoImpressaoCurriculo.exibirSolicitacaoPessoal" labelPosition="left"/>
+						<#else>
+							<@ww.hidden name="configuracaoImpressaoCurriculo.exibirSolicitacaoPessoal" />
+						</#if>
 						<!--<@ww.checkbox label="Exame Palográfico" name="configuracaoImpressaoCurriculo.exibirExamePalografico" labelPosition="left"/>-->
 			
 						<br>
@@ -219,6 +225,7 @@
 			
 			<@ww.hidden name="configuracaoImpressaoCurriculo.id" />
 			<@ww.hidden name="candidato.id" />
+			<@ww.hidden name="solicitacao.id" />
 		</@ww.form>
 
 		<div class="buttonGroup">
