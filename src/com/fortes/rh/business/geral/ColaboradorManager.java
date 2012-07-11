@@ -139,7 +139,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados);
 	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds);
 	public Integer getCountComHistoricoFuturoSQL(Map parametros);
-	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros);
+	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception;
 	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId);
 	public Collection<Colaborador> getAvaliacoesExperienciaPendentes(Date periodoIni, Date periodoFim, Empresa empresaSistema, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Integer diasDeAcompanhamento, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;
 	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date dataReferencia, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;

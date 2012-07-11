@@ -2865,10 +2865,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		String matriculaBusca = (String) parametros.get("matriculaBusca");
 		Long empresaId = (Long) parametros.get("empresaId");
 		Long areaBuscaId = (Long) parametros.get("areaId");
+		Long areasIdsPorResponsavel[] = (Long[]) parametros.get("areasIdsPorResponsavel");
 		Long estabelecimentoId = (Long) parametros.get("estabelecimentoId");
 		Long cargoId = (Long) parametros.get("cargoId");
 		String situacao = (String) parametros.get("situacao");
-		Long colaboaradorId = (Long) parametros.get("colaboradorId");
 		String cpfBusca = (String) parametros.get("cpfBusca");
 		
 		if(cpfBusca != null && cpfBusca.equals("   .   .   -  "))
@@ -2950,8 +2950,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			sql.append("and fs.cargo_id = :cargoId ");
 		if(estabelecimentoId != null)
 			sql.append("and hc.estabelecimento_id = :estabelecimentoId ");
-		if(colaboaradorId != null)
-			sql.append("and a.responsavel_id = :colaboaradorId ");
+		if(areasIdsPorResponsavel != null)
+			sql.append("and a.id in (:areasIdsPorResponsavel) ");
 
 		// Nome
 		if(nomeBusca != null && !nomeBusca.trim().equals(""))
@@ -3003,8 +3003,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("cargoId", cargoId);
 		if(estabelecimentoId != null)
 			query.setLong("estabelecimentoId", estabelecimentoId);
-		if(colaboaradorId != null)
-			query.setLong("colaboaradorId", colaboaradorId);
+		if(areasIdsPorResponsavel != null)
+			query.setParameterList("areasIdsPorResponsavel", areasIdsPorResponsavel);
 			
 		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T") && !situacao.trim().equals("U"))
 		{

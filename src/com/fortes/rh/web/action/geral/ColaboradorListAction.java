@@ -38,7 +38,6 @@ import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
-import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -163,6 +162,16 @@ public class ColaboradorListAction extends MyActionSupportList
 		if(situacao == null)
 			situacao = "A";
 		
+		Long[] areasIdsPorResponsavel = null;
+		
+		if(getUsuarioLogado().getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}))
+		{
+			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasResponsaveis(getUsuarioLogado(), getEmpresaSistema().getId());
+			
+			if(areasIdsPorResponsavel.length == 0)
+				areasIdsPorResponsavel = new Long[]{-1L};//não vai achar nenhum colaborador
+		}
+		
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("nomeBusca", nomeBusca);
 		parametros.put("nomeComercialBusca", nomeComercialBusca);
@@ -170,12 +179,10 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("matriculaBusca", matriculaBusca);
 		parametros.put("empresaId", getEmpresaSistema().getId());
 		parametros.put("areaId", areaOrganizacional.getId());
+		parametros.put("areasIdsPorResponsavel", areasIdsPorResponsavel);
 		parametros.put("estabelecimentoId", estabelecimento.getId());
 		parametros.put("cargoId", cargo.getId());
 		parametros.put("situacao", situacao);
-		
-		if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}) )
-			parametros.put("colaboradorId", colaboradorManager.findByUsuario(getUsuarioLogado().getId()));
 		
 		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
 		setTotalSize(colaboradorManager.getCountComHistoricoFuturoSQL(parametros));

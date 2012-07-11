@@ -1762,9 +1762,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findComHistoricoFuturoSQL(parametros, 0, 0).size();
 	}
 
-	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros)
+	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception
 	{
 		Collection<Colaborador> result = new LinkedList<Colaborador>();
+		
 		Collection lista = getDao().findComHistoricoFuturoSQL(parametros, pagingSize, page);
 
 		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)

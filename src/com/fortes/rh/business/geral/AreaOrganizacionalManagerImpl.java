@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
@@ -55,7 +56,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areasFilhas;
 	}
 
-	private Collection<AreaOrganizacional> getDescendentes(Collection<AreaOrganizacional> areas, Long id, Collection<AreaOrganizacional> descendentes)
+	public Collection<AreaOrganizacional> getDescendentes(Collection<AreaOrganizacional> areas, Long id, Collection<AreaOrganizacional> descendentes)
 	{
 		// Busca filhos da area pelo id e coloca eles nos descendentes
 		Collection<AreaOrganizacional> filhos = getFilhos(areas, id);
@@ -347,6 +348,14 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
+	private void montaIds(AreaOrganizacional area, HashSet<Long> lista)
+	{
+		if(area.getAreaMae() != null && area.getAreaMae().getId() != null){
+			lista.add(area.getAreaMae().getId());
+//			insereMae(areas, area);
+		}
+	}
+	
 	public Collection<AreaOrganizacional> getDistinctAreaMae(Collection<AreaOrganizacional> todasAreas, Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		Collection<AreaOrganizacional> retorno = new ArrayList<AreaOrganizacional>();
