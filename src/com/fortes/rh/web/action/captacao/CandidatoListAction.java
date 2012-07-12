@@ -771,6 +771,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 		mostraOpcaoSolicitacaoPessoal = (solicitacao != null && solicitacao.getId() != null);
 		parametros.put("mostraOpcaoSolicitacaoPessoal", mostraOpcaoSolicitacaoPessoal);
+		parametros.put("mostraColaboradorSubstituido", getEmpresaSistema().isExibirColaboradorSubstituido());
 		
 		return Action.SUCCESS;
 	}

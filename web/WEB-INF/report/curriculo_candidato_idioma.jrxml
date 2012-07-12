@@ -103,7 +103,7 @@
 			<band height="15"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="35"
+						x="40"
 						y="1"
 						width="272"
 						height="13"
@@ -116,7 +116,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="349"
+						x="352"
 						y="1"
 						width="178"
 						height="13"
@@ -131,7 +131,7 @@
 					<reportElement
 						x="2"
 						y="1"
-						width="33"
+						width="38"
 						height="13"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -142,9 +142,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="320"
+						x="318"
 						y="1"
-						width="29"
+						width="34"
 						height="13"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
