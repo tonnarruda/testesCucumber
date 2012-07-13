@@ -237,7 +237,7 @@
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
-		<concat encoding="UTF-8" outputencoding="UTF-8" destfile="${project.dir}/dist/create.sql">
+		<concat encoding="UTF-8" outputencoding="UTF-8" destfile="${project.dir}/dist/create.sql" append="false">
 			<fileset file="${project.dir}/dist/create.sql" />
 			<fileset file="${project.dir}/dist/create_data.sql" />
 		</concat>
