@@ -197,7 +197,7 @@
 		<echo message="Banco criado com sucesso" />
 	</target>
 
-	<target name="recreate-bd" depends="recreate-bd-vazio">
+	<target name="recreate-bd" depends="update-file-update-sql,recreate-bd-vazio">
 		<echo message="Criando banco de dados vazio" />
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create.sql">
@@ -221,7 +221,7 @@
 			output="${metadados.dir}/create.sql">
 			<arg value="-U" />
 			<arg value="postgres" />
-			<arg value="--schema-only" />
+			<arg value="--column-inserts" />
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
@@ -237,10 +237,7 @@
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
-		<concat encoding="UTF-8" outputencoding="UTF-8" destfile="${project.dir}/dist/create.sql" append="false">
-			<fileset file="${project.dir}/dist/create.sql" />
-			<fileset file="${project.dir}/dist/create_data.sql" />
-		</concat>
+		<copy file="${metadados.dir}/create.sql" todir="${ant.project.name}/dist" />
 
 		<antcall target="drop-temp-db"></antcall>
 		
