@@ -265,7 +265,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		historicos.add(historicoPorValor1);
 		
 		//TODO tem que terminar test quando for liberado o webservice 1.1.50.1
-		assertFalse(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa));
+		assertTrue(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa));
 	}
 	
 	

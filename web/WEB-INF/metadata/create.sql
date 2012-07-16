@@ -13,7 +13,7 @@ SET escape_string_warning = off;
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
-CREATE PROCEDURAL LANGUAGE plpgsql;
+CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 
 ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
@@ -85,8 +85,8 @@ ALTER TABLE public.afastamento OWNER TO postgres;
 CREATE SEQUENCE afastamento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -120,8 +120,8 @@ ALTER TABLE public.agenda OWNER TO postgres;
 CREATE SEQUENCE agenda_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -155,8 +155,8 @@ ALTER TABLE public.ambiente OWNER TO postgres;
 CREATE SEQUENCE ambiente_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -192,8 +192,8 @@ ALTER TABLE public.anexo OWNER TO postgres;
 CREATE SEQUENCE anexo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -236,8 +236,8 @@ ALTER TABLE public.anuncio OWNER TO postgres;
 CREATE SEQUENCE anuncio_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -271,8 +271,8 @@ ALTER TABLE public.aproveitamentoavaliacaocurso OWNER TO postgres;
 CREATE SEQUENCE aproveitamentoavaliacaocurso_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -304,8 +304,8 @@ ALTER TABLE public.areaformacao OWNER TO postgres;
 CREATE SEQUENCE areaformacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -351,8 +351,8 @@ ALTER TABLE public.areainteresse_areaorganizacional OWNER TO postgres;
 CREATE SEQUENCE areainteresse_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -390,8 +390,8 @@ ALTER TABLE public.areaorganizacional OWNER TO postgres;
 CREATE SEQUENCE areaorganizacional_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -425,8 +425,8 @@ ALTER TABLE public.aspecto OWNER TO postgres;
 CREATE SEQUENCE aspecto_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -472,8 +472,8 @@ ALTER TABLE public.atitude_areaorganizacional OWNER TO postgres;
 CREATE SEQUENCE atitude_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -511,8 +511,8 @@ ALTER TABLE public.auditoria OWNER TO postgres;
 CREATE SEQUENCE auditoria_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -564,8 +564,8 @@ ALTER TABLE public.avaliacaocurso OWNER TO postgres;
 CREATE SEQUENCE avaliacaocurso_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -603,8 +603,8 @@ ALTER TABLE public.avaliacaodesempenho OWNER TO postgres;
 CREATE SEQUENCE avaliacaodesempenho_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -637,8 +637,8 @@ ALTER TABLE public.avaliacaoturma OWNER TO postgres;
 CREATE SEQUENCE avaliacaoturma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -671,8 +671,8 @@ ALTER TABLE public.bairro OWNER TO postgres;
 CREATE SEQUENCE bairro_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -705,8 +705,8 @@ ALTER TABLE public.beneficio OWNER TO postgres;
 CREATE SEQUENCE beneficio_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -753,8 +753,8 @@ ALTER TABLE public.camposextras OWNER TO postgres;
 CREATE SEQUENCE camposextras_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -900,8 +900,8 @@ ALTER TABLE public.candidato_conhecimento OWNER TO postgres;
 CREATE SEQUENCE candidato_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -934,8 +934,8 @@ ALTER TABLE public.candidatocurriculo OWNER TO postgres;
 CREATE SEQUENCE candidatocurriculo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -970,8 +970,8 @@ ALTER TABLE public.candidatoeleicao OWNER TO postgres;
 CREATE SEQUENCE candidatoeleicao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1005,8 +1005,8 @@ ALTER TABLE public.candidatoidioma OWNER TO postgres;
 CREATE SEQUENCE candidatoidioma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1041,8 +1041,8 @@ ALTER TABLE public.candidatosolicitacao OWNER TO postgres;
 CREATE SEQUENCE candidatosolicitacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1162,8 +1162,8 @@ ALTER TABLE public.cargo_habilidade OWNER TO postgres;
 CREATE SEQUENCE cargo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1224,8 +1224,8 @@ ALTER TABLE public.cat_epi OWNER TO postgres;
 CREATE SEQUENCE cat_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1270,8 +1270,8 @@ ALTER TABLE public.certificacao_curso OWNER TO postgres;
 CREATE SEQUENCE certificacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1317,8 +1317,8 @@ ALTER TABLE public.cidade OWNER TO postgres;
 CREATE SEQUENCE cidade_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1359,8 +1359,8 @@ ALTER TABLE public.cliente OWNER TO postgres;
 CREATE SEQUENCE cliente_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1413,8 +1413,8 @@ ALTER TABLE public.clinicaautorizada_exame OWNER TO postgres;
 CREATE SEQUENCE clinicaautorizada_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1533,8 +1533,8 @@ ALTER TABLE public.colaborador OWNER TO postgres;
 CREATE SEQUENCE colaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1573,8 +1573,8 @@ ALTER TABLE public.colaboradorafastamento OWNER TO postgres;
 CREATE SEQUENCE colaboradorafastamento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1608,8 +1608,8 @@ ALTER TABLE public.colaboradoridioma OWNER TO postgres;
 CREATE SEQUENCE colaboradoridioma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1646,8 +1646,8 @@ ALTER TABLE public.colaboradorocorrencia OWNER TO postgres;
 CREATE SEQUENCE colaboradorocorrencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1681,8 +1681,8 @@ ALTER TABLE public.colaboradorperiodoexperienciaavaliacao OWNER TO postgres;
 CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1716,8 +1716,8 @@ ALTER TABLE public.colaboradorpresenca OWNER TO postgres;
 CREATE SEQUENCE colaboradorpresenca_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1760,8 +1760,8 @@ ALTER TABLE public.colaboradorquestionario OWNER TO postgres;
 CREATE SEQUENCE colaboradorquestionario_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1799,8 +1799,8 @@ ALTER TABLE public.colaboradorresposta OWNER TO postgres;
 CREATE SEQUENCE colaboradorresposta_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1838,8 +1838,8 @@ ALTER TABLE public.colaboradorturma OWNER TO postgres;
 CREATE SEQUENCE colaboradorturma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1875,8 +1875,8 @@ ALTER TABLE public.comissao OWNER TO postgres;
 CREATE SEQUENCE comissao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1910,8 +1910,8 @@ ALTER TABLE public.comissaoeleicao OWNER TO postgres;
 CREATE SEQUENCE comissaoeleicao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1946,8 +1946,8 @@ ALTER TABLE public.comissaomembro OWNER TO postgres;
 CREATE SEQUENCE comissaomembro_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -1980,8 +1980,8 @@ ALTER TABLE public.comissaoperiodo OWNER TO postgres;
 CREATE SEQUENCE comissaoperiodo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2020,8 +2020,8 @@ ALTER TABLE public.comissaoplanotrabalho OWNER TO postgres;
 CREATE SEQUENCE comissaoplanotrabalho_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2060,8 +2060,8 @@ ALTER TABLE public.comissaoreuniao OWNER TO postgres;
 CREATE SEQUENCE comissaoreuniao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2096,8 +2096,8 @@ ALTER TABLE public.comissaoreuniaopresenca OWNER TO postgres;
 CREATE SEQUENCE comissaoreuniaopresenca_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2129,8 +2129,8 @@ ALTER TABLE public.comoficousabendovaga OWNER TO postgres;
 CREATE SEQUENCE comoficousabendovaga_sequence
     START WITH 2
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2206,8 +2206,8 @@ ALTER TABLE public.composicaosesmt OWNER TO postgres;
 CREATE SEQUENCE composicaosesmt_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2247,8 +2247,8 @@ ALTER TABLE public.configuracaocampoextra OWNER TO postgres;
 CREATE SEQUENCE configuracaocampoextra_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2285,7 +2285,8 @@ CREATE TABLE configuracaoimpressaocurriculo (
     usuario_id bigint,
     empresa_id bigint,
     exibirexamepalografico boolean DEFAULT false,
-    exibirtextoocr boolean DEFAULT false
+    exibirtextoocr boolean DEFAULT false,
+    exibirsolicitacaopessoal boolean DEFAULT false
 );
 
 
@@ -2298,8 +2299,8 @@ ALTER TABLE public.configuracaoimpressaocurriculo OWNER TO postgres;
 CREATE SEQUENCE configuracaoimpressaocurriculo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2332,8 +2333,8 @@ ALTER TABLE public.configuracaolimitecolaborador OWNER TO postgres;
 CREATE SEQUENCE configuracaolimitecolaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2370,8 +2371,8 @@ ALTER TABLE public.configuracaonivelcompetencia OWNER TO postgres;
 CREATE SEQUENCE configuracaonivelcompetencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2405,8 +2406,8 @@ ALTER TABLE public.configuracaonivelcompetenciacolaborador OWNER TO postgres;
 CREATE SEQUENCE configuracaonivelcompetenciacolaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2441,8 +2442,8 @@ ALTER TABLE public.configuracaoperformance OWNER TO postgres;
 CREATE SEQUENCE configuracaoperformance_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2476,8 +2477,8 @@ ALTER TABLE public.configuracaorelatoriodinamico OWNER TO postgres;
 CREATE SEQUENCE configuracaorelatoriodinamico_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2509,8 +2510,8 @@ ALTER TABLE public.conhecimento_areaorganizacional OWNER TO postgres;
 CREATE SEQUENCE conhecimento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2560,8 +2561,8 @@ ALTER TABLE public.curso_avaliacaocurso OWNER TO postgres;
 CREATE SEQUENCE curso_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2596,8 +2597,8 @@ ALTER TABLE public.dependente OWNER TO postgres;
 CREATE SEQUENCE dependente_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2630,8 +2631,8 @@ ALTER TABLE public.diaturma OWNER TO postgres;
 CREATE SEQUENCE diaturma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2665,8 +2666,8 @@ ALTER TABLE public.dnt OWNER TO postgres;
 CREATE SEQUENCE dnt_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2705,8 +2706,8 @@ ALTER TABLE public.documentoanexo OWNER TO postgres;
 CREATE SEQUENCE documentoanexo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2760,8 +2761,8 @@ ALTER TABLE public.eleicao OWNER TO postgres;
 CREATE SEQUENCE eleicao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2831,8 +2832,8 @@ ALTER TABLE public.empresa OWNER TO postgres;
 CREATE SEQUENCE empresa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2869,8 +2870,8 @@ ALTER TABLE public.empresabds OWNER TO postgres;
 CREATE SEQUENCE empresabds_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2907,8 +2908,8 @@ ALTER TABLE public.engenheiroresponsavel OWNER TO postgres;
 CREATE SEQUENCE engenheiroresponsavel_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2941,8 +2942,8 @@ ALTER TABLE public.entrevista OWNER TO postgres;
 CREATE SEQUENCE entrevista_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -2976,8 +2977,8 @@ ALTER TABLE public.epc OWNER TO postgres;
 CREATE SEQUENCE epc_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3014,8 +3015,8 @@ ALTER TABLE public.epi OWNER TO postgres;
 CREATE SEQUENCE epi_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3052,8 +3053,8 @@ ALTER TABLE public.epihistorico OWNER TO postgres;
 CREATE SEQUENCE epihistorico_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3095,8 +3096,8 @@ ALTER TABLE public.estabelecimento OWNER TO postgres;
 CREATE SEQUENCE estabelecimento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3129,8 +3130,8 @@ ALTER TABLE public.estado OWNER TO postgres;
 CREATE SEQUENCE estado_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3167,8 +3168,8 @@ ALTER TABLE public.etapaprocessoeleitoral OWNER TO postgres;
 CREATE SEQUENCE etapaprocessoeleitoral_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3202,8 +3203,8 @@ ALTER TABLE public.etapaseletiva OWNER TO postgres;
 CREATE SEQUENCE etapaseletiva_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3235,8 +3236,8 @@ ALTER TABLE public.evento OWNER TO postgres;
 CREATE SEQUENCE evento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3271,8 +3272,8 @@ ALTER TABLE public.exame OWNER TO postgres;
 CREATE SEQUENCE exame_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3308,8 +3309,8 @@ ALTER TABLE public.examesolicitacaoexame OWNER TO postgres;
 CREATE SEQUENCE examesolicitacaoexame_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3350,8 +3351,8 @@ ALTER TABLE public.experiencia OWNER TO postgres;
 CREATE SEQUENCE experiencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3391,8 +3392,8 @@ ALTER TABLE public.extintor OWNER TO postgres;
 CREATE SEQUENCE extintor_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3440,8 +3441,8 @@ ALTER TABLE public.extintorinspecao_extintorinspecaoitem OWNER TO postgres;
 CREATE SEQUENCE extintorinspecao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3473,8 +3474,8 @@ ALTER TABLE public.extintorinspecaoitem OWNER TO postgres;
 CREATE SEQUENCE extintorinspecaoitem_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3523,8 +3524,8 @@ ALTER TABLE public.extintormanutencao_extintormanutencaoservico OWNER TO postgre
 CREATE SEQUENCE extintormanutencao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3556,8 +3557,8 @@ ALTER TABLE public.extintormanutencaoservico OWNER TO postgres;
 CREATE SEQUENCE extintormanutencaoservico_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3604,8 +3605,8 @@ ALTER TABLE public.faixasalarial_certificacao OWNER TO postgres;
 CREATE SEQUENCE faixasalarial_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3643,8 +3644,8 @@ ALTER TABLE public.faixasalarialhistorico OWNER TO postgres;
 CREATE SEQUENCE faixasalarialhistorico_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3678,8 +3679,8 @@ ALTER TABLE public.faturamentomensal OWNER TO postgres;
 CREATE SEQUENCE faturamentomensal_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3713,8 +3714,8 @@ ALTER TABLE public.fichamedica OWNER TO postgres;
 CREATE SEQUENCE fichamedica_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3753,8 +3754,8 @@ ALTER TABLE public.formacao OWNER TO postgres;
 CREATE SEQUENCE formacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3787,8 +3788,8 @@ ALTER TABLE public.funcao OWNER TO postgres;
 CREATE SEQUENCE funcao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3824,8 +3825,8 @@ ALTER TABLE public.gasto OWNER TO postgres;
 CREATE SEQUENCE gasto_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3859,8 +3860,8 @@ ALTER TABLE public.gastoempresa OWNER TO postgres;
 CREATE SEQUENCE gastoempresa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3894,8 +3895,8 @@ ALTER TABLE public.gastoempresaitem OWNER TO postgres;
 CREATE SEQUENCE gastoempresaitem_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3932,8 +3933,8 @@ ALTER TABLE public.gerenciadorcomunicacao OWNER TO postgres;
 CREATE SEQUENCE gerenciadorcomunicacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -3982,8 +3983,8 @@ ALTER TABLE public.grupoac OWNER TO postgres;
 CREATE SEQUENCE grupoac_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4016,8 +4017,8 @@ ALTER TABLE public.grupogasto OWNER TO postgres;
 CREATE SEQUENCE grupogasto_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4050,8 +4051,8 @@ ALTER TABLE public.grupoocupacional OWNER TO postgres;
 CREATE SEQUENCE grupoocupacional_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4083,8 +4084,8 @@ ALTER TABLE public.habilidade_areaorganizacional OWNER TO postgres;
 CREATE SEQUENCE habilidade_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4132,8 +4133,8 @@ ALTER TABLE public.historicoambiente_epc OWNER TO postgres;
 CREATE SEQUENCE historicoambiente_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4170,8 +4171,8 @@ ALTER TABLE public.historicobeneficio OWNER TO postgres;
 CREATE SEQUENCE historicobeneficio_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4210,8 +4211,8 @@ ALTER TABLE public.historicocandidato OWNER TO postgres;
 CREATE SEQUENCE historicocandidato_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4260,8 +4261,8 @@ ALTER TABLE public.historicocolaborador OWNER TO postgres;
 CREATE SEQUENCE historicocolaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4307,8 +4308,8 @@ ALTER TABLE public.historicocolaboradorbeneficio_beneficio OWNER TO postgres;
 CREATE SEQUENCE historicocolaboradorbeneficio_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4328,8 +4329,8 @@ SELECT pg_catalog.setval('historicocolaboradorbeneficio_sequence', 1, false);
 CREATE SEQUENCE historicoextintor_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4402,8 +4403,8 @@ ALTER TABLE public.historicofuncao_exame OWNER TO postgres;
 CREATE SEQUENCE historicofuncao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4435,8 +4436,8 @@ ALTER TABLE public.idioma OWNER TO postgres;
 CREATE SEQUENCE idioma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4470,8 +4471,8 @@ ALTER TABLE public.indice OWNER TO postgres;
 CREATE SEQUENCE indice_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4505,8 +4506,8 @@ ALTER TABLE public.indicehistorico OWNER TO postgres;
 CREATE SEQUENCE indicehistorico_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4540,8 +4541,8 @@ ALTER TABLE public.medicaorisco OWNER TO postgres;
 CREATE SEQUENCE medicaorisco_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4584,8 +4585,8 @@ ALTER TABLE public.medicocoordenador OWNER TO postgres;
 CREATE SEQUENCE medicocoordenador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4622,8 +4623,8 @@ ALTER TABLE public.mensagem OWNER TO postgres;
 CREATE SEQUENCE mensagem_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4667,8 +4668,8 @@ ALTER TABLE public.motivodemissao OWNER TO postgres;
 CREATE SEQUENCE motivodemissao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4701,8 +4702,8 @@ ALTER TABLE public.motivosolicitacao OWNER TO postgres;
 CREATE SEQUENCE motivosolicitacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4735,8 +4736,8 @@ ALTER TABLE public.naturezalesao OWNER TO postgres;
 CREATE SEQUENCE naturezalesao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4770,8 +4771,8 @@ ALTER TABLE public.nivelcompetencia OWNER TO postgres;
 CREATE SEQUENCE nivelcompetencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4808,8 +4809,8 @@ ALTER TABLE public.ocorrencia OWNER TO postgres;
 CREATE SEQUENCE ocorrencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4847,8 +4848,8 @@ ALTER TABLE public.papel OWNER TO postgres;
 CREATE SEQUENCE papel_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4906,8 +4907,8 @@ ALTER TABLE public.parametrosdosistema OWNER TO postgres;
 CREATE SEQUENCE parametrosdosistema_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4951,8 +4952,8 @@ ALTER TABLE public.perfil_papel OWNER TO postgres;
 CREATE SEQUENCE perfil_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -4994,8 +4995,8 @@ ALTER TABLE public.pergunta OWNER TO postgres;
 CREATE SEQUENCE pergunta_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5029,8 +5030,8 @@ ALTER TABLE public.periodoexperiencia OWNER TO postgres;
 CREATE SEQUENCE periodoexperiencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5063,8 +5064,8 @@ ALTER TABLE public.pesquisa OWNER TO postgres;
 CREATE SEQUENCE pesquisa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5098,8 +5099,8 @@ ALTER TABLE public.prioridadetreinamento OWNER TO postgres;
 CREATE SEQUENCE prioridadetreinamento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5134,8 +5135,8 @@ ALTER TABLE public.prontuario OWNER TO postgres;
 CREATE SEQUENCE prontuario_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5168,8 +5169,8 @@ ALTER TABLE public.providencia OWNER TO postgres;
 CREATE SEQUENCE providencia_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5203,8 +5204,8 @@ ALTER TABLE public.quantidadelimitecolaboradoresporcargo OWNER TO postgres;
 CREATE SEQUENCE quantidadelimitecolaboradoresporcargo_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5244,8 +5245,8 @@ ALTER TABLE public.questionario OWNER TO postgres;
 CREATE SEQUENCE questionario_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5297,8 +5298,8 @@ ALTER TABLE public.reajustecolaborador OWNER TO postgres;
 CREATE SEQUENCE reajustecolaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5332,8 +5333,8 @@ ALTER TABLE public.realizacaoexame OWNER TO postgres;
 CREATE SEQUENCE realizacaoexame_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5368,8 +5369,8 @@ ALTER TABLE public.resposta OWNER TO postgres;
 CREATE SEQUENCE resposta_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5415,8 +5416,8 @@ ALTER TABLE public.risco_epi OWNER TO postgres;
 CREATE SEQUENCE risco_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5452,8 +5453,8 @@ ALTER TABLE public.riscoambiente OWNER TO postgres;
 CREATE SEQUENCE riscoambiente_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5489,8 +5490,8 @@ ALTER TABLE public.riscofuncao OWNER TO postgres;
 CREATE SEQUENCE riscofuncao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5527,8 +5528,8 @@ ALTER TABLE public.riscomedicaorisco OWNER TO postgres;
 CREATE SEQUENCE riscomedicaorisco_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5708,8 +5709,8 @@ ALTER TABLE public.solicitacao_bairro OWNER TO postgres;
 CREATE SEQUENCE solicitacao_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5762,8 +5763,8 @@ ALTER TABLE public.solicitacaobds_empresabds OWNER TO postgres;
 CREATE SEQUENCE solicitacaobds_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5783,8 +5784,8 @@ SELECT pg_catalog.setval('solicitacaobds_sequence', 1, false);
 CREATE SEQUENCE solicitacaoepi_item_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5804,8 +5805,8 @@ SELECT pg_catalog.setval('solicitacaoepi_item_sequence', 1, false);
 CREATE SEQUENCE solicitacaoepi_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5825,8 +5826,8 @@ SELECT pg_catalog.setval('solicitacaoepi_sequence', 1, false);
 CREATE SEQUENCE solicitacaoepiitementrega_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5865,8 +5866,8 @@ ALTER TABLE public.solicitacaoexame OWNER TO postgres;
 CREATE SEQUENCE solicitacaoexame_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5903,8 +5904,8 @@ ALTER TABLE public.tabelareajustecolaborador OWNER TO postgres;
 CREATE SEQUENCE tabelareajustecolaborador_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5937,8 +5938,8 @@ ALTER TABLE public.tipodespesa OWNER TO postgres;
 CREATE SEQUENCE tipodespesa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -5970,8 +5971,8 @@ ALTER TABLE public.tipodocumento OWNER TO postgres;
 CREATE SEQUENCE tipodocumento_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6004,8 +6005,8 @@ ALTER TABLE public.tipoepi OWNER TO postgres;
 CREATE SEQUENCE tipoepi_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6025,8 +6026,8 @@ SELECT pg_catalog.setval('tipoepi_sequence', 1, false);
 CREATE SEQUENCE turma_avaliacaoturma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6046,8 +6047,8 @@ SELECT pg_catalog.setval('turma_avaliacaoturma_sequence', 1, false);
 CREATE SEQUENCE turma_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6081,8 +6082,8 @@ ALTER TABLE public.turmatipodespesa OWNER TO postgres;
 CREATE SEQUENCE turmatipodespesa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6119,8 +6120,8 @@ ALTER TABLE public.usuario OWNER TO postgres;
 CREATE SEQUENCE usuario_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6154,8 +6155,8 @@ ALTER TABLE public.usuarioempresa OWNER TO postgres;
 CREATE SEQUENCE usuarioempresa_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -6190,8 +6191,8 @@ ALTER TABLE public.usuariomensagem OWNER TO postgres;
 CREATE SEQUENCE usuariomensagem_sequence
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -27756,6 +27757,7 @@ INSERT INTO migrations (name) VALUES ('20120625093650');
 INSERT INTO migrations (name) VALUES ('20120702104504');
 INSERT INTO migrations (name) VALUES ('20120702113736');
 INSERT INTO migrations (name) VALUES ('20120703181421');
+INSERT INTO migrations (name) VALUES ('20120711133323');
 
 
 --
@@ -28042,7 +28044,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.78.74', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.79.75', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
 
 
 --

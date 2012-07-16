@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.79.75" data="16/07/2012"><![CDATA[
+		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Visualizar Currículo > Imprimir: Nova opção de impressão da solicitação de pessoal.
+		- C&S > Cadastros > Cargos e Faixas > Imprimir: Impressão da competência e nível de competência relacionados à faixa salarial.
+    ]]></Versao>
 	<Versao id="1.1.78.74" data="09/07/2012"><![CDATA[
 		- Info. Funcionais > Cadastros > Colaboradores > Desligar Colaborador: Ao tentar desligar um colaborador que esteja inserido na CIPA, é exibido um alerta informando o período de estabilidade na empresa.
 		- Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Nova funcionalidade de exportar curso/turma como ocorrência para o Tráfego Urbano (TRU).

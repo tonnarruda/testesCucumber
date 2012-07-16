@@ -38,7 +38,7 @@ Funcionalidade: Cadastrar Curso
     E eu devo ver o título "Cursos"
 
     Então eu clico na linha "_testes" da imagem "Turmas"
-    E eu devo ver o título "Turmas - _testes"
+    E eu devo ver o título "Turmas do curso _testes"
     E eu clico no botão "Inserir"
     E eu seleciono "_testes" de "Curso"
     E eu preencho "Descrição" com "_testes automatizados"
@@ -69,20 +69,20 @@ Funcionalidade: Cadastrar Curso
     E eu clico no botão "Voltar"
     E eu devo ver o título "Colaboradores Inscritos no curso de _testes, Turma - _testes automatizados"
     E eu clico no botão "Voltar"
-    E eu devo ver o título "Turmas - _testes"
+    E eu devo ver o título "Turmas do curso _testes"
 
     Então eu clico em editar "_testes automatizados"
     E eu devo ver o título "Editar Turma - _testes"
     E o campo "Descrição" deve conter "_testes automatizados"
     E eu preencho "Descrição" com "_testes auto"
     E eu clico no botão "Gravar"
-    E eu devo ver o título "Turmas - _testes"
+    E eu devo ver o título "Turmas do curso _testes"
     E eu não devo ver "_testes automatizados"
 
     Então eu clico na linha "_testes auto" da imagem "Lista de Frequência"
     E eu devo ver "Período: 13/06/2012 a 17/06/2012"
     E eu clico no botão "VoltarListaFrequencia"
-    E eu devo ver o título "Turmas - _testes"
+    E eu devo ver o título "Turmas do curso _testes"
     E eu clico no botão "Voltar"
     E eu devo ver o título "Cursos"
     
@@ -91,7 +91,7 @@ Funcionalidade: Cadastrar Curso
     E eu devo ver "possui dependências em"
 
     Então eu clico na linha "_testes" da imagem "Turmas"
-    E eu devo ver o título "Turmas - _testes"
+    E eu devo ver o título "Turmas do curso _testes"
     E eu clico em excluir "_testes auto"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Turma excluída com sucesso."

@@ -22,4 +22,4 @@ Funcionalidade: Relatório de EPIs com Prazo a Vencer
     E eu marco "Exibir Vencimento do CA"
 
     Então eu clico no botão "Relatorio"
-    E eu devo ver "Não existem EPIs com Prazo a Vencer para os filtros informados."
+    E eu devo ver "Não existem EPIs com prazo a vencer para os filtros informados."

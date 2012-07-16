@@ -18,7 +18,7 @@ Funcionalidade: Cadastrar Bairro
     Então eu devo ver o título "Inserir Bairro"
     E eu seleciono "Ceará" de "Estado"
     E eu saio do campo "Estado"
-    E eu seleciono "Fortim" de "Cidade"
+    E eu seleciono "Fortaleza" de "Cidade"
     E eu preencho "Nome" com "pontal"
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Bairros"
@@ -28,7 +28,7 @@ Funcionalidade: Cadastrar Bairro
     Então eu devo ver o título "Inserir Bairro"
     E eu seleciono "Ceará" de "Estado"
     E eu saio do campo "Estado"
-    E eu seleciono "Fortim" de "Cidade"
+    E eu seleciono "Fortaleza" de "Cidade"
     E eu preencho "Nome" com "beira-rio"
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Bairros"
@@ -40,7 +40,7 @@ Funcionalidade: Cadastrar Bairro
     Então eu devo ver o alert do valida campos e clico no ok
     E eu seleciono "Ceará" de "Estado"
     E eu saio do campo "Estado"
-    E eu seleciono "Fortim" de "Cidade"
+    E eu seleciono "Fortaleza" de "Cidade"
     E eu seleciono "beira-rio" de "Bairro (ATENÇÃO: este bairro será excluído)"
     E eu seleciono "pontal" de "Transferir registros para este Bairro"
 

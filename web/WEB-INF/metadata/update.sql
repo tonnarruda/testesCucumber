@@ -19077,3 +19077,8 @@ delete from perfil_papel where papeis_id=558;--.go
 delete from papel where id = 558;--.go
 insert into migrations values('20120703181421');--.go
 update parametrosdosistema set appversao = '1.1.78.74';--.go
+-- versao 1.1.79.75
+
+alter table configuracaoimpressaocurriculo add column exibirSolicitacaoPessoal boolean default false;--.go
+insert into migrations values('20120711133323');--.go
+update parametrosdosistema set appversao = '1.1.79.75';--.go
