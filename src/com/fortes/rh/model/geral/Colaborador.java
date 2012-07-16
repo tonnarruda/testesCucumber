@@ -216,6 +216,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private int somaCompetencias = 0;
 	@Transient
 	private double percentualCompatibilidade = 0.0;
+	@Transient
+	private Integer tempoServico;
+	@Transient
+	private String intervaloTempoServico;
 
 	public Colaborador()
 	{
@@ -568,7 +572,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  String cidadeNome, String ufSigla,
+						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
+						String cidadeNome, String ufSigla, 
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
@@ -585,6 +590,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
+		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
 				
@@ -688,6 +694,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
+		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
 		
@@ -2521,5 +2528,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setMediaPerformance(Double mediaPerformance)
 	{
 		this.mediaPerformance = mediaPerformance;
+	}
+
+	public Integer getTempoServico() {
+		return tempoServico;
+	}
+
+	public void setTempoServico(Integer tempoServico) {
+		this.tempoServico = tempoServico;
+	}
+
+	public String getIntervaloTempoServico() {
+		return intervaloTempoServico;
+	}
+
+	public void setIntervaloTempoServico(String intervaloTempoServico) {
+		this.intervaloTempoServico = intervaloTempoServico;
 	}
 }

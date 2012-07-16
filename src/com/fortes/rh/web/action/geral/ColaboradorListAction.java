@@ -90,6 +90,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Map statusRetornoACs = new StatusRetornoAC();
 	private boolean integraAc;
+	private boolean agruparPorTempoServico;
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String[] areasCheck;
@@ -109,6 +110,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	private char exibir = ' ';
 	
+	private Integer tempoServico;
 	private int mes;
 	private Map meses = new Mes();
 	
@@ -283,7 +285,10 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
-
+			
+			if(agruparPorTempoServico)
+				orderField = " co.dataAdmissao desc, " + orderField;
+			
 			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
 
 			if(colaboradores.isEmpty())
@@ -295,12 +300,14 @@ public class ColaboradorListAction extends MyActionSupportList
 	            Scriptable scope = cx.initStandardObjects();
 	            
 	            String xml = ArquivoUtil.getReportSource("relatorioDinamico.jrxml");
+	            if(agruparPorTempoServico)
+	            	xml = ArquivoUtil.getReportSource("relatorioDinamicoAgrupado.jrxml");
+	            
 	            xml = xml.replaceAll("<\\?.*\\s+<!.*\\s+<!.*\\s+", "");
 	            
 	            StringBuilder sb = new StringBuilder();
 	            sb.append("    var xml = " + xml + ";");
 	           
-	            
 	            int posicaoX = 0;
 	            int valueWidth = 0;
 	            int valueX = 0;
@@ -320,7 +327,10 @@ public class ColaboradorListAction extends MyActionSupportList
             		
 	            	valueWidth = coluna.getSize();
 		            valueX = posicaoX;
-		            			        
+		            			
+		            if(agruparPorTempoServico)
+		            	valueX += 18;
+		            
 		            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
 		            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
 		            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
@@ -339,7 +349,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	            		result.toString();
 	            
 	            reportInputStream = new ByteArrayInputStream(relatorioDinamico.getBytes());
-	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
+	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, tempoServico);
 
 	        }
 	        finally 
@@ -371,6 +381,10 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
+			
+			if(agruparPorTempoServico)
+				orderField = " co.dataAdmissao desc, " + orderField;
+			
 			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
 			
 			if(colaboradores.isEmpty())
@@ -381,8 +395,14 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			dinamicColumns = new ArrayList<String>();
 			dinamicProperts = new ArrayList<String>();
-			
 			montaColunas();
+			
+			if(agruparPorTempoServico){
+				colaboradores = colaboradorManager.insereGrupoPorTempoServico(colaboradores, tempoServico);
+				dinamicColumns.add("Tempo de serviço");  
+				dinamicProperts.add("intervaloTempoServico");
+			}
+			
 			for (String marcada : colunasMarcadas) 
 			{
 				for (ReportColumn coluna : colunas) 
@@ -936,6 +956,22 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
+	}
+
+	public boolean isAgruparPorTempoServico() {
+		return agruparPorTempoServico;
+	}
+
+	public void setAgruparPorTempoServico(boolean agruparPorTempoServico) {
+		this.agruparPorTempoServico = agruparPorTempoServico;
+	}
+
+	public Integer getTempoServico() {
+		return tempoServico;
+	}
+
+	public void setTempoServico(Integer tempoServico) {
+		this.tempoServico = tempoServico;
 	}
 
 	

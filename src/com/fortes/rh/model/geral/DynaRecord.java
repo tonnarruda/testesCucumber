@@ -22,12 +22,10 @@ public class DynaRecord implements Serializable, Cloneable
 	private String campo13;
 	private String campo14;
 	private String campo15;
+	private String tempoServico = "TESTE";
 	private Colaborador colaborador;
 	
-	public DynaRecord()
-	{
-
-	}
+	public DynaRecord(){}
 
 	public String getCampo1() {
 		return campo1;
@@ -162,10 +160,12 @@ public class DynaRecord implements Serializable, Cloneable
 	public void setCampo15(String campo15) {
 		this.campo15 = campo15;
 	}
-	
-	
-	
-	
-	
-	
+
+	public String getTempoServico() {
+		return tempoServico;
+	}
+
+	public void setTempoServico(String tempoServico) {
+		this.tempoServico = tempoServico;
+	}
 }

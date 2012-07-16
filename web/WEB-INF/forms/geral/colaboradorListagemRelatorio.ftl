@@ -123,6 +123,14 @@
 				$("#from_colunas option[value=" + this +  "]").attr('selected', true).dblclick();
 			});
 			
+			$('#agruparPorTempoServico').change(function() {
+				if ($(this).is(":checked"))
+					$('#tempoServico').removeAttr('disabled').css('background-color', '#FFFFFF');
+				else
+					$('#tempoServico').attr("disabled", true).css("background-color", "#DEDEDE");
+			});
+			
+			$('#agruparPorTempoServico').change();
 		});
 
 
@@ -277,6 +285,11 @@
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		
 		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos"  />
+		
+		<@ww.checkbox label="" name="agruparPorTempoServico" id="agruparPorTempoServico" labelPosition="left" theme="simple"/>
+		Agrupar colaboradores por tempo de serviço em  
+		<@ww.textfield theme="simple" name="tempoServico" id="tempoServico" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
+		meses.  
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 

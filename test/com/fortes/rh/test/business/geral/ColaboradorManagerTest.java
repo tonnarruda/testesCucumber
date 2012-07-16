@@ -1130,7 +1130,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Collection<String> colunasMarcadas = new ArrayList<String>();
     	colunasMarcadas = Arrays.asList("nome", "matricula", "nomeComercial");
     	
-    	Collection<DynaRecord> relatorio = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas);
+    	Collection<DynaRecord> relatorio = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, null);
     	
     	assertEquals(3, relatorio.size());
     	

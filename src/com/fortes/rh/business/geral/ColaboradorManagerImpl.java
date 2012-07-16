@@ -1953,9 +1953,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return retorno;
 	}
  
-	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas) 
+	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas, Integer tempoServico) 
 	{
 		Collection<DynaRecord> retorno = new ArrayList<DynaRecord>();
+		Integer tempoServicoInicial = 0;
+		Integer tempoServicoFinal = tempoServico;
 		
 		for (Colaborador colaborador : colaboradores)
 		{				
@@ -1963,12 +1965,38 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			for (int i=1; i <= colunasMarcadas.size(); i++)
 				BeanUtils.setValue(record, "campo" + i, BeanUtils.getValue(colaborador, (String) colunasMarcadas.toArray()[i - 1]));
-
+			
+			if(tempoServico != null){
+				while(colaborador.getTempoServico() > tempoServicoFinal){
+					tempoServicoInicial = tempoServicoFinal + 1; 
+					tempoServicoFinal += tempoServico; 
+				}
+				record.setTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal);
+			}			
+			
 			record.setColaborador(colaborador);
 			retorno.add(record);
 		}			
 
 		return retorno;
+	}
+	
+	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer tempoServico)
+	{
+		Integer tempoServicoInicial = 0;
+		Integer tempoServicoFinal = tempoServico;
+		
+		for (Colaborador colaborador : colaboradores) {
+			if(tempoServico != null){
+				while(colaborador.getTempoServico() > tempoServicoFinal){
+					tempoServicoInicial = tempoServicoFinal + 1; 
+					tempoServicoFinal += tempoServico; 
+				}
+				colaborador.setIntervaloTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal);
+			}	
+		}
+		
+		return colaboradores;
 	}
 
 	public Colaborador findByUsuarioProjection(Long usuarioId) 
