@@ -164,7 +164,9 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao.setApto(Apto.SIM);
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
-		candidatoSolicitacaoDao.updateTriagem(candidatoSolicitacao.getId(), true);
+		Long[] ids = new Long[] {candidatoSolicitacao.getId()};
+		
+		candidatoSolicitacaoDao.updateTriagem(ids, true);
 
 		CandidatoSolicitacao candidatoSolicitacaoRetorno = candidatoSolicitacaoDao.findByCandidatoSolicitacao(candidatoSolicitacao);
 		assertTrue(candidatoSolicitacaoRetorno.isTriagem());

@@ -329,7 +329,7 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     public void testUpdateTriagem(){
 
     	boolean triagem = true;
-    	Long candidatoSolicitacaoid = 1L;
+    	Long[] candidatoSolicitacaoid = new Long[] {1L};
 
     	candidatoSolicitacaoDao.expects(once()).method("updateTriagem").with(eq(candidatoSolicitacaoid), eq(triagem));
 

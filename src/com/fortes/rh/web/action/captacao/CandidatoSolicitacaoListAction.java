@@ -14,7 +14,6 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -38,6 +37,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private Collection<EtapaSeletiva> etapas;
 
 	private CandidatoSolicitacao candidatoSolicitacao;
+	private Long[] candidatoSolicitacaoIdsSelecionados;
 	private Solicitacao solicitacao;
 	private Solicitacao solicitacaoDestino;
 	private Candidato candidato;
@@ -124,7 +124,9 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public String removerTriagem() throws Exception
 	{
-		candidatoSolicitacaoManager.updateTriagem(candidatoSolicitacao.getId(), false);
+		if (candidatoSolicitacaoIdsSelecionados != null && candidatoSolicitacaoIdsSelecionados.length > 0) {
+			candidatoSolicitacaoManager.updateTriagem(candidatoSolicitacaoIdsSelecionados, false);
+		}
 
 		return Action.SUCCESS;
 	}
@@ -346,6 +348,18 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
 		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	
+	public Long[] getCandidatoSolicitacaoIdsSelecionados()
+	{
+		return candidatoSolicitacaoIdsSelecionados;
+	}
+
+	
+	public void setCandidatoSolicitacaoIdsSelecionados(Long[] candidatoSolicitacaoIdsSelecionados)
+	{
+		this.candidatoSolicitacaoIdsSelecionados = candidatoSolicitacaoIdsSelecionados;
 	}
 
 }

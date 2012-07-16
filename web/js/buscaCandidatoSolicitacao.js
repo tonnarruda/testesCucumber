@@ -65,6 +65,61 @@ function prepareEnviarForm()
 	}
 	else
 	{
-		jAlert("Nenhum Candidato selecionado!");
+		jAlert("Nenhum candidato selecionado!");
+	}
+}
+
+// ids de candidatoSolicitacao
+function marcarDesmarcarCandidatoSolicitacao(frm)
+{
+	var vMarcar;
+	
+	if (document.getElementById('md').checked)
+	{
+		vMarcar = true;
+	}
+	else
+	{
+		vMarcar = false;
+	}
+	
+	with(frm)
+	{
+		for(i = 0; i < elements.length; i++)
+		{
+			if(elements[i].name == 'candidatoSolicitacaoIdsSelecionados' && elements[i].type == 'checkbox')
+			{
+				elements[i].checked = vMarcar;
+			}
+		}
+	}
+}
+
+function verificaCandidatoSolicitacaos()
+{
+	if(document.formCandSolic.candidatoSolicitacaoIdsSelecionados.length == undefined)
+	{
+		return document.formCandSolic.candidatoSolicitacaoIdsSelecionados.checked;
+	}
+	
+	for(i = 0; i < document.formCandSolic.candidatoSolicitacaoIdsSelecionados.length; i++)
+	{
+		if(document.formCandSolic.candidatoSolicitacaoIdsSelecionados[i].checked)
+			return true;
+	}
+	
+	return false;
+}
+
+function prepareEnviarFormCandSolic()
+{
+	if(verificaCandidatoSolicitacaos())
+	{
+		
+		document.formCandSolic.submit();
+	}
+	else
+	{
+		jAlert("Nenhum candidato selecionado!");
 	}
 }

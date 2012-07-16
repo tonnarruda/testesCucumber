@@ -11,13 +11,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -280,14 +278,14 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return criteria.list();
     }
 
-    public void updateTriagem(Long candidatoSolicitacaoid, boolean triagem)
+    public void updateTriagem(Long[] candidatoSolicitacaoIdsSelecionados, boolean triagem)
     {
-        String hql = "update CandidatoSolicitacao set triagem = :triagem where id = :candidatoSolicitacaoid";
+        String hql = "update CandidatoSolicitacao set triagem = :triagem where id in (:candidatoSolicitacaoIdsSelecionados)";
 
         Query query = getSession().createQuery(hql);
 
         query.setBoolean("triagem", triagem);
-        query.setLong("candidatoSolicitacaoid", candidatoSolicitacaoid);
+        query.setParameterList("candidatoSolicitacaoIdsSelecionados", candidatoSolicitacaoIdsSelecionados, Hibernate.LONG);
 
         query.executeUpdate();
 

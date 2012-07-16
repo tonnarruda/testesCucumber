@@ -14,7 +14,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
-import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -180,9 +179,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().findByFiltroSolicitacaoTriagem(triagen);
 	}
 
-	public void updateTriagem(Long candidatoSolicitacaoid, boolean triagem)
+	public void updateTriagem(Long[] candidatoSolicitacaoIdsSelecionados, boolean triagem)
 	{
-		getDao().updateTriagem(candidatoSolicitacaoid, triagem);
+		getDao().updateTriagem(candidatoSolicitacaoIdsSelecionados, triagem);
 	}
 
 	public Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId)
