@@ -115,6 +115,24 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), codigoAC + " " + empresa.getCodigoAC(), dados);
 	}
+
+	public Auditavel solicitacaoDesligamentoAc(MetodoInterceptado metodo) throws Throwable 
+	{
+		metodo.processa();
+		
+		String codigoAC = (String) metodo.getParametros()[0];
+		Empresa empresa = (Empresa) metodo.getParametros()[1];
+		Date dataSolicitacaoDesligamento = (Date) metodo.getParametros()[2];
+		
+		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
+		desligamento.put("Colaborador codigoAC", codigoAC);
+		desligamento.put("Empresa codigoAC", empresa.getCodigoAC());
+		desligamento.put("Data Desligamento", dataSolicitacaoDesligamento);
+		
+		String dados = new GeraDadosAuditados(null, desligamento).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), codigoAC + " " + empresa.getCodigoAC(), dados);
+	}
 	
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {
 		ColaboradorManager manager = (ColaboradorManager) metodo.getComponente();

@@ -15,6 +15,7 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.fortes.security.auditoria.Audita;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
