@@ -35,6 +35,9 @@
 		<action name="insert" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="insert">
 			<result name="success" type="redirect"><![CDATA[list.action?questionario.id=${questionario.id}&exibirBotaoConcluir=${exibirBotaoConcluir}]]></result>
 		</action>
+		<action name="visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia">
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.ftl</result>
+		</action>
 		<action name="visualizarRespostasPorColaborador" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="visualizarRespostasPorColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/visualizarRespostasPorColaborador.ftl</result>
 		</action>

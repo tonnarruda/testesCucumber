@@ -36,7 +36,6 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -189,6 +188,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
+	public String visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia()
+	{
+		prepareResponderAvaliacaoDesempenho();		
+		return Action.SUCCESS;
+	}
+		
 	public String prepareResponderAvaliacaoDesempenho()
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
@@ -197,7 +202,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
-		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
+		
+		if (colaboradorQuestionario.getAvaliador() != null)
+			avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
 		if (colaboradorQuestionario.getRespondida())
 			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
@@ -212,7 +219,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String responderAvaliacaoDesempenho()
 	{
 		if(colaboradorQuestionario.getRespondidaEm() == null)
-			colaboradorQuestionario.setRespondidaEm(new Date());
+			colaboradorQuestionario.setRespondidaEm(new Date()); 
 		
 		exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 

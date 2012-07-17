@@ -12,9 +12,21 @@
 			<#assign classBotao="btnAvancar"/>
 		</#if>
 	
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('titulo','inicio','fim','anonima','permiteAutoAvaliacao','modelo'), new Array('inicio','fim'))"/>
-
-	<#include "../ftl/mascarasImports.ftl" />
+		<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('titulo','inicio','fim','anonima','permiteAutoAvaliacao','modelo'), new Array('inicio','fim'))"/>
+	
+		<#include "../ftl/mascarasImports.ftl" />
+		
+		<script type="text/javascript" >
+			$(function() {
+				abilitaExibirPerformanceProfissional();
+			});
+			
+			function abilitaExibirPerformanceProfissional()
+			{
+				$('#exibirPerformanceProfissional').attr('disabled', $('#anonima').val()=='true');
+			}
+		</script>
+		
 	</head>
 	<body>
 	
@@ -47,7 +59,8 @@
 			</#if>
 			
 			<@ww.select label="Modelo da Avaliação" name="avaliacaoDesempenho.avaliacao.id" id="modelo" required="true" list="avaliacaos" listKey="id" listValue="titulo" cssStyle="width: 450px;" headerKey="" headerValue="Selecione..." disabled="${desabilita}" />
-			<@ww.select label="Anônima" name="avaliacaoDesempenho.anonima" id="anonima" list=r"#{true:'Sim',false:'Não'}" disabled="${desabilita}" required="true" headerKey="" headerValue=""/>
+			<@ww.select label="Anônima" name="avaliacaoDesempenho.anonima" id="anonima" list=r"#{true:'Sim',false:'Não'}" disabled="${desabilita}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformanceProfissional();"/>
+			<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="avaliacaoDesempenho.exibirPerformanceProfissional"  labelPosition="left"/>
 			<@ww.select label="Permitir autoavaliação" name="avaliacaoDesempenho.permiteAutoAvaliacao" disabled="${desabilita}" id="permiteAutoAvaliacao" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue=""/>
 			
 			<@ww.hidden name="avaliacaoDesempenho.id" />

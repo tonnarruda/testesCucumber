@@ -34,7 +34,7 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     private boolean anonima;
     private boolean permiteAutoAvaliacao;
     private boolean liberada;
-    
+    private boolean exibirPerformanceProfissional;
     
     @NaoAudita
     public String getPeriodoFormatado()
@@ -171,5 +171,15 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 
 	public void setLiberada(boolean liberada) {
 		this.liberada = liberada;
+	}
+
+	public boolean isExibirPerformanceProfissional()
+	{
+		return exibirPerformanceProfissional;
+	}
+
+	public void setExibirPerformanceProfissional(boolean exibirPerformanceProfissional)
+	{
+		this.exibirPerformanceProfissional = exibirPerformanceProfissional;
 	}
 }

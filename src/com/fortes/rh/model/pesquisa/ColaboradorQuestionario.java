@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -200,6 +202,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	newAvaliacaoDesempenho();
     	
     	this.avaliacaoDesempenho.setAnonima(anonima == null ? false : anonima); 	
+    }
+    
+    public void setProjectionExibirPerformanceProfissional(Boolean exibirPerformanceProfissional)
+    {
+    	newAvaliacaoDesempenho();
+    	
+    	this.avaliacaoDesempenho.setExibirPerformanceProfissional(BooleanUtils.toBoolean(exibirPerformanceProfissional)); 	
     }
     
     public void setProjectionAvaliacaoDesempenhoPermiteAutoAvaliacao(Boolean projectionAvaliacaoDesempenhoPermiteAutoAvaliacao)

@@ -294,11 +294,22 @@
 				<td>
 				<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<@display.column property="avaliacao.titulo" title="Avaliação" />					
+						<#if avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional?exists && avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
+							<@display.column title="Avaliação" >					
+								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
+									${avaliacaoDesempenho.avaliacao.titulo}
+								</a>
+							</@display.column>
+						<#else>
+							<@display.column title="Avaliação" >					
+								${avaliacaoDesempenho.avaliacao.titulo}
+							</@display.column>
+						</#if>
+					
 						<@display.column property="performanceFormatada" title="Performance" />
 						<@display.column title="Obs." style="text-align: center;width: 50px">
-							<#if avaliacaoDesempenhos.observacao?exists && avaliacaoDesempenhos.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenhos.observacao?j_string}');return false">...</span>
+							<#if avaliacaoDesempenho.observacao?exists && avaliacaoDesempenho.observacao?trim != "">
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenho.observacao?j_string}');return false">...</span>
 							</#if>
 						</@display.column>
 				</@display.table>
@@ -336,7 +347,11 @@
 				<td>
 				<@display.table name="avaliacaoExperiencias" id="avaliacaoExperiencia" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<@display.column property="avaliacao.titulo" title="Avaliação" />
+						<@display.column title="Avaliação" >					
+							<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoExperiencia.id}', 600, 1100)">
+								${avaliacaoExperiencia.avaliacao.titulo}
+							</a>
+						</@display.column>
 						<@display.column property="performanceFormatada" title="Performance" />
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if avaliacaoExperiencia.observacao?exists && avaliacaoExperiencia.observacao?trim != "">

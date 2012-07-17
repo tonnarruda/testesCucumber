@@ -65,6 +65,7 @@
 		<pattern>/acesso/usuario/prepareRecuperaSenha.action**</pattern>
 		<pattern>/acesso/usuario/recuperaSenha.action**</pattern>
 		<pattern>/pesquisa/colaboradorQuestionario/visualizarRespostasPorColaboradorPerformanceProfissional.action*</pattern>
+		<pattern>/pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia*</pattern>
 	</decorator>
 
 	<decorator name="app" page="app.ftl">
