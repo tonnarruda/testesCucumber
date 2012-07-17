@@ -20,6 +20,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.dicionario.TipoMembroComissao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
@@ -149,7 +150,7 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 	}
 	
 	
-	public Comissao findComissaoByColaborador(Long colaboradorId) {
+	public Collection<Comissao> findComissaoByColaborador(Long colaboradorId) {
 		
 		StringBuilder hql = new StringBuilder("select new Comissao(comissao.dataIni, comissao.dataFim) ");
 		hql.append("from ComissaoMembro cm ");
@@ -159,13 +160,15 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		hql.append("and cp.aPartirDe = (select max(cp2.aPartirDe) from ComissaoPeriodo cp2 ");
 		hql.append("				where cp2.comissao.id = comissao.id ");
 		hql.append("				and cp2.aPartirDe <= :hoje ) ");
+		hql.append("and cm.tipo = :tipo ");
 		
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setLong("colaboradorId", colaboradorId);
 		query.setDate("hoje", new Date());
+		query.setString("tipo", TipoMembroComissao.ELEITO);
 		
-		return (Comissao) query.uniqueResult();
+		return query.list();
 	}
 	
 

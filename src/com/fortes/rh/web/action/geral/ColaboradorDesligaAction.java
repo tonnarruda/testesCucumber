@@ -48,7 +48,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		integraAc = getEmpresaSistema().isAcIntegra();
 		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-		comissao = comissaoMembroManager.findComissaoByColaborador(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
 		return Action.SUCCESS;
 	}

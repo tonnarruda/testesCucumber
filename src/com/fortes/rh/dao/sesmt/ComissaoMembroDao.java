@@ -17,5 +17,5 @@ public interface ComissaoMembroDao extends GenericDao<ComissaoMembro>
 	Collection<ComissaoMembro> findByComissao(Long comissaoId, String tipoMembroComissao);
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId, Collection<Long> colaboradorIds);
-	Comissao findComissaoByColaborador(Long colaboradorId);
+	Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
 }

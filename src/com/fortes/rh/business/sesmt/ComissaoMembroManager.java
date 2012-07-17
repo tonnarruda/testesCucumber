@@ -20,5 +20,5 @@ public interface ComissaoMembroManager extends GenericManager<ComissaoMembro>
 	Collection<ComissaoMembro> findByComissao(Long comissaoId, String tipoMembroComissao);
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId,Collection<Long> colaboradorIds);
-	public Comissao findComissaoByColaborador(Long colaboradorId);
+	public Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
 }

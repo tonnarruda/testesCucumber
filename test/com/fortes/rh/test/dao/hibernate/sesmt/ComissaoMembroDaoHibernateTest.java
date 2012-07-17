@@ -282,8 +282,8 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
 		comissaoMembroDao.save(comissaoMembro);
 		
-		Comissao comissaoResult = comissaoMembroDao.findComissaoByColaborador(colaborador.getId());
-		assertEquals(comissao.getDataFim(), comissaoResult.getDataFim());
+		Collection<Comissao> comissaoResults = comissaoMembroDao.findComissaoByColaborador(colaborador.getId());
+		assertEquals(comissao.getDataFim(), ((Comissao)comissaoResults.toArray()[0]).getDataFim());
 	}
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

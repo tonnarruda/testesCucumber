@@ -1,5 +1,6 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
@@ -12,12 +13,18 @@ public class ComissaoDWR
 
 	public String dataEstabilidade(Long colaboradorId)
 	{
-		Comissao comissao = comissaoMembroManager.findComissaoByColaborador(colaboradorId);
+		Collection<Comissao> comissaos = comissaoMembroManager.findComissaoByColaborador(colaboradorId);
 		
-		if(comissao == null)
+		if(comissaos.isEmpty())
 			return null;
 		
-		Date dataEstabilidade = DateUtil.incrementaAno(comissao.getDataFim(), 1);
+		Date dataEstabilidade = ((Comissao) (comissaos.toArray()[0])).getDataFim();
+		for (Comissao comissao : comissaos) {
+			if(comissao.getDataFim().getTime() > dataEstabilidade.getTime())
+				dataEstabilidade = comissao.getDataFim(); 
+		}
+		
+		dataEstabilidade = DateUtil.incrementaAno(dataEstabilidade, 1);
 		return DateUtil.formataDiaMesAno(dataEstabilidade);
 	}
 
