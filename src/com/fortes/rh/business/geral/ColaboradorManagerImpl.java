@@ -1253,9 +1253,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		if(!colaboradorOriginal.getEndereco().getNumero().equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
 			mensagem.append("Número: " + colaboradorOriginal.getEndereco().getNumero() + "\n");
-
-		if(!colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + colaboradorOriginal.getEndereco().getComplemento() + "\n");
+		
+		if (colaboradorOriginal.getEndereco().getComplemento() != null && !colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
+				mensagem.append("Complemento: " + colaboradorOriginal.getEndereco().getComplemento() + "\n");
 			
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
 			mensagem.append("Bairro: " + colaboradorOriginal.getEndereco().getBairro()+ "\n");
@@ -1299,7 +1299,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(!colaboradorOriginal.getEndereco().getNumero().equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
 			mensagem.append("Número: " + colaboradorAtualizado.getEndereco().getNumero() + "\n");
 
-		if(!colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
+		if(colaboradorOriginal.getEndereco().getComplemento() != null && !colaboradorOriginal.getEndereco().getComplemento().equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
 			mensagem.append("Complemento: " + colaboradorAtualizado.getEndereco().getComplemento() + "\n");
 		
 		if(!colaboradorOriginal.getEndereco().getBairro().equals(colaboradorAtualizado.getEndereco().getBairro()) ) 

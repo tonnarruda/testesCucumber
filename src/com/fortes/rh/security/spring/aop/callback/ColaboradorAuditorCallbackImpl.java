@@ -6,8 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.MotivoDemissaoManager;
+import com.fortes.rh.business.geral.MotivoDemissaoManagerImpl;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
@@ -118,24 +121,27 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 
 	public Auditavel solicitacaoDesligamentoAc(MetodoInterceptado metodo) throws Throwable 
 	{
+		
 		metodo.processa();
 		
-		String codigoAC = (String) metodo.getParametros()[0];
-		Empresa empresa = (Empresa) metodo.getParametros()[1];
-		Date dataSolicitacaoDesligamento = (Date) metodo.getParametros()[2];
+		Date dataSolicitacaoDesligamento = (Date) metodo.getParametros()[0];
+		String observacaoDemissao = (String) metodo.getParametros()[1];
+		Long motivoId = (Long) metodo.getParametros()[2];
 		
-		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
-		desligamento.put("Colaborador codigoAC", codigoAC);
-		desligamento.put("Empresa codigoAC", empresa.getCodigoAC());
-		desligamento.put("Data Desligamento", dataSolicitacaoDesligamento);
 		
-		String dados = new GeraDadosAuditados(null, desligamento).gera();
+		Map<String, Object> solicitaDesligamento = new LinkedHashMap<String, Object>();
+		solicitaDesligamento.put("Data Solicitação Desligamento", dataSolicitacaoDesligamento);
+		solicitaDesligamento.put("Observação Demissão", observacaoDemissao);
+		solicitaDesligamento.put("Motivo ID", motivoId);
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), codigoAC + " " + empresa.getCodigoAC(), dados);
+		String dados = new GeraDadosAuditados(null, solicitaDesligamento).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), null, dados);
 	}
 	
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {
 		ColaboradorManager manager = (ColaboradorManager) metodo.getComponente();
 		return manager.findEntidadeComAtributosSimplesById(colaborador.getId());
 	}
+	
 }
