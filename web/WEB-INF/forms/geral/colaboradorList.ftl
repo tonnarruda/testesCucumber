@@ -190,7 +190,7 @@
 			</#if>
 		
 			<#if colaborador.candidato?exists && colaborador.candidato.id?exists>
-				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" href="javascript:popup('../../captacao/candidato/infoCandidato.action?candidato.id=${colaborador.candidato.id}', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" href="javascript:popup('../../captacao/candidato/infoCandidato.action?candidato.id=${colaborador.candidato.id}&origemList=CO', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif"/>
 			<#else>
 				<@frt.link verifyRole="ROLE_COLAB_LIST_VISUALIZARCURRICULO" imgTitle="Não é possível visualizar currículo, este colaborador não é candidato." imgName="page_curriculo.gif" opacity=true/>
 			</#if>
