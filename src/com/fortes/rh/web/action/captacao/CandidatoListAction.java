@@ -205,6 +205,7 @@ public class CandidatoListAction extends MyActionSupportList
     private String palavras;
     private String forma;
 	private String nomeImg;
+	private String origemList; // CA - Candidato; CO - Colaborador  > Lista de origem que invoca a visualizacao do curriculo do candidato
 
 	// Utilizado para escapar nomes de candidatos contendo apóstrofos
 	private StringUtil stringUtil = new StringUtil();
@@ -1757,10 +1758,19 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setFaixasCheck(String[] faixasCheck) {
 		this.faixasCheck = faixasCheck;
 	}
-
 	
 	public boolean isMostraOpcaoSolicitacaoPessoal()
 	{
 		return mostraOpcaoSolicitacaoPessoal;
+	}
+	
+	public String getOrigemList()
+	{
+		return origemList;
+	}
+	
+	public void setOrigemList(String origemList)
+	{
+		this.origemList = origemList;
 	}
 }

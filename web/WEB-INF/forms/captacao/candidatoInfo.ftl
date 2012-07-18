@@ -86,6 +86,12 @@
 				document.getElementById(campo).disabled=true;
 		}
 		
+		<#if origemList?exists && origemList='CA'>
+			<#assign role = "ROLE_INFORM_CANDIDATO_CURRICULO">
+		<#else>
+			<#assign role = "ROLE_COLAB_LIST_VISUALIZARCURRICULO">
+		</#if>
+		
 		<#if solicitacao.id?exists>
 			var paramsCompetencia = {'candidato.id':'${candidato.id}','solicitacao.id':'${solicitacao.id}'};
 		<#else>
@@ -93,7 +99,7 @@
 		</#if>
 		
 		$(function() {
-			<@authz.authorize ifAllGranted="ROLE_INFORM_CANDIDATO_CURRICULO">
+			<@authz.authorize ifAllGranted="${role}">
 				$('#aba1').css("display", "inline");
 				$("#cv").load('<@ww.url includeParams="none" value="/captacao/candidato/verCurriculo.action"/>', {'candidato.id':'${candidato.id}'});
 			</@authz.authorize>
