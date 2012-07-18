@@ -80,7 +80,7 @@ public class ResultadoQuestionario implements Serializable
 			(!colaboradorResposta.getPergunta().getId().equals(perguntaId) || 
 			(colaboradorResposta.getColaboradorQuestionario() != null && 
 			colaboradorResposta.getColaboradorQuestionario().getId() != null &&  
-			!colaboradorResposta.getColaboradorQuestionario().getId().equals(colaboradorQuestionarioIdTmp) 
+			!colaboradorQuestionarioIdTmp.equals(colaboradorResposta.getColaboradorQuestionario().getId()) 
 			)))
 			{
 				colabComentariosDistinct.add(colaboradorResposta);
@@ -88,6 +88,16 @@ public class ResultadoQuestionario implements Serializable
 			}
 			
 			perguntaId = colaboradorResposta.getPergunta().getId();
+		}
+	}
+	
+	public void montaComentarioPesquisaDistinct()
+	{
+		this.colabComentariosDistinct = new ArrayList<ColaboradorResposta>();
+		
+		for (ColaboradorResposta colaboradorResposta : colabRespostas){
+			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()))
+				colabComentariosDistinct.add(colaboradorResposta);
 		}
 	}
 	

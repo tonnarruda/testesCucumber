@@ -304,7 +304,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         for (ResultadoQuestionario resultadoQuestionario : resultadoQuestionarios)
         {
         	if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
-        		resultadoQuestionario.montaComentarioDistinct();
+        		resultadoQuestionario.montaComentarioPesquisaDistinct();
         }
         
         return resultadoQuestionarios;
