@@ -4,6 +4,8 @@ Funcionalidade: Exames
 
   Cenário: Cadastro de Exames
     Dado que eu esteja logado
+    Dado uma nova sequence para exame
+    
     Quando eu acesso o menu "SESMT > Cadastros > Exames"
     Então eu devo ver o título "Exames"
     E eu clico no botão "Inserir"

@@ -4,7 +4,8 @@ Funcionalidade: Cadastrar Empresa
 
   Cenário: Empresa
     Dado que exista um curso "tdd"
-
+	Dado uma nova sequence para empresa
+	
     Dado que eu esteja logado
 
     Quando eu acesso o menu "Utilitários > Cadastros > Empresas"

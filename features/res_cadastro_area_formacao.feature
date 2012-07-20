@@ -4,6 +4,8 @@ Funcionalidade: Cadastrar Áreas de Formação
 
   Cenário: Cadastro de Áreas de Formação
     Dado que eu esteja logado
+    Dado uma nova sequence para areaformacao
+    
     Quando eu acesso o menu "R&S > Cadastros > Áreas de Formação"
     Então eu devo ver o título "Áreas de Formação"
     E eu clico no botão "Inserir"

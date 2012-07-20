@@ -3,8 +3,10 @@
 Funcionalidade: Cadastrar Perfil
 
   Cenário: Cadastro de Perfil
-    Dado que exista um papel "configuracoes"
-    Dado que exista um papel "mensagens"
+  	Dado uma nova sequence para perfil
+  
+    Dado que exista um papel "configuracoes" com id igual a "10000"
+    Dado que exista um papel "mensagens" com id igual a "20000"
     E que todos os papeis estejam permitidos
 
     Dado que eu esteja logado

@@ -4,6 +4,8 @@ Funcionalidade: Campos Extras para Colaborador
 
   @dev
   Cenário: Campos Extras para Colaborador
+  	Dado uma nova sequence para configuracaocampoextra
+  	
     Dado que exista a área organizacional "Financeiro"
     Dado que exista o cargo "Contador"
     Dado que exista a faixa salarial "I" no cargo "Contador"
