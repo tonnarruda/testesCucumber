@@ -139,7 +139,7 @@
 					<textElement textAlignment="Center">
 						<font size="10"/>
 					</textElement>
-				<text><![CDATA[Cursos Concluídos]]></text>
+				<text><![CDATA[Cursos Realizados]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
