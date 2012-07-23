@@ -19082,3 +19082,13 @@ update parametrosdosistema set appversao = '1.1.78.74';--.go
 alter table configuracaoimpressaocurriculo add column exibirSolicitacaoPessoal boolean default false;--.go
 insert into migrations values('20120711133323');--.go
 update parametrosdosistema set appversao = '1.1.79.75';--.go
+-- versao 1.1.80.76
+
+alter table avaliacaodesempenho add column exibirperformanceprofissional boolean default true;--.go
+update avaliacaodesempenho set exibirperformanceprofissional = false where anonima = true;--.go
+insert into migrations values('20120716170104');--.go
+update papel set papelmae_id = 365, ordem = 14 where id = 487;--.go
+update papel set papelmae_id = 75, ordem = 7 where id = 474;--.go
+update papel set papelmae_id = 361, ordem = 7 where id = 417;--.go
+insert into migrations values('20120718155949');--.go
+update parametrosdosistema set appversao = '1.1.80.76';--.go
