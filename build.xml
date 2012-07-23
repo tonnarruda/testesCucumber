@@ -226,14 +226,14 @@
 		</exec>
 		
 		<echo message="Criando create_data.sql" />
-		<exec executable="pg_dump" failonerror="true" 
-			output="${metadados.dir}/create_data.sql">
+		<exec executable="pg_dump" failonerror="true">
 			<arg value="-U" />
 			<arg value="postgres" />
 			<arg value="--disable-triggers" />
 			<arg value="--data-only" />
 			<arg value="--blobs" />
 			<arg value="--column-inserts" />
+			<arg value="--file=${metadados.dir}/create_data.sql" />
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
