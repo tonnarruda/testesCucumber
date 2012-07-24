@@ -1377,7 +1377,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("join colaborador c on hc.colaborador_id = c.id ");
 		sql.append("join faixaSalarial fs on hc.faixasalarial_id = fs.id ");
 		
-		if (empresa.isTurnoverPorSolicitacao() && isAdmitidos)
+		if (empresa.isTurnoverPorSolicitacao())
 		{
 			sql.append("inner join candidatosolicitacao cs on c.candidato_id = cs.candidato_id ");
 			sql.append("inner join solicitacao s on cs.solicitacao_id = s.id ");
@@ -1399,7 +1399,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("where hc2.data <= :dataFim ");
 		sql.append("and c.id=hc2.colaborador_id and hc2.status = :status ) ");
 		
-		if (empresa.isTurnoverPorSolicitacao() && isAdmitidos)
+		if (empresa.isTurnoverPorSolicitacao())
 			sql.append("and ms.turnover = true ");
 		
 		sql.append("group by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
