@@ -22,7 +22,7 @@ public class DynaRecord implements Serializable, Cloneable
 	private String campo13;
 	private String campo14;
 	private String campo15;
-	private String tempoServico = "TESTE";
+	private String tempoServico = "-";
 	private Colaborador colaborador;
 	
 	public DynaRecord(){}

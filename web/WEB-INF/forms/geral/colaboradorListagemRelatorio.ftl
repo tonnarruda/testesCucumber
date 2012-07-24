@@ -84,6 +84,10 @@
 			background-color:#FFF;
 		 	color:#AAA;
 		 }
+		 
+		 ul#periodos { margin: 10px 0px; }
+		 ul#periodos li { margin-bottom: 8px; }
+		 ul#periodos li span { background-color: #DEDEDE; padding: 3px 5px; }
 	</style>
 
 	
@@ -124,10 +128,9 @@
 			});
 			
 			$('#agruparPorTempoServico').change(function() {
-				if ($(this).is(":checked"))
-					$('#tempoServico').removeAttr('disabled').css('background-color', '#FFFFFF');
-				else
-					$('#tempoServico').attr("disabled", true).css("background-color", "#DEDEDE");
+				var marcado = $(this).is(":checked");
+				$('#periodosServico').toggle( marcado );
+				$('#periodoAdmissao').toggle( !marcado );
 			});
 			
 			$('#agruparPorTempoServico').change();
@@ -172,22 +175,30 @@
 		{
 			$('form[name=form]').attr('action', action);
 		
+			$('#tempoIni, #tempoFim').css('background-color', '#FFF');
+		
+			if ( $('#agruparPorTempoServico').is(":checked") && $('#periodos input').size() < 1 )
+			{
+				jAlert('Adicione ao menos um período de tempo de serviço');
+				$('#tempoIni, #tempoFim').css('background-color', '#FFEEC2');
+				return false;
+			}
+		
 			if($('#colunas option').length < 1)
 			{
 				alterBackground('#FFEEC2');
 				jAlert("Por favor selecione os campos para impressão.");
+				return false;
 			}
-			else
-			{
-				var firstOption = $('#colunas option:first');
-				var fromOption = $('#from_colunas option[value=' + firstOption.val() + ']');
-				var index = $('#from_colunas option').index(fromOption)
-				var order = colunasInfo[index].orderField;
-				$('#orderField').val(order);
-				
-				$('#colunas option').attr('selected', true);
-				return validaFormulario('form', new Array(), new Array('dataIni','dataFim','naoApague' ${validaDataCamposExtras}));
-			}
+
+			var firstOption = $('#colunas option:first');
+			var fromOption = $('#from_colunas option[value=' + firstOption.val() + ']');
+			var index = $('#from_colunas option').index(fromOption)
+			var order = colunasInfo[index].orderField;
+			$('#orderField').val(order);
+			
+			$('#colunas option').attr('selected', true);
+			return validaFormulario('form', new Array(), new Array('dataIni','dataFim','naoApague' ${validaDataCamposExtras}));
 		}
 
 		var maxSize = 780;
@@ -249,6 +260,40 @@
 			});
 		}
 		
+		function addPeriodo()
+		{
+			$('#tempoIni, #tempoFim').css('background-color', 'white');
+		
+			var tempoIni = $('#tempoIni').val();
+			var tempoFim = $('#tempoFim').val();
+			
+			if (tempoIni == '' || tempoFim == '')
+			{
+				jAlert('Informe o período corretamente!');
+				$('#tempoIni, #tempoFim').css('background-color', '#FFEEC2');
+				return false;
+			}
+			
+			appendPeriodo(tempoIni, tempoFim);
+		}
+		
+		function delPeriodo(item)
+		{
+			$(item).parent().parent().remove();
+		}
+		
+		function appendPeriodo(tempoIni, tempoFim)
+		{
+			var periodo = '<li><span>';
+			periodo += tempoIni + ' a ' + tempoFim + ' meses ';
+			periodo += '<input type="hidden" name="tempoServicoIni" value="' + tempoIni + '"/>';
+			periodo += '<input type="hidden" name="tempoServicoFim" value="' + tempoFim + '"/>';
+			periodo += '<img onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />';
+			periodo += '</span></li>';
+		
+			$('#periodos').append(periodo);
+			$('#tempoIni, #tempoFim').val('');
+		}
 	</script>
 	<#if dataIni?exists>
 		<#assign valueDataIni = dataIni?date/>
@@ -279,41 +324,55 @@
 			</li>
 		</#if>
 		
-		<div>Período de Admissão:</div>
-		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
-		<@ww.label value="a" liClass="liLeft"/>
-		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
-		
 		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos"  />
 		
-		<@ww.checkbox label="" name="agruparPorTempoServico" id="agruparPorTempoServico" labelPosition="left" theme="simple"/>
-		Agrupar colaboradores por tempo de serviço em  
-		<@ww.textfield theme="simple" name="tempoServico" id="tempoServico" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/> 
-		meses.  
+		<fieldset class="fieldsetPadrao" style="width:578px; margin-bottom: 10px;">
+			<legend>Tempo de Serviço</legend>
+			
+			<@ww.checkbox label="Agrupar colaboradores em períodos de tempo de serviço" name="agruparPorTempoServico" id="agruparPorTempoServico" labelPosition="left"/>
+
+			<div id="periodoAdmissao">
+				<div>Período de Admissão:</div>
+				<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
+				<@ww.label value="a" liClass="liLeft"/>
+				<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+			</div>
+
+			<div id="periodosServico" style="display:none;">
+				Adicione um Período: <br />
+				<@ww.textfield theme="simple" name="tempoIni" id="tempoIni" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return somenteNumeros(event,'');"/>
+				a
+				<@ww.textfield theme="simple" name="tempoFim" id="tempoFim" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return somenteNumeros(event,'');"/> 
+				meses
+				<img title="Inserir período" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" onclick="addPeriodo()" style="cursor:pointer;" />
+				
+				<ul id="periodos"></ul>
+			</div>
+		</fieldset>
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
 		
-		<fieldset class="fieldsetPadrao" style="width:578px; padding: 10px; padding-top: 0">
-			<ul>
-				<legend>Configurações de impressão</legend><br>
-				
-				<@ww.textfield label="Título" id="titulo" name="configuracaoRelatorioDinamico.titulo" maxLength="100" cssStyle="width:542px;"/>
-				<div class="pickListFrom">Campos disponíveis</div>
-				<div class="pickListTo">Campos selecionados</div>
-				
-				<@ww.select theme="simple" label="" multiple="true" name="colunasMarcadas" id="colunas" list="colunas" listKey="property" listValue="name" />
+		<br />
+		
+		<fieldset class="fieldsetPadrao" style="width:578px; padding: 10px;">
+			<legend>Configurações de impressão</legend>
+			
+			<@ww.textfield label="Título" id="titulo" name="configuracaoRelatorioDinamico.titulo" maxLength="100" cssStyle="width:542px;"/>
+			<div class="pickListFrom">Campos disponíveis</div>
+			<div class="pickListTo">Campos selecionados</div>
+			
+			<@ww.select theme="simple" label="" multiple="true" name="colunasMarcadas" id="colunas" list="colunas" listKey="property" listValue="name" />
 
-				<div class="ordenador">
-					<img border="0" onClick="prev();" title="Subir campo(s) selecionado(s)" src="<@ww.url value="/imgs/up.gif"/>">
-					<img border="0" onClick="next();" title="Baixar campo(s) selecionado(s)" src="<@ww.url value="/imgs/down.gif"/>">
-				</div>
+			<div class="ordenador">
+				<img border="0" onClick="prev();" title="Subir campo(s) selecionado(s)" src="<@ww.url value="/imgs/up.gif"/>">
+				<img border="0" onClick="next();" title="Baixar campo(s) selecionado(s)" src="<@ww.url value="/imgs/down.gif"/>">
+			</div>
 
-				<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar campo do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
-				<div style="clear: both"></div>
-				<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Utilize o relatório em Excel.</div>
-			</ul>
+			<img border="0" class="saveLayout" onClick="salvarLayout();" title="Salvar campo do relatório" src="<@ww.url value="/imgs/saveLayout.gif"/>">
+			<div style="clear: both"></div>
+			<div class="actionMessage" id="aviso">Limite de campos para o relatório em PDF foi excedido.<br>Utilize o relatório em Excel.</div>
 		</fieldset>
 	
 		<@ww.hidden name="habilitaCampoExtra" />

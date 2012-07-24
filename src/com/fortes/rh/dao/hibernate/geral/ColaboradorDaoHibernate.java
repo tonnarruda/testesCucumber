@@ -1071,7 +1071,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo)
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1170,6 +1170,23 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			montaQueryIntervalo(camposExtras.getValor2(), camposExtras.getValor2Fim(), "valor2", hql);
 
 			montaQueryIntervalo(camposExtras.getNumero1(), camposExtras.getNumero1Fim(), "numero1", hql);
+			
+		}
+
+		//Seleção de períodos de tempo de serviço
+		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
+		{
+			hql.append(" and ( ");
+			
+			for (int i = 0; i < tempoServicoIni.length; i++)
+			{
+				if (i != 0)
+					hql.append(" or ");
+				
+				hql.append("(extract(year from age(current_date(), co.dataAdmissao))*12 + extract(month from age(current_date(), co.dataAdmissao)) between " + tempoServicoIni[i] + " and " + tempoServicoFim[i] + ")");
+			}
+			
+			hql.append(" ) ");
 		}
 
 		// Ordenação

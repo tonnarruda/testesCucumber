@@ -906,9 +906,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionUsuario(colaboradorId);
 	}
 
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo)
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
 	{
-		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim, sexo);
+		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim, sexo, tempoServicoIni, tempoServicoFim);
 	}
 
 	public void setCidadeManager(CidadeManager cidadeManager)
@@ -1953,11 +1953,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return retorno;
 	}
  
-	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas, Integer tempoServico) 
+	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas, Integer[] tempoServicoIni, Integer[] tempoServicoFim) 
 	{
 		Collection<DynaRecord> retorno = new ArrayList<DynaRecord>();
-		Integer tempoServicoInicial = 0;
-		Integer tempoServicoFinal = tempoServico;
 		
 		for (Colaborador colaborador : colaboradores)
 		{				
@@ -1966,12 +1964,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (int i=1; i <= colunasMarcadas.size(); i++)
 				BeanUtils.setValue(record, "campo" + i, BeanUtils.getValue(colaborador, (String) colunasMarcadas.toArray()[i - 1]));
 			
-			if(tempoServico != null){
-				while(colaborador.getTempoServico() > tempoServicoFinal){
-					tempoServicoInicial = tempoServicoFinal + 1; 
-					tempoServicoFinal += tempoServico; 
+			if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length){
+				for (int i = 0; i < tempoServicoIni.length; i++) 
+				{
+					if (colaborador.getTempoServico() >= tempoServicoIni[i] && colaborador.getTempoServico() <= tempoServicoFim[i])
+					{
+						record.setTempoServico("De " + tempoServicoIni[i] + " até " + tempoServicoFim[i] + " meses");
+						break;
+					}
 				}
-				record.setTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal + " meses");
 			}			
 			
 			record.setColaborador(colaborador);

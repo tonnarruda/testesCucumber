@@ -111,6 +111,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private char exibir = ' ';
 	
 	private Integer tempoServico;
+	private Integer[] tempoServicoIni;
+	private Integer[] tempoServicoFim;
 	private int mes;
 	private Map meses = new Mes();
 	
@@ -289,7 +291,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, tempoServicoIni, tempoServicoFim);
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -349,7 +351,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	            		result.toString();
 	            
 	            reportInputStream = new ByteArrayInputStream(relatorioDinamico.getBytes());
-	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, tempoServico);
+	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, tempoServicoIni, tempoServicoFim);
 
 	        }
 	        finally 
@@ -385,7 +387,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, null);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -974,5 +976,19 @@ public class ColaboradorListAction extends MyActionSupportList
 		this.tempoServico = tempoServico;
 	}
 
-	
+	public Integer[] getTempoServicoIni() {
+		return tempoServicoIni;
+	}
+
+	public void setTempoServicoIni(Integer[] tempoServicoIni) {
+		this.tempoServicoIni = tempoServicoIni;
+	}
+
+	public Integer[] getTempoServicoFim() {
+		return tempoServicoFim;
+	}
+
+	public void setTempoServicoFim(Integer[] tempoServicoFim) {
+		this.tempoServicoFim = tempoServicoFim;
+	}
 }

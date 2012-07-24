@@ -638,7 +638,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").withAnyArguments().will(returnValue(colaboradors));
 
-        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null);
+        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null);
 
         assertEquals(1, retorno.size());
     }
@@ -1130,7 +1130,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Collection<String> colunasMarcadas = new ArrayList<String>();
     	colunasMarcadas = Arrays.asList("nome", "matricula", "nomeComercial");
     	
-    	Collection<DynaRecord> relatorio = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, null);
+    	Collection<DynaRecord> relatorio = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, null, null);
     	
     	assertEquals(3, relatorio.size());
     	

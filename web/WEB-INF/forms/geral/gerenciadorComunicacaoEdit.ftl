@@ -257,7 +257,7 @@
 				<span class="addDias">
 					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
 					<img title="Inserir configuração" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" onclick="addDia($('#qtdDias').val())" style="cursor:pointer;" />
-				</span> 				
+				</span>
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
 			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />
