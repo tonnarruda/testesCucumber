@@ -94,10 +94,24 @@ public class ResultadoQuestionario implements Serializable
 	public void montaComentarioPesquisaDistinct()
 	{
 		this.colabComentariosDistinct = new ArrayList<ColaboradorResposta>();
+		Boolean adicionar;
 		
 		for (ColaboradorResposta colaboradorResposta : colabRespostas){
 			if(StringUtils.isNotBlank(colaboradorResposta.getComentario()))
-				colabComentariosDistinct.add(colaboradorResposta);
+			{
+				adicionar = true;
+				
+				for (ColaboradorResposta colaboradorRespostaDist : colabComentariosDistinct){
+					if(colaboradorRespostaDist.getComentario().equals(colaboradorResposta.getComentario()))	{
+						adicionar = false;
+						break;
+					}
+				}
+				
+				if(adicionar)
+					colabComentariosDistinct.add(colaboradorResposta);
+			}
+				
 		}
 	}
 	
