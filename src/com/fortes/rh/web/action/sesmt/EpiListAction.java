@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.RemoveCascadeException;
@@ -68,6 +70,11 @@ public class EpiListAction extends MyActionSupportList
 		catch (RemoveCascadeException e)
 		{
 			addActionError(e.getMessage());
+		}
+		catch (DataIntegrityViolationException e) 
+		{
+			addActionError("Não foi possível remover o EPI. Existem registros vinculados a ele.");
+			e.printStackTrace();
 		}
 		catch (Exception e)
 		{

@@ -61,4 +61,9 @@ public class EpiHistoricoManagerImpl extends GenericManagerImpl<EpiHistorico, Ep
 	{
 		return getDao().findUltimoByEpiId(epiId);
 	}
+
+	public void removeByEpi(Long epiId) 
+	{
+		getDao().removeByEpi(epiId);
+	}
 }

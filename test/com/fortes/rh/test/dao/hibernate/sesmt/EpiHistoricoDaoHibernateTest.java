@@ -105,6 +105,38 @@ public class EpiHistoricoDaoHibernateTest extends GenericDaoHibernateTest<EpiHis
 		
 		assertEquals(epiHistorico2.getId(), retorno.getId());
 	}
+	
+	public void testRemoveByEpiId()
+	{
+		Epi epi = new Epi();
+		epiDao.save(epi);
+		
+		Epi epi2 = new Epi();
+		epiDao.save(epi2);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setEpi(epi);
+		epiHistorico.setData(DateUtil.criarDataMesAno(22, 3, 2012));
+		epiHistoricoDao.save(epiHistorico);
+		
+		EpiHistorico epiHistorico2 = new EpiHistorico();
+		epiHistorico2.setEpi(epi);
+		epiHistorico2.setData(DateUtil.criarDataMesAno(23, 3, 2012));
+		epiHistoricoDao.save(epiHistorico2);
+		
+		EpiHistorico epiHistorico3 = new EpiHistorico();
+		epiHistorico3.setEpi(epi2);
+		epiHistorico3.setData(DateUtil.criarDataMesAno(22, 3, 2012));
+		epiHistoricoDao.save(epiHistorico3);
+		
+		epiHistoricoDao.removeByEpi(epi2.getId());
+		
+		Collection<EpiHistorico> retorno1 = epiHistoricoDao.findByEpi(epi.getId());
+		assertEquals(2, retorno1.size());
+
+		Collection<EpiHistorico> retorno2 = epiHistoricoDao.findByEpi(epi2.getId());
+		assertTrue(retorno2.isEmpty());
+	}
 
 	@Override
 	public GenericDao<EpiHistorico> getGenericDao()

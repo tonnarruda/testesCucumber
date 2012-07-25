@@ -120,11 +120,10 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	
 	public void removeEpi(Epi epi) throws Exception
 	{
-		if (epiHistoricoManager.getCount(new String[] {"epi.id"}, new Object[]{epi.getId()}) >= 1)
-		{
-			throw new RemoveCascadeException("Não é possível excluir o Epi, pois este possui um ou mais históricos.");
-		}
+		if (epiHistoricoManager.getCount(new String[] {"epi.id"}, new Object[]{epi.getId()}) > 1)
+			throw new RemoveCascadeException("Não é possível excluir o Epi, pois este possui mais de um histórico.");
 		
+		epiHistoricoManager.removeByEpi(epi.getId());
 		remove(epi);
 	}
 	

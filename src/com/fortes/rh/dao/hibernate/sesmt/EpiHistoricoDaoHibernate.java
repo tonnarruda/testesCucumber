@@ -94,4 +94,11 @@ public class EpiHistoricoDaoHibernate extends GenericDaoHibernate<EpiHistorico> 
 
 		return (EpiHistorico) query.uniqueResult();
 	}
+
+	public void removeByEpi(Long epiId) 
+	{
+		Query query = getSession().createQuery("delete from EpiHistorico where epi.id = :epiId");
+		query.setLong("epiId", epiId);
+		query.executeUpdate();
+	}
 }

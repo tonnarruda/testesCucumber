@@ -18,4 +18,6 @@ public interface EpiHistoricoManager extends GenericManager<EpiHistorico>
 	public void clonar(EpiHistorico epiHistorico, Long epiId);
 
 	EpiHistorico findUltimoByEpiId(Long epiId);
+
+	void removeByEpi(Long epiId);
 }
