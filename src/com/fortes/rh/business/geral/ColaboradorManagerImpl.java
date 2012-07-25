@@ -1971,7 +1971,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					tempoServicoInicial = tempoServicoFinal + 1; 
 					tempoServicoFinal += tempoServico; 
 				}
-				record.setTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal);
+				record.setTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal + " meses");
 			}			
 			
 			record.setColaborador(colaborador);
@@ -1992,7 +1992,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					tempoServicoInicial = tempoServicoFinal + 1; 
 					tempoServicoFinal += tempoServico; 
 				}
-				colaborador.setIntervaloTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal);
+				colaborador.setIntervaloTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal + " meses");
 			}	
 		}
 		
