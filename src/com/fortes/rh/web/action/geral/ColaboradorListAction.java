@@ -387,7 +387,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, null);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, tempoServicoIni, tempoServicoFim);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -400,7 +400,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			montaColunas();
 			
 			if(agruparPorTempoServico){
-				colaboradores = colaboradorManager.insereGrupoPorTempoServico(colaboradores, tempoServico);
+				colaboradores = colaboradorManager.insereGrupoPorTempoServico(colaboradores, tempoServicoIni, tempoServicoFim);
 				dinamicColumns.add("Tempo de serviço");  
 				dinamicProperts.add("intervaloTempoServico");
 			}

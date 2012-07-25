@@ -194,5 +194,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) throws Exception;
 	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception;
 	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores);
-	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer tempoServico);
+	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim);
 }

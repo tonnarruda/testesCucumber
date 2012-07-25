@@ -1982,19 +1982,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return retorno;
 	}
 	
-	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer tempoServico)
+	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
 	{
-		Integer tempoServicoInicial = 0;
-		Integer tempoServicoFinal = tempoServico;
-		
 		for (Colaborador colaborador : colaboradores) {
-			if(tempoServico != null){
-				while(colaborador.getTempoServico() > tempoServicoFinal){
-					tempoServicoInicial = tempoServicoFinal + 1; 
-					tempoServicoFinal += tempoServico; 
+			if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length){
+				for (int i = 0; i < tempoServicoIni.length; i++) 
+				{
+					if (colaborador.getTempoServico() >= tempoServicoIni[i] && colaborador.getTempoServico() <= tempoServicoFim[i])
+					{
+						colaborador.setIntervaloTempoServico("De " + tempoServicoIni[i] + " até " + tempoServicoFim[i] + " meses");
+						break;
+					}
 				}
-				colaborador.setIntervaloTempoServico("De " + tempoServicoInicial + " até " + tempoServicoFinal + " meses");
-			}	
+			}
 		}
 		
 		return colaboradores;
