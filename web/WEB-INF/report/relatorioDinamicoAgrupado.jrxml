@@ -72,7 +72,7 @@
 		<variableExpression><![CDATA[$F{campo1}]]></variableExpression>
 	</variable>
 
-		<group  name="tempoServicoGrp" >
+		<group  name="tempoServicoGrp" isStartNewPage="true" >
 			<groupExpression><![CDATA[$F{tempoServico}]]></groupExpression>
 			<groupHeader>
 			<band height="18"  isSplitAllowed="true" >

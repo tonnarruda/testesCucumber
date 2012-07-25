@@ -129,6 +129,10 @@
 			
 			$('#agruparPorTempoServico').change(function() {
 				var marcado = $(this).is(":checked");
+
+				$('#dataIni, #dataFim').val('');
+				$('#periodos').empty();
+
 				$('#periodosServico').toggle( marcado );
 				$('#periodoAdmissao').toggle( !marcado );
 			});
