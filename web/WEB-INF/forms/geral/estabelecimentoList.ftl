@@ -13,7 +13,7 @@
 
 	<@ww.actionerror />
 	<@ww.actionmessage />
-	<@display.table name="estabelecimentos" id="estabelecimento" pagesize=10 class="dados" defaultsort=2 sort="list">
+	<@display.table name="estabelecimentos" id="estabelecimento" class="dados" defaultsort=2>
 		<@display.column title="Ações" class="acao" style="text-align:center; width: 80px">
 			<a href="prepareUpdate.action?estabelecimento.id=${estabelecimento.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<#if !integradoAC>
