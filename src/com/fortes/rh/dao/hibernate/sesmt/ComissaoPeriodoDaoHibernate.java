@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
@@ -70,5 +71,32 @@ public class ComissaoPeriodoDaoHibernate extends GenericDaoHibernate<ComissaoPer
 		criteria.setMaxResults(1);
 
 		return (ComissaoPeriodo) criteria.uniqueResult();
+	}
+
+	public Date maxDataComissaoPeriodo(Long comissaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.comissao", "com");
+		criteria.setProjection(Projections.max("c.aPartirDe"));
+
+		criteria.add(Expression.eq("com.id", comissaoId));
+
+		return (Date) criteria.uniqueResult();
+	}
+
+	public boolean verificaComissaoNaMesmaData(ComissaoPeriodo comissaoPeriodo) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.comissao", "com");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.aPartirDe", comissaoPeriodo.getaPartirDe()));
+		criteria.add(Expression.ne("c.id", comissaoPeriodo.getId()));
+		criteria.add(Expression.eq("com.id", comissaoPeriodo.getComissao().getId()));
+
+		return criteria.list().size() > 0;
 	}
 }

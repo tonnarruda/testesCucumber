@@ -131,7 +131,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoPeriodoDao.expects(once()).method("save");
 		comissaoMembroManager.expects(once()).method("save").will(returnValue(comissaoMembro));
 		
-		comissaoPeriodoManager.clonar(comissaoPeriodoId);
+		comissaoPeriodoManager.clonar(comissaoPeriodoId, null);
 	}
 	
 	public void testUpdate() throws Exception

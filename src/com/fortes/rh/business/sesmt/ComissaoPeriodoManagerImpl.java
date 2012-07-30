@@ -42,13 +42,13 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		}
 	}
 
-	public ComissaoPeriodo clonar(Long comissaoPeriodoId) throws Exception
+	public ComissaoPeriodo clonar(Long comissaoPeriodoId, Date aPartirDe) throws Exception
 	{
 		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
 		Collection<ComissaoMembro> comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodo);
 
 		comissaoPeriodo.setId(null);
-		comissaoPeriodo.setaPartirDe(DateUtil.incrementaMes(comissaoPeriodo.getaPartirDe(), 1));
+		comissaoPeriodo.setaPartirDe(dataValida(aPartirDe, comissaoPeriodo));
 		ComissaoPeriodo comissaoPeridoClonado = super.save(comissaoPeriodo);
 		
 		for (ComissaoMembro comissaoMembro : comissaoMembros)
@@ -64,6 +64,12 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		return comissaoPeridoClonado;
 	}
 
+	public Date dataValida (Date aPartirDe, ComissaoPeriodo comissaoPeriodo)
+	{
+		Date maxAPartirDE = getDao().maxDataComissaoPeriodo(comissaoPeriodo.getComissao().getId());
+		return DateUtil.incrementaMes(maxAPartirDE, 1);
+	}
+	
 	public Collection<ComissaoPeriodo> findByComissao(Long comissaoId)
 	{
 		Collection<ComissaoPeriodo> comissaoPeriodos = getDao().findByComissao(comissaoId);
@@ -170,31 +176,19 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 	public boolean validaDataComissaoPeriodo(Date data, Long comissaoPeriodoId) {
 		
 		ComissaoPeriodo comissaoPeriodo = getDao().findByIdProjection(comissaoPeriodoId);
+		comissaoPeriodo.setaPartirDe(data);
 		
 		//data fora do período da CIPA
 		if (!DateUtil.between(data, comissaoPeriodo.getComissao().getDataIni(), comissaoPeriodo.getComissao().getDataFim()))
 			return false;
 		
 		// outra comissão na mesma data
-		if (verificaComissaoNaMesmaData(comissaoPeriodo))
+		if (getDao().verificaComissaoNaMesmaData(comissaoPeriodo))
 			return false;
 		
 		return true;
 	}
 	
-	private boolean verificaComissaoNaMesmaData(ComissaoPeriodo comissaoPeriodo) {
-		
-		Collection<ComissaoPeriodo> periodos = getDao().findByComissao(comissaoPeriodo.getComissao().getId());
-		
-		for (ComissaoPeriodo comissaoPeriodo2 : periodos) {
-			
-			if (!comissaoPeriodo.getId().equals(comissaoPeriodo2.getId()) && DateUtil.equals(comissaoPeriodo.getaPartirDe(), comissaoPeriodo2.getaPartirDe()))
-				return true;
-		}
-		
-		return false;
-	}
-
 	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
 		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}

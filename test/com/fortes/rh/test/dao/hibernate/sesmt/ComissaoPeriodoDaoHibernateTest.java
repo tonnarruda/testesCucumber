@@ -88,6 +88,55 @@ public class ComissaoPeriodoDaoHibernateTest extends GenericDaoHibernateTest<Com
 		
 		assertEquals(dataPeriodo2, resultado.getaPartirDe());
 	}
+	
+	public void testMaxDataComissaoPeriodo()
+	{
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissaoDao.save(comissao);
+		
+		Date dataPeriodo1 = DateUtil.criarDataMesAno(10, 12, 2009);
+		Date dataPeriodo2 = DateUtil.criarDataMesAno(9, 1, 2010);
+		Date dataPeriodo3 = DateUtil.criarDataMesAno(5, 4, 2010);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setaPartirDe(dataPeriodo1);
+		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoPeriodo comissaoPeriodo2 = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo2.setComissao(comissao);
+		comissaoPeriodo2.setaPartirDe(dataPeriodo2);
+		comissaoPeriodoDao.save(comissaoPeriodo2);
+		
+		ComissaoPeriodo comissaoPeriodo3 = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo3.setComissao(comissao);
+		comissaoPeriodo3.setaPartirDe(dataPeriodo3);
+		comissaoPeriodoDao.save(comissaoPeriodo3);
+		
+		Date resultado = comissaoPeriodoDao.maxDataComissaoPeriodo(comissao.getId());
+		
+		assertEquals("05/04/2010", DateUtil.formataDiaMesAno(resultado));
+	}
+	
+	public void testExisteComissaoPeriodoNaMesmaData()
+	{
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissaoDao.save(comissao);
+		
+		Date dataPeriodo = DateUtil.criarDataMesAno(10, 12, 2009);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setaPartirDe(dataPeriodo);
+		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoPeriodo comissaoPeriodo2 = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo2.setComissao(comissao);
+		comissaoPeriodo2.setaPartirDe(dataPeriodo);
+		comissaoPeriodoDao.save(comissaoPeriodo2);
+		
+		assertTrue(comissaoPeriodoDao.verificaComissaoNaMesmaData(comissaoPeriodo));
+	}
 
 	public void setComissaoDao(ComissaoDao comissaoDao)
 	{

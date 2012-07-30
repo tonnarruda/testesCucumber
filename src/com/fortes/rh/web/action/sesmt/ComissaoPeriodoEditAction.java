@@ -42,7 +42,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private String nomeBusca;
 	private boolean clonar = false;
-	private Long comissaoPeridoIdAnterior;
 	private ComissaoMembro comissaoMembro;
 
 
@@ -53,10 +52,6 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 			comissaoPeriodo = (ComissaoPeriodo) comissaoPeriodoManager.findByIdProjection(comissaoPeriodo.getId());
 			comissao = comissaoPeriodo.getComissao();
 			comissaoMembros = comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodo);
-			
-			if(comissaoPeridoIdAnterior == null)
-				comissaoPeridoIdAnterior = comissaoPeriodo.getId();
-			
 			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		}
 		return SUCCESS;
@@ -115,9 +110,8 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 	{
 		try
 		{
-			comissaoPeridoIdAnterior = comissaoPeriodo.getId();
-			comissaoPeriodo = comissaoPeriodoManager.clonar(comissaoPeriodo.getId());
 			clonar = true;
+			comissaoPeriodo = comissaoPeriodoManager.clonar(comissaoPeriodo.getId(), null);
 		}
 		catch(Exception e)
 		{
@@ -272,13 +266,5 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 
 	public void setClonar(boolean clonar) {
 		this.clonar = clonar;
-	}
-
-	public Long getComissaoPeridoIdAnterior() {
-		return comissaoPeridoIdAnterior;
-	}
-
-	public void setComissaoPeridoIdAnterior(Long comissaoPeridoIdAnterior) {
-		this.comissaoPeridoIdAnterior = comissaoPeridoIdAnterior;
 	}
 }

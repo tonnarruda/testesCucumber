@@ -49,17 +49,14 @@
 		
 		function validaPeriodoClonado(aPartirDe)
 		{
-			ComissaoPeriodoDWR.validaDataDaComissao(processaValidacao, aPartirDe, ${comissaoPeridoIdAnterior});
+			ComissaoPeriodoDWR.validaDataDaComissao(processaValidacao, aPartirDe, ${comissaoPeriodo.id});
 		}
 		function processaValidacao(data)
 		{
 			if (!data)
-			{
-				jAlert('Data inválida, ou fora do período válido da comissão.');
-				document.formComissaoPeriodo.aPartirDe.value = '  /  /    ';
-			}else{
+				jAlert('Data inválida, fora do período válido da comissão ou existe uma comissão com essa data.');
+			else
 				${validarCampos};
-			}
 		}
 	</script>
 	
