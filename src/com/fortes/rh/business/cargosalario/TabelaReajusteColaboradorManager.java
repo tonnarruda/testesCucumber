@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -20,7 +21,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador);
 
 	@Audita(operacao="Aplicar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, Exception, ColecaoVaziaException;
+	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
 
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void cancelar(Long tabelaReajusteId, Empresa empresa) throws Exception;

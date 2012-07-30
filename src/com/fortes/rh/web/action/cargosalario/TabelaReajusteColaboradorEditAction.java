@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -164,16 +165,34 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 			addActionError(e.getMensagemDetalhada());
 			return Action.INPUT;
 		}
+		catch (InvocationTargetException e)
+		{
+			String msg = "Inserção do Planejamento de Realinhamento falhou.";
+			
+			if (e.getCause() != null)
+			{
+				e.getCause().printStackTrace();
+				msg += "<br />" + e.getCause().getMessage();
+			}
+			addActionError(msg);
+
+			visualizar();
+				
+			return Action.INPUT;
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+
+			String msg = "Inserção do Planejamento de Realinhamento falhou.";
+			
+			if (e.getMessage() != null)
+				msg += "<br />" + e.getMessage();
+	
+			addActionError(msg);
+			
 			visualizar();
-			
-			if(e.getMessage() != null)
-				addActionError("Inserção do Planejamento de Realinhamento falhou.<br>" + e.getMessage() );
-			else
-				addActionError("Inserção do Planejamento de Realinhamento falhou." );
-			
+
 			return Action.INPUT;
 		}
 	}

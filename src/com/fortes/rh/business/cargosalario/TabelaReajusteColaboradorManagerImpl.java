@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
@@ -17,14 +18,10 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.security.spring.aop.callback.FaixaSalarialAuditorCallbackImpl;
-import com.fortes.rh.security.spring.aop.callback.TabelaReajusteColaboradorAuditorCallbackImpl;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.HistoricoColaboradorUtil;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
-import com.fortes.security.auditoria.Audita;
-import com.fortes.security.auditoria.Modulo;
 
 public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<TabelaReajusteColaborador, TabelaReajusteColaboradorDao> implements TabelaReajusteColaboradorManager
 {
@@ -76,7 +73,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	}
 
 	@SuppressWarnings("deprecation")
-	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, Exception, ColecaoVaziaException
+	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception
 	{
 		if(tabelaReajusteColaborador != null && (reajustes == null || reajustes.size() == 0))
 			throw new ColecaoVaziaException("Nenhum Colaborador no Reajuste");
