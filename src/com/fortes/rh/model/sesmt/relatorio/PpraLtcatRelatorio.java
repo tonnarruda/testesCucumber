@@ -75,14 +75,18 @@ public class PpraLtcatRelatorio
 		
 		for (RiscoMedicaoRisco riscoMedicao : riscosDoAmbiente)
 		{
-			StringBuilder riscoAtual = new StringBuilder();
+			StringBuilder riscoMedido = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoPpra()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoPpra()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
+			
+			if (StringUtil.isBlank(riscoMedido.toString()))
+				riscoMedido.append("(não informado)");
+			
+			String riscoAtual = styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing) + riscoMedido.toString();
 			
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
@@ -174,14 +178,18 @@ public class PpraLtcatRelatorio
 		
 		for (RiscoMedicaoRisco riscoMedicao : riscosDoAmbiente)
 		{
-			StringBuilder riscoAtual = new StringBuilder();
+			StringBuilder riscoMedido = new StringBuilder();
 			String quebraDeLinha="\n";
 			
-			riscoAtual.append(styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing));
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoLtcat()) ).concat(". ") : "");
-			riscoAtual.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getDescricaoLtcat()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoLtcat()) ).concat(". ") : "");
+			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getMedidaDeSeguranca()) ? styleTag.concat("Medida de Segurança: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getMedidaDeSeguranca()) ).concat(". ") : "");
+			
+			if (StringUtil.isBlank(riscoMedido.toString()))
+				riscoMedido.append("(não informado)");
+			
+			String riscoAtual = styleTag.concat(riscoMedicao.getRisco().getDescricao()).concat(" - ").concat(styleTagClosing) + riscoMedido.toString();
 			
 			if (riscoMedicao.getRisco().getGrupoRisco().equals(GrupoRisco.FISICO))
 			{
