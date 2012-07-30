@@ -184,9 +184,9 @@
 			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 
 			<#if colaborador.usuario.id?exists>
-				<@frt.link verifyRole="ROLE_USER" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
 			<#else>
-				<@frt.link verifyRole="ROLE_USER" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${colaborador.nomeComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${colaborador.nomeComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
 			</#if>
 		
 			<#if colaborador.candidato?exists && colaborador.candidato.id?exists>

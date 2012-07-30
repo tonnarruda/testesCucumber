@@ -220,7 +220,7 @@
 				<!-- /acesso/usuario/criarUsuario.action*/**=ROLE_ANONYMOUS -->
 				/acesso/usuario/prepareRecuperaSenha*/**=ROLE_ANONYMOUS
 				/acesso/usuario/recuperaSenha*/**=ROLE_ANONYMOUS
-				/acesso/usuario/*/**=ROLE_CAD_USUARIO
+				/acesso/usuario/*/**=ROLE_CAD_USUARIO,ROLE_COLAB_LIST_CRIARUSUARIO
 				/acesso/perfil/*/**=ROLE_CAD_PERFIL
 				/geral/colaborador/prepareProjecaoSalarialFiltro*/** = ROLE_REL_PROJECAO_SALARIAL
 				/geral/colaborador/gerarRelatorioProjecaoSalarial*/** = ROLE_REL_PROJECAO_SALARIAL

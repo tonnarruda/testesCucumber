@@ -98,7 +98,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		if(usuarioLogado.isSuperAdmin())
 			usuarioId = 1L;
 		
-		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_USUARIO");
+		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_USUARIO", "ROLE_COLAB_LIST_CRIARUSUARIO");
 		colaboradores = colaboradorManager.findSemUsuarios(getEmpresaSistema().getId(), usuario);
 		
 		if(colaboradorId != null)
