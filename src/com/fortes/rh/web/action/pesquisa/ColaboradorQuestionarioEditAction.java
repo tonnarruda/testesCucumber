@@ -240,11 +240,11 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		filtro += "\nAvaliador: " + avaliador.getNome();
 		filtro += "\nAvaliado: " + colaborador.getNome();
 
-		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)
-			filtro += "\n\n" + colaboradorQuestionario.getAvaliacao().getCabecalho();
-		
 		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação de Desempenho", getEmpresaSistema(), filtro);
 		parametros.put("observacoes", colaboradorQuestionario.getObservacao());
+		
+		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)
+			parametros.put("observacoes_modelo", colaboradorQuestionario.getAvaliacao().getCabecalho());
 		
 		return Action.SUCCESS;
 	}

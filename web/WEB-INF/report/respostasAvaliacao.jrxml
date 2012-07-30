@@ -26,6 +26,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 	<parameter name="observacoes" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="observacoes_modelo" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="colaboradorQuestionarioId" class="java.lang.Long"/>
 	<field name="perguntaId" class="java.lang.Long"/>
@@ -151,19 +152,34 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="33"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="285"
-						y="0"
+						y="19"
 						width="249"
 						height="14"
-						key="textField-4"/>
+						key="textField-4"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Performance: " + $F{colaboradorQuestionarioPerformanceFormatada}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="0"
+						width="532"
+						height="14"
+						key="textField-5"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{observacoes_modelo}]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnHeader>
