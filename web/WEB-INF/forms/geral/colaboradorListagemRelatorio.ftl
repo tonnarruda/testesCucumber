@@ -181,7 +181,7 @@
 		
 			$("#periodos :text").css('background-color', '#FFF');
 		
-			if ( $('#agruparPorTempoServico').is(":checked") && $("#periodos :text[value='']").size() > 0 )
+			if ( $('#agruparPorTempoServico').is(":checked") && ($("#periodos :text").size() < 1 || $("#periodos :text[value='']").size() > 0) )
 			{
 				jAlert('Informe os períodos de tempo de serviço corretamente');
 				$("#periodos :text[value='']").css('background-color', '#FFEEC2');
