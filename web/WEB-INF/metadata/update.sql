@@ -19092,3 +19092,6 @@ update papel set papelmae_id = 75, ordem = 7 where id = 474;--.go
 update papel set papelmae_id = 361, ordem = 7 where id = 417;--.go
 insert into migrations values('20120718155949');--.go
 update parametrosdosistema set appversao = '1.1.80.76';--.go
+-- versao 1.1.81.76
+
+update parametrosdosistema set appversao = '1.1.81.76';--.go

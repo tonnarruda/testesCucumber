@@ -119,8 +119,11 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 	
 	public void testClonar() throws Exception
 	{
+		Comissao comissao = ComissaoFactory.getEntity(1L);
+		
 		Long comissaoPeriodoId=10L;
 		ComissaoPeriodo comissaoPeriodo=ComissaoPeriodoFactory.getEntity(comissaoPeriodoId);
+		comissaoPeriodo.setComissao(comissao);
 		comissaoPeriodo.setaPartirDe(new Date());
 		Collection<ComissaoMembro> comissaoMembros = new ArrayList<ComissaoMembro>();
 		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity(12L);
@@ -129,6 +132,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodoId)).will(returnValue(comissaoPeriodo));
 		comissaoMembroManager.expects(once()).method("findByComissaoPeriodo").will(returnValue(comissaoMembros ));
 		comissaoPeriodoDao.expects(once()).method("save");
+		comissaoPeriodoDao.expects(once()).method("maxDataComissaoPeriodo").with(eq(comissao.getId())).will(returnValue(new Date()));
 		comissaoMembroManager.expects(once()).method("save").will(returnValue(comissaoMembro));
 		
 		comissaoPeriodoManager.clonar(comissaoPeriodoId, null);
@@ -322,10 +326,9 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		Collection<ComissaoPeriodo> comissaoPeriodos = Arrays.asList(comissaoPeriodo, outroComissaoPeriodo);
 		
 		comissaoPeriodoDao.expects(once()).method("findByIdProjection").with(eq(comissaoPeriodo.getId())).will(returnValue(comissaoPeriodo));
-		comissaoPeriodoDao.expects(once()).method("findByComissao").with(eq(comissao.getId())).will(returnValue(comissaoPeriodos));
+		comissaoPeriodoDao.expects(once()).method("verificaComissaoNaMesmaData").with(eq(comissaoPeriodo)).will(returnValue(true));
 		
-		assertFalse("deve criticar se existe outro período na mesma data",
-				comissaoPeriodoManager.validaDataComissaoPeriodo(dataPeriodo, comissaoPeriodoId));
+		assertFalse("deve criticar se existe outro período na mesma data",	comissaoPeriodoManager.validaDataComissaoPeriodo(dataPeriodo, comissaoPeriodoId));
 	}
 	
 	public void testValidaDataComissaoPeriodoForaDoPeriodoDaComissao()

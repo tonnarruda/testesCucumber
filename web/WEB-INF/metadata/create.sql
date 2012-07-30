@@ -4,19 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -2177,7 +2181,7 @@ ALTER TABLE public.habilidade OWNER TO postgres;
 --
 
 CREATE VIEW competencia AS
-    (SELECT conhecimento.id, conhecimento.nome, conhecimento.empresa_id, conhecimento.observacao, 'C' AS tipo FROM conhecimento UNION SELECT habilidade.id, habilidade.nome, habilidade.empresa_id, habilidade.observacao, 'H' AS tipo FROM habilidade) UNION SELECT atitude.id, atitude.nome, atitude.empresa_id, atitude.observacao, 'A' AS tipo FROM atitude ORDER BY 1;
+    (SELECT conhecimento.id, conhecimento.nome, conhecimento.empresa_id, conhecimento.observacao, 'C'::text AS tipo FROM conhecimento UNION SELECT habilidade.id, habilidade.nome, habilidade.empresa_id, habilidade.observacao, 'H'::text AS tipo FROM habilidade) UNION SELECT atitude.id, atitude.nome, atitude.empresa_id, atitude.observacao, 'A'::text AS tipo FROM atitude ORDER BY 1;
 
 
 ALTER TABLE public.competencia OWNER TO postgres;
@@ -28047,7 +28051,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.80.76', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.81.76', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
 
 
 --
