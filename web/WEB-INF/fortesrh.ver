@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.80.76" data="23/07/2012"><![CDATA[
+	<Versao id="1.1.81.76" data="30/07/2012"><![CDATA[
+		Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de agrupar colaboradores em períodos de tempo de serviço.
+    ]]></Versao>
+    <Versao id="1.1.80.76" data="23/07/2012"><![CDATA[
 		- R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem Módulo Externo: Nova coluna para marcar/desmarcar os candidatos para incluir na solicitação.
 		- Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Visualizar respostas das aval. de desempenho e acompanhamento do período de experiência.
 		- Info. Funcionais > Relatório > Listagem de Colaboradores > Nova opção para agrupar colaboradores por tempo de serviço.
