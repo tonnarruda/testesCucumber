@@ -530,8 +530,8 @@
 	      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
 	        <li><hr /></li>
 	       	<b><@ww.label label="Carteira de Habilitação" /></b>
-			<@ww.textfield label="Número" name="colaborador.habilitacao.numeroHab" cssStyle="width: 80px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
-	      	<@ww.textfield label="Registro" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft"/>
+			<@ww.textfield label="Nº de Registro" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+	      	<@ww.textfield label="Prontuário" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft"/>
 	      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData" value="${habEmissao}"/>
 	      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData" value="${dataVenc}"/>
 	       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" cssStyle="width:25px" maxLength="3" />

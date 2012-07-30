@@ -688,8 +688,8 @@
 			<@ww.div id="wwgrp_cartairaHabilitacao" cssClass="campo">
 				<ul>
 			       	<b><@ww.label label="Carteira de Habilitação" /></b>
-					<@ww.textfield id="cartairaHabilitacao" label="Número" name="candidato.habilitacao.numeroHab" cssStyle="width: 80px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
-			      	<@ww.textfield label="Registro" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
+					<@ww.textfield id="cartairaHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
 			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
 			       	<@ww.textfield label="Categoria(s)" name="candidato.habilitacao.categoria" cssStyle="width:25px" maxLength="3" />
