@@ -86,8 +86,8 @@
 		 }
 		 
 		 ul#periodos { margin: 10px 0px; }
-		 ul#periodos li { margin-bottom: 8px; }
-		 ul#periodos li span { background-color: #DEDEDE; padding: 3px 5px; }
+		 ul#periodos li { margin-bottom: 2px; }
+		 ul#periodos li span { padding: 3px 5px; }
 	</style>
 
 	
@@ -130,11 +130,11 @@
 			$('#agruparPorTempoServico').change(function() {
 				var marcado = $(this).is(":checked");
 
-				$('#dataIni, #dataFim').val('');
-				$('#periodos').empty();
-
 				$('#periodosServico').toggle( marcado );
 				$('#periodoAdmissao').toggle( !marcado );
+				
+				if (marcado && $('#periodos li').size() == 0)
+					addPeriodo();
 			});
 			
 			$('#agruparPorTempoServico').change();
@@ -179,12 +179,12 @@
 		{
 			$('form[name=form]').attr('action', action);
 		
-			$('#tempoIni, #tempoFim').css('background-color', '#FFF');
+			$("#periodos :text").css('background-color', '#FFF');
 		
-			if ( $('#agruparPorTempoServico').is(":checked") && $('#periodos input').size() < 1 )
+			if ( $('#agruparPorTempoServico').is(":checked") && $("#periodos :text[value='']").size() > 0 )
 			{
-				jAlert('Adicione ao menos um período de tempo de serviço');
-				$('#tempoIni, #tempoFim').css('background-color', '#FFEEC2');
+				jAlert('Informe os períodos de tempo de serviço corretamente');
+				$("#periodos :text[value='']").css('background-color', '#FFEEC2');
 				return false;
 			}
 		
@@ -194,6 +194,11 @@
 				jAlert("Por favor selecione os campos para impressão.");
 				return false;
 			}
+
+			if ( $('#agruparPorTempoServico').is(":checked") )
+				$('#dataIni, #dataFim').val('');
+			else
+				$('#periodos').empty();
 
 			var firstOption = $('#colunas option:first');
 			var fromOption = $('#from_colunas option[value=' + firstOption.val() + ']');
@@ -264,36 +269,19 @@
 			});
 		}
 		
-		function addPeriodo()
-		{
-			$('#tempoIni, #tempoFim').css('background-color', 'white');
-		
-			var tempoIni = $('#tempoIni').val();
-			var tempoFim = $('#tempoFim').val();
-			
-			if (tempoIni == '' || tempoFim == '')
-			{
-				jAlert('Informe o período corretamente!');
-				$('#tempoIni, #tempoFim').css('background-color', '#FFEEC2');
-				return false;
-			}
-			
-			appendPeriodo(tempoIni, tempoFim);
-		}
-		
 		function delPeriodo(item)
 		{
 			$(item).parent().parent().remove();
 		}
 		
-		function appendPeriodo(tempoIni, tempoFim)
+		function addPeriodo()
 		{
 			var periodo = '<li><span>';
-			periodo += tempoIni + ' a ' + tempoFim + ' meses ';
-			periodo += '<input type="hidden" name="tempoServicoIni" value="' + tempoIni + '"/>';
-			periodo += '<input type="hidden" name="tempoServicoFim" value="' + tempoFim + '"/>';
-			periodo += '<img onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />';
-			periodo += '</span></li>';
+			periodo += '<img title="Remover período" onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
+			periodo += '<input type="text" name="tempoServicoIni" id="tempoServicoIni" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+			periodo += '&nbsp;a&nbsp;';
+			periodo += '<input type="text" name="tempoServicoFim" id="tempoServicoFim" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+			periodo += '&nbsp;meses</span></li>';
 		
 			$('#periodos').append(periodo);
 			$('#tempoIni, #tempoFim').val('');
@@ -343,14 +331,12 @@
 			</div>
 
 			<div id="periodosServico" style="display:none;">
-				Adicione um Período: <br />
-				<@ww.textfield theme="simple" name="tempoIni" id="tempoIni" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return somenteNumeros(event,'');"/>
-				a
-				<@ww.textfield theme="simple" name="tempoFim" id="tempoFim" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return somenteNumeros(event,'');"/> 
-				meses
-				<img title="Inserir período" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" onclick="addPeriodo()" style="cursor:pointer;" />
-				
 				<ul id="periodos"></ul>
+				
+				<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();">
+					<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+					Adicionar período
+				</a>
 			</div>
 		</fieldset>
 		
