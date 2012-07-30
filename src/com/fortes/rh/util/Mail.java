@@ -133,19 +133,18 @@ public class Mail
         properties.put("mail.smtp.host", mailSender.getHost());
         properties.put("mail.smtp.port", mailSender.getPort());
         properties.put("mail.smtp.sendpartial", "true");
-        properties.put("mail.smtp.starttls.enable","true"); 
-
-    	if ((mailSender.getUsername()== null || mailSender.getUsername().equals("")) && (mailSender.getPassword() == null || mailSender.getPassword().equals("")))
+         
+    	if ((mailSender.getUsername()== null || mailSender.getUsername().equals("")) || (mailSender.getPassword() == null || mailSender.getPassword().equals("")))
     	{
     		properties.put("mail.smtp.auth", "false");
     		session = Session.getInstance(properties);
     	}
     	else
     	{
+    		properties.put("mail.smtp.starttls.enable","true");
     		properties.put("mail.smtp.auth", "true");
             session = Session.getInstance(properties, new AuthenticatorImpl(mailSender));
     	}
-
         Message msg = new MimeMessage(session);
 
         Multipart mimesContainer = new MimeMultipart();
