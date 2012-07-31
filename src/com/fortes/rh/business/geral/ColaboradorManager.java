@@ -195,4 +195,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void insertColaboradoresSolicitacao(Long[] colaboradoresIds, Solicitacao solicitacao, char statusCandidatoSolicitacao) throws Exception;
 	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores);
 	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim);
+	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 }

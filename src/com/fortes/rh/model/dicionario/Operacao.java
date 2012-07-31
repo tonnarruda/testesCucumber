@@ -45,15 +45,6 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	LIBERAR_AVALIACAO_DESEMPENHO(6, "Liberar avaliação de desempenho", "R&S"){
-		public TreeMap<Integer, String> meioComunicação(){
-			this.add(MeioComunicacao.EMAIL);
-			
-			MeioComunicacao.EMAIL.add(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO);
-			
-			return this.getListMeioComunicacao();
-		}
-	},
 	CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO(3, "Existir currículo aguardando aprovação para participar de seleção (triagem do módulo externo)", "R&S") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
@@ -121,6 +112,15 @@ public enum Operacao
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	AVALIACAO_DESEMPENHO_A_RESPONDER(6, "Houver avaliação de desempenho a ser respondida", "Aval. Desempenho"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO);
 			
 			return this.getListMeioComunicacao();
 		}

@@ -64,7 +64,6 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.sesmt.Exame;
-import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaFactory;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -316,48 +315,36 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
 	}
 	
-	 public void testEnviaEmailQuestionarioLiberado() throws Exception
+	 public void testEnviarLembreteResponderAvaliacaoDesempenho() throws Exception
 	 {
 		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
 		 parametros.setAppUrl("url");
 
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-		 Questionario questionario = QuestionarioFactory.getEntity(1L);
-		 questionario.setEmpresa(empresa);
-		 questionario.setDataInicio(new Date());
-		 questionario.setDataFim(new Date());
-
 		 Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		 colaborador1.setEmpresa(empresa);
 		 colaborador1.setEmailColaborador("teste1@fortesinformatica.com.br");
 
-		 ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
-		 colaboradorQuestionario1.setColaborador(colaborador1);
-
 		 Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		 colaborador2.setEmpresa(empresa);
 		 colaborador2.setEmailColaborador("teste2@fortesinformatica.com.br");
-
-		 ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(2L);
-		 colaboradorQuestionario2.setColaborador(colaborador2);
-
-		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
-		 colaboradorQuestionarios.add(colaboradorQuestionario1);
-		 colaboradorQuestionarios.add(colaboradorQuestionario2);
 
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
 		 gerenciadorComunicacao.setEmpresa(empresa);
 		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
-
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId());
+		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-
+		 
+		 colaboradorManager.expects(once()).method("findColaboradorDeAvaliacaoDesempenhoNaoRespondida").will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
-		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_PESQUISA.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviaEmailQuestionarioLiberado(empresa, questionario, colaboradorQuestionarios);
+			 gerenciadorComunicacaoManager.enviarLembreteResponderAvaliacaoDesempenho();
 		 } catch (Exception e) {
 			 exception = e;
 		 }
@@ -365,6 +352,55 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 
+	 public void testEnviaEmailQuestionarioLiberado() throws Exception
+	 {
+		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
+		 parametros.setAppUrl("url");
+		 
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 
+		 Questionario questionario = QuestionarioFactory.getEntity(1L);
+		 questionario.setEmpresa(empresa);
+		 questionario.setDataInicio(new Date());
+		 questionario.setDataFim(new Date());
+		 
+		 Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		 colaborador1.setEmailColaborador("teste1@fortesinformatica.com.br");
+		 
+		 ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
+		 colaboradorQuestionario1.setColaborador(colaborador1);
+		 
+		 Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		 colaborador2.setEmailColaborador("teste2@fortesinformatica.com.br");
+		 
+		 ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(2L);
+		 colaboradorQuestionario2.setColaborador(colaborador2);
+		 
+		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		 colaboradorQuestionarios.add(colaboradorQuestionario1);
+		 colaboradorQuestionarios.add(colaboradorQuestionario2);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao.setEmpresa(empresa);
+		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 
+		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
+		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_PESQUISA.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviaEmailQuestionarioLiberado(empresa, questionario, colaboradorQuestionarios);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
 	 public void testEnviaLembreteDeQuestionarioNaoLiberado() throws Exception
 	 {
 		 ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);

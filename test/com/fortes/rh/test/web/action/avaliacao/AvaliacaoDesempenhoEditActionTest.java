@@ -425,7 +425,6 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
-		manager.expects(once()).method("enviarLembrete").with(ANYTHING, ANYTHING).isVoid();
 		
 		assertEquals("success",action.liberar());
 		
@@ -441,7 +440,6 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
-		manager.expects(once()).method("enviarLembrete").with(ANYTHING, ANYTHING).isVoid();
 		
 		assertEquals("success",action.liberar());
 		

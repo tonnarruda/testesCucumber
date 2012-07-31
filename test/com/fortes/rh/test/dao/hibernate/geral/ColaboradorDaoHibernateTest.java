@@ -1,3 +1,4 @@
+
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
@@ -3991,6 +3992,76 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null).size());
 		// avaliadores
 		assertEquals(1, colaboradorDao.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null).size());
+	}
+
+	public void testFindColaboradorDeAvaliacaoDesempenhoNaoRespondida() 
+	{
+		Date inicio = DateUtil.criarDataMesAno(01, 01, 2011);
+		Date fim = DateUtil.incrementaMes(new Date(), 1);
+		Date fim2 = DateUtil.incrementaMes(new Date(), -1);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setEmpresa(empresa);
+		colab.setNome("colab");
+		colab.setDesligado(false);
+		colaboradorDao.save(colab);
+		
+		Colaborador colab2 = ColaboradorFactory.getEntity();
+		colab2.setEmpresa(empresa);
+		colab2.setNome("colab2");
+		colab2.setDesligado(false);
+		colaboradorDao.save(colab2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setTitulo("Avaliacao 1");
+		avaliacaoDesempenho.setInicio(inicio);
+		avaliacaoDesempenho.setFim(fim);
+		avaliacaoDesempenho.setLiberada(true);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho2.setTitulo("Avaliacao 2");
+		avaliacaoDesempenho2.setInicio(inicio);
+		avaliacaoDesempenho2.setFim(fim2);
+		avaliacaoDesempenho2.setLiberada(true);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliador((colab));
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setRespondida(false);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setAvaliador(colab);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario2.setRespondida(true);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setAvaliador(colab2);
+		colaboradorQuestionario3.setAvaliacaoDesempenho(avaliacaoDesempenho2);
+		colaboradorQuestionario3.setRespondida(false);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		Collection<Colaborador> colaboradors = colaboradorDao.findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
+		
+		int qtdColabCorreto = 0;
+		int qtdColabErrado = 0;
+		for (Colaborador colaborador : colaboradors) {
+			
+			if (colaborador.getId().equals(colab.getId())) 
+				qtdColabCorreto++;
+			
+			if (colaborador.getId().equals(colab2.getId())) 
+				qtdColabErrado++;
+		}
+		
+		assertEquals(1, qtdColabCorreto);
+		assertEquals(0, qtdColabErrado);
 	}
 	
 	public void testFindByQuestionarioNaoRespondido() {

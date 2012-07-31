@@ -2737,6 +2737,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
+	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida()
+	{
+		Date hoje = new Date();
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		criteria.createCriteria("cq.avaliador", "colab");
+		criteria.createCriteria("colab.empresa", "e");
+		criteria.createCriteria("cq.avaliacaoDesempenho", "ad");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("colab.id")), "id");
+		p.add(Projections.property("colab.contato.email"), "emailColaborador");
+		p.add(Projections.property("ad.titulo"), "avaliacaoDesempenhoTitulo");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.emailRemetente"), "empresaEmailRemetente");
+
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("colab.desligado", false));
+		criteria.add(Expression.eq("ad.liberada", true));
+		criteria.add(Expression.le("ad.inicio", hoje));
+		criteria.add(Expression.ge("ad.fim", hoje));
+		criteria.add(Expression.eq("cq.respondida", false));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+	
 	public Collection<Colaborador> findParticipantesDistinctByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliado, Boolean respondida)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
@@ -2746,10 +2776,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		else
 			criteria.createCriteria("cq.avaliador", "colab");
 
-		criteria.createCriteria("cq.avaliacaoDesempenho", "avDesempenho");// não
-		// pode
-		// ser
-		// LEFT_JOIN
+		criteria.createCriteria("cq.avaliacaoDesempenho", "avDesempenho");// não pode ser LEFT_JOIN
 
 		ProjectionList p = Projections.projectionList().create();
 

@@ -1659,6 +1659,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		empresa.setNome(nome);
 	}
 
+	public void setEmpresaEmailRemetente(String emailRemetente)
+	{
+		criarEmpresa();
+		empresa.setEmailRemetente(emailRemetente);
+	}
+	
 	@NaoAudita
 	public String getEmpresaNome()
 	{
@@ -2544,5 +2550,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setIntervaloTempoServico(String intervaloTempoServico) {
 		this.intervaloTempoServico = intervaloTempoServico;
+	}
+	
+	public void setAvaliacaoDesempenhoTitulo(String avaliacaoDesempenhoTitulo)
+	{
+		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
 	}
 }

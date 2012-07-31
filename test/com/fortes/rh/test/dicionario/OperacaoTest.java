@@ -29,7 +29,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Existir currículo aguardando aprovação para participar de seleção (triagem do módulo externo)", Operacao.getDescricaoById(++i));
 		assertEquals("Encerrar solicitação de pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Alterar status da solicitação de pessoal", Operacao.getDescricaoById(++i));
-		assertEquals("Liberar avaliação de desempenho", Operacao.getDescricaoById(++i));
+		assertEquals("Houver avaliação de desempenho a ser respondida", Operacao.getDescricaoById(++i));
 		assertEquals("Liberar pesquisa", Operacao.getDescricaoById(++i));
 		assertEquals("Houver pesquisa a ser liberada (Notificação periódica)", Operacao.getDescricaoById(++i));
 		assertEquals("Houver avaliações do período de experiência a vencer (Notificação periódica)", Operacao.getDescricaoById(++i));
@@ -102,7 +102,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId());   // 3 
 		assertEquals(++i, Operacao.ENCERRAR_SOLICITACAO.getId());                // 4 
 		assertEquals(++i, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());              // 5 
-		assertEquals(++i, Operacao.LIBERAR_AVALIACAO_DESEMPENHO.getId());    // 6 
+		assertEquals(++i, Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId());    // 6 
 		assertEquals(++i, Operacao.LIBERAR_PESQUISA.getId());                    // 7 
 		assertEquals(++i, Operacao.PESQUISA_NAO_LIBERADA.getId());      // 8 
 		assertEquals(++i, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());  // 9 
@@ -147,8 +147,8 @@ public class OperacaoTest extends TestCase
 	{
 		++qtdDeOperacoesTestadas;
 		
-		assertEquals(2, Operacao.LIBERAR_AVALIACAO_DESEMPENHO.meioComunicação().size());
-		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.LIBERAR_AVALIACAO_DESEMPENHO.meioComunicação().values().toArray()[1]);
+		assertEquals(2, Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	

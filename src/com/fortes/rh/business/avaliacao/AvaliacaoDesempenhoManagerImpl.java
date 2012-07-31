@@ -220,7 +220,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 					avaliacaoDesempenho.setId(Long.parseLong(avaliacaoId));
 	
 					liberar(avaliacaoDesempenho);
-					enviarLembrete(avaliacaoDesempenho.getId(), empresa);
 				}
 			}
 		}

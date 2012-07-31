@@ -91,7 +91,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.ENCERRAR_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.CANDIDATO_NAO_APTO, empresa));
 		save(new GerenciadorComunicacao(Operacao.ALTERAR_STATUS_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_SOLICITACAO, empresa));
-		save(new GerenciadorComunicacao(Operacao.LIBERAR_AVALIACAO_DESEMPENHO, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO, empresa));
+		save(new GerenciadorComunicacao(Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO, empresa));
 		save(new GerenciadorComunicacao(Operacao.LIBERAR_PESQUISA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
 		save(new GerenciadorComunicacao(Operacao.PESQUISA_NAO_LIBERADA, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		save(new GerenciadorComunicacao(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
@@ -168,8 +168,44 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa) {
+	@SuppressWarnings("deprecation")
+	/**
+	 * Utilizado por Job
+	 */
+	public void enviarLembreteResponderAvaliacaoDesempenho() 
+	{
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+		Collection<Colaborador> avaliadores = colaboradorManager.findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		
+		for (Colaborador avaliador : avaliadores)
+		{
+			try
+			{
+				StringBuilder corpo = new StringBuilder();
+				corpo.append("ATENÇÃO:<br />");
+				corpo.append("A avaliação de desempenho "+avaliador.getAvaliacaoDesempenhoTitulo()+" está disponível para ser respondida.<br />");
+				corpo.append("Por favor click no link abaixo para acessar o sitema e respondê-la.<br />");
+				corpo.append("<a href=\" "+ parametros.getAppUrl() + "\">Sistema RH</a>") ;
+				
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId(), avaliador.getEmpresa().getId());
+				
+				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId())){
+						mail.send(avaliador.getEmpresa(), parametros, "[RH] Lembrete - Responder Avaliação de Desempenho", corpo.toString(), avaliador.getContato().getEmail());
+					} 		
+				}
+
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa) 
+	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenhoId, false, false);
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
@@ -180,15 +216,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{
 				StringBuilder corpo = new StringBuilder();
 				corpo.append("ATENÇÃO:<br>");
-				corpo.append("Existe Avaliação de Desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">RH</a>") ;
-				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.LIBERAR_AVALIACAO_DESEMPENHO.getId(), empresa.getId());
-
-				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId())){
-						mail.send(empresa, parametros, "[RH] Lembrete responder Avaliação de Desempenho", corpo.toString(), avaliador.getContato().getEmail());
-					} 		
-				}
-				
+				corpo.append("Existe uma avaliação de desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">RH</a>") ;
+				mail.send(empresa, parametros, "[RH] Lembrete - Responder Avaliação de Desempenho", corpo.toString(), avaliador.getContato().getEmail());
 			}
 			catch (Exception e)
 			{
