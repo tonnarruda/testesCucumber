@@ -12,6 +12,7 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
@@ -57,6 +59,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -88,6 +91,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private AvaliacaoTurmaDao avaliacaoTurmaDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
 	private TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao;
+	private ColaboradorPresencaDao colaboradorPresencaDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -946,7 +950,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		avaliacaoTurma.setQuestionario(questionario);
 		avaliacaoTurmaDao.save(avaliacaoTurma);
 
-		
 		Turma turma = TurmaFactory.getEntity();
 		turmaDao.save(turma);
 
@@ -960,6 +963,16 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorTurma.setColaborador(colaborador);
 		colaboradorTurma.setTurma(turma);
 		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresenca);
+		
+		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca2.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca2.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresenca2);
 		
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioDao.findQuestionarioByTurmaLiberadaPorUsuario(usuario.getId());
 		
@@ -1077,5 +1090,10 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setTurmaAvaliacaoTurmaDao(TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao) {
 		this.turmaAvaliacaoTurmaDao = turmaAvaliacaoTurmaDao;
+	}
+
+	public void setColaboradorPresencaDao(
+			ColaboradorPresencaDao colaboradorPresencaDao) {
+		this.colaboradorPresencaDao = colaboradorPresencaDao;
 	}
 }

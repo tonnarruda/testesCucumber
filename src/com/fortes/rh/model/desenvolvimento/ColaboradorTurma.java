@@ -42,6 +42,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private DNT dnt;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaboradorTurma")
 	private Collection<AproveitamentoAvaliacaoCurso> aproveitamentoAvaliacaoCursos;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaboradorTurma")
+	private Collection<ColaboradorPresenca> colaboradorPresencas;
 
 	private boolean origemDnt;
 	private boolean aprovado;
@@ -760,5 +762,14 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public void setMatrizTreinamentos(Collection<MatrizTreinamento> matrizTreinamentos)
 	{
 		this.matrizTreinamentos = matrizTreinamentos;
+	}
+
+	public Collection<ColaboradorPresenca> getColaboradorPresencas() {
+		return colaboradorPresencas;
+	}
+
+	public void setColaboradorPresencas(
+			Collection<ColaboradorPresenca> colaboradorPresencas) {
+		this.colaboradorPresencas = colaboradorPresencas;
 	}
 }

@@ -1028,9 +1028,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria = criteria.createCriteria("ct.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria = criteria.createCriteria("ct.colaboradorPresencas", "cp", Criteria.INNER_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.distinct(Projections.property("ct.id")), "id");
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.nome"), "colaboradorNome");
 		p.add(Projections.property("c.contato.email"), "colaboradorEmail");
@@ -1039,6 +1040,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		criteria.add(Expression.eq("ct.turma.id", turmaId));
 		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.eq("cp.presenca", true));
 		criteria.add(Expression.not(Expression.eq("c.contato.email", "")));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

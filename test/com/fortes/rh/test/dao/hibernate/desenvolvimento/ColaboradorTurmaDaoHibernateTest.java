@@ -199,6 +199,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	debora.setEmailColaborador(null);
     	colaboradorDao.save(debora);
     	
+    	Colaborador jose = ColaboradorFactory.getEntity();
+    	jose.setDesligado(false);
+    	jose.setEmailColaborador("jose@b.com.br");
+    	colaboradorDao.save(jose);
+    	
     	ColaboradorTurma colaboradorTurmaJoao = getEntity();
     	colaboradorTurmaJoao.setColaborador(joao);
     	colaboradorTurmaJoao.setTurma(java);
@@ -218,6 +223,36 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurmaDebora.setColaborador(debora);
     	colaboradorTurmaDebora.setTurma(java);
     	colaboradorTurmaDao.save(colaboradorTurmaDebora);
+    	
+    	ColaboradorTurma colaboradorTurmaJose= getEntity();
+    	colaboradorTurmaJose.setColaborador(jose);
+    	colaboradorTurmaJose.setTurma(java);
+    	colaboradorTurmaDao.save(colaboradorTurmaJose);
+    	
+    	ColaboradorPresenca colaboradorPresencaJoao = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaJoao.setColaboradorTurma(colaboradorTurmaJoao);
+    	colaboradorPresencaJoao.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaJoao);
+
+    	ColaboradorPresenca colaboradorPresencaJoao2 = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaJoao2.setColaboradorTurma(colaboradorTurmaJoao);
+    	colaboradorPresencaJoao2.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaJoao2);
+    	
+    	ColaboradorPresenca colaboradorPresencaMaria = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaMaria.setColaboradorTurma(colaboradorTurmaMaria);
+    	colaboradorPresencaMaria.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaMaria);
+    	
+    	ColaboradorPresenca colaboradorPresencaPedro = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaPedro.setColaboradorTurma(colaboradorTurmaPedro);
+    	colaboradorPresencaPedro.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaPedro);
+    	
+    	ColaboradorPresenca colaboradorPresencaDebora = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaDebora.setColaboradorTurma(colaboradorTurmaDebora);
+    	colaboradorPresencaDebora.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaDebora);
     	
     	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradoresComEmailByTurma(java.getId());
     	assertEquals(1, retorno.size());

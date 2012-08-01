@@ -859,17 +859,19 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId) {
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new ColaboradorQuestionario(c, q, t) ");
+		hql.append("select distinct new ColaboradorQuestionario(c, t, q.id, q.titulo) ");
 		hql.append("from ColaboradorTurma ct "); 
 		hql.append("inner join ct.turma t ");
 		hql.append("inner join t.turmaAvaliacaoTurmas tat "); 
 		hql.append("inner join tat.avaliacaoTurma at "); 
 		hql.append("inner join at.questionario q ");
 		hql.append("inner join ct.colaborador c "); 
+		hql.append("inner join ct.colaboradorPresencas cp "); 
 		hql.append("left join c.colaboradorQuestionarios cq with cq.turma.id=t.id and cq.questionario.id=q.id and c.usuario.id = :usuarioId ");
 		hql.append("where c.usuario.id = :usuarioId ");
 		hql.append("and tat.liberada = true "); 
 		hql.append("and (cq.respondida is null or cq.respondida=false) ");
+		hql.append("and cp.presenca = true "); 
 		hql.append("order by q.titulo ");
 
 		Query query = getSession().createQuery(hql.toString());

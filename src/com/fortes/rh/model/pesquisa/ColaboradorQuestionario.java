@@ -73,11 +73,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     public ColaboradorQuestionario() {
 	}
 
-    public ColaboradorQuestionario(Colaborador colaborador, Questionario questionario, Turma turma) 
+    public ColaboradorQuestionario(Colaborador colaborador, Turma turma, Long questionarioId,  String questionarioTitulo) 
     {
     	this.setTurma(turma);
     	this.colaborador = colaborador;
-    	this.questionario = questionario;
+    	this.questionario = new Questionario();
+    	this.questionario.setId(questionarioId);
+    	this.questionario.setTitulo(questionarioTitulo);
     }
 
     public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) {
