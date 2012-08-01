@@ -44,7 +44,14 @@ def popula_db conn
         end
         
         if linha =~ /^alter table (.*) disable trigger all/i
-          conn.exec("select pg_catalog.setval('#{$1}_sequence', select max(id) from #{$1}, false);")
+          comando = "select pg_catalog.setval('#{$1}_sequence',10000 , false);"
+          
+          puts comando
+          
+          begin
+            conn.exec(comando)
+          rescue Exception => e
+          end
         end
     end
     puts "Banco de dados populado com sucesso."
