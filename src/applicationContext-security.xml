@@ -253,9 +253,9 @@
 				/geral/colaborador/prepareDesliga.action*=ROLE_COLAB_LIST_DESLIGAR
 				/geral/colaborador/prepareDesligaAC.action*=ROLE_COLAB_LIST_DESLIGAR				
 				/pesquisa/entrevista/prepareResponderEntrevista.action*=ROLE_COLAB_LIST_ENTREVISTA
-				/geral/colaborador/prepareEdit.action*=ROLE_COLAB_LIST_EDITAR
-				/geral/colaborador/edit.action*=ROLE_COLAB_LIST_EDITAR
-				/geral/colaborador/excluir.action*=ROLE_COLAB_LIST_EXCLUIR
+				/geral/colaborador/prepareUpdate.action*=ROLE_COLAB_LIST_EDITAR
+				/geral/colaborador/update.action*=ROLE_COLAB_LIST_EDITAR
+				/geral/colaborador/delete.action*=ROLE_COLAB_LIST_EXCLUIR
 				/geral/colaborador/preparePerformanceFuncional.action*=ROLE_COLAB_LIST_PERFORMANCE				
 				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA				
 				/geral/colaborador/prepareColaboradorSolicitacao.action*=ROLE_COLAB_LIST_SOLICITACAO				
@@ -265,7 +265,7 @@
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
 				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
 				/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
-				/geral/colaboradorOcorrencia/*/**=ROLE_CAD_COLABORADOR, ROLE_CAD_OCORRENCIA
+				/geral/colaboradorOcorrencia/*/**=ROLE_CAD_OCORRENCIA
 				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
 				/geral/areaInteresse/*/**=ROLE_CAD_AREA
 				/geral/motivoDemissao/*elatorioMotivoDemissao*/**=ROLE_REL_MOTIVO_DEMISSAO
@@ -414,7 +414,7 @@
 				
 				/pesquisa/pesquisa/preview.action*= ROLE_USER
 				/pesquisa/pesquisa/*/**= ROLE_MOV_QUESTIONARIO
-				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR
+				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO
 				/pesquisa/pergunta/*/**= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
 				
 				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
