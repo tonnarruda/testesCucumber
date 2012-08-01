@@ -510,6 +510,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		Cargo cargo = CargoFactory.getEntity(1L);
 		TCargo tCargo = new TCargo();
+		tCargo.setDescricao("Nome da Faixa");
 		
 		faixaSalarialManager.expects(once()).method("montaFaixa").with(eq(tCargo)).will(returnValue(faixaSalarial));
 		cargoManager.expects(once()).method("preparaCargoDoAC").with(eq(tCargo)).will(returnValue(cargo));
@@ -525,12 +526,25 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		faixaSalarial.setCargo(cargo);
 		
 		TCargo tCargo = new TCargo();
+		tCargo.setDescricao("Nome da Faixa");
 		
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("updateAC").with(eq(tCargo));
 		cargoManager.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		
 		assertEquals(true, rHServiceManager.atualizarCargo(tCargo).isSucesso());
+	}
+	
+	public void testAtualizarCargoSemNomeFaixa() throws Exception
+	{
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setNome(null);
+		faixaSalarial.setCargo(cargo);
+		
+		TCargo tCargo = new TCargo();
+		
+		assertEquals("Faixa sem nome",false, rHServiceManager.atualizarCargo(tCargo).isSucesso());
 	}
 	
 	public void testRemoverCargo() throws Exception

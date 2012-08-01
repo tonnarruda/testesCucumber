@@ -1154,6 +1154,9 @@ public class RHServiceImpl implements RHService
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
+			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
+				throw new Exception("Descrição da faixa está vazia.");
+			
 			FaixaSalarial faixaSalarial = faixaSalarialManager.montaFaixa(tCargo);
 			faixaSalarial.setCargo(cargoManager.preparaCargoDoAC(tCargo));
 
@@ -1173,6 +1176,9 @@ public class RHServiceImpl implements RHService
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
+			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
+				throw new Exception("Descrição da faixa está vazia.");
+
 			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
 			
 			tCargo.setId(faixaSalarial.getId());
