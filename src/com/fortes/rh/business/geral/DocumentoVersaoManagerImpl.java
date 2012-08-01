@@ -34,11 +34,13 @@ public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 				else
 					cssClassLinha = "";
 
-				Element elementNode = (Element)iterListElements.next();
+				Element elementVersao = (Element)iterListElements.next();
 				textoXml += "<tr class=\""+cssClassLinha+"\">";
-				textoXml +=	"<td class=\"tamanho100\">" + elementNode.getAttributeValue("data") + "</td>";
-				textoXml += "<td class=\"tamanho100\">" + elementNode.getAttributeValue("id") + "</td>";
-				textoXml += "<td>" + elementNode.getValue().replace("- ", "<br>- ").replace("[nl_s]", "<br>&nbsp &nbsp ") + "</td><tr>";
+				textoXml +=	"<td class=\"tamanho100\">" + elementVersao.getAttributeValue("data") + "</td>";
+				textoXml += "<td class=\"tamanho100\">" + elementVersao.getAttributeValue("id") + "</td>";
+				
+				Element elementModule = elementVersao.getChild("Modulo");
+				textoXml += "<td>" + elementModule.getValue().replace(":: ", "<br>- ").trim().substring(4) + "</td><tr>";
 				linha++;
 			}
 
