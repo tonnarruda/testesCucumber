@@ -298,7 +298,6 @@
 				<div id="quadro">
 					<h2>Situação atual</h2>
 					<ul>
-						<div style="height: 50px;"></div> <#-- alinhar estabelecimento atual e proposto -->
 						<@ww.label label="Estabelecimento" name="estabelecimentoAtual.nome" id="estabelecimentoAtualNome" cssStyle="height:40px;"/>
 						<@ww.label label="Área Organizacional" name="areaOrganizacionalAtual.nome" id="areaOrganizacionalAtualNome"/>
 
@@ -322,9 +321,6 @@
 				<div id="quadro">
 					<h2>Situação proposta</h2>
 					<ul>
-						<#-- campo observação ficava no fim e foi movido pra ca devido a bug no IE7 -->
-						<@ww.textarea label="Observação" name="reajusteColaborador.observacao" id="observacao" cssStyle="width:550px;height:60px" /><br><br><br>
-												
 						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<#assign funcaoEstabelecimento=""/>
@@ -355,9 +351,10 @@
 							<@ww.hidden name="reajusteColaborador.ambienteAtual.id" id="ambienteAtual" />
 						</@authz.authorize>
 
-
 						<#-- Função que usa o include tipoSalarioInclude.ftl -->
 						${preparaSalario("reajusteColaborador")}
+	
+						<@ww.textarea label="Observação" name="reajusteColaborador.observacao" id="observacao" cssStyle="width:550px;height:60px" /><br><br><br>
 					</ul>
 				</div>
 			</div>
