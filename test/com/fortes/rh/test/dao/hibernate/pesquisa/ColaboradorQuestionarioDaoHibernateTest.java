@@ -2,6 +2,7 @@ package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -734,6 +735,9 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	
 	public void testFindAvaliadosByAvaliador()
 	{
+		Date anoAnterior = DateUtil.incrementaAno(new Date(), -1);
+		Date anoPosterior = DateUtil.incrementaAno(new Date(), 1);
+		
 		Colaborador avaliador = ColaboradorFactory.getEntity();
     	avaliador.setNome("Avaliador ");
     	colaboradorDao.save(avaliador);
@@ -752,6 +756,8 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
     	
     	AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
     	avaliacaoDesempenho.setLiberada(true);
+    	avaliacaoDesempenho.setInicio(anoAnterior);
+    	avaliacaoDesempenho.setFim(anoPosterior);
     	avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
     	
     	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();

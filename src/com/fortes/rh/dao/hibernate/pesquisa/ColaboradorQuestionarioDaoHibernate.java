@@ -620,6 +620,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		if (respondida != null)
 			criteria.add(Expression.eq("cq.respondida", respondida));
 		
+		Date hoje = new Date();
+		criteria.add(Expression.le("avDesempenho.inicio", hoje));
+		criteria.add(Expression.ge("avDesempenho.fim", hoje));
+		
 		criteria.addOrder(Order.asc("avDesempenho.titulo"));
 		criteria.addOrder(Order.asc("avaliado.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
