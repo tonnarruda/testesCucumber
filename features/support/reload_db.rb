@@ -23,14 +23,6 @@ def reload_db
       end
     end
 
-    setval_sequence = tables.map {|table| "select pg_catalog.setval('#{table['table_name']}_sequence',10000 , false);"}
-    setval_sequence.each do |comando|
-      begin
-        conn.exec comando
-      rescue Exception => e
-      end
-    end
-
     conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
     
     popula_db conn
@@ -58,6 +50,13 @@ def popula_db conn
           end
         elsif linha =~ /^(alter table|insert into)/i
             conn.exec(linha)
+        end
+        
+        if linha =~ /^alter table (.*) disable trigger all/i
+          begin
+            conn.exec("select pg_catalog.setval('#{$1}_sequence',10000 , false);")
+          rescue Exception => e
+          end
         end
     end
     puts "Banco de dados populado com sucesso."
