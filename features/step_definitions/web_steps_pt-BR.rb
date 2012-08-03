@@ -303,7 +303,6 @@ end
 
 Dado /^que exista o estabelecimento "([^"]*)"$/ do |nome|
    insert :estabelecimento do
-     id 2
      nome nome
      empresa :id => 1
    end
@@ -381,7 +380,6 @@ end
 
 Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
    insert :avaliacao do
-     id 1
      titulo avaliacao_titulo
      tipomodeloavaliacao 'D'
      ativo true
@@ -413,7 +411,6 @@ end
 
 Dado /^que exista um usuario "([^"]*)"$/ do |usuario_nome|
    insert :usuario do
-     id 2
      nome usuario_nome
      acessosistema true
      superadmin false
@@ -467,21 +464,10 @@ end
 
 Dado /^que exista uma empresa "([^"]*)"$/ do |empresa_nome|
    insert :empresa do
-      id 2
       nome empresa_nome
       acintegra false
       maxcandidatacargo 10
       exibirsalario true
-   end
-end
-
-Dado /^que exista um papel "([^"]*)" com id igual a "([^"]*)"$/ do |papel_nome, papel_id|  
-   insert :papel do
-      id papel_id
-      nome papel_nome
-      codigo 'ROLE'
-      ordem 1
-      menu false
    end
 end
 
@@ -620,7 +606,6 @@ Dado /^que exista um modelo de ficha medica "([^"]*)" com a pergunta "([^"]*)"$/
   end
 
   insert :pergunta do
-    id 1
     texto pergunta
     questionario :titulo => fichamedica_nome
     tipo 3
@@ -676,10 +661,6 @@ Dado /^que exista um periodo de experiencia "([^"]*)" de (\d+) dias$/ do |period
     dias periodo_dias
     empresa :id => 1
   end
-end
-
-Dado /^uma nova sequence para (.*)$/ do |tabela|
-   exec_sql "select pg_catalog.setval('#{tabela}_sequence', 1000, false);;"
 end
 
 Dado /^que todos os papeis estejam permitidos$/ do

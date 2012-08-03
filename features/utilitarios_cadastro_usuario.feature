@@ -3,8 +3,6 @@
 Funcionalidade: Cadastrar Usuário
 
   Cenário: Cadastro de Usuário
-  	Dado uma nova sequence para usuario
-  
     Dado que eu esteja logado
 
     Quando eu acesso o menu "Utilitários > Cadastros > Usuários"

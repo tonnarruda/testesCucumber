@@ -4,7 +4,6 @@ Funcionalidade: Campos Extras para Candidato
 
   @dev
   Cenário: Campos Extras para Candidato
-  	Dado uma nova sequence para configuracaocampoextra
     Dado que eu esteja logado
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"

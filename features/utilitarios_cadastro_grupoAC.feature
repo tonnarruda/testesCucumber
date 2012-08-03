@@ -3,7 +3,6 @@
 Funcionalidade: Cadastrar Grupo AC
 
   Cenário: Cadastro do Grupo AC
-    Dado uma nova sequence para grupoac
     Dado que eu esteja logado
 
     Quando eu acesso o menu "Utilitários > Cadastros > Grupos AC"

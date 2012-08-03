@@ -26,7 +26,7 @@
 		</fileset>
 	</path>
 
-	<target name="init" depends="update-file-update-sql, war, recreate-bd">
+	<target name="init" depends="war">
 		<mkdir dir="${ant.project.name}/dist" />
 		<copy file="${metadados.dir}/update.sql" todir="${ant.project.name}/dist" />
 		<delete file="${ant.project.name}/dist/update.sql" />
@@ -197,7 +197,7 @@
 		<echo message="Banco criado com sucesso" />
 	</target>
 
-	<target name="recreate-bd" depends="update-file-update-sql,recreate-bd-vazio">
+	<target name="generate-create-createdata" depends="update-file-update-sql,recreate-bd-vazio">
 		<echo message="Criando banco de dados vazio" />
 		<exec failonerror="true" executable="psql"
 			input="${metadados.dir}/create.sql">
