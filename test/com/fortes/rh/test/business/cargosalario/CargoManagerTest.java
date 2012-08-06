@@ -182,8 +182,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		Long empresaId = 69L;
 		String ordenarPor = "nome";
+		boolean isModuloExterno = true;
 		
-		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(true)).will(returnValue(Collections.EMPTY_LIST));
+		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(true), eq(isModuloExterno)).will(returnValue(Collections.EMPTY_LIST));
 		
 		cargoManager.findAllSelectModuloExterno(empresaId, ordenarPor);
 		
@@ -455,8 +456,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		String ordenarPor = "a";
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
+		boolean isModuloExterno = false;
 
-		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(null)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(null), eq(isModuloExterno)).will(returnValue(cargos));
 
 		assertEquals(cargos, cargoManager.findAllSelect(empresaId, ordenarPor));
 	}
@@ -497,7 +499,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		assertEquals(1, cargoManager.populaCheckBox(1L).size());
 	}
@@ -551,7 +553,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		assertEquals(1, cargoManager.populaCheckBox(null, null, 1L).size());
 	}

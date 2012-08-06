@@ -185,7 +185,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno)
+	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, boolean isModuloExterno)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
@@ -198,11 +198,15 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("e.nome"), "empresaNomeProjection");
 
 		criteria.setProjection(p);
+		
 		if(empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
 		if (exibirModuloExterno != null)
 			criteria.add(Expression.eq("c.exibirModuloExterno", exibirModuloExterno));
+		
+		if(isModuloExterno)
+			criteria.add(Expression.eq("c.ativo", true));
 		
 		criteria.addOrder(Order.asc("c."+ordenarPor));
 

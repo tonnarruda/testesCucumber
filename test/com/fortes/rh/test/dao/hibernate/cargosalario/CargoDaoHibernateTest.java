@@ -275,9 +275,41 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo2.setEmpresa(empresa);
 		cargo2 = cargoDao.save(cargo2);
 
-		Collection<Cargo> retorno = cargoDao.findAllSelect(empresa.getId(), "nomeMercado", null);
+		Collection<Cargo> retorno = cargoDao.findAllSelect(empresa.getId(), "nomeMercado", null, false);
 
 		assertEquals(2, retorno.size());
+	}
+	
+	public void testFindAllSelectModuloExterno()
+	{
+		boolean isModuloExterno = true;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setAtivo(true);
+		cargo1.setEmpresa(empresa);
+		cargo1 = cargoDao.save(cargo1);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setAtivo(true);
+		cargo2.setEmpresa(empresa);
+		cargo2 = cargoDao.save(cargo2);
+		
+		Cargo cargo3 = CargoFactory.getEntity();
+		cargo3.setAtivo(true);
+		cargo3.setEmpresa(empresa);
+		cargo3 = cargoDao.save(cargo3);
+		
+		Cargo cargo4 = CargoFactory.getEntity();
+		cargo4.setAtivo(false);
+		cargo4.setEmpresa(empresa);
+		cargo4 = cargoDao.save(cargo4);
+		
+		Collection<Cargo> retorno = cargoDao.findAllSelect(empresa.getId(), "nomeMercado", null, isModuloExterno);
+		
+		assertEquals(3, retorno.size());
 	}
 
 	public void testFindAllSelectEmpresas()
