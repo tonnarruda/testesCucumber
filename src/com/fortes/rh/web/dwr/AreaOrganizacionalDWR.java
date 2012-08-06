@@ -30,9 +30,9 @@ public class AreaOrganizacionalDWR
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, ((empresaId == null || empresaId < 0) ? "descricaoComEmpresaStatusAtivo" : "descricaoStatusAtivo"));
 		
-		return cu1.convertCollectionToMap(areaOrganizacionals, "getId", ((empresaId == null || empresaId < 0) ? "getDescricaoComEmpresa" : "getDescricao") ); 
+		return cu1.convertCollectionToMap(areaOrganizacionals, "getId", ((empresaId == null || empresaId < 0) ? "getDescricaoComEmpresaStatusAtivo" : "getDescricaoStatusAtivo") ); 
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,9 +46,9 @@ public class AreaOrganizacionalDWR
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresa");
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
 
-		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresa");
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}
 
 	@SuppressWarnings("unchecked")

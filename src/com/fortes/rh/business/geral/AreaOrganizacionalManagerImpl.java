@@ -245,9 +245,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
 			areas = montaFamilia(areas);
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricao");
+			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoStatusAtivo");
 
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricao");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo");
 		}
 		catch (Exception e)
 		{
@@ -265,9 +265,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			Collection<AreaOrganizacional> areas = findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
 			areas = montaFamilia(areas);
 			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoComEmpresa");
+			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoComEmpresaStatusAtivo");
 			
-			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoComEmpresa");
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoComEmpresaStatusAtivo");
 		}
 		catch (Exception e)
 		{

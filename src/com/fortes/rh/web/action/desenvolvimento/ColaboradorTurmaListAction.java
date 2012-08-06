@@ -166,7 +166,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		empresaId = getEmpresaSistema().getId();
 				
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
-		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
+		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 
 		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome"), "getId", "getNome");
