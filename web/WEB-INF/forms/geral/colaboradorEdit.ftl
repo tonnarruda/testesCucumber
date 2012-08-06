@@ -171,20 +171,17 @@
 			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
 			
 			$('#ambienteTooltipHelp').qtip({
-				content: '<strong>Ambiente</strong><br />Necessário para o PPP e PPRA.'
-				,
-				style: {
-		        	 width: '100px'
-		        }
+				content: '<strong>Ambiente</strong><br />Necessário para o PPP e PPRA.',
+				style: { width: '100px' }
 			});
 			
 			$('#funcaoTooltipHelp').qtip({
-				content: '<strong>Função</strong><br />Necessário para o PPP e PPRA.'
-				,
-				style: {
-		        	 width: '100px'
-		        }
+				content: '<strong>Função</strong><br />Necessário para o PPP e PPRA.',
+				style: {  width: '100px' }
 			});
+			
+			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o AC Pessoal.' });
+			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o AC Pessoal.' });
 			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
@@ -433,9 +430,26 @@
 		<div id="content2" style="display: none;">
 			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${somenteLeituraIntegraAC}" cssStyle="width:150px;" liClass="liLeft" maxLength="20"/>
 
-			<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
+			<#if somenteLeituraIntegraAC=="true" && edicao=="true">
+				<label for="dt_admissao">Admissão:</label><br />
+				<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="width: 71px;"/>
+				<img id="dataAdmissaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 
-			<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"/>
+				<br clear="all"/>
+
+				<label for="dt_admissao">Colocação:</label><br />
+				<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"/>
+				<img id="vinculoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
+				
+				<br clear="all"/>
+				
+				<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
+				<@ww.hidden  name="colaborador.vinculo" />
+			<#else>
+				<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
+				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"/>
+			</#if>
+			
 			<@ww.textfield label="Regime de Revezamento (PPP)" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="50"/>
 
 			<li>
