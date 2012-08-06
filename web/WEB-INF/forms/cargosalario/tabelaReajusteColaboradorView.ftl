@@ -184,7 +184,7 @@
 					<#assign class="odd"/>
 				</#if>
 
-				<#if reajusteColaborador.colaborador.dataDesligamento?exists && reajusteColaborador.colaborador.dataDesligamento < tabelaReajusteColaborador.data>
+				<#if reajusteColaborador.colaborador.dataDesligamento?exists && reajusteColaborador.colaborador.dataDesligamento <= tabelaReajusteColaborador.data>
 					<#assign existemDesligados=true/>
 					<#assign nomeColaborador="${reajusteColaborador.colaborador.nomeComercial} (Desligado)"/>
 					<#assign color="#F00"/>

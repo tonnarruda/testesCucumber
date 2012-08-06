@@ -51,6 +51,7 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -1017,6 +1018,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
+			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
 			getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
 			
 			transactionManager.commit(status);
@@ -1033,6 +1035,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
 		candidatoManager.reabilitaByColaborador(colaboradorId);
+		candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.APROMOVER);
 		getDao().religaColaborador(colaboradorId);
 	}
 

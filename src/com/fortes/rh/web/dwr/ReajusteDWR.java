@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
+
+import org.apache.commons.collections.MapUtils;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -121,11 +124,12 @@ public class ReajusteDWR
 		return colaboradorId;
 	}
 
-	public Map getColaboradoresByAreaOrganizacional(String areaId)
+	public Map<Long, String> getColaboradoresByAreaOrganizacional(String areaId)
 	{
-		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-
-		Map retorno = new HashMap();
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		
+		Map<Long, String> retorno = new LinkedHashMap<Long, String>();
+		retorno.put(0L, "Selecione...");
 
 		if (areaId != null && !areaId.equals(""))
 		{
@@ -134,22 +138,12 @@ public class ReajusteDWR
 
 			Collection<Colaborador> colaboradorLista = new LinkedList<Colaborador>();
 			colaboradorLista = colaboradorManager.getColaboradoresIntegraAc(colaboradorManager.findByAreasOrganizacionalIds(idsLong));
+			
+			colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradorLista, "nome");
 
-			if (colaboradorLista != null && colaboradorLista.size() > 0)
-			{
-				Colaborador colaboradorVazio = new Colaborador();
-				colaboradorVazio.setNomeComercial("Selecione...");
-				colaboradorVazio.setId(-1L);
-				colaboradors.add(colaboradorVazio);
-
-				colaboradors.addAll(colaboradorLista);
-			}
-
-			retorno = CollectionUtil.convertCollectionToMap(colaboradors, "getId", "getNomeMaisNomeComercial", Colaborador.class);
-
-			if (retorno.size() == 0)
-				retorno.put("", "Nenhum registro encontrado");
-
+			if (colaboradores != null && colaboradores.size() > 0)
+				for (Colaborador colaborador : colaboradorLista) 
+					retorno.put(colaborador.getId(), colaborador.getNomeMaisNomeComercial());
 		}
 
 		return retorno;

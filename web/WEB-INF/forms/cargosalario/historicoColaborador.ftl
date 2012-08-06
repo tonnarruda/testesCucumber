@@ -85,9 +85,11 @@
 	</#if>
 		<div class="buttonGroup">
 			<button onclick="window.location='../../geral/colaborador/list.action'" class="btnVoltar"></button>
-			<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
-				<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
-			</@authz.authorize>
+			<#if !colaborador.desligado>
+				<@authz.authorize ifAllGranted="ROLE_CAD_HISTORICOCOLABORADOR">
+					<button onclick="window.location='historicoColaboradorList.action?colaborador.id=${colaborador.id}'" class="btnEditarHistoricos"></button>
+				</@authz.authorize>
+			</#if>
 		</div>
 </body>
 </html>
