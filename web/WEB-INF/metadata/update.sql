@@ -19095,3 +19095,18 @@ update parametrosdosistema set appversao = '1.1.80.76';--.go
 -- versao 1.1.81.76
 
 update parametrosdosistema set appversao = '1.1.81.76';--.go
+-- versao 1.1.82.77
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (558, 'ROLE_COLAB_LIST_CRIARUSUARIO', 'Criar acesso ao sistema', '#', 10, false, 8);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=558 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 558); --.go
+alter sequence papel_sequence restart with 559;--.go
+
+update papel set ordem=11 where id=554;--.go
+
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 558 from perfil_papel where papeis_id = 8;--.go
+insert into migrations values('20120730170316');--.go
+update papel set ordem= ordem + 1  where papelmae_id=8;--.go
+update papel set nome='Cadastrar', ordem = 1  where id=555;--.go
+insert into migrations values('20120801105316');--.go
+update parametrosdosistema set appversao = '1.1.82.77';--.go

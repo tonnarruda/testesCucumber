@@ -23341,6 +23341,11 @@ INSERT INTO migrations (name) VALUES ('20120625093650');
 INSERT INTO migrations (name) VALUES ('20120702104504');
 INSERT INTO migrations (name) VALUES ('20120702113736');
 INSERT INTO migrations (name) VALUES ('20120703181421');
+INSERT INTO migrations (name) VALUES ('20120711133323');
+INSERT INTO migrations (name) VALUES ('20120716170104');
+INSERT INTO migrations (name) VALUES ('20120718155949');
+INSERT INTO migrations (name) VALUES ('20120730170316');
+INSERT INTO migrations (name) VALUES ('20120801105316');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23420,7 +23425,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 7, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (519, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 9, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 4, false, NULL, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (355, 'ROLE_PES_MOV', 'Movimentações', '#', 1, true, NULL, 353);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (28, 'ROLE_MOV_QUESTIONARIO', 'Pesquisas', '/pesquisa/pesquisa/list.action', 1, true, NULL, 355);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (401, 'ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO', 'Pode Responder Pesquisa Por Outro Usuário', '#', 4, false, NULL, 353);
@@ -23433,7 +23437,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (484, 'ROLE_RESPONDE_AVALIACAO', 'Pode ver e responder Aval. Desempenho', '#', 3, false, NULL, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (55, 'ROLE_MOV_AVALIACAO', 'Avaliações de Desempenho', '/avaliacao/desempenho/list.action', 1, true, NULL, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (483, 'ROLE_MOV_AVALIACAO', 'Responder Avaliações de Desempenho', '/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList.action', 2, true, NULL, 384);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode Responder Avaliação Por Outro Usuário', '#', 2, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (366, 'ROLE_T&D_CAD', 'Cadastros', '#', 1, true, NULL, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (13, 'ROLE_CAD_PRIORIDADETREINAMENTO', 'Prioridades de Treinamento', '/desenvolvimento/prioridadeTreinamento/list.action', 1, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (23, 'ROLE_MOV_CURSO', 'Cursos/Treinamentos', '/desenvolvimento/curso/list.action', 2, true, NULL, 366);
@@ -23578,23 +23581,26 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (459, 'ROLE_CAD_SOLICITACAOEXAME', 'Atendimentos Médicos', '/sesmt/solicitacaoExame/prepareRelatorioAtendimentosMedicos.action', 15, true, NULL, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (460, 'ROLE_CAD_SOLICITACAOEXAME', 'Exames Realizados', '/sesmt/exame/prepareRelatorioExamesRealizados.action', 16, true, NULL, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (74, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/list.action', 5, false, NULL, 75);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 0, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 12, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (8, 'ROLE_COLAB_LIST', 'Colaboradores', '/geral/colaborador/list.action', 7, true, NULL, 374);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (546, 'ROLE_COLAB_LIST_DESLIGAR', 'Desligar', '#', 1, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (547, 'ROLE_COLAB_LIST_ENTREVISTA', 'Entrevista de desligamento', '#', 2, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (548, 'ROLE_COLAB_LIST_EDITAR', 'Editar', '#', 3, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (549, 'ROLE_COLAB_LIST_EXCLUIR', 'Excluir', '#', 4, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (545, 'ROLE_CAD_HISTORICOCOLABORADOR', 'Situação', '#', 5, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (550, 'ROLE_COLAB_LIST_PERFORMANCE', 'Performance', '#', 6, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (551, 'ROLE_COLAB_LIST_NIVELCOMPETENCIA', 'Nível de competência', '#', 7, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (552, 'ROLE_COLAB_LIST_SOLICITACAO', 'Incluir em solicitação', '#', 8, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (553, 'ROLE_COLAB_LIST_DOCUMENTOANEXO', 'Documentos do colaborador', '#', 9, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (554, 'ROLE_COLAB_LIST_VISUALIZARCURRICULO', 'Visualizar currículo', '#', 10, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (555, 'ROLE_CAD_COLABORADOR', 'Outros acessos', '#', 15, false, NULL, 8);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (557, 'ROLE_COLAB_VER_TODOS', 'Visualizar Todos os Colaboradores', '#', 11, false, NULL, 8);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (463, 'INATIVOS', 'Inativos', '#', 100, true, NULL, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (539, 'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 12, true, NULL, 37);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode Responder Avaliação Por Outro Usuário', '#', 14, false, NULL, 365);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 7, false, NULL, 75);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 7, false, NULL, 361);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (546, 'ROLE_COLAB_LIST_DESLIGAR', 'Desligar', '#', 2, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (547, 'ROLE_COLAB_LIST_ENTREVISTA', 'Entrevista de desligamento', '#', 3, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (548, 'ROLE_COLAB_LIST_EDITAR', 'Editar', '#', 4, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (549, 'ROLE_COLAB_LIST_EXCLUIR', 'Excluir', '#', 5, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (545, 'ROLE_CAD_HISTORICOCOLABORADOR', 'Situação', '#', 6, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (550, 'ROLE_COLAB_LIST_PERFORMANCE', 'Performance', '#', 7, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (551, 'ROLE_COLAB_LIST_NIVELCOMPETENCIA', 'Nível de competência', '#', 8, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (552, 'ROLE_COLAB_LIST_SOLICITACAO', 'Incluir em solicitação', '#', 9, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (553, 'ROLE_COLAB_LIST_DOCUMENTOANEXO', 'Documentos do colaborador', '#', 10, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (557, 'ROLE_COLAB_VER_TODOS', 'Visualizar Todos os Colaboradores', '#', 12, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (558, 'ROLE_COLAB_LIST_CRIARUSUARIO', 'Criar acesso ao sistema', '#', 11, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (554, 'ROLE_COLAB_LIST_VISUALIZARCURRICULO', 'Visualizar currículo', '#', 12, false, NULL, 8);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (555, 'ROLE_CAD_COLABORADOR', 'Cadastrar', '#', 1, false, NULL, 8);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23617,7 +23623,8 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.79.75', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.82.77', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
+
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
 
@@ -23820,6 +23827,8 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 552);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 553);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 554);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 555);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 558);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 558);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;
@@ -24018,26 +24027,3 @@ ALTER TABLE usuariomensagem ENABLE TRIGGER ALL;
 -- PostgreSQL database dump complete
 --
 
-pg_dump: NOTICE: there are circular foreign-key constraints among these table(s):
-pg_dump:   areaorganizacional
-pg_dump: You may not be able to restore the dump without using --disable-triggers or temporarily dropping the constraints.
-pg_dump: Consider using a full dump instead of a --data-only dump to avoid this problem.
-pg_dump: NOTICE: there are circular foreign-key constraints among these table(s):
-pg_dump:   empresa
-pg_dump:   exame
-pg_dump: You may not be able to restore the dump without using --disable-triggers or temporarily dropping the constraints.
-pg_dump: Consider using a full dump instead of a --data-only dump to avoid this problem.
-pg_dump: NOTICE: there are circular foreign-key constraints among these table(s):
-pg_dump:   historicocolaborador
-pg_dump: You may not be able to restore the dump without using --disable-triggers or temporarily dropping the constraints.
-pg_dump: Consider using a full dump instead of a --data-only dump to avoid this problem.
-pg_dump: NOTICE: there are circular foreign-key constraints among these table(s):
-pg_dump:   papel
-pg_dump: You may not be able to restore the dump without using --disable-triggers or temporarily dropping the constraints.
-pg_dump: Consider using a full dump instead of a --data-only dump to avoid this problem.
-pg_dump: NOTICE: there are circular foreign-key constraints among these table(s):
-pg_dump:   areaorganizacional
-pg_dump:   colaborador
-pg_dump:   solicitacao
-pg_dump: You may not be able to restore the dump without using --disable-triggers or temporarily dropping the constraints.
-pg_dump: Consider using a full dump instead of a --data-only dump to avoid this problem.

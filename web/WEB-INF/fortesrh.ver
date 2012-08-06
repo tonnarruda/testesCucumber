@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.82.77" data="06/08/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Utilitários > Cadastros > Perfis: Nova configuração de acesso para [Criar/Editar Acesso ao Sistema] no cadastro de colaboradores. 
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.81.76" data="30/07/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de agrupar colaboradores em períodos de tempo de serviço.
