@@ -1,11 +1,13 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +29,9 @@ public class Comissao extends AbstractModel implements Serializable
 
 	@ManyToOne
 	private Eleicao eleicao;
+	
+	@OneToMany(mappedBy="comissao")
+	private Collection<ComissaoPeriodo> comissaoPeriodos;
 	
 	@Lob
 	private String ataPosseTexto1;
@@ -136,5 +141,13 @@ public class Comissao extends AbstractModel implements Serializable
 
 	public void setAtaPosseTexto2(String ataPosseTexto2) {
 		this.ataPosseTexto2 = ataPosseTexto2;
+	}
+
+	public Collection<ComissaoPeriodo> getComissaoPeriodos() {
+		return comissaoPeriodos;
+	}
+
+	public void setComissaoPeriodos(Collection<ComissaoPeriodo> comissaoPeriodos) {
+		this.comissaoPeriodos = comissaoPeriodos;
 	}
 }

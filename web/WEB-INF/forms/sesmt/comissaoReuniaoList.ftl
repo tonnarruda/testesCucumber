@@ -124,6 +124,7 @@
 			var dataReuniao = document.getElementById("reuniaoData").value;
 			ComissaoReuniaoDWR.validaDataNoPeriodoDaComissao(processaValidacao,dataReuniao,${comissao.id});
 		}
+		
 		function processaValidacao(data)
 		{
 			if (!data)
@@ -134,18 +135,24 @@
 				${validarCampos};
 		}
 		
+		function populaColaboradores(campoDataReuniao)
+		{
+			if (validaDate(campoDataReuniao))
+			{
+				
+			}
+		}
 	</script>
-
-	
 </head>
+
 <body>
 	<#include "comissaoLinks.ftl" />
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<@display.table name="comissaoReuniaos" id="comissaoReuniao" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="#" onclick="limpaForm(); preparaDadosUpdate(${comissaoReuniao.id});"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="javascript:;" onclick="limpaForm(); preparaDadosUpdate(${comissaoReuniao.id});"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<a href="imprimirAta.action?comissaoReuniao.id=${comissaoReuniao.id}&comissao.id=${comissao.id}"><img border="0" title="Imprimir ata da reunião" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
@@ -169,10 +176,10 @@
 		 Modal de edição da Reunião
 	-->
 	<div id="filter"></div>
-	<div id="box">
+	<div id="box" style="height:540px;">
 		<span id="boxtitle"></span>
 		<@ww.form name="form" action="insert.action" method="POST">
-			<@ww.datepicker label="Data" id="reuniaoData" name="comissaoReuniao.data" cssClass="mascaraData" required="true"/>
+			<@ww.datepicker label="Data" id="reuniaoData" name="comissaoReuniao.data" onblur="populaColaboradores(this)" onchange="populaColaboradores(this)" cssClass="mascaraData" required="true"/>
 			<@ww.textfield label="Horário" id="reuniaoHorario" name="comissaoReuniao.horario" value="" maxlength="20" cssStyle="width:40px;" required="true"/>
 			<@ww.textfield label="Local" id="reuniaoLocal" name="comissaoReuniao.localizacao" value="" maxlength="100" cssStyle="width:220px;"/>
 			<@ww.select label="Tipo" id="reuniaoTipo" name="comissaoReuniao.tipo" list=r"#{'O':'Ordinária','E':'Extraordinária'}" required="true"/>

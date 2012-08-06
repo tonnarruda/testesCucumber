@@ -2,10 +2,12 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
 import com.fortes.rh.model.dicionario.TipoMembroComissao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
@@ -119,20 +121,27 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 		return participacoesNaCipa;
 	}
 
+	public List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId) 
+	{
+		return getDao().findColaboradoresByDataReuniao(dataReuniao, comissaoId);
+	}
+	
 	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager)
 	{
 		this.comissaoPeriodoManager = comissaoPeriodoManager;
 	}
+	
 	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)
 	{
 		this.comissaoReuniaoManager = comissaoReuniaoManager;
 	}
+	
 	public void setComissaoPlanoTrabalhoManager(ComissaoPlanoTrabalhoManager comissaoPlanoTrabalhoManager)
 	{
 		this.comissaoPlanoTrabalhoManager = comissaoPlanoTrabalhoManager;
 	}
+	
 	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
 		this.comissaoMembroManager = comissaoMembroManager;
 	}
-
 }

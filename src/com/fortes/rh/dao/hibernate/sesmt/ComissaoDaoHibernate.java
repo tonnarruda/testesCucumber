@@ -1,6 +1,8 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -13,6 +15,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 
 @SuppressWarnings("unchecked")
@@ -96,4 +99,24 @@ public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implemen
 		return query.executeUpdate() == 1;
 	}
 
+	public List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId) 
+	{
+		StringBuffer hql = new StringBuffer();
+		hql.append("select new Colaborador(co.nome, co.id) "); 
+		hql.append("from ComissaoPeriodo cp ");
+		hql.append("inner join cp.comissao c ");
+		hql.append("inner join cp.comissaoMembros cm "); 
+		hql.append("inner join cm.colaborador co ");
+		hql.append("left join c.comissaoPeriodos cp2 with cp2.aPartirDe = (select min(aPartirDe) from ComissaoPeriodo where comissao.id = c.id and aPartirDe > cp.aPartirDe) ");
+		hql.append("where c.id = :comissaoId ");
+		hql.append("and :dataReuniao between cp.aPartirDe and coalesce(cp2.aPartirDe, c.dataFim) ");
+		hql.append("order by co.nome");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("comissaoId", comissaoId);
+		query.setDate("dataReuniao", dataReuniao);
+		
+		return query.list();
+	}
 }

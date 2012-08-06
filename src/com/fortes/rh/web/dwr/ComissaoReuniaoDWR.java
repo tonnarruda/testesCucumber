@@ -5,13 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.ComissaoReuniao;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
+import com.fortes.rh.util.DateUtil;
 
 public class ComissaoReuniaoDWR
 {
@@ -72,6 +75,11 @@ public class ComissaoReuniaoDWR
 		
 		return comissaoManager.validaData(dataReuniao, comissaoId);
 	}
+	
+	public List<Colaborador> findColaboradoresByDataReuniao(String dataReuniaoStr, Long comissaoId)
+	{
+		return comissaoManager.findColaboradoresByDataReuniao(DateUtil.criarDataMesAno(dataReuniaoStr), comissaoId);
+	}
 
 	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)
 	{
@@ -83,7 +91,8 @@ public class ComissaoReuniaoDWR
 		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
 
-	public void setComissaoManager(ComissaoManager comissaoManager) {
+	public void setComissaoManager(ComissaoManager comissaoManager) 
+	{
 		this.comissaoManager = comissaoManager;
 	}
 }
