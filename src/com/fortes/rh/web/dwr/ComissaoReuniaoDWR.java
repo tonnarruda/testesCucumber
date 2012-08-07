@@ -2,9 +2,11 @@ package com.fortes.rh.web.dwr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,9 +78,21 @@ public class ComissaoReuniaoDWR
 		return comissaoManager.validaData(dataReuniao, comissaoId);
 	}
 	
-	public List<Colaborador> findColaboradoresByDataReuniao(String dataReuniaoStr, Long comissaoId)
+	public Object findColaboradoresByDataReuniao(String dataReuniaoStr, Long comissaoId)
 	{
-		return comissaoManager.findColaboradoresByDataReuniao(DateUtil.criarDataMesAno(dataReuniaoStr), comissaoId);
+		List<Object> retorno = new ArrayList<Object>();
+		Map<String, String> colaborador;
+		List<Colaborador> colaboradores = comissaoManager.findColaboradoresByDataReuniao(DateUtil.montaDataByString(dataReuniaoStr), comissaoId);
+		
+		for (Colaborador col : colaboradores) 
+		{
+			colaborador = new LinkedHashMap<String, String>();
+			colaborador.put("id", col.getId().toString());
+			colaborador.put("nome", col.getNome());
+			retorno.add(colaborador);
+		}
+		
+		return retorno;
 	}
 
 	public void setComissaoReuniaoManager(ComissaoReuniaoManager comissaoReuniaoManager)

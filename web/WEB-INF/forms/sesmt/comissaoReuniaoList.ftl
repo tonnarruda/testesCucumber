@@ -23,13 +23,7 @@
 			document.getElementById('reuniaoTipo').value  = "O";
 			document.form.action="insert.action"
 
-			// presenças
-			<#list colaboradors as colab>
-				colabId = ${colab.id};
-				elementoCheck = document.getElementById("check"+colabId);
-				elementoCheck.checked = "";
-				desabilitaJustificativa(elementoCheck);
-			</#list>
+			$('#colaborador tbody').empty();
 		}
 
 		function preparaDadosUpdate(comissaoId)
@@ -135,11 +129,28 @@
 				${validarCampos};
 		}
 		
-		function populaColaboradores(campoDataReuniao)
+		function carregaListaColaboradores()
 		{
-			if (validaDate(campoDataReuniao))
+			$('#colaborador tbody').empty();
+			
+			if (validaDate(document.getElementById('reuniaoData')))
+				ComissaoReuniaoDWR.findColaboradoresByDataReuniao( populaColaboradores, $('#reuniaoData').val(), ${comissao.id} ); 
+		}
+		
+		function populaColaboradores(colaboradores)
+		{
+			var linha;
+			for (var i = 0; i < colaboradores.length; i++)
 			{
-				
+				linha = '<tr class="' + (i%2==0 ? 'odd' : 'even') + '">';
+				linha += '<td align="center"><input type="checkbox" onclick="desabilitaJustificativa(this);" id="check' + colaboradores[i].id + '" value="' + colaboradores[i].id + '" name="colaboradorChecks" /></td>';
+				linha += '<td align="left">' + colaboradores[i].nome + '</td>';
+				linha += '<td align="center">';
+				linha += '  <input type="text" name="justificativas" readonly="false" maxlength="100" id="justificativaId' + colaboradores[i].id + '" style="width:160px;border:1px solid #7E9DB9;"/>';
+				linha += '  <input type="hidden" name="colaboradorIds" value="' + colaboradores[i].id + '"/>';
+				linha += '</td>';
+				linha += '</tr>';
+				$('#colaborador tbody').append(linha);
 			}
 		}
 	</script>
@@ -179,7 +190,7 @@
 	<div id="box" style="height:540px;">
 		<span id="boxtitle"></span>
 		<@ww.form name="form" action="insert.action" method="POST">
-			<@ww.datepicker label="Data" id="reuniaoData" name="comissaoReuniao.data" onblur="populaColaboradores(this)" onchange="populaColaboradores(this)" cssClass="mascaraData" required="true"/>
+			<@ww.datepicker label="Data" id="reuniaoData" name="comissaoReuniao.data" onblur="carregaListaColaboradores()" eventOnUpdate="carregaListaColaboradores" cssClass="mascaraData" required="true"/>
 			<@ww.textfield label="Horário" id="reuniaoHorario" name="comissaoReuniao.horario" value="" maxlength="20" cssStyle="width:40px;" required="true"/>
 			<@ww.textfield label="Local" id="reuniaoLocal" name="comissaoReuniao.localizacao" value="" maxlength="100" cssStyle="width:220px;"/>
 			<@ww.select label="Tipo" id="reuniaoTipo" name="comissaoReuniao.tipo" list=r"#{'O':'Ordinária','E':'Extraordinária'}" required="true"/>
@@ -191,16 +202,17 @@
 			<@ww.hidden name="comissao.id" id="comissaoId" />
 			Presença:<br/>
 			<div style="height:130px;width:520px;overflow-y:scroll;border:1px solid #7E9DB9;">
-				<@display.table name="colaboradors" id="colaborador" class="dados" style="width:500px;border:none;">
-					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(this);' />" style="width: 30px; text-align: center;">
-						<input type="checkbox" onclick="desabilitaJustificativa(this);" id="check${colaborador.id}" value="${colaborador.id}" name="colaboradorChecks" />
-					</@display.column>
-					<@display.column property="nome" title="Nome" style="width: 240px;"/>
-					<@display.column title="Justificativa da ausência" style="width: 140px;text-align:center;">
-				        <@ww.textfield name="justificativas" theme="simple" readonly="false" maxlength="100" id="justificativaId${colaborador.id}" cssStyle="width:160px;border:1px solid #7E9DB9;"/>
-				        <@ww.hidden name="colaboradorIds" value="${colaborador.id}"/>
-					</@display.column>
-				</@display.table>
+				<table name="colaboradors" id="colaborador" class="dados" style="width:500px;border:none;">
+					<thead>
+						<tr>
+							<th width="30"><input type="checkbox" id="md" onclick="marcarDesmarcar(this);"></th>
+							<th width="280">Nome</th>
+							<th>Justificativa da ausência</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 		</@ww.form>
 
