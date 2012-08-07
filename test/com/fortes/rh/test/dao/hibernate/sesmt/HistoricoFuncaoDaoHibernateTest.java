@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -8,15 +9,18 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
+import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
+import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("deprecation")
 public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<HistoricoFuncao>
@@ -26,6 +30,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 	private EmpresaDao empresaDao;
 	private CargoDao cargoDao;
 	private EpiDao epiDao;
+	private ExameDao exameDao;
 
 	public HistoricoFuncao getEntity()
 	{
@@ -280,6 +285,53 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(historicoFuncao, historicoFuncaoDao.findByIdProjection(historicoFuncao.getId()));
 	}
 
+	public void testFindByFuncoes()
+	{
+		Date data = DateUtil.criarDataMesAno(01, 01, 2012);
+		Date datafutura = DateUtil.criarDataMesAno(01, 01, 2013);
+		
+		Exame exame1 = ExameFactory.getEntity();
+		exameDao.save(exame1);
+		
+		Exame exame2 = ExameFactory.getEntity();
+		exameDao.save(exame2);
+		
+		Exame exame3 = ExameFactory.getEntity();
+		exameDao.save(exame3);
+		
+		Collection<Exame> exames = Arrays.asList(exame1, exame2, exame3);
+				
+		Funcao funcao = new Funcao();
+		funcao = funcaoDao.save(funcao);
+		
+		Funcao funcao2 = new Funcao();
+		funcao2 = funcaoDao.save(funcao2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setExames(exames);
+		historicoFuncao.setData(data);
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
+		
+		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
+		historicoFuncao2.setExames(exames);
+		historicoFuncao2.setData(datafutura);
+		historicoFuncao2.setFuncao(funcao);
+		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
+		
+		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
+		historicoFuncao3.setExames(exames);
+		historicoFuncao3.setData(data);
+		historicoFuncao3.setFuncao(funcao2);
+		historicoFuncao3 = historicoFuncaoDao.save(historicoFuncao3);
+		
+		Long[] funcoesIds = new Long[] {funcao.getId()};
+		
+		Collection<Funcao> funcoes = historicoFuncaoDao.findByFuncoes(data, funcoesIds);
+		
+		assertEquals(3, funcoes.size());
+	}
+	
 	public void testGetHistoricosFuncoesByHistoricoColaborador()
 	{
 		//TODO:construir teste
@@ -313,5 +365,9 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 	public void setEpiDao(EpiDao epiDao)
 	{
 		this.epiDao = epiDao;
+	}
+
+	public void setExameDao(ExameDao exameDao) {
+		this.exameDao = exameDao;
 	}
 }

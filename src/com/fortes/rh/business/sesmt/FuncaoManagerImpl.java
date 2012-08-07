@@ -24,6 +24,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -33,9 +34,11 @@ import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
 
 @SuppressWarnings("unchecked")
@@ -419,6 +422,20 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 		
 		return qtdPorFuncao;
+	}
+	
+	public Collection<CheckBox> populaCheckBox() {
+		try
+		{
+			Collection<Funcao> funcoesTmp = getDao().findAll();
+			return CheckListBoxUtil.populaCheckListBox(funcoesTmp, "getId", "getNome");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<CheckBox>();
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

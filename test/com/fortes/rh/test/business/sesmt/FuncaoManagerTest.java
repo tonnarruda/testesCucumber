@@ -1,13 +1,16 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
 import mockit.Mockit;
 
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.sesmt.FuncaoManagerImpl;
@@ -24,6 +27,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -223,6 +227,21 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		Collection<QtdPorFuncaoRelatorio> qtdFuncao = funcaoManager.montaRelatorioQtdPorFuncao(empresa, estabelecimento, data);
 		assertEquals(2, qtdFuncao.size());
 	}
+	
+    public void testPopulaCheckBox()
+    {
+    	Funcao fun1 = FuncaoFactory.getEntity(1L);
+    	Funcao fun2 = FuncaoFactory.getEntity(2L);
+    	
+    	funcaoDao.expects(once()).method("findAll").will(returnValue(Arrays.asList(fun1, fun2)));
+    	assertEquals(2, funcaoManager.populaCheckBox().size());
+    	
+    }
+    public void testPopulaCheckBoxException()
+    {
+    	funcaoDao.expects(once()).method("findAll").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    	assertEquals(0, funcaoManager.populaCheckBox().size());
+    }
 	
 	@SuppressWarnings("deprecation")
 	public void testPopulaRelatorioPppExcecao()

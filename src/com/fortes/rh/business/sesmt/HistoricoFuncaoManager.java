@@ -23,4 +23,5 @@ public interface HistoricoFuncaoManager extends GenericManager<HistoricoFuncao>
 	HistoricoFuncao findUltimoHistoricoAteData(Long id, Date data);
 	Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data);
 	HistoricoFuncao findByData(Date data, Long historicoFuncaoId, Long funcaoId);
+	Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck);
 }

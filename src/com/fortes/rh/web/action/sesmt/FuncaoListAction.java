@@ -11,6 +11,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -23,6 +24,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
 public class FuncaoListAction extends MyActionSupportList
@@ -34,6 +36,7 @@ public class FuncaoListAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private HistoricoFuncaoManager historicoFuncaoManager;
 	
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 	private Collection<AreaOrganizacional> areas;
@@ -41,6 +44,9 @@ public class FuncaoListAction extends MyActionSupportList
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<Cargo> cargos;
 
+	private Long[] funcoesCheck;
+	private Collection<CheckBox> funcoesCheckList = new ArrayList<CheckBox>();
+	
 	private String cpfBusca;
 	private String nomeBusca;
 
@@ -155,6 +161,40 @@ public class FuncaoListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
+	
+	public String prepareRelatorioFuncoesExames()
+	{
+		funcoesCheckList = funcaoManager.populaCheckBox();
+		return SUCCESS;
+	}
+	
+	public String relatorioFuncoesExames()
+	{
+		String msg = new String();
+		try
+		{
+			parametros = RelatorioUtil.getParametrosRelatorio("Funções com Exames", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
+			funcaos = historicoFuncaoManager.findByFuncoes(data, funcoesCheck);  
+			
+			if (funcaos.isEmpty())
+			{
+				msg = "Não existem dados para relatório";
+				throw new Exception(msg);  
+			}
+			
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			if (msg == null )
+				addActionError("Erro ao gerar relatório.");
+			else
+				addActionError(msg);
+			prepareRelatorioFuncoesExames();
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+
 	private Integer getQtdTotal()
 	{
 		Integer total = 0;
@@ -178,7 +218,7 @@ public class FuncaoListAction extends MyActionSupportList
 		}
 		return funcao;
 	}
-
+	
 	public void setFuncao(Funcao funcao)
 	{
 		this.funcao = funcao;
@@ -332,5 +372,26 @@ public class FuncaoListAction extends MyActionSupportList
 	public Collection<Cargo> getCargos()
 	{
 		return cargos;
+	}
+
+	public Long[] getFuncoesCheck() {
+		return funcoesCheck;
+	}
+
+	public void setFuncoesCheck(Long[] funcoesCheck) {
+		this.funcoesCheck = funcoesCheck;
+	}
+
+	public Collection<CheckBox> getFuncoesCheckList() {
+		return funcoesCheckList;
+	}
+
+	public void setFuncoesCheckList(Collection<CheckBox> funcoesCheckList) {
+		this.funcoesCheckList = funcoesCheckList;
+	}
+
+	public void setHistoricoFuncaoManager(
+			HistoricoFuncaoManager historicoFuncaoManager) {
+		this.historicoFuncaoManager = historicoFuncaoManager;
 	}
 }

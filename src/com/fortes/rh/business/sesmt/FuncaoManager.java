@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
+import com.fortes.web.tags.CheckBox;
 public interface FuncaoManager extends GenericManager<Funcao>
 {
 	Integer getCount(Long cargoId);
@@ -28,4 +29,5 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo);
 	Collection<QtdPorFuncaoRelatorio> montaRelatorioQtdPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Date data);
 	void removeFuncao(Funcao funcao) throws Exception;
+	Collection<CheckBox> populaCheckBox();
 }

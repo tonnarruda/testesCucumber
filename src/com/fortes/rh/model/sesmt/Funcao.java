@@ -35,6 +35,9 @@ public class Funcao extends AbstractModel implements Serializable
 	@Transient
 	private HistoricoFuncao historicoAtual;
 	
+	@Transient
+	private String exameNome; 
+	
 	public Funcao() {
 	}
 	
@@ -110,6 +113,14 @@ public class Funcao extends AbstractModel implements Serializable
 
 	public void setMedicaoRiscos(Collection<MedicaoRisco> medicaoRiscos) {
 		this.medicaoRiscos = medicaoRiscos;
+	}
+
+	public String getExameNome() {
+		return exameNome;
+	}
+
+	public void setExameNome(String exameNome) {
+		this.exameNome = exameNome;
 	}
 
 }

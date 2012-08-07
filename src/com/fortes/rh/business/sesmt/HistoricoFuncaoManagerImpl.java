@@ -295,6 +295,10 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return historicoFuncao;
 	}
 
+	public Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck) {
+		return getDao().findByFuncoes(data, funcoesCheck);
+	}
+	
 	public void setExameManager(ExameManager exameManager)
 	{
 		this.exameManager = exameManager;

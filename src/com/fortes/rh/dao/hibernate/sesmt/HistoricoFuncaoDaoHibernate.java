@@ -10,10 +10,13 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -21,6 +24,7 @@ import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFuncao> implements HistoricoFuncaoDao
@@ -44,7 +48,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		query.setParameterList("funIds", idsFuncoes, Hibernate.LONG);
 
 		return query.list();
-}
+	}
 
 	public Collection<HistoricoFuncao> getHistoricosByDateFuncaos(Collection<Long> funcaoIds, Date data)
 	{
@@ -197,7 +201,37 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		criteria.setMaxResults(1);
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return (HistoricoFuncao)criteria.uniqueResult();
+	}
+
+	public Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck) 
+	{
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+				.setProjection( Projections.max("data") )
+				.add(Restrictions.le("hf2.data", data))
+				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
+		criteria.createCriteria("hf.funcao", "f");
+		criteria.createCriteria("hf.exames", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("f.nome"), "nome");
+		p.add(Projections.property("e.nome"), "exameNome");
+		criteria.setProjection(p);
+		
+		if (LongUtil.isNotEmpty(funcoesCheck))
+			criteria.add(Expression.in("f.id", funcoesCheck));
+		
+		criteria.add( Property.forName("hf.data").eq(maxData) );
+
+		criteria.addOrder(Order.asc("f.nome"));
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
+
+		return criteria.list();
 	}
 }
