@@ -20,6 +20,13 @@
 		<#assign accessKey="I"/>
 		<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','dataHist','nome','descricao'), new Array('dataHist'))"/>
 	</#if>
+	
+	<#if historicoAmbiente?exists && historicoAmbiente.data?exists>
+		<#assign data = historicoAmbiente.data>
+	<#else>
+		<#assign data = "">
+	</#if>
+	
 	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 	<script type="text/javascript">
 		$(function() {
@@ -35,7 +42,7 @@
 		
 		function habilitarDesabilitarCamposLinha(campoRisco)
 		{
-			$(campoRisco).parent().parent().find('input, select').not(campoRisco).attr('disabled', !campoRisco.checked);
+			$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
 		}
 	</script>
 </head>
@@ -51,45 +58,8 @@
 			<fieldset>
 				<ul>
 					<legend>Dados do Primeiro Histórico do Ambiente</legend>
-					<@ww.datepicker label="A partir de" name="historicoAmbiente.data" id="dataHist" required="true" cssClass="mascaraData"/>
-					<@ww.textfield label="Tempo de Exposição" name="historicoAmbiente.tempoExposicao" id="tempoExposicao" maxLength="40" style="width:100px;"/>
-					<@ww.textarea label="Descrição do Ambiente" name="historicoAmbiente.descricao" id="descricao" required="true"/>
-					<@frt.checkListBox label="EPCs existentes no Ambiente" name="epcCheck" list="epcCheckList" />
-					
-					<#assign i = 0/>
-					<#if empresaControlaRiscoPor == 'A'> 
-						<@display.table name="riscosAmbientes" id="riscoAmbiente" class="dados" style="width:500px;border:none;">
-							<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(this);' />" style="width: 30px; text-align: center;">
-								<input type="checkbox" onclick="desabilitaEpcEficaz(this);" id="check${riscoAmbiente.risco.id}" value="${riscoAmbiente.risco.id}" name="riscoChecks" />
-							</@display.column>
-							<@display.column property="risco.descricao" title="Risco" style="width: 240px;"/>
-							<@display.column property="risco.descricaoGrupoRisco" title="Tipo" style="width: 240px;"/>
-							<@display.column title="EPI Eficaz" style="width: 140px;text-align:center;">
-								<#if riscoAmbiente.risco.epiEficaz == true> 
-								Sim
-								<#else>
-								NA
-								</#if>
-							</@display.column>
-							<@display.column title="Periodicidade" style="text-align:center;">
-								<@ww.select name="riscosAmbientes[${i}].periodicidadeExposicao" id="perExposicao${riscoAmbiente.risco.id}" headerKey="" headerValue="Selecione" list=r"#{'C':'Contínua','I':'Intermitente','E':'Eventual'}" disabled="true"/>
-							</@display.column>
-							<@display.column title="EPC Eficaz" style="width: 140px;text-align:center;">
-								<@ww.checkbox id="epcEficaz${riscoAmbiente.risco.id}" name="riscosAmbientes[${i}].epcEficaz" disabled="true"/>
-								<@ww.hidden name="riscosAmbientes[${i}].risco.id"/>
-							</@display.column>
-							
-							<#assign i = i + 1/>
-						</@display.table>
-					<#else>
-						<#list riscosAmbientes as riscoAmbiente>
-							<@ww.hidden name="riscosAmbientes[${i}].periodicidadeExposicao" />
-							<@ww.hidden name="riscosAmbientes[${i}].epcEficaz" />
-							<@ww.hidden name="riscosAmbientes[${i}].risco.id" />
-							<#assign i = i + 1/>
-						</#list>
-					</#if>	
-				</ul>
+						<#include "includeHistoricoAmbiente.ftl" />
+					</ul>
 			</fieldset>
 		</li>
 			
