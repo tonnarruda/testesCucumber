@@ -6,11 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.MotivoDemissaoManager;
-import com.fortes.rh.business.geral.MotivoDemissaoManagerImpl;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;

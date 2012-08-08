@@ -458,4 +458,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);		
 	}
+
+	public void deleteRespostaAvaliacaoDesempenho(Long colaboradorQuestionarioId) {
+		getDao().deleteRespostaAvaliacaoDesempenho(colaboradorQuestionarioId);
+	}
 }

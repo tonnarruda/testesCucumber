@@ -860,7 +860,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
 
-	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId) {
+	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId) 
+	{
 		StringBuilder hql = new StringBuilder();
 		
 		hql.append("select distinct new ColaboradorQuestionario(c, t, q.id, q.titulo) ");
@@ -884,12 +885,21 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return query.list();
 	}
 
-	public void removeByCandidato(Long candidatoId) {
-		
+	public void removeByCandidato(Long candidatoId) 
+	{
 		String queryHQL = "delete from ColaboradorResposta cr where cr.colaboradorQuestionario.id in (select cq.id from ColaboradorQuestionario cq where cq.candidato.id = :candidatoId)";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
 	
 		queryHQL = "delete from ColaboradorQuestionario cq where cq.candidato.id = :candidatoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
+
+	public void deleteRespostaAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
+	{
+		String queryHQL = "delete from ColaboradorResposta ce where ce.colaboradorQuestionario.id = :colaboradorQuestionarioId";
+		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+		
+		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.observacao = null where cq.id = :colaboradorQuestionarioId";
+		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 	}
 }

@@ -1,5 +1,6 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 
 <html>
 <head>
@@ -95,9 +96,11 @@
 			<#if colaboradorQuestionario.respondida>
 				<a href="prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Editar respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="imprimirAvaliacaoDesempenhoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Imprimir respostas" src="<@ww.url value="/imgs/printer.gif"/>"></a>
+				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" href="deleteAvaliacao.action?colaboradorQuestionarioId=${colaboradorQuestionario.id}&avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&respondida=${respondida}" imgTitle="Excluir respostas" imgName="deletar_avaliacao.gif"/>
 			<#else>
 				<a href="prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/folhaCheia.gif"/>"></a>
 				<img border="0" title="Não há respostas a serem impressas" src="<@ww.url value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"/>
+				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" imgTitle="Não há respostas a serem excluídas" imgName="deletar_avaliacao.gif" opacity=true/>
 			</#if>
 		</@display.column>
 		<@display.column property="colaborador.nome" title="Avaliado"/>

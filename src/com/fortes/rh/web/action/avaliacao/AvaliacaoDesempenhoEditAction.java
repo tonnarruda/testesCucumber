@@ -348,6 +348,23 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	public String deleteAvaliacao() throws Exception
+	{
+		try
+		{
+			colaboradorQuestionarioManager.deleteRespostaAvaliacaoDesempenho(colaboradorQuestionarioId);
+			addActionMessage("Respostas da avaliação de desempenho excluídas com sucesso.");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Não foi possível excluir as respostas da Avaliação de Desempenho.");
+		}
+
+		avaliacaoDesempenhoQuestionarioList();
+		return SUCCESS;
+	}
+	
 	public String liberarEmLote() throws Exception
 	{
 		try 

@@ -11,9 +11,15 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorQuestionarioAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Avaliacao Desempenho")
 public interface ColaboradorQuestionarioManager extends GenericManager<ColaboradorQuestionario>
 {
+	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorQuestionarioAuditorCallbackImpl.class)
+	void deleteRespostaAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Collection<ColaboradorQuestionario> findByQuestionario(Long questionarioId);
 	ColaboradorQuestionario findByQuestionario(Long questionarioId, Long colaboradorId, Long turmaId);
 	Collection<Colaborador> selecionaColaboradores(Collection<Colaborador> colaboradores, char qtdPercentual, double percentual, int quantidade);
@@ -51,4 +57,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId);
 	void removeByCandidato(Long candidatoId);
 	ColaboradorQuestionario findColaborador(Long colaboradorId, Long questionarioId, Long turmaId);
+	
 }
