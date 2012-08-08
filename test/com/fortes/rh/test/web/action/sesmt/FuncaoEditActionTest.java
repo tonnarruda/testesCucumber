@@ -32,6 +32,7 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -41,6 +42,8 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -175,6 +178,11 @@ public class FuncaoEditActionTest extends MockObjectTestCase
 
     public void testInsert() throws Exception
     {
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setControlaRiscoPor('A');
+    	action.setEmpresaSistema(empresa);
+    	
     	Cargo cargo = new Cargo();
     	cargo.setId(2L);
 
@@ -194,8 +202,13 @@ public class FuncaoEditActionTest extends MockObjectTestCase
 
     	Long[] episChecked = new Long[]{1L};
     	action.setEpisChecked(episChecked);
+    	
+    	String[] riscoChecks = new String[]{"822", "823"};
+    	Collection<RiscoFuncao> riscosFuncoes = RiscoFuncaoFactory.getCollection();
+    	action.setRiscoChecks(riscoChecks);
+		action.setRiscosFuncoes(riscosFuncoes);
 
-    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked));
+    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(new Constraint[]{ eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked), eq(riscoChecks), eq(riscosFuncoes), eq(empresa.getControlaRiscoPor()) });
 
     	assertEquals(action.insert(), "success");
     }

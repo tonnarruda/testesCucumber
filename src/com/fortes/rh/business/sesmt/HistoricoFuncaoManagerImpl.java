@@ -19,9 +19,11 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFuncao, HistoricoFuncaoDao> implements HistoricoFuncaoManager
 {
@@ -41,7 +43,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		this.funcaoManager = funcaoManager;
 	}
 
-	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked) throws Exception
+	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -56,6 +58,39 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 			
 			CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 
 			historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
+			
+			Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
+			
+			if (historicoFuncao.getId() != null)
+			{
+				if (controlaRiscoPor == 'F'){
+					Collection<RiscoFuncao> riscosMarcadosAux = riscoFuncaoManager.findToList(new String[] {"id"},new String[] {"id"}, new String[]{"historicoFuncao.id"}, new Object[]{historicoFuncao.getId()});
+					
+					CollectionUtil<RiscoFuncao> cut = new CollectionUtil<RiscoFuncao>();
+					riscosMarcados = cut.convertCollectionToArrayIds(riscosMarcadosAux);
+					
+				} else {
+					riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
+				}
+			}
+			
+			Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
+			
+			for (Long riscoId : riscosMarcados)
+			{
+				for (RiscoFuncao riscoFuncao : riscoFuncoes)
+				{
+					if (riscoFuncao != null && riscoFuncao.getRisco() != null && riscoId.equals(riscoFuncao.getRisco().getId()))
+					{
+						riscoFuncao.setHistoricoFuncao(historicoFuncao);
+						riscoFuncoesSelecionados.add(riscoFuncao);
+					}
+				}
+			}
+			
+			historicoFuncao.setRiscoFuncaos(riscoFuncoesSelecionados);
+			//historicoFuncao.setEpcs(epcs);
+			
 			
 			getDao().save(historicoFuncao);
 
