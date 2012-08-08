@@ -7,6 +7,7 @@ import java.util.List;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 
 public interface ComissaoDao extends GenericDao<Comissao>
 {
@@ -15,4 +16,5 @@ public interface ComissaoDao extends GenericDao<Comissao>
 	Collection<Comissao> findAllSelect(Long empresaId);
 	boolean updateTextosComunicados(Comissao comissao);
 	List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId);
+	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId);
 }

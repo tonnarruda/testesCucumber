@@ -32,6 +32,9 @@ public class Comissao extends AbstractModel implements Serializable
 	
 	@OneToMany(mappedBy="comissao")
 	private Collection<ComissaoPeriodo> comissaoPeriodos;
+
+	@OneToMany(mappedBy="comissao")
+	private Collection<ComissaoReuniao> comissaoReunioes;
 	
 	@Lob
 	private String ataPosseTexto1;
@@ -149,5 +152,13 @@ public class Comissao extends AbstractModel implements Serializable
 
 	public void setComissaoPeriodos(Collection<ComissaoPeriodo> comissaoPeriodos) {
 		this.comissaoPeriodos = comissaoPeriodos;
+	}
+
+	public Collection<ComissaoReuniao> getComissaoReunioes() {
+		return comissaoReunioes;
+	}
+
+	public void setComissaoReunioes(Collection<ComissaoReuniao> comissaoReunioes) {
+		this.comissaoReunioes = comissaoReunioes;
 	}
 }

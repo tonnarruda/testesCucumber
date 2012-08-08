@@ -9,12 +9,16 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
 import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
+import com.fortes.rh.dao.sesmt.ComissaoReuniaoDao;
+import com.fortes.rh.dao.sesmt.ComissaoReuniaoPresencaDao;
 import com.fortes.rh.dao.sesmt.EleicaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
+import com.fortes.rh.model.sesmt.ComissaoReuniao;
+import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -22,6 +26,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoMembroFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoPeriodoFactory;
+import com.fortes.rh.test.factory.sesmt.ComissaoReuniaoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -30,6 +35,8 @@ public class ComissaoDaoHibernateTest extends GenericDaoHibernateTest<Comissao>
 	ComissaoDao comissaoDao;
 	ComissaoPeriodoDao comissaoPeriodoDao;
 	ComissaoMembroDao comissaoMembroDao;
+	ComissaoReuniaoDao comissaoReuniaoDao;
+	ComissaoReuniaoPresencaDao comissaoReuniaoPresencaDao;
 	ColaboradorDao colaboradorDao;
 	EleicaoDao eleicaoDao;
 	EmpresaDao empresaDao;
@@ -162,6 +169,81 @@ public class ComissaoDaoHibernateTest extends GenericDaoHibernateTest<Comissao>
 		assertEquals("maria", ((Colaborador)membros2.toArray()[1]).getNome());
 	}
 	
+	public void testFindPresencaColaboradoresByReuniao()
+	{
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissao.setDataIni(DateUtil.criarDataMesAno(1, 1, 2012));
+		comissao.setDataFim(DateUtil.criarDataMesAno(31, 12, 2012));
+		comissaoDao.save(comissao);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("joao");
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("maria");
+		colaboradorDao.save(maria);
+		
+		Colaborador gil = ColaboradorFactory.getEntity();
+		gil.setNome("gil");
+		colaboradorDao.save(gil);
+		
+		ComissaoPeriodo cp1 = ComissaoPeriodoFactory.getEntity();
+		cp1.setComissao(comissao);
+		cp1.setaPartirDe(DateUtil.criarDataMesAno(1, 1, 2012));
+		comissaoPeriodoDao.save(cp1);
+		
+		ComissaoPeriodo cp2 = ComissaoPeriodoFactory.getEntity();
+		cp2.setComissao(comissao);
+		cp2.setaPartirDe(DateUtil.criarDataMesAno(1, 7, 2012));
+		comissaoPeriodoDao.save(cp2);
+		
+		ComissaoMembro cmJoao1 = ComissaoMembroFactory.getEntity();
+		cmJoao1.setColaborador(joao);
+		cmJoao1.setComissaoPeriodo(cp1);
+		comissaoMembroDao.save(cmJoao1);
+		
+		ComissaoMembro cmMaria1 = ComissaoMembroFactory.getEntity();
+		cmMaria1.setColaborador(maria);
+		cmMaria1.setComissaoPeriodo(cp1);
+		comissaoMembroDao.save(cmMaria1);
+		
+		ComissaoMembro cmMaria2 = ComissaoMembroFactory.getEntity();
+		cmMaria2.setColaborador(maria);
+		cmMaria2.setComissaoPeriodo(cp2);
+		comissaoMembroDao.save(cmMaria2);
+		
+		ComissaoMembro cmGil2 = ComissaoMembroFactory.getEntity();
+		cmGil2.setColaborador(gil);
+		cmGil2.setComissaoPeriodo(cp2);
+		comissaoMembroDao.save(cmGil2);
+		
+		ComissaoReuniao r1 = ComissaoReuniaoFactory.getEntity();
+		r1.setData(DateUtil.criarDataMesAno(1, 2, 2012));
+		r1.setComissao(comissao);
+		comissaoReuniaoDao.save(r1);
+		
+		ComissaoReuniaoPresenca crp1 = new ComissaoReuniaoPresenca();
+		crp1.setColaborador(joao);
+		crp1.setComissaoReuniao(r1);
+		crp1.setPresente(false);
+		crp1.setJustificativaFalta("doença");
+		comissaoReuniaoPresencaDao.save(crp1);
+		
+		Collection<ComissaoReuniaoPresenca> presencas = comissaoDao.findPresencaColaboradoresByReuniao(r1.getId());
+		assertEquals(2, presencas.size());
+		
+		ComissaoReuniaoPresenca presenca1 = (ComissaoReuniaoPresenca) presencas.toArray()[0];
+		ComissaoReuniaoPresenca presenca2 = (ComissaoReuniaoPresenca) presencas.toArray()[1];
+		
+		assertEquals(crp1.getColaborador().getId(), presenca1.getColaborador().getId());
+		assertEquals(crp1.getColaborador().getNome(), presenca1.getColaborador().getNome());
+		assertEquals(crp1.getPresente(), presenca1.getPresente());
+		assertEquals(crp1.getJustificativaFalta(), presenca1.getJustificativaFalta());
+		
+		assertEquals(maria.getId(), presenca2.getColaborador().getId());
+	}
+	
 	public void setEleicaoDao(EleicaoDao eleicaoDao)
 	{
 		this.eleicaoDao = eleicaoDao;
@@ -182,5 +264,13 @@ public class ComissaoDaoHibernateTest extends GenericDaoHibernateTest<Comissao>
 
 	public void setComissaoMembroDao(ComissaoMembroDao comissaoMembroDao) {
 		this.comissaoMembroDao = comissaoMembroDao;
+	}
+
+	public void setComissaoReuniaoPresencaDao(ComissaoReuniaoPresencaDao comissaoReuniaoPresencaDao) {
+		this.comissaoReuniaoPresencaDao = comissaoReuniaoPresencaDao;
+	}
+
+	public void setComissaoReuniaoDao(ComissaoReuniaoDao comissaoReuniaoDao) {
+		this.comissaoReuniaoDao = comissaoReuniaoDao;
 	}
 }

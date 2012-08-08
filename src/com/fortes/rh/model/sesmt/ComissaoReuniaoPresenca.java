@@ -17,6 +17,7 @@ import com.fortes.rh.model.geral.Colaborador;
 public class ComissaoReuniaoPresenca extends AbstractModel implements Serializable
 {
 	private Boolean presente = false;
+	
 	@Column(length=100)
 	private String justificativaFalta;
 
@@ -35,6 +36,15 @@ public class ComissaoReuniaoPresenca extends AbstractModel implements Serializab
 		this.colaborador = colaborador;
 		setProjectionComissaoReuniaoId(comissaoReuniaoId);
 	}
+	
+	public ComissaoReuniaoPresenca(Long colaboradorId, String colaboradorNome, Boolean presente, String justificativaFalta)
+	{
+		setProjectionColaboradorId(colaboradorId);
+		setProjectionColaboradorNome(colaboradorNome);
+		setPresente(presente);
+		setJustificativaFalta(justificativaFalta);
+	}
+	
 	//Projection
 	public void setProjectionComissaoReuniaoId(Long comissaoReuniaoId)
 	{

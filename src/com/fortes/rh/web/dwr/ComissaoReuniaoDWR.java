@@ -28,7 +28,6 @@ public class ComissaoReuniaoDWR
 	{
 		Map<String,Object> retorno = new HashMap<String, Object>();
 		ComissaoReuniao comissaoReuniao = null;
-		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByReuniao(id);
 		try
 		{
 			comissaoReuniao = comissaoReuniaoManager.findByIdProjection(id);
@@ -44,14 +43,6 @@ public class ComissaoReuniaoDWR
 			retorno.put("reuniaoTipo", comissaoReuniao.getTipo());
 			retorno.put("reuniaoAta", comissaoReuniao.getAta());
 			retorno.put("reuniaoObsAnterior", comissaoReuniao.getObsReuniaoAnterior());
-
-			for (ComissaoReuniaoPresenca comissaoReuniaoPresenca : presencas )
-			{
-				String colaboradorId = comissaoReuniaoPresenca.getColaborador().getId().toString();
-				retorno.put("id" + colaboradorId, colaboradorId);
-				retorno.put("check" + colaboradorId, comissaoReuniaoPresenca.getPresente());
-				retorno.put("justificativaId" + colaboradorId, comissaoReuniaoPresenca.getJustificativaFalta());
-			}
 
 		} catch (Exception e)
 		{
@@ -89,6 +80,27 @@ public class ComissaoReuniaoDWR
 			colaborador = new LinkedHashMap<String, String>();
 			colaborador.put("id", col.getId().toString());
 			colaborador.put("nome", col.getNome());
+			colaborador.put("presente", "false");
+			colaborador.put("justificativaFalta",null);
+			retorno.add(colaborador);
+		}
+		
+		return retorno;
+	}
+	
+	public Object findPresencaColaboradoresByReuniao(Long comissaoReuniaoId)
+	{
+		List<Object> retorno = new ArrayList<Object>();
+		Map<String, String> colaborador;
+		List<ComissaoReuniaoPresenca> presencas = comissaoManager.findPresencaColaboradoresByReuniao(comissaoReuniaoId);
+		
+		for (ComissaoReuniaoPresenca presenca : presencas) 
+		{
+			colaborador = new LinkedHashMap<String, String>();
+			colaborador.put("id", presenca.getColaborador().getId().toString());
+			colaborador.put("nome", presenca.getColaborador().getNome());
+			colaborador.put("presente", presenca.getPresente().toString());
+			colaborador.put("justificativaFalta", presenca.getJustificativaFalta());
 			retorno.add(colaborador);
 		}
 		

@@ -17,6 +17,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 
 @SuppressWarnings("unchecked")
 public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implements ComissaoDao
@@ -116,6 +117,28 @@ public class ComissaoDaoHibernate extends GenericDaoHibernate<Comissao> implemen
 
 		query.setLong("comissaoId", comissaoId);
 		query.setDate("dataReuniao", dataReuniao);
+		
+		return query.list();
+	}
+
+	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId) 
+	{
+		StringBuffer hql = new StringBuffer();
+		hql.append("select new ComissaoReuniaoPresenca(co.id, co.nome, crp.presente, crp.justificativaFalta) "); 
+		hql.append("from ComissaoPeriodo cp ");
+		hql.append("inner join cp.comissao c ");
+		hql.append("inner join cp.comissaoMembros cm "); 
+		hql.append("inner join c.comissaoReunioes cr ");
+		hql.append("left join cr.comissaoReuniaoPresencas crp ");
+		hql.append("left join c.comissaoPeriodos cp2 with cp2.aPartirDe = (select min(aPartirDe) from ComissaoPeriodo where comissao.id = c.id and aPartirDe > cp.aPartirDe) ");
+		hql.append("inner join cm.colaborador co with crp.colaborador.id = co.id ");
+		hql.append("where cr.id = :comissaoReuniaoId ");
+		hql.append("and cr.data between cp.aPartirDe and coalesce(cp2.aPartirDe, c.dataFim) ");
+		hql.append("order by co.nome");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("comissaoReuniaoId", comissaoReuniaoId);
 		
 		return query.list();
 	}

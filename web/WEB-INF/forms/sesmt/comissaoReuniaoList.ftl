@@ -26,67 +26,16 @@
 			$('#colaborador tbody').empty();
 		}
 
-		function preparaDadosUpdate(comissaoId)
-		{
-			DWREngine.setErrorHandler(errorPreparaDados);
-			ComissaoReuniaoDWR.prepareDadosReuniao(carregaDados,comissaoId)
-		}
-
 		function errorPreparaDados(msg)
 		{
 			jAlert(msg);
 		}
-
-		function carregaDados(data)
-		{
-			//campos do form e hidden
-			document.getElementById("reuniaoData").value = data.reuniaoData;
-			document.getElementById("reuniaoDesc").value = data.reuniaoDesc;
-			document.getElementById("reuniaoHorario").value = data.reuniaoHorario;
-			document.getElementById("reuniaoLocal").value = data.reuniaoLocal;
-			document.getElementById("reuniaoTipo").value = data.reuniaoTipo;
-			document.getElementById("reuniaoAta").value = data.reuniaoAta;
-			document.getElementById("reuniaoObsAnterior").value = data.reuniaoObsAnterior;
-			document.getElementById("comissaoReuniaoId").value = data.comissaoReuniaoId;
-			//action
-			document.form.action="update.action";
-
-			// populando as presenças
-			<#list colaboradors as colab>
-				colabId = ${colab.id};
-				checado = data.check${colab.id};
-
-				elementoCheck = document.getElementById("check"+colabId);
-
-				if (checado)
-				{
-					elementoCheck.checked = "checked";
-
-					// reseta propriedades da justificativa
-					desabilitaJustificativa(elementoCheck);
-				}
-				else
-				{
-					// reseta propriedades da justificativa
-					desabilitaJustificativa(elementoCheck);
-
-					justificativa = data.justificativaId${colab.id};
-				    if (justificativa != null && justificativa != 'undefined')
-						document.getElementById("justificativaId"+colabId).value = data.justificativaId${colab.id};
-					else
-						document.getElementById("justificativaId"+colabId).value = "";
-				}
-			</#list>
-
-			openbox('Editar Reunião', 'reuniaoHorario');
-		}
-
+		
 		function desabilitaJustificativa(elementoCheck)
 		{
 			elemJustificativa = document.getElementById("justificativaId" + elementoCheck.value);
 			elemJustificativa.readOnly = elementoCheck.checked;
 			elemJustificativa.style.background=elementoCheck.checked ? "#EEE9E9" : "#FFFFFF";
-			elemJustificativa.value = "";
 		}
 
 		function marcarDesmarcar(mdCheck)
@@ -128,7 +77,33 @@
 			}else
 				${validarCampos};
 		}
-		
+
+		function preparaDadosUpdate(comissaoId)
+		{
+			DWREngine.setErrorHandler(errorPreparaDados);
+			ComissaoReuniaoDWR.prepareDadosReuniao(carregaDados,comissaoId)
+		}
+
+		function carregaDados(data)
+		{
+			//campos do form e hidden
+			document.getElementById("reuniaoData").value = data.reuniaoData;
+			document.getElementById("reuniaoDesc").value = data.reuniaoDesc;
+			document.getElementById("reuniaoHorario").value = data.reuniaoHorario;
+			document.getElementById("reuniaoLocal").value = data.reuniaoLocal;
+			document.getElementById("reuniaoTipo").value = data.reuniaoTipo;
+			document.getElementById("reuniaoAta").value = data.reuniaoAta;
+			document.getElementById("reuniaoObsAnterior").value = data.reuniaoObsAnterior;
+			document.getElementById("comissaoReuniaoId").value = data.comissaoReuniaoId;
+			//action
+			document.form.action="update.action";
+
+			if (validaDate(document.getElementById('reuniaoData')))
+				ComissaoReuniaoDWR.findPresencaColaboradoresByReuniao( populaColaboradores, data.comissaoReuniaoId ); 
+
+			openbox('Editar Reunião', 'reuniaoHorario');
+		}
+
 		function carregaListaColaboradores()
 		{
 			$('#colaborador tbody').empty();
@@ -143,15 +118,17 @@
 			for (var i = 0; i < colaboradores.length; i++)
 			{
 				linha = '<tr class="' + (i%2==0 ? 'odd' : 'even') + '">';
-				linha += '<td align="center"><input type="checkbox" onclick="desabilitaJustificativa(this);" id="check' + colaboradores[i].id + '" value="' + colaboradores[i].id + '" name="colaboradorChecks" /></td>';
+				linha += '<td align="center"><input type="checkbox" ' + (colaboradores[i].presente == 'true' ? 'checked="checked"' : '') + ' onclick="desabilitaJustificativa(this);" id="check' + colaboradores[i].id + '" value="' + colaboradores[i].id + '" name="colaboradorChecks" /></td>';
 				linha += '<td align="left">' + colaboradores[i].nome + '</td>';
 				linha += '<td align="center">';
-				linha += '  <input type="text" name="justificativas" readonly="false" maxlength="100" id="justificativaId' + colaboradores[i].id + '" style="width:160px;border:1px solid #7E9DB9;"/>';
+				linha += '  <input type="text" value="' + (colaboradores[i].justificativaFalta != null ? colaboradores[i].justificativaFalta : '') + '" name="justificativas" maxlength="100" id="justificativaId' + colaboradores[i].id + '" style="width:160px;border:1px solid #7E9DB9;"/>';
 				linha += '  <input type="hidden" name="colaboradorIds" value="' + colaboradores[i].id + '"/>';
 				linha += '</td>';
 				linha += '</tr>';
 				$('#colaborador tbody').append(linha);
 			}
+			
+			$('#colaborador input:checkbox').not('#md').each(function() { desabilitaJustificativa(this); });
 		}
 	</script>
 </head>

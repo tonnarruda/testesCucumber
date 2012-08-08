@@ -8,6 +8,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 
 public interface ComissaoManager extends GenericManager<Comissao>
@@ -21,4 +22,5 @@ public interface ComissaoManager extends GenericManager<Comissao>
 	AtaPosseRelatorio montaAtaPosse(Comissao comissao);
 	Collection<ParticipacaoColaboradorCipa> getParticipacoesDeColaboradorNaCipa(Long colaboradorId);
 	List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId);
+	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId);
 }
