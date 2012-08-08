@@ -3,7 +3,6 @@ package com.fortes.rh.web.dwr;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -92,7 +91,7 @@ public class ComissaoReuniaoDWR
 	{
 		List<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaborador;
-		List<ComissaoReuniaoPresenca> presencas = comissaoManager.findPresencaColaboradoresByReuniao(comissaoReuniaoId);
+		List<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findPresencaColaboradoresByReuniao(comissaoReuniaoId);
 		
 		for (ComissaoReuniaoPresenca presenca : presencas) 
 		{

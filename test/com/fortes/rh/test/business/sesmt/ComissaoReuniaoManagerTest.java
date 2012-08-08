@@ -27,7 +27,6 @@ import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.model.sesmt.ComissaoReuniao;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
-import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
 import com.fortes.rh.test.factory.sesmt.ComissaoPeriodoFactory;
@@ -202,10 +201,10 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		colaboradores.add(colaborador1);
 		colaboradores.add(colaborador2);
 		
-		comissaoReuniaoPresencaManager.expects(once()).method("findByComissao").with(eq(1L), eq(false)).will(returnValue(presencas));
-		comissaoMembroManager.expects(once()).method("findColaboradoresNaComissao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		comissaoReuniaoPresencaManager.expects(once()).method("findPresencasByComissao").with(eq(1L)).will(returnValue(presencas));
+		comissaoMembroManager.expects(once()).method("findColaboradoresNaComissao").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 
-		Collection<ComissaoReuniaoPresencaMatriz> resultado = null;
+		Collection<ComissaoReuniaoPresenca> resultado = null;
 		Exception exception = null;
 
 		try {
@@ -215,7 +214,7 @@ public class ComissaoReuniaoManagerTest extends MockObjectTestCase
 		}
 		
 		assertNull(exception);
-		assertEquals(2,resultado.size());
+		assertEquals(3,resultado.size());
 	}
 
 	public void testSaveOrUpdate() throws Exception

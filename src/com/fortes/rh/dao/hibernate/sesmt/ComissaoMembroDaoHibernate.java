@@ -8,23 +8,18 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
-import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.dicionario.TipoMembroComissao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
-import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 
 @SuppressWarnings("unchecked")
 public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMembro> implements ComissaoMembroDao
@@ -195,20 +190,18 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId, Collection<Long> colaboradorIds) 
+	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId) 
 	{
 		StringBuilder hql = new StringBuilder("select distinct new Colaborador(co.nome, co.id) ");
 		hql.append("from ComissaoMembro cm ");
 		hql.append("left join cm.comissaoPeriodo cp ");
 		hql.append("left join cm.colaborador co ");
-		hql.append("where cm.colaborador.id in (:colaboradorId) ");
-		hql.append("and cp.comissao.id = :comissaoId ");
+		hql.append("where cp.comissao.id = :comissaoId ");
 		hql.append("and cp.aPartirDe = (select max(cp2.aPartirDe) from ComissaoPeriodo cp2 ");
 		hql.append("				where cp2.comissao.id = :comissaoId )");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("comissaoId", comissaoId);
-		query.setParameterList("colaboradorId", colaboradorIds, Hibernate.LONG);
 		
 		return query.list();
 	}

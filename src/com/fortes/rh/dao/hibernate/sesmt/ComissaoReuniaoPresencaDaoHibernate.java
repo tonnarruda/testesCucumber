@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -21,7 +22,6 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 @SuppressWarnings("unchecked")
 public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<ComissaoReuniaoPresenca> implements ComissaoReuniaoPresencaDao
 {
-	@SuppressWarnings("unchecked")
 	public Collection<ComissaoReuniaoPresenca> findByReuniao(Long comissaoReuniaoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"presenca");
@@ -92,5 +92,47 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.add(Expression.in("presenca.colaborador.id", colaboradorIds));
 
 		return criteria.list().size() > 0;
+	}
+
+	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId) 
+	{
+		StringBuffer hql = new StringBuffer();
+		hql.append("select new ComissaoReuniaoPresenca(co.id, co.nome, crp.presente, crp.justificativaFalta) "); 
+		hql.append("from ComissaoPeriodo cp ");
+		hql.append("inner join cp.comissaoMembros cm "); 
+		hql.append("inner join cm.colaborador co ");
+		hql.append("inner join cp.comissao c ");
+		hql.append("inner join c.comissaoReunioes cr ");
+		hql.append("left join cr.comissaoReuniaoPresencas crp with crp.colaborador.id = co.id ");
+		hql.append("left join c.comissaoPeriodos cp2 with cp2.aPartirDe = (select min(aPartirDe) from ComissaoPeriodo where comissao.id = c.id and aPartirDe > cp.aPartirDe) ");
+		hql.append("where cr.id = :comissaoReuniaoId ");
+		hql.append("and cr.data between cp.aPartirDe and coalesce(cp2.aPartirDe, c.dataFim) ");
+		hql.append("order by co.nome");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("comissaoReuniaoId", comissaoReuniaoId);
+		
+		return query.list();
+	}
+	
+	public Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId) 
+	{
+		StringBuffer hql = new StringBuffer();
+		hql.append("select distinct new ComissaoReuniaoPresenca(co.id, co.nome, cr.id, cr.tipo, cr.data, crp.presente, crp.justificativaFalta) ");
+		hql.append("from Comissao c ");
+		hql.append("inner join c.comissaoPeriodos cp ");
+		hql.append("inner join cp.comissaoMembros cm "); 
+		hql.append("inner join cm.colaborador co ");
+		hql.append("left join c.comissaoReunioes cr ");
+		hql.append("left join cr.comissaoReuniaoPresencas crp with crp.colaborador.id = co.id ");
+		hql.append("where c.id = :comissaoId ");
+		hql.append("order by co.nome, cr.data ");
+		
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("comissaoId", comissaoId);
+		
+		return query.list();
 	}
 }

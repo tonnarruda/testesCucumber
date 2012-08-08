@@ -255,7 +255,7 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
 		colaboradorIds.add(colaborador.getId());
 		
-		Collection<Colaborador> colabCollection = comissaoMembroDao.findColaboradoresNaComissao(comissao.getId(), colaboradorIds);
+		Collection<Colaborador> colabCollection = comissaoMembroDao.findColaboradoresNaComissao(comissao.getId());
 		assertEquals(1, colabCollection.size());
 	}
 	

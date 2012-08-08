@@ -17,9 +17,9 @@ import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.model.sesmt.ComissaoReuniao;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
-import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuniao, ComissaoReuniaoDao> implements ComissaoReuniaoManager
 {
@@ -143,64 +143,19 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 		return comissaoMembros;
 	}
 
-	public Collection<ComissaoReuniaoPresencaMatriz> findRelatorioPresenca(Long comissaoId) throws FortesException
+	public Collection<ComissaoReuniaoPresenca> findRelatorioPresenca(Long comissaoId) throws FortesException
 	{
-		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findByComissao(comissaoId, false);
+		Collection<ComissaoReuniaoPresenca> presencas = comissaoReuniaoPresencaManager.findPresencasByComissao(comissaoId);
 		if (presencas == null || presencas.isEmpty())
 			throw new FortesException("Não existem registros de membros em reuniões desta comissão");
 		
-		Collection<Colaborador> colaboradores = getColaboradores(presencas);
-		Collection<Long> colaboradorIds = new ArrayList<Long>();
-				
-		for (Colaborador colaborador : colaboradores) 
-			colaboradorIds.add(colaborador.getId());
+		Collection<Colaborador> colaboradoresNaUltimaComissao = comissaoMembroManager.findColaboradoresNaComissao(comissaoId);
 		
-		Collection<Colaborador> colaboradoresNaUltimaComissao = comissaoMembroManager.findColaboradoresNaComissao(comissaoId, colaboradorIds);
+		for (ComissaoReuniaoPresenca presenca : presencas) 
+			if (presenca.getColaborador() != null && LongUtil.contains(presenca.getColaborador().getId(), colaboradoresNaUltimaComissao))
+				presenca.getColaborador().setMembroComissaoCipa(true);
 		
-		Collection<ComissaoReuniaoPresencaMatriz> matriz = montaMatriz(colaboradores, colaboradoresNaUltimaComissao, presencas);
-		return matriz;
-	}
-
-	private Collection<ComissaoReuniaoPresencaMatriz> montaMatriz(Collection<Colaborador> colaboradores, Collection<Colaborador> colaboradoresNaComissao, Collection<ComissaoReuniaoPresenca> presencas)
-	{
-		Collection<ComissaoReuniaoPresencaMatriz> colecaoMatriz = new ArrayList<ComissaoReuniaoPresencaMatriz>();
-
-		ComissaoReuniaoPresencaMatriz matriz = new ComissaoReuniaoPresencaMatriz();
-
-		for (Colaborador colaborador : colaboradores)
-		{
-			matriz = new ComissaoReuniaoPresencaMatriz();
-			matriz.setColaborador(colaborador);
-			
-			for (Colaborador colaboradorNaComissao : colaboradoresNaComissao) 
-			{
-				if(colaborador.equals(colaboradorNaComissao))
-					matriz.setMembroDaComissao(true);
-			}
-			
-			colecaoMatriz.add(matriz);
-
-			for (ComissaoReuniaoPresenca presenca : presencas)
-			{
-				if (colaborador.getId().equals(presenca.getColaborador().getId()))
-				{
-					matriz.addComissaoReuniaoPresencas(presenca);
-				}
-			}
-			
-		}
-		return colecaoMatriz;
-	}
-
-	private Collection<Colaborador> getColaboradores(Collection<ComissaoReuniaoPresenca> presencas)
-	{
-		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		for (ComissaoReuniaoPresenca presenca : presencas)
-		{
-			if (!retorno.contains(presenca.getColaborador()))
-				retorno.add(presenca.getColaborador());
-		}
-		return retorno;
+		return presencas;
 	}
 
 	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager)

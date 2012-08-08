@@ -44,7 +44,6 @@ public class ComissaoReuniaoDWRTest extends MockObjectTestCase
 		ComissaoReuniao comissaoReuniao = ComissaoReuniaoFactory.getEntity(1L);
 
 		comissaoReuniaoManager.expects(once()).method("findByIdProjection").with(eq(comissaoReuniaoId)).will(returnValue(comissaoReuniao));
-		comissaoReuniaoPresencaManager.expects(once()).method("findByReuniao").with(eq(comissaoReuniaoId)).will(returnValue(new ArrayList<ComissaoReuniaoPresenca>()));
 		Exception exception = null;
 		try
 		{

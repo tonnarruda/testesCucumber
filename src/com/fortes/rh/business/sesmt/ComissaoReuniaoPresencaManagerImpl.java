@@ -2,6 +2,7 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoReuniaoPresencaDao;
@@ -84,5 +85,15 @@ public class ComissaoReuniaoPresencaManagerImpl extends GenericManagerImpl<Comis
 	public boolean existeReuniaoPresenca(Long comissaoId,	Collection<Long> colaboradorIds) 
 	{
 		return getDao().existeReuniaoPresenca(comissaoId, colaboradorIds);
+	}
+
+	public Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId) 
+	{
+		return getDao().findPresencasByComissao(comissaoId);
+	}
+
+	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId) 
+	{
+		return getDao().findPresencaColaboradoresByReuniao(comissaoReuniaoId);
 	}
 }

@@ -220,6 +220,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Integer tempoServico;
 	@Transient
 	private String intervaloTempoServico;
+	
+	@Transient
+	private boolean membroComissaoCipa = false;
 
 	public Colaborador()
 	{
@@ -2555,5 +2558,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setAvaliacaoDesempenhoTitulo(String avaliacaoDesempenhoTitulo)
 	{
 		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
+	}
+
+	public boolean isMembroComissaoCipa() {
+		return membroComissaoCipa;
+	}
+
+	public void setMembroComissaoCipa(boolean membroComissaoCipa) {
+		this.membroComissaoCipa = membroComissaoCipa;
 	}
 }

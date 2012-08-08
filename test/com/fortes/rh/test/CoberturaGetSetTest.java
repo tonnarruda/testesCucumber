@@ -233,7 +233,6 @@ import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
-import com.fortes.rh.model.sesmt.relatorio.ComissaoReuniaoPresencaMatriz;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
@@ -689,7 +688,6 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new AsoRelatorio());
 		cobreGetSet(new AtaPosseRelatorio());
 		cobreGetSet(new CatRelatorioAnual());
-		cobreGetSet(new ComissaoReuniaoPresencaMatriz());
 		cobreGetSet(new DadosAmbienteRisco());
 		cobreGetSet(new ExameAnualRelatorio());
 		cobreGetSet(new ExamesPrevistosRelatorio());

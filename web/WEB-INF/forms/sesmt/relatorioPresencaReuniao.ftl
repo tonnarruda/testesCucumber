@@ -22,7 +22,6 @@
 <div id="divPrint">
 
 	<table width="100%" cellspacing="0" cellpadding="0" class="matriz">
-	
 		<tr>
 			<td class="matrizQualificacao">
 				<b>Relatório de Frequência</b>
@@ -35,45 +34,41 @@
 				</#list>
 			</#if>
 		</tr>
+		
+		<#assign colaboradorAtualId = -1/>
 	
-		<#if comissaoReuniaoPresencaMatrizes?exists>
-			<#list comissaoReuniaoPresencaMatrizes as comissaoReuniaoPresencaMatriz>
-				<tr>
-					<td class="colaborador">
-						<#if comissaoReuniaoPresencaMatriz.membroDaComissao>
-							${comissaoReuniaoPresencaMatriz.colaborador.nome}
-						<#else>
-							<span style='color: red;'>${comissaoReuniaoPresencaMatriz.colaborador.nome} </span>
+		<#if presencas?exists>
+			<tr>
+				<#list presencas as presenca>
+					<#if colaboradorAtualId != presenca.colaborador.id>
+						<#if colaboradorAtualId != -1>
+							</tr><tr><#-- Cria uma linha a cada novo colaborador -->
 						</#if>
-					</td>
-					<#if comissaoReuniaos?exists>
-						<#list comissaoReuniaos as comissaoReuniao>
-							<td class="pontuacao">
-								<#list comissaoReuniaoPresencaMatriz.comissaoReuniaoPresencas as presenca>
-									<#if comissaoReuniao.id == presenca.comissaoReuniao.id>
-										<#if presenca.presente>
-											<img border="0" title="Presente" src="<@ww.url value="/imgs/check_ok.gif"/>">
-										<#else>
-											<#if presenca.justificativaFalta?exists && presenca.justificativaFalta?j_string != "">
-												<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${presenca.justificativaFalta?j_string}');return false"><img border="0" src="<@ww.url value="/imgs/check_ok_Justificado.gif"/>"></span>
-											<#else>
-												<#if comissaoReuniao.frequeniciaReuniao>
-													<span href=# style="cursor: default;"><img border="0" title="Faltou" src="<@ww.url value="/imgs/check_falta.gif"/>"></span>
-												<#else>
-													<span href=# style="cursor: default;">&nbsp;</span>
-												</#if>	
-											</#if>
-										</#if>
-									</#if>
-								</#list>
-							</td>
-						</#list>
+						<td class="colaborador">
+							<#if presenca.colaborador.membroComissaoCipa>
+								${presenca.colaborador.nome}
+							<#else>
+								<span style='color: red;'>${presenca.colaborador.nome} </span>
+							</#if>
+						</td>
+						<#assign colaboradorAtualId = presenca.colaborador.id/>
 					</#if>
-				</tr>
-			</#list>
+					<td class="pontuacao">
+						<#if !(presenca.presente?exists)>
+							<img border="0" title="Não é membro da comissão desta reunião" src="<@ww.url value="/imgs/user_out.png"/>"/>
+						<#elseif presenca.presente>
+							<img border="0" title="Presente" src="<@ww.url value="/imgs/check_ok.gif"/>"/>
+						<#elseif presenca.justificativaFalta?exists && presenca.justificativaFalta?j_string != "">
+							<span href="#" style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${presenca.justificativaFalta?j_string}');return false"><img border="0" src="<@ww.url value="/imgs/check_ok_Justificado.gif"/>"></span>
+						<#else>
+							<img border="0" title="Faltou" src="<@ww.url value="/imgs/check_falta.gif"/>"/>
+						</#if>				
+					</td>
+				</#list>
+			</tr>
 		</#if>
 	</table>
-	
+
 	<span style='color: red;'>Colaborador(es) que não faz(em) mais parte da comissao.</span>
 </div>
 

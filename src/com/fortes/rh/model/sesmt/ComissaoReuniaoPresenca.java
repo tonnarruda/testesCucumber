@@ -37,6 +37,17 @@ public class ComissaoReuniaoPresenca extends AbstractModel implements Serializab
 		setProjectionComissaoReuniaoId(comissaoReuniaoId);
 	}
 	
+	public ComissaoReuniaoPresenca(Long colaboradorId, String colaboradorNome, Long comissaoReuniaoId, String comissaoReuniaoTipo, Date comissaoReuniaoData, Boolean presente, String justificativaFalta)
+	{
+		setProjectionColaboradorId(colaboradorId);
+		setProjectionColaboradorNome(colaboradorNome);
+		setProjectionComissaoReuniaoId(comissaoReuniaoId);
+		setProjectionComissaoReuniaoTipo(comissaoReuniaoTipo);
+		setProjectionComissaoReuniaoData(comissaoReuniaoData);
+		setPresente(presente);
+		setJustificativaFalta(justificativaFalta);
+	}
+	
 	public ComissaoReuniaoPresenca(Long colaboradorId, String colaboradorNome, Boolean presente, String justificativaFalta)
 	{
 		setProjectionColaboradorId(colaboradorId);

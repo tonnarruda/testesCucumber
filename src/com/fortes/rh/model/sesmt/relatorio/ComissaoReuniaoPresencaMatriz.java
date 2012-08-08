@@ -1,43 +1,70 @@
 package com.fortes.rh.model.sesmt.relatorio;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 
 public class ComissaoReuniaoPresencaMatriz
 {
-	private Colaborador colaborador;
-	private boolean membroDaComissao = false;
-	private Collection<ComissaoReuniaoPresenca> comissaoReuniaoPresencas = new ArrayList<ComissaoReuniaoPresenca>();
+	private Long colaboradorId;
+	private String colaboradorNome;
+	private Long comissaoReuniaoId;
+	private String comissaoReuniaoTipo;
+	private Date comissaoReuniaoData;
+	private Boolean comissaoReuniaoPresencaPresente;
+	private String comissaoReuniaoPresencaJustificativa;
 
-	public boolean isMembroDaComissao() {
-		return membroDaComissao;
-	}
-	public void setMembroDaComissao(boolean membroDaComissao) {
-		this.membroDaComissao = membroDaComissao;
+	public ComissaoReuniaoPresencaMatriz(Long colaboradorId, String colaboradorNome, Long comissaoReuniaoId, String comissaoReuniaoTipo, Date comissaoReuniaoData,
+											Boolean comissaoReuniaoPresencaPresente, String comissaoReuniaoPresencaJustificativa) 
+	{
+		this.colaboradorId = colaboradorId;
+		this.colaboradorNome = colaboradorNome;
+		this.comissaoReuniaoId = comissaoReuniaoId;
+		this.comissaoReuniaoTipo = comissaoReuniaoTipo;
+		this.comissaoReuniaoData = comissaoReuniaoData;
+		this.comissaoReuniaoPresencaPresente = comissaoReuniaoPresencaPresente;
+		this.comissaoReuniaoPresencaJustificativa = comissaoReuniaoPresencaJustificativa;
 	}
 	
-	public Colaborador getColaborador()
-	{
-		return colaborador;
+	public Long getColaboradorId() {
+		return colaboradorId;
 	}
-	
-	public void setColaborador(Colaborador colaborador)
-	{
-		this.colaborador = colaborador;
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
 	}
-	public Collection<ComissaoReuniaoPresenca> getComissaoReuniaoPresencas()
-	{
-		return comissaoReuniaoPresencas;
+	public String getColaboradorNome() {
+		return colaboradorNome;
 	}
-	public void setComissaoReuniaoPresencas(Collection<ComissaoReuniaoPresenca> comissaoReuniaoPresencas)
-	{
-		this.comissaoReuniaoPresencas = comissaoReuniaoPresencas;
+	public void setColaboradorNome(String colaboradorNome) {
+		this.colaboradorNome = colaboradorNome;
 	}
-	public void addComissaoReuniaoPresencas(ComissaoReuniaoPresenca presenca)
-	{
-		comissaoReuniaoPresencas.add(presenca);
+	public Long getComissaoReuniaoId() {
+		return comissaoReuniaoId;
+	}
+	public void setComissaoReuniaoId(Long comissaoReuniaoId) {
+		this.comissaoReuniaoId = comissaoReuniaoId;
+	}
+	public String getComissaoReuniaoTipo() {
+		return comissaoReuniaoTipo;
+	}
+	public void setComissaoReuniaoTipo(String comissaoReuniaoTipo) {
+		this.comissaoReuniaoTipo = comissaoReuniaoTipo;
+	}
+	public Date getComissaoReuniaoData() {
+		return comissaoReuniaoData;
+	}
+	public void setComissaoReuniaoData(Date comissaoReuniaoData) {
+		this.comissaoReuniaoData = comissaoReuniaoData;
+	}
+	public Boolean getComissaoReuniaoPresencaPresente() {
+		return comissaoReuniaoPresencaPresente;
+	}
+	public void setComissaoReuniaoPresencaPresente(Boolean comissaoReuniaoPresencaPresente) {
+		this.comissaoReuniaoPresencaPresente = comissaoReuniaoPresencaPresente;
+	}
+	public String getComissaoReuniaoPresencaJustificativa() {
+		return comissaoReuniaoPresencaJustificativa;
+	}
+	public void setComissaoReuniaoPresencaJustificativa(String comissaoReuniaoPresencaJustificativa) {
+		this.comissaoReuniaoPresencaJustificativa = comissaoReuniaoPresencaJustificativa;
 	}
 }

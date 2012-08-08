@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
@@ -12,4 +13,6 @@ public interface ComissaoReuniaoPresencaManager extends GenericManager<ComissaoR
 	void removeByReuniao(Long comissaoReuniaoId);
 	Collection<ComissaoReuniaoPresenca> findByComissao(Long comissaoId, boolean ordenarPorDataNome);
 	boolean existeReuniaoPresenca(Long comissaoId, Collection<Long> colaboradorIds);
+	Collection<ComissaoReuniaoPresenca> findPresencasByComissao(Long comissaoId);
+	List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId);
 }

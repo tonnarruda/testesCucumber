@@ -90,9 +90,9 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 		return getDao().findByColaborador(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId,Collection<Long> colaboradorIds)
+	public Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId)
 	{
-		return getDao().findColaboradoresNaComissao(comissaoId, colaboradorIds);
+		return getDao().findColaboradoresNaComissao(comissaoId);
 	}
 
 	public Collection<Comissao> findComissaoByColaborador(Long colaboradorId) 

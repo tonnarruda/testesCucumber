@@ -11,7 +11,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Comissao;
 import com.fortes.rh.model.sesmt.ComissaoMembro;
-import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -125,11 +124,6 @@ public class ComissaoManagerImpl extends GenericManagerImpl<Comissao, ComissaoDa
 	public List<Colaborador> findColaboradoresByDataReuniao(Date dataReuniao, Long comissaoId) 
 	{
 		return getDao().findColaboradoresByDataReuniao(dataReuniao, comissaoId);
-	}
-	
-	public List<ComissaoReuniaoPresenca> findPresencaColaboradoresByReuniao(Long comissaoReuniaoId) 
-	{
-		return getDao().findPresencaColaboradoresByReuniao(comissaoReuniaoId);
 	}
 	
 	public void setComissaoPeriodoManager(ComissaoPeriodoManager comissaoPeriodoManager)

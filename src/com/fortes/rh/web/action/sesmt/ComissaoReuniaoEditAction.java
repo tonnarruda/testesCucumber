@@ -162,7 +162,7 @@ public class ComissaoReuniaoEditAction extends MyActionSupportList
 	public String relatorioPresenca()
 	{
 		try {
-			comissaoReuniaoPresencaMatrizes = comissaoReuniaoManager.findRelatorioPresenca(comissao.getId());
+			presencas = comissaoReuniaoManager.findRelatorioPresenca(comissao.getId());
 			comissaoReuniaos = comissaoReuniaoManager.findByComissao(comissao.getId());
 			comissaoReuniaos = collectionUtil.sortCollectionDate(comissaoReuniaos, "data", "asc");
 		
