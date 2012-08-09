@@ -98,7 +98,7 @@ public class ComissaoReuniaoDWR
 			colaborador = new LinkedHashMap<String, String>();
 			colaborador.put("id", presenca.getColaborador().getId().toString());
 			colaborador.put("nome", presenca.getColaborador().getNome());
-			colaborador.put("presente", presenca.getPresente().toString());
+			colaborador.put("presente", String.valueOf(presenca.getPresente()));
 			colaborador.put("justificativaFalta", presenca.getJustificativaFalta());
 			retorno.add(colaborador);
 		}
