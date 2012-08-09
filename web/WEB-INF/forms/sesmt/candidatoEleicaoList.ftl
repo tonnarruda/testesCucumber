@@ -91,7 +91,7 @@
 		</@ww.form>
 
 		<@ww.form name="form" id="form" action="insert.action" onsubmit="${validarCampos}" validate="true" method="POST">
-			<@frt.checkListBox label="Colaboradores" name="candidatosCheck" list="candidatosCheckList"/>
+			<@frt.checkListBox form="form" label="Colaboradores" name="candidatosCheck" list="candidatosCheckList"/>
 
 			<@ww.hidden name="eleicao.id"/>
 			<@ww.token/>
