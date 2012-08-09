@@ -436,7 +436,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false);
 		
 		if(avaliacaoDesempenho != null)
-			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida());
+			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida(), false);
 		
 		if(exibeResultadoAutoavaliacao)
 		{

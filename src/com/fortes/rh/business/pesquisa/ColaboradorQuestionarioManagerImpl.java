@@ -406,9 +406,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenhoId);
 	}
 	
-	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida)
+	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho)
 	{
-		return getDao().findAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId, respondida);
+		return getDao().findAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId, respondida, considerarPeriodoAvalDesempenho);
 	}
 
 	public Collection<ColaboradorQuestionario> getPerformance(Collection<Long> avaliados, Long avaliacaoDesempenhoId)

@@ -177,7 +177,7 @@ public class Index extends ActionSupport
 		
 		for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
 		{
-			Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaborador.getId(), false);
+			Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaborador.getId(), false, true);
 			if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
 			{
 				for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)

@@ -780,13 +780,13 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
     	colaboradorQuestionarioDao.save(colaboradorQuestionario3Respondida);
     	
     	// todos os avaliados do avaliador.
-    	assertEquals(3, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null).size());
+    	assertEquals(3, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, true).size());
     	
     	// apenas não respondidas
-    	assertEquals(2, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), false).size());
+    	assertEquals(2, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), false, true).size());
     	
     	// apenas respondidas
-    	assertEquals(1, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), true).size());
+    	assertEquals(1, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), true, true).size());
 	}
 	
 	public void testExcluirColaboradorQuestionarioByAvaliacaoDesempenho()
