@@ -109,7 +109,6 @@
 			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>
-		
 		<action name="prepareTransferirFaixasCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareTransferirFaixasCargo">
 			<result name="input" type="redirect">list.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
@@ -119,6 +118,21 @@
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
+		</action>
+
+
+		<action name="prepareRelatorioColaboradorGrupoOcupacional" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioColaboradorGrupoOcupacional">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioColaboradorGrupoOcupacional.ftl</result>
+		</action>
+		<action name="relatorioColaboradorGrupoOcupacional" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorGrupoOcupacional">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorGrupoOcupacional.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorGrupoOcupacional.pdf</param>
+			</result>
 		</action>
 	</package>
 </xwork>

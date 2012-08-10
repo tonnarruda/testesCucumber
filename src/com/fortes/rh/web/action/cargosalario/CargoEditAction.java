@@ -155,6 +155,18 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String prepareRelatorioColaboradorCargo() throws Exception
 	{
+		prepareRelatoriosColab();
+		return Action.SUCCESS;
+	}
+
+	public String prepareRelatorioColaboradorGrupoOcupacional() throws Exception
+	{
+		prepareRelatoriosColab();
+		return Action.SUCCESS;
+	}
+
+	private void prepareRelatoriosColab() 
+	{
 		compartilharColaboradores =  parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_COLAB_CARGO");
 		vinculos = new Vinculo();
@@ -166,8 +178,6 @@ public class CargoEditAction extends MyActionSupportEdit
 			empresa = getEmpresaSistema();
 		
 		dataHistorico = new Date();
-		
-		return Action.SUCCESS;
 	}
 	
 	public String relatorioColaboradorCargo() throws Exception
@@ -193,6 +203,18 @@ public class CargoEditAction extends MyActionSupportEdit
 			return "successResumido";
 		else
 			return Action.SUCCESS;
+	}
+	
+	
+	public String relatorioColaboradorGrupoOcupacional() throws Exception
+	{
+		if (empresa.getId() != null)
+			empresa = empresaManager.findByIdProjection(empresa.getId());
+		
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
+		
+		return Action.SUCCESS;
 	}
 	
 	public String imprimir() throws Exception
