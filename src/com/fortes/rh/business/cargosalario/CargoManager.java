@@ -52,4 +52,6 @@ public interface CargoManager extends GenericManager<Cargo>
 
 	public boolean existemCargosSemAreaRelacionada(Long empresaId);
 	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId);
+
+	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId);
 }

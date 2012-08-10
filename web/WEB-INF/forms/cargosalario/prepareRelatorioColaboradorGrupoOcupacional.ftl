@@ -3,10 +3,11 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Colaboradores por Cargo</title>
+	<title>Colaboradores por Grupo Ocupacional</title>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GrupoOcupacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
@@ -18,6 +19,18 @@
 		</#if>
 		
 		DWRUtil.useLoadingMessage('Carregando...');
+		DWREngine.setAsync(false);
+
+		$(function() {
+			var empresa = $('#empresa').val();
+			
+			populaArea(empresa);
+			populaCargo(empresa);
+			populaGrupo(empresa);
+			populaEstabelecimento(empresa);
+			
+			$("input[name='areaOrganizacionalsCheck'], input[name='gruposCheck']").live('click', populaCargoByAreaGrupo);
+		});
 		
 		function populaEstabelecimento(empresaId)
 		{
@@ -34,16 +47,9 @@
 			CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
 		}
 		
-		function populaCargoByAreaGrupo(empresaId)
-		{
-			var areaIds;
-			var grupoIds;
-			
-			CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
-		}
-
 		function createListCargo(data)
 		{
+			console.log(data);
 			addChecks('cargosCheck',data);
 		}
 		
@@ -57,14 +63,27 @@
 			addChecks('areaOrganizacionalsCheck',data);
 		}
 		
-		$(document).ready(function($)
+		function populaGrupo(empresaId)
 		{
-			var empresa = $('#empresa').val();
+			GrupoOcupacionalDWR.getByEmpresas(createListGrupo, empresaId, empresaIds);
+		}
+
+		function createListGrupo(data)
+		{
+			addChecks('gruposCheck',data);
+		}
+		
+		function populaCargoByAreaGrupo()
+		{
+			var empresaId = $('#empresa').val();
+			var areaIds   = getArrayCheckeds(document.form, 'areaOrganizacionalsCheck');
+			var grupoIds  = getArrayCheckeds(document.form, 'gruposCheck');
 			
-			populaArea(empresa);
-			populaCargo(empresa);
-			populaEstabelecimento(empresa);
-		});
+			if ($(areaIds).size() > 0 || $(grupoIds).size() > 0)
+				CargoDWR.getCargosByAreaGrupo(createListCargo, areaIds, grupoIds, empresaId);
+			else
+				CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+		}
 	</script>
 </head>
 <body>
@@ -94,8 +113,8 @@
 		
 		<@ww.datepicker label="Data de Referência" id="data" name="data" required="true" cssClass="mascaraData" value="${dataTemp}"/><br>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
-		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
-		<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" width="500" />
+		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" onClick="populaCargoByAreaGrupo()" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
+		<@frt.checkListBox name="gruposCheck" id="gruposCheck" onClick="populaCargoByAreaGrupo()" label="Grupos Ocupacionais" list="gruposCheckList" width="500" />
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
 

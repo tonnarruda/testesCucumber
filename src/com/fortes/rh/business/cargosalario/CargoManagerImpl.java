@@ -488,18 +488,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return atitudes;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-
-	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager) {
-		this.areaFormacaoManager = areaFormacaoManager;
-	}
-
-	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
-		this.conhecimentoManager = conhecimentoManager;
-	}
-
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC)
 	{
 		if(StringUtils.isEmpty(codigo))
@@ -508,10 +496,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			return getDao().findByEmpresaAC(empCodigo, codigo, grupoAC);
 	}
 	
-		
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) {
-		this.etapaSeletivaManager = etapaSeletivaManager;
-	}
 
 	public Cargo preparaCargoDoAC(TCargo tCargo)
 	{
@@ -559,26 +543,55 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		else
 			return resultado;
 	}
-	
-	public void setHabilidadeManager(HabilidadeManager habilidadeManager) {
-		this.habilidadeManager = habilidadeManager;
-	}
 
-	public void setAtitudeManager(AtitudeManager atitudeManager) {
-		this.atitudeManager = atitudeManager;
-	}
-
-	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception 
+	{
 		getDao().deleteByAreaOrganizacional(areaIds);
-		
 	}
 
-	public boolean existemCargosSemAreaRelacionada(Long empresaId) {
+	public boolean existemCargosSemAreaRelacionada(Long empresaId) 
+	{
 		Collection<Cargo> cargos = getDao().getCargosSemAreaRelacionada(empresaId);
 		return cargos.size() != 0;
 	}
 
-	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId) {
+	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId) 
+	{
 		return getDao().getCargosSemAreaRelacionada(empresaId);
+	}
+
+	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId) 
+	{
+		return getDao().findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
+	}
+	
+	public void setHabilidadeManager(HabilidadeManager habilidadeManager) 
+	{
+		this.habilidadeManager = habilidadeManager;
+	}
+	
+	public void setAtitudeManager(AtitudeManager atitudeManager) 
+	{
+		this.atitudeManager = atitudeManager;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) 
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager) 
+	{
+		this.areaFormacaoManager = areaFormacaoManager;
+	}
+	
+	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) 
+	{
+		this.conhecimentoManager = conhecimentoManager;
+	}
+	
+	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) 
+	{
+		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
 }

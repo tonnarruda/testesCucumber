@@ -15,4 +15,6 @@ public interface GrupoOcupacionalDao extends GenericDao<GrupoOcupacional>
 	Collection<GrupoOcupacional> findAllSelect(int page, int pagingSize, Long empresaId);
 
 	GrupoOcupacional findByIdProjection(Long grupoOcupacionalId);
+
+	Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds);
 }

@@ -35,4 +35,5 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId);
+	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId);
 }

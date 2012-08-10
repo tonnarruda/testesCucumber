@@ -1,5 +1,6 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -23,8 +24,21 @@ public class GrupoOcupacionalDWR
 		
 		return new CollectionUtil<GrupoOcupacional>().convertCollectionToMap(grupoOcupacionals, "getId", "getNome");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
+	{
+		Collection<GrupoOcupacional> grupos = new ArrayList<GrupoOcupacional>();
+		if(empresaId == null || empresaId == 0 || empresaId == -1 )
+			grupos = grupoOcupacionalManager.findByEmpresasIds(empresaIds);
+		else
+			grupos = grupoOcupacionalManager.findByEmpresasIds(empresaId);
 
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager) {
+		return new CollectionUtil<GrupoOcupacional>().convertCollectionToMap(grupos, "getId", "getNome");
+	}
+
+	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager) 
+	{
 		this.grupoOcupacionalManager = grupoOcupacionalManager;
 	}
 }
