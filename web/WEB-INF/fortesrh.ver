@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.83.78" data="10/08/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Nova ação para excluir respostas do avaliador. 
+			:: SESMT > Relatórios > Funções com Exames: Novo relatório de funções com exames.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.82.77" data="06/08/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Utilitários > Cadastros > Perfis: Nova configuração de acesso para [Criar/Editar Acesso ao Sistema] no cadastro de colaboradores. 

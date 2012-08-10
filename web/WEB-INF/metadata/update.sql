@@ -19110,3 +19110,31 @@ update papel set ordem= ordem + 1  where papelmae_id=8;--.go
 update papel set nome='Cadastrar', ordem = 1  where id=555;--.go
 insert into migrations values('20120801105316');--.go
 update parametrosdosistema set appversao = '1.1.82.77';--.go
+-- versao 1.1.83.78
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções com Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387);
+insert into perfil_papel(perfil_id, papeis_id) values (1, 559); --.go
+alter sequence papel_sequence restart with 560; --.go
+
+insert into migrations values('20120807095420');--.go
+delete from comissaoreuniaopresenca where id in (
+	select crp.id 
+	from comissaoreuniao cr, comissaoperiodo cp, comissao c, comissaoreuniaopresenca crp 
+	where cp.comissao_id = c.id 
+		and cr.comissao_id = c.id 
+		and cr.data >= cp.apartirde 
+		and crp.comissaoreuniao_id = cr.id
+		and cr.data < coalesce((select min(apartirde) from comissaoperiodo where comissao_id = c.id and apartirde > cp.apartirde), c.dataFim) 
+		and cp.id not in (select comissaoperiodo_id from comissaomembro where colaborador_id = crp.colaborador_id and comissaoperiodo_id = cp.id)
+);--.go
+insert into migrations values('20120808094558');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Apagar Respostas', '#', 1, false, 55);--.go
+alter sequence papel_sequence restart with 561;--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=559 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 560 from perfil_papel where papeis_id =55;--.go
+update papel set codigo = 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO' where id = 484;--.go
+
+
+
+insert into migrations values('20120808174248');--.go
+update parametrosdosistema set appversao = '1.1.83.78';--.go
