@@ -22,14 +22,19 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		  conn.exec "pg_dump -U postgres #{config['db_name']} > #{bkpfile}"
 		end
 		
+  	puts "Parando tomcat"
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/shutdown.sh"
 		
+  	puts "Apagando pasta da aplicacao"
 		conn.exec "rm -rf #{app_path}"
 		
+  	puts "Apagando war aplicacao"
 		conn.exec "rm -rf #{app_path}.war"
 
+  	puts "Apagando pasta work da aplicacao"
     conn.exec "rm -rf #{tomcat_home}/work/*"
 		
+  	puts "Enviando war para o servidor de homologacao"
 		conn.upload config['repository_app'], "#{app_path}.war"
 		#conn.exec "cp #{tomcat_home}/webapps/unifor.war #{app_path}.war"
 		
@@ -42,12 +47,15 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 		end
 		
 		if config['run_migrates']
+      	puts "Executando migrates"
     		conn.upload 'migrate.rb', "#{app_path}/migrate.rb"
     		conn.exec "ruby #{app_path}/migrate.rb --db #{config['db_name']}"
     		conn.exec "rm -f #{app_path}/migrate.rb"
 		end
 		
+  	puts "Iniciando tomcat"
 		conn.exec "#{fortes_var} sh #{tomcat_home}/bin/startup.sh"
 		
+    puts "Publicacao em \"#{name}\" finalizada."
 	end
 end
