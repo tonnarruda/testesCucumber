@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column autenticacao boolean default true;--.go

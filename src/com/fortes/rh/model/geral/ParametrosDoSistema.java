@@ -70,6 +70,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String camposCandidatoVisivel;
     private String camposCandidatoObrigatorio;
     private String camposCandidatoTabs;
+    private boolean autenticacao;
     
 	public String getAppContext()
 	{
@@ -292,5 +293,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public boolean verificaRemprot() {
 		return this.proximaVersao == null || new Date().getTime() - this.proximaVersao.getTime() > 0;
+	}
+	public boolean isAutenticacao() {
+		return autenticacao;
+	}
+	public void setAutenticacao(boolean autenticacao) {
+		this.autenticacao = autenticacao;
 	}
 }

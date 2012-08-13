@@ -39,10 +39,10 @@ public class UtilDWR
 		return token;
 	}
 
-	public String enviaEmail(String email) throws Exception
+	public String enviaEmail(String email, boolean autenticacao) throws Exception
 	{
 		try {
-			mail.testEnvio("Teste do envio de email do Fortes RH", "Este email foi enviado de forma automática, não responda.", email);
+			mail.testEnvio("Teste do envio de email do Fortes RH", "Este email foi enviado de forma automática, não responda.", email, autenticacao);
 		} catch (AuthenticationFailedException e) {
 			e.printStackTrace();
 			if(e.getMessage() == null)

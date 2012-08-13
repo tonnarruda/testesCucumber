@@ -6,7 +6,6 @@
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'))"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -21,7 +20,7 @@
 				{
 					DWRUtil.useLoadingMessage('Enviando...');
 					DWREngine.setErrorHandler(error);				
-					UtilDWR.enviaEmail(apresentaMsg, email);
+					UtilDWR.enviaEmail(apresentaMsg, email, $('#autenticacao').is(':checked'));
 				}
 				else
 					jAlert("Email Inválido!");
@@ -37,6 +36,41 @@
 		{
 			jAlert(data);
 		}
+		
+		
+		$(document).ready(function(){
+			if ($('#autenticacao').is(':checked')){
+				$("#emailUser").removeAttr('disabled');
+				$("#emailPass").removeAttr('disabled');
+				
+			} else {
+				$("#emailUser").attr('disabled','disabled');
+				$("#emailPass").attr('disabled','disabled');
+			}
+			
+			$("#autenticacao").click(function(){
+				if ($('#autenticacao').is(':checked')){
+					$("#emailUser").removeAttr('disabled');
+					$("#emailPass").removeAttr('disabled');
+				$("input").removeAttr('disabled');
+				} else {
+					$("#emailUser").attr('disabled','disabled');
+					$("#emailPass").attr('disabled','disabled');
+				}
+			});
+			
+		});
+		
+		function submitForm()
+		{
+			if ($("#autenticacao").is(':checked')) {
+				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser', 'emailPass'), new Array('emailDoSuporteTecnico','proximaVersao'));
+			} else {
+				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'));			
+			}
+		}
+		
+		
 	</script>
 	
 	<#if parametrosDoSistema?exists && parametrosDoSistema.proximaVersao?exists>
@@ -49,7 +83,7 @@
 <body>
 <@ww.actionerror />
 <@ww.actionmessage />
-<@ww.form name="form" action="${formAction}"  onsubmit="${validarCampos}"  validate="true" method="POST">
+<@ww.form name="form" action="${formAction}"   validate="true" method="POST">
 	<@ww.textfield label="URL da Aplicação" name="parametrosDoSistema.appUrl" id="appUrl" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Contexto da Aplicação" name="parametrosDoSistema.appContext" id="appContext" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="40" maxLength="100" required="true"/>
@@ -94,6 +128,7 @@
 				<div style="float:right;"><img border="0" title="Testar envio de email" onclick="testaEmail();" src="<@ww.url includeParams="none" value="/imgs/testeEmail.gif"/>" style="cursor:pointer;"></div>
 				<@ww.textfield label="Servidor SMTP" name="parametrosDoSistema.emailSmtp" id="emailSmtp" size="40" maxLength="100" />
 				<@ww.textfield label="Porta SMTP" name="parametrosDoSistema.emailPort" id="emailPort" size="40" maxLength="100" />
+				<@ww.checkbox label="Requer autenticação" id="autenticacao" name="parametrosDoSistema.autenticacao" liClass="liLeft" labelPosition="left"/>
 				<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
 				<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
 			</ul>
@@ -108,7 +143,7 @@
 </@ww.form>
 
 	<div class="buttonGroup">
-		<button type="button" onclick="${validarCampos}" class="btnGravar" accesskey="${accessKey}">
+		<button type="button" onclick="submitForm();" class="btnGravar" accesskey="${accessKey}">
 		</button>
 	</div>
 
