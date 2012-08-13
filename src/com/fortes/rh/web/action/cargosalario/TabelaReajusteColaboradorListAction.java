@@ -61,8 +61,15 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
+			String message = "Não foi possível efetuar o cancelamento.";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
 			e.printStackTrace();
-			addActionError("Não foi possível efetuar o cancelamento.");
+			addActionError(message);
 		}
 		
 		return list();

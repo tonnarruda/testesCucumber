@@ -153,4 +153,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador);
 
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
+
+	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds);
 }

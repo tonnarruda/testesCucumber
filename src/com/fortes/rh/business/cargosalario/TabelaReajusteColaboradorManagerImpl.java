@@ -162,6 +162,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 					situacaosTmp.add(situacao);
 			}
 			
+			historicoColaboradorManager.removeDependenciasComHistoricoColaboradors(historicoIds);
 			historicoColaboradorManager.remove(historicoIds);
 			
 			// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.

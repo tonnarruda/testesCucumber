@@ -1474,6 +1474,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicos;
 	}
 
+	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds) {
+		getDao().removeDependenciasComHistoricoColaboradors(historicoIds);
+	}
+
 	public void ajustaMotivoContratado(Long colaboradorId) 
 	{
 		getDao().ajustaMotivoContratado(colaboradorId);
@@ -1498,5 +1502,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
+
 
 }

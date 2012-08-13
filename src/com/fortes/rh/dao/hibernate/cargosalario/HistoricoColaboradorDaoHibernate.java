@@ -1229,4 +1229,13 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			query.executeUpdate();		
 		}
 	}
+
+	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds) {
+		
+		String tibiraHQL = "update HistoricoColaborador set  historicoAnterior.id= null where historicoAnterior.id in (:historicoIds)";
+		Query query = getSession().createQuery(tibiraHQL);
+		
+		query.setParameterList("historicoIds", historicoIds, Hibernate.LONG);
+		query.executeUpdate();
+	}
 }
