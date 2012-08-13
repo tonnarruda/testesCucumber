@@ -57,4 +57,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds);
+	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] grupoOcupacionalIds, String vinculo);
 }

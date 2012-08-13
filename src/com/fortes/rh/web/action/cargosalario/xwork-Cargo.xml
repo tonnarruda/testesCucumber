@@ -133,6 +133,7 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresPorGrupoOcupacional.pdf</param>
 			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioColaboradorGrupoOcupacional.ftl</result>
 		</action>
 	</package>
 </xwork>

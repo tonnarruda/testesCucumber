@@ -1238,4 +1238,64 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setParameterList("historicoIds", historicoIds, Hibernate.LONG);
 		query.executeUpdate();
 	}
+	
+	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] grupoOcupacionalIds, String vinculo)
+	{
+
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct new HistoricoColaborador(hc.id, co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.vinculo, ao.id, ao.nome, ao.areaMae.id, c.id, c.nome, fs.id, fs.nome, go.id, go.nome) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("inner join hc.areaOrganizacional as ao ");
+		hql.append("inner join hc.estabelecimento as e ");
+		hql.append("inner join hc.colaborador as co ");
+		hql.append("inner join co.empresa as emp ");
+		hql.append("inner join hc.faixaSalarial as fs ");
+		hql.append("inner join fs.cargo as c ");
+		hql.append("left join c.grupoOcupacional as go ");
+
+		hql.append("where co.desligado = false ");
+		hql.append("and hc.status = :status ");
+
+		if(cargoIds != null && cargoIds.length > 0)
+			hql.append("and c.id in ( :cargoIds ) ");
+
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			hql.append("and e.id in ( :estabelecimentoIds ) ");
+
+		if(areaIds != null && areaIds.length>0)
+			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
+
+		if(empresaId != null )
+			hql.append("and co.empresa.id = :empresaId ");
+
+		if(vinculo != null && !vinculo.equals("") )
+			hql.append("and co.vinculo = :vinculo ");
+
+		hql.append("and hc.data = (select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :data and hc2.status = :status ) ");
+		hql.append("order by go.nome, c.nome, fs.nome, co.nome ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("data", dataHistorico);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		if(cargoIds != null && cargoIds.length > 0)
+			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+
+		if(areaIds != null && areaIds.length>0)
+			query.setParameterList("areaOrganizacionalIds", areaIds, Hibernate.LONG);
+
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
+
+		if(vinculo != null && !vinculo.equals("") )
+			query.setString("vinculo", vinculo);
+
+		return query.list();
+	}	
 }

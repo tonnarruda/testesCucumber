@@ -43,6 +43,7 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
@@ -1645,6 +1646,138 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		}
 		
 		assertNull("Não houve exceção", exception);
+	}
+	
+	public void testFindByAreaGrupoCargo() 
+	{
+		// dado uma empresa
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		// dado um estabelecimento
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		GrupoOcupacional gerentes = GrupoOcupacionalFactory.getGrupoOcupacional();
+		gerentes.setNome("Gerentes");
+		grupoOcupacionalDao.save(gerentes);
+		
+		GrupoOcupacional operacional = GrupoOcupacionalFactory.getGrupoOcupacional();
+		operacional.setNome("Operacional");
+		grupoOcupacionalDao.save(operacional);
+		
+		// dado um cargo
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Desenvolvedor");
+		cargo.setGrupoOcupacional(gerentes);
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setNome("Desenvolvedor2");
+		cargo2.setGrupoOcupacional(operacional);
+		cargo2.setEmpresa(empresa);
+		cargoDao.save(cargo2);
+		
+		// dado uma faixa com seu historico
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setNome("A");
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarial faixaSalarialColab = FaixaSalarialFactory.getEntity();
+		faixaSalarialColab.setNome("B");
+		faixaSalarialColab.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarialColab);
+
+		FaixaSalarial faixaSalarialColab2 = FaixaSalarialFactory.getEntity();
+		faixaSalarialColab2.setNome("C");
+		faixaSalarialColab2.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarialColab2);
+
+		// dado uma area organizacional
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		// dado um colaborador
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		maria.setEmpresa(empresa);
+		maria.setVinculo(Vinculo.EMPREGO);
+		maria.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		maria.setDesligado(false);
+		colaboradorDao.save(maria);
+
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		joao.setEmpresa(empresa);
+		joao.setVinculo(Vinculo.EMPREGO);
+		joao.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		joao.setDesligado(false);
+		colaboradorDao.save(joao);
+
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setNome("Pedro");
+		pedro.setEmpresa(empresa);
+		pedro.setVinculo(Vinculo.EMPREGO);
+		pedro.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		pedro.setDesligado(false);
+		colaboradorDao.save(pedro);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaborador.setColaborador(maria);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		HistoricoColaborador historicoColaboratdor1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaboratdor1.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaboratdor1.setTipoSalario(TipoAplicacaoIndice.CARGO);
+		historicoColaboratdor1.setColaborador(joao);
+		historicoColaboratdor1.setFaixaSalarial(faixaSalarialColab);
+		historicoColaboratdor1.setEstabelecimento(estabelecimento);
+		historicoColaboratdor1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboratdor1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaboratdor1);
+
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaborador2.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador2.setColaborador(pedro);
+		historicoColaborador2.setFaixaSalarial(faixaSalarialColab2);
+		historicoColaborador2.setEstabelecimento(estabelecimento);
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3.setData(DateUtil.criarDataMesAno(10, 2, 2010));//esse é o atual mas ta com status = AGUARDANDO
+		historicoColaborador3.setColaborador(maria);
+		historicoColaborador3.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historicoColaborador3);
+		
+		// quando
+		Long[] cargoIds = new Long[]{cargo.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
+		Long[] grupoOcupacionalIds = new Long[]{gerentes.getId()};
+		String vinculo = Vinculo.EMPREGO;
+		
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, grupoOcupacionalIds, vinculo);
+				
+		assertEquals(2, historicoColaboradors.size());
+		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
+		assertEquals("Maria", resultado1.getColaborador().getNome());
+		assertEquals("Desenvolvedor A", resultado1.getFaixaSalarial().getDescricao());
+		assertEquals("Gerentes", resultado1.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
+
+		HistoricoColaborador resultado2 = (HistoricoColaborador) historicoColaboradors.toArray()[1];
+		assertEquals("Joao", resultado2.getColaborador().getNome());
+		assertEquals("Desenvolvedor B", resultado2.getFaixaSalarial().getDescricao());
+		assertEquals("Gerentes", resultado2.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
 	}
 	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)

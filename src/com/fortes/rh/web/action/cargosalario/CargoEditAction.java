@@ -208,13 +208,21 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorGrupoOcupacional() throws Exception
 	{
-		if (empresa.getId() != null)
-			empresa = empresaManager.findByIdProjection(empresa.getId());
+		try {
+			if (empresa.getId() != null)
+				empresa = empresaManager.findByIdProjection(empresa.getId());
+			
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(empresa.getId(), dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, gruposCheck, vinculo);
+			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
+			
+			return Action.SUCCESS;
 		
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
-		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
-		
-		return Action.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			prepareRelatorioColaboradorGrupoOcupacional();
+			addActionMessage(e.getMessage());
+			return Action.INPUT;
+		}
 	}
 	
 	public String imprimir() throws Exception
