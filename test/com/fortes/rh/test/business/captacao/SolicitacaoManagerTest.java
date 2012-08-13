@@ -233,7 +233,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		empresa.setId(1L);
 
 		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailCandidatosNaoAptos").with(eq(empresa), eq(solicitacao.getId()));
-		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()));
+		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
 		solicitacaoManager.encerraSolicitacao(solicitacao, empresa);
 
@@ -246,7 +246,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacao.setId(1L);
 		solicitacao.setDataEncerramento(DateUtil.criarAnoMesDia(2008, 1, 1));
 
-		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()));
+		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
 		solicitacaoManager.updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());
 

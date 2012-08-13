@@ -4,72 +4,24 @@
 <html>
 <head>
 	<@ww.head/>
-	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-	</style>
-		<title>Solicitação de Pessoal</title>
-		
-		<#include "../ftl/mascarasImports.ftl" />
-		<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
-		<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
-		<#assign validarCamposUpdateStatus = "$('#gravarStatus').attr('disabled', true); return validaFormulario('formUpdateStatusSolicitacao', new Array(), null)"/>
-		
-		<#include "../ftl/showFilterImports.ftl" />
-		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	<title>Solicitação de Pessoal</title>
+	
+	<#include "../ftl/mascarasImports.ftl" />
+	<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
+	<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
+	<#assign validarCamposUpdateStatus = "$('#gravarStatus').attr('disabled', true); return validaFormulario('formUpdateStatusSolicitacao', new Array(), null)"/>
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<style type="text/css">
-		
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 
-		.alterarStatusDiv { 
-			display: none; 
-		}
-		.dataEncerramentoDiv
-		{
-			border: 1px solid #B0B0B0;
-			padding: 5px;
-			position:absolute;
-			top:10px;
-			left:50%;
-			margin-left: -90px;
-			background-color:#F0F0F0;
-			width: 180px;
-			top:50%;
-			margin-top:-50px;
-			display:none;
-		}
-		.suspendeDiv
-		{
-			border: 1px solid #B0B0B0;
-			padding: 5px;
-			position:absolute;
-			top:10px;
-			left:25%;
-			margin-left: -10px;
-			background-color:#F0F0F0;
-			width: 445px;
-			top:50%;
-			margin-top:-50px;
-			display:none;
-		}
-		.dataEncerramentoDiv *
-		{
-			font-size: 11px;
-		}
-		#modal
-		{
-			display:none;
-			background:silver none repeat scroll 0%;
-			height:700px;
-			width:100%;
-			left:0px;
-			top:0px;
-			opacity:0.65;
-			-moz-opacity: 0.65;
-			filter: alpha(opacity=65);
-			position:absolute;
-		}
+		.alterarStatusDiv {	display: none;}
+		.calendar { z-index: 99998 !important; }
+		#dataEncerramento{width: 80px;}
+		#formDialog { display: none; }
+		#suspendeDiv { display: none; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
@@ -85,32 +37,17 @@
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
 		});
 
-		function encerraSolicitacao(fraseConfirma, actionEncerra, solicitacaoId)
+		function encerraSolicitacao(solicitacaoId, observacaoLiberador)
 		{
-			newConfirm(fraseConfirma, function(){
-				var modal = document.getElementById("modal");
-				modal.style.display="block";
-				var janela = document.getElementById("dataEncerramentoDiv");
-				janela.style.display="block";
-				document.getElementById("solicitacaoId").value=solicitacaoId;
-				document.getElementById("dataEncerramento").focus();
-				var combo = document.getElementById("visualizacao");
-				combo.style.display='none';
-			});
+			$('#obsAprova').val(observacaoLiberador);
+			$('#solicitacaoIdEncerrar').val(solicitacaoId);
+			$('#formDialog').dialog({ modal: true, width: 470 });
 		}
 
-		function suspenderSolicitacao(fraseConfirma, solicitacaoId)
+		function suspenderSolicitacao(solicitacaoId)
 		{
-			newConfirm(fraseConfirma, function(){
-				var modal = document.getElementById("modal");
-				modal.style.display="block";
-				var janela = document.getElementById("suspendeDiv");
-				janela.style.display="block";
-				document.getElementById("solicitacaoIdSuspender").value=solicitacaoId;
-				document.getElementById("obsSuspensao").focus();
-				var combo = document.getElementById("visualizacao");
-				combo.style.display='none';
-			});
+			$('#solicitacaoIdSuspender').val(solicitacaoId);
+			$('#suspendeDiv').dialog({ modal: true, width: 470 });
 		}
 
 		function setPage()
@@ -143,7 +80,6 @@
 </head>
 
 <body>
-
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
@@ -162,10 +98,23 @@
 	<br />
 
 	<@display.table name="solicitacaos" id="solicitacao" class="dados">
+		
+		<#if solicitacao.observacaoLiberador?exists>
+			<#assign observacaoLiberador="${solicitacao.observacaoLiberador}"/>					
+		<#else>
+			<#assign observacaoLiberador=""/>					
+		</#if>
+		
+		<#if solicitacao.obsSuspensao?exists>
+			<#assign obsSuspensao="${solicitacao.obsSuspensao}"/>					
+		<#else>
+			<#assign obsSuspensao=""/>					
+		</#if>
+		
 		<#if solicitacao.encerrada>
 			<#assign classe=""/>
 			<#assign fraseConfirma="Deseja reabrir esta solicitação?"/>
-			<#assign titleEncerra="Reabrir Solicitação"/>
+			<#assign titleEncerra="Reabrir Solicitação. Observação: ${observacaoLiberador}\n "/>
 			<#assign imgEncerra="flag_green.gif"/>
 			<#assign actionEncerra="reabrirSolicitacao.action"/>
 		<#else>
@@ -193,7 +142,6 @@
 				<#if !solicitacao.encerrada>
 					<a href="prepareUpdate.action?solicitacao.id=${solicitacao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-
 					<#if solicitacao.anuncio?exists>
 						<#if solicitacao.anuncio.exibirModuloExterno>
 							<a href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Anunciado" src="<@ww.url includeParams="none" value="/imgs/cliper_checked.gif"/>"></a>
@@ -201,12 +149,11 @@
 							<a href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Anunciar" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 						</#if>
 					</#if>
-
-					<a href="#" onclick="encerraSolicitacao('${fraseConfirma}', '${actionEncerra}', '${solicitacao.id}');"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
+					<a href="#" onclick="encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador}');"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
 					<#if !solicitacao.suspensa>
-						<a href="#" onclick="suspenderSolicitacao('Deseja suspender esta solicitação?', '${solicitacao.id}');"><img border="0" title="Suspender solicitação" src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>"></a>
+						<a href="#" onclick="suspenderSolicitacao('${solicitacao.id}');"><img border="0" title="Suspender solicitação" src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>"></a>
 					<#else>
-						<a href="liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Liberar solicitação" src="<@ww.url includeParams="none" value="/imgs/control_play.gif"/>"></a>
+						<a href="liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Liberar solicitação. Observação: ${obsSuspensao}" src="<@ww.url includeParams="none" value="/imgs/control_play.gif"/>"></a>
 					</#if>
 				<#else>
 					<img border="0" title="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -260,40 +207,33 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
-	<div id="modal">
-	</div>
-	<div id="dataEncerramentoDiv" class="dataEncerramentoDiv">
+	<div id="formDialog" title="Encerrar Solicitação">
 		<@ww.form name="formEncerraSolicitacao" id="formEncerraSolicitacao" action="encerrarSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposEncerra}" >
-			<@ww.datepicker label="Data de Encerramento" name="dataEncerramento" id="dataEncerramento"  cssClass="mascaraData" />
-			<@ww.hidden name="solicitacao.id" id="solicitacaoId"/>
+			<@ww.datepicker label="Data de Encerramento" name="dataEncerramento" id="dataEncerramento" cssClass="mascaraData" />
+			<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova"/>
+			<@ww.hidden name="solicitacao.id" id="solicitacaoIdEncerrar" value="${solicitacao.id}"/>
 		</@ww.form>
-		<button onclick="${validarCamposEncerra};" class="btnEncerrarSolicitacao grayBG">
-		</button>
-		<button onclick="window.location='list.action'" class="btnCancelar grayBG">
-		</button>
+		<button onclick="${validarCamposEncerra};" class="btnEncerrarSolicitacao grayBG"></button>
+		<button onclick="window.location='list.action'" class="btnCancelar grayBG">	</button>
 	</div>
-
-	<div id="suspendeDiv" class="suspendeDiv">
+	<div id="suspendeDiv" title="Suspender Solicitação">
 		<@ww.form name="formSuspendeSolicitacao" id="formSuspendeSolicitacao" action="suspenderSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposSuspende}">
 			<@ww.textarea label="Observações sobre a suspensão" name="solicitacao.obsSuspensao" id="obsSuspensao" />
-			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender"/>
+			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender" value="${solicitacao.id}"/>
 		</@ww.form>
 		<button onclick="${validarCamposSuspende};" class="btnSuspenderSolicitacao grayBG">
 		</button>
 		<button onclick="window.location='list.action'" class="btnCancelar grayBG">
 		</button>
 	</div>
-
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
 		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
 			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" />
-			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador" id="obsAprova"/>
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
 			<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />
 		</@ww.form>
 		<button onclick="${validarCamposUpdateStatus};" class="btnGravar grayBG" id="gravarStatus"></button>
 	</div>
-
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>

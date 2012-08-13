@@ -53,6 +53,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.id"), "id");
 		p.add(Projections.property("s.data"), "data");
 		p.add(Projections.property("s.descricao"), "descricao");
+		p.add(Projections.property("s.observacaoLiberador"), "observacaoLiberador");
 		p.add(Projections.property("c.nome"), "nomeCargo");
 		p.add(Projections.property("a.nome"), "nomeArea");
 		p.add(Projections.property("us.nome"), "solicitanteNome");
@@ -283,15 +284,23 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return (Solicitacao) criteria.uniqueResult();
 	}
 
-	public void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId)
+	public void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId, String observacaoLiberador)
 	{
-		String hql = "update Solicitacao set encerrada = :encerrar, dataEncerramento = :dataEncerramento where id = (:id)";
+		String hql = "update Solicitacao set encerrada = :encerrar, dataEncerramento = :dataEncerramento ";
+		
+		if(observacaoLiberador != null)
+			hql += ", observacaoLiberador = :observacaoLiberador ";
+		
+		hql += " where id = (:id)";
 
 		Query query = getSession().createQuery(hql);
 
 		query.setBoolean("encerrar", encerrar);
 		query.setDate("dataEncerramento", dataEncerramento);
 		query.setLong("id", solicitacaoId);
+
+		if(observacaoLiberador != null)
+			query.setString("observacaoLiberador", observacaoLiberador);
 
 		query.executeUpdate();
 	}

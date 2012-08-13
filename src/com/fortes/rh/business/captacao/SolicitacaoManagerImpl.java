@@ -125,7 +125,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception
 	{
-    	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());
+    	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId(), solicitacao.getObservacaoLiberador());
     	gerenciadorComunicacaoManager.enviaEmailCandidatosNaoAptos(empresa, solicitacao.getId());
 	}
 
@@ -141,7 +141,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId)
 	{
-		getDao().updateEncerraSolicitacao(encerrar, dataEncerramento, solicitacaoId);
+		getDao().updateEncerraSolicitacao(encerrar, dataEncerramento, solicitacaoId, null);
 	}
 
 	public Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId)

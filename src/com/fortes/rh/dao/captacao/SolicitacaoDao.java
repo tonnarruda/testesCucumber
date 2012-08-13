@@ -25,7 +25,7 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	Solicitacao getValor(Long solcitacaoId);
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
-	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId);
+	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId, String observacaoLiberador);
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	void updateSuspendeSolicitacao(boolean suspender, String observacao, Long solicitacaoId);
 	void updateStatusSolicitacao(Solicitacao solicitacao);

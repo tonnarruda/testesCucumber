@@ -440,14 +440,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		s1.setEncerrada(false);
 		s1 = solicitacaoDao.save(s1);
 
-		solicitacaoDao.updateEncerraSolicitacao(true, dataEncerramento, s1.getId());
+		solicitacaoDao.updateEncerraSolicitacao(true, dataEncerramento, s1.getId(), null);
 		Solicitacao solicitacao = solicitacaoDao.findByIdProjectionForUpdate(s1.getId());
 
 		assertEquals(s1, solicitacao);
 		assertEquals(true, solicitacao.isEncerrada());
 		assertNotNull(solicitacao.getDataEncerramento());
 
-		solicitacaoDao.updateEncerraSolicitacao(false, null, s1.getId());
+		solicitacaoDao.updateEncerraSolicitacao(false, null, s1.getId(), null);
 		solicitacao = solicitacaoDao.findByIdProjectionForUpdate(s1.getId());
 
 		assertEquals(s1, solicitacao);
