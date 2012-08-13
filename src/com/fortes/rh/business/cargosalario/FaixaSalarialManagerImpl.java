@@ -74,7 +74,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			{
 				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 				if (codigoAC == null || codigoAC.equals(""))
-					throw new Exception("O Cargo não pôde ser cadastrado no AC Pessoal.");
+					throw new Exception("O Cargo não pôde ser cadastrado no AC Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp-Cargo existente com a mesma descrição no AC Pessoal. <br>&nbsp&nbsp&nbsp- Limite excedido de cadastros de cargos no AC Pessoal.");
 
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}

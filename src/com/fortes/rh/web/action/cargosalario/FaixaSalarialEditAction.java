@@ -132,7 +132,14 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		}
 		catch(Exception e)
 		{
-			addActionError("O Cargo não pôde ser cadastrado.");
+			String message = "O Cargo não pôde ser cadastrado.";
+			
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+			
+			addActionError(message);
 			prepareInsert();
 			return Action.INPUT;
 		}
