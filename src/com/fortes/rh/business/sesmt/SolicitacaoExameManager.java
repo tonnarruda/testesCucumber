@@ -28,5 +28,6 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	SolicitacaoExame findByIdProjection(Long id);
 	void removeByCandidato(Long candidatoId);
 	Integer findProximaOrdem(Date data);
-	void ajustaOrdem(Date data, Integer ordemAnterior, Integer novaOrdem);
+	void ajustaOrdemDoList(Date data, Integer ordem) throws Exception;
+	void ajustaOrdem(Date dataAnterior, Date dataAtual, Integer ordemAnterior, Integer novaOrdem) throws Exception;
 }

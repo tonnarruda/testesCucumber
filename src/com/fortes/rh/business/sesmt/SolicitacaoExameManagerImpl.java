@@ -236,17 +236,26 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		return getDao().findProximaOrdem(data);
 	}
 
-	public void ajustaOrdem(Date data, Integer ordemAnterior, Integer novaOrdem) 
+	public void ajustaOrdemDoList(Date data, Integer ordem) throws Exception{
+		getDao().ajustaOrdem(data, ordem, null, -1);
+	}
+	
+	public void ajustaOrdem(Date dataAnterior, Date dataAtual, Integer ordemAnterior, Integer novaOrdem) throws Exception
 	{
-		if (ordemAnterior != null)
-		{
-			if (ordemAnterior < novaOrdem)
-				getDao().ajustaOrdem(data, ordemAnterior, novaOrdem, -1);
-			
-			else if (ordemAnterior > novaOrdem)
-				getDao().ajustaOrdem(data, novaOrdem, ordemAnterior, 1);
-		}else{
-			getDao().ajustaOrdem(data, novaOrdem, ordemAnterior, 1);
+		if (dataAnterior != null && dataAtual != dataAnterior){
+			getDao().ajustaOrdem(dataAtual, novaOrdem, null, 1);
+			getDao().ajustaOrdem(dataAnterior, ordemAnterior, null, -1);
+		} else {
+			if (ordemAnterior != null)
+			{
+				if (ordemAnterior < novaOrdem)
+					getDao().ajustaOrdem(dataAtual, ordemAnterior, novaOrdem, -1);
+				
+				else if (ordemAnterior > novaOrdem)
+					getDao().ajustaOrdem(dataAtual, novaOrdem, ordemAnterior, 1);
+			}else{
+				getDao().ajustaOrdem(dataAtual, novaOrdem, ordemAnterior, 1);
+			}
 		}
 	}
 }

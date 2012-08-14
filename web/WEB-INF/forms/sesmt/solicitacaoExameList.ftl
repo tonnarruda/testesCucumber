@@ -131,7 +131,7 @@
 				<a href="prepareResultados.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.colaboradorNome=${nomeColaborador}"><img border="0" title="Resultados" src="<@ww.url value="/imgs/cliper.gif"/>"></a>
 			</#if>
 			<a href="prepareUpdate.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoExame.id=${solicitacaoExame.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoExame.id=${solicitacaoExame.id}&solicitacaoExame.data=${solicitacaoExame.data}&&solicitacaoExame.ordem=${solicitacaoExame.ordem}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			
 			<#if solicitacaoExame.semExames>
 				<img border="0" title="Não há exames para esta solicitação/atendimento" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">

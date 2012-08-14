@@ -112,6 +112,7 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
+		solicitacaoExameManager.ajustaOrdemDoList(solicitacaoExame.getData(),solicitacaoExame.getOrdem());
 		solicitacaoExameManager.remove(solicitacaoExame.getId());
 		addActionMessage("Solicitação/Atendimento Médico excluído com sucesso.");
 
