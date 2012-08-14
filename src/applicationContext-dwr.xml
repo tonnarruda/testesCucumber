@@ -153,6 +153,7 @@
 		<property name="grupoACManager" ref="grupoACManager"/>
 		<property name="mail" ref="mail"/>
 		<property name="acPessoalClient" ref="acPessoalClient"/>
+		<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
 	</bean>
 
 	<bean id="gerenciadorComunicacaoDWR" class="com.fortes.rh.web.dwr.GerenciadorComunicacaoDWR">

@@ -58,8 +58,12 @@
 			 border: none; 
 			 text-decoration: none; 
 		}
+		
+		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
+		#atualizacao img { margin-right: 5px; }
 	</style>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -84,6 +88,17 @@
 			{
 				$("#splash").dialog("open");
 			}
+			
+			<@authz.authorize ifAllGranted="ROLE_UTI_HISTORICO_VERSAO">
+				UtilDWR.findUltimaVersaoPortal(function(retorno) {
+					var resposta = jQuery.parseJSON(retorno);
+					if (resposta.sucesso == '1')
+					{
+						$('#versaoPortal').text(resposta.versao);
+						$('#atualizacao').show();
+					}
+				});
+			</@authz.authorize>
 		});
 		
 		function marcarMensagemLida(usuarioMensagemId)
@@ -109,7 +124,13 @@
 
 	<@ww.actionmessage />
 	<@ww.actionerror />	
-		
+	
+	<div id="atualizacao">
+		<a title="Acessar o Portal do Cliente" href="http://www.grupofortes.com.br/portaldocliente" target="_blank">
+			<img border="0" src="<@ww.url value="/imgs/softwareUpdate.png"/>" align="absMiddle"/>
+			Versão <span id="versaoPortal"></span> disponível. Clique aqui para acessar o Portal do Cliente e realizar o download.
+		</a>
+	</div>
 		
 	<#if avaliacaos?exists && 0 < avaliacaos?size>
 		<div class="waDivTituloX">Aviso!</div>
