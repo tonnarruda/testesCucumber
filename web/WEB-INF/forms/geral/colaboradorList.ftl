@@ -210,8 +210,12 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-		<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAD_COLABORADOR">
+			<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		</@authz.authorize>
+		<@authz.authorize ifAllGranted="ROLE_REL_LISTA_COLAB">
+			<button class="btnListagemColaborador" onclick="window.location='prepareRelatorioDinamico.action'"></button>
+		</@authz.authorize>
 	</div>
 
 </body>
