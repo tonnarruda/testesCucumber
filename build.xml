@@ -28,8 +28,11 @@
 
 	<target name="init" depends="war">
 		<mkdir dir="${ant.project.name}/dist" />
-		<copy file="${metadados.dir}/update.sql" todir="${ant.project.name}/dist" />
-		<delete file="${ant.project.name}/dist/update.sql" />
+		
+		<!-- Copia arquivo de versoes para o diretorio de distribuicao -->
+		<copy file="${ant.project.name}/web/WEB-INF/fortesrh.ver" todir="${ant.project.name}/dist" />
+		
+		<!-- Gera atualizador -->
 		<antcall target="build_atualizador"></antcall>
 	</target>
 
