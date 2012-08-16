@@ -96,9 +96,15 @@
 	
 		function retornoValidaOrdem(proximaOrdem)
 		{
-			if($('#ordem').val() > proximaOrdem){
+			var ordemAtual = $('#ordem').val();
+			
+			<#if edicao>
+				proximaOrdem = proximaOrdem - 1;
+			</#if>
+			 
+			if(ordemAtual == 0 || ordemAtual > proximaOrdem ){
 				$('#ordem').css('background-color', '#FFEEC2');
-				jAlert("Ordem deve ser menor ou igual a " + proximaOrdem + ".");
+				jAlert("Ordem deve ser maior que 0(zero) e menor ou igual a " + proximaOrdem + ".");
 			}else{
 				document.form.action = "${formAction}";
 				validaform();
