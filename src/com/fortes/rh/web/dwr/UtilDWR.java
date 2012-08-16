@@ -75,7 +75,7 @@ public class UtilDWR
 			HttpURLConnection.setFollowRedirects(false);
 			HttpURLConnection con = (HttpURLConnection) new URL(URL).openConnection();
 			con.setRequestMethod("HEAD");
-			con.setConnectTimeout(2000);
+			con.setConnectTimeout(5000);
 
 			if (con.getResponseCode() == HttpURLConnection.HTTP_OK)
 			{
