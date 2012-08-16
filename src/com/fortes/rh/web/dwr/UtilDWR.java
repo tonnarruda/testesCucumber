@@ -69,7 +69,7 @@ public class UtilDWR
 	
 	public String findUltimaVersaoPortal()
 	{
-		final String URL = "http://www.fortesinformastica.com.br/v3/downloadParserVer.php?system=6396";
+		final String URL = "http://www.fortesinformatica.com.br/v3/downloadParserVer.php?system=6396";
 		
 		try {
 			HttpURLConnection.setFollowRedirects(false);
