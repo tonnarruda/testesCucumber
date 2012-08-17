@@ -16,6 +16,17 @@
 <#assign validarCampos="return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));"/>
 
 <script type='text/javascript'>
+	$(document).ready(function($)
+	{
+		var empresa = $('#empresa').val();
+	
+		DWREngine.setAsync(false);
+		
+		populaArea(empresa);
+		populaCargo(empresa);
+		populaEstabelecimento(empresa);
+	});
+
 	function populaEstabelecimento(empresaId){
 		DWRUtil.useLoadingMessage('Carregando...');
 		EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
@@ -43,16 +54,6 @@
 		addChecks('areasCheck',data);
 	}
 	
-	$(document).ready(function($)
-	{
-		var empresa = $('#empresa').val();
-		
-		populaArea(empresa);
-		populaCargo(empresa);
-		populaEstabelecimento(empresa);
-	});
-
-
 	function filtrarOpt(){
 		value =	document.getElementById('optFiltro').value;
 		if(value == "1") {
