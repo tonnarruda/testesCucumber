@@ -53,6 +53,11 @@ public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupaci
 			
 		return grupoOcupacional;
 	}
+	
+	public Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds) 
+	{
+		return getDao().findByEmpresasIds(empresaIds);
+	}
 
 	public void setCargoManager(CargoManager cargoManager)
 	{

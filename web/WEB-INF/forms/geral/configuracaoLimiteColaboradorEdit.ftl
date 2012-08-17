@@ -67,25 +67,8 @@
 			
 			$("#listaCargos").append("<tr><td><img src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' style='cursor: pointer;' onclick='removerCargo(this)' title='Remover cargo'/></td><td id='cargo_" + i + "'></td><td>" + cargoNomeMercado + "</td></tr>");
 			
-			$('<input>').attr({
-			    type: 'text',
-			    name: 'quantidadeLimiteColaboradoresPorCargos['+ i +'].limite',
-			    size: 4,
-			    id: 'c_'+ i,
-			    class: 'valida',
-			    value: limite,
-			    maxlength: 3
-			})
-			.css('text-align', 'right')
-			.keypress(function(event) {
-				return somenteNumeros(event,"");  
-			})
-			.appendTo("#cargo_" + i);
-			
-			$('<input>').attr({
-			    type: 'hidden',
-			    name: 'quantidadeLimiteColaboradoresPorCargos['+ i +'].cargo.id'
-			}).val(cargoId).appendTo("#cargo_" + i);
+			$("#cargo_" + i).append('<input type="text" name="' + 'quantidadeLimiteColaboradoresPorCargos['+ i +'].limite' + '" value="' + limite + '" style="text-align:right;" onkeypress="return somenteNumeros(event,\"\")" id="c_' + i + '" class="valida" size="4" maxlength="3"/>');
+			$("#cargo_" + i).append('<input type="hidden" name="' + 'quantidadeLimiteColaboradoresPorCargos['+ i +'].cargo.id' + '" value="' + cargoId + '"/>');
 		
 			i++;
 		}

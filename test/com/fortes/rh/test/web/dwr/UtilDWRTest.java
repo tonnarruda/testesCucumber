@@ -48,7 +48,7 @@ public class UtilDWRTest extends MockObjectTestCase
 
 		acPessoalClient.expects(once()).method("getToken").with(ANYTHING).will(returnValue(token));
 
-		String retorno = utilDWR.getToken("XXX");
+		assertEquals("Conexão efetuada com sucesso.", utilDWR.getToken("XXX"));
 	}
 
 	public void testGetTokenComAcSenha()

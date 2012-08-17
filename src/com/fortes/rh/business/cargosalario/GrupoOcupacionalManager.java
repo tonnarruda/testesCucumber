@@ -13,4 +13,5 @@ public interface GrupoOcupacionalManager extends GenericManager<GrupoOcupacional
 	Collection<GrupoOcupacional> findAllSelect(int page, int pagingSize, Long empresaId);
 	Collection<CheckBox> populaCheckOrderNome(Long empresaId);
 	GrupoOcupacional findByIdProjection(Long grupoOcupacionalId);
+	Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds);
 }

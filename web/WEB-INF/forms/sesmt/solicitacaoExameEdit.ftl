@@ -88,13 +88,40 @@
 			document.getElementById(id_da_div).style.display = '';
 		}
 	
+		function validaOrdem()
+		{
+			var data = $('#data').val();
+			SolicitacaoExameDWR.findProximaOrdem(retornoValidaOrdem, data );
+		}
+	
+		function retornoValidaOrdem(proximaOrdem)
+		{
+			var ordemAtual = $('#ordem').val();
+			
+			<#if edicao>
+				proximaOrdem = proximaOrdem - 1;
+			</#if>
+			 
+			if(ordemAtual == 0 || ordemAtual > proximaOrdem ){
+				$('#ordem').css('background-color', '#FFEEC2');
+				jAlert("Ordem deve ser maior que 0(zero) e menor ou igual a " + proximaOrdem + ".");
+			}else{
+				document.form.action = "${formAction}";
+				validaform();
+			}
+		}
+	
 		function mudaAction(opcao)
 		{
-			if (opcao == 'gravar')
-				document.form.action = "${formAction}";
-			else
+			if (opcao == 'gravar'){
+				validaOrdem();
+			}else{
 				document.form.action = "imprimirSolicitacaoExames.action";
-	
+				validaform();
+			}
+		}
+		
+		function validaform(){
 			return validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
 		}
 		
@@ -335,11 +362,13 @@
 			<#if (listaExames?exists && listaExames?size > 0)>
 				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem()" onblur="findProxOrdem()"/>
 				<@ww.textfield label="Ordem de Atendimento" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="3" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
-				<@ww.hidden name="ordemAnterior" id="ordemAnterior"/>
-				<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
-			 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
-		
-				<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
+					<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
+				 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
+			
+					<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
+					
+					<@ww.hidden name="ordemAnterior" id="ordemAnterior"/>
+					<@ww.hidden name="dataAnterior" id="dataAnterior"/>
 				
 				<div id="legendas" align="right"><span style="background-color:blue;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Exames indicados para a função</div>
 				

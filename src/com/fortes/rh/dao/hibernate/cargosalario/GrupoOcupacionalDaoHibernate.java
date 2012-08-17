@@ -76,4 +76,25 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 
 		return (GrupoOcupacional) criteria.uniqueResult();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds) 
+	{
+		Criteria criteria = getSession().createCriteria(GrupoOcupacional.class, "g");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("g.id"), "id");
+		p.add(Projections.property("g.nome"), "nome");
+		p.add(Projections.property("g.empresa.id"), "projectionEmpresaId");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("g.empresa.id", empresaIds));
+		criteria.addOrder(Order.asc("g.nome"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(GrupoOcupacional.class));
+
+		return criteria.list();
+	}
 }

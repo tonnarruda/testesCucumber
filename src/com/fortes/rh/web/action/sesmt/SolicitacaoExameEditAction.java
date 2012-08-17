@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.antcontrib.logic.Throw;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -100,6 +102,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> motivosCheckList = new ArrayList<CheckBox>();
 	
 	private Integer ordemAnterior;
+
+	private Date dataAnterior;
 	
 	public Exame getExameAso() {
 		return exameAso;
@@ -145,6 +149,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			candidato = solicitacaoExame.getCandidato();
 			
 			ordemAnterior = solicitacaoExame.getOrdem();
+			dataAnterior = solicitacaoExame.getData();
 		}
 
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
@@ -241,9 +246,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			}
 			
 			solicitacaoExame.setEmpresa(getEmpresaSistema());
-			
-			solicitacaoExameManager.ajustaOrdem(solicitacaoExame.getData(), null, solicitacaoExame.getOrdem());
-			
+			solicitacaoExameManager.ajustaOrdem(null, solicitacaoExame.getData(), null, solicitacaoExame.getOrdem());
 			solicitacaoExameManager.save(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}
 		catch (Exception e)
@@ -261,7 +264,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			solicitacaoExameManager.ajustaOrdem(solicitacaoExame.getData(), ordemAnterior, solicitacaoExame.getOrdem());
+			solicitacaoExameManager.ajustaOrdem(dataAnterior, solicitacaoExame.getData(), ordemAnterior, solicitacaoExame.getOrdem());
 			
 			solicitacaoExameManager.update(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}
@@ -711,5 +714,17 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public void setPrimeiraExecucao(boolean primeiraExecucao)
 	{
 		this.primeiraExecucao = primeiraExecucao;
+	}
+
+	
+	public Date getDataAnterior()
+	{
+		return dataAnterior;
+	}
+
+	
+	public void setDataAnterior(Date dataAnterior)
+	{
+		this.dataAnterior = dataAnterior;
 	}
 }

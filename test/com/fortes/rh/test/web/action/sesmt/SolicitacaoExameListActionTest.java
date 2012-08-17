@@ -90,6 +90,7 @@ public class SolicitacaoExameListActionTest extends MockObjectTestCase
 		empresa.setId(1L);
 
 		manager.expects(once()).method("remove").with(eq(solicitacaoExame.getId()));
+		manager.expects(once()).method("ajustaOrdemDoList").with(ANYTHING, ANYTHING);
 		
 		assertEquals("success",action.delete());
 	}

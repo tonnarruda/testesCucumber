@@ -134,6 +134,12 @@ public class CargoDWR
 		return cargoManager.findByArea(areaOrganizacionalId, empresaId);
 	}
 	
+	public Map<Long, String> getCargosByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId)
+	{
+		Collection<Cargo> cargos = cargoManager.findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComEmpresa");
+	}
+	
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;

@@ -61,6 +61,38 @@ public class GrupoOcupacionalDaoHibernateTest extends GenericDaoHibernateTest<Gr
 		
 		assertEquals(grupoOcupacional, grupoOcupacionalDao.findByIdProjection(grupoOcupacional.getId()));
 	}
+
+	public void testFindByEmpresasIds()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+		
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+		
+		GrupoOcupacional g1 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		g1.setNome("gerentes");
+		g1.setEmpresa(emp1);
+		grupoOcupacionalDao.save(g1);
+		
+		GrupoOcupacional g2 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		g2.setNome("coordenadores");
+		g2.setEmpresa(emp2);
+		grupoOcupacionalDao.save(g2);
+		
+		Collection<GrupoOcupacional> retorno;
+		
+		retorno = grupoOcupacionalDao.findByEmpresasIds(emp1.getId()); 
+		
+		assertEquals(1, retorno.size());
+		assertEquals("gerentes", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
+		
+		retorno = grupoOcupacionalDao.findByEmpresasIds(emp1.getId(), emp2.getId());
+		
+		assertEquals(2, retorno.size());
+		assertEquals("coordenadores", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
+		assertEquals("gerentes", ((GrupoOcupacional) retorno.toArray()[1]).getNome());
+	}
 	
 	public GenericDao<GrupoOcupacional> getGenericDao()
 	{

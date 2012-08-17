@@ -328,6 +328,7 @@
 				/captacao/nivelCompetencia/imprimirMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
 				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO	
 
+				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO

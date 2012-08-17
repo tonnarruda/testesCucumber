@@ -535,4 +535,35 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return query.list();
 	}
+
+	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select distinct new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
+		hql.append("from Cargo as c ");
+		hql.append("left join c.areasOrganizacionais as a ");
+		hql.append("left join c.empresa as e ");
+		hql.append("where e.id = :empresaId ");
+		
+		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
+			hql.append("and a.id in (:areaOrganizacionalIds) ");
+		
+		if (grupoOcupacionalIds != null && grupoOcupacionalIds.length > 0)
+			hql.append("and c.grupoOcupacional.id in (:grupoOcupacionalIds) ");
+		
+		hql.append("order by e.nome, c.nomeMercado ");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setLong("empresaId", empresaId);
+		
+		if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
+			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+		
+		if (grupoOcupacionalIds != null && grupoOcupacionalIds.length > 0)
+			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
+
+		return query.list();
+	}
 }

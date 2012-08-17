@@ -306,6 +306,47 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.setProjectionIndiceHistoricoValor(indiceHistoricoValor);
 	}
 	
+	// Utilizado em findByAreaGrupoCargo
+	public HistoricoColaborador(Long historicoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, Date colaboradorDataAdmissao, String vinculo, Long areaId, String areaNome, Long areaMaeId, Long cargoId, String cargoNome, Long faixaId, String faixaNome, Long grupoOcupacionalId, String grupoOcupacionalNome)
+	{
+		this.setId(historicoId);
+		
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		this.colaborador.setId(colaboradorId);
+		this.colaborador.setNome(colaboradorNome);
+		this.colaborador.setNomeComercial(colaboradorNomeComercial);
+		this.colaborador.setDataAdmissao(colaboradorDataAdmissao);
+		this.colaborador.setVinculo(vinculo);
+		
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		this.areaOrganizacional.setId(areaId);
+		this.areaOrganizacional.setNome(areaNome);
+		
+		if(this.areaOrganizacional.getAreaMae() == null)
+			this.areaOrganizacional.setAreaMae(new AreaOrganizacional());
+		this.areaOrganizacional.getAreaMae().setId(areaMaeId);
+		
+		if(this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		this.faixaSalarial.setId(faixaId);
+		this.faixaSalarial.setNome(faixaNome);
+
+		if(this.faixaSalarial.getCargo() == null)
+			this.faixaSalarial.setCargo(new Cargo());
+		this.faixaSalarial.getCargo().setId(cargoId);
+		this.faixaSalarial.getCargo().setNome(cargoNome);
+
+		if(this.faixaSalarial.getCargo().getGrupoOcupacional() == null)
+			this.faixaSalarial.getCargo().setGrupoOcupacional(new GrupoOcupacional());
+		this.faixaSalarial.getCargo().getGrupoOcupacional().setId(grupoOcupacionalId);
+		this.faixaSalarial.getCargo().getGrupoOcupacional().setNome(grupoOcupacionalNome);
+		
+		this.colaborador.setHistoricoColaborador(this);
+	}
+	
+	
 	public HistoricoColaborador()
 	{
 	}

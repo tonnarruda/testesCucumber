@@ -3,6 +3,8 @@ package com.fortes.rh.test.dao.hibernate.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -568,6 +570,49 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		}
 		
 		assertNull(exception);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testFindByAreaGrupo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+		
+		GrupoOcupacional grupo1 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacionalDao.save(grupo1);
+		
+		GrupoOcupacional grupo2 = GrupoOcupacionalFactory.getGrupoOcupacional();
+		grupoOcupacionalDao.save(grupo2);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setEmpresa(empresa);
+		cargo1.setGrupoOcupacional(grupo1);
+		cargo1.setAreasOrganizacionais(Arrays.asList(new AreaOrganizacional[] { area1, area2 }));
+		cargoDao.save(cargo1);
+
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setEmpresa(empresa);
+		cargo2.setGrupoOcupacional(grupo2);
+		cargo2.setAreasOrganizacionais(Arrays.asList(new AreaOrganizacional[] { area1 }));
+		cargoDao.save(cargo2);
+		
+		assertEquals(2, cargoDao.findByAreaGrupo(null, null, empresa.getId()).size());
+		
+		assertEquals(2, cargoDao.findByAreaGrupo(new Long[] { area1.getId() }, null, empresa.getId()).size());
+		
+		assertEquals(2, cargoDao.findByAreaGrupo(new Long[] { area1.getId(), area2.getId() }, null, empresa.getId()).size());
+		
+		assertEquals(1, cargoDao.findByAreaGrupo(new Long[] { area2.getId() }, null, empresa.getId()).size());
+		
+		assertEquals(1, cargoDao.findByAreaGrupo(new Long[] { area1.getId(), area2.getId() }, new Long[] { grupo1.getId() }, empresa.getId()).size());
+		
+		assertEquals(2, cargoDao.findByAreaGrupo(null, new Long[] { grupo1.getId(), grupo2.getId() }, empresa.getId()).size());
 	}
 	
 	public GenericDao<Cargo> getGenericDao()

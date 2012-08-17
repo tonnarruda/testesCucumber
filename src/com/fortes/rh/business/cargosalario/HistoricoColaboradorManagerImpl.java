@@ -1220,8 +1220,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicoColaboradors, empresa, null, false);
 		}
 	}
-
-	//testes samuel
+	
 	@SuppressWarnings("static-access")
 	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception
 	{
@@ -1256,6 +1255,17 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			
 		return historicoColaboradors;
 	}
+
+//	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Empresa empresa, Date dataHistorico, String[] estabelecimentosCheck, String[] areaOrganizacionalCheck, String[] grupoOcupacionalCheck, String[] cargosCheck, String vinculo) throws Exception
+//	{
+//		Collection<HistoricoColaborador> historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId, vinculo);
+//		getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
+//		
+//		if(historicoColaboradors.isEmpty())
+//			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+//		
+//		return historicoColaboradors;
+//	}
 
 	private void getRemuneracaoVariavelByAcPessoal(Date dataHistorico, Collection<HistoricoColaborador> historicoColaboradors) throws Exception 
 	{
@@ -1485,6 +1495,17 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId) {
 		getDao().removeCandidatoSolicitacao(candidatoSolicitacaoId);		
+	}
+	
+	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, String[] gruposCheck, String vinculo) throws Exception
+	{
+		Collection<HistoricoColaborador> historicos = getDao().findByAreaGrupoCargo(empresaId, dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck), LongUtil.arrayStringToArrayLong(gruposCheck), vinculo);
+		if (historicos.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+		
+		montaAreaOrganizacional(empresaId, historicos);
+		
+		return historicos;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
