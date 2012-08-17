@@ -93,9 +93,9 @@ public class UtilDWRTest extends MockObjectTestCase
 	{
 		String email="teste@teste.com";
 
-		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING});
+		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
 
-		String retorno = utilDWR.enviaEmail(email, true);
+		String retorno = utilDWR.enviaEmail(email, true, false);
 
 		assertNotNull(retorno);
 	}
@@ -104,9 +104,9 @@ public class UtilDWRTest extends MockObjectTestCase
 	{
 		String email="teste@teste.com";
 
-		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException(null)));
+		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException(null)));
 
-		String retorno = utilDWR.enviaEmail(email, true);
+		String retorno = utilDWR.enviaEmail(email, true, false);
 
 		assertNotNull(retorno);
 	}

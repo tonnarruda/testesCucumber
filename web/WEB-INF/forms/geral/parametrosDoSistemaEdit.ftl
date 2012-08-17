@@ -20,7 +20,7 @@
 				{
 					DWRUtil.useLoadingMessage('Enviando...');
 					DWREngine.setErrorHandler(error);				
-					UtilDWR.enviaEmail(apresentaMsg, email, $('#autenticacao').is(':checked'));
+					UtilDWR.enviaEmail(apresentaMsg, email, $('#autenticacao').is(':checked'), $('#tls').is(':checked'));
 				}
 				else
 					jAlert("Email Inválido!");
@@ -40,20 +40,23 @@
 		
 		$(document).ready(function(){
 			if ($('#autenticacao').is(':checked')){
+				$('#divAutenticacao').show();
 				$("#emailUser").removeAttr('disabled');
 				$("#emailPass").removeAttr('disabled');
 				
 			} else {
+				$('#divAutenticacao').hide();
 				$("#emailUser").attr('disabled','disabled');
 				$("#emailPass").attr('disabled','disabled');
 			}
 			
 			$("#autenticacao").click(function(){
 				if ($('#autenticacao').is(':checked')){
+					$('#divAutenticacao').show();
 					$("#emailUser").removeAttr('disabled');
 					$("#emailPass").removeAttr('disabled');
-				$("input").removeAttr('disabled');
 				} else {
+					$('#divAutenticacao').hide();
 					$("#emailUser").attr('disabled','disabled');
 					$("#emailPass").attr('disabled','disabled');
 				}
@@ -64,7 +67,7 @@
 		function submitForm()
 		{
 			if ($("#autenticacao").is(':checked')) {
-				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser', 'emailPass'), new Array('emailDoSuporteTecnico','proximaVersao'));
+				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','proximaVersao'));
 			} else {
 				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'));			
 			}
@@ -125,12 +128,18 @@
 	<li>
 		<@ww.div cssClass="divInfo">
 			<ul>
+				<h2>
+					Configuração para envio de email:
+				</h2>
 				<div style="float:right;"><img border="0" title="Testar envio de email" onclick="testaEmail();" src="<@ww.url includeParams="none" value="/imgs/testeEmail.gif"/>" style="cursor:pointer;"></div>
 				<@ww.textfield label="Servidor SMTP" name="parametrosDoSistema.emailSmtp" id="emailSmtp" size="40" maxLength="100" />
 				<@ww.textfield label="Porta SMTP" name="parametrosDoSistema.emailPort" id="emailPort" size="40" maxLength="100" />
 				<@ww.checkbox label="Requer autenticação" id="autenticacao" name="parametrosDoSistema.autenticacao" liClass="liLeft" labelPosition="left"/>
-				<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
-				<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
+				<div id="divAutenticacao">
+					<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
+					<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
+					<@ww.checkbox label="Usar TLS" id="tls" name="parametrosDoSistema.tls" liClass="liLeft" labelPosition="left"/>
+				</div>
 			</ul>
 		</@ww.div>
 	</li>

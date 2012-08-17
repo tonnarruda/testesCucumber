@@ -88,7 +88,7 @@ public class Mail
 			
 			try
 			{
-				Message msg = prepareMessage(empresa, parametros, subject, body, attachedFiles,  parametros.isAutenticacao());
+				Message msg = prepareMessage(empresa, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), false);
 	
 				List<String> emails = new ArrayList<String>();
 	
@@ -113,7 +113,7 @@ public class Mail
     	}
     }
 
-	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, boolean autenticacao) throws MessagingException, AddressException
+	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, boolean autenticacao, boolean tls) throws MessagingException, AddressException
 	{
 		Session session;
 
@@ -133,16 +133,16 @@ public class Mail
         properties.put("mail.smtp.host", mailSender.getHost());
         properties.put("mail.smtp.port", mailSender.getPort());
         properties.put("mail.smtp.sendpartial", "true");
-         
+        
+        
+        properties.put("mail.smtp.starttls.enable",tls);
+		properties.put("mail.smtp.auth", autenticacao);
     	if (autenticacao)
     	{
-    		properties.put("mail.smtp.starttls.enable","true");
-    		properties.put("mail.smtp.auth", "true");
     		session = Session.getInstance(properties, new AuthenticatorImpl(mailSender));
     	}
     	else
     	{
-    		properties.put("mail.smtp.auth", "false");
     		session = Session.getInstance(properties);
     	}
         Message msg = new MimeMessage(session);
@@ -259,14 +259,14 @@ public class Mail
 	}
 
 	//utilizado pelo DWR, teste do email em configurações
-	public void testEnvio(String subject, String body, String email, boolean autenticacao) throws Exception 
+	public void testEnvio(String subject, String body, String email, boolean autenticacao, boolean tls) throws Exception 
 	{
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		if(!parametros.isEnvioDeEmailHabilitado())
 			throw new Exception("Envio de Email desabilitado, entre em contato com o suporte.");
 		
-		Message msg = prepareMessage(null, parametros, subject, body, null,  autenticacao);
+		Message msg = prepareMessage(null, parametros, subject, body, null,  autenticacao, tls);
 		List<String> emails = new ArrayList<String>();
 
 		emails.add(email);

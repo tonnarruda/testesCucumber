@@ -71,6 +71,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String camposCandidatoObrigatorio;
     private String camposCandidatoTabs;
     private boolean autenticacao;
+    private boolean tls;
     
 	public String getAppContext()
 	{
@@ -299,5 +300,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setAutenticacao(boolean autenticacao) {
 		this.autenticacao = autenticacao;
+	}
+	public boolean isTls() {
+		return tls;
+	}
+	public void setTls(boolean tls) {
+		this.tls = tls;
 	}
 }
