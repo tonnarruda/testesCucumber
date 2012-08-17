@@ -1390,7 +1390,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder sql = new StringBuilder();
 		String coluna = isAdmitidos ? "c.dataAdmissao" : "c.dataDesligamento";
 		
-		sql.append("select cast(date_part('month', " + coluna + ") as int) as mes, cast(date_part('year', " + coluna + ") as int) as ano, cast(count(c.id) as double precision) as qtd from historicoColaborador as hc ");
+		sql.append("select cast(date_part('month', " + coluna + ") as int) as mes, cast(date_part('year', " + coluna + ") as int) as ano, cast(count(distinct c.id) as double precision) as qtd from historicoColaborador as hc ");
 		sql.append("join colaborador c on hc.colaborador_id = c.id ");
 		sql.append("join faixaSalarial fs on hc.faixasalarial_id = fs.id ");
 		
