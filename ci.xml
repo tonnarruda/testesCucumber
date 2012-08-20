@@ -66,43 +66,11 @@
 
 	</target>
 
-<!--
-	<target name="recreate-bd-vazio">
-		<sql driver="org.postgresql.Driver"
-			url="jdbc:postgresql://localhost:5432/template1"
-			userid="postgres"
-			password="${postgres.password}"
-			classpath="${lib.dir}/postgresql-9.0-801.jdbc3.jar"
-			autocommit="true">
-			<transaction>
-				drop database fortesrh;
-				create database fortesrh with encoding = 'UTF-8';
-			</transaction>
-		</sql>
-	</target>
-
-	<target name="recreate-bd" depends="recreate-bd-vazio">
-		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create.sql" output="create.sql.log">
-			<env key="PGPASSWORD" value="${postgres.password}" />
-			<arg value="-U" />
-			<arg value="postgres" />
-			<arg value="fortesrh" />
-		</exec>
-		<exec failonerror="true" executable="psql"
-			input="${metadados.dir}/create_data.sql" output="create_data.sql.log">
-			<env key="PGPASSWORD" value="${postgres.password}" />
-			<arg value="-U" />
-			<arg value="postgres" />
-			<arg value="fortesrh" />
-		</exec>
-	</target>
--->
 	<target name="recreate-bd">
 		<exec failonerror="true" executable="ruby"
 			output="reload_db.log">
 			<arg value="${project.dir}/features/support/reload_db.rb" />
-			<arg value="--start" />
+			<arg value=" --start" />
 		</exec>
 	</target>
 	
