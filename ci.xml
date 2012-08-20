@@ -102,7 +102,7 @@
 		<exec failonerror="true" executable="ruby"
 			output="reload_db.log">
 			<arg value="${project.dir}/features/support/reload_db.rb" />
-			<arg value="--start" />
+			<arg value=" --start" />
 		</exec>
 	</target>
 	
