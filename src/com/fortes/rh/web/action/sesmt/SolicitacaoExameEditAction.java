@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.antcontrib.logic.Throw;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.captacao.CandidatoManager;

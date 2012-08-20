@@ -19134,7 +19134,26 @@ UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=559 WHERE atualizaPape
 insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 560 from perfil_papel where papeis_id =55;--.go
 update papel set codigo = 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO' where id = 484;--.go
 
-
-
 insert into migrations values('20120808174248');--.go
 update parametrosdosistema set appversao = '1.1.83.78';--.go
+-- versao 1.1.84.79
+update papel set ordem = 3 where id=396;--.go
+
+update papel set ordem = ordem + 1 where papelmae_id = 364 and ordem >= 5;--.go
+update papel set ordem = ordem + 1 where papelmae_id = 364 and ordem >7;--.go
+update papel set ordem = ordem + 1 where papelmae_id = 364 and ordem >9;--.go
+
+update papel set ordem = 5 where id=35;--.go
+update papel set ordem = 8 where id=407;--.go
+update papel set ordem = 10 where id=511;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (561, 'ROLE_REL_COLAB_GRUPOOCUPACIONAL', 'Colaboradores por Grupo Ocupacional', '/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action', 4, true, 364);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=561 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+alter sequence papel_sequence restart with 562;--.go
+
+insert into migrations values('20120810095307');--.go
+alter table parametrosdosistema add column autenticacao boolean default true;--.go
+insert into migrations values('20120813154127');--.go
+alter table parametrosdosistema add column tls boolean default false;--.go
+insert into migrations values('20120817094608');--.go
+update parametrosdosistema set appversao = '1.1.84.79';--.go

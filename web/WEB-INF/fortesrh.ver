@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.84.79" data="20/08/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Notificação de nova versão disponível no Portal do Cliente.
+			:: R&S > Movimentações > Solicitação de Pessoal: Possibilidade de inserir observação ao encerrar solicitação. 
+			:: C&S > Relatórios > Colaboradores por Grupo Ocupacional: Novo relatório.
+			:: Utilitários > Configurações > Sistema: Novas formas de autenticação do SMTP.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.83.78" data="10/08/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Nova ação para excluir respostas do avaliador. 

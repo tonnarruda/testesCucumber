@@ -4,19 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -4860,7 +4864,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 561, false);
+SELECT pg_catalog.setval('papel_sequence', 562, false);
 
 
 --
@@ -4895,7 +4899,9 @@ CREATE TABLE parametrosdosistema (
     camposcandidatotabs text,
     compartilharcolaboradores boolean DEFAULT true,
     compartilharcandidatos boolean DEFAULT true,
-    proximaversao date
+    proximaversao date,
+    autenticacao boolean DEFAULT true,
+    tls boolean DEFAULT false
 );
 
 
@@ -27766,6 +27772,9 @@ INSERT INTO migrations (name) VALUES ('20120801105316');
 INSERT INTO migrations (name) VALUES ('20120807095420');
 INSERT INTO migrations (name) VALUES ('20120808094558');
 INSERT INTO migrations (name) VALUES ('20120808174248');
+INSERT INTO migrations (name) VALUES ('20120810095307');
+INSERT INTO migrations (name) VALUES ('20120813154127');
+INSERT INTO migrations (name) VALUES ('20120817094608');
 
 
 --
@@ -27862,15 +27871,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (54, 'ROLE_REL_CARGO', 'Descrição de Cargos', '/cargosalario/cargo/prepareRelatorioCargo.action', 1, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (471, 'ROLE_REL_COLAB_CARGO', 'Colaboradores por Cargo', '/cargosalario/cargo/prepareRelatorioColaboradorCargo.action', 2, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (543, 'EXIBIR_SALARIO_RELAT_COLAB_CARGO', 'Mostrar opção Exibir Salário', '#', 1, false, NULL, 471);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (35, 'ROLE_REL_SIMULACAOREAJUSTE', 'Realinhamentos', '/cargosalario/reajusteRelatorio/formFiltro.action', 3, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (396, 'ROLE_REL_AREAORGANIZACIONAL', 'Colaboradores por Área Organizacional', '/geral/areaOrganizacionalRelatorio/formFiltro.action', 4, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (406, 'ROLE_MOV_TABELA', 'Análise de Tabela Salarial', '/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro.action', 5, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 6, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 6, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (473, 'ROLE_REL_SITUACOES', 'Situações', '/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action', 7, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 7, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (519, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 8, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 9, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (355, 'ROLE_PES_MOV', 'Movimentações', '#', 1, true, NULL, 353);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (28, 'ROLE_MOV_QUESTIONARIO', 'Pesquisas', '/pesquisa/pesquisa/list.action', 1, true, NULL, 355);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (401, 'ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO', 'Pode Responder Pesquisa Por Outro Usuário', '#', 4, false, NULL, 353);
@@ -27923,6 +27923,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (469, 'ROLE_COLAB_MOV', 'Movimentações', '#', 2, true, NULL, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 4, true, NULL, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (480, 'ROLE_CAD_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 2, true, NULL, 469);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, NULL, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (29, 'ROLE_MOV_GASTO_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/list.action', 11, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (377, 'ROLE_COLAB_REL', 'Relatórios', '#', 3, true, NULL, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 1, true, NULL, 377);
@@ -27982,7 +27983,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (445, 'ROLE_CAD_EXTINTOR', 'Extintores', '/sesmt/extintor/list.action', 7, true, NULL, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 8, true, NULL, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (437, 'ROLE_CAD_ETAPAPROCESSOELEITORAL', 'Etapas do Processo Eleitoral', '/sesmt/etapaProcessoEleitoral/list.action', 1, true, NULL, 455);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, NULL, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (439, 'ROLE_CAD_ELEICAO', 'Comissões', '/sesmt/comissao/list.action', 3, true, NULL, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 10, true, NULL, 385);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 11, true, NULL, 385);
@@ -28049,13 +28049,23 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções com Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Apagar Respostas', '#', 1, false, NULL, 55);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode ver e responder Aval. Desempenho', '#', 3, false, NULL, 382);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (396, 'ROLE_REL_AREAORGANIZACIONAL', 'Colaboradores por Área Organizacional', '/geral/areaOrganizacionalRelatorio/formFiltro.action', 3, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (406, 'ROLE_MOV_TABELA', 'Análise de Tabela Salarial', '/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro.action', 6, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 7, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (473, 'ROLE_REL_SITUACOES', 'Situações', '/cargosalario/historicoColaborador/prepareRelatorioSituacoes.action', 9, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (519, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 11, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 12, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (35, 'ROLE_REL_SIMULACAOREAJUSTE', 'Realinhamentos', '/cargosalario/reajusteRelatorio/formFiltro.action', 5, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 8, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 10, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (561, 'ROLE_REL_COLAB_GRUPOOCUPACIONAL', 'Colaboradores por Grupo Ocupacional', '/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action', 4, true, NULL, 364);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.83.78', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.84.79', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false);
 
 
 --
