@@ -99,6 +99,12 @@
 
 	<@display.table name="solicitacaos" id="solicitacao" class="dados">
 		
+		<#if solicitacao.id?exists>
+			<#assign solicitacaoId="${solicitacao.id}"/>					
+		<#else>
+			<#assign solicitacaoId=""/>					
+		</#if>
+		
 		<#if solicitacao.observacaoLiberador?exists>
 			<#assign observacaoLiberador="${solicitacao.observacaoLiberador}"/>					
 		<#else>
@@ -211,7 +217,7 @@
 		<@ww.form name="formEncerraSolicitacao" id="formEncerraSolicitacao" action="encerrarSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposEncerra}" >
 			<@ww.datepicker label="Data de Encerramento" name="dataEncerramento" id="dataEncerramento" cssClass="mascaraData" />
 			<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova"/>
-			<@ww.hidden name="solicitacao.id" id="solicitacaoIdEncerrar" value="${solicitacao.id}"/>
+			<@ww.hidden name="solicitacao.id" id="solicitacaoIdEncerrar" value="${solicitacaoId}"/>
 		</@ww.form>
 		<button onclick="${validarCamposEncerra};" class="btnEncerrarSolicitacao grayBG"></button>
 		<button onclick="window.location='list.action'" class="btnCancelar grayBG">	</button>
@@ -219,7 +225,7 @@
 	<div id="suspendeDiv" title="Suspender Solicitação">
 		<@ww.form name="formSuspendeSolicitacao" id="formSuspendeSolicitacao" action="suspenderSolicitacao.action" validate="true" method="POST" onsubmit="${validarCamposSuspende}">
 			<@ww.textarea label="Observações sobre a suspensão" name="solicitacao.obsSuspensao" id="obsSuspensao" />
-			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender" value="${solicitacao.id}"/>
+			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender" value="${solicitacaoId}"/>
 		</@ww.form>
 		<button onclick="${validarCamposSuspende};" class="btnSuspenderSolicitacao grayBG">
 		</button>
