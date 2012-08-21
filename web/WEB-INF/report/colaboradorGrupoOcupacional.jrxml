@@ -32,7 +32,7 @@
 	<field name="colaborador.tempoDeServico" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
 	<field name="colaborador.nomeMaisNomeComercial" class="java.lang.String"/>
-	<field name="colaborador.vinculo" class="java.lang.String"/>
+	<field name="colaborador.vinculoDescricao" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.grupoOcupacional.nome" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
@@ -284,7 +284,7 @@
 					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.vinculo}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.vinculoDescricao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
