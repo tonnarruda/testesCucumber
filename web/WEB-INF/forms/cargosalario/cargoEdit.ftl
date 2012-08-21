@@ -68,17 +68,25 @@
 		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
 			
-			$("#descricaoCBO").autocomplete({
-				source: ajaxData(urlFind),				 
-				minLength: 2,
-				select: function( event, ui ) { 
-					$("#codigoCBO").val(ui.item.id);
-				}
-			}).data( "autocomplete" )._renderItem = renderData;
-
-			$('#descricaoCBO').focus(function() {
-			    $(this).select();
-			});			
+			
+			<#if empresaSistema.acIntegra>
+				$('#codigoCBO, #descricaoCBO').attr('readOnly','readOnly')
+												.attr('title','Não é possível alterar o CBO quando integrado com o AC Pessoal.')
+												.css('background-color','#F2F2F2');
+				
+			<#else>
+				$("#descricaoCBO").autocomplete({
+					source: ajaxData(urlFind),				 
+					minLength: 2,
+					select: function( event, ui ) { 
+						$("#codigoCBO").val(ui.item.id);
+					}
+				}).data( "autocomplete" )._renderItem = renderData;
+	
+				$('#descricaoCBO').focus(function() {
+				    $(this).select();
+				});
+			</#if>
 		});
 	</script>
 
@@ -98,7 +106,7 @@
 	
 	<@ww.textfield label="Cód. CBO" name="cargo.cboCodigo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft"/>
 	<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
-	<div style="clear:both"/>
+	<div style="clear:both"></div>
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
