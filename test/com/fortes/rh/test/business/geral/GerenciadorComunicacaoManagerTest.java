@@ -209,6 +209,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 
 		// se for inserir mais  um defalt terá de aterar no importador o método insereGerenciadorComunicacaoDefault(empresa) em empresaJDBC.
 		Exception exception = null;
@@ -1255,6 +1256,44 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try {
 			gerenciadorComunicacaoManager.enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi();
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
+	public void testEnviarEmailTerminoContratoTemporarioColaborador()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Teo");
+		colaborador.setNomeComercial("Teo");
+		colaborador.setEmpresa(empresa);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+		colaborador2.setNome("Leo");
+		colaborador2.setNomeComercial("Leo");
+		colaborador2.setEmpresa(empresa);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao.setEmpresa(empresa);
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		gerenciadorComunicacao.setQtdDiasLembrete("1");
+
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.TERMINO_CONTRATO_COLABORADOR.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		colaboradorManager.expects(atLeastOnce()).method("findParaLembreteTerminoContratoTemporario").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador, colaborador2)));
+		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		Exception exception = null;
+		try {
+			gerenciadorComunicacaoManager.enviarEmailTerminoContratoTemporarioColaborador();
 		} catch (Exception e) {
 			exception = e;
 		}

@@ -64,7 +64,7 @@
 			}
 			
 			if($('#operacao').val() == ${lembreteQuestionarioNaoLiberadoId} || $('#operacao').val() == ${avaliacaoPeriodoExperienciaVencendoId} ||
-			   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId})
+			   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteTerminoContratoTemporarioColaboradorId})
 			{
 				if($('.dias').size() == 0 )
 				{
@@ -169,7 +169,7 @@
 		function exibeCampoQtdDiasLembrete(operacaoId)
 		{
 			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} ||
-											   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId});
+											   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId});
 									   
 			var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 			$('#camposQtdDiasLembrete label').text(label);

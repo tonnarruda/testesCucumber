@@ -112,6 +112,12 @@
 		<#assign dataAdm = ""/>
 	</#if>
 	
+	<#if colaborador?exists && colaborador.dataEncerramentoContrato?exists>
+		<#assign dataEncerramentoContrato = colaborador.dataEncerramentoContrato?date/>
+	<#else>
+		<#assign dataEncerramentoContrato = ""/>
+	</#if>
+	
 	<#if colaborador?exists && colaborador.pessoal?exists && colaborador.pessoal.rgDataExpedicao?exists>
 		<#assign rgDataExpedicao = colaborador.pessoal.rgDataExpedicao?date/>
 	<#else>
@@ -210,7 +216,25 @@
 					populaAmbiente($('#estabelecimento').val(), null);
 				}
 			</#if>
+			
+			
+			habilitaDtEncerramentoContrato();
 		});
+		
+		function habilitaDtEncerramentoContrato()
+		{
+			if ($('#vinculo').val() == 'E')
+			{
+				$('#dt_encerramentoContrato_button').hide();
+				$('#dt_encerramentoContrato').attr('disabled', 'disabled').css('background', '#F6F6F6');
+				$('#dt_encerramentoContrato').val('');
+			} else {
+				$('#dt_encerramentoContrato').removeAttr('disabled').css('background', '#FFFFFF');
+				$('#dt_encerramentoContrato_button').show();
+				
+			}
+		}
+		
 	
 		function populaAmbiente(estabelecimentoId, ambienteId)
 		{
@@ -313,7 +337,7 @@
 				arrayValidacao.push('ambiente','funcao');
 			</#if>
 			
-			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
+			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
 		}
 	</script>
 </head>
@@ -347,7 +371,7 @@
 		<@ww.textarea label="Informações Adicionais" id="obs" name="obs" cssStyle="width: 705px;"/>
 	</div>
 
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
+	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST" enctype="multipart/form-data">
 		<div id="content1">
 
 			<#assign somenteLeituraIntegraAC="false" />
@@ -437,8 +461,8 @@
 
 				<br clear="all"/>
 
-				<label for="dt_admissao">Colocação:</label><br />
-				<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"/>
+				<label for="colocacao">Colocação:</label><br />
+				<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" list="vinculos" onchange="habilitaDtEncerramentoContrato();" id="vinculo" cssStyle="width: 150px;"/>
 				<img id="vinculoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 				
 				<br clear="all"/>
@@ -447,7 +471,8 @@
 				<@ww.hidden  name="colaborador.vinculo" />
 			<#else>
 				<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
-				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"/>
+				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato();" liClass="liLeft" />
+				<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
 			</#if>
 			
 			<@ww.textfield label="Regime de Revezamento (PPP)" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="50"/>

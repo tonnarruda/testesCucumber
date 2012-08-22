@@ -105,6 +105,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO, empresa));
 		save(new GerenciadorComunicacao(Operacao.GERAR_BACKUP, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.TERMINO_CONTRATO_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 	}
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
@@ -159,7 +160,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.SOLICITANTE_SOLICITACAO.getId())){
-						mail.send(empresa, parametrosDoSistema, subject, body.toString(), new String[]{emailSolicitante, empresa.getEmailRespRH()});
+	    				String[] emails = (gerenciadorComunicacao.getEmpresa().getEmailRespRH()+";"+emailSolicitante).split(";");
+						mail.send(empresa, parametrosDoSistema, subject, body.toString(), emails);
 					} 		
 				}
 			}
@@ -305,8 +307,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						corpo.append("a " + label + questionario.getTitulo() + " está prevista para iniciar no dia " + DateUtil.formataDiaMesAno(questionario.getDataInicio())+".<br>") ;
 						corpo.append("Você ainda precisa liberá-la para que os colaboradores possam respondê-la.") ;
 
-						if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
-							mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, questionario.getEmpresa().getEmailRespRH());
+						if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
+		    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+							mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, emails);
+						}
+							
 					}
 				} 		
 			}
@@ -337,7 +342,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId(), empresaId);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
-    				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+    				mail.send(empresa, subject, body.toString(), null, emails);
     			} 		
     		}
 
@@ -385,7 +391,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.QTD_CURRICULOS_CADASTRADOS.getId(), empresa.getId());
 	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
-	    				mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
+	    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+	    				mail.send(empresa, subject, body.toString(), null, emails);
 	    			} 		
 	    		}
 			}
@@ -422,8 +429,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	    			} 		
 	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
 	    			{
-	    				Empresa empresa = empresaManager.findEmailsEmpresa(gerenciadorComunicacao.getEmpresa().getId());	
-	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, empresa.getEmailRespRH());
+	    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, emails);
 	    			} 		
 	    		}
 				
@@ -662,6 +669,41 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					
 					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, usuarioEmpresaPeriodoExperiencia, colaborador, TipoMensagem.INDIFERENTE);
 				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void enviarEmailTerminoContratoTemporarioColaborador() throws Exception{
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+		
+		StringBuilder body;
+		Collection<Integer> diasLembretes;
+		Collection<Colaborador> colaboradors;
+		String subject = "[Fortes RH] Término de Contrato Temporário";
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.TERMINO_CONTRATO_COLABORADOR.getId(), null);
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
+			{	
+				diasLembretes = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				
+				colaboradors = colaboradorManager.findParaLembreteTerminoContratoTemporario(diasLembretes, gerenciadorComunicacao.getEmpresa().getId());
+				
+				if(colaboradors.isEmpty())
+					continue;
+				
+				body = new StringBuilder();
+				body.append("Os contratos dos colaboradores abaixo estão próximos a vencer.");
+				
+				for (Colaborador colaborador : colaboradors) {
+					body.append("\n"+colaborador.getNomeMaisNomeComercial());					
+				}
+				
+				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+				
+				mail.send(gerenciadorComunicacao.getEmpresa(), subject, null, body.toString(), emails);
 			}
 		}
 	}

@@ -129,4 +129,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
 	public Collection<Colaborador> triar(Long empresaId, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade);
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
+	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
 }

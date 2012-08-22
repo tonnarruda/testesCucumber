@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(24, Operacao.values().length);
+		assertEquals(25, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -48,6 +48,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Cadastrar ocorrência", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar afastamento", Operacao.getDescricaoById(++i));
 		assertEquals("Contratar colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Terminar contrato temporário do colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -88,6 +89,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 22
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 23 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 24 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 25 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 		
@@ -121,6 +123,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CADASTRAR_OCORRENCIA.getId());					 // 22
 		assertEquals(++i, Operacao.CADASTRAR_AFASTAMENTO.getId());			 // 23
 		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR.getId());			 // 24
+		assertEquals(++i, Operacao.TERMINO_CONTRATO_COLABORADOR.getId());			 // 25
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -377,6 +380,17 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+
+	public void testTerminoContratoTemporarioColaborador()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.TERMINO_CONTRATO_COLABORADOR;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	

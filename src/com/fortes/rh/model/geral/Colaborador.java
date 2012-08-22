@@ -138,6 +138,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Usuario usuario;
 	@Column(length=5)
 	private String vinculo;
+	@Temporal(TemporalType.DATE)
+	private Date dataEncerramentoContrato;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaborador")
 	private Collection<Dependente> dependentes;
 	@Column(length=12)
@@ -545,6 +547,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.contato = colaborador.getContato();
 		this.usuario = colaborador.getUsuario();
 		this.vinculo = colaborador.getVinculo();
+		this.dataEncerramentoContrato = colaborador.getDataEncerramentoContrato();
 		this.dependentes = colaborador.getDependentes();
 		this.codigoAC = colaborador.getCodigoAC();
 	    this.cursos = colaborador.getCursos();
@@ -2564,7 +2567,18 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return membroComissaoCipa;
 	}
 
-	public void setMembroComissaoCipa(boolean membroComissaoCipa) {
+	public void setMembroComissaoCipa(boolean membroComissaoCipa)
+	{
 		this.membroComissaoCipa = membroComissaoCipa;
+	}
+
+	public Date getDataEncerramentoContrato()
+	{
+		return dataEncerramentoContrato;
+	}
+
+	public void setDataEncerramentoContrato(Date dataEncerramentoContrato)
+	{
+		this.dataEncerramentoContrato = dataEncerramentoContrato;
 	}
 }

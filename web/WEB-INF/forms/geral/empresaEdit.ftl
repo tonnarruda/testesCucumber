@@ -103,7 +103,7 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal','respRH'));
+		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}

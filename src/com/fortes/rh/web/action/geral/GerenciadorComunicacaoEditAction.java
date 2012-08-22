@@ -151,6 +151,11 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId();
 	}
 	
+	public int getLembreteTerminoContratoTemporarioColaboradorId()
+	{
+		return Operacao.TERMINO_CONTRATO_COLABORADOR.getId();
+	}
+	
 	public GerenciadorComunicacao getGerenciadorComunicacao()
 	{
 		if(gerenciadorComunicacao == null)

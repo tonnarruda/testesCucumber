@@ -15,6 +15,7 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 {
 	public Collection<GerenciadorComunicacao> findByOperacaoId(Integer operacaoId, Long empresaId) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
+		criteria = criteria.createCriteria("gc.empresa", "e");
 		
 		criteria.add(Expression.eq("gc.operacao", operacaoId));
 		if (empresaId != null)

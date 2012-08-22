@@ -1,0 +1,1 @@
+alter table colaborador add column dataencerramentocontrato date; --.go

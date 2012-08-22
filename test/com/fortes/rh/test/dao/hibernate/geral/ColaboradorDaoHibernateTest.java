@@ -4918,6 +4918,40 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradorDao.findAguardandoEntregaEpi(Arrays.asList(1, 3), empresa.getId()).size());
 	}
 	
+	public void testFfindParaLembreteTerminoContratoTemporario()
+	{
+		Calendar cincoDiasAtras = Calendar.getInstance();
+		cincoDiasAtras.add(Calendar.DAY_OF_YEAR, 5);
+		
+		Calendar tresDiasAtras = Calendar.getInstance();
+		tresDiasAtras.add(Calendar.DAY_OF_YEAR, 3);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setDataEncerramentoContrato(cincoDiasAtras.getTime());
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDataEncerramentoContrato(tresDiasAtras.getTime());
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		assertEquals(1, colaboradorDao.findParaLembreteTerminoContratoTemporario(Arrays.asList(1, 3), empresa.getId()).size());
+	}
+	
 	public void testTriar() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();

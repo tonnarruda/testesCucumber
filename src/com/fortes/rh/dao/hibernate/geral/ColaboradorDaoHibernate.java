@@ -4181,6 +4181,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
+	
 	public Collection<Colaborador> triar(Long empresaId, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade) 
 	{
 		StringBuilder hql = new StringBuilder();
@@ -4243,4 +4244,33 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return query.list();
 	}
+	
+	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembrete, Long empresaId)
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.dataEncerramentoContrato"), "dataEncerramentoContrato");
+		criteria.setProjection(p);
+
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.sqlRestriction("({alias}.dataEncerramentoContrato - ?) in ("+diasLembrete.toString().replaceAll("[\\[\\]]","") +")", new Date(), Hibernate.DATE));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
 }

@@ -2519,6 +2519,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		CollectionUtil<Colaborador> cul = new CollectionUtil<Colaborador>();
 		return cul.sortCollectionDouble(colaboradores, "mediaPerformance");
 	}
+	
+	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId)
+	{
+		return getDao().findParaLembreteTerminoContratoTemporario(diasLembretes, empresaId);
+	}
 
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{

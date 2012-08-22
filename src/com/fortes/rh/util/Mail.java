@@ -93,8 +93,8 @@ public class Mail
 				List<String> emails = new ArrayList<String>();
 	
 				for (int i = 0; i < to.length; i++)
-					if (to[i] != null && !to[i].equals(""))
-						emails.add(to[i]);
+					if (to[i] != null && !to[i].trim().equals(""))
+						emails.add(to[i].trim());
 	
 				Address[] address = new Address[emails.size()];
 	
@@ -113,7 +113,7 @@ public class Mail
     	}
     }
 
-	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, boolean autenticacao, boolean tls) throws MessagingException, AddressException
+	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException
 	{
 		Session session;
 
@@ -134,9 +134,8 @@ public class Mail
         properties.put("mail.smtp.port", mailSender.getPort());
         properties.put("mail.smtp.sendpartial", "true");
         
-        
-        properties.put("mail.smtp.starttls.enable",tls);
-		properties.put("mail.smtp.auth", autenticacao);
+        properties.put("mail.smtp.starttls.enable",tls.toString());
+		properties.put("mail.smtp.auth", autenticacao.toString());
     	if (autenticacao)
     	{
     		session = Session.getInstance(properties, new AuthenticatorImpl(mailSender));

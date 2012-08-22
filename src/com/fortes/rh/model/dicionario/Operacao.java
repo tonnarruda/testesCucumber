@@ -180,7 +180,15 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	}, 
-	
+	TERMINO_CONTRATO_COLABORADOR(25, "Terminar contrato temporário do colaborador", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			
+			return this.getListMeioComunicacao();
+		}
+	}, 
 	CADASTRAR_LIMITE_COLABORADOR_CARGO(15, "Cadastrar limite de colaboradores por cargo", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
