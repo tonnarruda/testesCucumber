@@ -151,56 +151,9 @@
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
 		<#if mensagems?exists>
 			<div class="caixas">
-				<div class="column left">
+				<div class="column">
 					<#assign i = 1/>
-					<#assign qtd = mensagems?keys?size/>
-					
-					<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
-						<#assign qtd = qtd + 1/>
-						<div class="portlet">
-							<div class="portlet-header">Pesquisas/Avaliações Disponíveis</div>
-							<div class="portlet-content">
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list questionarios as questionario>
-										<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=${questionario.id}&colaborador.id=${colaborador.id}&tela=index&validarFormulario=true">${questionario.titulo}</a></p>
-									</#list>
-								</#if>
-								
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list avaliacoesDesempenhoPendentes as avaliacaoDesempenho>
-										<p>
-										<a href="avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}">${avaliacaoDesempenho.avaliacaoDesempenho.titulo} (${avaliacaoDesempenho.colaborador.nome}) (${avaliacaoDesempenho.avaliacaoDesempenho.periodoFormatado})</a>
-										</p>
-									</#list>
-								</#if>
-						
-								<#if (questionarios?size < 1 && avaliacoesDesempenhoPendentes?size < 1)>
-									<span>Não existem questionários disponíveis</span>
-								</#if>
-							</div>
-						</div>
-					</#if>
-					
-					<#if colaboradorQuestionariosTeD?exists>
-						<#assign qtd = qtd + 1/>
-						<div class="portlet">
-							<div class="portlet-header">Avaliações de T&D</div>
-							<div class="portlet-content">
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list colaboradorQuestionariosTeD as colaboradorQuestionarioTeD>
-										<a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">
-											${colaboradorQuestionarioTeD.questionario.titulo} (Curso ${colaboradorQuestionarioTeD.turma.curso.nome}, turma ${colaboradorQuestionarioTeD.turma.descricao})
-										</a>
-										<br />
-									</#list>
-								</#if>
-								
-								<#if colaboradorQuestionariosTeD?size < 1>
-									<span>Não existem Avaliações de T&D disponíveis</span>
-								</#if>
-							</div>
-						</div>
-					</#if>
+					<#assign meio = (mensagems?keys?size/2)?int/>
 					
 					<#list mensagems?keys as tipo>
 						<div class="portlet">
@@ -247,10 +200,9 @@
 							</div>
 						</div>
 
-						<#-- Passa para a coluna da esquerda -->
-						<#if i == (qtd/2)?int - 1>
+						<#if i == meio + 1>
 							</div>
-							<div class="column right">
+							<div class="column">
 						</#if>
 						
 						<#assign i = i+1/>
