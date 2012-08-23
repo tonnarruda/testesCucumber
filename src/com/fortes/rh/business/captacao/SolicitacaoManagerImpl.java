@@ -221,7 +221,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		String link = parametrosDoSistema.getAppUrl();
 		
 		Collection<String> emails = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
-		emails.add(empresa.getEmailRespRH());
+		Collection<String> emailsRH = new CollectionUtil<String>().convertArrayToCollection(empresa.getEmailRespRH().split(";"));
+		
+		emails.addAll(emailsRH);
 		
 		if (emails != null && !emails.isEmpty())
 		{
