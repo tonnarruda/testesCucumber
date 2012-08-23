@@ -256,7 +256,6 @@
 						<#assign i = i+1/>
 					</#list>
 				</div>
-				
 			</div>
 		</#if>
 	</@authz.authorize>
