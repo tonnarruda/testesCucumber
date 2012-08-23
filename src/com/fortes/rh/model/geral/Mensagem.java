@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.dicionario.TipoMensagem;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,7 +26,7 @@ public class Mensagem extends AbstractModel implements Serializable
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Colaborador colaborador;
-	private Character tipo = TipoMensagem.INDIFERENTE;
+	private Character tipo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;

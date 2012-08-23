@@ -1249,6 +1249,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		StringBuffer mensagem = new StringBuffer();
 		
+		mensagem.append("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seus dados: \n\n");
+		
 		mensagem.append("Dados originais: \n");
 		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
 			mensagem.append("Logradouro: " + colaboradorOriginal.getEndereco().getLogradouro() + "\n");
@@ -1339,7 +1341,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresaId, "ROLE_VISUALIZAR_MSG");
 		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas, null, TipoMensagem.ENDERECO);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
 	}
 	
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)

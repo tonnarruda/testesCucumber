@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.geral;
 
+
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;

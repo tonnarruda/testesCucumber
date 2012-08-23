@@ -602,9 +602,6 @@
     <property name="dao">
       <ref bean="usuarioMensagemDao" />
     </property>
-    <property name="transactionManager">
-      <ref bean="transactionManager" />
-    </property>
     <property name="mensagemManager">
       <ref bean="mensagemManager" />
     </property>

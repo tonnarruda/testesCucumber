@@ -1,4 +1,3 @@
-
 <#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
@@ -12,40 +11,13 @@
 <head>
 	<style>
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
-		div.odd
-		{
-			background-color: #FFF;
-			font-family: Arial, Helvetica, sans-serif;
-			font-size:13px;
-			padding: 10px;
-		}
-		div.even
-		{
-			background-color: #E4F0FE;
-			font-family: Arial, Helvetica, sans-serif;
-			font-size:13px;
-			padding: 10px;
-		}
-		div.even a, div.odd a
-		{
-			font-weight: bold;
-			text-decoration: none;
-			color: #454C54;
-		}
-		
-		a, a:visited {
-		text-decoration:none;
-		color: #454C54;
-		font-family: Arial, Helvetica, sans-serif;
-		font-size:13px;
-		}
-		
+				
 		a:link {text-decoration: none}
 		a:visited {text-decoration: none}
-		a:hover {text-decoration: underline; 
-		color: #2471A7;
-		}
+		a:hover {text-decoration: underline; color: #2471A7; }
 		a:active {text-decoration: none}
+		
+		.dados td { font-size: 11px; }
 		
 		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
 		#fecharSplash {
@@ -61,6 +33,14 @@
 		
 		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
 		#atualizacao img { margin-right: 5px; }
+		
+		.column { width: 500px; float: left; padding-bottom: 100px; }
+		.portlet { margin: 0 1em 1em 0; }
+		.portlet-header { margin: 0.3em; padding: 3px; }
+		.portlet-header .ui-icon { float: right; }
+		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
+		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
+		.ui-sortable-placeholder * { visibility: hidden; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
@@ -89,8 +69,26 @@
 				$("#splash").dialog("open");
 			}
 			
-			<#assign superAdmin><@authz.authentication operation="superAdmin"/></#assign>
-			<#if superAdmin == "true">
+			$( ".column" ).sortable({
+				connectWith: ".column",
+				handle: ".portlet-header"
+			});
+			
+			$( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+				.find( ".portlet-header" )
+					.addClass( "ui-widget-header ui-corner-all" )
+					.prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+					.end()
+				.find( ".portlet-content" );
+	
+			$( ".portlet-header .ui-icon" ).click(function() {
+				$( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+				$( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+			});
+	
+			$( ".column" ).disableSelection();
+			
+			<@authz.authorize ifAllGranted="ROLE_UTI_HISTORICO_VERSAO">
 				UtilDWR.findUltimaVersaoPortal(function(retorno) {
 					var resposta = jQuery.parseJSON(retorno);
 					if (resposta.sucesso == '1')
@@ -99,7 +97,6 @@
 						$('#atualizacao').show();
 					}
 				});
-			</#if>
 		});
 		
 		function marcarMensagemLida(usuarioMensagemId)
@@ -132,7 +129,387 @@
 			Versão <span id="versaoPortal"></span> disponível. Clique aqui para acessar o Portal do Cliente e realizar o download.
 		</a>
 	</div>
-		
+	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
+		<#if mensagems?exists>
+			<div class="caixas">
+				<div class="column">
+				
+					<div class="portlet">
+						<div class="portlet-header">Integração com AC Pessoal</div>
+						<div class="portlet-content">
+							<div class="odd bold">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even bold">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="portlet">
+						<div class="portlet-header">Informações Funcionais</div>
+						<div class="portlet-content">
+							<table width="100%" class="dados" style="border:none;">
+								<tbody>
+									<#assign i=0/>
+									<#list action.getMensagens('F') as uMsg>
+										<#if i%2==0>
+											<#assign class="odd"/>
+										<#else>
+											<#assign class="even"/>
+										</#if>
+
+										<#if !uMsg.lida>
+											<#assign style="font-weight: bold;"/>
+											<#assign status="Não">
+										<#else>
+											<#assign style=""/>
+											<#assign status="Sim">
+										</#if>
+									
+										<tr class="${class}" style="${style}">
+											<td width="40" align="center">
+												<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${uMsg.id}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+												<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${uMsg.id}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+											</td>
+											<td>
+												<a href="#">
+													${uMsg.mensagem.remetente} - ${uMsg.mensagem.data}<br />
+													${uMsg.mensagem.textoAbreviado}
+												</a>
+											</td>
+										</tr>
+										<#assign i=i+1/>
+									</#list>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					<div class="portlet">
+						<div class="portlet-header">Pesquisas/Avaliações Disponíveis</div>
+						<div class="portlet-content">
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+				
+				<div class="column">
+				
+					<div class="portlet">
+						<div class="portlet-header">Avaliações de T&D</div>
+						<div class="portlet-content">
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="portlet">
+						<div class="portlet-header">Recrutamento & Seleção</div>
+						<div class="portlet-content">
+							<div class="odd bold">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even bold">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="portlet">
+						<div class="portlet-header">SESMT</div>
+						<div class="portlet-content">
+							<div class="odd">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="even">
+								<table width="100%">
+									<tr>
+										<td width="40">
+											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
+										</td>
+										<td>
+											<a href="#">
+												RH - 25/06/2012 07:32<br />
+												Período de Experiência: 0 dias para a Avaliação de 45 dias...
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</#if>
+	</@authz.authorize>
+	
+	
+	
+	
+	
+	
+	
+	
+	<#-- 
 	<#if avaliacaos?exists && 0 < avaliacaos?size>
 		<div class="waDivTituloX">Aviso!</div>
 		<div class="waDivFormularioX">
@@ -279,6 +656,7 @@
 			</div>
 		</#if>
 	</@authz.authorize>
+	-->
 	
 	<div id="splash">
 		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');">

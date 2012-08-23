@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -73,7 +74,7 @@ public class Index extends ActionSupport
 	private Collection<Pesquisa> pesquisasColaborador = new ArrayList<Pesquisa>();
 	private Collection<Questionario> questionarios;
 	private Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD;
-	private Collection<UsuarioMensagem> mensagems;
+	private Map<Character, Collection<UsuarioMensagem>> mensagems;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
 	private Collection<Avaliacao> avaliacaos;
@@ -172,6 +173,11 @@ public class Index extends ActionSupport
 		}
         
 		return Action.SUCCESS;
+	}
+	
+	public Collection<UsuarioMensagem> getMensagens(char tipoMensagem)
+	{
+		return mensagems.get(tipoMensagem);
 	}
 
 	private void validaAvaliacoesDesempenho()
@@ -368,14 +374,14 @@ public class Index extends ActionSupport
 		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
-	public void setMensagems(Collection<UsuarioMensagem> mensagems)
-	{
-		this.mensagems = mensagems;
-	}
-
-	public Collection<UsuarioMensagem> getMensagems()
+	public Map<Character, Collection<UsuarioMensagem>> getMensagems() 
 	{
 		return mensagems;
+	}
+
+	public void setMensagems(Map<Character, Collection<UsuarioMensagem>> mensagems) 
+	{
+		this.mensagems = mensagems;
 	}
 
 	public boolean isPgInicial()

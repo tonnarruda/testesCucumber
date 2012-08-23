@@ -7,7 +7,6 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManagerImpl;
@@ -34,7 +33,6 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 	private UsuarioMensagemManagerImpl usuarioMensagemManager = new UsuarioMensagemManagerImpl();
 	private Mock usuarioMensagemDao = null;
 	private Mock mensagemManager = null;
-	private Mock transactionManager = null;
 	private Mock usuarioEmpresaManager = null;
 
     protected void setUp() throws Exception
@@ -47,9 +45,6 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
         mensagemManager = new Mock(MensagemManager.class);
         usuarioMensagemManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 
-        transactionManager = new Mock(PlatformTransactionManager.class);
-        usuarioMensagemManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
-        
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
         usuarioMensagemManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 
@@ -145,9 +140,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 		String [] usuariosCheck = {"1"};
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		usuarioMensagemDao.expects(atLeastOnce()).method("save").with(ANYTHING);
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		usuarioMensagemManager.salvaMensagem(empresa, mensagem, usuariosCheck);
 
@@ -160,9 +153,6 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
 
 		String [] usuariosCheck = null;
-
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exception = null;
 
@@ -183,6 +173,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity(1L);
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
+		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
 
 		Collection<UsuarioEmpresa> usuarioEmpresas = new ArrayList<UsuarioEmpresa>();
 		usuarioEmpresas.add(usuarioEmpresa);
@@ -190,7 +181,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INDIFERENTE);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
 	}
 
 	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception

@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+
 import java.util.Collection;
 
 import org.hibernate.Criteria;
@@ -28,6 +29,7 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 		p.add(Projections.property("m.data"), "projectionMensagemData");
 		p.add(Projections.property("m.texto"), "projectionMensagemTexto");
 		p.add(Projections.property("m.link"), "projectionMensagemLink");
+		p.add(Projections.property("m.tipo"), "projectionMensagemTipo");
 
 		criteria.setProjection(p);
 

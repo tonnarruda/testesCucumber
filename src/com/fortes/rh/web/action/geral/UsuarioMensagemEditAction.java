@@ -9,6 +9,7 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
@@ -78,6 +79,7 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 		try
 		{
 			mensagemNova = mensagemManager.save(usuarioMensagem.getMensagem());
+			mensagemNova.setTipo(TipoMensagem.UTILITARIOS);
 
 			usuarioMensagemManager.salvaMensagem(usuarioMensagem.getEmpresa(), mensagemNova, usuariosCheck);
 

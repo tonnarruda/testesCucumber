@@ -3,11 +3,8 @@ package com.fortes.rh.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
@@ -22,13 +19,23 @@ import com.fortes.rh.model.geral.UsuarioMensagem;
 
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {
-	private PlatformTransactionManager transactionManager;
 	private MensagemManager mensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 
-	public Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId)
+	public Map<Character, Collection<UsuarioMensagem>> listaUsuarioMensagem(Long usuarioId, Long empresaId)
 	{
-		return getDao().listaUsuarioMensagem(usuarioId, empresaId);
+		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
+		Map<Character, Collection<UsuarioMensagem>> mensagensAgrupadas = new LinkedHashMap<Character, Collection<UsuarioMensagem>>();
+		
+		for (UsuarioMensagem usuarioMensagem : usuarioMensagens)
+		{
+			if (!mensagensAgrupadas.containsKey(usuarioMensagem.getMensagem().getTipo()))
+				mensagensAgrupadas.put(usuarioMensagem.getMensagem().getTipo(), new ArrayList<UsuarioMensagem>());
+			
+			mensagensAgrupadas.get(usuarioMensagem.getMensagem().getTipo()).add(usuarioMensagem);
+		}
+		
+		return mensagensAgrupadas;
 	}
 
 	public UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId)
@@ -43,10 +50,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 	public void salvaMensagem(Empresa empresa, Mensagem mensagem, String[] usuariosCheck) throws Exception
 	{
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-
 		try
 		{
 			for(int i=0; i < usuariosCheck.length; i++)
@@ -62,13 +65,10 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 
 				save(usuarioMensagem);
 			}
-
-			transactionManager.commit(status);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			transactionManager.rollback(status);
 			throw e;
 		}
 	}
@@ -101,12 +101,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, TipoMensagem.INDIFERENTE);
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, TipoMensagem.AVALIACAO_DESEMPENHO);
 	}
 
 	public void setMensagemManager(MensagemManager mensagemManager)
