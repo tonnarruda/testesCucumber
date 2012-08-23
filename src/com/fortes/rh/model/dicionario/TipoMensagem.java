@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 
 @SuppressWarnings("serial")
-public class TipoMensagem extends LinkedHashMap<Object, Object>
+public class TipoMensagem extends LinkedHashMap<Character, String>
 {
 	public static final char CARGO_SALARIO = 'C';
 	public static final char AVALIACAO_DESEMPENHO = 'A';
@@ -13,4 +13,14 @@ public class TipoMensagem extends LinkedHashMap<Object, Object>
 	public static final char UTILITARIOS = 'U';
 
 	public static final char DESLIGAMENTO = 'D';
+
+	public TipoMensagem() 
+	{
+		put(CARGO_SALARIO, "Cargo & Salário");
+		put(AVALIACAO_DESEMPENHO, "Avaliação de Desempenho");
+		put(INFO_FUNCIONAIS, "Informações Funcionais");
+		put(SESMT, "SESMT");
+		put(UTILITARIOS, "Utilitários");
+		put(DESLIGAMENTO, "Desligamento");
+	}
 }

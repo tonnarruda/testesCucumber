@@ -36,6 +36,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -178,6 +179,11 @@ public class Index extends ActionSupport
 	public Collection<UsuarioMensagem> getMensagens(char tipoMensagem)
 	{
 		return mensagems.get(tipoMensagem);
+	}
+	
+	public String getDescricaoTipo(char tipoMensagem)
+	{
+		return new TipoMensagem().get(tipoMensagem);
 	}
 
 	private void validaAvaliacoesDesempenho()

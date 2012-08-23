@@ -41,6 +41,8 @@
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
 		.ui-sortable-placeholder * { visibility: hidden; }
+		
+		.remetenteHora { color: #069; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
@@ -134,370 +136,63 @@
 		<#if mensagems?exists>
 			<div class="caixas">
 				<div class="column">
-				
-					<div class="portlet">
-						<div class="portlet-header">Integração com AC Pessoal</div>
-						<div class="portlet-content">
-							<div class="odd bold">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even bold">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
+					<#assign i = 1/>
+					<#assign meio = (mensagems?keys?size/2)?int/>
+					
+					<#list mensagems?keys as tipo>
+						<div class="portlet">
+							<div class="portlet-header">${action.getDescricaoTipo(tipo)}</div>
+							<div class="portlet-content">
+								<table width="100%" class="dados" style="border:none;">
+									<tbody>
+										<#assign j=0/>
+										<#list action.getMensagens(tipo) as uMsg>
+											<#if j%2==0>
+												<#assign class="odd"/>
+											<#else>
+												<#assign class="even"/>
+											</#if>
+	
+											<#if !uMsg.lida>
+												<#assign style="font-weight: bold;"/>
+												<#assign status="Não">
+											<#else>
+												<#assign style=""/>
+												<#assign status="Sim">
+											</#if>
+										
+											<tr class="${class}">
+												<td width="40" align="center">
+													<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${uMsg.id}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+													<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${uMsg.id}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+												</td>
+												<td>
+													<span class="remetenteHora">${uMsg.mensagem.remetente} - ${uMsg.mensagem.data?string("dd/MM/yyyy HH:mm")}</span><br />
+													<#if uMsg.mensagem.link?exists && uMsg.mensagem.link != "">
+														<a href="${uMsg.mensagem.link}" title="${uMsg.mensagem.textoAbreviado}"  onclick="marcarMensagemLida(${uMsg.id});" style="${style}">
+															${uMsg.mensagem.textoAbreviado}
+														</a>
+													<#else>
+														${uMsg.mensagem.textoAbreviado}
+													</#if>
+												</td>
+											</tr>
+											<#assign j=j+1/>
+										</#list>
+									</tbody>
 								</table>
 							</div>
 						</div>
-					</div>
-					
-					<div class="portlet">
-						<div class="portlet-header">Informações Funcionais</div>
-						<div class="portlet-content">
-							<table width="100%" class="dados" style="border:none;">
-								<tbody>
-									<#assign i=0/>
-									<#list action.getMensagens('F') as uMsg>
-										<#if i%2==0>
-											<#assign class="odd"/>
-										<#else>
-											<#assign class="even"/>
-										</#if>
 
-										<#if !uMsg.lida>
-											<#assign style="font-weight: bold;"/>
-											<#assign status="Não">
-										<#else>
-											<#assign style=""/>
-											<#assign status="Sim">
-										</#if>
-									
-										<tr class="${class}" style="${style}">
-											<td width="40" align="center">
-												<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${uMsg.id}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-												<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${uMsg.id}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
-											</td>
-											<td>
-												<a href="#">
-													${uMsg.mensagem.remetente} - ${uMsg.mensagem.data}<br />
-													${uMsg.mensagem.textoAbreviado}
-												</a>
-											</td>
-										</tr>
-										<#assign i=i+1/>
-									</#list>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					
-					<div class="portlet">
-						<div class="portlet-header">Pesquisas/Avaliações Disponíveis</div>
-						<div class="portlet-content">
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
+						<#if i == meio + 1>
 							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-				
+							<div class="column">
+						</#if>
+						
+						<#assign i = i+1/>
+					</#list>
 				</div>
 				
-				<div class="column">
-				
-					<div class="portlet">
-						<div class="portlet-header">Avaliações de T&D</div>
-						<div class="portlet-content">
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					
-					<div class="portlet">
-						<div class="portlet-header">Recrutamento & Seleção</div>
-						<div class="portlet-content">
-							<div class="odd bold">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even bold">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-					
-					<div class="portlet">
-						<div class="portlet-header">SESMT</div>
-						<div class="portlet-content">
-							<div class="odd">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div class="even">
-								<table width="100%">
-									<tr>
-										<td width="40">
-											<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=68656', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-											<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=68656'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"></a>
-										</td>
-										<td>
-											<a href="#">
-												RH - 25/06/2012 07:32<br />
-												Período de Experiência: 0 dias para a Avaliação de 45 dias...
-											</a>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>
-				
-				</div>
 			</div>
 		</#if>
 	</@authz.authorize>
