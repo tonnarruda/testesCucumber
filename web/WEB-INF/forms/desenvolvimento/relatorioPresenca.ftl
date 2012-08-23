@@ -10,7 +10,7 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
-<title>Lista de Freqüência</title>
+<title>Lista de Presença</title>
 	<script type='text/javascript'>
 		function populaDias(frm)
 		{

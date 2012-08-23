@@ -74,7 +74,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 			else
 				montaListaDePresenca(null, (ArrayList<ColaboradorTurma> )colaboradorTurmas);
 
-			parametros = RelatorioUtil.getParametrosRelatorio("Lista de Frequência", getEmpresaSistema(), "");
+			parametros = RelatorioUtil.getParametrosRelatorio("Lista de Presença", getEmpresaSistema(), "");
 			parametros = montaParametros(turma);
 		}
 		catch (Exception e)
