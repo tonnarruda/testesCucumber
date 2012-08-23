@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import mockit.Mockit;
 
@@ -78,7 +79,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
 
-		Collection<UsuarioMensagem> retorno = usuarioMensagemManager.listaUsuarioMensagem(usuario.getId(), empresa.getId());
+		Map<Character, Collection<UsuarioMensagem>> retorno = usuarioMensagemManager.listaUsuarioMensagem(usuario.getId(), empresa.getId());
 
 		assertEquals(usuarioMensagems.size(), retorno.size());
 	}
