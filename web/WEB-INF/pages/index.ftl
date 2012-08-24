@@ -264,7 +264,7 @@
 	<br clear="all"/>
 	
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
-		<#if pendenciaACs?exists>
+		<#if integradoAC && pendenciaACs?exists>
 			<div class="waDivTituloX">Pendências com o AC Pessoal</div>
 			<div class="waDivFormularioX">
 			<#if pendenciaACs?size < 1>
