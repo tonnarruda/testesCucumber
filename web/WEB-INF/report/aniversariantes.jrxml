@@ -72,7 +72,7 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="24"
+						width="27"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="1" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -83,9 +83,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="216"
+						x="227"
 						y="0"
-						width="212"
+						width="197"
 						height="11"
 						key="staticText-2">
 							<printWhenExpression><![CDATA[new Boolean($P{EXIBIR_AREA}.booleanValue() == true)]]></printWhenExpression>
@@ -98,9 +98,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="28"
+						x="29"
 						y="0"
-						width="186"
+						width="196"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="1" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -111,9 +111,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="216"
+						x="227"
 						y="0"
-						width="212"
+						width="197"
 						height="11"
 						key="staticText-4">
 							<printWhenExpression><![CDATA[new Boolean($P{EXIBIR_CARGO}.booleanValue() == true)]]></printWhenExpression>
@@ -126,9 +126,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="430"
+						x="426"
 						y="0"
-						width="106"
+						width="111"
 						height="11"
 						key="staticText-5"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -159,7 +159,7 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="24"
+						width="27"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="1" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -170,9 +170,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="216"
+						x="227"
 						y="0"
-						width="212"
+						width="197"
 						height="11"
 						key="textField">
 							<printWhenExpression><![CDATA[new Boolean($P{EXIBIR_AREA}.booleanValue() == true)]]></printWhenExpression>
@@ -185,9 +185,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="28"
+						x="29"
 						y="0"
-						width="186"
+						width="196"
 						height="11"
 						key="textField-8"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="1" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -198,9 +198,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="216"
+						x="227"
 						y="0"
-						width="212"
+						width="197"
 						height="11"
 						key="textField-9">
 							<printWhenExpression><![CDATA[new Boolean($P{EXIBIR_CARGO}.booleanValue() == true)]]></printWhenExpression>
@@ -213,9 +213,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="426"
 						y="0"
-						width="106"
+						width="111"
 						height="11"
 						key="textField-10"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
