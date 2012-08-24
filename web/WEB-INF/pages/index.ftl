@@ -34,8 +34,9 @@
 		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
 		#atualizacao img { margin-right: 5px; }
 		
-		.column { width: 500px; float: left; padding-bottom: 100px; }
-		.portlet { margin: 0 1em 1em 0; }
+		.column { width: 50%; float: left; }
+		.left .portlet { margin: 0 0.5em 1em 0; }
+		.right .portlet { margin: 0 0 1em 0.5em; }
 		.portlet-header { margin: 0.3em; padding: 3px; }
 		.portlet-header .ui-icon { float: right; }
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
@@ -132,12 +133,74 @@
 		</a>
 	</div>
 	
+	<#if avaliacaos?exists && 0 < avaliacaos?size>
+		<div class="waDivTituloX">Aviso!</div>
+		<div class="waDivFormularioX">
+			<p>
+				<strong>Caro cliente,</strong><br>
+				Existe uma inconsistência no cadastro de Modelo de Avaliação, foi criado um novo vínculo entre o "Modelo de Avaliação" e "Períodos de Acompanhamento de Experiência".<br>
+				Clique nos "Modelo de Avaliação" abaixo e edite o campo "Períodos de Acompanhamento de Experiência":<br><br>
+				<#list avaliacaos as avaliacao>
+					<a href="avaliacao/modelo/prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${avaliacao.tipoModeloAvaliacao}&telaInicial=true">${avaliacao.titulo}</a><br>
+				</#list>
+			</p>
+		</div>
+		<br />
+	</#if>
+	
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
 		<#if mensagems?exists>
 			<div class="caixas">
-				<div class="column">
+				<div class="column left">
 					<#assign i = 1/>
-					<#assign meio = (mensagems?keys?size/2)?int/>
+					<#assign qtd = mensagems?keys?size/>
+					
+					<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
+						<#assign qtd = qtd + 1/>
+						<div class="portlet">
+							<div class="portlet-header">Pesquisas/Avaliações Disponíveis</div>
+							<div class="portlet-content">
+								<#if colaborador?exists && colaborador.id?exists>
+									<#list questionarios as questionario>
+										<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=${questionario.id}&colaborador.id=${colaborador.id}&tela=index&validarFormulario=true">${questionario.titulo}</a></p>
+									</#list>
+								</#if>
+								
+								<#if colaborador?exists && colaborador.id?exists>
+									<#list avaliacoesDesempenhoPendentes as avaliacaoDesempenho>
+										<p>
+										<a href="avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}">${avaliacaoDesempenho.avaliacaoDesempenho.titulo} (${avaliacaoDesempenho.colaborador.nome}) (${avaliacaoDesempenho.avaliacaoDesempenho.periodoFormatado})</a>
+										</p>
+									</#list>
+								</#if>
+						
+								<#if (questionarios?size < 1 && avaliacoesDesempenhoPendentes?size < 1)>
+									<span>Não existem questionários disponíveis</span>
+								</#if>
+							</div>
+						</div>
+					</#if>
+					
+					<#if colaboradorQuestionariosTeD?exists>
+						<#assign qtd = qtd + 1/>
+						<div class="portlet">
+							<div class="portlet-header">Avaliações de T&D</div>
+							<div class="portlet-content">
+								<#if colaborador?exists && colaborador.id?exists>
+									<#list colaboradorQuestionariosTeD as colaboradorQuestionarioTeD>
+										<a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">
+											${colaboradorQuestionarioTeD.questionario.titulo} (Curso ${colaboradorQuestionarioTeD.turma.curso.nome}, turma ${colaboradorQuestionarioTeD.turma.descricao})
+										</a>
+										<br />
+									</#list>
+								</#if>
+								
+								<#if colaboradorQuestionariosTeD?size < 1>
+									<span>Não existem Avaliações de T&D disponíveis</span>
+								</#if>
+							</div>
+						</div>
+					</#if>
 					
 					<#list mensagems?keys as tipo>
 						<div class="portlet">
@@ -184,9 +247,10 @@
 							</div>
 						</div>
 
-						<#if i == meio + 1>
+						<#-- Passa para a coluna da esquerda -->
+						<#if i == (qtd/2)?int - 1>
 							</div>
-							<div class="column">
+							<div class="column right">
 						</#if>
 						
 						<#assign i = i+1/>
@@ -197,7 +261,24 @@
 		</#if>
 	</@authz.authorize>
 	
+	<br clear="all"/>
 	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
+		<#if pendenciaACs?exists>
+			<div class="waDivTituloX">Pendências com o AC Pessoal</div>
+			<div class="waDivFormularioX">
+			<#if pendenciaACs?size < 1>
+				<span>Nenhuma pendência</span>
+			<#else>
+				<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
+					<@display.column property="pendencia" title="Pendência" />
+					<@display.column property="detalhes" title="Detalhes" />
+					<@display.column property="status" title="Status" />
+				</@display.table>
+			</#if>
+			</div>
+		</#if>
+	</@authz.authorize>
 	
 	
 	
