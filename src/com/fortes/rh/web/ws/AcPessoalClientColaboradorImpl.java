@@ -242,7 +242,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		        	item.setEstabelecimento(historico.getEstabelecimento().getCodigoAC());
 		        	item.setSaltipo(String.valueOf(TipoAplicacaoIndice.getCodigoAC(historico.getTipoSalario())));
 		        	item.setDataRescisao(DateUtil.formataDiaMesAno(historico.getDataSolicitacaoDesligamento()));
-		        	item.setObs(historico.getObsACPessoal());
+		        	item.setObs(historico.getObsACPessoal().substring(0, 255));
 		        	
 		        	item.setExpAgenteNocivo(historico.getGfip());
 
