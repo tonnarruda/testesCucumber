@@ -1525,7 +1525,8 @@ CREATE TABLE colaborador (
     solicitacao_id bigint,
     dataatualizacao date,
     observacaodemissao text,
-    datasolicitacaodesligamentoac date
+    datasolicitacaodesligamentoac date,
+    dataencerramentocontrato date
 );
 
 
@@ -3949,7 +3950,7 @@ ALTER TABLE public.gerenciadorcomunicacao_sequence OWNER TO postgres;
 -- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 18, true);
+SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 19, true);
 
 
 --
@@ -27448,6 +27449,7 @@ INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, d
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (16, 11, 2, 6, NULL, 1, NULL);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (17, 3, 1, 14, NULL, 1, NULL);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (18, 9, 2, 7, NULL, 1, NULL);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (19, 25, 2, 7, NULL, 1, '7');
 
 
 --
@@ -27775,6 +27777,9 @@ INSERT INTO migrations (name) VALUES ('20120808174248');
 INSERT INTO migrations (name) VALUES ('20120810095307');
 INSERT INTO migrations (name) VALUES ('20120813154127');
 INSERT INTO migrations (name) VALUES ('20120817094608');
+INSERT INTO migrations (name) VALUES ('20120822104956');
+INSERT INTO migrations (name) VALUES ('20120823085851');
+INSERT INTO migrations (name) VALUES ('20120823141947');
 
 
 --
@@ -27898,7 +27903,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (31, 'ROLE_REL_MATRIZ', 'Matriz de Qualificação', '/desenvolvimento/turma/prepareImprimirMatriz.action', 1, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (32, 'ROLE_REL_PLANO', 'Plano de Treinamento', '/desenvolvimento/turma/prepareImprimirTurma.action', 2, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (33, 'ROLE_REL_SEM_INDICACAO', 'Colaboradores sem Indicação de Trein.', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorSemIndicacao.action', 3, true, NULL, 368);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (43, 'ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA', 'Lista de Frequência', '/desenvolvimento/relatorioPresenca/prepareRelatorio.action', 4, true, NULL, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (61, 'ROLE_CERTIFICADO_CURSO', 'Certificados', '/desenvolvimento/turma/prepareImprimirCertificado.action', 5, true, NULL, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (418, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Cronograma de Treinamento', '/desenvolvimento/turma/filtroCronogramaTreinamento.action', 6, true, NULL, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (415, 'ROLE_REL_COLABORADOR_SEM_TREINAMENTO', 'Colaboradores sem Treinamentos', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaborador.action', 7, true, NULL, 368);
@@ -28059,13 +28063,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 8, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 10, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (561, 'ROLE_REL_COLAB_GRUPOOCUPACIONAL', 'Colaboradores por Grupo Ocupacional', '/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action', 4, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (43, 'ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA', 'Lista de Presença', '/desenvolvimento/relatorioPresenca/prepareRelatorio.action', 4, true, NULL, 368);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.84.79', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, diaslembretepesquisa, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, diaslembreteperiodoexperiencia, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.85.80', NULL, 25, NULL, NULL, NULL, '', NULL, false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false);
 
 
 --

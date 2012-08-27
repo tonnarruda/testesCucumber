@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.85.80" data="27/08/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Cadastros > Colaboradores > Editar/Inserir: Novo campo [Encerramento do Contrato] para colaboradores que não sejam da colocação empregado.
+			:: Utilitários > Cadastros > Empresas: Possibilidade de inserir mais de um email no campo Email Resp. RH.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.84.79" data="20/08/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Notificação de nova versão disponível no Portal do Cliente.

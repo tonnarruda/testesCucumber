@@ -19157,3 +19157,26 @@ insert into migrations values('20120813154127');--.go
 alter table parametrosdosistema add column tls boolean default false;--.go
 insert into migrations values('20120817094608');--.go
 update parametrosdosistema set appversao = '1.1.84.79';--.go
+-- versao 1.1.85.80
+
+alter table colaborador add column dataencerramentocontrato date; --.go
+insert into migrations values('20120822104956');--.go
+CREATE FUNCTION insert_gerenciador_comunicao() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select e.id as empresaId from empresa e
+		LOOP
+			INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara, qtddiaslembrete) VALUES (nextval('gerenciadorComunicacao_sequence'), mviews.empresaId, 25, 2, 7, '7');
+		END LOOP;
+
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insert_gerenciador_comunicao();--.go
+drop function insert_gerenciador_comunicao();--.go 
+insert into migrations values('20120823085851');--.go
+update papel set nome='Lista de Presença' where id= 43;--.go
+insert into migrations values('20120823141947');--.go
+update parametrosdosistema set appversao = '1.1.85.80';--.go

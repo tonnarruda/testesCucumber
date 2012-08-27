@@ -8,8 +8,8 @@ Funcionalidade: Relatório de Lista de Frequência
 
     Dado que eu esteja logado
     
-    Quando eu acesso o menu "T&D > Relatórios > Lista de Frequência"
-    Então eu devo ver o título "Lista de Freqüência"
+    Quando eu acesso o menu "T&D > Relatórios > Lista de Presença"
+    Então eu devo ver o título "Lista de Presença"
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 
