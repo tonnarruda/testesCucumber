@@ -64,6 +64,7 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 	public void testInsert() throws Exception
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity(1L);
+		grupoAC.setAcSenha("abc");
 		action.setGrupoAC(grupoAC);
 
 		manager.expects(once()).method("save").with(eq(grupoAC)).will(returnValue(grupoAC));
@@ -82,6 +83,7 @@ public class GrupoACEditActionTest extends MockObjectTestCase
 	public void testUpdate() throws Exception
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity(1L);
+		grupoAC.setAcSenha("abc");
 		action.setGrupoAC(grupoAC);
 
 		manager.expects(once()).method("updateGrupo").with(eq(grupoAC)).isVoid();

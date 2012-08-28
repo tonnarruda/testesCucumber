@@ -98,12 +98,10 @@
 		{
 			var ordemAtual = $('#ordem').val();
 			
-			if(proximaOrdem > 1)
-			{
-				<#if edicao>
+			<#if edicao>
+				if(proximaOrdem > 1)
 					proximaOrdem = proximaOrdem - 1;
-				</#if>
-			}
+			</#if>
 			 
 			if(ordemAtual == 0 || ordemAtual > proximaOrdem ){
 				$('#ordem').css('background-color', '#FFEEC2');

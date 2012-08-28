@@ -40,6 +40,7 @@ public class GrupoACEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
+			grupoAC.setAcSenha(grupoAC.getAcSenha().toUpperCase());
 			grupoACManager.save(grupoAC);
 			return Action.SUCCESS;
 		} catch (DataIntegrityViolationException e) {
@@ -58,6 +59,7 @@ public class GrupoACEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
+			grupoAC.setAcSenha(grupoAC.getAcSenha().toUpperCase());
 			grupoACManager.updateGrupo(grupoAC);
 			return Action.SUCCESS;
 		} catch (DataIntegrityViolationException e) {

@@ -49,7 +49,6 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockLongUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
@@ -164,9 +163,9 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	
-    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas.size()));
-    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null), eq(""), eq(new String[]{})).will(returnValue(1));
+    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING, eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
     	
@@ -453,8 +452,8 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	colabTurmaCollection.add(colaboradorTurma);
     	
     	action.setColaborador(colaborador);
-    	action.setDataIni(DateUtil.criarAnoMesDia(2010, 01, 01));
-    	action.setDataFim(DateUtil.criarAnoMesDia(2010, 01, 01));
+    	action.setDataIni(DateUtil.criarDataMesAno(01, 01, 2010));
+    	action.setDataFim(DateUtil.criarDataMesAno(01, 01, 2010));
     	
     	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
     	certificacaoManager.expects(once()).method("montaMatriz").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<MatrizTreinamento>()));
@@ -500,8 +499,9 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null)).will(returnValue(colaboradorTurmas.size()));
-    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null), eq(""), eq(new String[]{})).will(returnValue(1));
+    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING,  eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 

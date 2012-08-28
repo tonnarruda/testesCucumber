@@ -132,9 +132,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradores;
 	}
 
-	public Integer getCount(Long turmaId, Long empresaId)
+	public Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds)
 	{
-		return getDao().getCount(turmaId, empresaId);
+		return getDao().getCount(turmaId, empresaId, colaboradorNome, estabelecimentoIds);
 	}
 
 	public Collection<ColaboradorTurma> filtroRelatorioPlanoTrei(LinkedHashMap filtro)
@@ -396,12 +396,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize)
 	{
-		return getDao().findByTurma(turmaId, null, empresaId, page, pagingSize);
+		return getDao().findByTurma(turmaId, null, empresaId, null, page, pagingSize);
 	}
 
-	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Integer page, Integer pagingSize)
 	{
-		return getDao().findByTurma(turmaId, colaboradorNome, empresaId, page, pagingSize);
+		return getDao().findByTurma(turmaId, colaboradorNome, empresaId, estabelecimentoIds, page, pagingSize);
 	}
 	
 	public void saveUpdate(Collection<Long> colaboradoresTurmaId, boolean aprovado) throws Exception

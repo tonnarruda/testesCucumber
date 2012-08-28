@@ -14,6 +14,7 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao
@@ -256,7 +258,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
-
+		
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("cq.id"), "id");
@@ -270,7 +272,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 			criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
 		if (empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
-
+		
 		criteria.add(Expression.eq("cq.turma.id", turmaId));
 		criteria.add(Expression.eq("cq.respondida", true));
 
