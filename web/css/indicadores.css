@@ -117,3 +117,43 @@ div.graph3 {
 	width: 965px;
 	text-align: right;
 }
+
+
+.grid {
+	
+}
+
+.grid .grid-cell {
+	width: 470px;
+	vertical-align: top;
+	border: 1px solid #7E9DB9;
+	position: relative;
+}
+
+.grid .graph {
+	float: none;
+	width: 220px !important;
+	height: 180px;
+	margin: 0px auto;
+}
+
+.grid .dados {
+	border: none;
+}
+
+.grid .table-wrapper {
+	overflow: scroll; 
+	overflow-x: hidden; 
+	width: 100%; 
+	height: 220px;
+}
+
+.grid .cell-title {
+	display: block;
+	margin: 0;
+	padding: 3px 4px;
+	font-size: 13px;
+	font-weight: normal;
+	background: #EBECF1;
+	border-bottom: 1px solid #7E9DB9;
+}

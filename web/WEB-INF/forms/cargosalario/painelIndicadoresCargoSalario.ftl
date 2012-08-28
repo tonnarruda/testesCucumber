@@ -62,6 +62,7 @@
 		}
 		
 		.btnImprimir { float: right; margin: 10px; }
+		.icoImprimir { float: right; }
 	</style>
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -357,12 +358,12 @@
 		
 		<div class="legendTotal">Valor total da folha em ${dateBase}: ${valorTotalFolha}</div>
 		<div class="fieldGraph">
-			<h1>Salário por Área Organizacional</h1>
+			<h1>
+				Salário por Área Organizacional
+				<img id="salarioAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+			</h1>
 		    <div id="salarioAreas" class="graph"></div>
 		    <div id="salarioAreasLegenda"></div>
-		    <div style="clear:both"></div>
-		    
-		    <button class="btnImprimir" id="salarioAreasImprimir"></button>
 		</div>
 		
 		<div style="clear: both"></div>

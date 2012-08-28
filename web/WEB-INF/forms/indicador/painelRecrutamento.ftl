@@ -10,10 +10,10 @@
 		@import url('<@ww.url value="/css/indicadores.css"/>');
 		
 		.formula { margin: 7px 5px; }
-		div.graph { height: 220px; }
-		div.graph li { padding: 10px; }
-		div.fieldGraph { height: 280px; }
-		.btnImprimir { float: right; margin: 5px; }
+		.icoImprimir { float: right; cursor: pointer; }
+		
+		#indicadores li { padding: 10px; }
+		.divFiltro { margin-left: 5px; }
 	</style>
 	
 
@@ -38,7 +38,7 @@
 				content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos no período * 100)'
 			});
 		
-			totalVagas = 0;
+			var totalVagas = 0;
 			$('.qtdVagaCargo').each(function() {
 			    totalVagas = totalVagas + parseInt($(this).text());
 			});
@@ -77,7 +77,7 @@
 		
 		function montaGrafico(obj, dados, titulo)
 		{
-			montaPie(dados, obj, {combinePercentMin: 0.05, percentMin: 0.05});
+			montaPie(dados, obj, { combinePercentMin: 0.02, percentMin: 0.03, noColumns: 2, container: obj + "Legenda" });
 			
 			$(obj + "Imprimir")
 					.unbind()
@@ -90,7 +90,7 @@
 								popup.focus();
 								popup.document.getElementById('popupTitulo').innerHTML = titulo;
 								
-								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: 0.05, percentMin: 0.05} );
+								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: 0.02, percentMin: 0.03} );
 								popup.window.print();
 								popup.window.close();
 							}
@@ -143,92 +143,114 @@
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 
-	<div class="fieldGraph">
-		<h1>Vagas Disponíveis (total: <span id="totalVagas"></span>)</h1>
-	    <div id="vagasDisponiveis" class="graph" style="overflow: scroll; overflow-x: hidden; width: 477px !important; height: 220px;">
-	    	<@display.table name="faixaSalarials" id="faixa" class="dados" style="width: 460px;">
-				<@display.column property="descricao" title="Cargo" style="width: 415px;"/>
-				<@display.column property="qtdVagasAbertas" class="qtdVagaCargo" title="Qtd." style="width: 50px;text-align: right;" />
-			</@display.table>
-	    </div>
-	    <button class="btnImprimir" id="vagasDisponiveisImprimir" onclick="imprimirDados('Vagas Disponíveis', $('#vagasDisponiveis').html())"></button>
-    </div>
-	<div class="fieldGraph">
-		<h1>Indicadores de R&S</h1>
-    	<div id="indicadores" class="graph">
-    		<ul>
-    			<li>Nº de Currículos Recebidos/Cadastrados:	${qtdCandidatosCadastrados}</li>
-    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
-    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
-    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
-    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")} 
-    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
-    			</li>
-    		</ul>
-    	</div>
-		<button class="btnImprimir" id="indicadoresImprimir" onclick="imprimirDados('Indicadores de R&S', $('#indicadores').html())"></button>
-    </div>
-    
-	<div class="fieldGraph bigger">
-		<h1>Estatística de Preenchimento de Vaga</h1>
-		<div id="estatisticaPreenchimento" style="height:220px; overflow:scroll; overflow-x: hidden;">
-	   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
-				<@display.column property="cargo.nome" title="Cargo"/>
-				<@display.column title="Vagas Disponíveis" style="width: 120px; text-align: right;">
-					<#if indicador.qtdVagas?exists>
-						${indicador.qtdVagas}
-					<#else>
-						0
-					</#if>
-				</@display.column>
-				<@display.column title="Candidatos Atendidos" style="width: 135px; text-align: right;">
-					<#if indicador.qtdCandidatos?exists>
-						${indicador.qtdCandidatos}
-					<#else>
-						0
-					</#if>
-				</@display.column>
-				<@display.column title="Vagas Preenchidas" style="width: 125px; text-align: right;">
-					<#if indicador.qtdContratados?exists>
-						${indicador.qtdContratados}
-					<#else>
-						0
-					</#if>
-				</@display.column>
-				<@display.column title="Média de Dias" style="width: 95px; text-align: right;">
-					${indicador.mediaDias?string(",##0.#")}
-				</@display.column>
-			</@display.table>
-		</div>
-		<button class="btnImprimir" id="estatisticaPreenchimentoImprimir" onclick="imprimirDados('Estatística de Preenchimento de Vaga', $('#estatisticaPreenchimento').html())"></button>
-    </div>
- 
-    <div class="fieldGraph">
-		<h1>Vagas Preenchidas por Cargo (total: <span id="totalVagasPreenchidasCargo"></span>)</h1>
-    	<div id="vagasPorCargo" class="graph"></div>
-    	<div style="clear:both"></div>
-	    <button class="btnImprimir" id="vagasPorCargoImprimir"></button>
-    </div>
-    <div class="fieldGraph">
-    	<h1>Vagas Preenchidas por Área (total: <span id="totalVagasPreenchidasArea"></span>)</h1>
-    	<div id="vagasPorArea" class="graph"></div>
-    	<div style="clear:both"></div>
-	    <button class="btnImprimir" id="vagasPorAreaImprimir"></button>
-    </div>
-    
-	<div class="fieldGraph">
-		<h1>Vagas Preenchidas por Motivo (total: <span id="totalVagasPreenchidasMotivo"></span>)</h1>
-	    <div id="vagasPorMotivo" class="graph" ></div>
-	    <div style="clear:both"></div>
-	    <button class="btnImprimir" id="vagasPorMotivoImprimir"></button>
-	</div>
-	<div class="fieldGraph">
-		<h1>Estatística de Divulgação de Vagas</h1>
-    	<div id="divulgacaoVaga" class="graph"></div>
-    	<div style="clear:both"></div>
-	    <button class="btnImprimir" id="divulgacaoVagaImprimir"></button>
-    </div>
-    
-    <div style="clear: both"></div>
+	<table class="grid" cellspacing="5">
+		<tr>
+			<td class="grid-cell">
+				<div class="cell-title">
+					Vagas Disponíveis (total: <span id="totalVagas"></span>) 
+					<img onclick="imprimirDados('Vagas Disponíveis', $('#vagasDisponiveis').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+				</div>
+			    <div id="vagasDisponiveis" class="table-wrapper">
+			    	<@display.table name="faixaSalarials" id="faixa" class="dados" style="width: 460px;">
+						<@display.column property="descricao" title="Cargo" style="width: 415px;"/>
+						<@display.column property="qtdVagasAbertas" class="qtdVagaCargo" title="Qtd." style="width: 50px;text-align: right;" />
+					</@display.table>
+			    </div>
+			</td>
+			<td class="grid-cell">
+				<div class="cell-title">
+					Indicadores de R&S <img id="indicadoresImprimir" onclick="imprimirDados('Indicadores de R&S', $('#indicadores').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+				</div>
+		    	<div id="indicadores">
+		    		<ul>
+		    			<li>Nº de Currículos Recebidos/Cadastrados:	${qtdCandidatosCadastrados}</li>
+		    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
+		    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
+		    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
+		    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")} 
+		    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
+		    			</li>
+		    		</ul>
+		    	</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="grid-cell" colspan="2">
+				<div class="cell-title">
+					Estatística de Preenchimento de Vaga 
+					<img onclick="imprimirDados('Estatística de Preenchimento de Vaga', $('#estatisticaPreenchimento').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+				</div>
+				<div id="estatisticaPreenchimento" class="table-wrapper">
+			   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
+						<@display.column property="cargo.nome" title="Cargo"/>
+						<@display.column title="Vagas Disponíveis" style="width: 120px; text-align: right;">
+							<#if indicador.qtdVagas?exists>
+								${indicador.qtdVagas}
+							<#else>
+								0
+							</#if>
+						</@display.column>
+						<@display.column title="Candidatos Atendidos" style="width: 135px; text-align: right;">
+							<#if indicador.qtdCandidatos?exists>
+								${indicador.qtdCandidatos}
+							<#else>
+								0
+							</#if>
+						</@display.column>
+						<@display.column title="Vagas Preenchidas" style="width: 125px; text-align: right;">
+							<#if indicador.qtdContratados?exists>
+								${indicador.qtdContratados}
+							<#else>
+								0
+							</#if>
+						</@display.column>
+						<@display.column title="Média de Dias" style="width: 95px; text-align: right;">
+							${indicador.mediaDias?string(",##0.#")}
+						</@display.column>
+					</@display.table>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="grid-cell">
+				<div class="cell-title">
+					Vagas Preenchidas por Cargo (total: <span id="totalVagasPreenchidasCargo"></span>) 
+					<img id="vagasPorCargoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+				</div>
+		    	<div id="vagasPorCargo" class="graph"></div>
+		    	<div style="clear:both"></div>
+		    	<div id="vagasPorCargoLegenda"></div>
+			</td>
+			<td class="grid-cell">
+		    	<div class="cell-title">
+		    		Vagas Preenchidas por Área (total: <span id="totalVagasPreenchidasArea"></span>) 
+		    		<img id="vagasPorAreaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+		    	</div>
+		    	<div id="vagasPorArea" class="graph"></div>
+		    	<div style="clear:both"></div>
+		    	<div id="vagasPorAreaLegenda"></div>
+			</td>
+		</tr>
+		<tr>
+			<td class="grid-cell">
+				<div class="cell-title">
+					Vagas Preenchidas por Motivo (total: <span id="totalVagasPreenchidasMotivo"></span>) 
+					<img id="vagasPorMotivoImprimir" border="0" class="icoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"/>
+				</div>
+			    <div id="vagasPorMotivo" class="graph"></div>
+			    <div style="clear:both"></div>
+			    <div id="vagasPorMotivoLegenda"></div>
+			</td>
+			<td class="grid-cell">
+				<div class="cell-title">
+					Estatística de Divulgação de Vagas 
+					<img id="divulgacaoVagaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+				</div>
+		    	<div id="divulgacaoVaga" class="graph"></div>
+		    	<div style="clear:both"></div>
+		    	<div id="divulgacaoVagaLegenda"></div>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
