@@ -266,6 +266,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
+		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.SEM_MOTIVO)));
 		criteria.add(Expression.eq("e.empresa.id", empresaId));
 		
 		if(areaIds != null && areaIds.length > 0)
@@ -1178,6 +1179,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("where hc.data >= :data ");
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and co.dataDesligamento is null ");
+		hql.append("and hc.motivo != :motivo ");
+		
 		hql.append("order by co.nome, hc.data");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -1185,6 +1188,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setDate("data", dataBase);
 		query.setLong("empresaId", empresaId);
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
+		query.setString("motivo", MotivoHistoricoColaborador.SEM_MOTIVO);
 
 		return query.list();
 
