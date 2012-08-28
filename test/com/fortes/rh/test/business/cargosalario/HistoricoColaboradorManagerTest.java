@@ -601,7 +601,10 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(garagem.getId())).will(returnValue(garagem));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(lavajato.getId())).will(returnValue(lavajato));
 		
-		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(null, null, null, null, empresa.getId());
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 1999);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2300);
+		
+		List<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(null, null, dataIni, dataFim, empresa.getId());
 		
 		assertEquals(2, promocoes.size());
 		
