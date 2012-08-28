@@ -38,6 +38,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -69,6 +70,7 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PesquisaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorQuestionario>
 {

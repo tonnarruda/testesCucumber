@@ -37,6 +37,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -141,15 +142,20 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			addActionMessage(msgAlert);
 
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-		
 		populaEmpresa("ROLE_MOV_TURMA");	
+		if(empresaId != null)
+			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaId);
+		else
+			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
 		
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
 		
-		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId));
-		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, getPage(), getPagingSize());
-		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
+		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck)));
+		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), getPage(), getPagingSize());
 
+		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
+		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
 
 		return Action.SUCCESS;

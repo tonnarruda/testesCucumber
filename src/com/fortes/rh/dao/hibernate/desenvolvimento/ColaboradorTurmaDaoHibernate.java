@@ -33,6 +33,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<ColaboradorTurma> implements ColaboradorTurmaDao
 {
@@ -224,7 +225,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Long[] estabelecimentoIds, Integer page, Integer pagingSize)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, pt.id, co.id, co.nome, co.nomeComercial, co.matricula, ao.id, ao.nome, ct.aprovado, e, fs.nome, c.nome, emp.id, emp.nome, emp.razaoSocial, emp.cnpj) ");
@@ -247,6 +248,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(StringUtils.isNotBlank(colaboradorNome))
 			hql.append("	and lower(co.nome) like :nome ");
 
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			hql.append("	and e.id in (:estabelecimentoIds) ");
 		
 		hql.append("	and hc.data = ( ");
 		hql.append("		select max(hc2.data) " );
@@ -272,6 +275,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
+		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 
@@ -455,24 +461,51 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Integer getCount(Long turmaId, Long empresaId)
+	public Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		 
 		hql.append("select count(ct.id) from ColaboradorTurma ct " );
-		hql.append("left join ct.colaborador co " );
-		hql.append("where ct.turma.id = :turmaId " );
+		hql.append("left join ct.colaborador as co ");
+		hql.append("left join co.historicoColaboradors as hc ");
+		hql.append("left join ct.turma as t ");
+		hql.append("where ");
+		hql.append("	t.id = :turmaId ");
 		
 		if(empresaId != null)
-			hql.append(" and co.empresa.id = :empresaId");
+			hql.append("	and co.empresa.id = :empresaId ");
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			hql.append("	and lower(co.nome) like :nome ");
+
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		{
+			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
+			hql.append("	and hc.data = ( ");
+			hql.append("		select max(hc2.data) " );
+			hql.append("		from HistoricoColaborador as hc2 ");
+			hql.append("		where hc2.colaborador.id = co.id ");
+			hql.append("			and hc2.status = :status ");
+			hql.append("	) ");
+		}
+		hql.append(" group by ct.id ");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setLong("turmaId", turmaId);
 		
+		query.setLong("turmaId", turmaId);
+
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
-
-		return (Integer)query.uniqueResult();
+		
+		if(StringUtils.isNotBlank(colaboradorNome))
+			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
+		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		{
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		}
+		
+		return (Integer)query.list().size();
 	}
 
 	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds)

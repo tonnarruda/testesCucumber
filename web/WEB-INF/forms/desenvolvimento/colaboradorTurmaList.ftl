@@ -22,6 +22,9 @@
     <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
     
     <script type="text/javascript">
 		var avaliacoes = new Array();
@@ -71,6 +74,17 @@
 										} 
 									});
 		}
+		
+		function populaEstabelecimento(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
+		}
+
+		function createListEstabelecimento(data)
+		{
+			addChecks('estabelecimentosCheck',data);
+		}
     </script>
 </head>
 <body>
@@ -80,8 +94,9 @@
     <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
 		<#if compartilharColaboradores>
 			<#include "../util/topFiltro.ftl" />
-	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>
-	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 350px;"/>
+	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);"/>
+	            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
+	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	    	<#include "../util/bottomFiltro.ftl" />
 	    	<br>

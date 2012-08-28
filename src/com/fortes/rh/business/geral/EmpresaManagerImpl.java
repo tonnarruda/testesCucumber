@@ -335,7 +335,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		if(empresaId == null)
 			return empresaSistemaId;
-		else if(empresaId == -1)
+		else if(empresaId.equals(-1L))
 			return null;
 		else
 			return empresaId;
