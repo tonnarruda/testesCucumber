@@ -38,7 +38,7 @@
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
 	</variable>
-	<variable name="contadorColaboradorNome" class="java.lang.Long" resetType="Report" calculation="Count">
+	<variable name="contadorColaboradorNome" class="java.lang.Long" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
 	</variable>
 
@@ -98,7 +98,7 @@
 					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Total: "]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $V{contadorColaboradorNome}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
