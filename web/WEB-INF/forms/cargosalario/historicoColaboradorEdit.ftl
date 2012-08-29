@@ -237,7 +237,7 @@
 			</ul>
 		</div>
 		
-		<@ww.select label="Motivo do reajuste" name="historicoColaborador.motivo" id="motivo" list=r'#{"C":"Contratado", "D":"Dissídio", "P":"Promoção"}'/>
+		<@ww.select label="Motivo do reajuste" name="historicoColaborador.motivo" id="motivo" list=r'#{"C":"Contratado", "D":"Dissídio", "P":"Promoção", "S":"Sem Motivo"}'/>
 		
 		<#if integraAc && !historicoColaborador.colaborador.naoIntegraAc>
 			<@ww.textfield label="Observação para o Setor Pessoal" name="historicoColaborador.obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>

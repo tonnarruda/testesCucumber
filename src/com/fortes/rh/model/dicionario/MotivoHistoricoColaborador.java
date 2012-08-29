@@ -2,6 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
+@SuppressWarnings("serial")
 public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 {
 	//motivo tambem pode ser setado pelo dicionario OrigemCandidato
@@ -13,9 +14,8 @@ public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 	public static final String IMPORTADO = "I";
 	public static final String MUDANCA_FUNCAO = "F";
 	public static final String DISSIDIO = "D";
+	public static final String SEM_MOTIVO = "S";
 
-
-	@SuppressWarnings("unchecked")
 	public MotivoHistoricoColaborador()
 	{
 		put(CONTRATADO, "Contratado");
@@ -26,5 +26,6 @@ public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 		put(IMPORTADO, "Importado do AC Pessoal");
 		put(MUDANCA_FUNCAO, "Mudança de Função");
 		put(DISSIDIO, "Dissídio");
+		put(SEM_MOTIVO, "Sem Motivo");
 	}
 }

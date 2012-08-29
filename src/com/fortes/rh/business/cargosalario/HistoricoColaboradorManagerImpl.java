@@ -349,62 +349,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return areaOrganizacionals;
 	}
 
-	public Collection<RelatorioPromocoes> montaRelatorio(Collection<HistoricoColaborador> historicoColaboradors,
-			Collection<HistoricoColaborador> historicoColaboradorsTodos)
-	{
-		Collection<RelatorioPromocoes> relatorioPromocoes = new ArrayList<RelatorioPromocoes>();
-		Map promocaoHorizontal = new HashMap<AreaOrganizacional, Integer>();
-		Map promocaoVertical = new HashMap<AreaOrganizacional, Integer>();
-		Collection<AreaOrganizacional> chaveAreas = new ArrayList<AreaOrganizacional>();
-
-		AreaOrganizacional area;
-		int subTotal;
-		for (HistoricoColaborador histColaborador : historicoColaboradors)
-		{
-			subTotal = 1;
-			if (histColaborador.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL))
-			{
-				area = histColaborador.getAreaOrganizacional();
-				if (!chaveAreas.contains(histColaborador.getAreaOrganizacional()))
-					chaveAreas.add(histColaborador.getAreaOrganizacional());
-
-				if (promocaoHorizontal.containsKey(area))
-					subTotal = ((Integer) promocaoHorizontal.get(area)) + 1;
-				promocaoHorizontal.put(area, subTotal);
-			}
-			else if (histColaborador.getMotivo().equals(MotivoHistoricoColaborador.PROMOCAO))
-			{
-
-				area = extraiAreaHistoricoAnterior(histColaborador, historicoColaboradorsTodos);
-
-				if (!chaveAreas.contains(histColaborador.getAreaOrganizacional()))
-					chaveAreas.add(histColaborador.getAreaOrganizacional());
-
-				if (promocaoVertical.containsKey(area))
-					subTotal = ((Integer) promocaoVertical.get(area)) + 1;
-				promocaoVertical.put(area, subTotal);
-
-			}
-		}
-
-		RelatorioPromocoes relatorioPromocao;
-		for (AreaOrganizacional areaTmp : chaveAreas)
-		{
-			relatorioPromocao = new RelatorioPromocoes();
-			relatorioPromocao.setArea(areaTmp);
-			if (promocaoHorizontal.get(areaTmp) != null)
-				relatorioPromocao.setQtdHorizontal((Integer) promocaoHorizontal.get(areaTmp));
-
-			if (promocaoVertical.get(areaTmp) != null)
-				relatorioPromocao.setQtdVertical((Integer) promocaoVertical.get(areaTmp));
-
-			relatorioPromocoes.add(relatorioPromocao);
-		}
-
-		return relatorioPromocoes;
-
-	}
-
 	private AreaOrganizacional extraiAreaHistoricoAnterior(HistoricoColaborador histColaborador, Collection<HistoricoColaborador> historicoColaboradorsTodos)
 	{
 		for (HistoricoColaborador hc : historicoColaboradorsTodos)
