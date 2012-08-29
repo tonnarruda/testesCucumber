@@ -4572,29 +4572,42 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacaoDao.save(solicitacao);
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao2);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity();
 		pedro.setDataAdmissao(hoje);
-		pedro.setSolicitacao(solicitacao);
+		pedro.setSolicitacao(solicitacao1);
 		pedro.setEmpresa(empresa);
 		colaboradorDao.save(pedro);
 		
 		Colaborador maria = ColaboradorFactory.getEntity();
 		maria.setDataAdmissao(hoje);
-		maria.setSolicitacao(solicitacao);
+		maria.setSolicitacao(solicitacao1);
 		maria.setEmpresa(empresa);
 		colaboradorDao.save(maria);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setDataAdmissao(hoje);
+		joao.setSolicitacao(solicitacao2);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
 		
 		Colaborador jose = ColaboradorFactory.getEntity();
 		jose.setDataAdmissao(hoje);
 		jose.setEmpresa(empresa);
 		colaboradorDao.save(jose);
 		
-		int qtd = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), hoje, hoje);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
 		
-		assertEquals(2, qtd);
+		int qtd1 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), solicitacaoIds, hoje, hoje);
+		int qtd2 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, hoje, hoje);
+		
+		assertEquals("Com solicitação especificada", 2, qtd1);
+		assertEquals("Sem solicitação especificada", 3, qtd2);
 	}
 	
 	public void testFindSemCodigoAC() {

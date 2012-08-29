@@ -30,6 +30,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
@@ -368,7 +369,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		query.executeUpdate();
 	}
 	
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(sum(solicitacao.quantidade) as qtdVagas, estabelecimento.id, areaOrganizacional.id, cargo.id) ");
 		consulta.append("from Solicitacao as solicitacao  ");
@@ -384,6 +385,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
                         
     	if (estabelecimentos != null && !estabelecimentos.isEmpty())
     		consulta.append("and estabelecimento.id in (:estabelecimentos) ");
+    	
+    	if (LongUtil.isNotEmpty(solicitacaoIds))
+    		consulta.append("and solicitacao.id in (:solicitacaoIds) ");
 		
 		consulta.append("group by ");
 		consulta.append("	estabelecimento.id,  ");
@@ -404,10 +408,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentos != null && !estabelecimentos.isEmpty())
     		query.setParameterList("estabelecimentos", estabelecimentos);
 		
+    	if (LongUtil.isNotEmpty(solicitacaoIds))
+    		query.setParameterList("solicitacaoIds", solicitacaoIds);
+    	
         return query.list();
 	}
 
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), coalesce(avg(s.dataEncerramento - s.data), 0)) ");
 		consulta.append("from Colaborador co ");
@@ -422,6 +429,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
                         
     	if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
     		consulta.append("	and s.estabelecimento.id in (:estabelecimentos) ");
+    	
+    	if (LongUtil.isNotEmpty(solicitacaoIds)) 
+    		consulta.append("	and s.id in (:solicitacaoIds) ");
 		
 		consulta.append("group by ");
 		consulta.append(" s.estabelecimento.id, ");
@@ -442,10 +452,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
     		query.setParameterList("estabelecimentos", estabelecimentosIds);
 		
+    	if (LongUtil.isNotEmpty(solicitacaoIds)) 
+    		query.setParameterList("solicitacaoIds", solicitacaoIds);
+    		
         return query.list();
 	}
 	
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga( ");
 		consulta.append("estabelecimento.id, areaOrganizacional.id, cargo.id, count(cs.candidato.id) as qtdCandidatos) ");
@@ -465,6 +478,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         if (estabelecimentos != null && !estabelecimentos.isEmpty())
         	consulta.append("and estabelecimento.id in (:estabelecimentos) ");
         
+        if (LongUtil.isNotEmpty(solicitacaoIds))
+        	consulta.append("and solicitacao.id in (:solicitacaoIds) ");
+        	
         consulta.append("group by ");
 		consulta.append(" estabelecimento.id, ");
 		consulta.append(" areaOrganizacional.id, ");
@@ -484,6 +500,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         if (estabelecimentos != null && !estabelecimentos.isEmpty())  
         	query.setParameterList("estabelecimentos", estabelecimentos);
 	        
+        if (LongUtil.isNotEmpty(solicitacaoIds))
+        	query.setParameterList("solicitacaoIds", solicitacaoIds);
+        	
         return query.list();
     }
 	
@@ -564,7 +583,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.faixaSalarial", "f");
@@ -584,6 +603,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if (LongUtil.isNotEmpty(solicitacaoIds))
+			criteria.add(Expression.in("s.id", solicitacaoIds));
+		
 		criteria.addOrder(Order.desc("qtdVagasAbertas"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -592,7 +614,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -610,6 +632,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if (LongUtil.isNotEmpty(solicitacaoIds))
+			criteria.add(Expression.in("s.id", solicitacaoIds));
+		
 		criteria.addOrder(Order.desc("qtdContratados"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -618,7 +643,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 	
-	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -634,6 +659,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if (LongUtil.isNotEmpty(solicitacaoIds))
+			criteria.add(Expression.in("s.id", solicitacaoIds));
+		
 		criteria.addOrder(Order.desc("qtdContratados"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -642,7 +670,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 	
-	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -657,6 +685,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		if (LongUtil.isNotEmpty(solicitacaoIds))
+			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
 		

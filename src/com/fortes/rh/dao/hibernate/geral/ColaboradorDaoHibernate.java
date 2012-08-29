@@ -3896,7 +3896,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim) {
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -3905,8 +3905,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
-		criteria.add(Expression.isNotNull("c.solicitacao.id"));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.isNotNull("c.solicitacao.id"));
+		
+		if (LongUtil.isNotEmpty(solicitacaoIds)) 
+			criteria.add(Expression.in("c.solicitacao.id", solicitacaoIds));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		

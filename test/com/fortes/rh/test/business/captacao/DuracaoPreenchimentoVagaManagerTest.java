@@ -71,10 +71,10 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	
     	Date dataDe = DateUtil.criarDataMesAno(1,1,2008);
     	Date dataAte = DateUtil.criarAnoMesDia(20,1,2008);
-    	Collection<Long> areaIds = new ArrayList<Long>();
-    	areaIds.add(1L);
-    	Collection<Long> estabelecimentoIds = new ArrayList<Long>();
-    	estabelecimentoIds.add(1L);
+    	
+    	Collection<Long> areaIds = Arrays.asList(1L);
+    	Collection<Long> estabelecimentoIds = Arrays.asList(1L);
+    	Long[] solicitacaoIds = null;
     	Long empresaId = 1L;
     	
     	Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
@@ -104,14 +104,14 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	indicadoresQtdVagas.add(qtdVagas1);
     	indicadoresQtdVagas.add(qtdVagas2);
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds)).will(returnValue(indicadores));
-    	solicitacaoManager.expects(once()).method("getIndicadorQtdCandidatos").with(eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds)).will(returnValue(indicadoresQtdCandidatos));
-		solicitacaoManager.expects(once()).method("getIndicadorQtdVagas").with(eq(dataDe),eq(dataAte), eq(areaIds), eq(estabelecimentoIds)).will(returnValue(indicadoresQtdVagas));
+    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorQtdCandidatos").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdCandidatos));
+		solicitacaoManager.expects(once()).method("getIndicadorQtdVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdVagas));
 		
 		cargoManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(1L)).will(returnValue(CargoFactory.getEntity(1L)));
 		cargoManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(2L)).will(returnValue(CargoFactory.getEntity(2L)));
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe,dataAte,areaIds,estabelecimentoIds, 1L);
+		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe,dataAte,areaIds,estabelecimentoIds, 1L, solicitacaoIds);
     	assertEquals(2, resultado.size());
 		IndicadorDuracaoPreenchimentoVaga indicador1 = (IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[0];
 		IndicadorDuracaoPreenchimentoVaga indicador2 = (IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[1];

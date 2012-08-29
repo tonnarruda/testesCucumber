@@ -157,29 +157,45 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Cargo cargo = CargoFactory.getEntity();
 		cargo = cargoDao.save(cargo);
 		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setNome("I");
+		faixaSalarial1.setCargo(cargo);
+		faixaSalarial1 = faixaSalarialDao.save(faixaSalarial1);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setNome("II");
+		faixaSalarial2.setCargo(cargo);
+		faixaSalarial2 = faixaSalarialDao.save(faixaSalarial2);
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao = getEntity();
-		solicitacao.setEncerrada(false);
-		solicitacao.setSuspensa(false);
-		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
-		solicitacao.setData(hoje);
-		solicitacao.setEmpresa(empresa);		
+		Solicitacao solicitacao1 = getEntity();
+		solicitacao1.setEncerrada(false);
+		solicitacao1.setSuspensa(false);
+		solicitacao1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		solicitacao1.setData(hoje);
+		solicitacao1.setEmpresa(empresa);		
+		solicitacao1.setFaixaSalarial(faixaSalarial1);
+		solicitacao1.setQuantidade(4);
+		solicitacaoDao.save(solicitacao1);
 		
-		solicitacao.setFaixaSalarial(faixaSalarial);
-		solicitacao.setQuantidade(4);
+		Solicitacao solicitacao2 = getEntity();
+		solicitacao2.setEncerrada(false);
+		solicitacao2.setSuspensa(false);
+		solicitacao2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
+		solicitacao2.setData(hoje);
+		solicitacao2.setEmpresa(empresa);		
+		solicitacao2.setFaixaSalarial(faixaSalarial2);
+		solicitacao2.setQuantidade(4);
+		solicitacaoDao.save(solicitacao2);
 		
-		solicitacaoDao.save(solicitacao);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
 		
+		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , hoje, hoje);
+		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), solicitacaoIds , hoje, hoje);
 		
-		Collection<FaixaSalarial> faixas = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), hoje, hoje);
-		
-		assertEquals(1, faixas.size());
+		assertEquals(2, faixasSemSolicitacao.size());
+		assertEquals(1, faixasComSolicitacao.size());
 	}
 
 	public void testFindQtdContratadosFaixa()
@@ -224,11 +240,17 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		pedro.setSolicitacao(solicitacao2);
 		colaboradorDao.save(pedro);
 		
-		Collection<FaixaSalarial> faixas = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), hoje, hoje);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
 		
-		assertEquals(2, faixas.size());
-		assertEquals(2, ((FaixaSalarial) (faixas.toArray()[0])).getQtdContratados());
-		assertEquals(1, ((FaixaSalarial) (faixas.toArray()[1])).getQtdContratados());
+		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, hoje, hoje);
+		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), solicitacaoIds, hoje, hoje);
+		
+		assertEquals(2, faixasSemSolicitacao.size());
+		assertEquals(2, ((FaixaSalarial) (faixasSemSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((FaixaSalarial) (faixasSemSolicitacao.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, faixasComSolicitacao.size());
+		assertEquals(2, ((FaixaSalarial) (faixasComSolicitacao.toArray()[0])).getQtdContratados());
 	}
 	
 	public void testFindQtdContratadosArea()
@@ -268,11 +290,17 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		pedro.setSolicitacao(solicitacao2);
 		colaboradorDao.save(pedro);
 		
-		Collection<AreaOrganizacional> areas = solicitacaoDao.findQtdContratadosArea(empresa.getId(), hoje, hoje);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
 		
-		assertEquals(2, areas.size());
-		assertEquals(2, ((AreaOrganizacional) (areas.toArray()[0])).getQtdContratados());
-		assertEquals(1, ((AreaOrganizacional) (areas.toArray()[1])).getQtdContratados());
+		Collection<AreaOrganizacional> areasSemSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, hoje, hoje);
+		Collection<AreaOrganizacional> areasComSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), solicitacaoIds, hoje, hoje);
+		
+		assertEquals(2, areasSemSolicitacao.size());
+		assertEquals(2, ((AreaOrganizacional) (areasSemSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((AreaOrganizacional) (areasSemSolicitacao.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, areasComSolicitacao.size());
+		assertEquals(2, ((AreaOrganizacional) (areasComSolicitacao.toArray()[0])).getQtdContratados());
 	}
 	
 	public void testFindQtdContratadosMotivo()
@@ -312,11 +340,17 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		pedro.setSolicitacao(solicitacao2);
 		colaboradorDao.save(pedro);
 		
-		Collection<MotivoSolicitacao> motivos = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), hoje, hoje);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
 		
-		assertEquals(2, motivos.size());
-		assertEquals(2, ((MotivoSolicitacao) (motivos.toArray()[0])).getQtdContratados());
-		assertEquals(1, ((MotivoSolicitacao) (motivos.toArray()[1])).getQtdContratados());
+		Collection<MotivoSolicitacao> motivosSemSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), solicitacaoIds, hoje, hoje);
+		
+		assertEquals(2, motivosSemSolicitacao.size());
+		assertEquals(2, ((MotivoSolicitacao) (motivosSemSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((MotivoSolicitacao) (motivosSemSolicitacao.toArray()[1])).getQtdContratados());
+		
+		assertEquals(1, motivosComSolicitacao.size());
+		assertEquals(2, ((MotivoSolicitacao) (motivosComSolicitacao.toArray()[0])).getQtdContratados());
 	}
 
 	public void testFindAllByVisualizacaoAbertaComCargo()
@@ -565,12 +599,16 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		areasOrganizacionais.add(areaOrganizacional.getId());
 		estabelecimentos.add(estabelecimento.getId());
+		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
 		
-		List<IndicadorDuracaoPreenchimentoVaga> resultado = solicitacaoDao.getIndicadorQtdVagas(data, data, areasOrganizacionais, estabelecimentos);
+		List<IndicadorDuracaoPreenchimentoVaga> resultadoSemSolicitacao = solicitacaoDao.getIndicadorQtdVagas(data, data, areasOrganizacionais, estabelecimentos, null);
+		List<IndicadorDuracaoPreenchimentoVaga> resultadoComSolicitacao = solicitacaoDao.getIndicadorQtdVagas(data, data, areasOrganizacionais, estabelecimentos, solicitacaoIds);
 		
-		IndicadorDuracaoPreenchimentoVaga indicador = resultado.get(0);
+		IndicadorDuracaoPreenchimentoVaga indicadorSemSolicitacao = resultadoSemSolicitacao.get(0);
+		IndicadorDuracaoPreenchimentoVaga indicadorComSolicitacao = resultadoComSolicitacao.get(0);
 		
-		assertEquals(8, indicador.getQtdVagas().intValue());
+		assertEquals("Sem solicitação especificada", 8, indicadorSemSolicitacao.getQtdVagas().intValue());
+		assertEquals("Com solicitação especificada", 5, indicadorComSolicitacao.getQtdVagas().intValue());
 	}
 	
 	public void testGetIndicadorMediaDiasPreenchimentoVagas()
@@ -630,14 +668,18 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
 		Collection<Long> estabelecimentosIds = Arrays.asList(estabelecimento.getId());
+		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadores = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds);
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIds );
 		
-		assertEquals(1, indicadores.size());
-		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadores.toArray()[0];
+		assertEquals(1, indicadoresSemSolicitacao.size());
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacao.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComSolicitacao = (IndicadorDuracaoPreenchimentoVaga) indicadoresComSolicitacao.toArray()[0];
 		
 		assertEquals("deve retornar a média de dias", 14.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
-		assertEquals("deve retornar qtd contratados", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados sem solicitação especificada", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados com solicitação especificada", 0, indicadorDuracaoPreenchimentoVagaComSolicitacao.getQtdContratados().intValue());
 	}
 	
 	public void testGetIndicadorQtdCandidatos()
@@ -658,21 +700,30 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		faixaSalarial.setCargo(cargo);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacao.setFaixaSalarial(faixaSalarial);
-		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
-		solicitacao.setAreaOrganizacional(areaOrganizacional);
-		solicitacao.setEstabelecimento(estabelecimento);
-		solicitacao.setData(DateUtil.criarDataMesAno(05, 10, 1945));
-		solicitacao.setDataEncerramento(DateUtil.criarDataMesAno(06, 10, 1945));
-		solicitacao = solicitacaoDao.save(solicitacao);
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
+		solicitacao1.setFaixaSalarial(faixaSalarial);
+		solicitacao1.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacao1.setAreaOrganizacional(areaOrganizacional);
+		solicitacao1.setEstabelecimento(estabelecimento);
+		solicitacao1.setData(DateUtil.criarDataMesAno(05, 10, 1945));
+		solicitacao1.setDataEncerramento(DateUtil.criarDataMesAno(06, 10, 1945));
+		solicitacao1 = solicitacaoDao.save(solicitacao1);
 
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacao2.setFaixaSalarial(faixaSalarial);
+		solicitacao2.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacao2.setAreaOrganizacional(areaOrganizacional);
+		solicitacao2.setEstabelecimento(estabelecimento);
+		solicitacao2.setData(DateUtil.criarDataMesAno(05, 10, 1945));
+		solicitacao2.setDataEncerramento(DateUtil.criarDataMesAno(06, 10, 1945));
+		solicitacao2 = solicitacaoDao.save(solicitacao2);
+		
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidato = candidatoDao.save(candidato);
 
 		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
 		candidatoSolicitacao.setCandidato(candidato);
-		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao.setSolicitacao(solicitacao1);
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
 		Date dataDe = DateUtil.criarDataMesAno(01, 01, 1945);
@@ -682,11 +733,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		estabelecimentos.add(estabelecimento.getId());
 		Collection<Long> areasOrganizacionais = new ArrayList<Long>();
 		areasOrganizacionais.add(areaOrganizacional.getId());
+		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
 
-		List<IndicadorDuracaoPreenchimentoVaga> retorno = solicitacaoDao.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais, estabelecimentos);
+		List<IndicadorDuracaoPreenchimentoVaga> retorno1 = solicitacaoDao.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais, estabelecimentos, null);
+		List<IndicadorDuracaoPreenchimentoVaga> retorno2 = solicitacaoDao.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais, estabelecimentos, solicitacaoIds);
 
-		assertEquals(1, retorno.size());
-		assertEquals(1, retorno.get(0).getQtdCandidatos().intValue());
+		assertEquals("Sem solicitação especificada", 1, retorno1.size());
+		assertEquals("Sem solicitação especificada", 1, retorno1.get(0).getQtdCandidatos().intValue());
+		assertEquals("Com solicitação especificada", 0, retorno2.size());
 	}
 	
 	public void testFindMotivosPreenchimentoSolicitacao()

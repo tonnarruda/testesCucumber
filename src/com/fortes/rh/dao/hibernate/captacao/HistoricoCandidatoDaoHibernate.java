@@ -20,6 +20,7 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -136,7 +137,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return criteria.list();
 	}
 	
-	public int findQtdAtendidos(Long empresaId, Date dataDe, Date dataAte) 
+	public int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataDe, Date dataAte) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
@@ -146,6 +147,9 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		p.add(Projections.countDistinct("cs.candidato.id"));
 		
 		criteria.setProjection(p);
+		
+		if(LongUtil.isNotEmpty(solicitacaoIds))
+			criteria.add(Expression.in("cs.id", solicitacaoIds));
 		
 		criteria.add(Expression.between("hc.data", dataDe, dataAte));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -157,18 +161,6 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 
 	public Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long cargoId, Long[] etapaIds)
 	{	
-//		EXEMPLO da consulta
-//		select e.id,e.nome,count(hc.id),date_part('month', hc.data),hc.apto
-//		from historicocandidato hc 
-//		join etapaseletiva e on e.id=hc.etapaseletiva_id
-//		join candidatosolicitacao cs on cs.id=hc.candidatosolicitacao_id
-//		join solicitacao s on s.id=cs.solicitacao_id
-//		join faixasalarial fs on fs.id=s.faixasalarial_id
-//		where fs.cargo_id=202
-//		and date_part('year',hc.data) = '2010'
-//		group by e.id,e.ordem,e.nome,date_part('month', hc.data),hc.apto
-//		order by e.ordem, date_part('month', hc.data),hc.apto
-
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new HistoricoCandidato(e.id, e.nome, count(hc.id), month(hc.data), coalesce(hc.apto, 'N')) ");
 		hql.append("from HistoricoCandidato as hc ");

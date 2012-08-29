@@ -15,7 +15,6 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -421,7 +420,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
     	solicitacaoDao.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").will(returnValue(list));
 
-    	assertEquals(list, solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(new Date(), new Date(), null,null));
+    	assertEquals(list, solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(new Date(), new Date(), null,null, null));
 	}
 	
 	public void testGetIndicadorQtdVagas(){
@@ -429,12 +428,14 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		List<IndicadorDuracaoPreenchimentoVaga> list = new ArrayList<IndicadorDuracaoPreenchimentoVaga>();
 		Collection<Long> areasOrganizacionais = new ArrayList<Long>();
 		Collection<Long> estabelecimentos = new ArrayList<Long>();
+		Long[] solicitacaoIds = null;
+		
 		Date dataAte = DateUtil.criarAnoMesDia(2008, 05, 8);
 		Date dataDe = DateUtil.criarAnoMesDia(2005, 05, 8);
 		
-		solicitacaoDao.expects(once()).method("getIndicadorQtdVagas").with(eq(dataDe), eq(dataAte), eq(areasOrganizacionais),eq(estabelecimentos)).will(returnValue(list));
+		solicitacaoDao.expects(once()).method("getIndicadorQtdVagas").with(new Constraint[] { eq(dataDe), eq(dataAte), eq(areasOrganizacionais),eq(estabelecimentos),eq(solicitacaoIds) }).will(returnValue(list));
 		
-		assertEquals(list, solicitacaoManager.getIndicadorQtdVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos));
+		assertEquals(list, solicitacaoManager.getIndicadorQtdVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, solicitacaoIds));
 	}
 	
 	public void testGetIndicadorQtdCandidatos(){
@@ -442,51 +443,59 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
     	List<IndicadorDuracaoPreenchimentoVaga> list = new ArrayList<IndicadorDuracaoPreenchimentoVaga>();
     	Collection<Long> areasOrganizacionais = new ArrayList<Long>();
     	Collection<Long> estabelecimentos = new ArrayList<Long>();
+    	Long[] solicitacaoIds = null;
+    	
     	Date dataAte = DateUtil.criarAnoMesDia(2008, 05, 8);
     	Date dataDe = DateUtil.criarAnoMesDia(2005, 05, 8);
 
-    	solicitacaoDao.expects(once()).method("getIndicadorQtdCandidatos").with(eq(dataDe), eq(dataAte), eq(areasOrganizacionais),eq(estabelecimentos)).will(returnValue(list));
+    	solicitacaoDao.expects(once()).method("getIndicadorQtdCandidatos").with(new Constraint[] { eq(dataDe), eq(dataAte), eq(areasOrganizacionais),eq(estabelecimentos),eq(solicitacaoIds) }).will(returnValue(list));
 
-    	assertEquals(list, solicitacaoManager.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais,estabelecimentos));
+    	assertEquals(list, solicitacaoManager.getIndicadorQtdCandidatos(dataDe, dataAte, areasOrganizacionais,estabelecimentos, solicitacaoIds));
     }
 
 	public void testFindQtdContratadosPorFaixa(){
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Long[] solicitacaoIds = null;
+		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> faixas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosFaixa").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(faixas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosFaixa").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(faixas));
 		
-		assertEquals(faixas, solicitacaoManager.findQtdContratadosPorFaixa(empresa.getId(), dataDe, dataAte));
+		assertEquals(faixas, solicitacaoManager.findQtdContratadosPorFaixa(empresa.getId(), solicitacaoIds, dataDe, dataAte));
 	}
 	
 	public void testFindQtdContratadosPorArea(){
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Long[] solicitacaoIds = null;
+		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> areas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosArea").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(areas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosArea").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(areas));
 		
-		assertEquals(areas, solicitacaoManager.findQtdContratadosPorArea(empresa.getId(), dataDe, dataAte));
+		assertEquals(areas, solicitacaoManager.findQtdContratadosPorArea(empresa.getId(), solicitacaoIds, dataDe, dataAte));
 	}
 
 	public void testFindQtdContratadosPorMotivo(){
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Long[] solicitacaoIds = null;
+		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> areas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosMotivo").with(eq(empresa.getId()), eq(dataDe), eq(dataAte)).will(returnValue(areas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosMotivo").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(areas));
 		
-		assertEquals(areas, solicitacaoManager.findQtdContratadosPorMotivo(empresa.getId(), dataDe, dataAte));
+		assertEquals(areas, solicitacaoManager.findQtdContratadosPorMotivo(empresa.getId(), solicitacaoIds, dataDe, dataAte));
 	}
 	
 	// TODO . Por que ta dando pau pra mockar o Mail? 

@@ -138,6 +138,7 @@
 			<@ww.datepicker name="dataDe" id="dataDe"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
 			
 			<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>
 		</@ww.form>

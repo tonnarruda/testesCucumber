@@ -284,29 +284,29 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos) {
-		return getDao().getIndicadorQtdVagas(dataDe, dataAte, areasOrganizacionais, estabelecimentos);
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds) {
+		return getDao().getIndicadorQtdVagas(dataDe, dataAte, areasOrganizacionais, estabelecimentos, solicitacaoIds);
 	}
 
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds) {
-		return getDao().getIndicadorMediaDiasPreenchimentoVagas(inicio, fim, areasIds, estabelecimentosIds);
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds) {
+		return getDao().getIndicadorMediaDiasPreenchimentoVagas(inicio, fim, areasIds, estabelecimentosIds, solicitacaoIds);
 	}
 
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds) {
-		return getDao().getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds);
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds) {
+		return getDao().getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
 	}
 
 	public Collection<Solicitacao> findAllByCandidato(Long candidatoId) {
 		return getDao().findAllByCandidato(candidatoId);
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim) {
-		return getDao().findQtdVagasDisponiveis(empresaId, dataIni, dataFim);
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasDisponiveis(empresaId, solicitacaoIds, dataIni, dataFim);
 	}
 
-	public Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim) {
+	public Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
 		Collection<DataGrafico> graficoContratadosFaixa = new ArrayList<DataGrafico>();
-		Collection<FaixaSalarial> faixasSalariaisContratados = getDao().findQtdContratadosFaixa(empresaId, dataIni, dataFim);
+		Collection<FaixaSalarial> faixasSalariaisContratados = getDao().findQtdContratadosFaixa(empresaId, solicitacaoIds, dataIni, dataFim);
 		
 		for (FaixaSalarial faixaSalarial : faixasSalariaisContratados)
 			graficoContratadosFaixa.add(new DataGrafico(null, faixaSalarial.getDescricao(), faixaSalarial.getQtdContratados(), ""));
@@ -314,9 +314,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return graficoContratadosFaixa;
 	}
 
-	public Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim) {
+	public Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
 		Collection<DataGrafico> graficoContratadosArea = new ArrayList<DataGrafico>();
-		Collection<AreaOrganizacional> areasContratados = getDao().findQtdContratadosArea(empresaId, dataIni, dataFim);
+		Collection<AreaOrganizacional> areasContratados = getDao().findQtdContratadosArea(empresaId, solicitacaoIds, dataIni, dataFim);
 		
 		for (AreaOrganizacional area : areasContratados)
 			graficoContratadosArea.add(new DataGrafico(null, area.getNome(), area.getQtdContratados(), ""));
@@ -324,9 +324,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return graficoContratadosArea;
 	}
 
-	public Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim) {
+	public Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
 		Collection<DataGrafico> graficoContratadosMotivo = new ArrayList<DataGrafico>();
-		Collection<MotivoSolicitacao> motivos = getDao().findQtdContratadosMotivo(empresaId, dataIni, dataFim);
+		Collection<MotivoSolicitacao> motivos = getDao().findQtdContratadosMotivo(empresaId, solicitacaoIds, dataIni, dataFim);
 		
 		for (MotivoSolicitacao motivo : motivos)
 			graficoContratadosMotivo.add(new DataGrafico(null, motivo.getDescricao(), motivo.getQtdContratados(), ""));

@@ -29,5 +29,5 @@ public interface HistoricoCandidatoManager extends GenericManager<HistoricoCandi
 	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 	Collection<EventoAgenda> getEventos(String responsavel, Long empresaId);
 	Collection<HistoricoCandidato> getEventos(Long empresaId, Date dataIni, Date dataFim);
-	int findQtdAtendidos(Long empresaId, Date dataIni, Date dataFim);
+	int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 }

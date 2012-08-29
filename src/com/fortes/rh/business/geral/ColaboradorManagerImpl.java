@@ -2276,8 +2276,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return vos;
 	}
 	
-	public int findQtdVagasPreenchidas(Long empresaId, Date dataIni, Date dataFim) {
-		return getDao().findQtdVagasPreenchidas(empresaId, dataIni, dataFim);
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasPreenchidas(empresaId, solicitacaoIds, dataIni, dataFim);
 	}
 	
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {

@@ -37,16 +37,16 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	void updateSuspendeSolicitacao(boolean suspender, String obsSuspensao, Long solicitacaoId);
 	void migrarBairro(Long bairroId, Long bairroDestinoId);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao);
 	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
-	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception;
 }

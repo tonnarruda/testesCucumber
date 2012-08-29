@@ -30,13 +30,13 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	void updateSuspendeSolicitacao(boolean suspender, String observacao, Long solicitacaoId);
 	void updateStatusSolicitacao(Solicitacao solicitacao);
 	void migrarBairro(Long bairroId, Long bairroDestinoId);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds);
-	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds);
+	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
-	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Date dataIni, Date dataFim);
-	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Date dataIni, Date dataFim);
-	Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Date dataIni, Date dataFim);
-	Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] solisolicitacaoIds, Date dataIni, Date dataFim);
+	Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 }

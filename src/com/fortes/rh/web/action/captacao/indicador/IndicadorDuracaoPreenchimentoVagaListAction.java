@@ -16,6 +16,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -27,7 +28,6 @@ import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
-@SuppressWarnings("unchecked")
 public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
@@ -46,6 +46,10 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<FaixaSalarial> faixaSalarials;
 
+	private Collection<Solicitacao> solicitacaos;
+	private Collection<CheckBox> solicitacaosCheck;
+	private String[] solicitacaosCheckIds;
+	
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -79,26 +83,32 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		if (dataDe == null)
 			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 2, true);
 		
-		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), dataDe, dataAte);
+    	solicitacaos = solicitacaoManager.findSolicitacaoList(getEmpresaSistema().getId(), null, null, null);
+
+    	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada");
+
+    	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
+
+		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
-		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), dataDe, dataAte);
-		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), dataDe, dataAte);
+		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
 		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), dataDe, dataAte);
 		
 		try {
-			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId());
+			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds));
 		} catch (Exception e) {
 			
 		}
 
-		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosFaixa = StringUtil.toJSON(graficoContratadosFaixa, null);
 
-		Collection<DataGrafico> graficoContratadosArea = solicitacaoManager.findQtdContratadosPorArea(getEmpresaSistema().getId(), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosArea = solicitacaoManager.findQtdContratadosPorArea(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosArea = StringUtil.toJSON(graficoContratadosArea, null);
 
-		Collection<DataGrafico> graficoContratadosMotivo = solicitacaoManager.findQtdContratadosPorMotivo(getEmpresaSistema().getId(), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosMotivo = solicitacaoManager.findQtdContratadosPorMotivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosMotivo = StringUtil.toJSON(graficoContratadosMotivo, null);
 		
 		Collection<DataGrafico> graficoDivulgacaoVaga = candidatoManager.countComoFicouSabendoVagas(getEmpresaSistema().getId(), dataDe, dataAte);
@@ -128,7 +138,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 		try
 		{
-			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId());
+			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), null);
 
 			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
 			reportTitle = "Indicador de Duração para preenchimento de Vagas";
@@ -377,5 +387,29 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public double getIndiceProcSeletivo() {
 		return indiceProcSeletivo;
+	}
+
+	
+	public Collection<CheckBox> getSolicitacaosCheck()
+	{
+		return solicitacaosCheck;
+	}
+
+	
+	public void setSolicitacaosCheck(Collection<CheckBox> solicitacaosCheck)
+	{
+		this.solicitacaosCheck = solicitacaosCheck;
+	}
+
+	
+	public String[] getSolicitacaosCheckIds()
+	{
+		return solicitacaosCheckIds;
+	}
+
+	
+	public void setSolicitacaosCheckIds(String[] solicitacaosCheckIds)
+	{
+		this.solicitacaosCheckIds = solicitacaosCheckIds;
 	}
 }

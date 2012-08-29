@@ -322,10 +322,14 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato3.setCandidatoSolicitacao(candSolMaria);
 		historicoCandidato3.setData(hoje);
 		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
+		
+		Long[] solicitacaoIds = new Long[]{candSolJoao.getId()};
 
-		int qtd = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), hoje, hoje);
+		int qtd1 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), solicitacaoIds, hoje, hoje);
+		int qtd2 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, hoje, hoje);
 
-		assertEquals(2, qtd);
+		assertEquals("Considerando solicitação",1, qtd1);
+		assertEquals("Não considerando solicitação", 2, qtd2);
 	}
 
 	public void testFindByIdProjection()
