@@ -149,7 +149,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		criteria.setProjection(p);
 		
 		if(LongUtil.isNotEmpty(solicitacaoIds))
-			criteria.add(Expression.in("cs.id", solicitacaoIds));
+			criteria.add(Expression.in("cs.solicitacao.id", solicitacaoIds));
 		
 		criteria.add(Expression.between("hc.data", dataDe, dataAte));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
