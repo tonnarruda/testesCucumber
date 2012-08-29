@@ -169,7 +169,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 										hql.append("and t.realizada = :realizada ");
 									
 									hql.append("group by c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, td.descricao, ttd.despesa ");
-									hql.append("order by c.nome, t.descricao, td.descricao ");
+									hql.append("order by c.nome, t.descricao, t.id, td.descricao ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);

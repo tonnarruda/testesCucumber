@@ -63,7 +63,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		if (indicadorTreinamento != null)
 		{
-			IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId);
+			IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
 
 			Double custoMedioHora = 0d;
 
@@ -87,7 +87,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			//Prepara o custo total se ainda não existir
 			if (indicadorTreinamento.getCustoTotal() == null)
 			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId);
+				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
 				indicadorTreinamento.setCustoTotal(indicadorTmp.getCustoTotal());
 			}
 
@@ -110,7 +110,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			// Prepara dados se ainda não existem
 			if (indicadorTreinamento.getSomaHoras() == null)
 			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId);
+				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
 				indicadorTreinamento.setSomaHoras(indicadorTmp.getSomaHoras());
 			}
 			if (indicadorTreinamento.getQtdColaboradoresInscritos() == null)

@@ -13,7 +13,7 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findAllSelect(Long empresaId);
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
-	public IndicadorTreinamento findSomaCustoEHorasTreinamentos(Date dataIni, Date dataFim, Long empresaId);
+	public IndicadorTreinamento findSomaCustoEHorasTreinamentos(Date dataIni, Date dataFim, Long empresaId, Boolean realizada);
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countTreinamentos(Date dataIni, Date dataFim, Long empresaId, Boolean realizado);

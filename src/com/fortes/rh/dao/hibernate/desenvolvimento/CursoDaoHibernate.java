@@ -110,18 +110,24 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return query.list();
 	}
 
-	public IndicadorTreinamento findSomaCustoEHorasTreinamentos(Date dataIni, Date dataFim, Long empresaId)
+	public IndicadorTreinamento findSomaCustoEHorasTreinamentos(Date dataIni, Date dataFim, Long empresaId, Boolean realizada)
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(sum(t.custo), sum(curso.cargaHoraria)) ");
 		hql.append("from Turma t ");
 		hql.append("join t.curso curso ");
-		hql.append("where  t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim ");
+		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 		hql.append("and curso.empresa.id = :empresaId ");
 
+		if(realizada != null)
+			hql.append("and t.realizada = :realizada ");
+		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setLong("empresaId", empresaId);
+		
+		if(realizada != null)
+			query.setBoolean("realizada", realizada);
 
 		return (IndicadorTreinamento)query.uniqueResult();
 	}
@@ -131,7 +137,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		StringBuilder hql = new StringBuilder("select count(ct.id) ");
 		hql.append("from ColaboradorTurma ct ");
 		hql.append("join ct.turma t ");
-		hql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim ");
+		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 		hql.append("and t.empresa.id = :empresaId ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -147,7 +153,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		StringBuilder hql = new StringBuilder("select sum(t.qtdParticipantesPrevistos) ");
 		hql.append("from Turma t ");
 		hql.append("join t.curso curso ");
-		hql.append("where  t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim ");
+		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 		hql.append("and curso.empresa.id = :empresaId ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -165,7 +171,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setProjection(Projections.rowCount());
 
 		criteria.add(Expression.ge("t.dataPrevIni", dataIni));
-		criteria.add(Expression.le("t.dataPrevFim", dataFim));
+		criteria.add(Expression.le("t.dataPrevIni", dataFim));
 		if (realizado != null)
 			criteria.add(Expression.eq("realizada", realizado));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -186,7 +192,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.ge("t.dataPrevIni", dataIni));
-		criteria.add(Expression.le("t.dataPrevFim", dataFim));
+		criteria.add(Expression.le("t.dataPrevIni", dataFim));
 
 		return criteria.list();
 	}

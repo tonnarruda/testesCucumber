@@ -213,11 +213,11 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Turma turmaForaDaConsulta = TurmaFactory.getEntity();
 		turmaForaDaConsulta.setCurso(curso2);
 		turmaForaDaConsulta.setCusto(9582.00);
-		turmaForaDaConsulta.setDataPrevIni(dataTresMesesDepois.getTime());
+		turmaForaDaConsulta.setDataPrevIni(dataQuatroMesesDepois.getTime());
 		turmaForaDaConsulta.setDataPrevFim(dataQuatroMesesDepois.getTime());
 		turmaDao.save(turmaForaDaConsulta);
 
-		IndicadorTreinamento result = cursoDao.findSomaCustoEHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), empresa.getId());
+		IndicadorTreinamento result = cursoDao.findSomaCustoEHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), empresa.getId(), null);
 		assertNotNull(result);
 		assertEquals(3712.69, result.getSomaCustos());
 		assertEquals(new Integer(60), result.getSomaHoras());
@@ -249,7 +249,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Turma turmaForaDaConsulta = TurmaFactory.getEntity();
 		turmaForaDaConsulta.setEmpresa(empresa);
 		turmaForaDaConsulta.setCurso(curso1);
-		turmaForaDaConsulta.setDataPrevIni(dataTresMesesDepois.getTime());
+		turmaForaDaConsulta.setDataPrevIni(dataQuatroMesesDepois.getTime());
 		turmaForaDaConsulta.setDataPrevFim(dataQuatroMesesDepois.getTime());
 		turmaDao.save(turmaForaDaConsulta);
 
@@ -324,6 +324,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	public void testCountTreinamentosRealizados()
 	{
 		Date hoje = new Date();
+		Calendar dataDoisMesesDepois = Calendar.getInstance();
+		dataDoisMesesDepois.add(Calendar.MONTH, 2);
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
     	dataDoisMesesAtras.add(Calendar.MONTH, -2);
     	Calendar dataTresMesesAtras = Calendar.getInstance();
@@ -368,8 +370,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Turma turmaRealizadaForaDoPeriodo = TurmaFactory.getEntity();
 		turmaRealizadaForaDoPeriodo.setCurso(curso1);
 		turmaRealizadaForaDoPeriodo.setRealizada(true);
-		turmaRealizadaForaDoPeriodo.setDataPrevIni(dataTresMesesAtras.getTime());
-		turmaRealizadaForaDoPeriodo.setDataPrevFim(hoje);
+		turmaRealizadaForaDoPeriodo.setDataPrevIni(hoje);
+		turmaRealizadaForaDoPeriodo.setDataPrevFim(dataDoisMesesDepois.getTime());
 		turmaDao.save(turmaRealizadaForaDoPeriodo);
 
 		assertEquals(new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId(), true));

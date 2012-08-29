@@ -159,7 +159,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
 		
 		if(ordenarPorNivel)
-			sql.append("order by c.nome, c.id ");
+			sql.append("order by c.nome, c.id, competencia ");
 		else
 			sql.append("order by competencia, c.nome ");
 		
