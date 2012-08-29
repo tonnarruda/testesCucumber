@@ -160,6 +160,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private Collection<PeriodoExperiencia> periodoExperiencias;
 	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes;
+	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor;
 	private Collection<Avaliacao> avaliacoes;
 
 	// Utilizados no insert e update para a chamada ao metodo saveDetalhes();
@@ -551,7 +552,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				if (candidatoSolicitacaoId != null)
 					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
 				
-				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes);
+				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 				
 				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
 				
@@ -692,7 +693,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 			
 			colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
-			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes);
+			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 		}
 //		catch (NestedRuntimeException e)
 //		{
@@ -1691,5 +1692,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Collection<Colaborador> getColaboradoresMesmoCpf() {
 		return colaboradoresMesmoCpf;
+	}
+
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoesGestor() {
+		return colaboradorAvaliacoesGestor;
+	}
+
+	public void setColaboradorAvaliacoesGestor(
+			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor) {
+		this.colaboradorAvaliacoesGestor = colaboradorAvaliacoesGestor;
 	}
 }

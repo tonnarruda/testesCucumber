@@ -36,7 +36,8 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 	public ColaboradorPeriodoExperienciaAvaliacao getEntity()
 	{
 		ColaboradorPeriodoExperienciaAvaliacao colaboradorPeriodoExperienciaAvaliacao = new ColaboradorPeriodoExperienciaAvaliacao();
-
+		colaboradorPeriodoExperienciaAvaliacao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		
 		return colaboradorPeriodoExperienciaAvaliacao;
 	}
 
@@ -47,6 +48,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		
 		ColaboradorPeriodoExperienciaAvaliacao configuracao = new ColaboradorPeriodoExperienciaAvaliacao();
 		configuracao.setColaborador(colaborador);
+		configuracao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configuracao);
 		
 		colaboradorPeriodoExperienciaAvaliacaoDao.removeByColaborador(colaborador.getId());
@@ -65,14 +67,17 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		
 		ColaboradorPeriodoExperienciaAvaliacao config1 = new ColaboradorPeriodoExperienciaAvaliacao();
 		config1.setColaborador(colab1);
+		config1.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config1);
 
 		ColaboradorPeriodoExperienciaAvaliacao config2 = new ColaboradorPeriodoExperienciaAvaliacao();
 		config2.setColaborador(colab1);
+		config2.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config2);
 		
 		ColaboradorPeriodoExperienciaAvaliacao config3 = new ColaboradorPeriodoExperienciaAvaliacao();
 		config3.setColaborador(colab2);
+		config3.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config3);
 		
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.findByColaborador(colab1.getId());
@@ -126,24 +131,28 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		config1Joao.setColaborador(joao);
 		config1Joao.setPeriodoExperiencia(periodo1);
 		config1Joao.setAvaliacao(avaliacao);
+		config1Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config1Joao);
 		
 		ColaboradorPeriodoExperienciaAvaliacao config2Joao = new ColaboradorPeriodoExperienciaAvaliacao();
 		config2Joao.setColaborador(joao);
 		config2Joao.setPeriodoExperiencia(periodo60);
 		config2Joao.setAvaliacao(avaliacao);
+		config2Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config2Joao);
 
 		ColaboradorPeriodoExperienciaAvaliacao configMaria = new ColaboradorPeriodoExperienciaAvaliacao();
 		configMaria.setColaborador(maria);
 		configMaria.setPeriodoExperiencia(periodo1);
 		configMaria.setAvaliacao(avaliacao);
+		configMaria.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configMaria);
 		
 		ColaboradorPeriodoExperienciaAvaliacao configPedro = new ColaboradorPeriodoExperienciaAvaliacao();
 		configPedro.setColaborador(pedro);
 		configPedro.setPeriodoExperiencia(periodo1);
 		configPedro.setAvaliacao(avaliacao);
+		configPedro.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configPedro);
 		
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.getColaboradoresComAvaliacaoVencidaHoje();

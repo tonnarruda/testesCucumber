@@ -11,7 +11,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
-	public void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) 
+	public void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor) 
 	{
 		if(colaboradorAvaliacoes != null)
 		{
@@ -20,7 +20,21 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 				if (colabPerExpAvaliacao.getAvaliacao() != null && colabPerExpAvaliacao.getAvaliacao().getId() != null)
 				{
 					colabPerExpAvaliacao.setColaborador(colaborador);
+					colabPerExpAvaliacao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 					getDao().save(colabPerExpAvaliacao);
+				}
+			}
+		}
+
+		if(colaboradorAvaliacoesGestor != null)
+		{
+			for (ColaboradorPeriodoExperienciaAvaliacao colabPerExpAvaliacaoGestor : colaboradorAvaliacoesGestor) 
+			{
+				if (colabPerExpAvaliacaoGestor.getAvaliacao() != null && colabPerExpAvaliacaoGestor.getAvaliacao().getId() != null)
+				{
+					colabPerExpAvaliacaoGestor.setColaborador(colaborador);
+					colabPerExpAvaliacaoGestor.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
+					getDao().save(colabPerExpAvaliacaoGestor);
 				}
 			}
 		}

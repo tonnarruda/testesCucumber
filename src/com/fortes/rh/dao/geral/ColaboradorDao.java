@@ -76,7 +76,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado);
 	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado);
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Long[] perfilIds, Long empresaId);
-	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa);
+	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId);
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos);
 	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long id, Long colaboradorLogadoId);
 	public Collection<Colaborador> findByCpf(String cpf, Long empresaId);

@@ -17,6 +17,7 @@ import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
+import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
@@ -35,6 +36,7 @@ import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.dao.geral.CamposExtrasDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
+import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
@@ -54,6 +56,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Habilitacao;
@@ -80,6 +83,7 @@ import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
+import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -104,6 +108,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -174,6 +179,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private EpiDao epiDao;
 	private SolicitacaoEpiDao solicitacaoEpiDao;
 	private ProvidenciaDao providenciaDao;
+	private PeriodoExperienciaDao periodoExperienciaDao;
+	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -3483,12 +3490,59 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador);
 
-		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa);
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, 6L);
 		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
 		
-		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa).size());
+		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa, 6L).size());
 		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
+	}
+	
+	public void testFindAdmitidosHaDiasPeriodoExperiencia() {
+		Calendar quarentaDiasAtras = Calendar.getInstance();
+		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
 		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
+		periodoExperienciaDao.save(periodoExperiencia);
+		
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		assertEquals(1, colabsRetorno.size());
+		assertNull(colabRetorno.getAvaliacaoId());
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacao = new ColaboradorPeriodoExperienciaAvaliacao();
+		colabPeriodoExperienciaAvaliacao.setColaborador(colaborador);
+		colabPeriodoExperienciaAvaliacao.setPeriodoExperiencia(periodoExperiencia);
+		colabPeriodoExperienciaAvaliacao.setAvaliacao(avaliacao);
+		colabPeriodoExperienciaAvaliacao.setTipo('G');
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacao);
+		
+		colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		
+		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
+		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId()).size());
+		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
 	}
 
 	public void testFindAdmitidosNoPeriodo() {
@@ -5322,6 +5376,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void setProvidenciaDao(ProvidenciaDao providenciaDao) {
 		this.providenciaDao = providenciaDao;
+	}
+
+	public void setPeriodoExperienciaDao(PeriodoExperienciaDao periodoExperienciaDao) {
+		this.periodoExperienciaDao = periodoExperienciaDao;
+	}
+
+	public void setColaboradorPeriodoExperienciaAvaliacaoDao(
+			ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
+		this.colaboradorPeriodoExperienciaAvaliacaoDao = colaboradorPeriodoExperienciaAvaliacaoDao;
 	}
 
 }

@@ -2595,10 +2595,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa)
+	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
@@ -2606,6 +2606,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
+		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
 		hql.append("where ");
 		hql.append("		hc.status = :status ");
 		hql.append("		and hc.data = (");
@@ -2620,6 +2621,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
+		query.setLong("periodoExperienciaId", periodoExperienciaId);
 		query.setDate("hoje", new Date());
 		query.setInteger("dias", dias);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);

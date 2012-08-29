@@ -1691,8 +1691,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsDeColaboradoresByPerfis(perfilIds, empresaId);
 	}
 
-	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa) throws Exception {
-		Collection<Colaborador> admitidosHaDias = getDao().findAdmitidosHaDias(dias, empresa);
+	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId) throws Exception {
+		Collection<Colaborador> admitidosHaDias = getDao().findAdmitidosHaDias(dias, empresa, periodoExperienciaId);
 		
 		admitidosHaDias = setFamiliaAreas(admitidosHaDias, empresa.getId());
 		

@@ -96,6 +96,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Ambiente ambiente;
 	@Transient
+	private Long avaliacaoId;
+	@Transient
 	private String avaliacaoTitulo;
 	@Transient
 	private Date respondidaEm;
@@ -175,6 +177,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<Cat> cats;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos; 
 
 	@OneToOne(optional=true)
 	private Candidato candidato;
@@ -910,7 +915,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//Construtor usado por findAdmitidosHaDias
-	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, String estabelecimentoNome)
+	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, String estabelecimentoNome, Long avaliacaoId)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -926,6 +931,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.areaOrganizacional.setAreaMaeId(areaMaeId);
 		this.areaOrganizacional.setAreaMaeNome(areaMaeNome);
 		this.setEstabelecimentoNomeProjection(estabelecimentoNome);
+		this.setAvaliacaoId(avaliacaoId);
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, Date admissao)
@@ -2581,4 +2587,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.dataEncerramentoContrato = dataEncerramentoContrato;
 	}
+
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorPeriodoExperienciaAvaliacaos() {
+		return colaboradorPeriodoExperienciaAvaliacaos;
+	}
+
+	public void setColaboradorPeriodoExperienciaAvaliacaos(
+			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos) {
+		this.colaboradorPeriodoExperienciaAvaliacaos = colaboradorPeriodoExperienciaAvaliacaos;
+	}
+
+	public Long getAvaliacaoId() {
+		return avaliacaoId;
+	}
+
+	public void setAvaliacaoId(Long avaliacaoId) {
+		this.avaliacaoId = avaliacaoId;
+	}
+
 }

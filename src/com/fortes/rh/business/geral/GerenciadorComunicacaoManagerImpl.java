@@ -530,7 +530,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	 				Collection<Colaborador> colaboradores = null;
 	 				
 					try {
-						colaboradores = colaboradorManager.findAdmitidosHaDias(dias, periodoExperiencia.getEmpresa());
+						colaboradores = colaboradorManager.findAdmitidosHaDias(dias, periodoExperiencia.getEmpresa(), periodoExperiencia.getId());
 					} catch (Exception e) {
 						e.printStackTrace();
 						continue;
@@ -560,8 +560,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 								.append("\nÁrea: ").append(colaborador.getAreaOrganizacional().getDescricao())
 								.append("\nData da avaliação: ").append(data);
 						
-						String link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
+						String link = "";
 						
+						if(colaborador.getAvaliacaoId() == null)
+							link = "avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action?colaborador.id=" + colaborador.getId();
+						else
+							link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaborador.getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id=" + colaborador.getAvaliacaoId();
 						
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
 		    			{

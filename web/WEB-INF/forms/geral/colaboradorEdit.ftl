@@ -195,6 +195,7 @@
 				<#list avaliacoes as avaliacao>
 					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
 				    	$('#modeloPeriodo' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
+				    	$('#modeloPeriodoGestor' + ${avaliacao.periodoExperiencia.id}).append("<option value='${avaliacao.id}'>${avaliacao.titulo}</option>");
 					</#if>
 				</#list>
 			</#if>
@@ -202,7 +203,11 @@
 			<#if colaboradorAvaliacoes?exists>
 				<#list colaboradorAvaliacoes as colaboradorAvaliacao>
 					<#if colaboradorAvaliacao.periodoExperiencia?exists && colaboradorAvaliacao.periodoExperiencia.id?exists && colaboradorAvaliacao.avaliacao?exists && colaboradorAvaliacao.avaliacao.id?exists>
-					    $('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+					    <#if colaboradorAvaliacao.tipo == 'G'>
+					    	$('#modeloPeriodoGestor' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+					    <#else>
+					    	$('#modeloPeriodo' + ${colaboradorAvaliacao.periodoExperiencia.id}).val(${colaboradorAvaliacao.avaliacao.id});
+						</#if>
 					</#if>
 				</#list>
 			</#if>
@@ -597,16 +602,35 @@
 	      </div>
 
 		<div id="content6" style="display: none;">
-			<#assign i = 0 />
-			<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
-				<@display.column title="Dias" property="dias" style="width:80px;" />
-				<@display.column title="Modelo do Acompanhamento do Período de Experiência">
-					<@ww.hidden name="colaboradorAvaliacoes[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
-					<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
-				</@display.column>
-				
-				<#assign i = i + 1 />
-			</@display.table>
+			<fieldset>
+				<legend>Colaborador</legend>
+				<#assign i = 0 />
+				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
+					<@display.column title="Dias" property="dias" style="width:80px;" />
+					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
+						<@ww.hidden name="colaboradorAvaliacoes[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
+						<@ww.select theme="simple" name="colaboradorAvaliacoes[${i}].avaliacao.id" id="modeloPeriodo${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+					</@display.column>
+					
+					<#assign i = i + 1 />
+				</@display.table>
+			</fieldset>
+
+			<br />
+
+			<fieldset>
+				<legend>Gestor</legend>
+				<#assign i = 0 />
+				<@display.table name="periodoExperiencias" id="periodoExperiencia" class="dados">
+					<@display.column title="Dias" property="dias" style="width:80px;" />
+					<@display.column title="Modelo do Acompanhamento do Período de Experiência">
+						<@ww.hidden name="colaboradorAvaliacoesGestor[${i}].periodoExperiencia.id" value="${periodoExperiencia.id}" />
+						<@ww.select theme="simple" name="colaboradorAvaliacoesGestor[${i}].avaliacao.id" id="modeloPeriodoGestor${periodoExperiencia.id}" headerKey="" headerValue="Selecione" cssStyle="width: 750px;"/>
+					</@display.column>
+					
+					<#assign i = i + 1 />
+				</@display.table>
+			</fieldset>
 	    </div>
 
 		<#if habilitaCampoExtra>

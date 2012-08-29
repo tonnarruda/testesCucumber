@@ -656,8 +656,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
-		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
-		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();

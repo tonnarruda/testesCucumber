@@ -1281,10 +1281,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		Empresa empresa= EmpresaFactory.getEmpresa(1L);
 		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
 		
-		colaboradorDao.expects(once()).method("findAdmitidosHaDias").with(eq(dias),eq(empresa)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorDao.expects(once()).method("findAdmitidosHaDias").with(eq(dias),eq(empresa), ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacinoalManager.expects(once()).method("findByEmpresasIds").with(ANYTHING, ANYTHING).will(returnValue(areas));
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
-		assertEquals(0, colaboradorManager.findAdmitidosHaDias(dias, empresa).size());
+		assertEquals(0, colaboradorManager.findAdmitidosHaDias(dias, empresa, null).size());
     }
     
     public void testFindAdmitidos() throws Exception

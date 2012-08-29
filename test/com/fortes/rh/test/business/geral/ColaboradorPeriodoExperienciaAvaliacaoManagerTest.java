@@ -62,7 +62,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 
 		Exception exception = null;
 		try {
-			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes);
+			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, null);
 		
 		} catch (Exception e) {
 			exception = e;
