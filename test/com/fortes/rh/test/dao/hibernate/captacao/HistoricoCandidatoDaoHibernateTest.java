@@ -290,6 +290,12 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
+		Solicitacao sol1 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(sol1);
+		
+		Solicitacao sol2 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(sol2);
+		
 		Candidato joao = CandidatoFactory.getCandidato();
 		joao.setNome("joao");
 		joao.setEmpresa(empresa);
@@ -302,10 +308,12 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		CandidatoSolicitacao candSolJoao = new CandidatoSolicitacao();
 		candSolJoao.setCandidato(joao);
+		candSolJoao.setSolicitacao(sol1);
 		candidatoSolicitacaoDao.save(candSolJoao);
 
 		CandidatoSolicitacao candSolMaria = new CandidatoSolicitacao();
 		candSolMaria.setCandidato(maria);
+		candSolMaria.setSolicitacao(sol2);
 		candidatoSolicitacaoDao.save(candSolMaria);
 
 		HistoricoCandidato historicoCandidato = new HistoricoCandidato();
@@ -323,7 +331,7 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato3.setData(hoje);
 		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
 		
-		Long[] solicitacaoIds = new Long[]{candSolJoao.getId()};
+		Long[] solicitacaoIds = new Long[]{ sol1.getId() };
 
 		int qtd1 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), solicitacaoIds, hoje, hoje);
 		int qtd2 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, hoje, hoje);
