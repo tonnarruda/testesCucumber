@@ -19,6 +19,7 @@ import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.model.geral.relatorio.MensagemVO;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
@@ -79,7 +80,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
 
-		Map<Character, Collection<UsuarioMensagem>> retorno = usuarioMensagemManager.listaUsuarioMensagem(usuario.getId(), empresa.getId());
+		Map<Character, Collection<MensagemVO>> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), null);
 
 		assertEquals(usuarioMensagems.size(), retorno.size());
 	}

@@ -7,32 +7,97 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.model.geral.relatorio.MensagemVO;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.util.SpringUtil;
 
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {
 	private MensagemManager mensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
-
-	public Map<Character, Collection<UsuarioMensagem>> listaUsuarioMensagem(Long usuarioId, Long empresaId)
+	
+	public Map<Character, Collection<MensagemVO>> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
 	{
-		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
-		Map<Character, Collection<UsuarioMensagem>> mensagensAgrupadas = new LinkedHashMap<Character, Collection<UsuarioMensagem>>();
+		Map<Character, Collection<MensagemVO>> mensagensAgrupadas = new LinkedHashMap<Character, Collection<MensagemVO>>();
+		MensagemVO vo;
+		TipoMensagem tipoMensagem = new TipoMensagem();
 		
-		for (UsuarioMensagem usuarioMensagem : usuarioMensagens)
+		for (char tipo : tipoMensagem.keySet())
+			mensagensAgrupadas.put(tipo, new ArrayList<MensagemVO>());
+		
+		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
+		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
 		{
-			if (!mensagensAgrupadas.containsKey(usuarioMensagem.getMensagem().getTipo()))
-				mensagensAgrupadas.put(usuarioMensagem.getMensagem().getTipo(), new ArrayList<UsuarioMensagem>());
+			vo = new MensagemVO();
+			vo.setUsuarioMensagemId(usuarioMensagem.getId());
+			vo.setRemetente(usuarioMensagem.getMensagem().getRemetente());
+			vo.setData(usuarioMensagem.getMensagem().getData());
+			vo.setTexto(usuarioMensagem.getMensagem().getTexto());
+			vo.setTipo(usuarioMensagem.getMensagem().getTipo());
+			vo.setLink(usuarioMensagem.getMensagem().getLink());
+			vo.setLida(usuarioMensagem.isLida());
 			
-			mensagensAgrupadas.get(usuarioMensagem.getMensagem().getTipo()).add(usuarioMensagem);
+			mensagensAgrupadas.get(usuarioMensagem.getMensagem().getTipo()).add(vo);
+		}
+		
+		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
+		Collection<Questionario> questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
+		for (Questionario questionario : questionarios) 
+		{
+			vo = new MensagemVO();
+			vo.setTexto(questionario.getTitulo());
+			vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=" + questionario.getId() + "&colaborador.id=" + colaboradorId + "&tela=index&validarFormulario=true");
+			vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
+			vo.setLida(true);
+			
+			mensagensAgrupadas.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).add(vo);
+		}
+		
+		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
+		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+		for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
+		{
+			Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
+			if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
+			{
+				for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
+				{
+					vo = new MensagemVO();
+					vo.setTexto(colabQuestionarioAvaliado.getAvaliacaoDesempenho().getTitulo() + " (" + colabQuestionarioAvaliado.getColaborador().getNome() + ") (" + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getPeriodoFormatado() + ")");
+					vo.setLink("avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=" + colabQuestionarioAvaliado.getId());
+					vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
+					vo.setLida(true);
+					
+					mensagensAgrupadas.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).add(vo);
+				}
+			}
+		}
+		
+		Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
+		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionariosTeD) 
+		{
+			vo = new MensagemVO();
+			vo.setTexto(colaboradorQuestionario.getQuestionario().getTitulo());
+			vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
+			vo.setTipo(TipoMensagem.AVALIACOES_TED);
+			vo.setLida(true);
+			
+			mensagensAgrupadas.get(TipoMensagem.AVALIACOES_TED).add(vo);
 		}
 		
 		return mensagensAgrupadas;

@@ -29,14 +29,14 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	private ColaboradorManager colaboradorManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Usuario findByLogin(String login)
 	{
 		return getDao().findByLogin(login);
+	}
+	
+	public Usuario findByIdProjection(Long usuarioId)
+	{
+		return getDao().findByIdProjection(usuarioId);
 	}
 
 	public Usuario save(Usuario usuario)
@@ -90,11 +90,6 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	public Collection<Usuario> findAllSelect()
 	{
 		return getDao().findAllSelect();
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
-	{
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
 	public Collection<Usuario> findAllBySelectUsuarioEmpresa(Long empresaId)
@@ -238,15 +233,33 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		}
 	}
 	
-	public String[] findEmailsByUsuario(Long[] usuariosIds){
+	public String[] findEmailsByUsuario(Long[] usuariosIds)
+	{
 		return getDao().findEmailsByUsuario(usuariosIds);
 	}
 
-	public void setUltimoLogin(Long id) {
+	public void setUltimoLogin(Long id) 
+	{
 		getDao().setUltimoLogin(id);
 	}
 
-	public Collection<Usuario> findAllSelect(Long empresaId) {
+	public Collection<Usuario> findAllSelect(Long empresaId) 
+	{
 		return getDao().findAllSelect(empresaId);
+	}
+	
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas) 
+	{
+		getDao().updateConfiguracoesMensagens(usuarioId, caixasMensagensOrdem, caixasMensagensMinimizadas);
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
+	{
+		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

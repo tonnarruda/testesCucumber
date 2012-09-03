@@ -11,28 +11,29 @@ import com.fortes.rh.model.geral.Empresa;
 
 public interface UsuarioDao extends GenericDao<Usuario>
 {
-	public Usuario findByLogin(String login);
+	Usuario findByLogin(String login);
 
-	public Collection findUsuarios(int page, int pagingSize, String nomeBusca, Empresa empresa);
+	Collection findUsuarios(int page, int pagingSize, String nomeBusca, Empresa empresa);
 
-	public Integer getCountUsuario(String nomeBusca, Empresa empresa);
+	Integer getCountUsuario(String nomeBusca, Empresa empresa);
 
-	public Collection<Usuario> findAllSelect();
+	Collection<Usuario> findAllSelect();
 
-	public Usuario findByLogin(Usuario usuario);
+	Usuario findByLogin(Usuario usuario);
 
-	public void desativaAcessoSistema(Long colaboradorId);
+	void desativaAcessoSistema(Long colaboradorId);
 	
-	public void reativaAcessoSistema(Long colaboradorId);
+	void reativaAcessoSistema(Long colaboradorId);
 
-	public void setUltimoLogin(Long id);
+	void setUltimoLogin(Long id);
 
-	public void desativaSuperAdmin();
+	void desativaSuperAdmin();
 	
-	public Usuario findByIdProjection(Long usuarioId);
+	Usuario findByIdProjection(Long usuarioId);
 	
-	public Collection<Usuario> findAllSelect(Long empresaId);
+	Collection<Usuario> findAllSelect(Long empresaId);
 	
-	public String[] findEmailsByUsuario(Long[] usuariosIds);
+	String[] findEmailsByUsuario(Long[] usuariosIds);
 
+	void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas);
 }

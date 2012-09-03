@@ -117,6 +117,9 @@
 	<bean id="usuarioMensagemDWR" class="com.fortes.rh.web.dwr.UsuarioMensagemDWR">
 		<property name="usuarioMensagemManager" ref="usuarioMensagemManager"/>
 	</bean>
+	<bean id="usuarioDWR" class="com.fortes.rh.web.dwr.UsuarioDWR">
+		<property name="usuarioManager" ref="usuarioManager"/>
+	</bean>
 	<bean id="etapaProcessoEleitoralDWR" class="com.fortes.rh.web.dwr.EtapaProcessoEleitoralDWR">
 		<property name="etapaProcessoEleitoralManager" ref="etapaProcessoEleitoralManager"/>
 	</bean>

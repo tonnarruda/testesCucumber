@@ -252,6 +252,25 @@ public final class StringUtil
 
 		return retorno.toString();
 	}
+
+	public static String converteCharArrayToString(Character[] array)
+	{
+		StringBuilder retorno = new StringBuilder();
+		
+		if(array != null && array.length > 0)
+		{
+			for (Character valor : array)
+			{
+				retorno.append(valor);
+				retorno.append(",");
+			}
+		}
+		
+		if(retorno.length() > 0)
+			return retorno.substring(0, (retorno.length() - 1));
+		
+		return retorno.toString();
+	}
 	
 	public static String converteCollectionToString(Collection<String> colecao)
 	{

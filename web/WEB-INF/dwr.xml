@@ -100,6 +100,9 @@
 		<create creator="spring" javascript="UsuarioMensagemDWR">
 			<param name="beanName" value="usuarioMensagemDWR"/>
 		</create>
+		<create creator="spring" javascript="UsuarioDWR">
+			<param name="beanName" value="usuarioDWR"/>
+		</create>
 		<create creator="spring" javascript="EtapaProcessoEleitoralDWR">
 			<param name="beanName" value="etapaProcessoEleitoralDWR"/>
 		</create>

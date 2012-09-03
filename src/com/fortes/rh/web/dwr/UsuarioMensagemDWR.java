@@ -7,7 +7,6 @@ public class UsuarioMensagemDWR
 {
 	private UsuarioMensagemManager usuarioMensagemManager;
 
-
 	public void gravarMensagemLida(Long usuarioMensagemId, Long empresaId, boolean lida)
 	{
 		UsuarioMensagem usuarioMensagem = usuarioMensagemManager.findByIdProjection(usuarioMensagemId, empresaId);

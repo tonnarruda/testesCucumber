@@ -35,6 +35,8 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		p.add(Projections.property("u.login"), "login");
 		p.add(Projections.property("u.senha"), "senha");
 		p.add(Projections.property("u.acessoSistema"), "acessoSistema");
+		p.add(Projections.property("u.caixasMensagensOrdem"), "caixasMensagensOrdem");
+		p.add(Projections.property("u.caixasMensagensMinimizadas"), "caixasMensagensMinimizadas");
 
 		criteria.setProjection(p);
 
@@ -243,6 +245,17 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
+	}
+
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas) 
+	{
+		String hql = "update Usuario set caixasMensagensOrdem = :caixasMensagensOrdem, caixasMensagensMinimizadas = :caixasMensagensMinimizadas where id = :usuarioId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("usuarioId", usuarioId);
+		query.setString("caixasMensagensOrdem", caixasMensagensOrdem);
+		query.setString("caixasMensagensMinimizadas", caixasMensagensMinimizadas);
+		
+		query.executeUpdate();
 	}
 
 }

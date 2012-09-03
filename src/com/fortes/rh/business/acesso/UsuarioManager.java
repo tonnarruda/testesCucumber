@@ -18,6 +18,8 @@ import com.fortes.web.tags.CheckBox;
 public interface UsuarioManager extends GenericManager<Usuario>
 {
 	public Usuario findByLogin(String login);
+	
+	Usuario findByIdProjection(Long usuarioId);
 
 	public Colaborador prepareCriarUsuario(Colaborador colaborador);
 
@@ -52,5 +54,7 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	public Collection<Usuario> findAllSelect(Long empresaId);
 	
 	public String[] findEmailsByUsuario(Long[] usuariosIds);
+
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas);
 
 }

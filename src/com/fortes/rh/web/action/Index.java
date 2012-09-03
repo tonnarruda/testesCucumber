@@ -32,7 +32,6 @@ import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
-import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
@@ -41,8 +40,8 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
-import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.geral.Video;
+import com.fortes.rh.model.geral.relatorio.MensagemVO;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -75,7 +74,7 @@ public class Index extends ActionSupport
 	private Collection<Pesquisa> pesquisasColaborador = new ArrayList<Pesquisa>();
 	private Collection<Questionario> questionarios;
 	private Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD;
-	private Map<Character, Collection<UsuarioMensagem>> mensagems;
+	private Map<Character, Collection<MensagemVO>> mensagems;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
 	private Collection<Avaliacao> avaliacaos;
@@ -124,29 +123,18 @@ public class Index extends ActionSupport
 			{
 				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
-				//SecurityUtil.setMenuFormatadoSession(ActionContext.getContext().getSession(), "Marlus");
 			}
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
 
-			questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
-			
-			colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
-			
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 
-			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
-			{
-				mensagems = usuarioMensagemManager.listaUsuarioMensagem(usuarioId, empresaId);
-				possuiMensagem = usuarioMensagemManager.possuiMensagemNaoLida(usuarioId, empresaId);
-			}
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
+				mensagems = usuarioMensagemManager.listaMensagens(usuarioId, empresaId, colaborador.getId());
 			
 			if (parametrosDoSistemaManager.isIdiomaCorreto())
 				idiomaIncorreto = true;
 			
-			
-			validaAvaliacoesDesempenho();
-			
-			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
 			{
 				solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.ANALISE, null);
 				
@@ -154,7 +142,7 @@ public class Index extends ActionSupport
 					candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
 			}
 			
-			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
 				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
 			
 			validaIntegracaoAC();
@@ -176,7 +164,7 @@ public class Index extends ActionSupport
 		return Action.SUCCESS;
 	}
 	
-	public Collection<UsuarioMensagem> getMensagens(char tipoMensagem)
+	public Collection<MensagemVO> getMensagens(char tipoMensagem)
 	{
 		return mensagems.get(tipoMensagem);
 	}
@@ -186,24 +174,6 @@ public class Index extends ActionSupport
 		return new TipoMensagem().get(tipoMensagem);
 	}
 
-	private void validaAvaliacoesDesempenho()
-	{
-		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
-		
-		for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
-		{
-			Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaborador.getId(), false, true);
-			if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
-			{
-				for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
-				{
-					avaliacoesDesempenhoPendentes.add(colabQuestionarioAvaliado);
-				}
-			}
-		}
-	}
-	
-	
 	public String videoteca() throws Exception
 	{
 		pgInicial = false;
@@ -380,16 +350,6 @@ public class Index extends ActionSupport
 		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
-	public Map<Character, Collection<UsuarioMensagem>> getMensagems() 
-	{
-		return mensagems;
-	}
-
-	public void setMensagems(Map<Character, Collection<UsuarioMensagem>> mensagems) 
-	{
-		this.mensagems = mensagems;
-	}
-
 	public boolean isPgInicial()
 	{
 		return pgInicial;
@@ -513,5 +473,13 @@ public class Index extends ActionSupport
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Map<Character, Collection<MensagemVO>> getMensagems() {
+		return mensagems;
+	}
+
+	public void setMensagems(Map<Character, Collection<MensagemVO>> mensagems) {
+		this.mensagems = mensagems;
 	}
 }
