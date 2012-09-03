@@ -223,7 +223,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
-		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
+		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
 		addActionMessage("Avaliação respondida com sucesso.");
 		
 		return Action.SUCCESS;
@@ -366,7 +366,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
 		ajustaSolicitacao();
 		
-		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
+		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
@@ -396,7 +396,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		//TODO: Este metodo tambem atualiza o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" atualizasse as respostas e nao o contrario. 		
 		ajustaSolicitacao();
-		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario);
+		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
 		
 		if (respostaColaborador)
 			return "sucessoIndex";

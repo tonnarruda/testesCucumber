@@ -12,11 +12,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -42,6 +44,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     private QuestionarioManager questionarioManager;
     private ColaboradorManager colaboradorManager;
     private AvaliacaoManager avaliacaoManager;
+    private UsuarioManager usuarioManager ;
 
 	public List<Object[]> countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
     {
@@ -393,7 +396,10 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return resultadosObjetivas;
 	}
 	
-	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
+	/**
+	 * @param usuarioLogadoId : O ID do usuario logado eh utilizado na auditoria.
+	 */
+	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId)
 	{
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);
@@ -484,7 +490,10 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}
 
-	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
+	/**
+	 * @param usuarioLogadoId : O ID do usuario logado eh utilizado na auditoria.
+	 */
+	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId)
 	{
 		ajustaEntidadesNull(colaboradorQuestionario);
 		
@@ -498,30 +507,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
 	}
 	
-	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId)
-	{
-		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId);
-	}
-
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
-		this.avaliacaoManager = avaliacaoManager;
-	}
-	
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId)
     {
         List<Object[]> countRespostas = getDao().countRespostas(avaliadoId, avaliacaoDesempenhoId);
@@ -589,5 +574,39 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 		
 		return respostas;
+	}
+
+	public Usuario findUsuarioParaAuditoria(Long usuarioId)
+	{
+		return usuarioManager.findEntidadeComAtributosSimplesById(usuarioId);
+	}
+
+	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId)
+	{
+		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId);
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+	
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
+	{
+		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	public void setQuestionarioManager(QuestionarioManager questionarioManager)
+	{
+		this.questionarioManager = questionarioManager;
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setUsuarioManager(UsuarioManager usuarioManager)
+	{
+		this.usuarioManager = usuarioManager;
 	}
 }

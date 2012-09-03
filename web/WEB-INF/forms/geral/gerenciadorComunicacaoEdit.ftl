@@ -166,6 +166,17 @@
 			}
 		}
 		
+		function exibeCampoPermitirResponderAvaliacao(operacaoId, meioComunicacaoId, enviarParaId)
+		{
+			if($('#operacao').val() == 9 && $('#meioComunicacoes').val() == 1 && $('#enviarParas').val() == 1)//EnviarPara.USUARIOS = 1
+			{
+				$('#campoPermitirResponderAvaliacao').show();
+			} else {
+				$('#campoPermitirResponderAvaliacao').hide();
+			}
+			
+		}
+		
 		function exibeCampoQtdDiasLembrete(operacaoId)
 		{
 			$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} ||
@@ -194,7 +205,9 @@
 				exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
 				exibeUsuarios(${gerenciadorComunicacao.enviarPara});
 				exibeCampoQtdDiasLembrete(${gerenciadorComunicacao.operacao});
+				
 				$('#operacao').val(${gerenciadorComunicacao.operacao});
+				exibeCampoPermitirResponderAvaliacao(); 
 				
 				<#if gerenciadorComunicacao.qtdDiasLembrete?exists && gerenciadorComunicacao.qtdDiasLembrete != "">
 					var arrayDias = $('${gerenciadorComunicacao.qtdDiasLembrete}'.split('&')).map(function(item) { return parseInt(this); });
@@ -214,6 +227,7 @@
 				exibeCamposEmailsAvulsos(0);
 				exibeUsuarios(0);
 				exibeCampoQtdDiasLembrete(0);
+				exibeCampoPermitirResponderAvaliacao();
 			</#if>
 		});
 	</script>
@@ -242,7 +256,7 @@
 			</li>			
 			
 			<@ww.select label="Através de" name="gerenciadorComunicacao.meioComunicacao" id="meioComunicacoes" cssClass="campo" list="meioComunicacoes" cssStyle="width: 600px;" onchange="populaEnviarPara(this.value);"/>
-			<@ww.select label="Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);" />
+			<@ww.select label="Para" id="enviarParas" cssClass="campo" name="gerenciadorComunicacao.enviarPara" list="enviarParas" cssStyle="width: 600px;" onchange="exibeCamposEmailsAvulsos(this.value);exibeUsuarios(this.value);exibeCampoPermitirResponderAvaliacao();" />
 			<span id="emailDestinatario">
 				<@ww.textfield label="Destinatário(s)*" id="destinatario" require="true" cssClass="mascaraEmail" cssStyle="width:937px;" name="gerenciadorComunicacao.destinatario" />
 				Obs: Coloque vírgula para inserir mais de um email. 
@@ -258,6 +272,9 @@
 					<@ww.textfield theme="simple" id="qtdDias" size="2" maxlength="2" onkeypress="return somenteNumeros(event,'');" />
 					<img title="Inserir configuração" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" onclick="addDia($('#qtdDias').val())" style="cursor:pointer;" />
 				</span>
+			</span>
+			<span id="campoPermitirResponderAvaliacao">
+				<@ww.checkbox id="permitirResponderAvalicao" name="gerenciadorComunicacao.permitirResponderAvaliacao" label="Permitir os usuários marcados acima a responderem o acompanhamento do período de experiência pela caixa de mensagem." labelPosition="left"/>
 			</span>
 			<@ww.hidden name="gerenciadorComunicacao.id" />
 			<@ww.hidden name="gerenciadorComunicacao.empresa.id" />

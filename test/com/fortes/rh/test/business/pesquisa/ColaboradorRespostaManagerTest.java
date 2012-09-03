@@ -24,6 +24,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManagerImpl;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -38,6 +39,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -461,7 +463,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
     	colaboradorRespostaDao.expects(atLeastOnce()).method("save").will(returnValue(ColaboradorRespostaFactory.getEntity(1L)));
     	
-    	colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario);
+    	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
+    	
+		colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId());
     }
     
     public void testSavePerformance()
@@ -512,7 +516,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
     	
-    	colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario);
+    	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
+
+    	colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId());
     	
     	assertEquals("55,1%", colaboradorQuestionario.getPerformanceFormatada());
     }

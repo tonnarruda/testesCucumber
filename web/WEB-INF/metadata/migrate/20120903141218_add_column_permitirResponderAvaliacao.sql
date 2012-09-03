@@ -1,0 +1,1 @@
+alter table gerenciadorcomunicacao add column permitirresponderavaliacao boolean default false; --.go

@@ -33,6 +33,8 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	@Column(length=20)
 	private String qtdDiasLembrete;
 	
+	private boolean permitirResponderAvaliacao;
+	
 	@OneToMany(fetch=FetchType.LAZY, targetEntity=Usuario.class)
 	private Collection<Usuario> usuarios;
 
@@ -108,5 +110,15 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 
 	public void setQtdDiasLembrete(String qtdDiasLembrete) {
 		this.qtdDiasLembrete = qtdDiasLembrete;
+	}
+
+	public boolean isPermitirResponderAvaliacao()
+	{
+		return permitirResponderAvaliacao;
+	}
+	
+	public void setPermitirResponderAvaliacao(boolean permitirResponderAvaliacao)
+	{
+		this.permitirResponderAvaliacao = permitirResponderAvaliacao;
 	}
 }

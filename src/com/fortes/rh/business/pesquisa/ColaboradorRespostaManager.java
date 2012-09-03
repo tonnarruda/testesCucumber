@@ -5,11 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorRespostaAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorRespostaManager extends GenericManager<ColaboradorResposta>
@@ -25,11 +30,14 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario, Long questionarioId);
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(Long id);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Date periodoIni, Date periodoFim, Long turmaId, Integer totalColaboradores, Long empresaId);
-	void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario);
-	void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario);
+	@Audita(operacao="Inserção", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
+	void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId);
+	@Audita(operacao="Atualização", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
+	void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId);
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId);
 	void removeFichas(Long[] colaboradorQuestionarioIds);
 	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
+	Usuario findUsuarioParaAuditoria(Long usuarioId);
 }
