@@ -19180,3 +19180,10 @@ insert into migrations values('20120823085851');--.go
 update papel set nome='Lista de Presença' where id= 43;--.go
 insert into migrations values('20120823141947');--.go
 update parametrosdosistema set appversao = '1.1.85.80';--.go
+-- versao 1.1.86.81
+
+alter table colaboradorperiodoexperienciaavaliacao add column tipo character(1);--.go
+update colaboradorperiodoexperienciaavaliacao set tipo = 'C';--.go
+alter table colaboradorperiodoexperienciaavaliacao alter column tipo set not null; --.go
+insert into migrations values('20120829164924');--.go
+update parametrosdosistema set appversao = '1.1.86.81';--.go

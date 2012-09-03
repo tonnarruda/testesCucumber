@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.86.81" data="03/09/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Painel de Indicadores : Nova opção de filtro por solicitação de pessoal.
+			:: T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos no Curso: Nova Opção de filtrar colaboradores por estabelecimento.
+			:: Info. Funcionais > Cadastros > Colaboradores > Editar > Modelos de Avaliação : Nova caixa para seleção do modelo de avaliação do período de experiência para o gestor.
+			:: Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Editar: Nova opção [Sem Motivo] em motivo do reajuste.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.85.80" data="27/08/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Cadastros > Colaboradores > Editar/Inserir: Novo campo [Encerramento do Contrato] para colaboradores que não sejam da colocação empregado.

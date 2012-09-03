@@ -21,6 +21,7 @@ import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborador {
 	private AcPessoalClient acPessoalClient;
@@ -242,7 +243,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		        	item.setEstabelecimento(historico.getEstabelecimento().getCodigoAC());
 		        	item.setSaltipo(String.valueOf(TipoAplicacaoIndice.getCodigoAC(historico.getTipoSalario())));
 		        	item.setDataRescisao(DateUtil.formataDiaMesAno(historico.getDataSolicitacaoDesligamento()));
-		        	item.setObs(historico.getObsACPessoal().substring(0, 255));
+		        	item.setObs(StringUtil.subStr(historico.getObsACPessoal(), 255));
 		        	
 		        	item.setExpAgenteNocivo(historico.getGfip());
 
