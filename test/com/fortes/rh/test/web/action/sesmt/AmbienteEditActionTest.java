@@ -22,7 +22,9 @@ import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
+import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.AmbienteEditAction;
 import com.fortes.web.tags.CheckBox;
 
@@ -56,6 +58,8 @@ public class AmbienteEditActionTest extends MockObjectTestCase
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+        
+        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
     }
 
     protected void tearDown() throws Exception
@@ -186,7 +190,38 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	assertEquals("success", action.list());
     	assertEquals(action.getAmbientes(), ambientes);
     }
+    
+    public void testImprimirList() throws Exception
+    {
+    	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+    	Ambiente a1 = new Ambiente();
+    	a1.setId(1L);
+    	a1.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	Ambiente a2 = new Ambiente();
+    	a2.setId(2L);
+    	a2.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	
+    	ambientes.add(a1);
+    	ambientes.add(a2);
+    	
+    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+    	
+    	assertEquals("success", action.imprimirLista());
+    	assertEquals(action.getAmbientes(), ambientes);
+    }
 
+    public void testImprimirListErro() throws Exception
+    {
+    	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+    	
+    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(ambientes.size()));
+    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+    	
+    	assertEquals("input", action.imprimirLista());
+    	assertEquals(action.getAmbientes(), ambientes);
+    }
+    
     public void testGetSet() throws Exception
     {
     	Ambiente ambiente = new Ambiente();
