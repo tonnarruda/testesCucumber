@@ -3,6 +3,8 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.tools.ant.taskdefs.Apt;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -24,6 +26,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -117,7 +120,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		historicoCandidatoRedacao.setEtapaSeletiva(redacao);
 		historicoCandidatoDao.save(historicoCandidatoRedacao);
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.findHistoricoAptoByEtapaSolicitacao(empresa.getId(), new Long[]{entrevista.getId(), redacao.getId()});
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM);
 
 		assertEquals(1, candidatoSolicitacaos.size());
 		assertEquals(redacao, ((CandidatoSolicitacao)candidatoSolicitacaos.toArray()[0]).getEtapaSeletiva());

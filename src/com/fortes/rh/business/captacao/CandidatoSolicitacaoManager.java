@@ -15,7 +15,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
 	public void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status);
 	public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
-	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacaoAberta(String[] etapaCheck, Long empresaId);
+	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
 	public String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception;
 	public Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos,Long empresaId);

@@ -23,6 +23,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 
 @SuppressWarnings("unchecked")
 public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<CandidatoSolicitacao> implements CandidatoSolicitacaoDao
@@ -412,7 +413,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return (Integer) criteria.uniqueResult();
     }
 
-	public Collection<CandidatoSolicitacao> findHistoricoAptoByEtapaSolicitacao(Long empresaId, Long[] etapaIds) 
+	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato) 
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoCandidato.class, "hc2");
         ProjectionList pSub = Projections.projectionList().create();
@@ -435,12 +436,19 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		p.add(Projections.property("es.id"), "projectionEtapaId");
 		p.add(Projections.property("ca.nome"), "candidatoNome");
 		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.apto"), "apto");
 		p.add(Projections.property("c.nome"), "cargoNome");
 		
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("hc.apto", Apto.SIM ));
-		criteria.add(Expression.eq("s.encerrada", false));
+		if(statusSolicitacao == StatusSolicitacao.ABERTA)
+			criteria.add(Expression.eq("s.encerrada", false));
+		else if(statusSolicitacao == StatusSolicitacao.ENCERRADA)
+			criteria.add(Expression.eq("s.encerrada", true));
+		
+		if(situacaoCandidato != Apto.INDIFERENTE)
+			criteria.add(Expression.eq("hc.apto", situacaoCandidato));
+		
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		criteria.add(Expression.eq("ca.contratado", false));
 		

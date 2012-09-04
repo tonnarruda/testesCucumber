@@ -511,6 +511,10 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		return apto;
 	}
 	
+	public String getAptoDescricao() {
+		return Apto.getDescApto(apto);
+	}
+	
 	public boolean getAptoBoolean() {
 		return this.apto != Apto.NAO;
 	}

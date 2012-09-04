@@ -95,9 +95,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         getDao().updateSolicitacaoCandidatos(solicitacao, lista);
     }
 
-    public Collection<CandidatoSolicitacao> getCandidatosBySolicitacaoAberta(String[] etapaCheck, Long empresaId)
+    public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato)
     {
-        return getDao().findHistoricoAptoByEtapaSolicitacao(empresaId, LongUtil.arrayStringToArrayLong(etapaCheck));
+        return getDao().getCandidatosBySolicitacao(LongUtil.arrayStringToArrayLong(etapaCheck), empresaId, statusSolicitacao, situacaoCandidato);
     }
 
     public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos)

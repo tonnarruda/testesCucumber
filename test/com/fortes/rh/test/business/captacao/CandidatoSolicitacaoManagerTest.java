@@ -21,6 +21,7 @@ import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -162,9 +163,9 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacaos.add(cs1);
 		candidatoSolicitacaos.add(cs2);
 
-		candidatoSolicitacaoDao.expects(once()).method("findHistoricoAptoByEtapaSolicitacao").with(eq(empresaId), ANYTHING).will(returnValue(candidatoSolicitacaos));
+		candidatoSolicitacaoDao.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING, eq(empresaId), ANYTHING, ANYTHING).will(returnValue(candidatoSolicitacaos));
 
-		candidatoSolicitacaoManager.getCandidatosBySolicitacaoAberta(etapaCheck, empresaId);
+		candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, empresaId, StatusSolicitacao.TODAS, Apto.SIM);
     }
 
     public void testPromover()

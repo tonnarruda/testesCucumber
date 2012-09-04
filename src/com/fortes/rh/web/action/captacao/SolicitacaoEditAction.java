@@ -41,6 +41,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -133,6 +134,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private boolean clone;
 	private boolean somenteLeitura;
 
+	private char statusSolicitacao;
+	private char situacaoCandidato;
 	private char visualizar;
 	private Cargo cargo;
 	private Collection<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
@@ -317,10 +320,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public String imprimirRelatorio() throws Exception
     {
-        String titulo = "Lista de candidatos aptos das solicitações abertas.";
-		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
+        String titulo = "Lista de Candidatos da Seleção.";
+		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), StatusSolicitacao.getDescricao(statusSolicitacao));
 
-        candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacaoAberta(etapaCheck, getEmpresaSistema().getId());
+        candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, getEmpresaSistema().getId(), statusSolicitacao, situacaoCandidato);
 
         if(candidatoSolicitacaos.size() > 0)
         {
@@ -781,5 +784,21 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public boolean isExibeColaboradorSubstituido() {
 		return exibeColaboradorSubstituido;
+	}
+
+	public char getStatusSolicitacao() {
+		return statusSolicitacao;
+	}
+
+	public void setStatusSolicitacao(char statusSolicitacao) {
+		this.statusSolicitacao = statusSolicitacao;
+	}
+
+	public char getSituacaoCandidato() {
+		return situacaoCandidato;
+	}
+
+	public void setSituacaoCandidato(char situacaoCandidato) {
+		this.situacaoCandidato = situacaoCandidato;
 	}
 }

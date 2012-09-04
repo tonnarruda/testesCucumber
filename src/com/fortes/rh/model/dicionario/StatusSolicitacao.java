@@ -16,4 +16,10 @@ public class StatusSolicitacao extends LinkedHashMap<Character, String>
 		put(ABERTA, "Solicitações abertas");
 		put(ENCERRADA, "Solicitações encerradas");
 	}
+	
+	public static String getDescricao(Character statusSolicitacao)
+	{
+		StatusSolicitacao staSolicitacao = new StatusSolicitacao();
+		return staSolicitacao.get(statusSolicitacao);
+	}
 }

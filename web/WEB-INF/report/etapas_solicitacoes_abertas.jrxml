@@ -31,6 +31,7 @@
 	<field name="etapaSeletiva.nome" class="java.lang.String"/>
 	<field name="etapaSeletiva.id" class="java.lang.Long"/>
 	<field name="dataString" class="java.lang.String"/>
+	<field name="aptoDescricao" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="etapa" calculation="Count">
 		<variableExpression><![CDATA[$F{candidato.nome}]]></variableExpression>
@@ -100,7 +101,7 @@
 					<reportElement
 						x="14"
 						y="15"
-						width="230"
+						width="223"
 						height="11"
 						key="staticText-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -111,9 +112,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="246"
+						x="239"
 						y="15"
-						width="190"
+						width="148"
 						height="11"
 						key="staticText-2"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -124,7 +125,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="438"
+						x="389"
 						y="15"
 						width="96"
 						height="11"
@@ -148,6 +149,19 @@
 					</textElement>
 				<text><![CDATA[Etapa seletiva]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						x="488"
+						y="15"
+						width="45"
+						height="11"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Apto]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -169,7 +183,7 @@
 					<reportElement
 						x="14"
 						y="1"
-						width="230"
+						width="223"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -180,9 +194,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="246"
+						x="239"
 						y="1"
-						width="190"
+						width="148"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -193,16 +207,29 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="438"
+						x="389"
 						y="1"
 						width="96"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
+					<textElement textAlignment="Left">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{dataString}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="495"
+						y="1"
+						width="38"
+						height="13"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{aptoDescricao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
