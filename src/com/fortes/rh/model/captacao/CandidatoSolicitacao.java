@@ -352,6 +352,13 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		solicitacao.getFaixaSalarial().getCargo().setNome(nome);
 	}
+	public void setSolicitacaoObservacaoLiberador(String observacaoLiberador)
+	{
+		if (solicitacao == null)
+			solicitacao = new Solicitacao();
+		
+		solicitacao.setObservacaoLiberador(observacaoLiberador);
+	}
 
 	//get usado pelo populaCheckListBox
 	public String getCandidatoNome()

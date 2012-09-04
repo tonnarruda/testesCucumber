@@ -118,6 +118,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">etapasSolicitacoesAbertas.pdf</param>
 			</result>
+			<result name="sucess_observacao" type="jasper">
+				<param name="location">WEB-INF/report/etapas_solicitacoes_obs.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">etapasSolicitacoesAbertasObs.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareRelatorioSolicitacao.ftl</result>
 		</action>
 

@@ -133,6 +133,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private boolean exibeSalario;
 	private boolean clone;
 	private boolean somenteLeitura;
+	private boolean imprimirObservacao;
 
 	private char statusSolicitacao;
 	private char situacaoCandidato;
@@ -328,7 +329,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if(candidatoSolicitacaos.size() > 0)
         {
             dataSource = new CollectionUtil().convertCollectionToList(candidatoSolicitacaos);
-            return Action.SUCCESS;
+            return imprimirObservacao ? "sucess_observacao": Action.SUCCESS;
         }
         else
         {
@@ -800,5 +801,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setSituacaoCandidato(char situacaoCandidato) {
 		this.situacaoCandidato = situacaoCandidato;
+	}
+	
+	public void setImprimirObservacao(boolean imprimirObservacao)
+	{
+		this.imprimirObservacao = imprimirObservacao;
 	}
 }
