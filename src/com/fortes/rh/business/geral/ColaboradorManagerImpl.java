@@ -1980,12 +1980,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 						break;
 					}
 				}
-			}			
-			
+			}
 			record.setColaborador(colaborador);
 			retorno.add(record);
 		}			
 
+		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
+		{
+			retorno = new CollectionUtil<DynaRecord>().sortCollectionStringIgnoreCase(retorno, "campo1");
+			retorno = new CollectionUtil<DynaRecord>().sortCollectionStringIgnoreCase(retorno, "tempoServico");
+		}
+		
 		return retorno;
 	}
 	
