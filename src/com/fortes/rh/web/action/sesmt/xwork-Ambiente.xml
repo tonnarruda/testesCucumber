@@ -12,6 +12,15 @@
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambienteList.ftl</result>
 		</action>
+		<action name="imprimirLista" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="imprimirLista">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ambientes.jasper</param>
+				<param name="dataSource">ambientes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ambientes.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ambienteList.ftl</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">list.action</result>

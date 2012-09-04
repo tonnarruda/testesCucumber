@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -14,6 +15,8 @@ import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.util.BooleanUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -45,6 +48,8 @@ public class AmbienteEditAction extends MyActionSupportList
 	private String[] riscoChecks;
 	private String[] epcEficazChecks;
 
+	private Map<String, Object> parametros;
+	
 	private void prepare() throws Exception
 	{
 		if(ambiente != null && ambiente.getId() != null)
@@ -110,9 +115,20 @@ public class AmbienteEditAction extends MyActionSupportList
 		setTotalSize(ambienteManager.getCount(getEmpresaSistema().getId(), ambiente));
 		ambientes = ambienteManager.findAmbientes(getPage(), getPagingSize(), getEmpresaSistema().getId(), ambiente);
 
-//		if(!msgAlert.equals(""))
-//			addActionError(msgAlert);
+		return Action.SUCCESS;
+	}
 
+	public String imprimirLista() throws Exception
+	{
+		ambientes = ambienteManager.findAmbientes(0, 0, getEmpresaSistema().getId(), ambiente);
+		if (ambientes.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			list();
+			return Action.INPUT;
+		}
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ambientes", getEmpresaSistema(),"");
+		
 		return Action.SUCCESS;
 	}
 
@@ -233,5 +249,11 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public void setRiscosAmbientes(Collection<RiscoAmbiente> riscosAmbientes) {
 		this.riscosAmbientes = riscosAmbientes;
+	}
+
+	
+	public Map<String, Object> getParametros()
+	{
+		return parametros;
 	}
 }

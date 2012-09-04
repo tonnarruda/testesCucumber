@@ -11,7 +11,22 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-<title>Ambientes</title>
+	<title>Ambientes</title>
+	
+	<script type="text/javascript">
+		function pesquisar()
+		{
+			$('#pagina').val(1);
+			$('#formBusca').attr('action','list.action');
+			$('#formBusca').submit();
+		}
+		
+		function imprimir()
+		{ 
+			$('#formBusca').attr('action','imprimirLista.action');
+			$('#formBusca').submit();
+		}
+	</script>
 </head>
 
 <body>
@@ -19,12 +34,12 @@
 <@ww.actionmessage />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" method="POST" id="formBusca">
+		<@ww.form name="formBusca" method="POST" id="formBusca">
 			<@ww.textfield label="Nome do Ambiente" name="ambiente.nome" cssStyle="width: 350px;"/>
 			
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="pesquisar();">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
@@ -42,7 +57,8 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>
+		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
+		<button class="btnImprimir" onclick="imprimir();"></button>
 	</div>
 </body>
 </html>
