@@ -153,6 +153,11 @@
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>">
 				</a>
 			</#if>
+			<#if candidato.contratado>
+				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato é colaborador');return false">
+					<img border="0" src="<@ww.url includeParams="none" value="/imgs/colaborador.png"/>">
+				</span>
+			</#if>
 		</@display.column>
 
 		<@display.column property="dataCadastro" format="{0,date,dd/MM/yyyy}" title="Data Cadastro" style="text-align:center;width:80px;color: ${color}"/>
