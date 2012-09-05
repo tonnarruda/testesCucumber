@@ -80,7 +80,11 @@ public class ConfiguracaoNivelCompetenciaVO
 	
 	public String getTotalGapExcedenteCargoDescricao() {
 		if (totalPontos != null && totalPontosFaixa != null)
-			return totalPontos - totalGapExcedenteAoCargo + " / " + totalPontosFaixa + " = " + MathUtil.formataValor(( (totalPontos.doubleValue() - totalGapExcedenteAoCargo.doubleValue()) / totalPontosFaixa.doubleValue()) * 100.0) + " %";
+		{
+			Integer gapPositivo = totalPontos - totalGapExcedenteAoCargo;
+			gapPositivo = gapPositivo > totalPontosFaixa ? totalPontosFaixa: gapPositivo; 
+			return gapPositivo + " / " + totalPontosFaixa + " = " + MathUtil.formataValor(( (gapPositivo.doubleValue()) / totalPontosFaixa.doubleValue()) * 100.0) + " %";
+		}
 		
 		return "";
 	}
