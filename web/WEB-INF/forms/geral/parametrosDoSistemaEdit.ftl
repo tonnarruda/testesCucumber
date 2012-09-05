@@ -64,15 +64,27 @@
 			
 		});
 		
-		function submitForm()
+		function validaSessionTimeout()
 		{
-			if ($("#autenticacao").is(':checked')) {
-				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','proximaVersao'));
-			} else {
-				return validaFormulario('form', new Array('appUrl','appContext','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'));			
+			if($('#sessionTimeout').val() < 30){
+				$('#sessionTimeout').css('background-color', '#FFEEC2');
+				jAlert("O valor do tempo para expirar a sessão deve ser maior ou igual a 30.");
+				return false;
 			}
+			return true;
 		}
 		
+		function submitForm()
+		{
+			if (!validaSessionTimeout())
+				return false;
+		
+			if ($("#autenticacao").is(':checked')) {
+				return validaFormulario('form', new Array('appUrl','appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','proximaVersao'));
+			} else {
+				return validaFormulario('form', new Array('appUrl','appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','proximaVersao'));			
+			}
+		}
 		
 	</script>
 	
@@ -89,6 +101,7 @@
 <@ww.form name="form" action="${formAction}"   validate="true" method="POST">
 	<@ww.textfield label="URL da Aplicação" name="parametrosDoSistema.appUrl" id="appUrl" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Contexto da Aplicação" name="parametrosDoSistema.appContext" id="appContext" size="40" maxLength="100" required="true"/>
+	<@ww.textfield label="Tempo para expirar a sessão(em segundos)" name="parametrosDoSistema.sessionTimeout" id="sessionTimeout" onkeypress="return(somenteNumeros(event,''));" size="8" maxlength="8" required="true"/>
 	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Configuração do Autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="40" maxLength="100" required="true"/>
 	

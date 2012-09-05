@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column sessionTimeout integer default 600; --.go

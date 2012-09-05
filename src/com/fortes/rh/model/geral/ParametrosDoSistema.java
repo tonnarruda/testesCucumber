@@ -58,6 +58,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
 
+    private Integer sessionTimeout;
+    
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
     
@@ -306,5 +308,13 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setTls(boolean tls) {
 		this.tls = tls;
+	}
+	public Integer getSessionTimeout()
+	{
+		return sessionTimeout;
+	}
+	public void setSessionTimeout(Integer sessionTimeout)
+	{
+		this.sessionTimeout = sessionTimeout;
 	}
 }
