@@ -24,7 +24,6 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.model.sesmt.Epi;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -361,11 +360,11 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	
 	public void removeFuncao(Funcao funcao) throws Exception
 	{
-		HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
-		
-		if (historicoFuncaoManager.getCount(new String[] {"funcao.id"}, new Object[]{funcao.getId()}) >= 1)
-		{
-			throw new RemoveCascadeException("Não é possível excluir a Função, pois esta possui um ou mais históricos.");
+		try {
+			HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
+			historicoFuncaoManager.removeByFuncoes(new Long[]{funcao.getId()});
+		} catch (Exception e) {
+			throw new RemoveCascadeException("Não é possível excluir a Função, pois esta possui dependência com colaborador.");
 		}
 		
 		remove(funcao);
