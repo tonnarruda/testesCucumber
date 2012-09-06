@@ -19,6 +19,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
@@ -28,6 +29,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.PesquisaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
@@ -77,6 +79,7 @@ public class IndexTest extends MockObjectTestCase
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 	}
 
 	public void testIndex(){
@@ -106,10 +109,14 @@ public class IndexTest extends MockObjectTestCase
 		Collection<Pesquisa> pesquisas = new ArrayList<Pesquisa>();
 		pesquisas.add(pesquisa1);
 		pesquisas.add(pesquisa2);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setSessionTimeout(90);
 
 		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
 		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
 

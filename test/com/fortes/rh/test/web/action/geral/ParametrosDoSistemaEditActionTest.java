@@ -2,18 +2,21 @@ package com.fortes.rh.test.web.action.geral;
 
 import java.util.ArrayList;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction;
+import com.opensymphony.webwork.ServletActionContext;
 
 public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
 {
@@ -31,6 +34,8 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
 		action.setPerfilManager((PerfilManager) perfilManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 	}
 
     public void testPrepareUpdate() throws Exception
@@ -48,6 +53,7 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
     {
     	
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setSessionTimeout(90);
     	
     	action.setParametrosDoSistema(parametrosDoSistema);
     	action.setUsuarioLogado(UsuarioFactory.getEntity(1L));

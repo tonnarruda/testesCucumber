@@ -325,7 +325,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	public void testRemoveFuncao() throws Exception
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
-		historicoFuncaoManager.expects(once()).method("getCount").will(returnValue(0));
+		historicoFuncaoManager.expects(once()).method("removeByFuncoes");
 		funcaoDao.expects(once()).method("remove").isVoid();
 		
 		funcaoManager.removeFuncao(funcao);
@@ -333,7 +333,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	public void testRemoveFuncaoException() 
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
-		historicoFuncaoManager.expects(once()).method("getCount").will(returnValue(1));
+		historicoFuncaoManager.expects(once()).method("removeByFuncoes").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		Exception ex= null;
 		
