@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
@@ -131,8 +132,22 @@ public class RiscoEditAction extends MyActionSupportList
 		}
 		else
 		{
-			riscoManager.remove(new Long[]{risco.getId()});
-			addActionMessage("Risco excluído com sucesso.");
+			try {
+				riscoManager.remove(new Long[]{risco.getId()});
+				addActionMessage("Risco excluído com sucesso.");
+			} catch (Exception e) {
+				String message = "Erro ao excluir o risco.<br/>";
+				
+				if(e instanceof DataIntegrityViolationException)
+					message = "O risco não pode ser excluído, pois possui dependência com outros cadastros.";
+				else if(e.getMessage() != null)
+					message += e.getMessage();
+				else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+					message += e.getCause().getLocalizedMessage();				
+				
+				e.printStackTrace();
+				addActionError(message);
+			}
 		}
 
 		return list();
