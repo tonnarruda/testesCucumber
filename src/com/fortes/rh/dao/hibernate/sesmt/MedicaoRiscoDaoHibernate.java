@@ -23,7 +23,8 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 	public MedicaoRisco findByIdProjection(Long id) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "medicao");
-		criteria.createCriteria("medicao.ambiente", "ambiente");
+		criteria.createCriteria("medicao.ambiente", "ambiente", Criteria.LEFT_JOIN);
+		criteria.createCriteria("medicao.funcao", "funcao", Criteria.LEFT_JOIN);
 		criteria.createCriteria("medicao.riscoMedicaoRiscos", "riscoMedicaoRiscos");
 		
 		criteria.add(Expression.eq("medicao.id", id));
