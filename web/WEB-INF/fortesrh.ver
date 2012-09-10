@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.87.82" data="10/09/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Candidatos: Novo ícone identificador de candidato contratado(colaborador) quando selecionado o filtro [Exibir também contratados].
+			:: R&S > Relatórios > Lista de Candidatos da Seleção: Novas opções de filtros pelo status da solicitação de pessoal e situação dos candidatos.
+			:: R&S > Relatórios > Lista de Candidatos da Seleção: Nova opção para imprimir a observação da solicitação de pessoal.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Contador de subgrupos quando agrupar colaboradores em períodos de tempo de serviço.
+			:: SESMT > Cadastros > Ambientes: Novo botão para imprimir lista de ambientes.
+			:: Utilitários > Configurações > Sistema: Novo campo [Tempo para expirar a sessão(em segundos)] que limita a vigência da sessão dos usuários.
+			:: Utilitários > Configurações > Gerenciador de Comunicação: Nova opção para [Permitir os usuários marcados a responderem o acompanhamento do período de experiência pela caixa de mensagem] para a configuração [Notificar quando: Houver avaliações do período de experiência a vencer; Através de: Caixa de mensagem; Para: Usuários].
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.86.81" data="03/09/2012">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Painel de Indicadores : Nova opção de filtro por solicitação de pessoal.

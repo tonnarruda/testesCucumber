@@ -22967,25 +22967,25 @@ ALTER TABLE gastoempresaitem ENABLE TRIGGER ALL;
 
 ALTER TABLE gerenciadorcomunicacao DISABLE TRIGGER ALL;
 
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (1, 5, 2, 4, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (2, 6, 2, 5, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (3, 7, 2, 6, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (4, 8, 2, 7, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (5, 1, 2, 7, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (6, 2, 2, 7, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (7, 9, 2, 17, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (8, 10, 2, 1, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (9, 9, 1, 1, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (10, 9, 1, 2, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (11, 12, 2, 8, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (12, 13, 1, 13, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (13, 14, 1, 13, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (14, 16, 2, 12, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (15, 15, 2, 15, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (16, 11, 2, 6, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (17, 3, 1, 14, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (18, 9, 2, 7, NULL, 1, NULL);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete) VALUES (19, 25, 2, 7, NULL, 1, '7');
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (1, 5, 2, 4, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (2, 6, 2, 5, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (3, 7, 2, 6, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (4, 8, 2, 7, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (5, 1, 2, 7, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (6, 2, 2, 7, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (7, 9, 2, 17, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (8, 10, 2, 1, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (9, 9, 1, 1, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (10, 9, 1, 2, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (11, 12, 2, 8, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (12, 13, 1, 13, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (13, 14, 1, 13, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (14, 16, 2, 12, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (15, 15, 2, 15, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (16, 11, 2, 6, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (17, 3, 1, 14, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (18, 9, 2, 7, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (19, 25, 2, 7, NULL, 1, '7', false);
 
 
 ALTER TABLE gerenciadorcomunicacao ENABLE TRIGGER ALL;
@@ -23357,6 +23357,9 @@ INSERT INTO migrations (name) VALUES ('20120822104956');
 INSERT INTO migrations (name) VALUES ('20120823085851');
 INSERT INTO migrations (name) VALUES ('20120823141947');
 INSERT INTO migrations (name) VALUES ('20120829164924');
+INSERT INTO migrations (name) VALUES ('20120903141218');
+INSERT INTO migrations (name) VALUES ('20120904142852');
+INSERT INTO migrations (name) VALUES ('20120905165913');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23395,7 +23398,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (496, 'ROLE_VISUALIZAR_SOLICITACAO_PESSOAL', 'Visualizar Solicitação de Pessoal', '#', 14, false, NULL, 359);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (50, 'ROLE_BD_SOLIDARIO', 'Banco de Dados Solidário', '/captacao/candidato/prepareBusca.action?BDS=true', 2, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (360, 'ROLE_R&S_REL', 'Relatórios', '#', 3, true, NULL, 357);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Lista de Candidatos Aptos das Solicitações Abertas', '/captacao/solicitacao/prepareRelatorio.action', 1, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Análise das Etapas Seletivas', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (424, 'ROLE_REL_AVALIACAO_CANDIDATOS', 'Avaliações de Candidatos', '/captacao/candidato/prepareRelatorioAvaliacaoCandidatos.action', 3, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (508, 'ROLE_COMO_FICOU_SABENDO_VAGA', 'Estatística de Divulgação da Vaga', '/geral/comoFicouSabendoVaga/prepareRelatorioComoFicouSabendoVaga.action', 4, true, NULL, 360);
@@ -23615,6 +23617,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 10, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (561, 'ROLE_REL_COLAB_GRUPOOCUPACIONAL', 'Colaboradores por Grupo Ocupacional', '/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action', 4, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (43, 'ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA', 'Lista de Presença', '/desenvolvimento/relatorioPresenca/prepareRelatorio.action', 4, true, NULL, 368);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (46, 'ROLE_REL_SOLICITACAO', 'Lista de Candidatos da Seleção', '/captacao/solicitacao/prepareRelatorio.action', 1, true, NULL, 360);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23637,7 +23640,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.86.81', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.87.82', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;

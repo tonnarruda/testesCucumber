@@ -19187,3 +19187,12 @@ update colaboradorperiodoexperienciaavaliacao set tipo = 'C';--.go
 alter table colaboradorperiodoexperienciaavaliacao alter column tipo set not null; --.go
 insert into migrations values('20120829164924');--.go
 update parametrosdosistema set appversao = '1.1.86.81';--.go
+-- versao 1.1.87.82
+
+alter table gerenciadorcomunicacao add column permitirresponderavaliacao boolean default false; --.go
+insert into migrations values('20120903141218');--.go
+update papel set nome = 'Lista de Candidatos da Seleção' where id=46;--.go
+insert into migrations values('20120904142852');--.go
+alter table parametrosdosistema add column sessionTimeout integer default 600; --.go
+insert into migrations values('20120905165913');--.go
+update parametrosdosistema set appversao = '1.1.87.82';--.go
