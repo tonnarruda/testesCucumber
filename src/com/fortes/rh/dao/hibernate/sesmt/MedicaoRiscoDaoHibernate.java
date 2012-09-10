@@ -1,7 +1,6 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -13,7 +12,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 
