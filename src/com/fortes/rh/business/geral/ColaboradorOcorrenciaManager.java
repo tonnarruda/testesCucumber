@@ -8,6 +8,8 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorOcorrenciaAuditorCallbackImpl;
+import com.fortes.security.auditoria.Audita;
 
 public interface ColaboradorOcorrenciaManager extends GenericManager<ColaboradorOcorrencia>
 {
@@ -16,8 +18,10 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	Collection<ColaboradorOcorrencia> findProjection(int page, int pagingSize, Long colaboradorId);
 	ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId);
 	void saveOcorrenciasFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception;
+	@Audita(operacao="Inserção/Atualização", auditor=ColaboradorOcorrenciaAuditorCallbackImpl.class)
 	void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception;
 	void removeFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception;
+	@Audita(operacao="Remoção", auditor=ColaboradorOcorrenciaAuditorCallbackImpl.class)
 	void remove(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception;
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
 	Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds, Collection<Long> afastamentosIds) throws Exception;

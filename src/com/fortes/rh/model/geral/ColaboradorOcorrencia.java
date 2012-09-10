@@ -117,6 +117,13 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 		if(ocorrencia == null)
     		ocorrencia = new Ocorrencia();
 	}
+	
+	public void setProvidenciaId(Long id)
+	{
+		if(providencia == null)
+			providencia = new Providencia();
+		providencia.setId(id);
+	}
 
     public void setColaboradorId(Long id)
     {
