@@ -99,7 +99,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 
 	public void removeByFuncoes(Long[] funcaoIds)
 	{
-		String hql = "delete HistoricoFuncao where funcao.id in(:funcaoIds)";
+		String hql = "delete HistoricoFuncao where funcao.id in (:funcaoIds)";
 
 		Query query = getSession().createQuery(hql);
 		query.setParameterList("funcaoIds", funcaoIds, Hibernate.LONG);
@@ -232,6 +232,23 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
 
+		return criteria.list();
+	}
+
+	public Collection<HistoricoFuncao> findByFuncao(Long funcaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hf.id"), "id");
+		p.add(Projections.property("hf.data"), "data");
+		p.add(Projections.property("hf.descricao"), "descricao");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("hf.funcao.id", funcaoId));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoFuncao.class));
+		
 		return criteria.list();
 	}
 }

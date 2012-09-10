@@ -136,15 +136,6 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 		return riscoMedicaoRiscos;
 	}
 	
-	public void setRiscoMedicaoRiscoManager(
-			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
-		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
 	public void removeCascade(Long id) 
 	{
 		MedicaoRisco medicaoRisco = findById(id);
@@ -160,5 +151,14 @@ public class MedicaoRiscoManagerImpl extends GenericManagerImpl<MedicaoRisco, Me
 	{
 		return getDao().findRiscoMedicaoRiscos(medicaoRiscoId);
 	}
+	
+	public void setRiscoMedicaoRiscoManager(RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) 
+	{
+		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
+	}
 
+	public void setTransactionManager(PlatformTransactionManager transactionManager) 
+	{
+		this.transactionManager = transactionManager;
+	}
 }

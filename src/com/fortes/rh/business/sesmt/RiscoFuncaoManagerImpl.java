@@ -19,4 +19,9 @@ public class RiscoFuncaoManagerImpl extends GenericManagerImpl<RiscoFuncao, Risc
 	{
 		return getDao().findRiscosByFuncaoData(funcaoId, data);
 	}
+
+	public void removeByFuncao(Long funcaoId) 
+	{
+		getDao().removeByFuncao(funcaoId);
+	}
 }

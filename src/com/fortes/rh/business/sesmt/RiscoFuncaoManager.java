@@ -11,4 +11,5 @@ public interface RiscoFuncaoManager extends GenericManager<RiscoFuncao>
 {
 	boolean removeByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Risco> findRiscosByFuncaoData(Long funcaoId, Date data);
+	void removeByFuncao(Long funcaoId);
 }

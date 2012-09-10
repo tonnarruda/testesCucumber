@@ -36,7 +36,7 @@ public class Funcao extends AbstractModel implements Serializable
 	private HistoricoFuncao historicoAtual;
 	
 	@Transient
-	private String exameNome; 
+	private String exameNome;
 	
 	public Funcao() {
 	}

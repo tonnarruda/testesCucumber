@@ -28,6 +28,6 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	Collection<String> findColaboradoresSemFuncao(Date data, Long estabelecimentoId);
 	int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo);
 	Collection<QtdPorFuncaoRelatorio> montaRelatorioQtdPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Date data);
-	void removeFuncao(Funcao funcao) throws Exception;
+	void removeFuncao(Funcao funcao);
 	Collection<CheckBox> populaCheckBox();
 }

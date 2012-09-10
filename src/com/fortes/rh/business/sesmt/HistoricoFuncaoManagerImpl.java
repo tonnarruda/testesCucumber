@@ -19,7 +19,6 @@ import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
-import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -330,8 +329,24 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return historicoFuncao;
 	}
 
-	public Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck) {
+	public Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck) 
+	{
 		return getDao().findByFuncoes(data, funcoesCheck);
+	}
+	
+	public HistoricoFuncao findUltimoHistoricoAteData(Long id, Date data)
+	{
+		return getDao().findUltimoHistoricoAteData(id, data);
+	}
+	
+	public Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data)
+	{
+		return getDao().findEpis(funcaoIds, data);
+	}
+	
+	public Collection<HistoricoFuncao> findByFuncao(Long funcaoId) 
+	{
+		return getDao().findByFuncao(funcaoId);
 	}
 	
 	public void setExameManager(ExameManager exameManager)
@@ -344,18 +359,8 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		this.epiManager = epiManager;
 	}
 
-	public HistoricoFuncao findUltimoHistoricoAteData(Long id, Date data)
+	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) 
 	{
-		return getDao().findUltimoHistoricoAteData(id, data);
-	}
-
-	public Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data)
-	{
-		return getDao().findEpis(funcaoIds, data);
-	}
-
-	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
 		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
-
 }

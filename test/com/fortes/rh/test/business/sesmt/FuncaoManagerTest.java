@@ -16,6 +16,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.sesmt.FuncaoManagerImpl;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.exception.PppRelatorioException;
@@ -53,6 +54,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	private Mock historicoAmbienteManager;
 	private Mock historicoFuncaoManager;
 	private Mock riscoMedicaoRiscoManager;
+	private Mock riscoFuncaoManager;
 
     protected void setUp() throws Exception
     {
@@ -60,19 +62,20 @@ public class FuncaoManagerTest extends MockObjectTestCase
         funcaoDao = new Mock(FuncaoDao.class);
         funcaoManager.setDao((FuncaoDao) funcaoDao.proxy());
         
-        historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
-//        funcaoManager.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
-        
         historicoAmbienteManager = mock(HistoricoAmbienteManager.class);
         funcaoManager.setHistoricoAmbienteManager((HistoricoAmbienteManager) historicoAmbienteManager.proxy());
         
         riscoMedicaoRiscoManager = mock(RiscoMedicaoRiscoManager.class);
         funcaoManager.setRiscoMedicaoRiscoManager((RiscoMedicaoRiscoManager) riscoMedicaoRiscoManager.proxy());
         
+        historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
         historicoFuncaoManager = mock(HistoricoFuncaoManager.class);
+        riscoFuncaoManager = mock(RiscoFuncaoManager.class);
+        
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         MockSpringUtil.mocks.put("historicoFuncaoManager", historicoFuncaoManager);
         MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
+        MockSpringUtil.mocks.put("riscoFuncaoManager", riscoFuncaoManager);
     }
     
     @Override
@@ -325,15 +328,34 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	public void testRemoveFuncao() throws Exception
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
-		historicoFuncaoManager.expects(once()).method("removeByFuncoes");
+		
+		HistoricoFuncao hist1 = new HistoricoFuncao();
+		hist1.setId(1L);
+
+		HistoricoFuncao hist2 = new HistoricoFuncao();
+		hist2.setId(2L);
+		
+		riscoFuncaoManager.expects(once()).method("removeByFuncao");
+		historicoFuncaoManager.expects(once()).method("findByFuncao").will(returnValue(Arrays.asList(hist1, hist2)));
+		historicoFuncaoManager.expects(atLeastOnce()).method("remove");
+		
 		funcaoDao.expects(once()).method("remove").isVoid();
 		
 		funcaoManager.removeFuncao(funcao);
 	}
+	
 	public void testRemoveFuncaoException() 
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
-		historicoFuncaoManager.expects(once()).method("removeByFuncoes").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		
+		HistoricoFuncao hist1 = new HistoricoFuncao();
+		hist1.setId(1L);
+
+		HistoricoFuncao hist2 = new HistoricoFuncao();
+		hist2.setId(2L);
+		
+		riscoFuncaoManager.expects(once()).method("removeByFuncao");
+		historicoFuncaoManager.expects(once()).method("findByFuncao").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		Exception ex= null;
 		

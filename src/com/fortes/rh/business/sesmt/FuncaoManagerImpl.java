@@ -13,7 +13,6 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.exception.PppRelatorioException;
-import com.fortes.rh.exception.RemoveCascadeException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Colaborador;
@@ -358,14 +357,15 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 	}
 	
-	public void removeFuncao(Funcao funcao) throws Exception
+	public void removeFuncao(Funcao funcao)
 	{
-		try {
-			HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
-			historicoFuncaoManager.removeByFuncoes(new Long[]{funcao.getId()});
-		} catch (Exception e) {
-			throw new RemoveCascadeException("Não é possível excluir a Função, pois esta possui dependência com colaborador.");
-		}
+		RiscoFuncaoManager riscoFuncaoManager = (RiscoFuncaoManager) SpringUtil.getBean("riscoFuncaoManager");
+		riscoFuncaoManager.removeByFuncao(funcao.getId());
+		
+		HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
+		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findByFuncao(funcao.getId());
+		for (HistoricoFuncao historicoFuncao : historicoFuncaos)
+			historicoFuncaoManager.remove(historicoFuncao.getId());
 		
 		remove(funcao);
 	}

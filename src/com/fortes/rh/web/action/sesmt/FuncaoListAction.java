@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -115,8 +118,22 @@ public class FuncaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		funcaoManager.removeFuncao(funcao);
-		addActionMessage("Função excluída com sucesso.");
+		try {
+			funcaoManager.removeFuncao(funcao);
+			addActionMessage("Função excluída com sucesso.");
+
+		} catch (DataIntegrityViolationException e) {
+			addActionError("Não é possível excluir a Função, pois esta possui dependências.");
+			e.printStackTrace();
+
+		} catch (ConstraintViolationException e) {
+			addActionError("Não é possível excluir a Função, pois esta possui dependências.");
+			e.printStackTrace();
+		
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		}
 
 		return Action.SUCCESS;
 	}

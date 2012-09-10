@@ -18,4 +18,5 @@ public interface HistoricoFuncaoDao extends GenericDao<HistoricoFuncao>
 	Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data);
 	HistoricoFuncao findByData(Date data, Long historicoFuncaoId, Long funcaoId);
 	Collection<Funcao> findByFuncoes(Date data, Long[] funcoesCheck);
+	Collection<HistoricoFuncao> findByFuncao(Long funcaoId);
 }

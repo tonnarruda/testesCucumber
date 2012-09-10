@@ -11,4 +11,5 @@ public interface RiscoFuncaoDao extends GenericDao<RiscoFuncao>
 {
 	boolean removeByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Risco> findRiscosByFuncaoData(Long funcaoId, Date data);
+	void removeByFuncao(Long funcaoId);
 }

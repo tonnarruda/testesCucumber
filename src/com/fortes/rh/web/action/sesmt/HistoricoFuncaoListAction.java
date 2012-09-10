@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -11,6 +12,7 @@ import com.opensymphony.xwork.Action;
 public class HistoricoFuncaoListAction extends MyActionSupportList
 {
 	private HistoricoFuncaoManager historicoFuncaoManager;
+	private RiscoFuncaoManager riscoFuncaoManager;
 
 	private HistoricoFuncao historicoFuncao;
 	private Funcao funcao;
@@ -24,6 +26,7 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
+		riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 		historicoFuncaoManager.remove(new Long[]{historicoFuncao.getId()});
 
 		if(veioDoSESMT)
@@ -75,6 +78,10 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 	public void setVeioDoSESMT(boolean veioDoSESMT)
 	{
 		this.veioDoSESMT = veioDoSESMT;
+	}
+
+	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
+		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 
 }

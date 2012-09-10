@@ -332,6 +332,37 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(3, funcoes.size());
 	}
 	
+	public void testFindByFuncao()
+	{
+		Date data1 = DateUtil.criarDataMesAno(01, 01, 2012);
+		Date data2 = DateUtil.criarDataMesAno(01, 02, 2012);
+		
+		Funcao funcao = new Funcao();
+		funcao = funcaoDao.save(funcao);
+		
+		Funcao funcao2 = new Funcao();
+		funcao2 = funcaoDao.save(funcao2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(data1);
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
+		
+		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
+		historicoFuncao2.setData(data2);
+		historicoFuncao2.setFuncao(funcao);
+		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
+		
+		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
+		historicoFuncao3.setData(data1);
+		historicoFuncao3.setFuncao(funcao2);
+		historicoFuncao3 = historicoFuncaoDao.save(historicoFuncao3);
+		
+		Collection<HistoricoFuncao> funcoes = historicoFuncaoDao.findByFuncao(funcao.getId());
+		
+		assertEquals(2, funcoes.size());
+	}
+	
 	public void testGetHistoricosFuncoesByHistoricoColaborador()
 	{
 		//TODO:construir teste

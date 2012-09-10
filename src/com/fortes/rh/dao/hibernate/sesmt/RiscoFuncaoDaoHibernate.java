@@ -37,4 +37,13 @@ public class RiscoFuncaoDaoHibernate extends GenericDaoHibernate<RiscoFuncao> im
 		
 		return query.list();
 	}
+
+	public void removeByFuncao(Long funcaoId) 
+	{
+		String hql = "delete from RiscoFuncao rf where rf.historicoFuncao.id in (select id from HistoricoFuncao where funcao_id = :funcaoId) ";
+		Query query = getSession().createQuery(hql);
+		query.setLong("funcaoId", funcaoId);
+		
+		query.executeUpdate();
+	}
 }

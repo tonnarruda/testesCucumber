@@ -52,6 +52,29 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 		assertTrue(riscoFuncaoDao.removeByHistoricoFuncao(historicoFuncao.getId()));
 	}
 
+	public void testRemoveByFuncao()
+	{
+		Funcao funcao = new Funcao();
+		funcaoDao.save(funcao);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
+		riscoFuncao.setHistoricoFuncao(historicoFuncao);
+		riscoFuncaoDao.save(riscoFuncao);
+		
+		Exception exception = null;
+		try {
+			riscoFuncaoDao.removeByFuncao(historicoFuncao.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+
 	public void testFindRiscosByCargo()
 	{
 		Date hoje = DateUtil.criarDataMesAno(29, 3, 2012);
