@@ -148,117 +148,102 @@
 		<br />
 	</#if>
 	
-	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
-		<#if mensagems?exists>
-			<div class="caixas">
-				<div class="column left">
-					<#assign i = 1/>
-					<#assign qtd = mensagems?keys?size/>
-					
-					<#if questionarios?exists || avaliacoesDesempenhoPendentes?exists>
-						<#assign qtd = qtd + 1/>
-						<div class="portlet">
-							<div class="portlet-header">Pesquisas/Avaliações Disponíveis</div>
-							<div class="portlet-content">
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list questionarios as questionario>
-										<p><a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=${questionario.id}&colaborador.id=${colaborador.id}&tela=index&validarFormulario=true">${questionario.titulo}</a></p>
-									</#list>
-								</#if>
-								
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list avaliacoesDesempenhoPendentes as avaliacaoDesempenho>
-										<p>
-										<a href="avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}">${avaliacaoDesempenho.avaliacaoDesempenho.titulo} (${avaliacaoDesempenho.colaborador.nome}) (${avaliacaoDesempenho.avaliacaoDesempenho.periodoFormatado})</a>
-										</p>
-									</#list>
-								</#if>
+	<form id="formMensagens">
+		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
+			<#if mensagems?exists>
+				<div class="caixas">
+					<div class="column left">
+						<#assign i = 1/>
 						
-								<#if (questionarios?size < 1 && avaliacoesDesempenhoPendentes?size < 1)>
-									<span>Não existem questionários disponíveis</span>
-								</#if>
-							</div>
-						</div>
-					</#if>
-					
-					<#if colaboradorQuestionariosTeD?exists>
-						<#assign qtd = qtd + 1/>
-						<div class="portlet">
-							<div class="portlet-header">Avaliações de T&D</div>
-							<div class="portlet-content">
-								<#if colaborador?exists && colaborador.id?exists>
-									<#list colaboradorQuestionariosTeD as colaboradorQuestionarioTeD>
-										<a href="pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=${colaborador.id}&questionario.id=${colaboradorQuestionarioTeD.questionario.id}&turmaId=${colaboradorQuestionarioTeD.turma.id}&voltarPara=../../index.action">
-											${colaboradorQuestionarioTeD.questionario.titulo} (Curso ${colaboradorQuestionarioTeD.turma.curso.nome}, turma ${colaboradorQuestionarioTeD.turma.descricao})
-										</a>
-										<br />
-									</#list>
-								</#if>
-								
-								<#if colaboradorQuestionariosTeD?size < 1>
-									<span>Não existem Avaliações de T&D disponíveis</span>
-								</#if>
-							</div>
-						</div>
-					</#if>
-					
-					<#list mensagems?keys as tipo>
-						<div class="portlet">
-							<div class="portlet-header">${action.getDescricaoTipo(tipo)}</div>
-							<div class="portlet-content">
-								<table width="100%" class="dados" style="border:none;">
-									<tbody>
-										<#assign j=0/>
-										<#list action.getMensagens(tipo) as uMsg>
-											<#if j%2==0>
-												<#assign class="odd"/>
-											<#else>
-												<#assign class="even"/>
-											</#if>
-	
-											<#if !uMsg.lida>
-												<#assign style="font-weight: bold;"/>
-												<#assign status="Não">
-											<#else>
-												<#assign style=""/>
-												<#assign status="Sim">
-											</#if>
-										
-											<tr class="${class}">
-												<td width="40" align="center">
-													<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${uMsg.id}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-													<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${uMsg.id}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
-												</td>
-												<td>
-													<span class="remetenteHora">${uMsg.mensagem.remetente} - ${uMsg.mensagem.data?string("dd/MM/yyyy HH:mm")}</span><br />
-													<#if uMsg.mensagem.link?exists && uMsg.mensagem.link != "">
-														<a href="${uMsg.mensagem.link}" title="${uMsg.mensagem.textoAbreviado}"  onclick="marcarMensagemLida(${uMsg.id});" style="${style}">
-															${uMsg.mensagem.textoAbreviado}
-														</a>
-													<#else>
-														${uMsg.mensagem.textoAbreviado}
+						<#list mensagems?keys as tipo>
+							<div class="portlet">
+								<input type="hidden" name="caixa" value="${tipo}"/>
+								<div class="portlet-header">${action.getDescricaoTipo(tipo)}</div>
+								<div class="portlet-content">
+									<table width="100%" class="dados" style="border:none;">
+										<tbody>
+											<#assign j=0/>
+											<#list action.getMensagens(tipo) as msg>
+												<#if j%2==0>
+													<#assign class="odd"/>
+												<#else>
+													<#assign class="even"/>
+												</#if>
+		
+												<#if !msg.lida>
+													<#assign style="font-weight: bold;"/>
+													<#assign status="Não">
+												<#else>
+													<#assign style=""/>
+													<#assign status="Sim">
+												</#if>
+											
+												<tr class="${class}">
+													<#if msg.usuarioMensagemId?exists>
+														<td width="40" align="center">
+															<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${msg.usuarioMensagemId}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+															<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+														</td>
 													</#if>
-												</td>
-											</tr>
-											<#assign j=j+1/>
-										</#list>
-									</tbody>
-								</table>
+													<td>
+														<#if msg.remetente?exists && msg.data?exists>
+															<span class="remetenteHora">${msg.remetente} - ${msg.data?string("dd/MM/yyyy HH:mm")}</span><br />
+														</#if>
+														
+														<#if msg.link?exists && msg.link != "">
+															<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="${style}">
+																${msg.textoAbreviado}
+															</a>
+														<#else>
+															${msg.textoAbreviado}
+														</#if>
+													</td>
+												</tr>
+												<#assign j=j+1/>
+											</#list>
+											
+											<#if (action.getMensagens(tipo)?size < 1)>
+												<tr>
+													<td>Não há mensagens disponíveis</td>
+												</tr>
+											</#if>
+										</tbody>
+									</table>
+								</div>
 							</div>
-						</div>
-
-						<#-- Passa para a coluna da esquerda -->
-						<#if i == (qtd/2)?int - 1>
-							</div>
-							<div class="column right">
-						</#if>
-						
-						<#assign i = i+1/>
-					</#list>
+	
+							<#-- Passa para a coluna da esquerda -->
+							<#if i == (mensagems?keys?size/2)?int>
+								</div>
+								<div class="column right">
+							</#if>
+							
+							<#assign i = i+1/>
+						</#list>
+					</div>
 				</div>
-			</div>
-		</#if>
-	</@authz.authorize>
+			</#if>
+		</@authz.authorize>
+		
+		<br clear="all"/>
+		
+		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
+			<#if integradoAC && pendenciaACs?exists>
+				<div class="waDivTituloX">Pendências com o AC Pessoal</div>
+				<div class="waDivFormularioX">
+				<#if pendenciaACs?size < 1>
+					<span>Nenhuma pendência</span>
+				<#else>
+					<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
+						<@display.column property="pendencia" title="Pendência" />
+						<@display.column property="detalhes" title="Detalhes" />
+						<@display.column property="status" title="Status" />
+					</@display.table>
+				</#if>
+				</div>
+			</#if>
+		</@authz.authorize>
+	</form>
 	
 	<br clear="all"/>
 	
