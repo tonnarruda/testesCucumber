@@ -1183,7 +1183,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				if (i != 0)
 					hql.append(" or ");
 				
-				hql.append("(extract(year from age(current_date(), co.dataAdmissao))*12 + extract(month from age(current_date(), co.dataAdmissao)) between " + tempoServicoIni[i] + " and " + tempoServicoFim[i] + ")");
+				hql.append("(extract(year from age(current_date()+1, co.dataAdmissao))*12 + extract(month from age(current_date()+1, co.dataAdmissao)) + (extract(day from age(current_date()+1,co.dataAdmissao))/30.0) between " + tempoServicoIni[i] + " and " + tempoServicoFim[i] + ") ");
 			}
 			
 			hql.append(" ) ");
