@@ -14,6 +14,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
 
@@ -41,9 +42,10 @@
 			</span>
 			<span class="nomeUsuario"><@authz.authentication operation="nome"/>&nbsp;</span>
 			<span class="nomeEmpresa">(<@authz.authentication operation="empresaNome"/>)&nbsp;&nbsp;</span>
-			<br>
-			<span class="nomeEmpresa"><@authz.authentication operation="ultimoLogin"/>&nbsp;&nbsp;</span>
+			<br clear="all"/>
+			<span class="nomeEmpresa"><@authz.authentication operation="ultimoLoginFormatado"/>&nbsp;&nbsp;-&nbsp;&nbsp; Expira em <span class="expira">--:--</span> &nbsp;&nbsp;</span>
 		</div>
+			
 		<div id="userDiv1">
 			<img src='<@ww.url includeParams="none" value="/imgs/topo_img_right.jpg"/>' border='0' align='absMiddle' />
 		</div>
@@ -54,7 +56,6 @@
 		</#if>
 		
 	</div>
-	
 	
 	<@authz.authentication operation="menuFormatado"/>
 	
@@ -75,15 +76,38 @@
 		<br><br>
 	</div>
 
-	<!-- Create a MenuMatic Instance -->
 	<script type="text/javascript" >
-		/**
-		 * Adiciona setinhas aos submenus que possuem nodes filhos;
-		 */
 		$(document).ready(function(){
+			// Adiciona setinhas aos submenus que possuem nodes filhos;
 			$("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
+			
+			// Calcula tempo de expiracao da sessao
+			var expiracao;
+			var horaExpiracao = new Date().getTime() + ${session.maxInactiveInterval * 1000};
+			var sessionTimer = setInterval(function() {
+				expiracao = new Date(horaExpiracao - new Date());
+
+				if (expiracao.getTime() <= 30000)
+					$('.expira').css('color', '#F90');
+
+				if (expiracao.getTime() < 1)
+				{
+					clearInterval(sessionTimer);
+					
+					jConfirm('Sua sessão expirou. Deseja efetuar o login novamente?', 'Fortes RH', function(r) {
+					    if(r)
+					    {
+						    location.href = '<@ww.url includeParams="none" value="/logout.action"/>';
+					    }	
+					}, true);
+					
+					return false;
+				}
+
+				$('.expira').text($.format.date(expiracao, "mm:ss"));
+				
+			}, 1000);
 		});
 	</script>
-
 </body>
 </html>

@@ -1,10 +1,13 @@
 package com.fortes.rh.security;
 
+import java.util.Date;
+
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
 
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails
@@ -13,7 +16,7 @@ public class UserDetailsImpl implements UserDetails
 	private String nome;
 	private String username;
 	private String password;
-	private String ultimoLogin;
+	private Date ultimoLogin;
 
 	private GrantedAuthority[] authorities;
 	private boolean accountNonExpired;
@@ -24,7 +27,7 @@ public class UserDetailsImpl implements UserDetails
 	private Empresa empresa;
 	private Colaborador colaborador;
 
-	public UserDetailsImpl(Long id, String nome, String username, String password, String ultimoLogin,
+	public UserDetailsImpl(Long id, String nome, String username, String password, Date ultimoLogin,
 			GrantedAuthority[] authorities, boolean accountNonExpired,
 			boolean accountNonLocked, boolean credentialsNonExpired,
 			boolean enabled, String menuFormatado, Empresa empresa, Colaborador colaborador)
@@ -124,11 +127,24 @@ public class UserDetailsImpl implements UserDetails
 		return empresa.getId();
 	}
 	
-	public String getUltimoLogin() {
+	public Date getUltimoLogin() 
+	{
 		return ultimoLogin;
 	}
 
-	public void setUltimoLogin(String ultimoLogin) {
+	public String getUltimoLoginFormatado() 
+	{
+		String uLogin = "Último login: ";
+		if (ultimoLogin != null)
+			uLogin += DateUtil.formataDate(ultimoLogin, "dd/MM/yyyy - HH:mm");
+		else
+			uLogin = "";
+		
+		return uLogin;
+	}
+	
+	public void setUltimoLogin(Date ultimoLogin) 
+	{
 		this.ultimoLogin = ultimoLogin;
 	}
 

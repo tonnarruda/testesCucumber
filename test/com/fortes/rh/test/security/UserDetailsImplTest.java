@@ -1,5 +1,7 @@
 package com.fortes.rh.test.security;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import com.fortes.rh.model.geral.Colaborador;
@@ -17,7 +19,7 @@ public class UserDetailsImplTest extends TestCase
 		empresa.setNome("empresa");
 		empresa.setControlaRiscoPor('A');
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		UserDetailsImpl userDetailsImpl = new UserDetailsImpl(id, "nome", "username", "1234", "", null, false, false, false, false, "menu", empresa, colaborador);
+		UserDetailsImpl userDetailsImpl = new UserDetailsImpl(id, "nome", "username", "1234", new Date(), null, false, false, false, false, "menu", empresa, colaborador);
 		
 		assertEquals(id, userDetailsImpl.getId());
 		assertEquals("nome", userDetailsImpl.getNome());

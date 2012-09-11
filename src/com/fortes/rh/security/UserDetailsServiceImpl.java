@@ -11,7 +11,6 @@ import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class UserDetailsServiceImpl implements UserDetailsService
@@ -19,7 +18,6 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	private UsuarioManager usuarioManager;
 	private ColaboradorManager colaboradorManager;
 
-	@SuppressWarnings("unchecked")
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException
  	{
  		Usuario user = usuarioManager.findByLogin(login);
@@ -31,15 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService
 			if(colaboradors == null || colaboradors.size() > 0)
 				throw new UsernameNotFoundException("Usuário '" + login + "' está desligado.");
 
-			String ultimoLogin = "Último login: ";
-			if (user.getUltimoLogin() != null)
-				ultimoLogin += DateUtil.formataDate(user.getUltimoLogin(),"dd/MM/yyyy - HH:mm");
-			else
-				ultimoLogin = "";
-		
-			usuarioManager.setUltimoLogin (user.getId());
+			usuarioManager.setUltimoLogin(user.getId());
 			
-			return new UserDetailsImpl(user.getId(), user.getNome(), login, StringUtil.decodeString(user.getSenha()), ultimoLogin, null ,user.isAcessoSistema(),true,true,true,null,null, user.getColaborador());
+			return new UserDetailsImpl(user.getId(), user.getNome(), login, StringUtil.decodeString(user.getSenha()), user.getUltimoLogin(), null ,user.isAcessoSistema(),true,true,true,null,null, user.getColaborador());
 		}
 		else
 			throw new UsernameNotFoundException("Usuário '" + login + "' não cadastrado...");

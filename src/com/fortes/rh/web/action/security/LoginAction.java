@@ -1,7 +1,6 @@
 package com.fortes.rh.web.action.security;
 
 import java.util.Collection;
-import java.util.Date;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
