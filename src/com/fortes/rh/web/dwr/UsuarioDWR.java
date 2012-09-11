@@ -1,7 +1,6 @@
 package com.fortes.rh.web.dwr;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.util.StringUtil;
 
 public class UsuarioDWR
@@ -10,7 +9,6 @@ public class UsuarioDWR
 	
 	public void gravarLayoutCaixasMensagens(Long usuarioId, Character[] ordem, Character[] minimizadas) throws Exception 
 	{
-		Usuario usuario;
 		try {
 			usuarioManager.updateConfiguracoesMensagens(usuarioId, StringUtil.converteCharArrayToString(ordem), StringUtil.converteCharArrayToString(minimizadas));
 

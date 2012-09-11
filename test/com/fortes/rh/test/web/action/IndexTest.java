@@ -13,8 +13,6 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
-import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -55,14 +53,8 @@ public class IndexTest extends MockObjectTestCase
 	{
 		index = new Index();
 
-		questionarioManager = new Mock(QuestionarioManager.class);
-		index.setQuestionarioManager((QuestionarioManager) questionarioManager.proxy());
-
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		index.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-
-		colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
-		index.setColaboradorQuestionarioManager((ColaboradorQuestionarioManager) colaboradorQuestionarioManager.proxy());
 
 		usuarioMensagemManager = new Mock(UsuarioMensagemManager.class);
 		index.setUsuarioMensagemManager((UsuarioMensagemManager)usuarioMensagemManager.proxy());

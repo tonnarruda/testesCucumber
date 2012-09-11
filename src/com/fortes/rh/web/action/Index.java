@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -29,8 +28,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
-import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -59,13 +57,10 @@ public class Index extends ActionSupport
 {
 	private static final long serialVersionUID = 1L;
 	private ColaboradorManager colaboradorManager = null;
-	private QuestionarioManager questionarioManager;
 	private UsuarioMensagemManager usuarioMensagemManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AvaliacaoManager avaliacaoManager;
 	private EmpresaManager empresaManager;
 
@@ -80,13 +75,13 @@ public class Index extends ActionSupport
 	private Collection<Avaliacao> avaliacaos;
 
 	private Long usuarioId;
+	private Usuario usuario;
 	private Colaborador colaborador;
 	private ParametrosDoSistema parametrosDoSistema;
 	private Long empresaId;
     private String actionMsg;
 
 	private boolean pgInicial = true;
-	private boolean possuiMensagem = true;
 	private boolean primeiraExecucao;
 	private boolean idiomaIncorreto;
 	
@@ -99,6 +94,8 @@ public class Index extends ActionSupport
 	private Collection<Video> listaVideos = new ArrayList<Video>();
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
+	private char[] caixasMensagensOrdem;
+	private char[] caixasMensagensMinimizadas;
 
 	public String index()
 	{
@@ -118,12 +115,18 @@ public class Index extends ActionSupport
 
 		try
 		{
-			usuarioId = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId();
+			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+			
 			if (empresaId != null)
 			{
 				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
 			}
+
+			caixasMensagensOrdem = usuario.getCaixasMensagensOrdem().replace(",", "").toCharArray();
+			caixasMensagensMinimizadas = usuario.getCaixasMensagensMinimizadas().replace(",", "").toCharArray();
+			
+			usuarioId = usuario.getId();
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
 
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
@@ -153,7 +156,6 @@ public class Index extends ActionSupport
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
-
 		}
 		catch (Exception e)
 		{
@@ -310,11 +312,6 @@ public class Index extends ActionSupport
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void setQuestionarioManager(QuestionarioManager questionarioManager)
-	{
-		this.questionarioManager = questionarioManager;
-	}
-
 	public Long getUsuarioId()
 	{
 		return usuarioId;
@@ -353,16 +350,6 @@ public class Index extends ActionSupport
 	public boolean isPgInicial()
 	{
 		return pgInicial;
-	}
-
-	public boolean isPossuiMensagem()
-	{
-		return possuiMensagem;
-	}
-
-	public void setPossuiMensagem(boolean possuiMensagem)
-	{
-		this.possuiMensagem = possuiMensagem;
 	}
 
 	public void setActionMsg(String actionMsg)
@@ -431,16 +418,8 @@ public class Index extends ActionSupport
 		return candidatoSolicitacaos;
 	}
 
-	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
-		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
-	}
-
 	public Collection<ColaboradorQuestionario> getAvaliacoesDesempenhoPendentes() {
 		return avaliacoesDesempenhoPendentes;
-	}
-
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
 	public boolean isIdiomaIncorreto() {
@@ -481,5 +460,17 @@ public class Index extends ActionSupport
 
 	public void setMensagems(Map<Character, Collection<MensagemVO>> mensagems) {
 		this.mensagems = mensagems;
+	}
+
+	public char[] getCaixasMensagensOrdem() {
+		return caixasMensagensOrdem;
+	}
+
+	public char[] getCaixasMensagensMinimizadas() {
+		return caixasMensagensMinimizadas;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
 }
