@@ -16,6 +16,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
@@ -30,28 +31,35 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	private MensagemManager mensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	
-	public Map<Character, Collection<MensagemVO>> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
+	public Map<Character, CaixaMensagem> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
 	{
-		Map<Character, Collection<MensagemVO>> mensagensAgrupadas = new LinkedHashMap<Character, Collection<MensagemVO>>();
+		Map<Character, CaixaMensagem> caixasMensagens = new LinkedHashMap<Character, CaixaMensagem>();
 		MensagemVO vo;
+		char tp;
 		TipoMensagem tipoMensagem = new TipoMensagem();
+		CaixaMensagem caixaMensagem;
 		
 		for (char tipo : tipoMensagem.keySet())
-			mensagensAgrupadas.put(tipo, new ArrayList<MensagemVO>());
+			caixasMensagens.put(tipo, new CaixaMensagem(tipo, new ArrayList<MensagemVO>(), 0));
 		
 		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
 		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
 		{
+			tp = usuarioMensagem.getMensagem().getTipo();
+			
 			vo = new MensagemVO();
 			vo.setUsuarioMensagemId(usuarioMensagem.getId());
 			vo.setRemetente(usuarioMensagem.getMensagem().getRemetente());
 			vo.setData(usuarioMensagem.getMensagem().getData());
 			vo.setTexto(usuarioMensagem.getMensagem().getTexto());
-			vo.setTipo(usuarioMensagem.getMensagem().getTipo());
+			vo.setTipo(tp);
 			vo.setLink(usuarioMensagem.getMensagem().getLink());
 			vo.setLida(usuarioMensagem.isLida());
 			
-			mensagensAgrupadas.get(usuarioMensagem.getMensagem().getTipo()).add(vo);
+			caixaMensagem = caixasMensagens.get(tp); 
+			caixaMensagem.getMensagens().add(vo);
+			if (!usuarioMensagem.isLida())
+				caixaMensagem.setNaoLidas(caixaMensagem.getNaoLidas() + 1);
 		}
 		
 		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
@@ -64,7 +72,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
 			vo.setLida(true);
 			
-			mensagensAgrupadas.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).add(vo);
+			caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
 		}
 		
 		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
@@ -83,7 +91,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
 					vo.setLida(true);
 					
-					mensagensAgrupadas.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).add(vo);
+					caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
 				}
 			}
 		}
@@ -97,10 +105,10 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setTipo(TipoMensagem.AVALIACOES_TED);
 			vo.setLida(true);
 			
-			mensagensAgrupadas.get(TipoMensagem.AVALIACOES_TED).add(vo);
+			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
 		}
 		
-		return mensagensAgrupadas;
+		return caixasMensagens;
 	}
 
 	public UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId)

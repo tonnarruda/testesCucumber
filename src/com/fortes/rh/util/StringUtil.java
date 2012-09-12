@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
@@ -52,6 +53,15 @@ public final class StringUtil
 		cfg.setRootClass(clazz);
 		
 		return JSONSerializer.toJava(jsonObject, cfg);			
+	}
+	
+	public static Object simpleJSONObjecttoArrayJava(String json, Class<?> clazz) throws JSONException 
+	{
+		JSONObject jsonObject = JSONObject.fromObject(json);
+		JsonConfig cfg = new JsonConfig();
+		cfg.setRootClass(clazz);
+		
+		return JSONSerializer.toJava(jsonObject, cfg);	
 	}
 	
 	public static String subStr(String value, int max)

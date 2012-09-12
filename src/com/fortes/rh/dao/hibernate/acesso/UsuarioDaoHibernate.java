@@ -247,15 +247,13 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
 	}
 
-	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas) 
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens) 
 	{
-		String hql = "update Usuario set caixasMensagensOrdem = :caixasMensagensOrdem, caixasMensagensMinimizadas = :caixasMensagensMinimizadas where id = :usuarioId";
+		String hql = "update Usuario set caixasMensagens = :caixasMensagens where id = :usuarioId";
 		Query query = getSession().createQuery(hql);
 		query.setLong("usuarioId", usuarioId);
-		query.setString("caixasMensagensOrdem", caixasMensagensOrdem);
-		query.setString("caixasMensagensMinimizadas", caixasMensagensMinimizadas);
+		query.setString("caixasMensagens", caixasMensagens);
 		
 		query.executeUpdate();
 	}
-
 }

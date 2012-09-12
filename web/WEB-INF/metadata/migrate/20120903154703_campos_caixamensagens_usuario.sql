@@ -1,2 +1,3 @@
-alter table usuario add column caixasMensagensOrdem character varying(50);--.go
-alter table usuario add column caixasMensagensMinimizadas character varying(50);--.go
+alter table usuario add column caixasMensagens character varying(255);--.go
+update usuario set caixasMensagens = '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}';--.go
+alter table usuario alter column caixasMensagens set not null; --.go

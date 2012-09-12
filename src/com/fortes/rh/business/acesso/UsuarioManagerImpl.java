@@ -248,9 +248,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return getDao().findAllSelect(empresaId);
 	}
 	
-	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas) 
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens) 
 	{
-		getDao().updateConfiguracoesMensagens(usuarioId, caixasMensagensOrdem, caixasMensagensMinimizadas);
+		getDao().updateConfiguracoesMensagens(usuarioId, caixasMensagens);
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

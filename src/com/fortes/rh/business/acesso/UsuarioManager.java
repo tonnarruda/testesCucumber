@@ -55,6 +55,6 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	
 	public String[] findEmailsByUsuario(Long[] usuariosIds);
 
-	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas);
+	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens);
 
 }

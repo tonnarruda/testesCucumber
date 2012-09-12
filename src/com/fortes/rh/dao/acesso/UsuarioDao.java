@@ -35,5 +35,5 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	
 	String[] findEmailsByUsuario(Long[] usuariosIds);
 
-	void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagensOrdem, String caixasMensagensMinimizadas);
+	void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens);
 }

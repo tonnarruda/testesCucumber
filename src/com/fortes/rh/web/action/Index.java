@@ -35,7 +35,9 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
+import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Video;
@@ -69,7 +71,7 @@ public class Index extends ActionSupport
 	private Collection<Pesquisa> pesquisasColaborador = new ArrayList<Pesquisa>();
 	private Collection<Questionario> questionarios;
 	private Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD;
-	private Map<Character, Collection<MensagemVO>> mensagems;
+	private Map<Character, CaixaMensagem> caixasMensagens;
 	private Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 	private Collection<ColaboradorQuestionario> avaliacoesDesempenhoPendentes = new ArrayList<ColaboradorQuestionario>();
 	private Collection<Avaliacao> avaliacaos;
@@ -94,9 +96,8 @@ public class Index extends ActionSupport
 	private Collection<Video> listaVideos = new ArrayList<Video>();
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
-	private char[] caixasMensagensOrdem;
-	private char[] caixasMensagensMinimizadas;
-
+	private ConfiguracaoCaixasMensagens configuracaoCaixasMensagens;
+	
 	public String index()
 	{
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -122,9 +123,8 @@ public class Index extends ActionSupport
 				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
 			}
-
-			caixasMensagensOrdem = usuario.getCaixasMensagensOrdem().replace(",", "").toCharArray();
-			caixasMensagensMinimizadas = usuario.getCaixasMensagensMinimizadas().replace(",", "").toCharArray();
+			
+			configuracaoCaixasMensagens = (ConfiguracaoCaixasMensagens) StringUtil.simpleJSONObjecttoArrayJava(usuario.getCaixasMensagens(), ConfiguracaoCaixasMensagens.class);
 			
 			usuarioId = usuario.getId();
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
@@ -132,10 +132,14 @@ public class Index extends ActionSupport
 			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
 
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
-				mensagems = usuarioMensagemManager.listaMensagens(usuarioId, empresaId, colaborador.getId());
+			{
+				caixasMensagens = usuarioMensagemManager.listaMensagens(usuarioId, empresaId, colaborador.getId());
+			}
 			
 			if (parametrosDoSistemaManager.isIdiomaCorreto())
+			{
 				idiomaIncorreto = true;
+			}
 			
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
 			{
@@ -168,7 +172,12 @@ public class Index extends ActionSupport
 	
 	public Collection<MensagemVO> getMensagens(char tipoMensagem)
 	{
-		return mensagems.get(tipoMensagem);
+		return caixasMensagens.get(tipoMensagem).getMensagens();
+	}
+
+	public int getTotalNaoLidas(char tipoMensagem)
+	{
+		return caixasMensagens.get(tipoMensagem).getNaoLidas();
 	}
 	
 	public String getDescricaoTipo(char tipoMensagem)
@@ -454,23 +463,15 @@ public class Index extends ActionSupport
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public Map<Character, Collection<MensagemVO>> getMensagems() {
-		return mensagems;
-	}
-
-	public void setMensagems(Map<Character, Collection<MensagemVO>> mensagems) {
-		this.mensagems = mensagems;
-	}
-
-	public char[] getCaixasMensagensOrdem() {
-		return caixasMensagensOrdem;
-	}
-
-	public char[] getCaixasMensagensMinimizadas() {
-		return caixasMensagensMinimizadas;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
+	}
+
+	public ConfiguracaoCaixasMensagens getConfiguracaoCaixasMensagens() {
+		return configuracaoCaixasMensagens;
+	}
+
+	public Map<Character, CaixaMensagem> getCaixasMensagens() {
+		return caixasMensagens;
 	}
 }

@@ -12,11 +12,7 @@
 	<style>
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 				
-		a:link {text-decoration: none}
-		a:visited {text-decoration: none}
-		a:hover {text-decoration: underline; color: #2471A7; }
-		a:active {text-decoration: none}
-		
+		a:link, a:hover, a:visited, a:active { text-decoration: underline; font-size: 10px !important; font-weight: normal; color: #454C54; font-family: Arial, Helvetica, sans-serif; }
 		.dados td { font-size: 11px; }
 		
 		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
@@ -48,6 +44,7 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
@@ -74,7 +71,8 @@
 			
 			$( ".column" ).sortable({
 				connectWith: ".column",
-				handle: ".portlet-header"
+				handle: ".portlet-header",
+				stop: gravarPosicoes
 			});
 			
 			$( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
@@ -87,7 +85,13 @@
 			$( ".portlet-header .ui-icon" ).click(function() {
 				$( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
 				$( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+				gravarPosicoes();
 			});
+			
+			<#list configuracaoCaixasMensagens.caixasMinimizadas as tipo>
+				$( '.portlet-header-${tipo} .ui-icon' ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+				$( '.portlet-header-${tipo} .ui-icon' ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+			</#list>
 	
 			$( ".column" ).disableSelection();
 			
@@ -120,18 +124,23 @@
 		
 		function gravarPosicoes()
 		{
-			var ordem = [];
+			var esquerda = [];
+			var direita = [];
 			var minimizadas = [];
 			
-			$("input[name='caixa']").each(function() {
-				ordem.push( $(this).val() );
+			$(".left input[name='caixa']").each(function() {
+				esquerda.push( $(this).val() );
+			});
+
+			$(".right input[name='caixa']").each(function() {
+				direita.push( $(this).val() );
 			});
 
 			$(".portlet").has(".ui-icon-plusthick").find("[name='caixa']").each(function() {
 				minimizadas.push( $(this).val() );
 			});
 		
-			UsuarioDWR.gravarLayoutCaixasMensagens(<@authz.authentication operation="id"/>, ordem, minimizadas, function() {  });
+			UsuarioDWR.gravarLayoutCaixasMensagens(<@authz.authentication operation="id"/>, esquerda, direita, minimizadas, function() {  });
 		}
 	</script>
 
@@ -166,75 +175,17 @@
 	
 	<form id="formMensagens">
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
-			<#if mensagems?exists>
+			<#if caixasMensagens?exists>
 				<div class="caixas">
 					<div class="column left">
-						<#assign i = 1/>
-						
-						<#list mensagems?keys as tipo>
-							<div class="portlet">
-								<input type="hidden" name="caixa" value="${tipo}"/>
-								<div class="portlet-header">${action.getDescricaoTipo(tipo)}</div>
-								<div class="portlet-content">
-									<table width="100%" class="dados" style="border:none;">
-										<tbody>
-											<#assign j=0/>
-											<#list action.getMensagens(tipo) as msg>
-												<#if j%2==0>
-													<#assign class="odd"/>
-												<#else>
-													<#assign class="even"/>
-												</#if>
-		
-												<#if !msg.lida>
-													<#assign style="font-weight: bold;"/>
-													<#assign status="Não">
-												<#else>
-													<#assign style=""/>
-													<#assign status="Sim">
-												</#if>
-											
-												<tr class="${class}">
-													<#if msg.usuarioMensagemId?exists>
-														<td width="40" align="center">
-															<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=4&amp;usuarioMensagem.id=${msg.usuarioMensagemId}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-															<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
-														</td>
-													</#if>
-													<td>
-														<#if msg.remetente?exists && msg.data?exists>
-															<span class="remetenteHora">${msg.remetente} - ${msg.data?string("dd/MM/yyyy HH:mm")}</span><br />
-														</#if>
-														
-														<#if msg.link?exists && msg.link != "">
-															<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="${style}">
-																${msg.textoAbreviado}
-															</a>
-														<#else>
-															${msg.textoAbreviado}
-														</#if>
-													</td>
-												</tr>
-												<#assign j=j+1/>
-											</#list>
-											
-											<#if (action.getMensagens(tipo)?size < 1)>
-												<tr>
-													<td>Não há mensagens disponíveis</td>
-												</tr>
-											</#if>
-										</tbody>
-									</table>
-								</div>
-							</div>
-	
-							<#-- Passa para a coluna da esquerda -->
-							<#if i == (mensagems?keys?size/2)?int>
-								</div>
-								<div class="column right">
-							</#if>
-							
-							<#assign i = i+1/>
+						<#list configuracaoCaixasMensagens.caixasEsquerda as tipo>
+							<#include "caixaMensagens.ftl"/>
+						</#list>
+					</div>
+
+					<div class="column right">
+						<#list configuracaoCaixasMensagens.caixasDireita as tipo>
+							<#include "caixaMensagens.ftl"/>
 						</#list>
 					</div>
 				</div>
@@ -260,25 +211,6 @@
 			</#if>
 		</@authz.authorize>
 	</form>
-	
-	<br clear="all"/>
-	
-	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
-		<#if integradoAC && pendenciaACs?exists>
-			<div class="waDivTituloX">Pendências com o AC Pessoal</div>
-			<div class="waDivFormularioX">
-			<#if pendenciaACs?size < 1>
-				<span>Nenhuma pendência</span>
-			<#else>
-				<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
-					<@display.column property="pendencia" title="Pendência" />
-					<@display.column property="detalhes" title="Detalhes" />
-					<@display.column property="status" title="Status" />
-				</@display.table>
-			</#if>
-			</div>
-		</#if>
-	</@authz.authorize>
 	
 	<div id="splash">
 		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');">

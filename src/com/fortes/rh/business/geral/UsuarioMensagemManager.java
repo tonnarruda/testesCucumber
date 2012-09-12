@@ -5,15 +5,15 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
-import com.fortes.rh.model.geral.relatorio.MensagemVO;
 
 public interface UsuarioMensagemManager extends GenericManager<UsuarioMensagem>
 {
-	Map<Character, Collection<MensagemVO>> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId);
+	Map<Character, CaixaMensagem> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId);
 	UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId);
 	Boolean possuiMensagemNaoLida(Long usuarioId, Long empresaId);
 	void salvaMensagem(Empresa empresa, Mensagem mensage, String[] usuariosCheck) throws Exception;

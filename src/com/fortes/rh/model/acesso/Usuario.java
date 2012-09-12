@@ -36,12 +36,9 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	
 	private boolean superAdmin;
 	
-	@Column(length=50)
-	private String caixasMensagensOrdem;
+	@Column(length=255)
+	private String caixasMensagens;
 
-	@Column(length=50)
-	private String caixasMensagensMinimizadas;
-	
 	@OneToMany(mappedBy="usuario")
 	private Collection<UsuarioEmpresa> usuarioEmpresas;
 	
@@ -196,19 +193,11 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 		this.superAdmin = superAdmin;
 	}
 
-	public String getCaixasMensagensOrdem() {
-		return caixasMensagensOrdem;
+	public String getCaixasMensagens() {
+		return caixasMensagens;
 	}
 
-	public void setCaixasMensagensOrdem(String caixasMensagensOrdem) {
-		this.caixasMensagensOrdem = caixasMensagensOrdem;
-	}
-
-	public String getCaixasMensagensMinimizadas() {
-		return caixasMensagensMinimizadas;
-	}
-
-	public void setCaixasMensagensMinimizadas(String caixasMensagensMinimizadas) {
-		this.caixasMensagensMinimizadas = caixasMensagensMinimizadas;
+	public void setCaixasMensagens(String caixasMensagens) {
+		this.caixasMensagens = caixasMensagens;
 	}
 }
