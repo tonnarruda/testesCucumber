@@ -36,6 +36,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	private String[] emailsNotificacoes;
 
 	private String msgAlert;
+	private Boolean filtroTipoAreaOrganizacional = AreaOrganizacional.TODAS;
 
 	public String execute() throws Exception
 	{
@@ -48,12 +49,14 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		if(areaOrganizacional != null && areaOrganizacional.getId() != null && areaOrganizacional.getNome() == null)
 			areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacional.getId());
 
-		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
+		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), filtroTipoAreaOrganizacional, null);
+		filtroTipoAreaOrganizacional = AreaOrganizacional.TODAS;
 		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nomeComercial");
 	}
 
 	public String prepareInsert() throws Exception
 	{
+		filtroTipoAreaOrganizacional = AreaOrganizacional.ATIVA;
 		prepare();
 		podeEditarAreaMae = true;
 		return Action.SUCCESS;
