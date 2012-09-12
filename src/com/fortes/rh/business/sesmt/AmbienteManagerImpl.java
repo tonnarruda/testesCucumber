@@ -141,10 +141,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		ppraLtcatRelatorio.formataFuncoes(Arrays.asList(funcao));
 
 		//TODO Samuel falta implementar por funcao
-		Collection<RiscoMedicaoRisco> riscosDoAmbiente = riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(funcao.getId(), data);
+		Collection<RiscoMedicaoRisco> riscosDaFuncao = riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(funcao.getId(), data);
 		
-		ppraLtcatRelatorio.formataRiscosPpra(riscosDoAmbiente);
-		ppraLtcatRelatorio.formataRiscosLtcat(riscosDoAmbiente);
+		ppraLtcatRelatorio.formataRiscosPpra(riscosDaFuncao);
+		ppraLtcatRelatorio.formataRiscosLtcat(riscosDaFuncao);
 		
 		cabecalho.setQtdHomens(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.MASCULINO, funcao.getId()));
 		cabecalho.setQtdMulheres(getDao().getQtdColaboradorByAmbiente(ambiente.getId(), data, Sexo.FEMININO, funcao.getId()));

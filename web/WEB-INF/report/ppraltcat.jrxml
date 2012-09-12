@@ -245,6 +245,22 @@ DO AMBIENTE DE TRABALHO]]></text>
 			<groupHeader>
 			<band height="322"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="191"
+						width="535"
+						height="19"
+						key="textField-22"
+						positionType="Float">
+							<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+					<textElement isStyledText="true">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+				</textField>
 				<subreport  isUsingCache="false">
 					<reportElement
 						x="0"
@@ -383,7 +399,7 @@ DE RISCOS AMBIENTAIS]]></text>
 						positionType="Float">
 							<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
 						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="2"/>
 					<textElement isStyledText="true">
 						<font size="9"/>
 					</textElement>
@@ -428,29 +444,13 @@ DE RISCOS AMBIENTAIS]]></text>
 						positionType="Float"
 						isPrintRepeatedValues="false"
 						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
 						</reportElement>
-					<subreportParameter  name="LTCAT">
-						<subreportParameterExpression><![CDATA[$F{ltcat}]]></subreportParameterExpression>
+					<subreportParameter  name="PPRA">
+						<subreportParameterExpression><![CDATA[$F{ppra}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_LTCAT.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
 				</subreport>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="191"
-						width="535"
-						height="19"
-						key="textField-22"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="2"/>
-					<textElement isStyledText="true">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
-				</textField>
 			</band>
 			</groupHeader>
 			<groupFooter>
