@@ -11,6 +11,7 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -18,6 +19,26 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<script type='text/javascript'>
+	
+		var empresaIds = new Array();
+		
+		<#if empresaIds?exists>
+			<#list empresaIds as empresaId>
+				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
+	
+		function populaEstabelecimento(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+		}
+		
+		function createListEstabelecimento(data)
+		{
+			addChecks('estabelecimentosCheck',data);
+		}
+	
 		function populaAreas(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -105,6 +126,13 @@
 				$("#divAreaOrganizacionals").hide();
 			}
 		}
+		
+		$(document).ready(function()
+		{
+			var empresa = $('#empresaId').val();
+			populaAreas(empresa);
+			populaEstabelecimento(empresa);
+		});
 	</script>
 
 <#include "../ftl/showFilterImports.ftl" />
@@ -136,7 +164,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
-            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaAreas(this.value);" disabled="!compartilharColaboradores"/>
+            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaEstabelecimento(this.value);populaAreas(this.value);" disabled="!compartilharColaboradores"/>
 			
 			<label>Admitidos entre:</label><br />
 			<@ww.datepicker name="dataAdmissaoIni" value="${dataAdmIni}" id="admIni" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
@@ -145,6 +173,8 @@
 			
 			<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 			<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
+			
+			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
 
 			<@ww.select id="optFiltro" label="Filtrar Por" name="filtro"
 				list=r"#{'2':'Áreas Organizacionais','1':'Colaboradores pré-inscritos no curso'}" onchange="filtrarOpt();" />

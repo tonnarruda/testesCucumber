@@ -180,7 +180,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 			}
 				
-			colaboradors = colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, colaborador, null, null, getEmpresaSistema().getId(), false);
+			colaboradors = colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, colaborador, null, null, getEmpresaSistema().getId(), false);
 			
 			if (colaborador.getId() != null)
 			{

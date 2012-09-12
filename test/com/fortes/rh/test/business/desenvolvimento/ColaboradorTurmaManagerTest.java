@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -394,6 +395,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		int page = 1;
 		int pagingSize = 10;
 		String[] areasCheck = new String[] { "1" };
+		String[]  estabelecimentosCheck = new String[] { "1" };
 		String[] cargosCheck = null;
 		String[] gruposCheck = null;
 		String[] colaboradoresCursosCheck = new String[] { "" };
@@ -406,10 +408,10 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaboradores.add(colaborador);
 
-		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 		
 		
-		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
+		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
 	}
 
 	public void testFiltrarColaboradoresFiltrarPorCargo() throws Exception
@@ -432,8 +434,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("findByCargosIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, eq(empresaId
 				)}).will(
 				returnValue(colaboradores));
-		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck,
-				filtrarPor, turma, null, null, null, empresaId).size());
+		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, null, gruposCheck,
+				colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
 	}
 
 	public void testFiltrarColaboradoresFiltrar() throws Exception
@@ -456,8 +458,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		colaboradorTurmaDao.expects(once()).method("findByColaboradorAndTurma").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, eq(turma.getCurso().getId()), ANYTHING}).will(
 				returnValue(colaboradorTurmas));
-		assertEquals(colaboradorTurmas, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck,
-				colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId));
+		assertEquals(colaboradorTurmas, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, null,
+				gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId));
 	}
 
 	public void testFiltroRelatorioMatriz()

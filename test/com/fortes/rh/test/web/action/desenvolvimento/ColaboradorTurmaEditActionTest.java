@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -34,6 +36,7 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction;
@@ -50,6 +53,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock prioridadeTreinamentoManager;
 	private Mock colaboradorManager;
+	private Mock estabelecimentoManager;
 
     protected void setUp() throws Exception
     {
@@ -64,6 +68,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         prioridadeTreinamentoManager = new Mock(PrioridadeTreinamentoManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
+        estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 
         action.setColaboradorTurmaManager((ColaboradorTurmaManager) manager.proxy());
         action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
@@ -74,6 +79,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
         action.setPrioridadeTreinamentoManager((PrioridadeTreinamentoManager) prioridadeTreinamentoManager.proxy());
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -181,6 +187,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(empresa);
     	action.setEmpresaId(empresa.getId());
     	
+    	
     	Curso curso = CursoFactory.getEntity();
     	curso.setId(1L);
     	
@@ -204,6 +211,9 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	String[] colaboradoresCursosCheck = {"1"};
     	action.setColaboradoresCursosCheck(colaboradoresCursosCheck);
     	
+    	String[] estabelecimentosCheck = {"1"};
+    	action.setEstabelecimentosCheck(estabelecimentosCheck);
+    	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
     	
@@ -214,6 +224,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
     	empresaManager.expects(once()).method("ajustaCombo").with(eq(empresa.getId()),ANYTHING).will(returnValue(empresa.getId()));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(Arrays.asList(empresa)));
+    	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(Arrays.asList(empresa)));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()),ANYTHING,ANYTHING).will(returnValue(Arrays.asList(new AreaOrganizacional(1L, "area", true))));
     	manager.expects(once()).method("findColaboradoresByCursoTurmaIsNull").with(eq(turma.getCurso().getId())).will(returnValue(colaboradorTurmas));

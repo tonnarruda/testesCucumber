@@ -73,7 +73,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
-	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, int filtrarPor, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
+	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, int filtrarPor, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{
 		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -81,7 +81,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		switch (filtrarPor)
 		{
 			case 1: // Áreas organizacionais
-				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true);
+				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true);
 				retorno = geraColaboradorTurma(colaboradores, turma);
 				break;
 				//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe

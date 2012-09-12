@@ -22,7 +22,7 @@ import com.fortes.rh.model.geral.Colaborador;
 @SuppressWarnings("unchecked")
 public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma>
 {
-	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, int filtrarPor, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException;
+	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, int filtrarPor, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException;
 	public Collection<ColaboradorTurma> filtroRelatorioMatriz(LinkedHashMap filtro);
 	public Collection<Colaborador> getListaColaboradores(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorTurma> filtroRelatorioPlanoTrei(LinkedHashMap filtro);

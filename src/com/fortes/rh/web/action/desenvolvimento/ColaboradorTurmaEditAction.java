@@ -18,6 +18,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
@@ -30,6 +31,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.SecurityUtil;
@@ -57,6 +59,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private EstabelecimentoManager estabelecimentoManager;
 
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos = null;
@@ -76,6 +79,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	private String[] areasCheck;
 	private String[] gruposCheck;
+	private String[] estabelecimentosCheck;
 	private String[] cargosCheck;
 	private String[] colaboradoresCursosCheck;
 	
@@ -91,6 +95,8 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> colaboradoresCursosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	
 
 	private Long areaFiltroId;
 
@@ -166,6 +172,10 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		populaEmpresas();
 		
 //		questionario = turma.getAvaliacaoTurma().getQuestionario();
+		
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null);
 		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
@@ -194,7 +204,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		totalSize = 10000;
-		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		return prepareInsert();
@@ -355,6 +365,11 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 //		colaboradorTurmaManager.aprovacaoColaboradorTurma(colaboradorTurma.getId(), false);
 //		return Action.SUCCESS;
 //	}
+	
+	public void setEstabelecimentoManager(
+			EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
 
 	public ColaboradorTurma getColaboradorTurma()
 	{
@@ -812,5 +827,26 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 
 	public void setDataAdmissaoFim(Date dataAdmissaoFim) {
 		this.dataAdmissaoFim = dataAdmissaoFim;
+	}
+
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public void setEstabelecimentosCheckList(
+			Collection<CheckBox> estabelecimentosCheckList) {
+		this.estabelecimentosCheckList = estabelecimentosCheckList;
+	}
+
+	public EstabelecimentoManager getEstabelecimentoManager() {
+		return estabelecimentoManager;
+	}
+
+	public String[] getEstabelecimentosCheck() {
+		return estabelecimentosCheck;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
 	}
 }
