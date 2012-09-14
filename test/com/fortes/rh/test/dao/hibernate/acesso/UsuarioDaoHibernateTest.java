@@ -58,12 +58,12 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	
 	public void testDesativaSuperAdmin()
 	{
-		Usuario usuarioJoao = new Usuario();
+		Usuario usuarioJoao = UsuarioFactory.getEntity();
 		usuarioJoao.setLogin("joaobla12");
 		usuarioJoao.setSuperAdmin(true);
 		usuarioDao.save(usuarioJoao);
 
-		Usuario usuarioMaria = new Usuario();
+		Usuario usuarioMaria = UsuarioFactory.getEntity();
 		usuarioMaria.setLogin("mariabla12");
 		usuarioDao.save(usuarioMaria);
 		

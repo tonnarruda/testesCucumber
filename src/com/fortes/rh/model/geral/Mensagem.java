@@ -21,11 +21,13 @@ public class Mensagem extends AbstractModel implements Serializable
 {
 	@Column(length=100)
     private String remetente;
+	
 	@Column(length=200)
 	private String link;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Colaborador colaborador;
+	
 	private Character tipo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -86,19 +88,23 @@ public class Mensagem extends AbstractModel implements Serializable
 		this.link = link;
 	}
 
-	public Colaborador getColaborador() {
+	public Colaborador getColaborador() 
+	{
 		return colaborador;
 	}
 
-	public void setColaborador(Colaborador colaborador) {
+	public void setColaborador(Colaborador colaborador) 
+	{
 		this.colaborador = colaborador;
 	}
 
-	public Character getTipo() {
+	public Character getTipo() 
+	{
 		return tipo;
 	}
 
-	public void setTipo(Character tipo) {
+	public void setTipo(Character tipo) 
+	{
 		this.tipo = tipo;
 	}
 }

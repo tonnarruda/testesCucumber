@@ -893,11 +893,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		usuario.setAcessoSistema(true);
 		usuario = usuarioDao.save(usuario);
 
-		Usuario usuario1 = new Usuario();
+		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuario1.setLogin("usuario 1");
 		usuario1 = usuarioDao.save(usuario1);
 
-		Usuario usuario2 = new Usuario();
+		Usuario usuario2 = UsuarioFactory.getEntity();
 		usuario2.setLogin("usuario 2");
 		usuario2.setAcessoSistema(true);
 		usuario2 = usuarioDao.save(usuario2);

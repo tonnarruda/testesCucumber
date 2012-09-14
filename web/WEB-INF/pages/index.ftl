@@ -13,7 +13,6 @@
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 				
 		a { text-decoration: none; font-size: 11px !important; font-family: Arial, Helvetica, sans-serif !important; }
-		.verTodas { text-align: center; padding: 5px; border-top: 1px solid #EBECF1; }
 		.dados td { font-size: 11px !important; }
 		.tituloMensagem { width: 390px; white-space: nowrap; overflow: hidden; }
 		.remetenteHora { color: #069; }
@@ -37,7 +36,7 @@
 		.left .portlet { margin: 0 0.5em 1em 0; }
 		.right .portlet { margin: 0 0 1em 0.5em; }
 		.portlet-header { margin: 0.3em; padding: 3px; }
-		.portlet-header .ui-icon { float: right; }
+		.portlet-header .ui-icon { float: right; cursor: pointer; }
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
 		.ui-sortable-placeholder * { visibility: hidden; }

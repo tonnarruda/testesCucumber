@@ -11,5 +11,6 @@ public interface UsuarioMensagemDao extends GenericDao<UsuarioMensagem>
 	Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId);
 	UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId);
 	Boolean possuiMensagemNaoLida(Long usuarioId, Long empresaId);
-	Long findAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao);
+	Long findAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo);
+	Integer countMensagens(Long empresaId, Long usuarioId, Character tipo);
 }

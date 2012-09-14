@@ -23,7 +23,6 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 
 /**

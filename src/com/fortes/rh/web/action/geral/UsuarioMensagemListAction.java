@@ -9,17 +9,17 @@ import com.opensymphony.xwork.ActionSupport;
 public class UsuarioMensagemListAction extends ActionSupport
 {
 	private UsuarioMensagemManager usuarioMensagemManager = null;
-
 	private UsuarioMensagem usuarioMensagem;
 
-	private boolean fromPopup = false; // indica quando o delete se origina do
-										// popup
+	private boolean fromPopup = false;
+	private boolean fromTodasMensagens = false;
 
 	private Long usuarioMensagemProximoId;
-
 	private Long usuarioMensagemAnteriorId;
 
 	private Long[] usuarioMensagemIds;
+	
+	private char tipo;
 
 	public String execute() throws Exception
 	{
@@ -30,10 +30,14 @@ public class UsuarioMensagemListAction extends ActionSupport
 	{
 		usuarioMensagemManager.delete(usuarioMensagem, usuarioMensagemIds);
 			
-		if(!fromPopup)
-			return Action.SUCCESS;
-		else
+		if (fromPopup)
 			return "success_popup";
+		
+		else if (fromTodasMensagens)
+			return "success_mensagens";
+		
+		else
+			return Action.SUCCESS;
 	}
 
 	public UsuarioMensagem getUsuarioMensagem()
@@ -88,5 +92,23 @@ public class UsuarioMensagemListAction extends ActionSupport
 	public void setUsuarioMensagemIds(Long[] usuarioMensagemIds)
 	{
 		this.usuarioMensagemIds = usuarioMensagemIds;
+	}
+
+	public boolean isFromTodasMensagens() 
+	{
+		return fromTodasMensagens;
+	}
+
+	public void setFromTodasMensagens(boolean fromTodasMensagens) 
+	{
+		this.fromTodasMensagens = fromTodasMensagens;
+	}
+
+	public char getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(char tipo) {
+		this.tipo = tipo;
 	}
 }

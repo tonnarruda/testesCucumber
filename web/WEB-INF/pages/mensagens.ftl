@@ -24,7 +24,10 @@
 	<@ww.actionmessage />
 
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
-		<@ww.form name="formMensagemUsuario" action="geral/usuarioMensagem/delete.action" method="POST">
+		<@ww.form name="formMensagemUsuario" action="geral/usuarioMensagem/delete.action" method="post">
+			<@ww.hidden name="tipo"/>
+			<@ww.hidden name="fromTodasMensagens" value="true"/>
+		
 			<@display.table name="getMensagens(tipo)" id="msg" class="dados">
 				<#if !msg.lida>
 					<#assign style="font-weight:bold;"/>
@@ -65,6 +68,7 @@
 		
 		<div class="buttonGroup">
 			<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.formMensagemUsuario.submit();});" class="btnExcluir"></button>
+			<button onclick="javascript: location.href='index.action';" class="btnVoltar"></button>
 		</div>
 	</@authz.authorize>
 </body>

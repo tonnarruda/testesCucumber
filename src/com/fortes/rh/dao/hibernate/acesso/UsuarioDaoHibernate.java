@@ -35,8 +35,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		p.add(Projections.property("u.login"), "login");
 		p.add(Projections.property("u.senha"), "senha");
 		p.add(Projections.property("u.acessoSistema"), "acessoSistema");
-		p.add(Projections.property("u.caixasMensagensOrdem"), "caixasMensagensOrdem");
-		p.add(Projections.property("u.caixasMensagensMinimizadas"), "caixasMensagensMinimizadas");
+		p.add(Projections.property("u.caixasMensagens"), "caixasMensagens");
 
 		criteria.setProjection(p);
 
@@ -61,7 +60,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 	}
 
-	public Collection findUsuarios(int page, int pagingSize,String nomeBusca,Empresa empresa)
+	public Collection<Usuario> findUsuarios(int page, int pagingSize,String nomeBusca,Empresa empresa)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioEmpresa.class, "usuEmp");
 		criteria.createCriteria("usuEmp.usuario","usu");

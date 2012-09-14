@@ -1,5 +1,6 @@
 package com.fortes.rh.test.factory.geral;
 
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.util.DateUtil;
 
@@ -13,6 +14,7 @@ public class MensagemFactory
 		mensagem.setRemetente("Fortes RH");
 		mensagem.setData(DateUtil.criarDataMesAno(05, 01, 2009));
 		mensagem.setTexto("Teste do sistema de caixa de mensagem.");
+		mensagem.setTipo(TipoMensagem.AVALIACAO_DESEMPENHO);
 
 		return mensagem;
 	}

@@ -7,6 +7,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.MensagemManager;
@@ -152,8 +153,8 @@ public class UsuarioMensagemEditActionTest extends MockObjectTestCase
 
 		action.setUsuarioMensagem(usuarioMensagem);
 
-		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
-		manager.expects(atLeastOnce()).method("getAnteriorOuProximo").with(eq(usuarioMensagem.getId()), eq(usuario.getId()), eq(empresa.getId()), ANYTHING).will(returnValue(null));
+		manager.expects(once()).method("countMensagens").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(2));
+		manager.expects(atLeastOnce()).method("getAnteriorOuProximo").with(new Constraint[] { eq(usuarioMensagem.getId()), eq(usuario.getId()), eq(empresa.getId()), ANYTHING, ANYTHING }).will(returnValue(null));
 		manager.expects(once()).method("findByIdProjection").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagem));
 
 		assertEquals("success", action.leituraUsuarioMensagemPopup());

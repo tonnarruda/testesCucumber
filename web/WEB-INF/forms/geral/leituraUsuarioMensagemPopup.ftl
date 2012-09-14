@@ -81,6 +81,7 @@
 		</table>
 		<br>
 
+		<@ww.hidden name="tipo" />
 		<@ww.hidden name="usuarioMensagem.id" />
 		<@ww.hidden name="usuarioMensagem.usuario.id" />
 		<@ww.hidden name="usuarioMensagem.mensagem.id" />
@@ -120,6 +121,7 @@
 	</script>
 
 	<@ww.form name="formProximo" action="leituraUsuarioMensagemPopup.action"  method="POST">
+		<@ww.hidden name="tipo" />
 		<@ww.hidden name="usuarioMensagem.id" />
 		<@ww.hidden name="usuarioMensagem.usuario.id" />
 		<@ww.hidden name="usuarioMensagem.empresa.id" />
@@ -128,6 +130,7 @@
 		<@ww.hidden name="navegacao" value="proximo" />
 	</@ww.form>
 	<@ww.form name="formAnterior" action="leituraUsuarioMensagemPopup.action"  method="POST">
+		<@ww.hidden name="tipo" />
 		<@ww.hidden name="usuarioMensagem.id" />
 		<@ww.hidden name="usuarioMensagem.usuario.id" />
 		<@ww.hidden name="usuarioMensagem.empresa.id" />
@@ -136,6 +139,7 @@
 		<@ww.hidden name="navegacao" value="anterior" />
 	</@ww.form>
 	<@ww.form name="formDelete" action="delete.action" method="POST">
+		<@ww.hidden name="tipo" />
 		<@ww.hidden name="usuarioMensagem.id" />
 		<@ww.hidden name="usuarioMensagemProximoId" />
 		<@ww.hidden name="usuarioMensagemAnteriorId" />
@@ -173,7 +177,7 @@
 		</button>
 		<button onclick="${acaoExcluir}" class="${btnExcluir}" accesskey="E">
 		</button>
-		<button onclick="window.opener.location.reload();window.close();" class="btnFechar" accessKey="F">
+		<button onclick="window.close();" class="btnFechar" accessKey="F">
 		</button>
 	</div>
 

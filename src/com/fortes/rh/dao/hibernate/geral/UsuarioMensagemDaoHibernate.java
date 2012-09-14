@@ -94,12 +94,12 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 	 * 				'A' - mensagem anterior
 	 * 				'P' - próxima mensagem
 	 */
-	public Long findAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao)
+	public Long findAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioMensagem.class, "um");
+		criteria.createCriteria("um.mensagem", "m", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
-		//p.add(Projections.property("um.id"), "id");
 
 		if (opcao == 'A' )
 		{
@@ -117,9 +117,27 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 
 		criteria.add(Expression.eq("um.usuario.id", usuarioId));
 		criteria.add(Expression.eq("um.empresa.id", empresaId));
+		
+		if (tipo != null)
+			criteria.add(Expression.eq("m.tipo", tipo));
+		
 		criteria.setMaxResults(1);
 
 		return (Long) criteria.uniqueResult();
 	}
 
+	public Integer countMensagens(Long empresaId, Long usuarioId, Character tipo) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "um");
+		criteria.createCriteria("um.mensagem", "m", Criteria.LEFT_JOIN);
+		criteria.setProjection(Projections.rowCount());
+
+		criteria.add(Expression.eq("um.empresa.id", empresaId));
+		criteria.add(Expression.eq("um.usuario.id", usuarioId));
+		criteria.add(Expression.eq("m.tipo", tipo));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return (Integer) criteria.uniqueResult();
+	}
 }

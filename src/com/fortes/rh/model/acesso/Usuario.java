@@ -37,7 +37,7 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	private boolean superAdmin;
 	
 	@Column(length=255)
-	private String caixasMensagens;
+	private String caixasMensagens = "{'caixasDireita':['T','C','F','U'],'caixasEsquerda':['P','D','A','S'],'caixasMinimizadas':[]}";
 
 	@OneToMany(mappedBy="usuario")
 	private Collection<UsuarioEmpresa> usuarioEmpresas;

@@ -183,14 +183,14 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		this.mensagemManager = mensagemManager;
 	}
 
-	public Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao)
+	public Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo)
 	{
-		Integer count = getDao().getCount(new String[]{"empresa.id", "usuario.id"}, new Object[]{empresaId, usuarioId});
+		Integer count = countMensagens(empresaId, usuarioId, tipo);
 		if (count <= 1)
 			return null;
 		else
 		{
-			Long id = getDao().findAnteriorOuProximo(usuarioMensagemId, usuarioId, empresaId, opcao);
+			Long id = getDao().findAnteriorOuProximo(usuarioMensagemId, usuarioId, empresaId, opcao, tipo);
 			return id;
 		}
 	}
@@ -204,7 +204,13 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				remove(usuarioMensagemIds);		
 	}
 
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
+	public Integer countMensagens(Long empresaId, Long usuarioId, Character tipo) 
+	{
+		return getDao().countMensagens(empresaId, usuarioId, tipo);
+	}
+	
+	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) 
+	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 }

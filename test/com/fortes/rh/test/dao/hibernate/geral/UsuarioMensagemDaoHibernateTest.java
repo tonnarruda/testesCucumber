@@ -162,25 +162,33 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
+		
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
+		Mensagem mensagem = MensagemFactory.getEntity();
+		mensagemDao.save(mensagem);
+		
 		UsuarioMensagem usuarioMensagem1 = UsuarioMensagemFactory.getEntity();
 		usuarioMensagem1.setUsuario(usuario);
 		usuarioMensagem1.setEmpresa(empresa);
+		usuarioMensagem1.setMensagem(mensagem);
 		usuarioMensagemDao.save(usuarioMensagem1);
+		
 		UsuarioMensagem usuarioMensagem2 = UsuarioMensagemFactory.getEntity();
 		usuarioMensagem2.setUsuario(usuario);
 		usuarioMensagem2.setEmpresa(empresa);
+		usuarioMensagem2.setMensagem(mensagem);
 		usuarioMensagemDao.save(usuarioMensagem2);
 
-		assertNotNull(usuarioMensagemDao.findAnteriorOuProximo(usuarioMensagem1.getId(), usuario.getId(), usuarioMensagem1.getEmpresa().getId(), 'P'));
+		assertNotNull(usuarioMensagemDao.findAnteriorOuProximo(usuarioMensagem1.getId(), usuario.getId(), usuarioMensagem1.getEmpresa().getId(), 'P', null));
 	}
 	
 	public void testFindProximoOpcaoA()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
+		
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 		
@@ -188,12 +196,39 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		usuarioMensagem1.setUsuario(usuario);
 		usuarioMensagem1.setEmpresa(empresa);
 		usuarioMensagemDao.save(usuarioMensagem1);
+
 		UsuarioMensagem usuarioMensagem2 = UsuarioMensagemFactory.getEntity();
 		usuarioMensagem2.setUsuario(usuario);
 		usuarioMensagem2.setEmpresa(empresa);
 		usuarioMensagemDao.save(usuarioMensagem2);
 		
-		assertNotNull(usuarioMensagemDao.findAnteriorOuProximo(usuarioMensagem2.getId(), usuario.getId(), usuarioMensagem1.getEmpresa().getId(), 'A'));
+		assertNotNull(usuarioMensagemDao.findAnteriorOuProximo(usuarioMensagem2.getId(), usuario.getId(), usuarioMensagem1.getEmpresa().getId(), 'A', null));
+	}
+	
+	public void testGetCount()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Mensagem mensagem = MensagemFactory.getEntity();
+		mensagemDao.save(mensagem);
+		
+		UsuarioMensagem usuarioMensagem1 = UsuarioMensagemFactory.getEntity();
+		usuarioMensagem1.setUsuario(usuario);
+		usuarioMensagem1.setEmpresa(empresa);
+		usuarioMensagem1.setMensagem(mensagem);
+		usuarioMensagemDao.save(usuarioMensagem1);
+
+		UsuarioMensagem usuarioMensagem2 = UsuarioMensagemFactory.getEntity();
+		usuarioMensagem2.setUsuario(usuario);
+		usuarioMensagem2.setEmpresa(empresa);
+		usuarioMensagem2.setMensagem(mensagem);
+		usuarioMensagemDao.save(usuarioMensagem2);
+		
+		assertEquals(new Integer(2), usuarioMensagemDao.countMensagens(empresa.getId(), usuario.getId(), 'A'));
 	}
 
 	public void setUsuarioMensagemDao(UsuarioMensagemDao usuarioMensagemDao)

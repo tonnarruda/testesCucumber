@@ -130,7 +130,7 @@ public class Index extends ActionSupport
 			usuarioId = usuario.getId();
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
 
-			colaborador = colaboradorManager.findByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
+			colaborador = colaboradorManager.findByUsuario(usuario, empresaId);
 
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
 			{

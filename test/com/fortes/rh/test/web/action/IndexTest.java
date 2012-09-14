@@ -34,6 +34,8 @@ import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.Index;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
@@ -41,9 +43,7 @@ import com.opensymphony.xwork.ActionContext;
 public class IndexTest extends MockObjectTestCase
 {
 	Index index;
-	Mock questionarioManager;
 	Mock colaboradorManager;
-	Mock colaboradorQuestionarioManager;
 	Mock usuarioMensagemManager;
 	Mock historicoColaboradorManager;
 	Mock faixaSalarialHistoricoManager;
@@ -68,10 +68,14 @@ public class IndexTest extends MockObjectTestCase
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		index.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
+		colaboradorManager = new Mock(ColaboradorManager.class);
+		index.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
 	public void testIndex(){
@@ -105,8 +109,7 @@ public class IndexTest extends MockObjectTestCase
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setSessionTimeout(90);
 
-		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
-		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(pesquisas));
+		colaboradorManager.expects(once()).method("avisoQtdCadastros").withNoArguments().will(returnValue(""));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 
@@ -146,10 +149,4 @@ public class IndexTest extends MockObjectTestCase
 	{
 		this.colaboradorManager = colaboradorManager;
 	}
-
-	public void setPesquisaManager(Mock pesquisaManager)
-	{
-		this.questionarioManager = pesquisaManager;
-	}
-
 }

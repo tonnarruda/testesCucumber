@@ -135,6 +135,7 @@
 		</#if>
 	
 		<@ww.hidden name="usuario.id" />
+		<@ww.hidden name="usuario.caixasMensagens" />
 		<@ww.hidden name="colaborador.id" />
 	
 		<div>Perfil do Usuário: (Listadas somente empresas cujo seu usuário tenha acesso a essa tela)</div>

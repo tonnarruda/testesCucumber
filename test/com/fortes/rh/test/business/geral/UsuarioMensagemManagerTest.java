@@ -8,26 +8,38 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManagerImpl;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.CaixaMensagem;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioMensagemFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 
 public class UsuarioMensagemManagerTest extends MockObjectTestCase
@@ -36,6 +48,10 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 	private Mock usuarioMensagemDao = null;
 	private Mock mensagemManager = null;
 	private Mock usuarioEmpresaManager = null;
+	private Mock questionarioManager = null;
+	private Mock colaboradorQuestionarioManager = null;
+	private Mock colaboradorManager = null;
+	private Mock avaliacaoDesempenhoManager = null;
 
     protected void setUp() throws Exception
     {
@@ -50,8 +66,14 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
         usuarioMensagemManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
 
+        questionarioManager = new Mock(QuestionarioManager.class);
+        colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
+        colaboradorManager = new Mock(ColaboradorManager.class);
+        avaliacaoDesempenhoManager = new Mock(AvaliacaoDesempenhoManager.class);
+        
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -64,6 +86,9 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setId(1L);
 
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setUsuario(usuario);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
@@ -79,11 +104,19 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Collection<UsuarioMensagem> usuarioMensagems = new ArrayList<UsuarioMensagem>();
 		usuarioMensagems.add(usuarioMensagem);
 
+		MockSpringUtil.mocks.put("questionarioManager", questionarioManager);
+		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		MockSpringUtil.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
+		
 		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
+		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<Questionario>()));
+		avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 
 		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), null);
 
-		assertEquals(usuarioMensagems.size(), retorno.size());
+		assertEquals(new TipoMensagem().size(), retorno.size());
 	}
 
 	public void testFindByIdProjection()
@@ -227,8 +260,8 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 	public void testGetAnteriorOuProximo()
 	{
-		usuarioMensagemDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
-		usuarioMensagemDao.expects(once()).method("findAnteriorOuProximo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(2L));
-		assertEquals(new Long(2), usuarioMensagemManager.getAnteriorOuProximo(1L, 1L, 1L, 'P'));
+		usuarioMensagemDao.expects(once()).method("countMensagens").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(2));
+		usuarioMensagemDao.expects(once()).method("findAnteriorOuProximo").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(2L));
+		assertEquals(new Long(2), usuarioMensagemManager.getAnteriorOuProximo(1L, 1L, 1L, 'P', null));
 	}
 }

@@ -44,6 +44,8 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 
 	private String[] usuariosCheck;
 	private Collection<CheckBox> usuariosCheckList = new ArrayList<CheckBox>();
+	
+	private Character tipo;
 
 	public String execute() throws Exception
 	{
@@ -104,7 +106,7 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 	{
 		Empresa empresa = getEmpresaSistema();
 		Usuario usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
-		qtdTotal = usuarioMensagemManager.getCount(new String[]{"empresa.id", "usuario.id"}, new Object[]{empresa.getId(), usuario.getId()});
+		qtdTotal = usuarioMensagemManager.countMensagens(empresa.getId(), usuario.getId(), tipo);
 
 		if (qtdTotal > 0)
 		{
@@ -129,25 +131,25 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 			{
 				usuarioMensagemAnteriorId = usuarioMensagem.getId();
 				usuarioMensagem.setId(usuarioMensagemProximoId);
-				usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P');
+				usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P', tipo);
 			}
 			else if (navegacao.equals("anterior"))
 			{
 				usuarioMensagemProximoId = usuarioMensagem.getId();
 				usuarioMensagem.setId(usuarioMensagemAnteriorId);
-				usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A');
+				usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A', tipo);
 			}
 			else if (navegacao.equals("delete"))
 			{
 				if (usuarioMensagemProximoId != null)
 				{
 					usuarioMensagem.setId(usuarioMensagemProximoId);
-					usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P');
+					usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P', tipo);
 				}
 				else if (usuarioMensagemAnteriorId != null)
 				{
 					usuarioMensagem.setId(usuarioMensagemAnteriorId);
-					usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A');
+					usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A', tipo);
 				}
 				else
 				{
@@ -158,8 +160,8 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 		}
 		else
 		{
-			usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A');
-			usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P');
+			usuarioMensagemAnteriorId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'A', tipo);
+			usuarioMensagemProximoId = usuarioMensagemManager.getAnteriorOuProximo(usuarioMensagem.getId(), usuario.getId(), empresa.getId(), 'P', tipo);
 		}
 	}
 
@@ -308,5 +310,13 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 	public void setNoMessages(boolean noMessages)
 	{
 		this.noMessages = noMessages;
+	}
+
+	public Character getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Character tipo) {
+		this.tipo = tipo;
 	}
 }

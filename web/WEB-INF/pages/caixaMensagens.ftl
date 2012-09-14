@@ -1,6 +1,9 @@
 <div class="portlet">
 	<input type="hidden" name="caixa" value="${tipo}"/>
-	<div class="portlet-header portlet-header-${tipo}">${action.getDescricaoTipo(tipo)} (${action.getTotalNaoLidas(tipo)})</div>
+	<div class="portlet-header portlet-header-${tipo}">
+		${action.getDescricaoTipo(tipo)} (${action.getTotalNaoLidas(tipo)} não lidas) 
+		<a href="mensagens.action?tipo=${tipo}" class="verTodas">&bull; ver todas</a>
+	</div>
 	<div class="portlet-content">
 		<table width="100%" class="dados" style="border:none;">
 			<tbody>
@@ -23,7 +26,7 @@
 					<tr class="${class}">
 						<#if msg.usuarioMensagemId?exists>
 							<td width="40" align="center">
-								<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+								<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
 								<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
 							</td>
 						</#if>
@@ -44,6 +47,8 @@
 						</td>
 					</tr>
 					<#assign j=j+1/>
+					
+					<#if j==10><#break></#if>
 				</#list>
 				
 				<#if (action.getMensagens(tipo)?size < 1)>
@@ -53,13 +58,5 @@
 				</#if>
 			</tbody>
 		</table>
-	</div>
-	<div class="verTodas">
-		<#if (j > 0)>
-			<img border="0" title="Ver todas" src="/fortesrh/imgs/add.png"/>
-			<a href="mensagens.action?tipo=${tipo}">Ver todas</a>
-		<#else>
-			&nbsp;
-		</#if>
 	</div>
 </div>
