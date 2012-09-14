@@ -53,7 +53,7 @@
 				
 				<#if (action.getMensagens(tipo)?size < 1)>
 					<tr>
-						<td>Não há mensagens disponíveis</td>
+						<td>Não há mensagens a serem exibidas</td>
 					</tr>
 				</#if>
 			</tbody>
