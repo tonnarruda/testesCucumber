@@ -31,5 +31,4 @@ Funcionalidade: Funções
 
     Então eu clico em excluir "vendedor"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Não é possível excluir a Função, pois esta possui um ou mais históricos."
-    Então eu devo ver "vendedor"
+    E eu devo ver "Função excluída com sucesso."

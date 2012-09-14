@@ -15,14 +15,14 @@ Funcionalidade: Cadastrar Grupos Ocupacionais
 
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Grupo Ocupacional"
-    E eu preencho "Nome" com "_grupo ocu"
+    E eu preencho "Nome" com "_grupo ocup"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Grupos Ocupacionais"
-    E eu devo ver "_grupo ocu"
+    E eu devo ver "_grupo ocup"
 
-    Entao eu clico em editar "_grupo ocu"
+    Entao eu clico em editar "_grupo ocup"
     E eu devo ver o título "Editar Grupo Ocupacional"
-    E o campo "Nome" deve conter "_grupo ocu"
+    E o campo "Nome" deve conter "_grupo ocup"
     E eu preencho "Nome" com "_grupo ocupacional"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Grupos Ocupacionais"

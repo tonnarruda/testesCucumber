@@ -545,14 +545,14 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     conjugetrabalha true
     qtdfilhos 0
     sexo 'M'
-    naointegraac true
+    naointegraac false
     deficiencia 'N'
     respondeuentrevista true
     empresa :nome => 'Empresa Padrão'
   end
 
   insert :historicocolaborador do
-    data '01/07/2011'
+    data '14/09/2012'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
     areaorganizacional :nome => areaorganizacional_nome

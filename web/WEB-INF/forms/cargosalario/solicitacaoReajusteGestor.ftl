@@ -282,7 +282,7 @@
 <@ww.actionerror />
 <@ww.fielderror />
 <@ww.actionmessage />
-	<#if areaOrganizacionals?exists && 0 < areaOrganizacionals?size >
+	<#if true >
 		<@ww.form name="form" id="form" action="${formAction}" method="POST">
 			<li>
 			<div id="quadroInformacao">
