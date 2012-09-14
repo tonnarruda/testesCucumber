@@ -16,10 +16,10 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
-import com.fortes.rh.model.geral.relatorio.MensagemVO;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
@@ -67,6 +67,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
+		mensagem.setTipo(TipoMensagem.AVALIACAO_DESEMPENHO);
 
 		UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
 		usuarioMensagem.setId(1L);
@@ -80,7 +81,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 
 		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
 
-		Map<Character, Collection<MensagemVO>> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), null);
+		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), null);
 
 		assertEquals(usuarioMensagems.size(), retorno.size());
 	}

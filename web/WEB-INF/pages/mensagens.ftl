@@ -1,0 +1,71 @@
+<#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<html>
+<head>
+	<meta http-equiv="Content-Language" content="pt-br" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
+	<meta http-equiv="Pragma" content="no-cache, no-store" />
+	<meta http-equiv="Expires" content="0" />
+	
+	<title>Caixa de Mensagens de ${action.getDescricaoTipo(tipo)}</title>
+	
+	<style>
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		.dados a { text-decoration: none; font-family: Arial, Helvetica, sans-serif !important; color: #000 !important; }
+		.dados td { font-size: 11px !important; }
+		.dados td .tituloMensagem { font-size: 11px !important; width: 590px; white-space: nowrap; overflow: hidden; }
+		.remetenteHora { color: #069; }
+	</style>
+</head>
+
+<body>
+	<@ww.actionerror />
+	<@ww.actionmessage />
+
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
+		<@ww.form name="formMensagemUsuario" action="geral/usuarioMensagem/delete.action" method="POST">
+			<@display.table name="getMensagens(tipo)" id="msg" class="dados">
+				<#if !msg.lida>
+					<#assign style="font-weight:bold;"/>
+					<#assign status>Não</#assign>
+				<#else>
+					<#assign style=""/>
+					<#assign status>Sim</#assign>
+				</#if>
+				
+				<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkMensagem\", this.checked);' />" style="width: 30px; text-align: center;">
+					<input type="checkbox" class="checkMensagem" value="${msg.usuarioMensagemId}" name="usuarioMensagemIds" />
+				</@display.column>
+				
+				<@display.column title="Ações" media="html" style="text-align:center; width:50px;">
+					<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+					<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+				</@display.column>
+				
+				<@display.column title="De" style="${style} text-align:center; width:70px;">
+					${msg.remetente}
+				</@display.column>
+				
+				<@display.column title="Data" style="${style} text-align:center; width:100px;">
+					${msg.data?string("dd/MM/yyyy HH:mm")}
+				</@display.column>
+				
+				<@display.column title="Mensagem" style="${style}">
+					<div class="tituloMensagem">
+						${msg.textoAbreviado}
+					</div>
+				</@display.column>
+				
+				<@display.column title="Lida" style="${style} text-align:center; width:40px;">
+					${status}
+				</@display.column>
+			</@display.table>
+		</@ww.form>
+		
+		<div class="buttonGroup">
+			<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.formMensagemUsuario.submit();});" class="btnExcluir"></button>
+		</div>
+	</@authz.authorize>
+</body>
+</html>

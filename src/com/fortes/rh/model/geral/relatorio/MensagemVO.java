@@ -56,8 +56,8 @@ public class MensagemVO implements Serializable {
 		if (this.texto == null)
 			return "";
 		
-		if(this.texto.length() > 90)
-			return this.texto.substring(0, 90) + "...";
+		if(this.texto.length() > 120)
+			return this.texto.substring(0, 120) + "...";
 		else
 			return this.texto;
 	}

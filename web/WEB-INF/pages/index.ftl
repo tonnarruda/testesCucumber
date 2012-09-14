@@ -12,8 +12,11 @@
 	<style>
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 				
-		a:link, a:hover, a:visited, a:active { text-decoration: underline; font-size: 10px !important; font-weight: normal; color: #454C54; font-family: Arial, Helvetica, sans-serif; }
-		.dados td { font-size: 11px; }
+		a { text-decoration: none; font-size: 11px !important; font-family: Arial, Helvetica, sans-serif !important; }
+		.verTodas { text-align: center; padding: 5px; border-top: 1px solid #EBECF1; }
+		.dados td { font-size: 11px !important; }
+		.tituloMensagem { width: 390px; white-space: nowrap; overflow: hidden; }
+		.remetenteHora { color: #069; }
 		
 		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
 		#fecharSplash {
@@ -38,8 +41,6 @@
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
 		.ui-sortable-placeholder * { visibility: hidden; }
-		
-		.remetenteHora { color: #069; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>

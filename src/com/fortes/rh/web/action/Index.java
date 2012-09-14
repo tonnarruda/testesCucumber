@@ -97,6 +97,7 @@ public class Index extends ActionSupport
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private ConfiguracaoCaixasMensagens configuracaoCaixasMensagens;
+	private Character tipo;
 	
 	public String index()
 	{
@@ -167,6 +168,32 @@ public class Index extends ActionSupport
 			addActionError(e.getMessage());
 		}
         
+		return Action.SUCCESS;
+	}
+	
+	public String mensagens()
+	{
+		pgInicial = false;
+		
+		try {
+			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+			usuarioId = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId();
+			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
+			colaborador = colaboradorManager.findByUsuario(usuario, empresaId);
+			
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_MSG"}) )
+			{
+				caixasMensagens = usuarioMensagemManager.listaMensagens(usuarioId, empresaId, colaborador.getId());
+			}
+		
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao carregar a lista de mensagens");
+			index();
+			return Action.INPUT;
+		}
+
 		return Action.SUCCESS;
 	}
 	
@@ -473,5 +500,13 @@ public class Index extends ActionSupport
 
 	public Map<Character, CaixaMensagem> getCaixasMensagens() {
 		return caixasMensagens;
+	}
+
+	public Character getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Character tipo) {
+		this.tipo = tipo;
 	}
 }

@@ -20,7 +20,7 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 	public Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioMensagem.class, "um");
-		criteria.createCriteria("um.mensagem", "m",Criteria.LEFT_JOIN);
+		criteria.createCriteria("um.mensagem", "m", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("um.id"), "id");

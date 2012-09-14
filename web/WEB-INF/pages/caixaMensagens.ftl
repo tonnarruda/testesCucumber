@@ -1,6 +1,6 @@
 <div class="portlet">
 	<input type="hidden" name="caixa" value="${tipo}"/>
-	<div class="portlet-header portlet-header-${tipo}">${action.getDescricaoTipo(tipo)}(${action.getTotalNaoLidas(tipo)})</div>
+	<div class="portlet-header portlet-header-${tipo}">${action.getDescricaoTipo(tipo)} (${action.getTotalNaoLidas(tipo)})</div>
 	<div class="portlet-content">
 		<table width="100%" class="dados" style="border:none;">
 			<tbody>
@@ -13,11 +13,11 @@
 					</#if>
 
 					<#if !msg.lida>
-						<#assign style="font-weight: bold;"/>
-						<#assign status="Não lida">
-					<#else>
 						<#assign style=""/>
-						<#assign status="Lida">
+						<#assign status><img border="0" title="Não lida" src="/fortesrh/imgs/mail.png"/></#assign>
+					<#else>
+						<#assign style="color: #949494;"/>
+						<#assign status><img border="0" title="Lida" src="/fortesrh/imgs/mail-open.png"/></#assign>
 					</#if>
 				
 					<tr class="${class}">
@@ -29,16 +29,18 @@
 						</#if>
 						<td>
 							<#if msg.remetente?exists && msg.data?exists>
-								<span class="remetenteHora">${msg.remetente} - ${msg.data?string("dd/MM/yyyy HH:mm")} - ${status}</span><br />
+								${status}&nbsp;&nbsp;<span class="remetenteHora">${msg.remetente} - ${msg.data?string("dd/MM/yyyy HH:mm")}</span><br />
 							</#if>
 							
-							<#if msg.link?exists && msg.link != "">
-								<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="${style}">
-									${msg.textoAbreviado}
-								</a>
-							<#else>
-								<span style="${style}">${msg.textoAbreviado}</span>
-							</#if>
+							<div class="tituloMensagem">
+								<#if msg.link?exists && msg.link != "">
+									<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}">
+										${msg.textoAbreviado}
+									</a>
+								<#else>
+									<a style="${style}">${msg.textoAbreviado}</a>
+								</#if>
+							</div>
 						</td>
 					</tr>
 					<#assign j=j+1/>
@@ -51,5 +53,13 @@
 				</#if>
 			</tbody>
 		</table>
+	</div>
+	<div class="verTodas">
+		<#if (j > 0)>
+			<img border="0" title="Ver todas" src="/fortesrh/imgs/add.png"/>
+			<a href="mensagens.action?tipo=${tipo}">Ver todas</a>
+		<#else>
+			&nbsp;
+		</#if>
 	</div>
 </div>

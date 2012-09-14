@@ -146,6 +146,10 @@
     <action name="videoteca" class="com.fortes.rh.web.action.Index" method="videoteca">
       <result name="success" type="freemarker">/WEB-INF/pages/videoteca.ftl</result>
     </action>
+    <action name="mensagens" class="com.fortes.rh.web.action.Index" method="mensagens">
+      <result name="success" type="freemarker">/WEB-INF/pages/mensagens.ftl</result>
+      <result name="input" type="freemarker">/WEB-INF/pages/index.ftl</result>
+    </action>
     <action name="contatos" class="com.fortes.rh.web.action.Index" method="contatos">
       <result name="success" type="freemarker">/WEB-INF/pages/contatos.ftl</result>
     </action>

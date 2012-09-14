@@ -37,7 +37,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		MensagemVO vo;
 		char tp;
 		TipoMensagem tipoMensagem = new TipoMensagem();
-		CaixaMensagem caixaMensagem;
 		
 		for (char tipo : tipoMensagem.keySet())
 			caixasMensagens.put(tipo, new CaixaMensagem(tipo, new ArrayList<MensagemVO>(), 0));
@@ -56,10 +55,9 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setLink(usuarioMensagem.getMensagem().getLink());
 			vo.setLida(usuarioMensagem.isLida());
 			
-			caixaMensagem = caixasMensagens.get(tp); 
-			caixaMensagem.getMensagens().add(vo);
+			caixasMensagens.get(tp).getMensagens().add(vo); 
 			if (!usuarioMensagem.isLida())
-				caixaMensagem.setNaoLidas(caixaMensagem.getNaoLidas() + 1);
+				caixasMensagens.get(tp).incrementaNaoLidas();
 		}
 		
 		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
@@ -73,6 +71,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setLida(true);
 			
 			caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
+			caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
 		}
 		
 		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
@@ -92,6 +91,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setLida(true);
 					
 					caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
+					caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
 				}
 			}
 		}
@@ -106,6 +106,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setLida(true);
 			
 			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
+			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).incrementaNaoLidas();
 		}
 		
 		return caixasMensagens;

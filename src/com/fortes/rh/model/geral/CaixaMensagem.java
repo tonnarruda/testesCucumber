@@ -20,6 +20,11 @@ public class CaixaMensagem
 		this.mensagens = mensagens;
 		this.naoLidas = naoLidas;
 	}
+	
+	public void incrementaNaoLidas()
+	{
+		this.naoLidas++;
+	}
 
 	public char getTipo() 
 	{
