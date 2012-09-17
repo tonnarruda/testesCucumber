@@ -29,7 +29,7 @@ Funcionalidade: Período de Acompanhamento de Experiência
     E eu preencho "Descrição" com "2ª Avaliação"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Períodos de Acompanhamento de Experiência"
-    E eu não devo ver "90"
+    E eu não devo ver na listagem "90"
     E eu devo ver "180"
 
     Então eu clico em excluir "180"

@@ -19196,3 +19196,6 @@ insert into migrations values('20120904142852');--.go
 alter table parametrosdosistema add column sessionTimeout integer default 600; --.go
 insert into migrations values('20120905165913');--.go
 update parametrosdosistema set appversao = '1.1.87.82';--.go
+-- versao 1.1.87.83
+
+update parametrosdosistema set appversao = '1.1.87.83';--.go

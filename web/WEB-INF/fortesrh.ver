@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.87.83" data="17/09/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Listar apenas áreas ativas no campo [Área Mãe](Na edição, caso a área mãe atual for inativa, a mesma permanecerá aparecendo na relação do campo [Área Mãe]).
+			:: R&S > Relatórios > Lista de Candidatos da Seleção: Impressão das etapas seletivas em páginas separadas e totalizador de candidatos por etapa seletiva.
+			:: T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Nova opção de filtrar por estabelecimento.
+			:: Mostragem do tempo que falta para a sessão expirar, localizado no canto superior direito da tela inicial.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.87.82" data="10/09/2012">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Cadastros > Candidatos: Novo ícone identificador de candidato contratado(colaborador) quando selecionado o filtro [Exibir também contratados].
