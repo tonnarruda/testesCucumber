@@ -150,14 +150,14 @@
 					<reportElement
 						x="468"
 						y="40"
-						width="64"
+						width="65"
 						height="11"
 						key="staticText-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Média de Dias]]></text>
+				<text><![CDATA[Média de Dias*]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -279,7 +279,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{mediaDias}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="386"
 						y="1"
@@ -342,7 +342,7 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="17"  isSplitAllowed="true" >
+			<band height="39"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="1"
@@ -408,6 +408,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{mediaTotalDias}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="28"
+						width="537"
+						height="11"
+						key="staticText-31"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[*baseado na quantidade de dias entre a data da solicitação e a data de encerramento da solicitação]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>
