@@ -374,7 +374,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setOpcaoResultado("criterio");
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		manager.expects(once()).method("montaResultado").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<ResultadoAvaliacaoDesempenho>()));
+		manager.expects(once()).method("montaResultado").with(ANYTHING,ANYTHING,ANYTHING, ANYTHING).will(returnValue(new ArrayList<ResultadoAvaliacaoDesempenho>()));
 		
 		assertEquals("SUCCESS_CRITERIO", action.resultado());
 	}
@@ -390,7 +390,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setOpcaoResultado("criterio");
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		manager.expects(once()).method("montaResultado").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(new ColecaoVaziaException()));
+		manager.expects(once()).method("montaResultado").with(ANYTHING,ANYTHING,ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException()));
 		//prepare
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));

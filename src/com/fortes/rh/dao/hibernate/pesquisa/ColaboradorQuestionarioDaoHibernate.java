@@ -810,13 +810,16 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId) 
+	public Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.avg("cq.performance")) ;
+		
+		if (desconsiderarAutoAvaliacao)
+			criteria.add(Expression.ne("cq.avaliador.id", avaliadoId));
 		
 		criteria.add(Expression.eq("cq.colaborador.id", avaliadoId));
 	    criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));

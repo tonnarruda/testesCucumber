@@ -314,12 +314,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
      * Monta resultados da avaliação de desempenho
      * @see avaliacaoDesempenhoManager.montaResultado()
      */
-    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores)
+    public Collection<ResultadoAvaliacaoDesempenho> montaResultadosAvaliacaoDesempenho(Collection<Pergunta> perguntas, Map<Long, Integer> pontuacoesMaximasPerguntas, Collection<Resposta> respostas, Long avaliadoId, Collection<ColaboradorResposta> colaboradorRespostas, Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas, AvaliacaoDesempenho avaliacaoDesempenho, Integer qtdAvaliadores, boolean desconsiderarAutoAvaliacao)
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
 		
 		String avaliadoNome = colaboradorManager.getNome(avaliadoId);
-		Double mediaPeformance = colaboradorQuestionarioManager.getMediaPeformance(avaliadoId, avaliacaoDesempenho.getId());
+		Double mediaPeformance = colaboradorQuestionarioManager.getMediaPeformance(avaliadoId, avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao);
 				
 		for (Pergunta pergunta: perguntas)
 		{

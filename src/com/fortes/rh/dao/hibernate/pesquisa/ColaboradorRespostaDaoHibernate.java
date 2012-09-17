@@ -417,7 +417,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId)
+	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq");
@@ -443,8 +443,11 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("c.id", avaliadoId));
 		criteria.add(Expression.eq("ad.id", avaliacaoDesempenhoId));
+		criteria.add(Expression.eq("c.id", avaliadoId));
+
+		if (desconsiderarAutoAvaliacao)
+			criteria.add(Expression.ne("av.id", avaliadoId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorResposta.class));

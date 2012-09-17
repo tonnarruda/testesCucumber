@@ -9,12 +9,9 @@ import java.util.HashMap;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -27,7 +24,6 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -37,12 +33,10 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.Mail;
 
 public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 {
@@ -183,6 +177,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
 		avaliacaoDesempenho.setAvaliacao(AvaliacaoFactory.getEntity(1L));
 		boolean agruparPorAspectos = true;
+		boolean desconsiderarAutoAvaliacao = false;
 		
 		Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 		perguntas.add(PerguntaFactory.getEntity(1L));
@@ -201,8 +196,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		perguntaManager.expects(atLeastOnce()).method("findByQuestionarioAspectoPergunta").will(returnValue(perguntas));
 		respostaManager.expects(atLeastOnce()).method("findInPerguntaIds").will(returnValue(respostas));
 		
-		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L)).will(returnValue(new ArrayList<ColaboradorResposta>()));
-		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(2L),eq(3L)).will(returnValue(colaboradorRespostas));
+		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L), eq(false)).will(returnValue(new ArrayList<ColaboradorResposta>()));
+		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(2L),eq(3L), eq(false)).will(returnValue(colaboradorRespostas));
 		
 		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdavaliadores").with(ANYTHING).will(returnValue(3));
 		perguntaManager.expects(atLeastOnce()).method("getPontuacoesMaximas").with(ANYTHING).will(returnValue(new HashMap<Long, Integer>()));
@@ -212,12 +207,14 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		questionarioManager.expects(once()).method("montaResultadosAvaliacaoDesempenho").withAnyArguments().will(returnValue(resultadoQuestionarios));
 		
-		Collection<ResultadoAvaliacaoDesempenho> resultados = avaliacaoDesempenhoManager.montaResultado(avaliadosIds, avaliacaoDesempenho, agruparPorAspectos);
+		Collection<ResultadoAvaliacaoDesempenho> resultados = avaliacaoDesempenhoManager.montaResultado(avaliadosIds, avaliacaoDesempenho, agruparPorAspectos, desconsiderarAutoAvaliacao);
 		assertEquals(1, resultados.size());
 	}
 	
 	public void testMontaResultadoColecaoVaziaException() 
 	{
+		boolean desconsiderarAutoAvaliacao = false;
+		
 		Collection<Long> avaliadosIds = Arrays.asList(1L);
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
 		avaliacaoDesempenho.setAvaliacao(AvaliacaoFactory.getEntity(1L));
@@ -231,7 +228,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		perguntaManager.expects(atLeastOnce()).method("findByQuestionarioAspectoPergunta").will(returnValue(perguntas));
 		respostaManager.expects(atLeastOnce()).method("findInPerguntaIds").will(returnValue(respostas));
 		
-		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L)).will(returnValue(colaboradorRespostas));
+		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L), eq(false)).will(returnValue(colaboradorRespostas));
 		
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostas));
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostasMultiplas));
@@ -245,7 +242,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			resultados = avaliacaoDesempenhoManager.montaResultado(avaliadosIds, avaliacaoDesempenho, false);
+			resultados = avaliacaoDesempenhoManager.montaResultado(avaliadosIds, avaliacaoDesempenho, false, desconsiderarAutoAvaliacao);
 		} 
 		catch (ColecaoVaziaException e) {
 			exception = e;

@@ -581,9 +581,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return usuarioManager.findEntidadeComAtributosSimplesById(usuarioId);
 	}
 
-	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId)
+	public Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
 	{
-		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId);
+		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 	}
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {

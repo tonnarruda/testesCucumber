@@ -36,7 +36,7 @@
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>
 			<@ww.checkbox label="Exibir comentários" id="exibirComentarios" name="exibirComentarios" labelPosition="left"/>
 			<@ww.checkbox label="Agrupar perguntas por aspecto" id="agruparPorAspectos" name="agruparPorAspectos" labelPosition="left"/>
-			
+			<@ww.checkbox label="Desconsiderar auto avaliação" id="desconsiderarAutoAvaliacao" name="desconsiderarAutoAvaliacao" labelPosition="left"/>
 		</div>
 		
 		<@ww.hidden name="avaliacaoDesempenho.id"  />

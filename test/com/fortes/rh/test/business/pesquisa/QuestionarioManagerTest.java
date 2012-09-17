@@ -559,12 +559,13 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		resultadoQuestionarios.add(resultadoAvaliacaoDesempenho);
 		
 		Long avaliadoId = 1L;
+		boolean desconsiderarAutoAvaliacao = false;
 		
-		colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING).will(returnValue(new Double(2)));
+		colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Double(2)));
 		colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
-		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1);
+		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);
 		assertEquals(2, resultados.size());
     }
     
@@ -625,13 +626,15 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	
     	Collection<ColaboradorResposta> colaboradorRespostas = Arrays.asList(colaboradorResposta1, colaboradorResposta2, colaboradorResposta3);
     	Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>(); 
-    	Long avaliadoId = colaborador.getId();
     	
-    	colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING).will(returnValue(new Double(2)));
+    	Long avaliadoId = colaborador.getId();
+    	boolean desconsiderarAutoAvaliacao = false;
+    	
+    	colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Double(2)));
     	colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
     	
-    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1);
+    	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);
     	assertEquals(4, resultados.size());
     }
 

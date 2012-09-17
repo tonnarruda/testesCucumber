@@ -83,6 +83,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean exibirRespostas;
 	private boolean exibirComentarios;
 	private boolean agruparPorAspectos;
+	private boolean desconsiderarAutoAvaliacao;
 	private Long[] participanteIds;
 	
 	
@@ -231,7 +232,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			
 			
-			resultados = avaliacaoDesempenhoManager.montaResultado(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho, agruparPorAspectos);
+			resultados = avaliacaoDesempenhoManager.montaResultado(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho, agruparPorAspectos, desconsiderarAutoAvaliacao);
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Resultado por Critérios\nPeríodo: " + avaliacaoDesempenho.getPeriodoFormatado());
 			
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
@@ -719,5 +720,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAvaliacoesCheckList() {
 		return avaliacoesCheckList;
+	}
+
+	
+	public void setDesconsiderarAutoAvaliacao(boolean desconsiderarAutoAvaliacao)
+	{
+		this.desconsiderarAutoAvaliacao = desconsiderarAutoAvaliacao;
 	}
 }

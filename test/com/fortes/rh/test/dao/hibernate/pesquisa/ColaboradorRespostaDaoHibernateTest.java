@@ -677,9 +677,14 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorQuestionario.setColaborador(avaliado);
 		colaboradorQuestionario.setAvaliador(avaliador);
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
-
 		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
 
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(avaliado);
+		colaboradorQuestionario2.setAvaliador(avaliado);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
 		Aspecto aspecto = AspectoFactory.getEntity();
 		aspecto = aspectoDao.save(aspecto);
 
@@ -716,8 +721,20 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta2.setResposta(resposta2);
 		colaboradorResposta2 = colaboradorRespostaDao.save(colaboradorResposta2);
 		
-		Collection<ColaboradorResposta> respostas = colaboradorRespostaDao.findByAvaliadoAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId());
-		assertEquals(2, respostas.size());
+		ColaboradorResposta colaboradorResposta3 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta3.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta3.setColaboradorQuestionario(colaboradorQuestionario2);
+		colaboradorResposta3.setPergunta(pergunta2);
+		colaboradorResposta3.setResposta(resposta2);
+		colaboradorResposta3 = colaboradorRespostaDao.save(colaboradorResposta3);
+		
+		boolean desconsiderarAutoAvaliacao = false;
+
+		Collection<ColaboradorResposta> respostas1 = colaboradorRespostaDao.findByAvaliadoAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao);
+		Collection<ColaboradorResposta> respostas2 = colaboradorRespostaDao.findByAvaliadoAndAvaliacaoDesempenho(avaliado.getId(), avaliacaoDesempenho.getId(), !desconsiderarAutoAvaliacao);
+
+		assertEquals("Com auto avaliação", 3, respostas1.size());
+		assertEquals("Sem auto avaliação", 2, respostas2.size());
 	}
 
 	public GenericDao<ColaboradorResposta> getGenericDao()

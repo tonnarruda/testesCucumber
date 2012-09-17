@@ -626,7 +626,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     }
     public void testFindByAvaliadoAndAvaliacaoDesempenho()
 	{
+    	boolean desconsiderarAutoAvaliacao = false;
+    	
     	colaboradorRespostaDao.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").will(returnValue(new ArrayList<ColaboradorResposta>()));
-    	assertNotNull(colaboradorRespostaManager.findByAvaliadoAndAvaliacaoDesempenho(1L, 10L));
+    	assertNotNull(colaboradorRespostaManager.findByAvaliadoAndAvaliacaoDesempenho(1L, 10L, desconsiderarAutoAvaliacao));
 	}
 }

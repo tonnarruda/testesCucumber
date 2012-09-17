@@ -844,11 +844,16 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		avaliado.setNome("Avaliado");
 		colaboradorDao.save(avaliado);
 		
+		Colaborador avaliador = ColaboradorFactory.getEntity();
+		avaliador.setNome("Avaliador");
+		colaboradorDao.save(avaliador);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
 		colaboradorQuestionario.setPerformance(25.0);
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
@@ -856,12 +861,24 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario2.setColaborador(avaliado);
+		colaboradorQuestionario2.setAvaliador(avaliador);
 		colaboradorQuestionario2.setPerformance(35.0);
 		colaboradorQuestionario2.setRespondida(true);
 		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		assertEquals(30.0, colaboradorQuestionarioDao.getMediaPeformance(avaliado.getId(), avaliacaoDesempenho.getId()));
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(avaliado);
+		colaboradorQuestionario3.setAvaliador(avaliado);
+		colaboradorQuestionario3.setPerformance(60.0);
+		colaboradorQuestionario3.setRespondida(true);
+		colaboradorQuestionario3.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		boolean desconsiderarAutoAvaliacao = false;
+		
+		assertEquals("Com auto avaliação", 40.0, colaboradorQuestionarioDao.getMediaPeformance(avaliado.getId(), avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao));
+		assertEquals("Sem auto avaliação", 30.0, colaboradorQuestionarioDao.getMediaPeformance(avaliado.getId(), avaliacaoDesempenho.getId(), !desconsiderarAutoAvaliacao));
 	}
 	
 	public void testGetQtdavaliadores()
