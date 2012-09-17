@@ -89,7 +89,8 @@
 				$("#splash").dialog("open");
 			}
 			
-			<@authz.authorize ifAllGranted="ROLE_UTI_HISTORICO_VERSAO">
+			<#assign superAdmin><@authz.authentication operation="superAdmin"/></#assign>
+			<#if superAdmin == "true">
 				UtilDWR.findUltimaVersaoPortal(function(retorno) {
 					var resposta = jQuery.parseJSON(retorno);
 					if (resposta.sucesso == '1')
@@ -98,7 +99,7 @@
 						$('#atualizacao').show();
 					}
 				});
-			</@authz.authorize>
+			</#if>
 		});
 		
 		function marcarMensagemLida(usuarioMensagemId)

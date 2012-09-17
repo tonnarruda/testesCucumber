@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CollectionUtil;
 

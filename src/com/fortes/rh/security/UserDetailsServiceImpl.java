@@ -31,7 +31,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
 			usuarioManager.setUltimoLogin(user.getId());
 			
-			return new UserDetailsImpl(user.getId(), user.getNome(), login, StringUtil.decodeString(user.getSenha()), user.getUltimoLogin(), null ,user.isAcessoSistema(),true,true,true,null,null, user.getColaborador());
+			return new UserDetailsImpl(user.getId(), user.getNome(), login, StringUtil.decodeString(user.getSenha()), user.isSuperAdmin(), user.getUltimoLogin(), 
+										null, user.isAcessoSistema(), true, true, true, null, null, user.getColaborador());
 		}
 		else
 			throw new UsernameNotFoundException("Usuário '" + login + "' não cadastrado...");

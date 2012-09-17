@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +60,6 @@ import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorTurmaManagerTest extends MockObjectTestCase
@@ -390,7 +388,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		}
 	}
 
-	public void testFiltrarColaboradoresFiltrarPorArea() throws Exception
+	public void testFiltrarColaboradores() throws Exception
 	{
 		int page = 1;
 		int pagingSize = 10;
@@ -402,8 +400,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Turma turma = TurmaFactory.getEntity(1L);
 		Long empresaId = 1L;
 
-		int filtrarPor = 1;
-
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaboradores.add(colaborador);
@@ -411,55 +407,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colaboradores));
 		
 		
-		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
-	}
-
-	public void testFiltrarColaboradoresFiltrarPorCargo() throws Exception
-	{
-		int page = 1;
-		int pagingSize = 10;
-		String[] areasCheck = null;
-		String[] cargosCheck = new String[] { "1" };
-		String[] gruposCheck = null;
-		String[] colaboradoresCursosCheck = new String[] { "" };
-		Turma turma = TurmaFactory.getEntity(1L);
-		Long empresaId = 1L;
-
-		int filtrarPor = 3;
-
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaboradores.add(colaborador);
-
-		historicoColaboradorManager.expects(once()).method("findByCargosIds").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, ANYTHING, eq(empresaId
-				)}).will(
-				returnValue(colaboradores));
-		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, null, gruposCheck,
-				colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId).size());
-	}
-
-	public void testFiltrarColaboradoresFiltrar() throws Exception
-	{
-		int page = 1;
-		int pagingSize = 10;
-		String[] areasCheck = null;
-		String[] cargosCheck = null;
-		String[] gruposCheck = null;
-		String[] colaboradoresCursosCheck = new String[] { "1" };
-		Long empresaId = 1L;
-
-		Curso curso = CursoFactory.getEntity(1L);
-		Turma turma = TurmaFactory.getEntity(1L);
-		turma.setCurso(curso);
-
-		int filtrarPor = 4;
-
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-
-		colaboradorTurmaDao.expects(once()).method("findByColaboradorAndTurma").with(new Constraint[]{eq(page), eq(pagingSize), ANYTHING, eq(turma.getCurso().getId()), ANYTHING}).will(
-				returnValue(colaboradorTurmas));
-		assertEquals(colaboradorTurmas, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, null,
-				gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, null, null, null, empresaId));
+		assertEquals(1, colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, turma, null, null, null, empresaId).size());
 	}
 
 	public void testFiltroRelatorioMatriz()

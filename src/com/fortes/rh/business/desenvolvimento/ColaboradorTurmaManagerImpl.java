@@ -73,26 +73,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 
-	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, int filtrarPor, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
+	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{
 		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
-		switch (filtrarPor)
-		{
-			case 1: // Áreas organizacionais
-				colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true);
-				retorno = geraColaboradorTurma(colaboradores, turma);
-				break;
-				//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe
-			case 3: // Cargos
-				colaboradores = historicoColaboradorManager.findByCargosIds(page, pagingSize, LongUtil.arrayStringToArrayLong(cargosCheck), colaborador, empresaId);
-				retorno = geraColaboradorTurma(colaboradores, turma);
-				break;
-			case 4:
-				retorno = getDao().findByColaboradorAndTurma(page, pagingSize, LongUtil.arrayStringToArrayLong(colaboradoresCursosCheck), turma.getCurso().getId(), colaborador);
-				break;
-		}
+		colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true);
+		if (colaboradores != null && colaboradores.size() > 0)
+			retorno = geraColaboradorTurma(colaboradores, turma);
 
 		return retorno;
 	}

@@ -228,6 +228,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private Map<String, Integer> pesos;
 
 	private boolean mostraOpcaoSolicitacaoPessoal;
+	
+	private int filtrarPor;
 
 	public String list() throws Exception
 	{
@@ -820,7 +822,16 @@ public class CandidatoListAction extends MyActionSupportList
 		avaliacaoCandidatos = new ArrayList<AvaliacaoCandidatosRelatorio>();
 		try
 		{
-			avaliacaoCandidatos = candidatoManager.findRelatorioAvaliacaoCandidatos(dataCadIni, dataCadFim, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), statusSolicitacao);
+			Long[] areasIds = null;
+			Long[] cargosIds = null;
+			
+			if (filtrarPor == 1)
+				areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
+			
+			if (filtrarPor == 2)
+				cargosIds = LongUtil.arrayStringToArrayLong(cargosCheck);
+			
+			avaliacaoCandidatos = candidatoManager.findRelatorioAvaliacaoCandidatos(dataCadIni, dataCadFim, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), areasIds, cargosIds, statusSolicitacao);
 			parametros = RelatorioUtil.getParametrosRelatorio("Avaliações dos Candidatos", getEmpresaSistema(), getPeriodoFormatado());
 			return SUCCESS;
 
@@ -1772,5 +1783,13 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setOrigemList(String origemList)
 	{
 		this.origemList = origemList;
+	}
+
+	public int getFiltrarPor() {
+		return filtrarPor;
+	}
+
+	public void setFiltrarPor(int filtrarPor) {
+		this.filtrarPor = filtrarPor;
 	}
 }

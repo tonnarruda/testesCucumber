@@ -1786,6 +1786,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoJose.setColaborador(jose);
 		historicoJose.setAreaOrganizacional(areaOrganizacional);
 		historicoJose.setFaixaSalarial(faixaSalarial);
+		historicoJose.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoJose);
 
 		HistoricoColaborador historicoJoao = HistoricoColaboradorFactory.getEntity();
@@ -1793,14 +1794,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoJoao.setColaborador(joao);
 		historicoJoao.setAreaOrganizacional(areaOrganizacional);
 		historicoJoao.setFaixaSalarial(faixaSalarial);
+		historicoJoao.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoJoao);
 
 		Colaborador colaboradorBusca = new Colaborador();
 		Date dataAdmissaoIni = DateUtil.criarDataMesAno(6, 6, 2011);
 		Date dataAdmissaoFim = DateUtil.criarDataMesAno(8, 8, 2011);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(Arrays.asList(areaOrganizacional.getId()), Arrays.asList(estabelecimento.getId()),null, null, colaboradorBusca, dataAdmissaoIni,
-				dataAdmissaoFim, empresa.getId(), false);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(Arrays.asList(areaOrganizacional.getId()), Arrays.asList(estabelecimento.getId()),null, null, colaboradorBusca, dataAdmissaoIni, dataAdmissaoFim, empresa.getId(), false);
 		assertEquals(1, colaboradores.size());
 		assertEquals(joao, colaboradores.toArray()[0]);
 	}

@@ -17,6 +17,7 @@ public class UserDetailsImpl implements UserDetails
 	private String username;
 	private String password;
 	private Date ultimoLogin;
+	private boolean superAdmin;
 
 	private GrantedAuthority[] authorities;
 	private boolean accountNonExpired;
@@ -27,15 +28,15 @@ public class UserDetailsImpl implements UserDetails
 	private Empresa empresa;
 	private Colaborador colaborador;
 
-	public UserDetailsImpl(Long id, String nome, String username, String password, Date ultimoLogin,
-			GrantedAuthority[] authorities, boolean accountNonExpired,
-			boolean accountNonLocked, boolean credentialsNonExpired,
-			boolean enabled, String menuFormatado, Empresa empresa, Colaborador colaborador)
+	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
+			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
+			String menuFormatado, Empresa empresa, Colaborador colaborador)
 	{
 		this.id = id;
 		this.nome = nome;
 		this.username = username;
 		this.password = password;
+		this.superAdmin = superAdmin;
 		this.ultimoLogin = ultimoLogin;
 		this.authorities = authorities;
 		this.accountNonExpired = accountNonExpired;
@@ -161,6 +162,14 @@ public class UserDetailsImpl implements UserDetails
 	public Colaborador getColaborador()
 	{
 		return colaborador;
+	}
+
+	public boolean getSuperAdmin() {
+		return superAdmin;
+	}
+
+	public void setSuperAdmin(boolean superAdmin) {
+		this.superAdmin = superAdmin;
 	}
 
 }

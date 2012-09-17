@@ -52,11 +52,6 @@
 		
 		function enviaForm()
 		{
-			if(document.getElementById('divAreaOrganizacionals').style.display != 'none')
-				document.getElementById('filtrarPor').value = 1;
-			else if(document.getElementById('divColaboradors').style.display != 'none')
-				document.getElementById('filtrarPor').value = 4;
-
 			validaFormularioEPeriodo('form', false, new Array('admIni', 'admFim'));
 		}
 
@@ -105,26 +100,6 @@
 													});
 			else 
 				document.formColab.submit();
-		}
-		
-		function filtrarOpt()
-		{
-			value =	$('#optFiltro').val();
-			if(value == "1")
-			{
-				$("#divColaboradors").show();
-				$("#divAreaOrganizacionals").hide();
-			}
-			else if(value == "2")
-			{
-				$("#divColaboradors").hide();
-				$("#divAreaOrganizacionals").show();
-			}
-			else if(value == "3")
-			{
-				$("#divColaboradors").hide();
-				$("#divAreaOrganizacionals").hide();
-			}
 		}
 		
 		$(document).ready(function()
@@ -176,18 +151,7 @@
 			
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
 
-			<@ww.select id="optFiltro" label="Filtrar Por" name="filtro"
-				list=r"#{'2':'Áreas Organizacionais','1':'Colaboradores pré-inscritos no curso'}" onchange="filtrarOpt();" />
-
-			<#--filtrarPor do colaboradoresCursosCheck tem que ser 4 ta amarrado no codigo pois dele depende um update no ColaboradorTurmaEdit e o hidden no formColab-->
-			<br>
-			<span id="divColaboradors" style="display:none">
-				<@frt.checkListBox name="colaboradoresCursosCheck" label="Colaboradores pré-inscritos no curso" list="colaboradoresCursosCheckList" />
-			</span>
-
-			<span id="divAreaOrganizacionals" style="display:''">
-				<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
-			</span>
+			<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
 
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
@@ -213,7 +177,6 @@
 				<@display.column property="colaborador.areaOrganizacional.descricao" title="Área" style="width: 300px;"/>
 			</@display.table>
 		
-
 			<@ww.hidden name="turma.id" />
 			<@ww.hidden name="turma.curso.id" />
 			<@ww.hidden name="filtrarPor" />
@@ -228,9 +191,5 @@
 		</#if>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>
-
-	<script type='text/javascript'>
-		filtrarOpt();
-	</script>
 </body>
 </html>

@@ -93,7 +93,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			whereAreaIds = "and ao.id in (:ids) ";
 			
 		
-		if(whereEstabelecimentosIds != null && !whereEstabelecimentosIds.isEmpty())
+		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			whereEstabelecimentosIds = "and hc.estabelecimento.id in (:estabelecimentosIds) ";
 
 		if(colaborador != null)
@@ -130,6 +130,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		hql.append("and hc.status = :status ");
 		hql.append(whereAreaIds);
+		hql.append(whereEstabelecimentosIds);
 		hql.append(whereNome + whereMatricula + whereCPF );
 		hql.append("and hc.data = (select max(hc2.data) ");
 		hql.append("from HistoricoColaborador as hc2 ");
@@ -204,8 +205,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Long> param2 = new HashSet<Long>();
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 		{
-			for (int i = 0; i < ids.length; i++)
-				param2.add(estabelecimentosIds[i]);			
+			for (int i = 0; i < estabelecimentosIds.length; i++)
+				param2.add(estabelecimentosIds[i]);
 		}
 		
 		

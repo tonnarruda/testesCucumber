@@ -171,8 +171,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		
 		populaEmpresas();
 		
-//		questionario = turma.getAvaliacaoTurma().getQuestionario();
-		
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		estabelecimentosCheckList = CheckListBoxUtil.populaCheckListBox(estabelecimentos, "getId", "getNome");
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
@@ -180,12 +178,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null);
 		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-
-		//31/01/2011 - Francisco, retirei acho que os clientes não tão usando, retirar depois de 3 meses, hehehe 
-//		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(empresaId, "nome"), "getId", "getNome");
-//		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-//		gruposCheckList = populaCheckListBox(grupoOcupacionalManager.findAllSelect(empresaId), "getId", "getNome");
-//		gruposCheckList = CheckListBoxUtil.marcaCheckListBox(gruposCheckList, gruposCheck);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresByCursoTurmaIsNull(turma.getCurso().getId());
 		colaboradoresCursosCheckList = populaCheckListBox(colaboradorTurmaManager.getListaColaboradores(colaboradorTurmas), "getId", "getNome");
@@ -204,7 +196,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		totalSize = 10000;
-		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, filtrarPor, turma, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
+		colaboradorTurmas = colaboradorTurmaManager.filtrarColaboradores(page, pagingSize, areasCheck, cargosCheck, estabelecimentosCheck, gruposCheck, colaboradoresCursosCheck, turma, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId);
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 
 		return prepareInsert();

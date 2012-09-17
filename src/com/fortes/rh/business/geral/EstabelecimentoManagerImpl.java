@@ -70,7 +70,7 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	public Collection<Estabelecimento> findAllSelect(Long[] empresaIds)
 	{
 		if(empresaIds == null || empresaIds.length == 0)
-			return new ArrayList<Estabelecimento>();
+			return getDao().findAll();
 		else
 			return getDao().findAllSelect(empresaIds);
 	}
