@@ -658,7 +658,6 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		conhecimentoDao.save(conhecimento);
 
 		assertEquals(1, cursoDao.findByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO).size());
-
 	}	
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
