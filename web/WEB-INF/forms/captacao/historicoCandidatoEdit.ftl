@@ -21,11 +21,11 @@
 <#assign validarCampos="enviaForm()"/>
 
 <#if historicoCandidato?exists>
-		<#if historicoCandidato.data?exists>
-			<#assign data = historicoCandidato.data/>
-		<#else>
-			<#assign data = ""/>
-		</#if>
+	<#if historicoCandidato.data?exists>
+		<#assign data = historicoCandidato.dataFormatada/>
+	<#else>
+		<#assign data = ""/>
+	</#if>
 </#if>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
@@ -171,6 +171,7 @@
 
 		<@ww.hidden name="candidatoSol.id"/>
 		<@ww.hidden name="solicitacao.id"/>
+		<@ww.hidden name="solicitacao.data"/>
 		<@ww.hidden name="historicoCandidato.id"/>
 	</@ww.form>
 

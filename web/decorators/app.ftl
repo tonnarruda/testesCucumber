@@ -43,7 +43,7 @@
 			<span class="nomeUsuario"><@authz.authentication operation="nome"/>&nbsp;</span>
 			<span class="nomeEmpresa">(<@authz.authentication operation="empresaNome"/>)&nbsp;&nbsp;</span>
 			<br clear="all"/>
-			<span class="nomeEmpresa"><@authz.authentication operation="ultimoLoginFormatado"/>&nbsp;&nbsp;-&nbsp;&nbsp; Expira em <span class="expira">--:--</span> &nbsp;&nbsp;</span>
+			<span class="nomeEmpresa"><@authz.authentication operation="ultimoLoginFormatado"/>&nbsp;&nbsp;-&nbsp;&nbsp; Expira em <span class="expira">00:00</span> &nbsp;&nbsp;</span>
 		</div>
 			
 		<div id="userDiv1">

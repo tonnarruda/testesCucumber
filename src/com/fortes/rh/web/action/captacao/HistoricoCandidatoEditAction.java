@@ -9,6 +9,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
@@ -117,26 +118,54 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 
 	public String insert() throws Exception
 	{
-		historicoCandidato.setCandidatoSolicitacao(candidatoSol);
-		historicoCandidatoManager.save(historicoCandidato);
+		try {
+			if (historicoCandidato.getData().before(solicitacao.getData()))
+				throw new FortesException("A data do histórico do candidato não pode anteceder a data da solicitação à que se refere.");
+			
+			historicoCandidato.setCandidatoSolicitacao(candidatoSol);
+			historicoCandidatoManager.save(historicoCandidato);
 
-		candidatoManager.setBlackList(historicoCandidato, candidatoSol.getId(), blacklist);
+			candidatoManager.setBlackList(historicoCandidato, candidatoSol.getId(), blacklist);
+		
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+
+			addActionError(e.getMessage());
+			prepareInsert();
+			
+			return Action.INPUT;
+		}
 
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		historicoCandidato.setCandidatoSolicitacao(candidatoSol);
-		historicoCandidatoManager.update(historicoCandidato);
+		try {
+			if (historicoCandidato.getData().before(solicitacao.getData()))
+				throw new FortesException("A data do histórico do candidato não pode anteceder a data da solicitação à que se refere.");
+			
+			historicoCandidato.setCandidatoSolicitacao(candidatoSol);
+			historicoCandidatoManager.update(historicoCandidato);
+	
+			candidatoSol = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSol.getId());
+	
+			if (blacklist)
+				candidatoManager.updateBlackList(historicoCandidato.getObservacao(), blacklist, candidatoSol.getCandidato().getId());
+			else if(candidatoSol.getCandidato().isBlackList())
+				candidatoManager.updateBlackList("", blacklist, candidatoSol.getCandidato().getId());
 
-		candidatoSol = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSol.getId());
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
 
-		if (blacklist)
-			candidatoManager.updateBlackList(historicoCandidato.getObservacao(), blacklist, candidatoSol.getCandidato().getId());
-		else if(candidatoSol.getCandidato().isBlackList())
-			candidatoManager.updateBlackList("", blacklist, candidatoSol.getCandidato().getId());
-
+			addActionError(e.getMessage());
+			prepareUpdate();
+			
+			return Action.INPUT;
+		}
+			
 		return Action.SUCCESS;
 	}
 

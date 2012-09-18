@@ -46,6 +46,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("c.contratado"), "candidatoContratado");
         p.add(Projections.property("c.blackList"), "projectionCandidatoBlackList");
         p.add(Projections.property("s.id"), "solicitacaoId");
+        p.add(Projections.property("s.data"), "solicitacaoData");
         p.add(Projections.property("s.quantidade"), "solicitacaoQtd");
         p.add(Projections.property("u.id"), "solicitanteId");
         p.add(Projections.property("u.nome"), "solicitanteNome");

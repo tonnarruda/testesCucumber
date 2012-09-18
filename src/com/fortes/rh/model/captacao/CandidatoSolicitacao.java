@@ -251,6 +251,14 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		solicitacao.setId(solicitacaoId);
 	}
+	
+	public void setSolicitacaoData(Date solicitacaoData)
+	{
+		if (solicitacao == null)
+			solicitacao = new Solicitacao();
+		
+		solicitacao.setData(solicitacaoData);
+	}
 
 	public void setCandidatoPessoalCpf(String cpf)
 	{
