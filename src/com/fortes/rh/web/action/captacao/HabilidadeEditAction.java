@@ -39,7 +39,6 @@ public class HabilidadeEditAction extends MyActionSupportList
 	{
 		if(habilidade != null && habilidade.getId() != null)
 			habilidade = (Habilidade) habilidadeManager.findByIdProjection(habilidade.getId());
-//		nao esta trazendo area nem curso(falta atitude)
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		cursosCheckList = cursoManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
