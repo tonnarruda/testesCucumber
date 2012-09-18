@@ -16,6 +16,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -28,6 +29,8 @@ public class Conhecimento extends AbstractModel implements Serializable
 	private String nome;
 	@ManyToMany(fetch=FetchType.EAGER)
 	private Collection<AreaOrganizacional> areaOrganizacionals;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Collection<Curso> cursos;
 	@ManyToOne
 	private Empresa empresa;
 	@Lob
@@ -103,11 +106,23 @@ public class Conhecimento extends AbstractModel implements Serializable
 		 return string.toString();
 	}
 
-	public String getObservacao() {
+	public String getObservacao()
+	{
 		return observacao;
 	}
 
-	public void setObservacao(String observacao) {
+	public void setObservacao(String observacao)
+	{
 		this.observacao = observacao;
+	}
+
+	public Collection<Curso> getCursos()
+	{
+		return cursos;
+	}
+
+	public void setCursos(Collection<Curso> cursos)
+	{
+		this.cursos = cursos;
 	}
 }

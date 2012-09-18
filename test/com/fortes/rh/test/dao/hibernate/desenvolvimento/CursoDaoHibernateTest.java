@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
@@ -13,6 +14,7 @@ import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -23,6 +25,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
@@ -39,6 +42,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	private TurmaDao turmaDao;
 	private ColaboradorDao colaboradorDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
+	private ConhecimentoDao conhecimentoDao;
 
 	public Curso getEntity()
 	{
@@ -634,20 +638,50 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(1, cursos.size());
 	}
 	
-	
+	public void testFindByConhecimento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Curso curso1 = CursoFactory.getEntity();
+		cursoDao.save(curso1);
+
+		Curso curso2 = CursoFactory.getEntity();
+		cursoDao.save(curso2);
+
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso1);
+
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setCursos(cursos);
+		conhecimentoDao.save(conhecimento);
+
+		assertEquals(1, cursoDao.findByCompetencia(conhecimento.getId(), null).size());
+
+	}	
+
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;
 	}
+
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao)
 	{
 		this.certificacaoDao = certificacaoDao;
 	}
+
 	public void setAvaliacaoCursoDao(AvaliacaoCursoDao avaliacaoCursoDao)
 	{
 		this.avaliacaoCursoDao = avaliacaoCursoDao;
 	}
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) 
+	{
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setConhecimentoDao(ConhecimentoDao conhecimentoDao)
+	{
+		this.conhecimentoDao = conhecimentoDao;
 	}
 }

@@ -12,4 +12,5 @@ public interface HabilidadeDao extends GenericDao<Habilidade>
 	public Collection<Habilidade> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId);
 	public Collection<Habilidade> findSincronizarHabilidades(Long empresaOrigemId);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
+	public Habilidade findByIdProjection(Long habilidadeId);
 }

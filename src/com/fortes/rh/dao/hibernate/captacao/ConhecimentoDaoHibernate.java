@@ -106,18 +106,7 @@ public class ConhecimentoDaoHibernate extends GenericDaoHibernate<Conhecimento> 
 
 	public Conhecimento findByIdProjection(Long conhecimentoId)
 	{
-		Criteria criteria = getSession().createCriteria(Conhecimento.class, "c");
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.observacao"), "observacao");
-		criteria.setProjection(p);
-		
-		criteria.add(Expression.eq("c.id", conhecimentoId));
-		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Conhecimento.class));
+		Criteria criteria = CHAHelperDaoHibernate.montafindByIdProjection(conhecimentoId, getSession(), getEntityClass());
 		
 		return (Conhecimento) criteria.uniqueResult();
 	}

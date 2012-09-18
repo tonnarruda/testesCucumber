@@ -19,6 +19,7 @@
 
 	<@ww.textfield label="Nome" name="habilidade.nome" id="nome" required="true" cssClass="inputNome" maxLength="100" cssStyle="width:500px;"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList"/>
+	<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos/Treinamentos Sugeridos" list="cursosCheckList"/>
 	<@ww.textarea label="Observação" name="habilidade.observacao" id="observacao" cssStyle="width:500px;"/>
 	<@ww.hidden label="Id" name="habilidade.id" />
 

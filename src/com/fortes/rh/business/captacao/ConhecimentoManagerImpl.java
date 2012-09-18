@@ -8,12 +8,15 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
@@ -95,9 +98,13 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 
 	public Conhecimento findByIdProjection(Long conhecimentoId)
 	{
+		CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 		Conhecimento conhecimento = getDao().findByIdProjection(conhecimentoId);
-		if(conhecimento != null)
+		
+		if(conhecimento != null) {
 			conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.findByConhecimento(conhecimentoId));
+			conhecimento.setCursos(cursoManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
+		}
 
 		return conhecimento;
 	}
@@ -126,40 +133,33 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 			Long conhecimentoOrigemId = conhecimento.getId();
 			clonar(conhecimento, empresaDestinoId);
 			conhecimentoIds.put(conhecimentoOrigemId, conhecimento.getId());
-			
 			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByConhecimento(conhecimentoOrigemId);
 			popularAreasComIds(areaIds, areas);
-			
 			conhecimento.setAreaOrganizacionals(areas);
 			update(conhecimento);
 		}
 	}
 
-	private void popularAreasComIds(Map<Long, Long> areaIds, Collection<AreaOrganizacional> areas) {
-		
-		for (AreaOrganizacional areaOrganizacional : areas)
-		{
-			Long id = areaIds.get( areaOrganizacional.getId() );
-			
+	private void popularAreasComIds(Map<Long, Long> areaIds, Collection<AreaOrganizacional> areas)
+	{
+		for (AreaOrganizacional areaOrganizacional : areas) {
+			Long id = areaIds.get(areaOrganizacional.getId());
 			if (id == null)
 				continue;
-			
 			areaOrganizacional.setId(id);
 		}
 	}
 
-	private void clonar(Conhecimento conhecimento, Long empresaDestinoId) {
-		
+	private void clonar(Conhecimento conhecimento, Long empresaDestinoId)
+	{
 		conhecimento.setId(null);
 		conhecimento.setAreaOrganizacionals(null);
 		conhecimento.setEmpresaId(empresaDestinoId);
-		
 		getDao().save(conhecimento);
 	}
 
-	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception
+	{
 		getDao().deleteByAreaOrganizacional(areaIds);
-		
 	}
-	
 }
