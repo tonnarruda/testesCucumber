@@ -354,7 +354,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	}
 	
 	private void ajustaSolicitacao() {
-		if(solicitacao.getId() == null)
+		if(solicitacao == null || solicitacao.getId() == null)
 			colaboradorQuestionario.setSolicitacao(null);
 		else
 			colaboradorQuestionario.setSolicitacao(solicitacao);
