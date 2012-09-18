@@ -17,6 +17,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
@@ -42,6 +45,12 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
     private String codigoTru;
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="cursos")
 	private Collection<Certificacao> certificacaos;
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "cursos")
+	private Collection<Conhecimento> conhecimentos;
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "cursos")
+	private Collection<Habilidade> habilidades;
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "cursos")
+	private Collection<Atitude> atitudes;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="curso")
 	private Collection<Turma> turmas;
@@ -74,6 +83,15 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 			this.empresa = new Empresa();
 
 		empresa.setId(empresaId);
+	}
+	
+	public void setCargaHorariaMinutos(String cargaHorariaMinutos) 
+	{
+		if (!cargaHorariaMinutos.equals("    :  ") && !cargaHorariaMinutos.equals("0000:00")) {
+			Integer hora = Integer.parseInt(cargaHorariaMinutos.substring(0, (cargaHorariaMinutos.length() - 3)));
+			Integer minutos = Integer.parseInt(cargaHorariaMinutos.substring(cargaHorariaMinutos.length() - 2, cargaHorariaMinutos.length()));
+			setCargaHoraria(hora * 60 + minutos);
+		}
 	}
 
 	public Object clone()
@@ -191,20 +209,43 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		return formataCargaHorariaMinutos(cargaHoraria, "");		
 	}
 
-	public void setCargaHorariaMinutos(String cargaHorariaMinutos) 
+	public String getCodigoTru()
 	{
-		if(!cargaHorariaMinutos.equals("    :  ") && !cargaHorariaMinutos.equals("0000:00"))
-		{
-			Integer hora = Integer.parseInt(cargaHorariaMinutos.substring(0, (cargaHorariaMinutos.length()-3)));
-			Integer minutos = Integer.parseInt(cargaHorariaMinutos.substring(cargaHorariaMinutos.length()-2, cargaHorariaMinutos.length()));
-			
-			setCargaHoraria(hora*60 + minutos);
-		}
-	}
-	public String getCodigoTru() {
 		return codigoTru;
 	}
-	public void setCodigoTru(String codigoTru) {
+
+	public void setCodigoTru(String codigoTru)
+	{
 		this.codigoTru = codigoTru;
+	}
+	
+	public Collection<Conhecimento> getConhecimentos()
+	{
+		return conhecimentos;
+	}
+	
+	public void setConhecimentos(Collection<Conhecimento> conhecimentos)
+	{
+		this.conhecimentos = conhecimentos;
+	}
+	
+	public Collection<Habilidade> getHabilidades()
+	{
+		return habilidades;
+	}
+	
+	public void setHabilidades(Collection<Habilidade> habilidades)
+	{
+		this.habilidades = habilidades;
+	}
+	
+	public Collection<Atitude> getAtitudes()
+	{
+		return atitudes;
+	}
+	
+	public void setAtitudes(Collection<Atitude> atitudes)
+	{
+		this.atitudes = atitudes;
 	}
 }

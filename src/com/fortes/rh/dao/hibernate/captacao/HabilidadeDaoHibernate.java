@@ -15,6 +15,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
+import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 
 public class HabilidadeDaoHibernate extends GenericDaoHibernate<Habilidade> implements HabilidadeDao
@@ -100,5 +101,12 @@ public class HabilidadeDaoHibernate extends GenericDaoHibernate<Habilidade> impl
 			JDBCConnection.executeQuery(sql);
 		}
 		
+	}
+
+	public Habilidade findByIdProjection(Long habilidadeId)
+	{
+		Criteria criteria = CHAHelperDaoHibernate.montafindByIdProjection(habilidadeId, getSession(), getEntityClass());
+		
+		return (Habilidade) criteria.uniqueResult();
 	}
 }

@@ -21,6 +21,7 @@ import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 
 @SuppressWarnings("unchecked")
 public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements CursoDao
@@ -294,5 +295,27 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 		
 		return criteria.list();
+	}
+
+	public Collection<Curso> findByCompetencia(Long competenciaId, Character tipoCompetencia)
+	{
+		StringBuilder hql = new StringBuilder("select new Curso(curso.id, curso.nome, curso.cargaHoraria, curso.conteudoProgramatico, curso.criterioAvaliacao, curso.percentualMinimoFrequencia ) ");
+		
+		if (tipoCompetencia == TipoCompetencia.CONHECIMENTO)
+			hql.append("from Conhecimento comp ");
+		else if (tipoCompetencia == TipoCompetencia.HABILIDADE) 
+			hql.append("from Habilidade comp ");
+		else if (tipoCompetencia == TipoCompetencia.ATITUDE) 
+			hql.append("from Atitude comp ");
+		
+		hql.append("inner join comp.cursos curso ");
+		hql.append("where comp.id = :competenciaId ");
+
+		hql.append("order by curso.nome ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("competenciaId", competenciaId);
+
+		return query.list();
 	}
 }

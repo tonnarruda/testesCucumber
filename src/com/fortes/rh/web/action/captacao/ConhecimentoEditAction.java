@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -25,9 +26,12 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	private ConhecimentoManager conhecimentoManager = null;
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
 	private CompetenciaManager competenciaManager = null;
+	private CursoManager cursoManager;
 
 	private String[] areasCheck;
+	private Long[] cursosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 
 	//	POJOs
 	private Conhecimento conhecimento;
@@ -45,6 +49,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			conhecimento = conhecimentoManager.findByIdProjection(conhecimento.getId());
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		cursosCheckList = cursoManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -57,6 +62,8 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	{
 		prepare();
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, conhecimento.getAreaOrganizacionals(), "getId");
+		cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, conhecimento.getCursos(), "getId");
+		
 		return Action.SUCCESS;
 	}
 
@@ -70,8 +77,10 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		}
 		
 		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
+		conhecimento.setCursos(cursoManager.populaCursos(cursosCheck));
 		conhecimento.setEmpresa(getEmpresaSistema());
 		conhecimentoManager.save(conhecimento);
+		
 		return Action.SUCCESS;
 	}
 
@@ -85,6 +94,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		}
 
 		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
+		conhecimento.setCursos(cursoManager.populaCursos(cursosCheck));
 		conhecimento.setEmpresa(getEmpresaSistema());
 		conhecimentoManager.update(conhecimento);
 		return Action.SUCCESS;
@@ -169,7 +179,28 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		this.areasCheckList = areasCheckList;
 	}
 
-	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
+	public void setCompetenciaManager(CompetenciaManager competenciaManager)
+	{
 		this.competenciaManager = competenciaManager;
+	}
+
+	public Collection<CheckBox> getCursosCheckList()
+	{
+		return cursosCheckList;
+	}
+
+	public void setCursosCheckList(Collection<CheckBox> cursosCheckList)
+	{
+		this.cursosCheckList = cursosCheckList;
+	}
+
+	public void setCursoManager(CursoManager cursoManager)
+	{
+		this.cursoManager = cursoManager;
+	}
+
+	public void setCursosCheck(Long[] cursosCheck)
+	{
+		this.cursosCheck = cursosCheck;
 	}
 }

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -28,6 +29,8 @@ public class Habilidade extends AbstractModel implements Serializable
 	private String observacao;
 	@ManyToMany(fetch=FetchType.EAGER)
 	private Collection<AreaOrganizacional> areaOrganizacionals;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Collection<Curso> cursos; 
 	
 	public Habilidade()	{
 	}
@@ -70,15 +73,26 @@ public class Habilidade extends AbstractModel implements Serializable
 	{
 		if (this.empresa == null)
 			this.empresa = new Empresa();
-		
 		this.empresa.setId(empresaId);
 	}
-	
-	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals()
+	{
 		return areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals)
+	{
 		this.areaOrganizacionals = areaOrganizacionals;
+	}
+
+	public Collection<Curso> getCursos()
+	{
+		return cursos;
+	}
+
+	public void setCursos(Collection<Curso> cursos)
+	{
+		this.cursos = cursos;
 	}
 }

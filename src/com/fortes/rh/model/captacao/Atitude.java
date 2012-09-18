@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
@@ -19,25 +20,27 @@ import com.fortes.security.auditoria.ChaveDaAuditoria;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="atitude_sequence", allocationSize=1)
-public class Atitude extends AbstractModel implements Serializable
-{
-	@Column(length=100)
+public class Atitude extends AbstractModel implements Serializable {
+
+	@Column(length = 100)
 	private String nome;
 	@ManyToOne
 	private Empresa empresa;
 	@Lob
 	private String observacao;
-	@ManyToMany(fetch=FetchType.EAGER)
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<AreaOrganizacional> areaOrganizacionals;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Collection<Curso> cursos;
 
-	public Atitude()	{
-	}
+	public Atitude() {}
 
-	public Atitude(Long id, String nome)
-	{
+	public Atitude(Long id, String nome) {
 		this.setId(id);
 		this.nome = nome;
 	}
+
 	@ChaveDaAuditoria
 	public String getNome()
 	{
@@ -59,11 +62,13 @@ public class Atitude extends AbstractModel implements Serializable
 		this.empresa = empresa;
 	}
 
-	public String getObservacao() {
+	public String getObservacao()
+	{
 		return observacao;
 	}
 
-	public void setObservacao(String observacao) {
+	public void setObservacao(String observacao)
+	{
 		this.observacao = observacao;
 	}
 
@@ -71,15 +76,26 @@ public class Atitude extends AbstractModel implements Serializable
 	{
 		if (this.empresa == null)
 			this.empresa = new Empresa();
-		
 		this.empresa.setId(empresaId);
 	}
-	
-	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
+
+	public Collection<AreaOrganizacional> getAreaOrganizacionals()
+	{
 		return areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals) {
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals)
+	{
 		this.areaOrganizacionals = areaOrganizacionals;
+	}
+
+	public Collection<Curso> getCursos()
+	{
+		return cursos;
+	}
+
+	public void setCursos(Collection<Curso> cursos)
+	{
+		this.cursos = cursos;
 	}
 }

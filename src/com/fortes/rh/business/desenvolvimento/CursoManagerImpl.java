@@ -1,5 +1,6 @@
 package com.fortes.rh.business.desenvolvimento;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -16,19 +17,16 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
 {
 	private PlatformTransactionManager transactionManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private ColaboradorManager colaboradorManager;
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
 
 	public Curso findByIdProjection(Long cursoId)
 	{
@@ -146,33 +144,95 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
-		
-		if(avaliacaoCursoIds == null || avaliacaoCursoIds.length == 0)
+		if (avaliacaoCursoIds == null || avaliacaoCursoIds.length == 0)
 			avaliacaoCursoIds = null;
-		
-		try
-		{
+		try {
 			aproveitamentoAvaliacaoCursoManager.remove(curso.getId(), avaliacaoCursoIds);
-
 			CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 			curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoIds));
 			curso.setEmpresa(empresa);
 			update(curso);
-
 			transactionManager.commit(status);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			transactionManager.rollback(status);
 			throw e;
 		}
-
 	}
-	
+
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId)
 	{
 		return getDao().findByFiltro(page, pagingSize, curso, empresaId);
+	}
+
+	public Integer getCount(Curso curso, Long empresaId)
+	{
+		return getDao().getCount(curso, empresaId);
+	}
+
+	public Curso saveClone(Curso curso, Long empresaId)
+	{
+		curso.setId(null);
+		curso.setEmpresaId(empresaId);
+		return (Curso) getDao().save(curso);
+	}
+
+	public String somaCargaHoraria(Collection<Turma> turmas)
+	{
+		Integer totalCargaHoraria = 0;
+		for (Turma turma : turmas) {
+			totalCargaHoraria += (turma.getCurso().getCargaHoraria() == null ? 0 : turma.getCurso().getCargaHoraria());
+		}
+		return Curso.formataCargaHorariaMinutos(totalCargaHoraria, "");
+	}
+
+	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId)
+	{
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		try
+		{
+			Collection<Curso> cursos = findToList(new String[]{"id", "nome"},new String[]{"id", "nome"},new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"});
+			CollectionUtil<Curso> cu1 = new CollectionUtil<Curso>();
+			cursos = cu1.sortCollectionStringIgnoreCase(cursos, "nome");
+
+			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return checks;
+	}
+
+
+	public Collection<Curso> populaCursos(Long[] cursosCheckIds)
+	{
+		Collection<Curso> cursos = new ArrayList<Curso>();
+
+		if(cursosCheckIds != null && cursosCheckIds.length > 0)
+		{
+			Curso curso;
+			for (Long cursoId: cursosCheckIds)
+			{
+				curso = new Curso();
+				curso.setId(cursoId);
+
+				cursos.add(curso);
+			}
+		}
+
+		return cursos;
+	}	
+	
+	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia)
+	{
+		return getDao().findByCompetencia(conhecimentoId, tipoCompetencia);
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
 	}
 
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
@@ -183,29 +243,5 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
-	}
-
-	public Integer getCount(Curso curso, Long empresaId)
-	{
-		return getDao().getCount(curso, empresaId);
-	}
-
-	public Curso saveClone(Curso curso, Long empresaId) 
-	{
-		curso.setId(null);
-		curso.setEmpresaId(empresaId);
-		
-		return (Curso) getDao().save(curso);
-	}
-
-	public String somaCargaHoraria(Collection<Turma> turmas) {
-		
-		Integer totalCargaHoraria = 0;
-		
-		for (Turma turma : turmas) {
-			totalCargaHoraria += (turma.getCurso().getCargaHoraria() == null ? 0 : turma.getCurso().getCargaHoraria());
-		}
-		
-		return Curso.formataCargaHorariaMinutos(totalCargaHoraria, "");
 	}
 }

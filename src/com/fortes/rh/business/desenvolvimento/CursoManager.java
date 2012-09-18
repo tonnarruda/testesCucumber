@@ -8,6 +8,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.web.tags.CheckBox;
 
 public interface CursoManager extends GenericManager<Curso>
 {
@@ -28,4 +29,7 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId);
+	public Collection<Curso> populaCursos(Long[] cursosCheckIds);
+	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia);
 }

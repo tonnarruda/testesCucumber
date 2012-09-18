@@ -5,12 +5,15 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, HabilidadeDao> implements HabilidadeManager
@@ -119,5 +122,18 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
 		getDao().deleteByAreaOrganizacional(areaIds);
+	}
+
+	public Habilidade findByIdProjection(Long habilidadeId)
+	{
+		CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
+		Habilidade habilidade = getDao().findByIdProjection(habilidadeId);
+		
+		if(habilidade != null) {
+			habilidade.setAreaOrganizacionals(areaOrganizacionalManager.findByHabilidade(habilidadeId));
+			habilidade.setCursos(cursoManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
+		}
+
+		return getDao().findByIdProjection(habilidadeId);
 	}
 }
