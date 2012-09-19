@@ -11,6 +11,7 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
@@ -18,15 +19,19 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("serial")
 public class TurmaListAction extends MyActionSupportList
@@ -36,6 +41,7 @@ public class TurmaListAction extends MyActionSupportList
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
+	private EmpresaManager empresaManager;
 
 	private Collection<Turma> turmas;
 
@@ -54,16 +60,23 @@ public class TurmaListAction extends MyActionSupportList
 	private FiltroPlanoTreinamento filtroPlanoTreinamento = new FiltroPlanoTreinamento();
 
 	private String[] turmasCheck;
-	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
-
+	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>(); 
 	private String[] cursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+
 	private Date dataIni;
 	private Date dataFim;
 	private char realizada;
 	private String totalCargaHoraria;
 	private boolean exibirCustoDetalhado;
 
+	private Long[] empresaIds;
+	private Collection<Empresa> empresas;
+	
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
@@ -124,6 +137,22 @@ public class TurmaListAction extends MyActionSupportList
 			filtro.append("Não");
 
 		return filtro.toString();
+	}
+
+	public String preparePdi()
+	{
+		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		
+		return SUCCESS;
+	}
+	
+	private void prepareEmpresas(String role)
+	{
+		empresas = empresaManager.findEmpresasPermitidas(false , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
+		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
+		empresaIds = clu.convertCollectionToArrayIds(empresas);
+		
+//		empresa = getEmpresaSistema();
 	}
 
 	public String list() throws Exception
@@ -409,5 +438,47 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
 		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
+	}
+
+	
+	public Collection<Empresa> getEmpresas()
+	{
+		return empresas;
+	}
+
+	
+	public void setEmpresaManager(EmpresaManager empresaManager)
+	{
+		this.empresaManager = empresaManager;
+	}
+
+	
+	public Long[] getEmpresaIds()
+	{
+		return empresaIds;
+	}
+
+	
+	public Collection<CheckBox> getAreasCheckList()
+	{
+		return areasCheckList;
+	}
+
+	
+	public Collection<CheckBox> getEstabelecimentosCheckList()
+	{
+		return estabelecimentosCheckList;
+	}
+
+	
+	public void setAreasCheck(String[] areasCheck)
+	{
+		this.areasCheck = areasCheck;
+	}
+
+	
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck)
+	{
+		this.estabelecimentosCheck = estabelecimentosCheck;
 	}
 }

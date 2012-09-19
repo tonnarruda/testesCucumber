@@ -194,5 +194,8 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamento.ftl</result>
 		</action>
+		<action name="preparePdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="preparePdi">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
+		</action>
 	</package>
 </xwork>
