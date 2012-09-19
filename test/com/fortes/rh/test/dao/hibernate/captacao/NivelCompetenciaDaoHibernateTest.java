@@ -332,7 +332,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(2, configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
 	}
 	
-	public void testFindByColaborador()
+	public void testFindByConfiguracaoNivelCompetenciaColaborador()
 	{
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
 		conhecimentoDao.save(conhecimento);
@@ -699,6 +699,71 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(new Integer(1), total);
 	}
 
+	public void testFindByColaborador()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("esporte");
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("atividade");
+		atitudeDao.save(atitude);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setDescricao("bom");
+		nivelCompetencia1.setOrdem(4);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setDescricao("pessimo");
+		nivelCompetencia2.setOrdem(1);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123");
+		colaboradorManager.save(colaborador);
+		
+		ConfiguracaoNivelCompetenciaColaborador configColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+		configColaborador.setColaborador(colaborador);
+		configColaborador.setFaixaSalarial(faixaSalarial);
+		configColaborador.setData(DateUtil.criarDataMesAno(17, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configColaborador);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaColaborador(configColaborador);
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaColaborador(configColaborador);
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
+		
+		ConfiguracaoNivelCompetenciaColaborador configColaborador2 = new ConfiguracaoNivelCompetenciaColaborador();
+		configColaborador2.setColaborador(colaborador);
+		configColaborador2.setFaixaSalarial(faixaSalarial);
+		configColaborador2.setData(DateUtil.criarDataMesAno(16, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configColaborador2);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia3 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia3.setConfiguracaoNivelCompetenciaColaborador(configColaborador2);
+		configuracaoNivelCompetencia3.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia3.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia3.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia3);
+
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByColaborador(colaborador.getId());
+		assertEquals(2, configs.size());
+		assertEquals(atitude.getId(), ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaId());
+		assertEquals(conhecimento.getId(), ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaId());
+	}
+	
 	@Override
 	public GenericDao<NivelCompetencia> getGenericDao()
 	{
