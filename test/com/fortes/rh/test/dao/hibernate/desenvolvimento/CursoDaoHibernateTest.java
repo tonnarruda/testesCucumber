@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -656,7 +657,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		conhecimento.setCursos(cursos);
 		conhecimentoDao.save(conhecimento);
 
-		assertEquals(1, cursoDao.findByCompetencia(conhecimento.getId(), null).size());
+		assertEquals(1, cursoDao.findByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO).size());
 
 	}	
 

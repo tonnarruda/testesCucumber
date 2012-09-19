@@ -12,4 +12,5 @@ public interface AtitudeDao extends GenericDao<Atitude>
 	public Collection<Atitude> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId);
 	public Collection<Atitude> findSincronizarAtitudes(Long empresaOrigemId);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
+	public Atitude findByIdProjection(Long atitudeId);
 }

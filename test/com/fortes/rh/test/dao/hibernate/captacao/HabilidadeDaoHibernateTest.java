@@ -23,7 +23,6 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 	private HabilidadeDao habilidadeDao;
 	private EmpresaDao empresaDao;
 	private CargoDao cargoDao;
-	private AreaOrganizacional areaOrganizacional;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	
 	public void testFindAllSelect()
@@ -137,6 +136,14 @@ public class HabilidadeDaoHibernateTest extends GenericDaoHibernateTest<Habilida
 		assertNull(exception);
 	}
 	
+	public void testFindByIdProjection()
+	{
+		Habilidade habilidade = getEntity();
+		habilidade = habilidadeDao.save(habilidade);
+
+		assertEquals(habilidade, habilidadeDao.findByIdProjection(habilidade.getId()));
+	}
+
 	@Override
 	public Habilidade getEntity()
 	{

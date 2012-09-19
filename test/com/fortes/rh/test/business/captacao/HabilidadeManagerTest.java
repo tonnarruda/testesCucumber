@@ -1,22 +1,29 @@
 package com.fortes.rh.test.business.captacao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.HabilidadeManagerImpl;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class HabilidadeManagerTest extends MockObjectTestCase
@@ -24,6 +31,7 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 	HabilidadeManagerImpl habilidadeManagerImpl;
 	Mock habilidadeDao;
 	Mock areaOrganizacionalManager;
+	private Mock cursoManager;
 
     protected void setUp() throws Exception
     {
@@ -34,6 +42,9 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         habilidadeManagerImpl.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        cursoManager = new Mock(CursoManager.class);
+        Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
     }
 
     public void testPopulaHabilidades()
@@ -136,4 +147,19 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 		assertEquals(3, habilidadeIds.size());
     }
     
+	public void testFindByIdProjection()
+	{
+		MockSpringUtil.mocks.put("cursoManager", cursoManager);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		
+		habilidadeDao.expects(once()).method("findByIdProjection").with(eq(habilidade.getId())).will(returnValue(habilidade));
+
+		Collection<AreaOrganizacional> areas = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
+		
+		areaOrganizacionalManager.expects(once()).method("findByHabilidade").with(eq(habilidade.getId())).will(returnValue(areas));
+		cursoManager.expects(once()).method("findByCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(areas));
+		
+		assertEquals(habilidade, habilidadeManagerImpl.findByIdProjection(habilidade.getId()));
+	}
 }
