@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.captacao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.hibernate.ObjectNotFoundException;
@@ -10,14 +11,15 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.CompetenciaManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
-import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.web.action.captacao.AtitudeEditAction;
 import com.fortes.web.tags.CheckBox;
 
@@ -27,6 +29,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock atitudeManager;
 	private Mock competenciaManager;
+	private Mock cursoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -34,11 +37,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action = new AtitudeEditAction();
 		atitudeManager = new Mock(AtitudeManager.class);
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+		cursoManager = new Mock(CursoManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
 
 		action.setAtitude(new Atitude());
 		action.setAtitudeManager((AtitudeManager) atitudeManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		action.setCursoManager((CursoManager) cursoManager.proxy());
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
@@ -51,9 +56,12 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(Atitude);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 
-		atitudeManager.expects(once()).method("findById").will(returnValue(Atitude));
 		Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();		
+		Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+		
+		atitudeManager.expects(once()).method("findByIdProjection").will(returnValue(Atitude));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(areasCheckList)); 
+		cursoManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(cursosCheckList));		
 		
 		assertEquals("success", action.prepareInsert());
 	}
@@ -65,9 +73,12 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		atitudeManager.expects(once()).method("findById").will(returnValue(atitude));
 		Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();		
+		Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+		
+		atitudeManager.expects(once()).method("findByIdProjection").will(returnValue(atitude));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(areasCheckList));
+		cursoManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(cursosCheckList));		
 		
 		assertEquals("success", action.prepareUpdate());
 	}
@@ -122,9 +133,11 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
 		
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
 		atitudeManager.expects(once()).method("save").with(eq(atitude)).will(returnValue(atitude));
 		
 		assertEquals("success", action.insert());
@@ -144,9 +157,10 @@ public class AtitudeEditActionTest extends MockObjectTestCase
     		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
     		
     		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+    		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
     		
     		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
-    		
+    		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
     		atitudeManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.insert();
 		}
@@ -164,9 +178,11 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
+		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
 		
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
 		atitudeManager.expects(once()).method("update").with(eq(atitude)).isVoid();
 
 		assertEquals("success", action.update());
@@ -186,8 +202,10 @@ public class AtitudeEditActionTest extends MockObjectTestCase
     		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
     		
     		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
-		
+    		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
+    		
 			areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
+			cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
     		atitudeManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();
 		}

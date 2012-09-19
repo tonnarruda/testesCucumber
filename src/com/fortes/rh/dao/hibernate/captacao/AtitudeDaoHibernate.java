@@ -93,14 +93,18 @@ public class AtitudeDaoHibernate extends GenericDaoHibernate<Atitude> implements
 		return criteria.list();
 	}
 
-	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
-		if(areaIds != null && areaIds.length > 0)
-		{
-			String[] sql = new String[] {"delete from atitude_areaorganizacional where areaorganizacionals_id in ("+StringUtils.join(areaIds, ",")+");"};
-
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception
+	{
+		if (areaIds != null && areaIds.length > 0) {
+			String[] sql = new String[] { "delete from atitude_areaorganizacional where areaorganizacionals_id in (" + StringUtils.join(areaIds, ",") + ");" };
 			JDBCConnection.executeQuery(sql);
-
 		}
+	}
+
+	public Atitude findByIdProjection(Long atitudeId)
+	{
+		Criteria criteria = CHAHelperDaoHibernate.montafindByIdProjection(atitudeId, getSession(), getEntityClass());
 		
+		return (Atitude) criteria.uniqueResult();
 	}
 }

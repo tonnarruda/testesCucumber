@@ -16,4 +16,5 @@ public interface AtitudeManager extends GenericManager<Atitude>
 	public Collection<Atitude> findAllSelect(Long empresaId);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> conhecimentoIds);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
+	public Atitude findByIdProjection(Long atitudeId);
 }

@@ -48,7 +48,6 @@ public class ConhecimentoDaoHibernateTest extends GenericDaoHibernateTest<Conhec
 		return conhecimentoDao;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testFindAllSelect()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
