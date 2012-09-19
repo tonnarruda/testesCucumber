@@ -7,6 +7,9 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -22,7 +25,12 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -63,6 +71,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private CandidatoManager candidatoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private NivelCompetenciaManager nivelCompetenciaManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -112,6 +123,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean respostaColaborador;
 	private boolean moduloExterno;
 	private boolean preview;
+
+	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
+	private Collection<NivelCompetencia> nivelCompetencias;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
+	private boolean reavaliarCompetenciasColaborador;
+
 
 	public String prepareInsert() throws Exception
 	{
@@ -201,7 +220,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		if (colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
-		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
+		colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
 		
 		if (colaboradorQuestionario.getAvaliador() != null)
 			avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
@@ -213,18 +232,54 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		montaPerguntasRespostas();
 		
+		if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
+		{
+			FaixaSalarial faixaSalarial = colaborador.getFaixaSalarial();
+			
+			configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+			configuracaoNivelCompetenciaColaborador.setData(new Date());
+			
+			niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+			nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
+			niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
+			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId());
+		}
+		
 		return Action.SUCCESS;
 	}
 	
 	public String responderAvaliacaoDesempenho()
 	{
-		if(colaboradorQuestionario.getRespondidaEm() == null)
-			colaboradorQuestionario.setRespondidaEm(new Date()); 
-		
-		exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
+		try {
+			if(colaboradorQuestionario.getRespondidaEm() == null)
+				colaboradorQuestionario.setRespondidaEm(new Date()); 
+			
+			exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
-		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
-		addActionMessage("Avaliação respondida com sucesso.");
+			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+			
+			if (reavaliarCompetenciasColaborador && colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
+			{
+				colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
+				
+				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(colaborador.getFaixaSalarial());
+				
+				configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
+				
+				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
+			}
+			
+			addActionMessage("Avaliação respondida com sucesso.");
+		
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			
+			prepareResponderAvaliacaoDesempenho();
+			return Action.INPUT;
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -789,5 +844,58 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Collection<RespostaQuestionarioVO> getRespostaQuestionarioVOs() {
 		return respostaQuestionarioVOs;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(
+			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setNivelCompetenciaManager(
+			NivelCompetenciaManager nivelCompetenciaManager) {
+		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariais() {
+		return niveisCompetenciaFaixaSalariais;
+	}
+	
+	public void setNiveisCompetenciaFaixaSalariais(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) {
+		this.niveisCompetenciaFaixaSalariais = niveisCompetenciaFaixaSalariais;
+	}
+
+	public Collection<NivelCompetencia> getNivelCompetencias() {
+		return nivelCompetencias;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSugeridos() {
+		return niveisCompetenciaFaixaSalariaisSugeridos;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvos() {
+		return niveisCompetenciaFaixaSalariaisSalvos;
+	}
+
+	public boolean isReavaliarCompetenciasColaborador() {
+		return reavaliarCompetenciasColaborador;
+	}
+
+	public void setReavaliarCompetenciasColaborador(
+			boolean reavaliarCompetenciasColaborador) {
+		this.reavaliarCompetenciasColaborador = reavaliarCompetenciasColaborador;
+	}
+
+	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() {
+		return configuracaoNivelCompetenciaColaborador;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaborador(
+			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
+		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
 	}
 }

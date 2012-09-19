@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -18,10 +17,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -293,5 +289,22 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.add(Expression.isNull("cnc.configuracaoNivelCompetenciaColaborador.id"));
 		
 		return (Integer) criteria.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id) "); 
+		hql.append("from ConfiguracaoNivelCompetencia cnc "); 
+		hql.append("left join cnc.configuracaoNivelCompetenciaColaborador cncc "); 
+		hql.append("where cncc.colaborador.id = :colaboradorId ");
+		hql.append("and cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = cncc.colaborador.id) ");
+		hql.append("order by cnc.competenciaId");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("colaboradorId", colaboradorId);
+		
+		return query.list();
 	}
 }

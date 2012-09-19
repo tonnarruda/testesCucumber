@@ -41,4 +41,6 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId);
 
 	Integer somaConfiguracoesByFaixa(Long faixaSalarialId);
+
+	Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId);
 }

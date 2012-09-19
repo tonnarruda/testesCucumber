@@ -23,7 +23,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	{
 		ConfiguracaoNivelCompetenciaColaborador configMesmaData = getDao().checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 		if (configMesmaData != null && configMesmaData.getId() != null)
-			throw new Exception("Já existe uma configuração para este Colaborador na data informada.");
+			throw new Exception("Já existe uma configuração de competências para este Colaborador na data informada.");
 	}
 
 	public void removeColaborador(Colaborador colaborador) {
