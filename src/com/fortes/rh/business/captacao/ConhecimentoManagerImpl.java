@@ -98,7 +98,6 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 
 	public Conhecimento findByIdProjection(Long conhecimentoId)
 	{
-		CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 		Conhecimento conhecimento = getDao().findByIdProjection(conhecimentoId);
 		
 		if(conhecimento != null) {

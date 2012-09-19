@@ -141,14 +141,20 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 
 	public Habilidade findByIdProjection(Long habilidadeId)
 	{
-		CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 		Habilidade habilidade = getDao().findByIdProjection(habilidadeId);
 		
 		if(habilidade != null) {
+			CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
+			
 			habilidade.setAreaOrganizacionals(areaOrganizacionalManager.findByHabilidade(habilidadeId));
 			habilidade.setCursos(cursoManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
 		}
 
-		return getDao().findByIdProjection(habilidadeId);
+		return habilidade;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }
