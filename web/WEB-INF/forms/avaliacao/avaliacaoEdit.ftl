@@ -26,18 +26,17 @@
 					{
 						$('#wwgrp_periodoExperiencia').show();
 						$('#wwgrp_periodoExperiencia select').removeAttr('disabled');
+						$('#wwgrp_avaliarCompetenciasCargo').hide();
 					}
 					else
 					{
 						$('#wwgrp_periodoExperiencia').hide();
 						$('#wwgrp_periodoExperiencia select').attr("disabled", true);
+						$('#wwgrp_avaliarCompetenciasCargo').show();
 					}
 				});
 				
-				<#if avaliacao.tipoModeloAvaliacao != 'A'>
-					$('#wwgrp_periodoExperiencia').hide();
-					$('#wwgrp_periodoExperiencia select').attr("disabled", true);
-				</#if>
+				$('#tipoModeloAvaliacao').change();
 			</#if>
 
 		});
@@ -71,6 +70,7 @@
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
 				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="diasComDescricao" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
+				<@ww.checkbox label="Avaliar competências exigidas pelo cargo" id="avaliarCompetenciasCargo" name="avaliacao.avaliarCompetenciasCargo" labelPosition="left"/>
 			</#if>			
 		
 			<@ww.hidden name="telaInicial" />
