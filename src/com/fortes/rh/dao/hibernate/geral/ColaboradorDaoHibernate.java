@@ -1095,9 +1095,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"co.nomeComercial, co.matricula, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.pessoal.estadoCivil,  " +
 				"co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
-				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.habilitacao.numeroHab, co.habilitacao.emissao,  " +
-				"co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento, co.endereco.numero,  " +
-				"co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.foneCelular,	co.contato.foneFixo, fun.nome, amb.nome, " +
+				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
+				"co.habilitacao.numeroHab, co.habilitacao.emissao, co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento,  " +
+				"co.endereco.numero, co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.foneCelular,	co.contato.foneFixo, fun.nome, amb.nome, " +
 				"cidade.nome, uf.sigla " );
 				
 				if(habilitaCampoExtra && camposExtras != null)

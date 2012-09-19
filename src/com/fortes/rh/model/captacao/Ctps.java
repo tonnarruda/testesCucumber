@@ -64,6 +64,18 @@ public class Ctps implements Serializable
 	{
 		this.ctpsUf = ctpsUf;
 	}
+	
+	public String getNumeroCompleto()
+	{
+		String numeroCompleto="";
+		
+		if (StringUtils.isNotBlank(ctpsNumero))
+			numeroCompleto = ctpsNumero;
+		
+		numeroCompleto += "/"+getSerieMaisDv();
+		
+		return numeroCompleto;
+	}
 
 	public String getSerieMaisDv()
 	{

@@ -31,6 +31,7 @@ import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
@@ -581,7 +582,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
 						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
-						Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
+						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
 						String cidadeNome, String ufSigla, 
@@ -622,6 +623,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getPessoal().setDataNascimento(dataNascimento);
 		this.getPessoal().setConjuge(conjuge);
 		this.getPessoal().setQtdFilhos(qtdFilhos);
+		
+		if (this.pessoal.getCtps() == null)
+			this.pessoal.setCtps(new Ctps());
+		
+		this.getPessoal().getCtps().setCtpsNumero(ctpsNumero);
+		this.getPessoal().getCtps().setCtpsSerie(ctpsSerie);
+		this.getPessoal().getCtps().setCtpsDv(ctpsDv);
 				
 		if (this.habilitacao == null)
 			this.habilitacao = new Habilitacao();
@@ -680,7 +688,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
 			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
-			Date dataNascimento, String conjuge, Integer qtdFilhos, String numeroHab, Date emissao, 
+			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
 			String cidadeNome, String ufSigla) 
@@ -727,6 +735,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getPessoal().setConjuge(conjuge);
 		this.getPessoal().setQtdFilhos(qtdFilhos);
 		
+		if (this.pessoal.getCtps() == null)
+			this.pessoal.setCtps(new Ctps());
+		
+		this.getPessoal().getCtps().setCtpsNumero(ctpsNumero);
+		this.getPessoal().getCtps().setCtpsSerie(ctpsSerie);
+		this.getPessoal().getCtps().setCtpsDv(ctpsDv);
+				
 		if (this.habilitacao == null)
 			this.habilitacao = new Habilitacao();
 		
