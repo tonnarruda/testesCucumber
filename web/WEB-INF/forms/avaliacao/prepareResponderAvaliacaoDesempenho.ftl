@@ -15,6 +15,15 @@
 	<script type="text/javascript">
 		$(function() {
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+				$('#reavaliarCompetenciasColaborador').click(function() {
+					var reavaliar = $(this).attr('checked');
+					$('#camposAvaliacaoCompetencias').toggle( reavaliar );
+					if (reavaliar)
+						$('#fdAval').css('border','1px solid #7E9DB9');
+					else
+						$('#fdAval').css('border','none');
+				});
+			
 				$('.checkCompetencia').click(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
@@ -88,42 +97,45 @@
 			
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 				<br />
-				<fieldset>
+				<fieldset id="fdAval" style="border:none;">
 					<legend>
 						<@ww.checkbox id="reavaliarCompetenciasColaborador" name="reavaliarCompetenciasColaborador" theme="simple"/>
 						<label for="reavaliarCompetenciasColaborador">Reavaliar as Competências do Colaborador para o Cargo</label>
 					</legend>
 				
-					<br />
-					
-					<@ww.datepicker label="Data" id="data" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" required="true" cssClass="mascaraData"/>
-				
-					<div id="legendas">
-						<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
-						<br /><br />
-						<span style='border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
-						<br /><br />
-						<span style='background-color: #ececec; border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador coincide com o nível exigido para o Cargo/Faixa Salarial
-					</div>
-		
-					<br /><br />
-					
-					<#assign i = 0/>
-					<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
-						<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
-							<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-							<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
-							<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
-						</@display.column>
+					<div id="camposAvaliacaoCompetencias" style="display:none; margin:5px;">
+						<br />
 						
-						<#list nivelCompetencias as nivel>			
-							<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
-								<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
+						<@ww.datepicker label="Data" id="data" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" required="true" cssClass="mascaraData"/>
+						<br />
+					
+						<div id="legendas">
+							<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
+							<br /><br />
+							<span style='border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
+							<br /><br />
+							<span style='background-color: #ececec; border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador coincide com o nível exigido para o Cargo/Faixa Salarial
+						</div>
+			
+						<br /><br />
+						
+						<#assign i = 0/>
+						<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
+							<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
+								<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+								<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+								<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 							</@display.column>
-						</#list>
-						
-						<#assign i = i + 1/>
-					</@display.table>
+							
+							<#list nivelCompetencias as nivel>			
+								<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
+									<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
+								</@display.column>
+							</#list>
+							
+							<#assign i = i + 1/>
+						</@display.table>
+					</div>
 				</fieldset>
 			</#if>
 			
