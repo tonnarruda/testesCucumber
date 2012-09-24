@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.87.84" data="24/09/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Relatórios > Duração para Preenchimento de Vagas: Ajuda no entendimento da coluna [Média de Dias]. Esta ajuda está impressa no final do relatório. 
+			:: Aval. Desempenho > Movimentações > Avalições de Desempenho > Resultado da Avaliação: Nova opção para desconsiderar auto-avaliação quando o campo [Resultado] for igual a [Resultado por Critério].
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de impressão do campo CTPS/Série-DV em [Campos disponíveis].
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.87.83" data="17/09/2012">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Listar apenas áreas ativas no campo [Área Mãe](Na edição, caso a área mãe atual for inativa, a mesma permanecerá aparecendo na relação do campo [Área Mãe]).
