@@ -1,6 +1,7 @@
 package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -17,4 +18,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 	void removeColaborador(Colaborador colaborador);
 
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
+
+	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId);
 }

@@ -124,13 +124,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean moduloExterno;
 	private boolean preview;
 
-	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
-	private boolean reavaliarCompetenciasColaborador;
-
 
 	public String prepareInsert() throws Exception
 	{
@@ -236,9 +233,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		{
 			FaixaSalarial faixaSalarial = colaborador.getFaixaSalarial();
 			
-			configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-			configuracaoNivelCompetenciaColaborador.setData(new Date());
-			
 			niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
 			nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 			niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
@@ -250,6 +244,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String responderAvaliacaoDesempenho()
 	{
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
+		Date hoje = new Date();
+		
 		try {
 			if(colaboradorQuestionario.getRespondidaEm() == null)
 				colaboradorQuestionario.setRespondidaEm(new Date()); 
@@ -258,14 +255,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
 			
-			if (reavaliarCompetenciasColaborador && colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
+			if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 			{
 				colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
 				
+				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(hoje, colaborador.getId());
+				if (configuracaoNivelCompetenciaColaborador == null)
+					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+				
+				configuracaoNivelCompetenciaColaborador.setData(hoje);
 				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
 				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(colaborador.getFaixaSalarial());
-				
-				configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 				
 				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
 			}
@@ -879,23 +879,5 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvos() {
 		return niveisCompetenciaFaixaSalariaisSalvos;
-	}
-
-	public boolean isReavaliarCompetenciasColaborador() {
-		return reavaliarCompetenciasColaborador;
-	}
-
-	public void setReavaliarCompetenciasColaborador(
-			boolean reavaliarCompetenciasColaborador) {
-		this.reavaliarCompetenciasColaborador = reavaliarCompetenciasColaborador;
-	}
-
-	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() {
-		return configuracaoNivelCompetenciaColaborador;
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaborador(
-			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
-		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
 	}
 }
