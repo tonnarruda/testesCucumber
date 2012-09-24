@@ -2,6 +2,8 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
+	<title>Plano de Treinamento Individual (PDI)</title>
+
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -36,9 +38,11 @@
 			addChecks('areasCheck',data);
 		}
 		
-		$(document).ready(function($)
+		$(function($)
 		{
 			var empresa = $('#empresa').val();
+		
+			DWREngine.setAsync(false);
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
@@ -48,8 +52,6 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<@ww.head/>
-	<title>Plano de Treinamento Individual (PDI)</title>
-
 </head>
 <body>
 	<@ww.actionmessage />
