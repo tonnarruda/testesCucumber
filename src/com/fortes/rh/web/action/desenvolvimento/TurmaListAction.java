@@ -146,6 +146,13 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	public String pdi()
+	{
+		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		
+		return SUCCESS;
+	}
+	
 	private void prepareEmpresas(String role)
 	{
 		empresas = empresaManager.findEmpresasPermitidas(false , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
