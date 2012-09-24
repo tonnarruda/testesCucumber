@@ -663,6 +663,15 @@ Dado /^que exista um periodo de experiencia "([^"]*)" de (\d+) dias$/ do |period
   end
 end
 
+Dado /^que exista um papel "([^"]*)"$/ do |papel_nome|
+   insert :papel do
+     nome papel_nome
+     codigo 'ROLE'
+     ordem 1
+     menu false
+   end
+end
+ 
 Dado /^que todos os papeis estejam permitidos$/ do
    exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
 end
