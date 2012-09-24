@@ -1,6 +1,7 @@
 package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
@@ -26,11 +27,18 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 			throw new Exception("Já existe uma configuração de competências para este Colaborador na data informada.");
 	}
 
-	public void removeColaborador(Colaborador colaborador) {
+	public void removeColaborador(Colaborador colaborador) 
+	{
 		getDao().removeColaborador(colaborador);
 	}
 
-	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception 
+	{
 		getDao().deleteByFaixaSalarial(faixaIds);
+	}
+
+	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId) 
+	{
+		return getDao().findByData(data, colaboradorId);
 	}
 }
