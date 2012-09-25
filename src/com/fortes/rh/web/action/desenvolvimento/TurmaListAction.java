@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -14,6 +15,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -42,6 +44,7 @@ public class TurmaListAction extends MyActionSupportList
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 	private EmpresaManager empresaManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	private Collection<Turma> turmas;
 
@@ -74,8 +77,10 @@ public class TurmaListAction extends MyActionSupportList
 	private String totalCargaHoraria;
 	private boolean exibirCustoDetalhado;
 
+	private Long empresaId;
 	private Long[] empresaIds;
 	private Collection<Empresa> empresas;
+	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -149,6 +154,8 @@ public class TurmaListAction extends MyActionSupportList
 	public String pdi()
 	{
 		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
 		
 		return SUCCESS;
 	}
@@ -487,5 +494,22 @@ public class TurmaListAction extends MyActionSupportList
 	public void setEstabelecimentosCheck(String[] estabelecimentosCheck)
 	{
 		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
+		return configuracaoNivelCompetencias;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
 }

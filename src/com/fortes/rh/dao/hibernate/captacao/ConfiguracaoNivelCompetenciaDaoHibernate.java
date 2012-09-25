@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
@@ -16,6 +17,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 
@@ -304,6 +306,52 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("colaboradorId", colaboradorId);
+		
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] areaIds, Long[] estabelecimentoIds) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ConfiguracaoNivelCompetencia(c.id, c.nome, fs.id, cnc.competenciaId, cnc.tipoCompetencia, nc, nc2) ");
+		hql.append("from HistoricoColaborador hc ");
+		hql.append("inner join hc.colaborador c ");
+		hql.append("inner join hc.faixaSalarial fs ");
+		
+		hql.append("left join fs.configuracaoNivelCompetencias cnc with cnc.candidato.id = null and cnc.configuracaoNivelCompetenciaColaborador.id = null ");
+		hql.append("inner join cnc.nivelCompetencia nc ");
+		
+		hql.append("left join c.configuracaoNivelCompetenciaColaboradors cncc ");
+		hql.append("left join cncc.configuracaoNivelCompetencias cnc2  ");
+		hql.append("left join cnc2.nivelCompetencia nc2 ");
+		
+		hql.append("where c.empresa.id = :empresaId ");
+		hql.append("and c.desligado = false ");
+		
+		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status and hc2.data <= :hoje) ");
+		hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = cncc.colaborador.id and cncc2.data <= :hoje) or cncc.data is null) ");
+		
+		if (areaIds != null && areaIds.length > 0)
+			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
+		
+		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
+		
+		hql.append("group by c.id, fs.id, nc2.descricao, nc.descricao, nc2.ordem, nc.ordem ");
+		hql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
+		hql.append("order by c.nome, c.id");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setDate("hoje", new Date());
+		
+		if (areaIds != null && areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+		
+		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
 		return query.list();
 	}

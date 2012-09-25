@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -41,6 +42,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private Collection<FaixaSalarialHistorico> faixaSalarialHistoricos;
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Certificacao> certificacaos;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="faixaSalarial")
+	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 
 	@Transient
 	private String descricao;
@@ -368,5 +371,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setCompetencias(Collection<Competencia> competencias)
 	{
 		this.competencias = competencias;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
+		return configuracaoNivelCompetencias;
+	}
+
+	public void setConfiguracaoNivelCompetencias(
+			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
+		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
 	}
 }
