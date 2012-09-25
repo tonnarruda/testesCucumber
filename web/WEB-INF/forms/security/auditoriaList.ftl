@@ -33,7 +33,7 @@
 
 			<table>
 				<tr>
-					<td>Período:</td>
+					<td>Período:*</td>
 					<td>Usuário:</td>
 					<td>Movimentação:</td>
 					<td>Operação: <span id="loading" style="display:none;">Carregando..</span></td>

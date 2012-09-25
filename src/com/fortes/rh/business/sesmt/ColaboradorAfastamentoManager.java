@@ -11,7 +11,9 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.security.auditoria.Modulo;
 
+@Modulo("Afastamento do Colaborador")
 public interface ColaboradorAfastamentoManager extends GenericManager<ColaboradorAfastamento>
 {
 	Integer getCount(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento);
