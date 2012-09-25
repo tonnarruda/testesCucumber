@@ -764,6 +764,76 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(conhecimento.getId(), ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaId());
 	}
 	
+	public void testFindColaboradoresCompetenciasAbaixoDoNivel()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("esporte");
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("atividade");
+		atitudeDao.save(atitude);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
+		nivelBom.setDescricao("bom");
+		nivelBom.setOrdem(3);
+		nivelCompetenciaDao.save(nivelBom);
+
+		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
+		nivelRegular.setDescricao("regular");
+		nivelRegular.setOrdem(2);
+		nivelCompetenciaDao.save(nivelRegular);
+
+		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
+		nivelPessimo.setDescricao("pessimo");
+		nivelPessimo.setOrdem(1);
+		nivelCompetenciaDao.save(nivelPessimo);
+		
+		Colaborador ataliba = ColaboradorFactory.getEntity(1L, "ataliba", "ataliba", "0456");
+		ataliba.setEmpresa(empresa);
+		colaboradorManager.save(ataliba);
+
+		Colaborador tiburcio = ColaboradorFactory.getEntity(1L, "tiburcio", "tiburcio", "0123");
+		tiburcio.setEmpresa(empresa);
+		colaboradorManager.save(tiburcio);
+		
+		ConfiguracaoNivelCompetenciaColaborador configAtaliba = new ConfiguracaoNivelCompetenciaColaborador();
+		configAtaliba.setColaborador(ataliba);
+		configAtaliba.setFaixaSalarial(faixaSalarial);
+		configAtaliba.setData(DateUtil.criarDataMesAno(17, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configAtaliba);
+
+		ConfiguracaoNivelCompetenciaColaborador configTiburcio = new ConfiguracaoNivelCompetenciaColaborador();
+		configAtaliba.setColaborador(tiburcio);
+		configAtaliba.setFaixaSalarial(faixaSalarial);
+		configAtaliba.setData(DateUtil.criarDataMesAno(17, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configTiburcio);
+		
+		ConfiguracaoNivelCompetencia configAtaliba1 = new ConfiguracaoNivelCompetencia();
+		configAtaliba1.setConfiguracaoNivelCompetenciaColaborador(configAtaliba);
+		configAtaliba1.setNivelCompetencia(nivelRegular);
+		configAtaliba1.setCompetenciaId(atitude.getId());
+		configAtaliba1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(configAtaliba1);
+		
+		ConfiguracaoNivelCompetencia configAtaliba2 = new ConfiguracaoNivelCompetencia();
+		configAtaliba2.setConfiguracaoNivelCompetenciaColaborador(configAtaliba);
+		configAtaliba2.setNivelCompetencia(nivelPessimo);
+		configAtaliba2.setCompetenciaId(conhecimento.getId());
+		configAtaliba2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configAtaliba2);
+		
+
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null);
+		assertEquals(0, configs.size());
+	}
+	
 	@Override
 	public GenericDao<NivelCompetencia> getGenericDao()
 	{
