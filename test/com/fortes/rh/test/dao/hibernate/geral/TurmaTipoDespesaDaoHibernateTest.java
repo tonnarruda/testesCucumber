@@ -102,14 +102,23 @@ public class TurmaTipoDespesaDaoHibernateTest extends GenericDaoHibernateTest<Tu
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2012);
 		Date dataFim = DateUtil.criarDataMesAno(2, 1, 2012);
 		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
 		
-		Turma turma = TurmaFactory.getEntity();
-		turma.setEmpresa(empresa);
-		turma.setDataPrevIni(dataIni);
-		turma.setDataPrevFim(dataFim);
-		turmaDao.save(turma);
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setEmpresa(empresa1);
+		turma1.setDataPrevIni(dataIni);
+		turma1.setDataPrevFim(dataFim);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa2);
+		turma2.setDataPrevIni(dataIni);
+		turma2.setDataPrevFim(dataFim);
+		turmaDao.save(turma2);
 		
 		TipoDespesa tipoDespesaAlim = TipoDespesaFactory.getEntity();
 		tipoDespesaAlim.setDescricao("alimentacao");
@@ -120,25 +129,25 @@ public class TurmaTipoDespesaDaoHibernateTest extends GenericDaoHibernateTest<Tu
 		tipoDespesaDao.save(tipoDespesaTrans);
 		
 		TurmaTipoDespesa turmaTipoDespesa1 = TurmaTipoDespesaFactory.getEntity();
-		turmaTipoDespesa1.setTurma(turma);
+		turmaTipoDespesa1.setTurma(turma1);
 		turmaTipoDespesa1.setTipoDespesa(tipoDespesaAlim);
 		turmaTipoDespesa1.setDespesa(200.0);
 		turmaTipoDespesaDao.save(turmaTipoDespesa1);
 		
 		TurmaTipoDespesa turmaTipoDespesa2 = TurmaTipoDespesaFactory.getEntity();
-		turmaTipoDespesa2.setTurma(turma);
+		turmaTipoDespesa2.setTurma(turma1);
 		turmaTipoDespesa2.setTipoDespesa(tipoDespesaAlim);
 		turmaTipoDespesa2.setDespesa(150.0);
 		turmaTipoDespesaDao.save(turmaTipoDespesa2);
 		
 		TurmaTipoDespesa turmaTipoDespesa3 = TurmaTipoDespesaFactory.getEntity();
-		turmaTipoDespesa3.setTurma(turma);
+		turmaTipoDespesa3.setTurma(turma1);
 		turmaTipoDespesa3.setTipoDespesa(tipoDespesaTrans);
 		turmaTipoDespesa3.setDespesa(75.0);
 		turmaTipoDespesaDao.save(turmaTipoDespesa3);
 		
-		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, empresa.getId());
-		Collection<TipoDespesa> tipoDespesasOutraEmpresa = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, 1111111111111L);
+		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()});
+		Collection<TipoDespesa> tipoDespesasOutraEmpresa = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{1111111111111L});
 		
 		assertEquals(2, tipoDespesas.size());
 		assertEquals(350.0, ((TipoDespesa)tipoDespesas.toArray()[0]).getTotalDespesas());

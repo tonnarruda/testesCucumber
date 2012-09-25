@@ -15,12 +15,12 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findAllSelect(Long empresaId);
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
-	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId);
-	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId);
-	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId);
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
+	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
+	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
+	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long empresaId, Boolean realizado);
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds)throws Exception;
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);

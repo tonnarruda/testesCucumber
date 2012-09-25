@@ -111,7 +111,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
-	public Integer getCountAtivos(Date dataIni, Date dataFim, Long empresaId);
+	public Integer getCountAtivos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public File getFoto(Long id) throws Exception;
 	public Collection<Colaborador> findAniversariantes(Long[] empresaIds, int mes, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
 	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos);

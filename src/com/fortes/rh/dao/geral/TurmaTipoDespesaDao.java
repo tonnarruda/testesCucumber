@@ -11,5 +11,5 @@ public interface TurmaTipoDespesaDao extends GenericDao<TurmaTipoDespesa>
 {
 	Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId);
 	void removeByTurma(Long turmaId);
-	Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long empresaId);
+	Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds);
 }

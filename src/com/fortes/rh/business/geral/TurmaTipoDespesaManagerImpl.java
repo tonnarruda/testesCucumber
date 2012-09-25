@@ -65,8 +65,8 @@ public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDes
 		}
 	}
 
-	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
-		return getDao().somaDespesasPorTipo(dataIni, dataFim, empresaId);
+		return getDao().somaDespesasPorTipo(dataIni, dataFim, empresaIds);
 	}
 }

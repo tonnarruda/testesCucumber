@@ -1,5 +1,6 @@
 <html>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <head>
 <@ww.head/>
 	<style type="text/css">
@@ -40,7 +41,7 @@
 				document.formBusca.action="imprimir.action";
 			}
 
-			return validaFormularioEPeriodo('formBusca', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'));
+			return validaFormularioEPeriodo('formBusca', new Array('dataIni', 'dataFim'), new Array('dataIni','dataFim'));
 		}
 		
 		$(function () {
@@ -167,7 +168,7 @@
 			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-	
+			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')"/>
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

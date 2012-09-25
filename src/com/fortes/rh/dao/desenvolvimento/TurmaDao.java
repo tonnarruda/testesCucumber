@@ -20,12 +20,12 @@ public interface TurmaDao extends GenericDao<Turma>
 	public Integer countPlanosDeTreinamento(Long cursoId, Date dataIni, Date dataFim, Boolean realizada);
 	public void updateRealizada(Long turmaId, boolean realizada)throws Exception;
 	public void updateCusto(Long turmaId, double totalCusto);
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long empresaId);
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long[] empresaIds);
 	public Collection<Turma> findByIdProjection(Long[] ids);
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId);
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmaIds, Date dataIni, Date dataFim, Boolean realizada);
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId);
-	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId);
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Double somaCustos(Date dataIni, Date dataFim, Long[] empresaIds);
 }

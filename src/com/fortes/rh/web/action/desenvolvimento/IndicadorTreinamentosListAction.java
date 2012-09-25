@@ -8,18 +8,24 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.jfree.chart.JFreeChart;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 
 public class IndicadorTreinamentosListAction extends MyActionSupportList
@@ -31,6 +37,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	private TurmaManager turmaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	private EmpresaManager empresaManager;
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
@@ -51,13 +58,24 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private String grfDesempenho="";
 	private String grfCusto="";
 
+	private Long[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+
 	public String list() throws Exception
 	{
 		prepareDatas();
+		
+		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_T&D_REL");
+   		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 
-		cursoManager.findCustoMedioHora(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		cursoManager.findCustoPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
-		cursoManager.findHorasPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+   		if (ArrayUtils.isEmpty(empresasCheck)) {
+   			CollectionUtil<CheckBox> cUtil = new CollectionUtil<CheckBox>();
+			empresasCheck = cUtil.convertCollectionToArrayIds(empresasCheckList);
+		}
+   		
+		cursoManager.findCustoMedioHora(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
+		cursoManager.findCustoPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
+		cursoManager.findHorasPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
@@ -88,7 +106,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoDesempenho()
 	{
-		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 		qtdAprovados = resultados.get("qtdAprovados");
 		qtdReprovados = resultados.get("qtdReprovados");
 
@@ -100,13 +118,13 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoFrequencia()
 	{
-		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 		Object[] inscritos = new Object[]{1, qtdTotalInscritosTurmas};
 		Collection<Object[]>  graficoInscritos = new ArrayList<Object[]>();
 		graficoInscritos.add(inscritos);
 		grfFrequenciaInscritos = StringUtil.toJSON(graficoInscritos, null);
 		
-		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 		Object[] participantes = new Object[]{2, qtdParticipantesPrevistos};
 		Collection<Object[]>  graficoParticipantes = new ArrayList<Object[]>();
 		graficoParticipantes.add(participantes);
@@ -115,8 +133,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoCumprimentoPlanoTreinamento()
 	{
-		this.qtdTreinamentosRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), true);
-		this.qtdTreinamentosNaoRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId(), false);
+		this.qtdTreinamentosRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, true);
+		this.qtdTreinamentosNaoRealizados = cursoManager.countTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, false);
 
 		Collection<DataGrafico> grfCumprimentoPlanoTreinamento = new ArrayList<DataGrafico>();
 		grfCumprimentoPlanoTreinamento.add(new DataGrafico(null, "Realizados", this.qtdTreinamentosRealizados, ""));
@@ -128,10 +146,10 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	{
 		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
 
-		Double custosNaoDetalhados = turmaManager.somaCustosNaoDetalhados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		Double custosNaoDetalhados = turmaManager.somaCustosNaoDetalhados(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", custosNaoDetalhados, ""));
 		
-		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaManager.somaDespesasPorTipo(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaManager.somaDespesasPorTipo(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 		for (TipoDespesa tipoDespesa : tipoDespesas)
 			grfCustoTipoDespesa.add(new DataGrafico(null, tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), ""));
 			
@@ -140,12 +158,12 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	
 	public Double getPercentualFrequencia() 
 	{
-		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 	}
 
 	public Double getPercentualInvestimentoEmTeD() 
 	{
-		return turmaManager.getPercentualInvestimento(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		return turmaManager.getPercentualInvestimento(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 	}
 	
 	public void setCursoManager(CursoManager cursoManager)
@@ -188,7 +206,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	}
 	
 	public Integer getQtdTotalInscritosTurmas() {
-		return cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		return cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 	}
 
 	public void setQtdTotalInscritosTurmas(Integer qtdTotalInscritosTurmas) {
@@ -196,7 +214,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	}
 
 	public Integer getQtdParticipantesPrevistos() {
-		return turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), getEmpresaSistema().getId());
+		return turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 	}
 	
 	public void setQtdParticipantesPrevistos(Integer qtdParticipantesPrevistos) {
@@ -235,5 +253,20 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public String getGrfFrequenciaInscritos()
 	{
 		return grfFrequenciaInscritos;
+	}
+
+	public void setEmpresasCheck(Long[] empresasCheck)
+	{
+		this.empresasCheck = empresasCheck;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList()
+	{
+		return empresasCheckList;
+	}
+	
+	public void setEmpresaManager(EmpresaManager empresaManager)
+	{
+		this.empresaManager = empresaManager;
 	}
 }

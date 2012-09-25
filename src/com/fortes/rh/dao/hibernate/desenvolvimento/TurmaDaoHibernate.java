@@ -368,7 +368,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long empresaId)
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long[] empresaIds)
 	{
         Criteria criteria = getSession().createCriteria(Turma.class,"t");
         criteria.createCriteria("t.curso", "c");
@@ -381,7 +381,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         p.add(Projections.property("c.nome"), "cursoNome");
 
         criteria.setProjection(p);
-        criteria.add(Expression.eq("e.id", empresaId));
+        criteria.add(Expression.in("e.id", empresaIds));
 
 		if (dataPrevIni != null)
 			criteria.add(Expression.ge("t.dataPrevIni", dataPrevIni));
@@ -453,7 +453,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		return criteria.list();
 	}
 	
-	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId)
+	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds)
 	 {
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.empresa", "e");
@@ -461,7 +461,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.setProjection(Projections.sum("t.qtdParticipantesPrevistos"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
-        criteria.add(Expression.eq("e.id", empresaId));
+        criteria.add(Expression.in("e.id", empresaIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
         if(valor == null)
@@ -508,7 +508,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) 
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(TurmaTipoDespesa.class, "ttd");
         
@@ -523,7 +523,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.setProjection(Projections.sum("t.custo"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
-        criteria.add(Expression.eq("t.empresa.id", empresaId));
+        criteria.add(Expression.in("t.empresa.id", empresaIds));
         criteria.add(Subqueries.propertyNotIn("t.id", subQuery));
 
     	Double valor = (Double) criteria.uniqueResult();
@@ -532,14 +532,14 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Double somaCustos(Date dataIni, Date dataFim, Long empresaId) {
+	public Double somaCustos(Date dataIni, Date dataFim, Long[] empresaIds) {
 		
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		
 		criteria.setProjection(Projections.sum("t.custo"));
 		criteria.add(Expression.ge("t.dataPrevIni", dataIni));
 		criteria.add(Expression.le("t.dataPrevFim", dataFim));
-		criteria.add(Expression.eq("t.empresa.id", empresaId));
+		criteria.add(Expression.in("t.empresa.id", empresaIds));
 
     	Double valor = (Double) criteria.uniqueResult();
         

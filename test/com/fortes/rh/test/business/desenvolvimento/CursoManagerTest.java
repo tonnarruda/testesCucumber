@@ -66,7 +66,7 @@ public class CursoManagerTest extends MockObjectTestCase
 
 		colaboradorManager.expects(once()).method("getCountAtivos").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(3000));
 
-		cursoManager.findHorasPerCapita(indicadorTreinamento, new Date(), new Date(), 4L);
+		cursoManager.findHorasPerCapita(indicadorTreinamento, new Date(), new Date(), new Long[]{4L});
 
 		Double calculoHorasPerCapita = (((double)80*20)/3000)/60;
 		assertEquals(calculoHorasPerCapita, indicadorTreinamento.getHorasPerCapita());

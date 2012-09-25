@@ -301,25 +301,37 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
     	Calendar dataTresMesesAtras = Calendar.getInstance();
     	dataTresMesesAtras.add(Calendar.MONTH, -3);
 		
-		Empresa empresa = new Empresa();
-		empresaDao.save(empresa);		
+		Empresa empresa1 = new Empresa();
+		empresaDao.save(empresa1);		
+		
+		Empresa empresa2 = new Empresa();
+		empresaDao.save(empresa2);		
 		
 		Turma turma1 = TurmaFactory.getEntity();
 		turma1.setQtdParticipantesPrevistos(2);
 		turma1.setDataPrevIni(dataTresMesesAtras.getTime());
 		turma1.setDataPrevFim(dataDoisMesesAtras.getTime());
+		turma1.setEmpresa(empresa1);
 		turmaDao.save(turma1);
-		turma1.setEmpresa(empresa);
 
 		Turma turma2 = TurmaFactory.getEntity();
 		turma2.setQtdParticipantesPrevistos(3);
 		turma2.setDataPrevIni(dataTresMesesAtras.getTime());
 		turma2.setDataPrevFim(dataDoisMesesAtras.getTime());
+		turma2.setEmpresa(empresa1);
 		turmaDao.save(turma2);
-		turma2.setEmpresa(empresa);
 		
-		assertEquals(new Integer(5), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId()));
-		assertEquals(new Integer(0), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), 1021L));
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setQtdParticipantesPrevistos(3);
+		turma3.setDataPrevIni(dataTresMesesAtras.getTime());
+		turma3.setDataPrevFim(dataDoisMesesAtras.getTime());
+		turma3.setEmpresa(empresa2);
+		turmaDao.save(turma3);
+		
+		assertEquals("Empresa 1", new Integer(5), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId()}));
+		assertEquals("Empresa 2", new Integer(3), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa2.getId()}));
+		assertEquals("Empresa 1 e 2", new Integer(8), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId(), empresa2.getId()}));
+		assertEquals("Empresa desconhecida", new Integer(0), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {1021L}));
 	}
 	
 	public void testFindPlanosDeTreinamento()
@@ -426,8 +438,11 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	
 	public void testfindByFiltro() throws Exception
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
 		
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
@@ -439,29 +454,44 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaRealizada.setRealizada(true);
 		turmaRealizada.setDataPrevIni(dataPrevIni);
 		turmaRealizada.setDataPrevFim(dataPrevFim);
-		turmaRealizada.setEmpresa(empresa);
+		turmaRealizada.setEmpresa(empresa1);
 		turmaRealizada.setCurso(curso);
 		turmaDao.save(turmaRealizada);
 		
-		Turma turmaNaoRealizada = TurmaFactory.getEntity();
-		turmaNaoRealizada.setRealizada(false);
-		turmaNaoRealizada.setDataPrevIni(dataPrevIni);
-		turmaNaoRealizada.setDataPrevFim(dataPrevFim);
-		turmaNaoRealizada.setEmpresa(empresa);
-		turmaNaoRealizada.setCurso(curso);
-		turmaDao.save(turmaNaoRealizada);
+		Turma turmaNaoRealizada1 = TurmaFactory.getEntity();
+		turmaNaoRealizada1.setRealizada(false);
+		turmaNaoRealizada1.setDataPrevIni(dataPrevIni);
+		turmaNaoRealizada1.setDataPrevFim(dataPrevFim);
+		turmaNaoRealizada1.setEmpresa(empresa1);
+		turmaNaoRealizada1.setCurso(curso);
+		turmaDao.save(turmaNaoRealizada1);
+		
+		Turma turmaNaoRealizada2 = TurmaFactory.getEntity();
+		turmaNaoRealizada2.setRealizada(false);
+		turmaNaoRealizada2.setDataPrevIni(dataPrevIni);
+		turmaNaoRealizada2.setDataPrevFim(dataPrevFim);
+		turmaNaoRealizada2.setEmpresa(empresa2);
+		turmaNaoRealizada2.setCurso(curso);
+		turmaDao.save(turmaNaoRealizada2);
 		
 		Date hoje = new Date();
 		Turma turmaForaPeriodo = TurmaFactory.getEntity();
 		turmaForaPeriodo.setRealizada(false);
 		turmaForaPeriodo.setDataPrevIni(hoje);
 		turmaForaPeriodo.setDataPrevFim(hoje);
-		turmaForaPeriodo.setEmpresa(empresa);
+		turmaForaPeriodo.setEmpresa(empresa1);
 		turmaForaPeriodo.setCurso(curso);
 		turmaDao.save(turmaForaPeriodo);
 		
-		Collection<Turma> turmas = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, true, empresa.getId());
-		assertEquals(1, turmas.size());
+		Collection<Turma> turmasRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, true, new Long[]{empresa1.getId()});
+		Collection<Turma> turmasNaoRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId()});
+		Collection<Turma> turmasNaoRealizadasE2 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa2.getId()});
+		Collection<Turma> turmasNaoRealizadasTotal = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId(), empresa2.getId()});
+		
+		assertEquals("Empresa 1", 1, turmasRealizadasE1.size());
+		assertEquals("Empresa 1", 1, turmasNaoRealizadasE1.size());
+		assertEquals("Empresa 2", 1, turmasNaoRealizadasE2.size());
+		assertEquals("Empresa 1 e 2", 2, turmasNaoRealizadasTotal.size());
 	}
 
 	public void setCursoDao(CursoDao cursoDao)
@@ -580,24 +610,36 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
 		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
 		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
 		
 		Turma turma = TurmaFactory.getEntity();
-		turma.setEmpresa(empresa);
+		turma.setEmpresa(empresa1);
 		turma.setDataPrevIni(dataPrevIni);
 		turma.setDataPrevFim(dataPrevFim);
 		turma.setQtdParticipantesPrevistos(new Integer(2));
 		turmaDao.save(turma);
 		
 		Turma turma2 = TurmaFactory.getEntity();
-		turma2.setEmpresa(empresa);
+		turma2.setEmpresa(empresa1);
 		turma2.setDataPrevIni(dataPrevIni);
 		turma2.setDataPrevFim(dataPrevFim);
 		turma2.setQtdParticipantesPrevistos(new Integer(2));
 		turmaDao.save(turma2);
 
-		assertEquals(new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, empresa.getId()));
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setEmpresa(empresa2);
+		turma3.setDataPrevIni(dataPrevIni);
+		turma3.setDataPrevFim(dataPrevFim);
+		turma3.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma3);
+		
+		assertEquals("Empresa 1", new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId()}));
+		assertEquals("Empresa 2", new Integer (2), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
+		assertEquals("Empresa 1 e 2", new Integer (6), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId(), empresa2.getId()}));
 	}
 	
 	public void testFindByEmpresa()
@@ -681,11 +723,16 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaOutraEmpresa.setEmpresa(empresa2);
 		turmaOutraEmpresa.setDataPrevIni(dataPrevIni);
 		turmaOutraEmpresa.setDataPrevFim(dataPrevFim);
-		turmaOutraEmpresa.setCusto(5550.0);
+		turmaOutraEmpresa.setCusto(10.15);
 		turmaDao.save(turmaOutraEmpresa);
 		
-		assertEquals(29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
-		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
+		assertEquals("Empresa 1", 29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
+		assertEquals("Empresa 1 e 2",39.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}));
+		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}));
+
+//		assertEquals(29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
+//		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
 	}
 
 	public void testSomaCustos()
@@ -720,15 +767,17 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setCusto(50.00);
 		turmaDao.save(turma3);
 				
-		Turma turmaOutraEmpresa = TurmaFactory.getEntity();
-		turmaOutraEmpresa.setEmpresa(empresa2);
-		turmaOutraEmpresa.setDataPrevIni(dataPrevIni);
-		turmaOutraEmpresa.setDataPrevFim(dataPrevFim);
-		turmaOutraEmpresa.setCusto(5550.0);
-		turmaDao.save(turmaOutraEmpresa);
+		Turma turma4 = TurmaFactory.getEntity();
+		turma4.setEmpresa(empresa2);
+		turma4.setDataPrevIni(dataPrevIni);
+		turma4.setDataPrevFim(dataPrevFim);
+		turma4.setCusto(10.15);
+		turmaDao.save(turma4);
 		
-		assertEquals(79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
-		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
+		assertEquals("Empresa 1", 79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
+		assertEquals("Empresa 1 e 2",89.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}));
+		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}));
 	}
 	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

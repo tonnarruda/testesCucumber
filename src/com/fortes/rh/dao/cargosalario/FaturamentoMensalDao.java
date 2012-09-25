@@ -15,5 +15,5 @@ public interface FaturamentoMensalDao extends GenericDao<FaturamentoMensal>
 
 	FaturamentoMensal findAtual(Date data);
 
-	Double somaByPeriodo(Date dataIni, Date dataFim, Long empresaId);
+	Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds);
 }

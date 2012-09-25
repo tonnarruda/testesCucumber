@@ -59,11 +59,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByCertificacao(certificacaoId);
 	}
 
-	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId)
+	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		if (indicadorTreinamento != null)
 		{
-			IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
+			IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
 
 			Double custoMedioHora = 0d;
 
@@ -80,19 +80,19 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		}
 	}
 
-	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId)
+	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		if (indicadorTreinamento != null)
 		{
 			//Prepara o custo total se ainda não existir
 			if (indicadorTreinamento.getCustoTotal() == null)
 			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
+				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
 				indicadorTreinamento.setCustoTotal(indicadorTmp.getCustoTotal());
 			}
 
 			Double custoPerCapita = 0d;
-			Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaId);
+			Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
 			
 			if (qtdInscritos != null && qtdInscritos > 0)
 				custoPerCapita = (indicadorTreinamento.getCustoTotal() / qtdInscritos);
@@ -103,35 +103,35 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		}
 	}
 
-	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long empresaId)
+	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		if (indicadorTreinamento != null)
 		{
 			// Prepara dados se ainda não existem
 			if (indicadorTreinamento.getSomaHoras() == null)
 			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaId, true);
+				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
 				indicadorTreinamento.setSomaHoras(indicadorTmp.getSomaHoras());
 			}
 			if (indicadorTreinamento.getQtdColaboradoresInscritos() == null)
 			{
-				Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaId);
+				Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
 				indicadorTreinamento.setQtdColaboradoresInscritos(qtdInscritos);
 			}
 
 			Integer qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0);
 			Integer qtdParticipantes = indicadorTreinamento.getQtdColaboradoresInscritos();
 
-			Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaId);
+			Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaIds);
 			Double horasPerCapita = ((qtdHoras.doubleValue()/60) * qtdParticipantes.doubleValue()) / qtdAtivos;
 
 			indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		}
 	}
 
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long empresaId)
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
-		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaId);
+		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
 	}
 
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId)
@@ -140,9 +140,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return (resultado != null ? resultado : new Integer(0));
 	}
 
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long empresaId, Boolean realizado)
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado)
 	{
-		return getDao().countTreinamentos(dataIni, dataFim, empresaId, realizado);
+		return getDao().countTreinamentos(dataIni, dataFim, empresaIds, realizado);
 	}
 
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim)

@@ -431,9 +431,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Collection<Turma> turmas = new ArrayList<Turma>();
 		turmas.add(turma);
 		
-		turmaDao.expects(once()).method("quantidadeParticipantesPrevistos").with(eq(dataTresMesesAtras.getTime()), eq(dataDoisMesesAtras.getTime()),eq(empresa.getId())).will(returnValue(new Integer (1)));
+		turmaDao.expects(once()).method("quantidadeParticipantesPrevistos").with(eq(dataTresMesesAtras.getTime()), eq(dataDoisMesesAtras.getTime()),eq(new Long[]{empresa.getId()})).will(returnValue(new Integer (1)));
 
-		assertEquals(new Integer(1), turmaManager.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),empresa.getId()));
+		assertEquals(new Integer(1), turmaManager.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),new Long[]{empresa.getId()}));
 	}
 	
 	public void testClonarTurmaAndCursoEntreEmpresas() 
@@ -502,15 +502,15 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(100.0));
-		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(10.0));
+		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(new Long[]{empresa.getId()})).will(returnValue(100.0));
+		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(new Long[]{empresa.getId()})).will(returnValue(10.0));
 		
-		assertEquals(10.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, empresa.getId()));
+		assertEquals(10.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, new Long[]{empresa.getId()}));
 		
-		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(0.0));
-		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(empresa.getId())).will(returnValue(10.0));
+		faturamentoMensalManager.expects(once()).method("somaByPeriodo").with(eq(dataIni), eq(dataFim), eq(new Long[]{empresa.getId()})).will(returnValue(0.0));
+		turmaDao.expects(once()).method("somaCustos").with(eq(dataIni), eq(dataFim), eq(new Long[]{empresa.getId()})).will(returnValue(10.0));
 		
-		assertEquals(0.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, empresa.getId()));
+		assertEquals(0.0, turmaManager.getPercentualInvestimento(dataIni, dataFim, new Long[]{empresa.getId()}));
 		
 	}
 }
