@@ -318,6 +318,8 @@
 		
 		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos"  />
 		
+		<@ww.select id="deficiencia" label="Deficiência" name="deficiencia" list=r"#{'1':'Todas', '2':'Somente Deficientes', '3':'Sem Deficiência'}" />
+		
 		<fieldset class="fieldsetPadrao" style="width:578px; margin-bottom: 10px;">
 			<legend>Tempo de Serviço</legend>
 			

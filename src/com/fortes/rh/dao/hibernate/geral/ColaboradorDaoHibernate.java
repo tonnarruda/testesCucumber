@@ -1088,7 +1088,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
+			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1140,6 +1140,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			hql.append("	and co.pessoal.sexo = :sexo ");
+		
+		// somente deficientes
+		if(deficiencia != null && deficiencia.equals("2"))
+			hql.append("    and co.pessoal.deficiencia <> '0'");
+		
+		// não deficientes
+		if(deficiencia != null && deficiencia.equals("3"))
+			hql.append("    and co.pessoal.deficiencia = '0'");
 		
 		if(empresaId != null)
 			hql.append("	and emp.id = :empresaId ");

@@ -126,6 +126,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private CamposExtras camposExtras = new CamposExtras();;
 	private Map sexos = new Sexo();
 	private String sexo;
+	private String deficiencia;
 
 	private Collection<DynaRecord> dataSource;
 	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
@@ -291,7 +292,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, tempoServicoIni, tempoServicoFim);
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -387,7 +388,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, tempoServicoIni, tempoServicoFim);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, tempoServicoIni, tempoServicoFim);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -990,5 +991,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setTempoServicoFim(Integer[] tempoServicoFim) {
 		this.tempoServicoFim = tempoServicoFim;
+	}
+
+	public String getDeficiencia() {
+		return deficiencia;
+	}
+
+	public void setDeficiencia(String deficiencia) {
+		this.deficiencia = deficiencia;
 	}
 }
