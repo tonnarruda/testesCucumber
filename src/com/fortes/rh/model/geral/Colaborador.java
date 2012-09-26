@@ -173,7 +173,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	@OneToMany(mappedBy="colaborador")
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradors;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")

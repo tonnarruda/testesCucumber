@@ -82,6 +82,8 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<Empresa> empresas;
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
+	private char agruparPor;
+
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
@@ -154,6 +156,9 @@ public class TurmaListAction extends MyActionSupportList
 	public String pdi()
 	{
 		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
 		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
 		
@@ -511,5 +516,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setEmpresaId(Long empresaId) {
 		this.empresaId = empresaId;
+	}
+
+	public char getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(char agruparPor) {
+		this.agruparPor = agruparPor;
 	}
 }
