@@ -27,16 +27,16 @@ public interface TurmaManager extends GenericManager<Turma>
 	public void updateRealizada(Long turmaId, boolean realizada)throws Exception;
 	public void updateCusto(Long turmaId, double totalCusto);
 	public Map<String, Object> getParametrosRelatorioSemTreinamento(Empresa empresa, Map<String, Object> parametros);
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long empresaId);
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long[] empresaIds);
 	public Boolean realizadaValue(char realizada);
 	public Collection<Turma> findByIdProjection(Long[] ids);
 	public boolean verificaAvaliacaoDeTurmaRespondida(Long turmaId);
 	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId);
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId);
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId);
-	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long empresaId);
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds);
 }

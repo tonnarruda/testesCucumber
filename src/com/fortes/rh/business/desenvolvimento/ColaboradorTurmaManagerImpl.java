@@ -671,7 +671,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	public Double percentualFrequencia(Date dataIni, Date dataFim, Long empresaId)
+	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		double resultado = 0.0;
 		Integer qtdDiasPresentes = 0;
@@ -680,7 +680,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		Integer qtdDiasTurma;
 		
 		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		Collection<Turma> turmas = turmaManager.findByFiltro(dataIni, dataFim, 'T', empresaId);
+		Collection<Turma> turmas = turmaManager.findByFiltro(dataIni, dataFim, 'T', empresaIds);
 		Collection<Long> turmaIds = LongUtil.collectionToCollectionLong(turmas);
 
 		diaTurmaManager = (DiaTurmaManager) SpringUtil.getBean("diaTurmaManager");
@@ -1007,16 +1007,16 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
-		return getDao().findAprovadosReprovados(dataIni, dataFim, empresaId);
+		return getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds);
 	}
 
-	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long empresaId) 
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = findAprovadosReprovados(dataIni, dataFim, empresaId);
+		Collection<ColaboradorTurma> colaboradorTurmas = findAprovadosReprovados(dataIni, dataFim, empresaIds);
 		Integer qtdAprovados = new Integer(0);
 		Integer qtdReprovados = new Integer(0);
 

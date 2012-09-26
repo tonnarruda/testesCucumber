@@ -968,48 +968,49 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long empresaId) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		StringBuilder sql = new StringBuilder();		
 		
 		sql.append("select ");
-		sql.append("ct.id as colaboradorturma, ");
-		sql.append("cp.qtdpresenca, ");
-		sql.append("dt.totaldias, ");
-		sql.append("c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
-		sql.append("ca.qtdavaliacoescurso, ");
-		sql.append("rct.qtdavaliacoesaprovadaspornota, ");
-		sql.append("rct.nota ");
+		sql.append("  ct.id as colaboradorturma, ");
+		sql.append("  cp.qtdpresenca, ");
+		sql.append("  dt.totaldias, ");
+		sql.append("  c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
+		sql.append("  ca.qtdavaliacoescurso, ");
+		sql.append("  rct.qtdavaliacoesaprovadaspornota, ");
+		sql.append("  rct.nota ");
 		sql.append("from Colaboradorturma ct ");
-		sql.append("left join turma t on t.id=ct.turma_id ");
-		sql.append("left join curso c on c.id=t.curso_id ");
-		sql.append("left join ( select cursos_id, count(avaliacaocursos_id) qtdavaliacoescurso ");
-		sql.append("from curso_avaliacaocurso ");
-		sql.append("group by cursos_id order by cursos_id )as ca ");
-		sql.append("on ca.cursos_id = c.id ");
-		sql.append("left join ( select turma_id, count(dia) totaldias ");
-		sql.append("from diaturma ");
-		sql.append("group by turma_id ");
-		sql.append("order by turma_id ) as dt ");
-		sql.append("on dt.turma_id = t.id ");
-		sql.append("left join( select colaboradorturma_id, count(id) qtdpresenca ");
-		sql.append("from colaboradorpresenca ");
-		sql.append("where ");
-		sql.append("presenca=true ");
-		sql.append("group by colaboradorturma_id  order by colaboradorturma_id  )as cp ");
-		sql.append("on cp.colaboradorturma_id = ct.id ");
-		sql.append("left join ( select aac.colaboradorturma_id, count(aac.colaboradorturma_id) as qtdavaliacoescurso, ");
-		sql.append("sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, sum(aac.valor) as nota ");
-		sql.append("from aproveitamentoavaliacaocurso aac ");
-		sql.append("left join avaliacaocurso ac ");
-		sql.append("on ac.id = aac.avaliacaocurso_id ");
-		sql.append("group by aac.colaboradorturma_id ");
-		sql.append("order by aac.colaboradorturma_id ) as rct ");
-		sql.append("on rct.colaboradorturma_id = ct.id ");
+		sql.append("  left join turma t on t.id=ct.turma_id ");
+		sql.append("  left join curso c on c.id=t.curso_id ");
+		sql.append("  left join ( select cursos_id, count(avaliacaocursos_id) qtdavaliacoescurso ");
+		sql.append("              from curso_avaliacaocurso ");
+		sql.append("              group by cursos_id ");
+		sql.append("              order by cursos_id )as ca ");
+		sql.append("              on ca.cursos_id = c.id ");
+		sql.append("  left join ( select turma_id, count(dia) totaldias ");
+		sql.append("              from diaturma ");
+		sql.append("              group by turma_id ");
+		sql.append("              order by turma_id ) as dt ");
+		sql.append("              on dt.turma_id = t.id ");
+		sql.append("  left join ( select colaboradorturma_id, count(id) qtdpresenca ");
+		sql.append("              from colaboradorpresenca ");
+		sql.append("              where presenca=true ");
+		sql.append("              group by colaboradorturma_id ");
+		sql.append("              order by colaboradorturma_id  )as cp ");
+		sql.append("              on cp.colaboradorturma_id = ct.id ");
+		sql.append("  left join ( select aac.colaboradorturma_id, count(aac.colaboradorturma_id) as qtdavaliacoescurso, ");
+		sql.append("              sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, sum(aac.valor) as nota ");
+		sql.append("              from aproveitamentoavaliacaocurso aac ");
+		sql.append("                 left join avaliacaocurso ac ");
+		sql.append("                 on ac.id = aac.avaliacaocurso_id ");
+		sql.append("                 group by aac.colaboradorturma_id ");
+		sql.append("                 order by aac.colaboradorturma_id ) as rct ");
+		sql.append("              on rct.colaboradorturma_id = ct.id ");
 		sql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim and t.realizada = :realizada and t.id is not null ");
 		
-		if(empresaId != null)
-			sql.append("and c.empresa_id = :empresaId ");
+		if(empresaIds != null)
+			sql.append("and c.empresa_id in (:empresaIds) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
@@ -1017,8 +1018,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setDate("dataFim", dataFim);
 		query.setBoolean("realizada", true);
 		
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
+		if(empresaIds != null)
+			query.setParameterList("empresaIds", empresaIds);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		

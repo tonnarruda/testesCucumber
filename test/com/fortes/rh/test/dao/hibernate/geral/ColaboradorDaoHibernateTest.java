@@ -3353,7 +3353,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDesligadoForaDaConsulta.setDataDesligamento(dataTresMesesAtras.getTime());
 		colaboradorDao.save(colaboradorDesligadoForaDaConsulta);
 
-		assertEquals(new Integer(2), colaboradorDao.getCountAtivos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), empresa.getId()));
+		assertEquals(new Integer(2), colaboradorDao.getCountAtivos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}));
 
 	}
 	
@@ -3490,7 +3490,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null));
 		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{area.getId()}));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, null, new Long[]{area.getId()}));
+		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, new ArrayList<Long>(), new Long[]{area.getId()}));
 	}
 
 	public void testFindAniversariantes() {

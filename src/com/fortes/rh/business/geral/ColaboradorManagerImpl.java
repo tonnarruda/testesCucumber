@@ -1489,9 +1489,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByUsuario(usuarioId);
 	}
 
-	public Integer getCountAtivos(Date dataIni, Date dataFim, Long empresaId)
+	public Integer getCountAtivos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
-		return getDao().getCountAtivos(dataIni, dataFim, empresaId);
+		return getDao().getCountAtivos(dataIni, dataFim, empresaIds);
 	}
 
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId)

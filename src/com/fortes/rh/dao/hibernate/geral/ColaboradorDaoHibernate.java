@@ -2193,10 +2193,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Integer getCountAtivos(Date dataIni, Date dataFim, Long empresaId)
+	public Integer getCountAtivos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
-		hql.append("where c.empresa.id = :empresaId ");
+		hql.append("where c.empresa.id in (:empresaIds) ");
 
 		if(dataFim != null)
 		{
@@ -2205,7 +2205,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
+		query.setParameterList("empresaIds", empresaIds);
 
 		if(dataFim != null)
 			query.setDate("dataFim", dataFim);

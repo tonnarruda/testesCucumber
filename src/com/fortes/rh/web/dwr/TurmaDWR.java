@@ -60,7 +60,7 @@ public class TurmaDWR
 			throw new Exception("Data no formato inválido.");
 		}
 
-		Collection<Turma> turmas = turmaManager.findByFiltro(dataPrevIni, dataPrevFim, realizada, empresaId);
+		Collection<Turma> turmas = turmaManager.findByFiltro(dataPrevIni, dataPrevFim, realizada, new Long[]{empresaId});
 
 		if(turmas.isEmpty())
 			throw new Exception("Não existe Turmas para o filtro informado.");

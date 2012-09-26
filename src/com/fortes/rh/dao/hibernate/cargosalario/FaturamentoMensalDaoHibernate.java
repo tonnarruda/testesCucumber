@@ -78,13 +78,13 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		return (FaturamentoMensal) criteria.uniqueResult();
 	}
 
-	public Double somaByPeriodo(Date dataIni, Date dataFim, Long empresaId) {
+	public Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		
 		criteria.setProjection(Projections.sum("f.valor"));
 		
 		criteria.add(Expression.between("f.mesAno", dataIni, dataFim));		
-		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		criteria.add(Expression.in("f.empresa.id", empresaIds));
 		
 		Double valor = (Double) criteria.uniqueResult();
 		

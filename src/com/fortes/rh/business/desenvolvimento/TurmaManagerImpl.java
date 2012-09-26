@@ -234,9 +234,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		getDao().updateRealizada(turmaId, realizada);
 	}
 
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long empresaId)
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long[] empresaIds)
 	{
-		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaId);
+		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaIds);
 	}
 	
 	public Collection<Turma> findByCursos(Long[] cursoIds)
@@ -267,19 +267,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return (respondidas == null) ? false : (respondidas.size() > 0);
 	}
 	
-//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId) {
-//		getDao().findByIdProjection(turmaId)
-//		return null;
-//	}
-
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
 	{
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
 	}
 	
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long empresaId) 
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
-		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresaId);
+		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresaIds);
 	}
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada) 
@@ -292,17 +287,17 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		getDao().updateCusto(turmaId, totalCusto);
 	}
 
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long empresaId) 
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
-		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaId);
+		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaIds);
 	}
 
-	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long empresaId) 
+	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		double percentual = 0.0;
 		
-		Double faturamentoPeriodo = faturamentoMensalManager.somaByPeriodo(dataIni, dataFim, empresaId);
-		Double custos = getDao().somaCustos(dataIni, dataFim, empresaId);
+		Double faturamentoPeriodo = faturamentoMensalManager.somaByPeriodo(dataIni, dataFim, empresaIds);
+		Double custos = getDao().somaCustos(dataIni, dataFim, empresaIds);
 		
 		if (faturamentoPeriodo > 0)
 			percentual = (custos / faturamentoPeriodo) * 100;
