@@ -73,7 +73,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     		estabelecimento = historicoColaborador.getEstabelecimento();
     	}
     	
-        String[] perguntasRespostas = respostas.split("_");
+        String[] perguntasRespostas = respostas.split("¨");
         questionario = questionarioManager.findByIdProjection(questionario.getId());
         ColaboradorResposta colaboradorResposta = null;
 

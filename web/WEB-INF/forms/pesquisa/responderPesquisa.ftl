@@ -96,22 +96,22 @@ function agrupaPerguntaseRespostas(formulario)
 		elemento = formulario.elements[i];
 
 		if(elemento.name.substring(0,2) == "PG"){
-			perguntasRespostas += "PG"+elemento.name.substring(2)+"_";
+			perguntasRespostas += "PG"+elemento.name.substring(2)+"¨";
 		}
 		else if(elemento.name.substring(0,2) == "RO" && elemento.checked){
-			perguntasRespostas += "RO"+elemento.id.substring(2)+"_";
+			perguntasRespostas += "RO"+elemento.id.substring(2)+"¨";
 		}
 		else if(elemento.name.substring(0,2) == "RM" && elemento.checked){
-			perguntasRespostas += "RM"+elemento.id.substring(2)+"_";
+			perguntasRespostas += "RM"+elemento.id.substring(2)+"¨";
 		}
 		else if(elemento.name.substring(0,2) == "RN"){
-			perguntasRespostas += "RN"+elemento.value+"_";
+			perguntasRespostas += "RN"+elemento.value+"¨";
 		}
 		else if(elemento.name.substring(0,2) == "RS" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RS"+elemento.value.trim()+"_";
+			perguntasRespostas += "RS"+elemento.value.trim()+"¨";
 		}
 		else if(elemento.name.substring(0,2) == "RC" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RC"+elemento.value.trim()+"_";
+			perguntasRespostas += "RC"+elemento.value.trim()+"¨";
 		}
 	}
 
