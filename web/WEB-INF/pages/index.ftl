@@ -104,6 +104,7 @@
 						$('#atualizacao').show();
 					}
 				});
+			</@authz.authorize>
 		});
 		
 		function marcarMensagemLida(usuarioMensagemId)
