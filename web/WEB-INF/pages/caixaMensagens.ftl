@@ -17,17 +17,17 @@
 
 					<#if !msg.lida>
 						<#assign style=""/>
-						<#assign status><img border="0" title="Não lida" src="/fortesrh/imgs/mail.png"/></#assign>
+						<#assign status><img border="0" title="Não lida" src="<@ww.url value="imgs/mail.png"/>"/></#assign>
 					<#else>
 						<#assign style="color: #949494;"/>
-						<#assign status><img border="0" title="Lida" src="/fortesrh/imgs/mail-open.png"/></#assign>
+						<#assign status><img border="0" title="Lida" src="<@ww.url value="imgs/mail-open.png"/>"/></#assign>
 					</#if>
 				
 					<tr class="${class}">
 						<#if msg.usuarioMensagemId?exists>
 							<td width="40" align="center">
-								<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-								<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+								<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url value="/imgs/olho.jpg"/>"/> </a>
+								<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
 							</td>
 						</#if>
 						<td>
