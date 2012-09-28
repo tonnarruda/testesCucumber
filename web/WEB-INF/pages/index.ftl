@@ -95,7 +95,7 @@
 	
 			$( ".column" ).disableSelection();
 			
-			<@authz.authorize ifAllGranted="ROLE_UTI_HISTORICO_VERSAO">
+			<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA">
 				UtilDWR.findUltimaVersaoPortal(function(retorno) {
 					var resposta = jQuery.parseJSON(retorno);
 					if (resposta.sucesso == '1')
