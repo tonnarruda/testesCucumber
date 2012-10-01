@@ -27,9 +27,9 @@ public class IssueManagerImpl implements IssueManager
 	private static final String USERPWD = "suporterh:s1234rh";
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public Collection<Issue> getIssues(String label, boolean closed) {
+	public Collection<Issue> getIssues(String label, boolean closed, int pageInicial, int pageFinal) {
 		HttpClient client = new HttpClient();
-		String url = URL_ISSUES + "?sort=created&direction=desc";
+		String url = URL_ISSUES + "?sort=created&direction=desc&page="+ pageInicial +"&per_page=" + pageFinal;
 
 		if(closed)
 			url += "&state=closed";
@@ -62,6 +62,7 @@ public class IssueManagerImpl implements IssueManager
 		
 		return issues;
 	}
+	
 	
 	public Issue findByNumber(String number) 
 	{

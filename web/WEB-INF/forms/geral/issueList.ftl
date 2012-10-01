@@ -1,9 +1,13 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
 	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		.label { padding: 3px 4px 3px 12px; cursor: pointer; border-radius: 3px; border: 1px solid transparent; }
 		.label:hover, .marcado { 
 			border-color: #BBB;
@@ -50,8 +54,12 @@
 	</script>
 	
 	<title>Cartões</title>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
 <body>
+	<#if !page?exists>
+		<#assign page=1>
+	</#if>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<div id="containerLabels">
@@ -60,7 +68,8 @@
 	<span class="label lblFechados"><span class="lbl" style="background-color: #666666;">todos os fechados</span></span>  
 	</div>
 	<br>
-	<@display.table name="issues" id="issue" class="dados">
+	<@ww.form name="formBusca" action="list.action"  method="POST" id="formBusca">
+	<@display.table name="issues" id="issue" class="dados" pagesize=20>
 		<@display.column title="Ações" class="acao" style="width:30px;text-align:center;vertical-align:top;">
 			<#if issue.user.id == '1630543'>
 				<a href="prepareUpdate.action?issue.number=${issue.number}"><img border="0" align='absMiddle' title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
@@ -77,7 +86,9 @@
 		<@display.column property="body" title="Descrição" style="width:500px;"/>
 		<@display.column property="user.login" title="Criado por" style="width:100px;"/>
 	</@display.table>
-	
+	<@ww.hidden id="pagina" name="page"/>
+	</@ww.form>
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
 	</div>

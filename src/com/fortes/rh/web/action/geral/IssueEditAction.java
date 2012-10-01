@@ -8,6 +8,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.github.Issue;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.sun.org.apache.bcel.internal.generic.ISUB;
 
 public class IssueEditAction extends MyActionSupportList
 {
@@ -18,7 +19,7 @@ public class IssueEditAction extends MyActionSupportList
 	private boolean closed;
 	private String label;
 	private Collection<Issue> issues;
-
+    
 	private void prepare() throws Exception
 	{
 		labels = issueManager.getLabels();
@@ -78,8 +79,9 @@ public class IssueEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setTotalSize(issueManager.getIssues(label, closed, 1, 9999).size());	
 		labels = issueManager.getLabels();
-		issues = issueManager.getIssues(label, closed);
+		issues = issueManager.getIssues(label, closed, getPage(), getPagingSize());
 		return Action.SUCCESS;
 	}
 	
