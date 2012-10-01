@@ -518,29 +518,29 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testCalculaIndiceProcessoSeletivo()
     {
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(21));
-    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodo").will(returnValue(99));
+    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(99));
     	
-    	assertEquals(78.79, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null));
+    	assertEquals(78.79, colaboradorManager.calculaIndiceProcessoSeletivo(null, null));
 
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(21));
-    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodo").will(returnValue(45));
+    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(45));
     	//arredonda pra cima 46,666666	
-    	assertEquals(53.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null));
+    	assertEquals(53.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null));
 
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(0));
-    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodo").will(returnValue(100));
+    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(100));
     	
-    	assertEquals(100.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null));
-    	
-    	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(10));
-    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodo").will(returnValue(0));
-    	
-    	assertEquals(0.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null));
+    	assertEquals(100.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null));
     	
     	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(10));
-    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodo").will(returnValue(3));
+    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(0));
     	
-    	assertEquals(-233.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null, null));
+    	assertEquals(0.0, colaboradorManager.calculaIndiceProcessoSeletivo(null, null));
+    	
+    	colaboradorDao.expects(once()).method("qtdDemitidosEm90Dias").will(returnValue(10));
+    	colaboradorDao.expects(once()).method("qtdAdmitidosPeriodoEm90Dias").will(returnValue(3));
+    	
+    	assertEquals(-233.33, colaboradorManager.calculaIndiceProcessoSeletivo(null, null));
     }
 
     public void testFindColaboradorByIdProjection()

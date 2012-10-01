@@ -117,8 +117,8 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
-	public int qtdDemitidosEm90Dias(Long empresaId, Date dataDe, Date dataAte);
-	public int qtdAdmitidosPeriodo(Long empresaId, Date dataDe, Date dataAte);
+	public int qtdDemitidosEm90Dias(Long empresaId, Date dataAte);
+	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Date dataAte);
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);

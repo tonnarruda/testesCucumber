@@ -4380,7 +4380,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Date dataDe = DateUtil.montaDataByString("20/01/2010");
 		Date dataAte = DateUtil.montaDataByString("11/11/2010");
 		
 		Colaborador mariaNaoDesligada = ColaboradorFactory.getEntity();
@@ -4388,7 +4387,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		mariaNaoDesligada.setDesligado(false);
 		colaboradorDao.save(mariaNaoDesligada);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
 		
 		Colaborador joaoDesligadoAntesDoPeriodo = ColaboradorFactory.getEntity();
 		joaoDesligadoAntesDoPeriodo.setEmpresa(empresa);
@@ -4396,7 +4395,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		joaoDesligadoAntesDoPeriodo.setDataDesligamento(DateUtil.montaDataByString("01/01/2000"));
 		colaboradorDao.save(joaoDesligadoAntesDoPeriodo);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
 		
 		Colaborador marciaDesligadoDepoisPeriodo = ColaboradorFactory.getEntity();
 		marciaDesligadoDepoisPeriodo.setEmpresa(empresa);
@@ -4404,13 +4403,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		marciaDesligadoDepoisPeriodo.setDataDesligamento(DateUtil.montaDataByString("22/12/2022"));
 		colaboradorDao.save(marciaDesligadoDepoisPeriodo);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
 
-		Colaborador pedroDesligadoNoPeriodo = ColaboradorFactory.getEntity();
-		pedroDesligadoNoPeriodo.setEmpresa(empresa);
-		pedroDesligadoNoPeriodo.setDesligado(true);
-		pedroDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("20/01/2010"));
-		colaboradorDao.save(pedroDesligadoNoPeriodo);
+		Colaborador pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias = ColaboradorFactory.getEntity();
+		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setEmpresa(empresa);
+		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setDesligado(true);
+		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setDataDesligamento(DateUtil.montaDataByString("20/01/2010"));
+		colaboradorDao.save(pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias);
 		
 		Colaborador toinDesligadoNoPeriodo = ColaboradorFactory.getEntity();
 		toinDesligadoNoPeriodo.setEmpresa(empresa);
@@ -4424,7 +4423,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		bebelDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("20/09/2010"));
 		colaboradorDao.save(bebelDesligadoNoPeriodo);
 		
-		assertEquals(3, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataDe, dataAte));
+		assertEquals(2, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
 	}
 	
 	public void testQtdAdmitidosPeriodo() 
@@ -4432,7 +4431,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Date dataDe = DateUtil.montaDataByString("20/01/2010");
 		Date dataAte = DateUtil.montaDataByString("11/11/2010");
 		
 		Colaborador maria = ColaboradorFactory.getEntity();
@@ -4446,12 +4444,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		bebel.setDataAdmissao(DateUtil.montaDataByString("22/12/2022"));
 		colaboradorDao.save(bebel);
 		
-		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
+		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), dataAte));
 		
-		Colaborador joao = ColaboradorFactory.getEntity();
-		joao.setEmpresa(empresa);
-		joao.setDataAdmissao(DateUtil.montaDataByString("20/01/2010"));
-		colaboradorDao.save(joao);
+		Colaborador joaoFora = ColaboradorFactory.getEntity();
+		joaoFora.setEmpresa(empresa);
+		joaoFora.setDataAdmissao(DateUtil.montaDataByString("20/01/2010"));
+		colaboradorDao.save(joaoFora);
 		
 		Colaborador marcia = ColaboradorFactory.getEntity();
 		marcia.setEmpresa(empresa);
@@ -4463,7 +4461,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		pedro.setDataAdmissao(DateUtil.montaDataByString("11/11/2010"));
 		colaboradorDao.save(pedro);
 		
-		assertEquals(3, colaboradorDao.qtdAdmitidosPeriodo(empresa.getId(), dataDe, dataAte));
+		assertEquals(2, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), dataAte));
 	}
 	
 	public void testFindCodigoACDuplicado() 

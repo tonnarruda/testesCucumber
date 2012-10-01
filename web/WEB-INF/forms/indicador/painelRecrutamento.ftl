@@ -35,7 +35,7 @@
 		$(function () {
 		
 			$('#tooltipHelp').qtip({
-				content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos no período * 100)'
+				content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos em até 90 dias * 100). Apenas a data final do período é considerada para este cálculo.' 
 			});
 		
 			var totalVagas = 0;

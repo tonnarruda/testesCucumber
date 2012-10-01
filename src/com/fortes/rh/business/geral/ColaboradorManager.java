@@ -176,7 +176,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
-	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataDe, Date dataAte);
+	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataAte);
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
