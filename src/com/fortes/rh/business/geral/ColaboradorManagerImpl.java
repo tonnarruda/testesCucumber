@@ -2323,11 +2323,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByQuestionarioNaoRespondido(questionarioId);
 	}
 
-	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataDe, Date dataAte) 
+	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataAte) 
 	{
 		//(demitidos em até 90 dias / admitidos no periodo * 100)
-		double qtdDemitidosEm90Dias = getDao().qtdDemitidosEm90Dias(empresaId, dataDe, dataAte);
-		double qtdAdmitidosPeriodo = getDao().qtdAdmitidosPeriodo(empresaId, dataDe, dataAte);
+		double qtdDemitidosEm90Dias = getDao().qtdDemitidosEm90Dias(empresaId, dataAte);
+		double qtdAdmitidosPeriodo = getDao().qtdAdmitidosPeriodoEm90Dias(empresaId, dataAte);
 		
 		if(qtdDemitidosEm90Dias == 0.0)
 			return 100.0;

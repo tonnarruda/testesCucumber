@@ -3997,7 +3997,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public int qtdDemitidosEm90Dias(Long empresaId, Date dataDe, Date dataAte) 
+	public int qtdDemitidosEm90Dias(Long empresaId, Date dataAte) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
 		hql.append("	where co.empresa.id = :empresaId ");
@@ -4007,14 +4007,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
-		query.setDate("dataIni", dataDe);
+		query.setDate("dataIni", DateUtil.incrementaDias(dataAte, -90));
 		query.setDate("dataFim", dataAte);
 		query.setInteger("qtdDias", 90);
 
 		return (Integer) query.uniqueResult();
 	}
 
-	public int qtdAdmitidosPeriodo(Long empresaId, Date dataDe, Date dataAte) 
+	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Date dataAte) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
 		hql.append("	where co.empresa.id = :empresaId ");
@@ -4022,7 +4022,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
-		query.setDate("dataIni", dataDe);
+		query.setDate("dataIni", DateUtil.incrementaDias(dataAte, -90));
 		query.setDate("dataFim", dataAte);
 
 		return (Integer) query.uniqueResult();
