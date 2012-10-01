@@ -414,6 +414,7 @@ Dado /^que exista um usuario "([^"]*)"$/ do |usuario_nome|
      nome usuario_nome
      acessosistema true
      superadmin false
+     caixasmensagens '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}'
    end
    insert :usuarioempresa do
      usuario :nome => usuario_nome

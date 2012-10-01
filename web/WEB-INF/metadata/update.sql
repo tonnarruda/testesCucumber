@@ -19202,3 +19202,18 @@ update parametrosdosistema set appversao = '1.1.87.83';--.go
 -- versao 1.1.87.84
 
 update parametrosdosistema set appversao = '1.1.87.84';--.go
+-- versao 1.1.88.85
+
+update papel set ordem=ordem+1 where papelmae_id is null and ordem >= 3;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 562);--.go
+UPDATE parametrosdosistema SET modulos = cast(encode(decode(modulos, 'base64')||',562', 'base64') as text);--.go
+alter sequence papel_sequence restart with 563;--.go
+
+insert into migrations values('20120928152741');--.go
+alter table usuario add column caixasMensagens character varying(255);--.go
+update usuario set caixasMensagens = '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}';--.go
+alter table usuario alter column caixasMensagens set not null; --.go
+insert into migrations values('20121001135135');--.go
+update parametrosdosistema set appversao = '1.1.88.85';--.go

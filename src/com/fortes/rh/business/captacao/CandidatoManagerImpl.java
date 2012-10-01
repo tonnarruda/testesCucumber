@@ -1,8 +1,3 @@
-/* autor: Moesioan Medeirostasull
- * Data: 07/06/2006
- * Requisito: RFA013 - Cadastro de candidato
- */
-
 package com.fortes.rh.business.captacao;
 
 import java.io.BufferedReader;

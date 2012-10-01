@@ -147,7 +147,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
 
-    	String respostas = "PG01_RO01_PG02_RO02_PG03_RN10_RCTESETE_PG04_RSTETETETETE";
+    	String respostas = "PG01¨RO01¨PG02¨RO02¨PG03¨RN10¨RCTESETE¨PG04¨RSTETETETETE";
 
     	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
@@ -160,7 +160,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorRespostaDao.expects(atLeastOnce()).method("save").with(ANYTHING);
 
-    	transactionManager.expects(once()).method("commit").with(ANYTHING);
+    	transactionManager.expects(once()).method("commit").with(ANYTHING).isVoid();
 
     	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date());
 
@@ -228,7 +228,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorQuestionarioManager.expects(once()).method("save").with(ANYTHING).will(returnValue(colaboradorQuestionario));
 
-    	String respostas = "PG01_RO01_PG02_RO02_PG03_RN10_RCTESETE_PG04_RSTETETETETE";
+    	String respostas = "PG01¨RO01¨PG02¨RO02¨PG03¨RN10¨RCTESETE¨PG04¨RSTETETETETE";
 
     	colaboradorManager.expects(once()).method("respondeuEntrevista").with(ANYTHING);
 
@@ -273,7 +273,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorQuestionario.setRespondida(true);
 
-    	String respostas = "PG01_RO01_PG02_RO02_PG03_RN10_RCTESETE_PG04_RSTETETETETE";
+    	String respostas = "PG01¨RO01¨PG02¨RO02¨PG03¨RN10¨RCTESETE¨PG04¨RSTETETETETE";
 
     	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 

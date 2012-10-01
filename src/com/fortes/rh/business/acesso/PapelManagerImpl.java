@@ -193,7 +193,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 			
 			for (Papel papel : novosPapeis)
 			{
-				if (todosOsPapeisPermitidos.contains(papel.getPapelMae().getId()))
+				if (papel.getPapelMae()!=null && papel.getPapelMae().getId()!=null && todosOsPapeisPermitidos.contains(papel.getPapelMae().getId()))
 					todosOsPapeisPermitidos.add(papel.getId());
 				
 			}
