@@ -14,7 +14,6 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -27,7 +26,6 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
-import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao
@@ -830,7 +828,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (Double) criteria.uniqueResult();
 	}
 
-	public Integer getQtdavaliadores(Long avaliacaoDesempenhoId) 
+	public Integer getQtdAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId, boolean desconsiderarAutoAvaliacao) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 
@@ -839,7 +837,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 	    criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 	    criteria.add(Expression.eq("cq.respondida", true));
+	    criteria.add(Expression.eq("cq.colaborador.id", avaliadoId));
 
+	    if (desconsiderarAutoAvaliacao)
+	    	criteria.add(Expression.ne("cq.avaliador.id", avaliadoId));
+	    
 		criteria.setProjection(Projections.distinct(p));
 		
 		return (Integer) criteria.uniqueResult();

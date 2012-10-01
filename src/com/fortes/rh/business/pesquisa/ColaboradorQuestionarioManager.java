@@ -52,7 +52,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	void excluirColaboradorQuestionarioByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	Collection<ColaboradorQuestionario> findByColaborador(Long colaboradorId);
 	Double getMediaPeformance(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
-	Integer getQtdavaliadores(Long avaliacaoDesempenhoId);
+	Integer getQtdAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId, boolean desconsiderarAutoAvaliacao);
 	ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao);
 	Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId);
 	void removeByCandidato(Long candidatoId);

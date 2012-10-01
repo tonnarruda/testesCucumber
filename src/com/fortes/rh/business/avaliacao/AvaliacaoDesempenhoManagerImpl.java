@@ -133,10 +133,12 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException
 	{
 		Collection<ResultadoAvaliacaoDesempenho> resultadoQuestionarios = new ArrayList<ResultadoAvaliacaoDesempenho>();
-		Integer qtdAvaliadores = colaboradorQuestionarioManager.getQtdavaliadores(avaliacaoDesempenho.getId());
+		Integer qtdAvaliadores = null;
 		
 		for (Long avaliadoId : avaliadosIds)
 		{
+			qtdAvaliadores = colaboradorQuestionarioManager.getQtdAvaliadores(avaliacaoDesempenho.getId(), avaliadoId, desconsiderarAutoAvaliacao);
+			
 			Collection<Pergunta> perguntas = perguntaManager.findByQuestionarioAspectoPergunta(avaliacaoDesempenho.getAvaliacao().getId(), null, null, agruparPorAspectos);
 			Long[] perguntasIds = new CollectionUtil<Pergunta>().convertCollectionToArrayIds(perguntas);
 			Map<Long, Integer> pontuacoesMaximasPerguntas = perguntaManager.getPontuacoesMaximas(perguntasIds); 

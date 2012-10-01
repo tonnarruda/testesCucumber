@@ -199,7 +199,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L), eq(false)).will(returnValue(new ArrayList<ColaboradorResposta>()));
 		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(2L),eq(3L), eq(false)).will(returnValue(colaboradorRespostas));
 		
-		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdavaliadores").with(ANYTHING).will(returnValue(3));
+		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdAvaliadores").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(3));
 		perguntaManager.expects(atLeastOnce()).method("getPontuacoesMaximas").with(ANYTHING).will(returnValue(new HashMap<Long, Integer>()));
 		
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(2L),eq(3L)).will(returnValue(percentuaisDeRespostas));
@@ -233,7 +233,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostas));
 		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostasMultiplas));
 		
-		colaboradorQuestionarioManager.expects(once()).method("getQtdavaliadores").with(ANYTHING).will(returnValue(1));
+		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdAvaliadores").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(1));
 		perguntaManager.expects(once()).method("getPontuacoesMaximas").with(ANYTHING).will(returnValue(new HashMap<Long, Integer>()));
 		
 		questionarioManager.expects(once()).method("montaResultadosAvaliacaoDesempenho").withAnyArguments().will(returnValue(new ArrayList<ResultadoAvaliacaoDesempenho>()));
