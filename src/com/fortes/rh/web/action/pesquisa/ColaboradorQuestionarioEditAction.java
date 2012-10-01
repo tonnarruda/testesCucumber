@@ -252,7 +252,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private void exibeResultadoAutoavaliacao() 
 	{
 		this.exibeResultadoAutoavaliacao =  colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() 
-		&& SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId().equals(colaboradorQuestionario.getColaborador().getId()) 
+		&& colaboradorQuestionario.getColaborador().getId().equals(SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId()) 
 		&& colaboradorQuestionario.getAvaliador().getId().equals(colaboradorQuestionario.getColaborador().getId()) 
 		&& colaboradorQuestionario.getAvaliacao().isExibeResultadoAutoavaliacao();
 	}

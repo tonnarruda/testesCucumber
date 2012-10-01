@@ -919,7 +919,15 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionario3.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
 		
-		assertEquals(new Integer(2), colaboradorQuestionarioDao.getQtdavaliadores(avaliacaoDesempenho.getId()));
+		ColaboradorQuestionario colaboradorQuestionario4 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario4.setColaborador(avaliado);
+		colaboradorQuestionario4.setAvaliador(avaliado);
+		colaboradorQuestionario4.setRespondida(true);
+		colaboradorQuestionario4.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario4);
+		
+		assertEquals("Considera autoavaliacao", new Integer(3), colaboradorQuestionarioDao.getQtdAvaliadores(avaliacaoDesempenho.getId(), avaliado.getId(), false));
+		assertEquals("Desconsidera autoavaliacao", new Integer(2), colaboradorQuestionarioDao.getQtdAvaliadores(avaliacaoDesempenho.getId(), avaliado.getId(), true));
 	}
 	
 	public void testFindByColaboradorAvaliacao()

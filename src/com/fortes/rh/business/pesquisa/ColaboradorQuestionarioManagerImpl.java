@@ -440,8 +440,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().getMediaPeformance(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 	}
 
-	public Integer getQtdavaliadores(Long avaliacaoDesempenhoId){
-		return getDao().getQtdavaliadores(avaliacaoDesempenhoId);
+	public Integer getQtdAvaliadores(Long avaliacaoDesempenhoId, Long avaliadoId, boolean desconsiderarAutoAvaliacao){
+		return getDao().getQtdAvaliadores(avaliacaoDesempenhoId, avaliadoId, desconsiderarAutoAvaliacao);
 	}
 	
 	public ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao) {
