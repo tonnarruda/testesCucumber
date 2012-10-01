@@ -40,12 +40,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId);
+		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, null);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.anuncio", "an", Criteria.LEFT_JOIN);
@@ -66,7 +66,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("an.exibirModuloExterno"), "projectionAnuncioExibirModuloExterno");
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId);
+		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca);
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
@@ -79,7 +79,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId)
+	private void montaConsulta(Criteria criteria, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
 	{
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.solicitante", "us", Criteria.LEFT_JOIN);
@@ -103,6 +103,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 			criteria.add(Expression.eq("s.encerrada", false));
 			criteria.add(Expression.eq("s.suspensa", true));
 		}
+		
+		if(descricaoBusca != null && !descricaoBusca.equals(""))
+			criteria.add(Expression.eq("s.descricao", descricaoBusca)); 
 
 		if(usuario != null && usuario.getId() != null && !liberaSolicitacao)
 			criteria.add(Expression.eq("s.solicitante.id", usuario.getId()));

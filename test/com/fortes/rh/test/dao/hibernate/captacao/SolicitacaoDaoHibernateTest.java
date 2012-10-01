@@ -122,7 +122,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setEmpresa(empresa);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'E', false, empresa.getId(), null, cargoId);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'E', false, empresa.getId(), null, cargoId, null);
 
 		assertEquals(1, solicitacaos.size());
 	}
@@ -144,7 +144,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setSolicitante(solicitante);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargoId);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargoId, null);
 
 		assertEquals(1, solicitacaos.size());
 	}
@@ -376,9 +376,39 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setFaixaSalarial(faixaSalarial);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId());
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), null);
 
 		assertEquals(1, solicitacaos.size());
+	}
+	
+	public void testFindAllByVisualizacaoSolicitacaoDescricao()
+	{
+		Usuario solicitante = UsuarioFactory.getEntity();
+		solicitante = usuarioDao.save(solicitante);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargo = cargoDao.save(cargo);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+
+		Solicitacao solicitacao = getEntity();
+		solicitacao.setDescricao("Desenvolvedor");
+		solicitacao.setEncerrada(false);
+		solicitacao.setSuspensa(false);
+		solicitacao.setEmpresa(empresa);
+		solicitacao.setSolicitante(solicitante);
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao = solicitacaoDao.save(solicitacao);
+
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedor");
+		Collection<Solicitacao> solicitacaos2 = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedores");
+		assertEquals(1, solicitacaos.size());
+		assertEquals(0, solicitacaos2.size());
 	}
 
 	public void testFindAllByVisualizacaoSuspensa()
@@ -398,7 +428,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setSolicitante(solicitante);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'S', false, empresa.getId(), solicitante, cargoId);
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'S', false, empresa.getId(), solicitante, cargoId, null);
 
 		assertEquals(1, solicitacaos.size());
 	}

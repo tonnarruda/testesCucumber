@@ -346,9 +346,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		boolean liberaSolicitacao = true;
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(liberaSolicitacao), eq(empresa.getId()), eq(usuario), eq(cargo.getId()) }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(liberaSolicitacao), eq(empresa.getId()), eq(usuario), eq(cargo.getId()), eq(null) }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, liberaSolicitacao, empresa.getId(), usuario.getId(), cargo.getId());
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, liberaSolicitacao, empresa.getId(), usuario.getId(), cargo.getId(), null);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}
@@ -407,9 +407,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		boolean liberaSolicitacao = true;
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(liberaSolicitacao), eq(empresa.getId()), eq(null), eq(cargo.getId()) }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(liberaSolicitacao), eq(empresa.getId()), eq(null), eq(cargo.getId()), eq(null) }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, liberaSolicitacao, empresa.getId(), cargo.getId());
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, liberaSolicitacao, empresa.getId(), cargo.getId(), null);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}

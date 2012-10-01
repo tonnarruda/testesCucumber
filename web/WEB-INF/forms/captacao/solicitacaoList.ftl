@@ -85,7 +85,8 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="list.action" validate="true" onsubmit="setPage();" method="POST" id="formBusca">
-			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" /><br>
+			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" />
+			<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca"  cssStyle="width: 229px;"/>
 			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" /><br>
 			<@ww.hidden id="pagina" name="page"/>
 

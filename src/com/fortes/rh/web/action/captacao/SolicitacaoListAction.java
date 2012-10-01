@@ -66,6 +66,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
+    private String descricaoBusca;
     
     private String json;
     private char statusSolicitacaoAnterior;
@@ -88,13 +89,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 		if(roleMovSolicitacaoSelecao)
 		{
 			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId()));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId());
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
 			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId()));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId());
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -435,5 +436,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public String getDescricaoBusca() {
+		return descricaoBusca;
+	}
+
+	public void setDescricaoBusca(String descricaoBusca) {
+		this.descricaoBusca = descricaoBusca;
 	}
 }

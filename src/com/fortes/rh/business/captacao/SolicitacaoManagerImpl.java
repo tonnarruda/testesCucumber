@@ -52,12 +52,12 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().getCount(visualizar, liberaSolicitacao, empresaId, usuario, cargoId);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId, String descricaoBusca)
 	{
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
 
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, liberaSolicitacao, empresaId, usuario, cargoId);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca);
 	}
 
 	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId)
@@ -65,9 +65,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().getCount(visualizar, liberaSolicitacao, empresaId, null, cargoId);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId, String descricaoBusca)
 	{
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,liberaSolicitacao, empresaId, null, cargoId);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,liberaSolicitacao, empresaId, null, cargoId, descricaoBusca);
 	}
 
 	@Override

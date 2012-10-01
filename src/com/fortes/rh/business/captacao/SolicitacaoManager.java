@@ -30,8 +30,8 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
 	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId);
-	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId);
-	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId);
+	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId, String descricaoBusca);
+	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId, String descricaoBusca);
 	Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long cargoId);
 	Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Long usuarioId, Long cargoId);
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
