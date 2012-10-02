@@ -12,7 +12,7 @@
 	<style>
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 				
-		a { text-decoration: none; font-size: 11px !important; font-family: Arial, Helvetica, sans-serif !important; }
+		.dados a { text-decoration: none; font-size: 11px !important; font-family: Arial, Helvetica, sans-serif !important; }
 		.dados td { font-size: 11px !important; }
 		.tituloMensagem { width: 390px; white-space: nowrap; overflow: hidden; }
 		.remetenteHora { color: #069; }
@@ -96,13 +96,16 @@
 			$( ".column" ).disableSelection();
 			
 			<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA">
-				UtilDWR.findUltimaVersaoPortal(function(retorno) {
-					var resposta = jQuery.parseJSON(retorno);
-					if (resposta.sucesso == '1')
-					{
-						$('#versaoPortal').text(resposta.versao);
-						$('#atualizacao').show();
-					}
+				UtilDWR.findUltimaVersaoPortal({ 
+						callback: function(retorno) {
+							var resposta = jQuery.parseJSON(retorno);
+							if (resposta.sucesso == '1')
+							{
+								$('#versaoPortal').text(resposta.versao);
+								$('#atualizacao').show();
+							}
+						},
+						errorHandler: function() {  }
 				});
 			</@authz.authorize>
 		});
