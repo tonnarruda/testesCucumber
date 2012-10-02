@@ -616,32 +616,18 @@
 						key="rectangle-5"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
 				</rectangle>
-				<staticText>
-					<reportElement
-						x="3"
-						y="1"
-						width="79"
-						height="11"
-						key="staticText-5"
-						isPrintInFirstWholeBand="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Total de Registros:]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="82"
+						x="2"
 						y="1"
-						width="25"
+						width="187"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Long"><![CDATA[$V{countCampo1}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total de Registros: " + $V{countCampo1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>
