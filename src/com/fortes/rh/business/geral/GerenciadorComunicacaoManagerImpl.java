@@ -542,10 +542,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					for (Colaborador colaborador : colaboradores)
 					{
 						StringBuilder mensagem = new StringBuilder();
-						mensagem.append("Período de Experiência: ")
+						mensagem.append("Período de Experiência: ");
+						
+						StringBuilder mensagemTitulo = new StringBuilder();
+						mensagemTitulo.append("Faltam ")
 								.append(diaLembrete)
 								.append(" dias para a Avaliação de ").append(diasAvaliacao).append(" dias de ")
 								.append(colaborador.getNome()).append(".\n\n");
+						mensagem.append(mensagemTitulo);
 						
 						mensagem.append("Lembrete de Avaliação de ")
 								.append(diasAvaliacao)
@@ -576,6 +580,16 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    			
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
 		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds());
+		    			
+		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
+		    			{
+		    				try {
+		    					String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaborador.getAreaOrganizacional().getId(), colaborador.getEmpresa().getId());
+		    					mail.send(gerenciadorComunicacao.getEmpresa(), mensagemTitulo.toString(), null, mensagem.toString().replace("\n", "<br>"), emails);
+		    				} catch (Exception e) {
+		    					e.printStackTrace();
+		    				}
+		    			}
 					}
 				}
 			}

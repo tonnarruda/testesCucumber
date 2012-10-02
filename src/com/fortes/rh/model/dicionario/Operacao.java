@@ -103,6 +103,7 @@ public enum Operacao
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR_AVALIADO);
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
 			
 			return this.getListMeioComunicacao();
 		}

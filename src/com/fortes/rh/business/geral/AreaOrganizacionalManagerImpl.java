@@ -35,6 +35,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
 
@@ -712,5 +713,24 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		areas = cUtil.sortCollectionStringIgnoreCase(areas, "descricao");
 		
 		return areas;
+	}
+	
+	public String[] getEmailsResponsaveis(Long areaId, Long empresaId) throws Exception
+	{
+		Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, true, null); 
+		areas = getAncestrais(areas, areaId);
+		
+		Collection<String> emailsNotificacoes = new ArrayList<String>();
+		for (AreaOrganizacional area : areas) 
+		{
+			if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
+				emailsNotificacoes.add(area.getResponsavelEmail());
+			
+			if(area.getEmailsNotificacoes() != null)
+				for (String email : area.getEmailsNotificacoes().split(";"))
+					emailsNotificacoes.add(email);
+		}
+		
+		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
 }
