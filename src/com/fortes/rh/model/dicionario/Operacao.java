@@ -243,6 +243,17 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	ATUALIZAR_INFO_PESSOAIS(26, "Atualizar dados pessoais", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 
 	private int id;

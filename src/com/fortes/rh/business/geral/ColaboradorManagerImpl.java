@@ -44,7 +44,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
@@ -67,7 +66,6 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -1235,113 +1233,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
 			
-			criarMensagemAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
-			
+			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			throw new Exception("Não foi possível Editar o colaborador.");
 		}
-	}
-	
-	private void criarMensagemAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId)
-	{
-		StringBuffer mensagem = new StringBuffer();
-		
-		mensagem.append("<b>" + colaboradorOriginal.getNome() + "</b> atualizou seus dados: \n\n");
-		
-		mensagem.append("Dados originais: \n");
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + colaboradorOriginal.getEndereco().getLogradouro() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + colaboradorOriginal.getEndereco().getNumero() + "\n");
-		
-		if (!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-				mensagem.append("Complemento: " + colaboradorOriginal.getEndereco().getComplemento() + "\n");
-			
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + colaboradorOriginal.getEndereco().getBairro()+ "\n");
-		
-		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + colaboradorOriginal.getEndereco().getCidade().getNome()+ "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla())) 
-			mensagem.append("UF: " + colaboradorOriginal.getEndereco().getUf().getSigla() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + colaboradorOriginal.getEndereco().getCepFormatado() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + colaboradorOriginal.getContato().getEmail() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + colaboradorOriginal.getContato().getFoneFixo() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + colaboradorOriginal.getContato().getFoneCelular() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + colaboradorOriginal.getPessoal().getEscolaridadeDescricao() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + colaboradorOriginal.getPessoal().getEstadoCivilDescricao() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + colaboradorOriginal.getPessoal().getConjuge() + "\n");
-		
-		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
-		
-		mensagem.append("\n\n");
-				
-		mensagem.append("Dados atualizados:\n");		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getLogradouro()).equals(colaboradorAtualizado.getEndereco().getLogradouro()) ) 
-			mensagem.append("Logradouro: " + colaboradorAtualizado.getEndereco().getLogradouro() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getNumero()).equals(colaboradorAtualizado.getEndereco().getNumero()) ) 
-			mensagem.append("Número: " + colaboradorAtualizado.getEndereco().getNumero() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getComplemento()).equals(colaboradorAtualizado.getEndereco().getComplemento()) ) 
-			mensagem.append("Complemento: " + colaboradorAtualizado.getEndereco().getComplemento() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getBairro()).equals(colaboradorAtualizado.getEndereco().getBairro()) ) 
-			mensagem.append("Bairro: " + colaboradorAtualizado.getEndereco().getBairro() + "\n");
-		
-		if(colaboradorAtualizado.getEndereco().getCidade() !=  null && !colaboradorAtualizado.getEndereco().getCidade().equals(colaboradorOriginal.getEndereco().getCidade()))
-			mensagem.append("Cidade: " + colaboradorAtualizado.getEndereco().getCidade().getNome() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getUf().getSigla()).equals(colaboradorAtualizado.getEndereco().getUf().getSigla()) ) 
-			mensagem.append("UF: " + colaboradorAtualizado.getEndereco().getUf().getSigla() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getEndereco().getCepFormatado()).equals(colaboradorAtualizado.getEndereco().getCepFormatado()) ) 
-			mensagem.append("CEP: " + colaboradorAtualizado.getEndereco().getCepFormatado() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getEmail()).equals(colaboradorAtualizado.getContato().getEmail())) 
-			mensagem.append("Email: " + colaboradorAtualizado.getContato().getEmail() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneFixo()).equals(colaboradorAtualizado.getContato().getFoneFixo())) 
-			mensagem.append("Telefone Fixo: " + colaboradorAtualizado.getContato().getFoneFixo() + "\n");
-		
-		if(!StringUtils.defaultString(colaboradorOriginal.getContato().getFoneCelular()).equals(colaboradorAtualizado.getContato().getFoneCelular())) 
-			mensagem.append("Fone celular: " + colaboradorAtualizado.getContato().getFoneCelular() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEscolaridade()).equals((colaboradorAtualizado.getPessoal().getEscolaridade())) ) 
-			mensagem.append("Escolaridade: " + colaboradorAtualizado.getPessoal().getEscolaridadeDescricao() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getEstadoCivil()).equals((colaboradorAtualizado.getPessoal().getEstadoCivil())) ) 
-			mensagem.append("Estado civil: " + colaboradorAtualizado.getPessoal().getEstadoCivilDescricao() + "\n");
-
-		if(!StringUtils.defaultString(colaboradorOriginal.getPessoal().getConjuge()).equals((colaboradorAtualizado.getPessoal().getConjuge())) ) 
-			mensagem.append("Nome do conjuge: " + colaboradorAtualizado.getPessoal().getConjuge() + "\n");
-
-		if(colaboradorOriginal.getPessoal().getQtdFilhos() != ((colaboradorAtualizado.getPessoal().getQtdFilhos())) ) 
-			mensagem.append("Quantidade de filhos: " + colaboradorOriginal.getPessoal().getQtdFilhos() == null ? 0 : colaboradorOriginal.getPessoal().getQtdFilhos() + "\n");
-		
-		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresaId, "ROLE_VISUALIZAR_MSG");
-		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", "geral/colaborador/prepareUpdate.action?colaborador.id=" + colaboradorOriginal.getId(), usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
 	}
 	
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)

@@ -54,5 +54,6 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId);
 	void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa);
 	void enviaAvisoContratacao(HistoricoColaborador historicoColaborador);
-	void enviarEmailTerminoContratoTemporarioColaborador() throws Exception;	
+	void enviarEmailTerminoContratoTemporarioColaborador() throws Exception;
+	void enviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId);
 }

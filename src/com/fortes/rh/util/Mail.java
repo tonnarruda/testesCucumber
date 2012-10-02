@@ -88,7 +88,7 @@ public class Mail
 			
 			try
 			{
-				Message msg = prepareMessage(empresa, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), false);
+				Message msg = prepareMessage(empresa, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), parametros.isTls());
 	
 				List<String> emails = new ArrayList<String>();
 	
