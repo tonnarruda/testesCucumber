@@ -97,7 +97,7 @@
 	<@ww.form name="form" action="relatorioColaboradorCargo.action" onsubmit="${validarCampos}" validate="true" method="POST">
 		
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">

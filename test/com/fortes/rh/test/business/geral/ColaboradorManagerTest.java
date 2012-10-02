@@ -638,7 +638,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").withAnyArguments().will(returnValue(colaboradors));
 
-        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null);
+        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null, null);
 
         assertEquals(1, retorno.size());
     }

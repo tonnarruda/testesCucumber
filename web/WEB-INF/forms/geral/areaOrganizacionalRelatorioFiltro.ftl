@@ -24,6 +24,7 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
@@ -56,6 +57,17 @@
 		{
 			addChecks('areaOrganizacionalsCheck',data);
 		}
+		
+		function populaCargo(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+		}
+
+		function createListCargo(data)
+		{
+			addChecks('cargosCheck',data);
+		}
 	
 		function validarCampos()
 		{
@@ -68,6 +80,7 @@
 			
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
+			populaCargo(empresa);
 		});
 		
 	</script>
@@ -80,7 +93,7 @@
 
 	<@ww.form name="form" action="gerarRelatorio.action" onsubmit="return validarCampos();" validate="true" method="POST">
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -92,6 +105,8 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 
 		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
+		
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" width="600" />
 		
 		<#if habilitaCampoExtra>
 			<fieldset class="fieldsetPadrao" style="width:583px;">

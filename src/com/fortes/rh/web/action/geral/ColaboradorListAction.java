@@ -292,7 +292,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -388,7 +388,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, tempoServicoIni, tempoServicoFim);
+			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, tempoServicoIni, tempoServicoFim);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");

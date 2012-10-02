@@ -1088,7 +1088,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
+			Collection<Long> areaOrganizacionalIds, Collection<Long> cargoIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
@@ -1157,6 +1157,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
+
+		if(cargoIds != null && !cargoIds.isEmpty())
+			hql.append(" and cg.id in (:cargoIds) ");
 		
 		if(dataAdmissaoIni != null)
 			hql.append(" and :dataAdmissaoIni <= co.dataAdmissao");
@@ -1238,6 +1241,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
+
+		if(cargoIds != null && !cargoIds.isEmpty())
+			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
 		
 		if(dataAdmissaoIni != null)
 			query.setDate("dataAdmissaoIni", dataAdmissaoIni);
