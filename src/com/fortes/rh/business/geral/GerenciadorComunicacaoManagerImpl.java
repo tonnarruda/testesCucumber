@@ -110,7 +110,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
 		
-		if (empresa.getEmailCandidatoNaoApto() && StringUtils.isNotBlank(empresa.getMailNaoAptos())){
+		if (StringUtils.isNotBlank(empresa.getMailNaoAptos())){
 			
 			String body = empresa.getMailNaoAptos();
 			String subject = "Solicitação de Candidatos";

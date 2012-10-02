@@ -18,13 +18,13 @@ public class TipoMensagem extends LinkedHashMap<Character, String>
 
 	public TipoMensagem() 
 	{
-		put(CARGO_SALARIO, "Cargo & Salário");
+		put(CARGO_SALARIO, "Cargos & Salários");
 		put(PESQUISAS_AVAL_DISPONIVEIS, "Pesquisas/Avaliações Disponíveis");
-		put(AVALIACAO_DESEMPENHO, "Avaliação de Desempenho");
+		put(AVALIACAO_DESEMPENHO, "Avaliações de Desempenho");
 		put(AVALIACOES_TED, "Avaliações de T&D");
 		put(INFO_FUNCIONAIS, "Informações Funcionais");
 		put(SESMT, "SESMT");
 		put(UTILITARIOS, "Utilitários");
-		put(DESLIGAMENTO, "Desligamento");
+		put(DESLIGAMENTO, "Desligamentos");
 	}
 }

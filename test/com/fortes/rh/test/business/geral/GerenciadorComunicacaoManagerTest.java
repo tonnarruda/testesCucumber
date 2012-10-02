@@ -225,7 +225,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	public void testExecuteEncerrarSolicitacao()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setEmailCandidatoNaoApto(Boolean.TRUE);
 		empresa.setMailNaoAptos("Envio de email");
 		
 		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();

@@ -194,7 +194,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     public void testGetEmailNaoApto() throws Exception{
 
     	Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresa.setEmailCandidatoNaoApto(true);
     	empresa.setMailNaoAptos("mailNaoAptos");
 		Long solicitacaoId = 1L;
 

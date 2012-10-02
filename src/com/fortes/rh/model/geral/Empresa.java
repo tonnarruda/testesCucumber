@@ -85,7 +85,6 @@ public class Empresa extends AbstractModel implements Serializable
 	private Cidade cidade;
 	private boolean campoExtraColaborador;
 	private boolean campoExtraCandidato;
-	private Boolean emailCandidatoNaoApto = false;
 	@Lob
     private String mailNaoAptos;
     @OneToOne
@@ -387,14 +386,6 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCampoExtraCandidato(boolean campoExtraCandidato) {
 		this.campoExtraCandidato = campoExtraCandidato;
-	}
-
-	public Boolean getEmailCandidatoNaoApto() {
-		return emailCandidatoNaoApto;
-	}
-
-	public void setEmailCandidatoNaoApto(Boolean emailCandidatoNaoApto) {
-		this.emailCandidatoNaoApto = emailCandidatoNaoApto;
 	}
 
 	public String getMailNaoAptos() {

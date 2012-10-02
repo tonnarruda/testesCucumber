@@ -30,6 +30,11 @@
 				style: { width: 400 }
 			});
 
+			$('#candidatoNaoAptoHelp').qtip({
+				content: '<div style="text-align:justify">Para enviar os emails para os candidatos não aptos no encerramento da solicitação de pessoal. Essa opção deverá ser configurada no gerenciador de comunicação.</div>',
+				style: { width: 400 }
+			});
+
 			$('#CodigoTruCursoHelp').qtip({
 				content: '<div style="text-align:justify">Esta opção possibilita a exportação do curso/turma como ocorrência para o sistema Tráfego Urbano (TRU).</div>',
 				style: { width: 400 }
@@ -198,8 +203,10 @@
 		<li>
 			<@ww.div cssClass="divInfo">
 				<ul>
-					<@ww.checkbox label="Enviar emails para candidatos não aptos" id="emailCandidatoNaoApto" name="empresa.emailCandidatoNaoApto" liClass="liLeft" labelPosition="left"/><br>
-					<@ww.textarea label="Texto para email de candidatos não aptos" name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
+					Texto para email de candidatos não aptos:
+					<img id="candidatoNaoAptoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
+					<br />
+					<@ww.textarea name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 				</ul>
 			</@ww.div>
 		</li>
