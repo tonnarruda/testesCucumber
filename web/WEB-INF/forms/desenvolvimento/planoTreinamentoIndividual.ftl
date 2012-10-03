@@ -7,6 +7,10 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		
+		.empresaEstabelecimento { text-align: left; }
+		.colaborador { text-align: left; background-color: #7BA6D3; color: #FFFFFF !important; font-weight: bold; }
+		.titulo { background-color: #F3F3F3; font-weight: bold; }
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
@@ -76,33 +80,85 @@
 	<br /><br />
 
 	<#if configuracaoNivelCompetencias?exists>
-		<#assign empresaAnterior = ""/>
 		<#assign estabelecimentoAnterior = ""/>
 		<#assign colaboradorAnterior = ""/>
+		<#assign competenciaDescricaoAnterior = ""/>
 
-		<ul>
-			<#list configuracaoNivelCompetencias as configNivel>
-				<li>
-					<#if empresaAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome>
-						<li>- ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome}</li>
-					</#if>
-					
-					<#if estabelecimentoAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome>
-						<li>--- ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}</li>
-					</#if>
-					
-					<#if colaboradorAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome>
-						<li>----- ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}</li>
-					</#if>
-	
-					<li>------- ${configNivel.nivelCompetencia.descricao}</li>
-				</li>
+		<#list configuracaoNivelCompetencias as configNivel>
+			<#if estabelecimentoAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome>
+				<#if estabelecimentoAnterior != "">	
+						</tbody>
+					</table>
+				</#if>
 				
-				<#assign empresaAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome/>
-				<#assign estabelecimentoAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome/>
-				<#assign colaboradorAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome/>
-			</#list>
-		</ul>
+				<table class="dados">
+					<thead>
+						<tr>
+							<th colspan="4" class="empresaEstabelecimento">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome} - ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}</th>
+						</tr>
+					</thead>
+			</#if>
+			
+			<#if colaboradorAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome>
+				<#assign i = 0/>			
+				<tbody>
+					<tr>
+						<td colspan="4" class="colaborador">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}</td>
+					</tr>
+					<tr>
+						<td class="titulo" width="200">Competência</td>
+						<td class="titulo" width="100">Nível Cargo/Faixa</td>
+						<td class="titulo" width="100">Nível Colaborador</td>
+						<td class="titulo">Treinamentos Sugeridos</td>
+					</tr>
+			</#if>
+
+			<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao>
+				<#if estabelecimentoAnterior != "">	
+						</td>
+					</tr>
+				</#if>
+				
+				<tr class="<#if i%2 == 0>odd<#else>even</#if>">
+					<td>${configNivel.competenciaDescricao}</td>
+					<td>${configNivel.nivelCompetencia.descricao}</td>
+					<td>
+						<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
+							${configNivel.nivelCompetenciaColaborador.descricao}
+						</#if>
+					</td>
+					<td>
+					
+				<#assign i = i + 1/>
+			</#if>
+			
+			<#if configNivel.cursoNome?exists>
+				${configNivel.cursoNome}<br />
+			</#if>
+			
+			<#--  
+			<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao>
+				<li>------- ${configNivel.competenciaDescricao} - Nivel do colaborador:
+				
+					<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
+						${configNivel.nivelCompetenciaColaborador.descricao}
+					<#else>
+						Não possue
+					</#if>
+				
+				  	Exigido pelo cargo : ${configNivel.nivelCompetencia.descricao} 
+				 </li>
+			</#if>
+
+			<#if configNivel.cursoNome?exists>
+				<li>-------------------------- ${configNivel.cursoNome}</li>
+			</#if>
+			-->
+				 
+			<#assign estabelecimentoAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome/>
+			<#assign colaboradorAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome/>
+			<#assign competenciaDescricaoAnterior = configNivel.competenciaDescricao/>
+		</#list>
 	</#if>
 </body>
 </html>

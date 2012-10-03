@@ -34,6 +34,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Transient
 	private String competenciaDescricao;	
 	@Transient
+	private String cursoNome;	
+	@Transient
 	private NivelCompetencia nivelCompetenciaColaborador;
 	@Transient
 	private Colaborador colaborador;
@@ -43,21 +45,27 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 
 	// findColaboradoresCompetenciasAbaixoDoNivel
-	public ConfiguracaoNivelCompetencia(Long colaboradorId, String colaboradorNome, Long faixaSalarialId, String empresaNome, String estabelecimentoNome, Long competenciaId, Character tipoCompetencia, NivelCompetencia nivelCompetencia, NivelCompetencia nivelCompetenciaColaborador)
+	public ConfiguracaoNivelCompetencia(BigInteger colaboradorId, String colaboradorNome, BigInteger faixaSalarialId, String empresaNome, String estabelecimentoNome, BigInteger competenciaId, Character tipoCompetencia, String nivelCompetenciaDescricao, String nivelCompetenciaColaboradorDescricao, String competenciaDescricao, String cursoNome)
 	{
 		Colaborador colaborador = new Colaborador();
-		colaborador.setId(colaboradorId);
+		colaborador.setId(colaboradorId.longValue());
 		colaborador.setNome(colaboradorNome);
 		colaborador.setEmpresaNome(empresaNome);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		this.configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 		this.configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
 		
-		this.setFaixaSalarialIdProjection(faixaSalarialId);
-		this.setCompetenciaId(competenciaId);
+		this.setFaixaSalarialIdProjection(faixaSalarialId.longValue());
+		this.setCompetenciaId(competenciaId.longValue());
 		this.setTipoCompetencia(tipoCompetencia);
-		this.setNivelCompetencia(nivelCompetencia);
-		this.setNivelCompetenciaColaborador(nivelCompetenciaColaborador);
+
+		this.setNivelCompetencia(new NivelCompetencia());
+		this.getNivelCompetencia().setDescricao(nivelCompetenciaDescricao);
+		
+		this.setNivelCompetenciaColaborador(new NivelCompetencia());
+		this.getNivelCompetenciaColaborador().setDescricao(nivelCompetenciaColaboradorDescricao);
+		this.setCompetenciaDescricao(competenciaDescricao);
+		this.setCursoNome(cursoNome);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, Long faixaSalarialId, Long nivelCompetenciaId, Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
@@ -274,5 +282,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
+	}
+
+	public String getCursoNome() {
+		return cursoNome;
+	}
+
+	public void setCursoNome(String cursoNome) {
+		this.cursoNome = cursoNome;
 	}
 }
