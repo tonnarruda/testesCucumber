@@ -95,7 +95,7 @@
 						<li>----- ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}</li>
 					</#if>
 	
-					<li>------- ${configNivel.nivelCompetencia.descricao} - ${configNivel.competenciaDescricao}</li>
+					<li>------- ${configNivel.nivelCompetencia.descricao}</li>
 				</li>
 				
 				<#assign empresaAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome/>
