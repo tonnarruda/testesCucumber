@@ -313,40 +313,49 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds) 
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ConfiguracaoNivelCompetencia(c.id, c.nome, fs.id, emp.nome, est.nome, cnc.competenciaId, cnc.tipoCompetencia, nc, nc2) ");
-		hql.append("from HistoricoColaborador hc ");
-		hql.append("inner join hc.faixaSalarial fs ");
-		hql.append("inner join hc.estabelecimento est ");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select c.id as colabId, c.nome as colabNome, fs.id as faixaId, emp.nome as empNome, est.nome as estNome, cnc.competencia_id as compId, cnc.tipoCompetencia as tipoComp, nc.descricao as nivelCompetenciaDescricao, nc2.descricao as nivelCompetenciaColaboradorDescricao, COALESCE(a.nome, conhe.nome, h.nome) as competencia, COALESCE (cconhe.nome, chabil.nome, cati.nome ) as cursoNome ");
+		sql.append("from HistoricoColaborador hc ");
+		sql.append("inner join faixaSalarial fs on fs.id = hc.faixasalarial_id ");
+		sql.append("inner join estabelecimento est on est.id = hc.estabelecimento_id ");
 		
-		hql.append("left join fs.configuracaoNivelCompetencias cnc with cnc.candidato.id = null and cnc.configuracaoNivelCompetenciaColaborador.id = null ");
-		hql.append("inner join cnc.nivelCompetencia nc ");
+		sql.append("left join configuracaoNivelCompetencia cnc on cnc.faixasalarial_id = fs.id and cnc.candidato_id is null and cnc.configuracaoNivelCompetenciaColaborador_id is null ");
+		sql.append("inner join nivelCompetencia nc on nc.id = cnc.nivelCompetencia_id ");
 		
-		hql.append("inner join hc.colaborador c ");
-		hql.append("inner join c.empresa emp ");
-		hql.append("left join c.configuracaoNivelCompetenciaColaboradors cncc ");
-		hql.append("left join cncc.configuracaoNivelCompetencias cnc2 with cnc2.competenciaId = cnc.competenciaId and cnc2.tipoCompetencia = cnc.tipoCompetencia ");
-		hql.append("left join cnc2.nivelCompetencia nc2 ");
+		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
+		sql.append("	left join atitude_curso at on at.atitudes_id = a.id ");
+		sql.append("	left join curso cati on cati.id = at.cursos_id ");
+		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
+		sql.append("	left join habilidade_curso hac on hac.habilidades_id = h.id ");
+		sql.append("	left join curso chabil on chabil.id = hac.cursos_id ");
+		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
+		sql.append("	left join conhecimento_curso cc on cc.conhecimentos_id = conhe.id ");
+		sql.append("	left join curso cconhe on cconhe.id = cc.cursos_id ");
 		
-		hql.append("where c.desligado = false ");
+		sql.append("inner join colaborador c on c.id = hc.colaborador_id ");
+		sql.append("inner join empresa emp on emp.id = c.empresa_id ");
+		sql.append("left join configuracaoNivelCompetenciaColaborador cncc on cncc.colaborador_id = c.id  ");
+		sql.append("left join configuracaoNivelCompetencia cnc2 on cnc2.configuracaoNivelCompetenciaColaborador_id = cncc.id and cnc2.competencia_id = cnc.competencia_id and cnc2.tipoCompetencia = cnc.tipoCompetencia ");
+		sql.append("left join nivelCompetencia nc2 on nc2.id = cnc2.nivelCompetencia_id ");
 		
-		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status and hc2.data <= :hoje) ");
-		hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = c.id and cncc2.data <= :hoje) or cncc.data is null) ");
+		sql.append("where c.desligado = false ");
+		sql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status and hc2.data <= :hoje) ");
+		sql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador_id = c.id and cncc2.data <= :hoje) or cncc.data is null) ");
 		
 		if (empresaId != null)
-			hql.append("and c.empresa.id = :empresaId ");
+			sql.append("and c.empresa.id = :empresaId ");
 		
 		if (areaIds != null && areaIds.length > 0)
-			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
+			sql.append("and hc.areaOrganizacional_id in (:areaIds) ");
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
+			sql.append("and hc.estabelecimento_id in (:estabelecimentoIds) ");
 		
-		hql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competenciaId, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem ");
-		hql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
-		hql.append("order by emp.nome, est.nome, c.nome, c.id");
+		sql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoNome ");
+		sql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
+		sql.append("order by emp.nome, est.nome, c.nome, c.id, cursoNome");
 		
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("hoje", new Date());
 
@@ -359,6 +368,15 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
-		return query.list();
+		Collection<Object[]> resultado = query.list();
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (BigInteger)res[2], (String)res[3], (String)res[4], (BigInteger)res[5], (Character)res[6], (String)res[7], (String)res[8], (String)res[9], (String)res[10]));
+		}
+		
+		return lista;	
 	}
 }
