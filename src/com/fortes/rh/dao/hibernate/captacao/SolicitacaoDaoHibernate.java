@@ -5,11 +5,13 @@
  */
 package com.fortes.rh.dao.hibernate.captacao;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -26,6 +28,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -168,7 +171,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("						cargo.id, ");
 		hql.append("						cargo.nome, ");
 		hql.append("						areaOrganizacional.nome, ");
-		hql.append("						usuario.nome) ");
+		hql.append("						usuario.nome, ");
+		hql.append("						(select count(cs.status) from CandidatoSolicitacao cs where cs.status in (:contratado) and cs.solicitacao.id = solicitacao.id)) ");
 		hql.append("from Solicitacao solicitacao ");
 		hql.append("	left join solicitacao.solicitante usuario ");
 		hql.append("	left join solicitacao.areaOrganizacional areaOrganizacional ");
@@ -177,15 +181,16 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("	left join faixaSalarial.faixaSalarialHistoricos historicoFaixaSalarial with historicoFaixaSalarial.data = (select max(historicoFaixaSalarial2.data) ");
 		hql.append("																								  from FaixaSalarialHistorico historicoFaixaSalarial2 ");
 		hql.append("																								  where historicoFaixaSalarial2.faixaSalarial.id = faixaSalarial.id ");
-		hql.append("																								  and historicoFaixaSalarial2.data <= :hoje and historicoFaixaSalarial2.status != :status");
+		hql.append("																								  and historicoFaixaSalarial2.data <= current_date and historicoFaixaSalarial2.status != :status");
 		hql.append("																								  )");
 		hql.append("	left join historicoFaixaSalarial.indice i ");
 		hql.append("where solicitacao.id = :solicitacaoId");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setDate("hoje", new Date());
-		query.setLong("solicitacaoId", solcitacaoId);
+		query.setParameterList("contratado", Arrays.asList(StatusCandidatoSolicitacao.CONTRATADO, StatusCandidatoSolicitacao.PROMOVIDO), Hibernate.CHARACTER);
+		//query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CANCELADO);
+		query.setLong("solicitacaoId", solcitacaoId);
 
 		return (Solicitacao) query.uniqueResult();
 	}

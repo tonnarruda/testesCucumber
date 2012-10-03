@@ -94,9 +94,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@ManyToOne
 	private Empresa empresa;
 	
-	@Transient
-	private String valorPromocao;
-
 	private boolean suspensa;
 	
 	@Lob
@@ -105,12 +102,18 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@ManyToOne
 	private Avaliacao avaliacao;
 
+	@Transient
+	private String valorPromocao;
+	
+	@Transient
+	private Integer qtdVagasPreenchidas;
+	
 	public Solicitacao()
 	{
 
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas)
 	{
 		setId(id);
 		setQuantidade(quantidade);
@@ -119,7 +122,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setSolicitanteNome(nomeSolicitante);
 		setProjectionEmpresaId(empresaId);
 		this.encerrada = encerrada;
-
+		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
+		
 		setAvaliacao(new Avaliacao());
 		getAvaliacao().setId(avaliacaoId);
 		
@@ -716,4 +720,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setColaboradorSubstituido(String colaboradorSubstituido) {
 		this.colaboradorSubstituido = colaboradorSubstituido;
 	}
+
+	public Integer getQtdVagasPreenchidas() {
+		return qtdVagasPreenchidas;
+	}
+
+	public void setQtdVagasPreenchidas(Integer qtdVagasPreenchidas) {
+		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
+	}
+
 }
