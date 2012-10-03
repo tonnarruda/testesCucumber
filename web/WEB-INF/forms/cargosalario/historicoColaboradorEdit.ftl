@@ -248,6 +248,8 @@
 		<@ww.hidden name="historicoColaborador.colaborador.naoIntegraAc" />
 		<@ww.hidden name="colaborador.id" />
 		<@ww.hidden name="candidatoSolicitacaoId" />
+		<@ww.hidden name="solicitacao.id" />
+		<@ww.hidden name="encerrarSolicitacao" />
 	<@ww.token/>
 	</@ww.form>
 

@@ -172,24 +172,22 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("						cargo.nome, ");
 		hql.append("						areaOrganizacional.nome, ");
 		hql.append("						usuario.nome, ");
-		hql.append("						(select count(cs.status) from CandidatoSolicitacao cs where cs.status in (:contratado) and cs.solicitacao.id = solicitacao.id)) ");
+		hql.append("						(select count(cs.status) from CandidatoSolicitacao cs where cs.status in (:contratado) and cs.solicitacao.id = solicitacao.id) ) ");
 		hql.append("from Solicitacao solicitacao ");
 		hql.append("	left join solicitacao.solicitante usuario ");
 		hql.append("	left join solicitacao.areaOrganizacional areaOrganizacional ");
 		hql.append("	left join solicitacao.faixaSalarial faixaSalarial ");
 		hql.append("	left join faixaSalarial.cargo cargo ");
-		hql.append("	left join faixaSalarial.faixaSalarialHistoricos historicoFaixaSalarial with historicoFaixaSalarial.data = (select max(historicoFaixaSalarial2.data) ");
-		hql.append("																								  from FaixaSalarialHistorico historicoFaixaSalarial2 ");
-		hql.append("																								  where historicoFaixaSalarial2.faixaSalarial.id = faixaSalarial.id ");
-		hql.append("																								  and historicoFaixaSalarial2.data <= current_date and historicoFaixaSalarial2.status != :status");
-		hql.append("																								  )");
+		hql.append("	left join faixaSalarial.faixaSalarialHistoricos historicoFaixaSalarial  ");
+		hql.append("		with historicoFaixaSalarial.data = (select max(hfs.data) ");
+		hql.append("											from FaixaSalarialHistorico hfs ");
+		hql.append("											where hfs.faixaSalarial.id = faixaSalarial.id ");
+		hql.append("												and hfs.data <= current_date and hfs.status != "+StatusRetornoAC.CANCELADO+") ");
 		hql.append("	left join historicoFaixaSalarial.indice i ");
 		hql.append("where solicitacao.id = :solicitacaoId");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setParameterList("contratado", Arrays.asList(StatusCandidatoSolicitacao.CONTRATADO, StatusCandidatoSolicitacao.PROMOVIDO), Hibernate.CHARACTER);
-		//query.setDate("hoje", new Date());
-		query.setInteger("status", StatusRetornoAC.CANCELADO);
 		query.setLong("solicitacaoId", solcitacaoId);
 
 		return (Solicitacao) query.uniqueResult();

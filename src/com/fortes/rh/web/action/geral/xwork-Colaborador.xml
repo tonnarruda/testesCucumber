@@ -89,11 +89,11 @@
 		</action>
 		<action name="prepareContrata" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareContrata">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
-			<result name="ehColaborador" type="redirect"><![CDATA[/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}]]></result>
+			<result name="ehColaborador" type="redirect"><![CDATA[/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}&encerrarSolicitacao=${encerrarSolicitacao}]]></result>
 		</action>
 		<action name="preparePromoverCandidato" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="preparePromoverCandidato">
 			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect"><![CDATA[/cargosalario/historicoColaborador/prepareInsert.action?colaborador.id=${colaborador.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacaoId}]]></result>
+			<result name="success" type="redirect"><![CDATA[/cargosalario/historicoColaborador/prepareInsert.action?colaborador.id=${colaborador.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacaoId}&encerrarSolicitacao=${encerrarSolicitacao}]]></result>
 			<result name="naoEhColaborador" type="redirect"><![CDATA[/captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}]]></result>
 		</action>
 		<action name="formPrint" class="com.fortes.rh.web.action.geral.ColaboradorReportAction">

@@ -455,11 +455,16 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	public void testGetValor()
 	{
 		
+		Solicitacao solicitacao = getEntity();
+		solicitacaoDao.save(solicitacao);
+
 		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidato1.setNome("aaaaaaaaaaaaaaaaaaaaaaaaaa");
 		candidatoDao.save(candidato1);
 		
 		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
 		candidatoSolicitacao1.setCandidato(candidato1);
+		candidatoSolicitacao1.setSolicitacao(solicitacao);
 		candidatoSolicitacao1.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
 		
@@ -467,6 +472,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		candidatoDao.save(candidato2);
 		
 		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setSolicitacao(solicitacao);
 		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.PROMOVIDO);
 		candidatoSolicitacao2.setCandidato(candidato2);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
@@ -475,19 +481,20 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		candidatoDao.save(candidato3);
 		
 		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao3.setSolicitacao(solicitacao);
 		candidatoSolicitacao3.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
 		candidatoSolicitacao3.setCandidato(candidato3);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
 		
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = Arrays.asList(candidatoSolicitacao1, candidatoSolicitacao2, candidatoSolicitacao3);
 		
-		Solicitacao solicitacao = getEntity();
 		solicitacao.setCandidatoSolicitacaos(candidatoSolicitacaos);
 		solicitacaoDao.save(solicitacao);
 		
 		Solicitacao solicitacaoRetorno = solicitacaoDao.getValor(solicitacao.getId());
 
 		assertEquals(solicitacao, solicitacaoRetorno);
+		assertEquals(2, solicitacaoRetorno.getQtdVagasPreenchidas().intValue());
 	}
 
 	public void testFindByIdProjectionAreaFaixaSalarial()

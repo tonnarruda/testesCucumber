@@ -129,6 +129,14 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
     	gerenciadorComunicacaoManager.enviaEmailCandidatosNaoAptos(empresa, solicitacao.getId());
 	}
 
+	public void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception
+	{
+		throw new Exception();
+//		solicitacao.setDataEncerramento(new Date());
+//		solicitacao.setObservacaoLiberador("Encerrado através da Solicitação de Pessoal.");
+//		encerraSolicitacao(solicitacao, empresa);
+	}
+
 	public Solicitacao findByIdProjection(Long solicitacaoId)
 	{
 		return getDao().findByIdProjection(solicitacaoId);

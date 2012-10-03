@@ -8,7 +8,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.core.NestedRuntimeException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -135,6 +140,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private AvaliacaoManager avaliacaoManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
+	private PlatformTransactionManager transactionManager;
 	
 	private Colaborador colaborador;
 	private AreaOrganizacional areaOrganizacional;
@@ -243,6 +249,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private String voltarPara;
 	
 	Collection<Colaborador> colaboradoresMesmoCpf = new ArrayList<Colaborador>();
+	
+	private String encerrarSolicitacao;
 	
 	private void prepare() throws Exception
 	{
@@ -507,6 +515,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
 		try
 		{
 			if(historicoColaborador.getData().before(colaborador.getDataAdmissao()))
@@ -544,17 +556,23 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 			setDadosHistoricoColaborador();
 
-			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
+//			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
+				if (true)
 			{
 				// Transferindo solicitações médicas do candidato
-				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
+//				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
 				
 				if (candidatoSolicitacaoId != null)
-					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
+//					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
 				
-				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+//				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 				
+				if (StringUtils.equals(encerrarSolicitacao, "S")) 
+					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
+
 				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
+				
+				transactionManager.commit(status);
 				
 				return Action.SUCCESS;
 			}
@@ -566,6 +584,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (NestedRuntimeException e) // TODO ver necessidade desse catch. 
 		{
+			transactionManager.rollback(status);
+			
 			e.printStackTrace();
 			addActionError("Erro ao gravar as informações do colaborador!");
 
@@ -583,6 +603,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
+			transactionManager.rollback(status);
 			e.printStackTrace();
 			
 			String message = "Erro ao gravar as informações do colaborador!";
@@ -1535,171 +1556,224 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.camposExtrasManager = camposExtrasManager;
 	}
 
-	public void setConfiguracaoCampoExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras) {
+	public void setConfiguracaoCampoExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras)
+	{
 		this.configuracaoCampoExtras = configuracaoCampoExtras;
 	}
 
-	public Collection<ColaboradorQuestionario> getColaboradorQuestionarioAvaloacaoExperiencias() {
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarioAvaloacaoExperiencias()
+	{
 		return colaboradorQuestionarioAvaloacaoExperiencias;
 	}
 
-	public Collection<ColaboradorQuestionario> getAvaliacaoExperiencias() {
+	public Collection<ColaboradorQuestionario> getAvaliacaoExperiencias()
+	{
 		return avaliacaoExperiencias;
 	}
 
-	public void setAvaliacaoExperiencias(Collection<ColaboradorQuestionario> avaliacaoExperiencias) {
+	public void setAvaliacaoExperiencias(Collection<ColaboradorQuestionario> avaliacaoExperiencias)
+	{
 		this.avaliacaoExperiencias = avaliacaoExperiencias;
 	}
 
-	public Collection<ColaboradorQuestionario> getAvaliacaoDesempenhos() {
+	public Collection<ColaboradorQuestionario> getAvaliacaoDesempenhos()
+	{
 		return avaliacaoDesempenhos;
 	}
 
-	public void setAvaliacaoDesempenhos(Collection<ColaboradorQuestionario> avaliacaoDesempenhos) {
+	public void setAvaliacaoDesempenhos(Collection<ColaboradorQuestionario> avaliacaoDesempenhos)
+	{
 		this.avaliacaoDesempenhos = avaliacaoDesempenhos;
 	}
 
-	public ColaboradorQuestionario getAvaliacaoExperiencia() {
+	public ColaboradorQuestionario getAvaliacaoExperiencia()
+	{
 		return avaliacaoExperiencia;
 	}
 
-	public void setAvaliacaoExperiencia(ColaboradorQuestionario avaliacaoExperiencia) {
+	public void setAvaliacaoExperiencia(ColaboradorQuestionario avaliacaoExperiencia)
+	{
 		this.avaliacaoExperiencia = avaliacaoExperiencia;
 	}
 
-	public ColaboradorQuestionario getAvaliacaoDesempenho() {
+	public ColaboradorQuestionario getAvaliacaoDesempenho()
+	{
 		return avaliacaoDesempenho;
 	}
 
-	public void setAvaliacaoDesempenho(ColaboradorQuestionario avaliacaoDesempenho) {
+	public void setAvaliacaoDesempenho(ColaboradorQuestionario avaliacaoDesempenho)
+	{
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
 
-	public RelatorioPerformanceFuncional getRelatorioPerformanceFuncional() {
+	public RelatorioPerformanceFuncional getRelatorioPerformanceFuncional()
+	{
 		return relatorioPerformanceFuncional;
 	}
 
-	public void setRelatorioPerformanceFuncional(RelatorioPerformanceFuncional relatorioPerformanceFuncional) {
+	public void setRelatorioPerformanceFuncional(RelatorioPerformanceFuncional relatorioPerformanceFuncional)
+	{
 		this.relatorioPerformanceFuncional = relatorioPerformanceFuncional;
 	}
 
-	public Map<String, Object> getParametros() {
+	public Map<String, Object> getParametros()
+	{
 		return parametros;
 	}
 
-	public String getConfigPerformanceBoxes() {
+	public String getConfigPerformanceBoxes()
+	{
 		return configPerformanceBoxes;
 	}
 
-	public void setConfiguracaoPerformanceManager(ConfiguracaoPerformanceManager configuracaoPerformanceManager) {
+	public void setConfiguracaoPerformanceManager(ConfiguracaoPerformanceManager configuracaoPerformanceManager)
+	{
 		this.configuracaoPerformanceManager = configuracaoPerformanceManager;
 	}
 
-	public Long getCandidatoSolicitacaoId() {
+	public Long getCandidatoSolicitacaoId()
+	{
 		return candidatoSolicitacaoId;
 	}
 
-	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
+	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId)
+	{
 		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
 	}
-	
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
+	{
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public char getStatusCandSol() {
+	public char getStatusCandSol()
+	{
 		return statusCandSol;
 	}
 
-	public void setStatusCandSol(char statusCandSol) {
+	public void setStatusCandSol(char statusCandSol)
+	{
 		this.statusCandSol = statusCandSol;
 	}
 
-	public void setObsACPessoal(String obsACPessoal) {
+	public void setObsACPessoal(String obsACPessoal)
+	{
 		this.obsACPessoal = obsACPessoal;
 	}
 
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager)
+	{
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
-	public Collection<ColaboradorQuestionario> getPesquisas() {
+	public Collection<ColaboradorQuestionario> getPesquisas()
+	{
 		return pesquisas;
 	}
-	
-	public boolean isChecarCandidatoMesmoCpf() {
+
+	public boolean isChecarCandidatoMesmoCpf()
+	{
 		return checarCandidatoMesmoCpf;
 	}
-	
-	public void setChecarCandidatoMesmoCpf(boolean checarCandidatoMesmoCpf) {
+
+	public void setChecarCandidatoMesmoCpf(boolean checarCandidatoMesmoCpf)
+	{
 		this.checarCandidatoMesmoCpf = checarCandidatoMesmoCpf;
 	}
 
-	public boolean isVincularCandidatoMesmoCpf() {
+	public boolean isVincularCandidatoMesmoCpf()
+	{
 		return vincularCandidatoMesmoCpf;
 	}
 
-	public void setVincularCandidatoMesmoCpf(boolean vincularCandidatoMesmoCpf) {
+	public void setVincularCandidatoMesmoCpf(boolean vincularCandidatoMesmoCpf)
+	{
 		this.vincularCandidatoMesmoCpf = vincularCandidatoMesmoCpf;
 	}
 
-	public Collection<PeriodoExperiencia> getPeriodoExperiencias() {
+	public Collection<PeriodoExperiencia> getPeriodoExperiencias()
+	{
 		return periodoExperiencias;
 	}
 
-	public void setPeriodoExperienciaManager(
-			PeriodoExperienciaManager periodoExperienciaManager) {
+	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager)
+	{
 		this.periodoExperienciaManager = periodoExperienciaManager;
 	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager)
+	{
 		this.avaliacaoManager = avaliacaoManager;
 	}
 
-	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoes() {
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoes()
+	{
 		return colaboradorAvaliacoes;
 	}
 
-	public void setColaboradorAvaliacoes(
-			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes) {
+	public void setColaboradorAvaliacoes(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes)
+	{
 		this.colaboradorAvaliacoes = colaboradorAvaliacoes;
 	}
 
-	public void setColaboradorPeriodoExperienciaAvaliacaoManager(
-			ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) {
+	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager)
+	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 
-	public Collection<Avaliacao> getAvaliacoes() {
+	public Collection<Avaliacao> getAvaliacoes()
+	{
 		return avaliacoes;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador() {
+	public boolean isObrigarAmbienteFuncaoColaborador()
+	{
 		return obrigarAmbienteFuncaoColaborador;
 	}
 
-	public int getPontuacao() {
+	public int getPontuacao()
+	{
 		return pontuacao;
 	}
 
-	public String getVoltarPara() {
+	public String getVoltarPara()
+	{
 		return voltarPara;
 	}
 
-	public void setVoltarPara(String voltarPara) {
+	public void setVoltarPara(String voltarPara)
+	{
 		this.voltarPara = voltarPara;
 	}
 
-	public Collection<Colaborador> getColaboradoresMesmoCpf() {
+	public Collection<Colaborador> getColaboradoresMesmoCpf()
+	{
 		return colaboradoresMesmoCpf;
 	}
 
-	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoesGestor() {
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorAvaliacoesGestor()
+	{
 		return colaboradorAvaliacoesGestor;
 	}
 
-	public void setColaboradorAvaliacoesGestor(
-			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor) {
+	public void setColaboradorAvaliacoesGestor(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
+	{
 		this.colaboradorAvaliacoesGestor = colaboradorAvaliacoesGestor;
+	}
+
+	public String getEncerrarSolicitacao()
+	{
+		return encerrarSolicitacao;
+	}
+
+	public void setEncerrarSolicitacao(String encerrarSolicitacao)
+	{
+		this.encerrarSolicitacao = encerrarSolicitacao;
+	}
+
+	
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
 	}
 }

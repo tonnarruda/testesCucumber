@@ -5,7 +5,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -18,6 +25,7 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -48,8 +56,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ColaboradorManager colaboradorManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private SolicitacaoManager solicitacaoManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
-
+	private PlatformTransactionManager transactionManager;
+	
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
@@ -74,6 +84,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Date dataPrimeiroHist;
 	private boolean integraAc;
 	private boolean obrigarAmbienteFuncaoColaborador;	
+	private String encerrarSolicitacao;
+
+	private Solicitacao solicitacao;
 	
 	public void prepare() throws Exception
 	{
@@ -130,6 +143,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	
 	public String insert() throws Exception
 	{
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
 		try
 		{
 			if(historicoColaboradorManager.existeHistoricoData(historicoColaborador))
@@ -155,10 +172,17 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
 			
+			if (StringUtils.equals(encerrarSolicitacao, "S")) 
+				solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
+			
+			transactionManager.commit(status);
+			
 			return Action.SUCCESS;
 		}
 		catch (IntegraACException e)
 		{
+			transactionManager.rollback(status);
+			
 			String msg = "Não foi possível atualizar esta Situação no AC Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
@@ -171,6 +195,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (LimiteColaboradorExceditoException e)
 		{
+			transactionManager.rollback(status);
+			
 			e.printStackTrace();
 			addActionError(e.getMessage());
 			prepareInsert();
@@ -179,6 +205,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
+			transactionManager.rollback(status);
+			
 			addActionError("Não foi possível inserir Situação.");
 			prepareInsert();
 
@@ -397,56 +425,100 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		return salarioProcessado;
 	}
 
-	public Map<String, String> getCodigosGFIP() {
+	public Map<String, String> getCodigosGFIP()
+	{
 		return codigosGFIP;
 	}
 
-	public Collection<HistoricoColaborador> getHistoricoColaboradors() {
+	public Collection<HistoricoColaborador> getHistoricoColaboradors()
+	{
 		return historicoColaboradors;
 	}
 
-	public void setHistoricoColaboradors(Collection<HistoricoColaborador> historicoColaboradors) {
+	public void setHistoricoColaboradors(Collection<HistoricoColaborador> historicoColaboradors)
+	{
 		this.historicoColaboradors = historicoColaboradors;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public Collection<Colaborador> getColaboradors() {
+	public Collection<Colaborador> getColaboradors()
+	{
 		return colaboradors;
 	}
 
-	public String getColaboradorNome() {
+	public String getColaboradorNome()
+	{
 		return colaboradorNome;
 	}
 
-	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
+	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId)
+	{
 		this.candidatoSolicitacaoId = candidatoSolicitacaoId;
 	}
 
-	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager)
+	{
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public Long getCandidatoSolicitacaoId() {
+	public Long getCandidatoSolicitacaoId()
+	{
 		return candidatoSolicitacaoId;
 	}
 
-	public boolean isIntegraAc() {
+	public boolean isIntegraAc()
+	{
 		return integraAc;
 	}
 
-	public Date getDataPrimeiroHist() {
+	public Date getDataPrimeiroHist()
+	{
 		return dataPrimeiroHist;
 	}
 
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager)
+	{
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador() {
+	public boolean isObrigarAmbienteFuncaoColaborador()
+	{
 		return obrigarAmbienteFuncaoColaborador;
 	}
+
+	public void setEncerrarSolicitacao(String encerrarSolicitacao)
+	{
+		this.encerrarSolicitacao = encerrarSolicitacao;
+	}
+
+	public String getEncerrarSolicitacao()
+	{
+		return encerrarSolicitacao;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
+	{
+		this.solicitacaoManager = solicitacaoManager;
+	}
+
 	
+	public Solicitacao getSolicitacao()
+	{
+		return solicitacao;
+	}
+
+	
+	public void setSolicitacao(Solicitacao solicitacao)
+	{
+		this.solicitacao = solicitacao;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
 }

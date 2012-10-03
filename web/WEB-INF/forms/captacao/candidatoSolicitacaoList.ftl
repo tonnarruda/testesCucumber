@@ -8,6 +8,7 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+				@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }
@@ -22,6 +23,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type="text/javascript">
 	
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)
@@ -34,6 +36,35 @@
 				else
 					jAlert("Colaborador contratado na empresa " + retorno.empresa + ".\nDesligue-o para continuar o processo de transferência.");
 			});
+			
+		}
+		
+		function contrataCandidato(nomeCandidato, acao, link)
+		{
+			var link = "${baseUrl}"+link;
+			var msg = 'Deseja realmente '+acao.toLowerCase()+' '+nomeCandidato+' ?';
+			
+			$('<div>'+ msg +'</div>').dialog({title: acao,
+													modal: true, 
+													height: 150,
+													width: 500,
+													buttons: [
+													    {
+													        text: acao,
+													        click: function() { window.location=link+'&encerrarSolicitacao=N'; }
+													    },
+ 														<#if solicitacao.qtdVagasPreenchidas?exists && solicitacao.quantidade?exists && solicitacao.quantidade <= solicitacao.qtdVagasPreenchidas+1>
+													    {
+													        text: acao+" e Encerrar solicitação",
+													        click: function() { window.location=link+'&encerrarSolicitacao=S'; }
+													    },
+													    </#if>
+													    {
+													        text: "Cancelar",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													] 
+													});
 			
 		}
 	</script>
@@ -52,6 +83,7 @@
 			<td>Cargo: <#if solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.cargo?exists && solicitacao.faixaSalarial.cargo.nome?exists>${solicitacao.faixaSalarial.cargo.nome}</#if></td>
 			<td>Solicitante: <#if solicitacao.solicitante?exists && solicitacao.solicitante.nome?exists>${solicitacao.solicitante.nome}</#if></td>
 			<td>Vagas: <#if solicitacao.quantidade?exists>${solicitacao.quantidade}</#if></td>
+			<td>Vagas preenchidas: <#if solicitacao.qtdVagasPreenchidas?exists>${solicitacao.qtdVagasPreenchidas}</#if></td>
 		</tr>
 	</table>
 	<br/>
@@ -88,12 +120,10 @@
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists >
 			<#if candidatoSolicitacao.candidato.contratado || candidatoSolicitacao.status == 'A'>
 				<#assign titleContrata="Promover"/>
-				<#assign alertContrata="Deseja realmente promover o candidato"/>
-				<#assign actionContrata="/geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+				<#assign actionContrata="geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 			<#else>
-				<#assign titleContrata="Contratar o Candidato"/>
-				<#assign alertContrata="Deseja realmente contratar o candidato"/>
-				<#assign actionContrata="/geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
+				<#assign titleContrata="Contratar"/>
+				<#assign actionContrata="geral/colaborador/prepareContrata.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 			</#if>
 		</#if>
 		
@@ -135,7 +165,9 @@
 							<img border="0" title="Contratar candidato de outra empresa?" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 						</a>
 					<#else>
-						<a href="javascript:newConfirm('${alertContrata} ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="${actionContrata}"/>'});"><img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
+						<a href="javascript:contrataCandidato('${nomeFormatado}', '${titleContrata}', '${actionContrata}');">
+							<img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+						</a>
 					</#if>
 				</#if>
 				

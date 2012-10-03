@@ -49,4 +49,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception;
+	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
 }
