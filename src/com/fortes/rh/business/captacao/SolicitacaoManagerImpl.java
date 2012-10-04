@@ -131,10 +131,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception
 	{
-		throw new Exception();
-//		solicitacao.setDataEncerramento(new Date());
-//		solicitacao.setObservacaoLiberador("Encerrado através da Solicitação de Pessoal.");
-//		encerraSolicitacao(solicitacao, empresa);
+		solicitacao.setDataEncerramento(new Date());
+		solicitacao.setObservacaoLiberador("Encerrado através da solicitação de pessoal.");
+		encerraSolicitacao(solicitacao, empresa);
 	}
 
 	public Solicitacao findByIdProjection(Long solicitacaoId)

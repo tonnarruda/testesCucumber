@@ -556,16 +556,15 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 			setDadosHistoricoColaborador();
 
-//			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
-				if (true)
+			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
 			{
 				// Transferindo solicitações médicas do candidato
-//				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
+				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
 				
 				if (candidatoSolicitacaoId != null)
-//					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
+					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);
 				
-//				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+				colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 				
 				if (StringUtils.equals(encerrarSolicitacao, "S")) 
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
@@ -604,8 +603,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		catch (Exception e)
 		{
 			transactionManager.rollback(status);
-			e.printStackTrace();
 			
+			e.printStackTrace();
 			String message = "Erro ao gravar as informações do colaborador!";
 			
 			if(e.getMessage() != null)

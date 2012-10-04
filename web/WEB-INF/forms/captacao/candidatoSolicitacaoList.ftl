@@ -42,7 +42,15 @@
 		function contrataCandidato(nomeCandidato, acao, link)
 		{
 			var link = "${baseUrl}"+link;
-			var msg = 'Deseja realmente '+acao.toLowerCase()+' '+nomeCandidato+' ?';
+			var msg = 'Deseja realmente '+acao.toLowerCase()+' '+nomeCandidato+' ? <br />';
+			
+			if(${solicitacao.quantidade} == ${solicitacao.qtdVagasPreenchidas}+1) {
+				msg += ' *Esta é a última vaga da solicitação a ser preenchida.';
+			} else if (${solicitacao.quantidade} == ${solicitacao.qtdVagasPreenchidas}){
+				msg += ' *Com esta operação as vagas da solicitação serão excedidas.'
+			} else if (${solicitacao.quantidade} < ${solicitacao.qtdVagasPreenchidas}){
+				msg += ' *As vagas da solicitação já foram excedidas.'
+			}
 			
 			$('<div>'+ msg +'</div>').dialog({title: acao,
 													modal: true, 
@@ -53,11 +61,11 @@
 													        text: acao,
 													        click: function() { window.location=link+'&encerrarSolicitacao=N'; }
 													    },
- 														<#if solicitacao.qtdVagasPreenchidas?exists && solicitacao.quantidade?exists && solicitacao.quantidade <= solicitacao.qtdVagasPreenchidas+1>
-													    {
-													        text: acao+" e Encerrar solicitação",
-													        click: function() { window.location=link+'&encerrarSolicitacao=S'; }
-													    },
+														<#if solicitacao.qtdVagasPreenchidas?exists && solicitacao.quantidade?exists && solicitacao.quantidade <= solicitacao.qtdVagasPreenchidas+1>
+														    {
+														        text: acao+" e encerrar solicitação",
+														        click: function() { window.location=link+'&encerrarSolicitacao=S'; }
+														    },
 													    </#if>
 													    {
 													        text: "Cancelar",

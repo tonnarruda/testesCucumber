@@ -6,6 +6,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -47,7 +48,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock colaboradorManager;
 	private Mock quantidadeLimiteColaboradoresPorCargoManager;
-
+	private Mock transactionManager = null;
+	
 	private Empresa empresaDoSistema;
 	private HistoricoColaborador historicoColaborador;
 
@@ -56,6 +58,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		action = new HistoricoColaboradorEditAction();
 		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 		action.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
+		transactionManager = new Mock(PlatformTransactionManager.class);
 		
 		action.setHistoricoColaboradorManager(mockaHistoricoColaboradorManager());
 		action.setIndiceManager(mockaIndiceManager());
@@ -65,6 +68,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		action.setFaixaSalarialManager(mockaFaixaSalarialManager());
 		action.setAreaOrganizacionalManager(mockaAreaOrganizacionalManager());
 		action.setColaboradorManager(mockaColaboradorManager());
+		action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		
 		
 		empresaDoSistema = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresaDoSistema);
@@ -171,8 +176,9 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
@@ -204,6 +210,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		// comportamento do prepareInsert()
 		simulaComportamentoDoPrepareInsert();
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		String outcome = action.insert();
 		
 		assertEquals("input", outcome);
@@ -219,7 +227,9 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
@@ -245,7 +255,9 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
