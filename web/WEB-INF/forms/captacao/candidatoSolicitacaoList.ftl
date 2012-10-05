@@ -54,7 +54,7 @@
 			
 			$('<div>'+ msg +'</div>').dialog({title: acao,
 													modal: true, 
-													height: 150,
+													height: 170,
 													width: 500,
 													buttons: [
 													    {
