@@ -42,14 +42,14 @@
 		function contrataCandidato(nomeCandidato, acao, link)
 		{
 			var link = "${baseUrl}"+link;
-			var msg = 'Deseja realmente '+acao.toLowerCase()+' '+nomeCandidato+' ? <br />';
+			var msg = 'Deseja realmente '+acao.toLowerCase()+' '+nomeCandidato+' ? <br /><br />';
 			
 			if(${solicitacao.quantidade} == ${solicitacao.qtdVagasPreenchidas}+1) {
-				msg += ' *Esta é a última vaga da solicitação a ser preenchida.';
+				msg += '<b>*Esta é a última vaga da solicitação a ser preenchida.</b>';
 			} else if (${solicitacao.quantidade} == ${solicitacao.qtdVagasPreenchidas}){
-				msg += ' *Com esta operação as vagas da solicitação serão excedidas.'
+				msg += '<b>*Com esta operação as vagas da solicitação serão excedidas.</b>'
 			} else if (${solicitacao.quantidade} < ${solicitacao.qtdVagasPreenchidas}){
-				msg += ' *As vagas da solicitação já foram excedidas.'
+				msg += '<b>*As vagas da solicitação já foram excedidas.</b>'
 			}
 			
 			$('<div>'+ msg +'</div>').dialog({title: acao,

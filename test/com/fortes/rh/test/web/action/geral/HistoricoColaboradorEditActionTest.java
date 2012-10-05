@@ -211,7 +211,6 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		simulaComportamentoDoPrepareInsert();
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		String outcome = action.insert();
 		
 		assertEquals("input", outcome);
@@ -229,7 +228,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
@@ -257,7 +256,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 		
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
