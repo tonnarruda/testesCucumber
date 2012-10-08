@@ -2814,7 +2814,6 @@ CREATE TABLE empresa (
     grupoac character varying(3),
     campoextracolaborador boolean DEFAULT false,
     campoextracandidato boolean DEFAULT false,
-    emailcandidatonaoapto boolean,
     mailnaoaptos text,
     exame_id bigint,
     emailresplimitecontrato character varying(120) DEFAULT ''::character varying,
@@ -3952,7 +3951,7 @@ ALTER TABLE public.gerenciadorcomunicacao_sequence OWNER TO postgres;
 -- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 19, true);
+SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 20, true);
 
 
 --
@@ -27190,7 +27189,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, emailcandidatonaoapto, mailnaoaptos, exame_id, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, enviaremailaniversariante, turnoverporsolicitacao, obrigarambientefuncaocolaborador, verificaparentesco, controlariscopor, exibircolaboradorsubstituido, codigotrucurso) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, NULL, 1, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, false, 'N', 'A', false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, exame_id, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, enviaremailaniversariante, turnoverporsolicitacao, obrigarambientefuncaocolaborador, verificaparentesco, controlariscopor, exibircolaboradorsubstituido, codigotrucurso) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, 1, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, false, 'N', 'A', false, false);
 
 
 --
@@ -27452,6 +27451,7 @@ INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, d
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (17, 3, 1, 14, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (18, 9, 2, 7, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (19, 25, 2, 7, NULL, 1, '7', false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (20, 26, 1, 1, NULL, 1, NULL, false);
 
 
 --
@@ -27788,6 +27788,9 @@ INSERT INTO migrations (name) VALUES ('20120904142852');
 INSERT INTO migrations (name) VALUES ('20120905165913');
 INSERT INTO migrations (name) VALUES ('20120928152741');
 INSERT INTO migrations (name) VALUES ('20121001135135');
+INSERT INTO migrations (name) VALUES ('20121002105225');
+INSERT INTO migrations (name) VALUES ('20121002153027');
+INSERT INTO migrations (name) VALUES ('20121004143617');
 
 
 --
@@ -28079,7 +28082,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.88.85', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.89.86', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
 
 
 --
