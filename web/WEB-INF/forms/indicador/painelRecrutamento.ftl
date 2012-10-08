@@ -168,7 +168,7 @@
 		    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
 		    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
 		    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
-		    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")} 
+		    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")}%
 		    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
 		    			</li>
 		    		</ul>

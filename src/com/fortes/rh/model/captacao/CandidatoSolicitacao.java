@@ -133,6 +133,27 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 		candidato.setNome(candidatoNome);
 	}
 	
+	public void setCandidatoDdd(String candidatoDdd)
+	{
+		inicializaCandidato();
+
+		candidato.setDdd(candidatoDdd);
+	}
+
+	public void setCandidatoFoneFixo(String candidatoFoneFixo)
+	{
+		inicializaCandidato();
+		
+		candidato.setFoneFixo(candidatoFoneFixo);
+	}
+	
+	public void setCandidatoFoneCelular(String candidatoFoneCelular)
+	{
+		inicializaCandidato();
+
+		candidato.setFoneCelular(candidatoFoneCelular);
+	}
+	
 	public void setCandidatoIdF2RH(Integer candidatoIdF2RH)
 	{
 		inicializaCandidato();

@@ -212,6 +212,7 @@
 				</a>
 			</#if>
 		</@display.column>
+		<@display.column property="candidato.contato.foneContatoFormatado" title="Telefone Fixo/Celular" class="${classe}" style="width: 160px;"/>
 		<@display.column property="etapaSeletiva.nome" title="Etapa" class="${classe}"/>
 		<@display.column property="responsavel" title="Responsável" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" class="${classe}" style="text-align: center;"/>

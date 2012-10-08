@@ -913,6 +913,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		contato.setFoneCelular(foneCelular);
 	}
 
+	public void setDdd(String ddd)
+	{
+		if (contato == null)
+			contato = new Contato();
+		contato.setDdd(ddd);
+	}
+
 	public void setEmpresaId(Long empresaId)
 	{
 		prepareProjectionEmpresa();
