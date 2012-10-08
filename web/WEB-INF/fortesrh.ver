@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.89.86" data="08/10/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitacao de pessoal : Nova opção de fitrar por descrição da solicitação.
+			:: C&S > Relatórios > Colaboradores Por Área Organizacional: Nova opção de filtro por cargo. 
+			:: Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação para envio de email para o responsável da área do período de experiência a vencer. 
+			:: Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação para envio de email para os candidatos nao aptos da solicitação de pessoal.
+			:: Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação para envio de email ou mensagem ao atualizar as info. pessoais. 
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.88.85" data="01/10/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Novo layout da caixa de mensagens na tela inicial. 
