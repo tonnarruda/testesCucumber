@@ -310,7 +310,7 @@ public class CandidatoListAction extends MyActionSupportList
 				Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"});
 				
 				uf = solicitacao.getCidade().getUf().getId();
-				cidades = CollectionUtil.convertCollectionToMap(cidadesList, "getId", "getNome", Cidade.class);
+				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
             	
 				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
@@ -503,7 +503,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroF2rh();
 		
 		try {
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidade, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas, getPage());
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadesCheck, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas, getPage());
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
 
 			setTotalSize(curriculos.size());
@@ -1802,13 +1802,19 @@ public class CandidatoListAction extends MyActionSupportList
 		this.filtrarPor = filtrarPor;
 	}
 
-	public void setCidadesCheck(Long[] cidadesCheck)
-	{
-		this.cidadesCheck = cidadesCheck;
+	public Collection<CheckBox> getCidadesCheckList() {
+		return cidadesCheckList;
 	}
 
-	public Collection<CheckBox> getCidadesCheckList()
-	{
-		return cidadesCheckList;
+	public void setCidadesCheckList(Collection<CheckBox> cidadesCheckList) {
+		this.cidadesCheckList = cidadesCheckList;
+	}
+
+	public Long[] getCidadesCheck() {
+		return cidadesCheck;
+	}
+
+	public void setCidadesCheck(Long[] cidadesCheck) {
+		this.cidadesCheck = cidadesCheck;
 	}
 }

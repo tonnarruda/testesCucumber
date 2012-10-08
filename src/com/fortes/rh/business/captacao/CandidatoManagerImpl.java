@@ -1119,7 +1119,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long cidadeValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas, Integer page) 
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidadesValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas, Integer page) 
 	{
 		String nome = "";
 		String cpf = "";
@@ -1149,13 +1149,29 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
 		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
 		if(cidades != null && cidades.size() > 0)
-			cidade = montaParametro(cidade, "cidade", (String) cidades.get(cidadeValue));
+			cidade = montaParametroCidade(cidade, "cidade", cidadesValue, cidades);
 		
 		pagina = montaParametro(pagina, "page", String.valueOf(page));
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
 		
 		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave, pagina};
+	}
+
+	private String montaParametroCidade(String variavel, String chave,Long[] cidadesValue, Map cidades) {
+		if(cidadesValue != null && cidadesValue.length > 0)
+		{
+			try {
+				variavel = chave + "=";
+				for (Long cidadeId : cidadesValue)
+					variavel += (String) cidades.get(cidadeId) + ",";
+			
+			} catch (Exception e){
+				variavel = chave + "=";
+			}			
+		}
+		
+		return variavel;
 	}
 
 	private String getIdioma(Collection<Idioma> idiomas, Long value) 
@@ -1183,7 +1199,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		
 		return variavel;
 	}
-
+	
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa) 
 	{
 		F2rhFacade f2rhFacade = new F2rhFacadeImpl();
