@@ -671,7 +671,7 @@
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
 			<band height="156"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($P{mostraOpcaoSolicitacaoPessoal}.equals(new Boolean(true)))]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($P{mostraOpcaoSolicitacaoPessoal}.booleanValue() && $P{exibirSolicitacaoPessoal}.booleanValue())]]></printWhenExpression>
 				<staticText>
 					<reportElement
 						x="0"
@@ -1680,7 +1680,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.endereco.cidade.nome} + " / " + $F{candidato.endereco.uf.sigla}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{candidato.endereco.cidade.nome}==null ? "" : $F{candidato.endereco.cidade.nome} ) + ( $F{candidato.endereco.uf.sigla}==null ? "" :  " / " + $F{candidato.endereco.uf.sigla})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -1947,7 +1947,7 @@
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="352"
 						y="184"
@@ -2025,7 +2025,7 @@
 					</textElement>
 				<text><![CDATA[Deficiência:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="65"
 						y="210"
@@ -2051,7 +2051,7 @@
 					</textElement>
 				<text><![CDATA[Contato:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="368"
 						y="197"
