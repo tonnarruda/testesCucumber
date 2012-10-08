@@ -31,6 +31,7 @@
 				populaCargosConhecimentos($(this).val());
 			});
 			
+			populaCidadesCheckList();
 			var obj = document.getElementById("legendas");
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
 		});
@@ -65,7 +66,7 @@
 				document.getElementById(campos[contador]).value = "";
 			}
 			
-			populaCidades();
+			populaCidadesCheckList();
 			document.getElementById('cpfBusca').value = valueCpf; 
 			marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'conhecimentosCheck',false);
@@ -99,9 +100,9 @@
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 395px;" liClass="liLeft" />
 			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
 
-			<@ww.select label="Escolaridade mínima" name="escolaridade" id="escolaridade" list="escolaridades" liClass="liLeft" cssStyle="width: 220px;" headerKey="" headerValue=""/>
-			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
-			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 300px;" headerKey="" headerValue=""/>
+			<@ww.select label="Escolaridade mínima" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 220px;" headerKey="" headerValue=""/>
+			<@ww.select label="Estado" name="uf" id="uf" list="ufs" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList()"/>
+			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" />
 
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />

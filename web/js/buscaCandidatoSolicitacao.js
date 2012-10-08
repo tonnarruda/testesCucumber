@@ -15,6 +15,18 @@ function createListCidades(data)
 	DWRUtil.addOptions("cidade", data);
 }
 
+
+function populaCidadesCheckList()
+{
+	DWRUtil.useLoadingMessage('Carregando...');
+	CidadeDWR.getCidadesCheckList(createListCidadesCheck, document.getElementById("uf").value);
+}
+
+function createListCidadesCheck(data)
+{
+	addChecks('cidadesCheck',data);
+}
+
 function marcarDesmarcar(frm)
 {
 	var vMarcar;

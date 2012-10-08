@@ -37,6 +37,22 @@ public class CidadeDWR
 		return new HashMap();
 
 	}
+	
+	public Map getCidadesCheckList(String ufId)
+	{
+		if(ufId != null && !ufId.equals("-1"))
+		{
+			Collection<Cidade> cidades = cidadeManager.findAllSelect(Long.valueOf(ufId));
+			Collection<Cidade> cidadesLista = new ArrayList<Cidade>();
+
+			if(!cidades.isEmpty())
+				cidadesLista.addAll(cidades);
+
+			return CollectionUtil.convertCollectionToMap(cidadesLista, "getId", "getNome", Cidade.class);
+		}
+
+		return new HashMap();
+	}
 
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{

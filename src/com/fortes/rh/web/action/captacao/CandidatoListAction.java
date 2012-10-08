@@ -139,12 +139,14 @@ public class CandidatoListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] conhecimentosCheck;
 	private Collection<CheckBox> conhecimentosCheckList = new ArrayList<CheckBox>();
-	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private String[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private String[] gruposCheck;
 	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
+	private Long[] cidadesCheck;
+	private Collection<CheckBox> cidadesCheckList = new ArrayList<CheckBox>();
 	private String emailAvulso;
 	private String anuncioBDS;
 
@@ -305,10 +307,15 @@ public class CandidatoListAction extends MyActionSupportList
 			
 			if(solicitacao.getCidade() != null && solicitacao.getCidade().getUf() != null)
 			{
+				Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"});
+				
 				uf = solicitacao.getCidade().getUf().getId();
-				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+				cidades = CollectionUtil.convertCollectionToMap(cidadesList, "getId", "getNome", Cidade.class);
 				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
-            	Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
+            	
+				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+				
+				Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
             	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
             	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
 				bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, marcados, "getId");
@@ -1785,11 +1792,23 @@ public class CandidatoListAction extends MyActionSupportList
 		this.origemList = origemList;
 	}
 
-	public int getFiltrarPor() {
+	public int getFiltrarPor()
+	{
 		return filtrarPor;
 	}
 
-	public void setFiltrarPor(int filtrarPor) {
+	public void setFiltrarPor(int filtrarPor)
+	{
 		this.filtrarPor = filtrarPor;
+	}
+
+	public void setCidadesCheck(Long[] cidadesCheck)
+	{
+		this.cidadesCheck = cidadesCheck;
+	}
+
+	public Collection<CheckBox> getCidadesCheckList()
+	{
+		return cidadesCheckList;
 	}
 }
