@@ -24,10 +24,6 @@
 
 	<script type="text/javascript">
 	
-		$(document).ready(function(){
-			populaCidadesCheckList();
-		});
-	
 		function stopEvent(e){
 			if(!e) var e = window.event;
 			

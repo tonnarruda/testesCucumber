@@ -16,6 +16,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Idioma;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.web.action.captacao.CandidatoListAction;
 
@@ -64,7 +65,7 @@ public class CandidatoListActionTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	idiomaManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Idioma>()));
     	manager.expects(once()).method("montaStringBuscaF2rh");
-    	cidadeManager.expects(once()).method("find").withAnyArguments();
+    	cidadeManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<Cidade>()));
     	
     	f2rhFacade.expects(once()).method("buscarCurriculos").with(ANYTHING).will(returnValue(new ArrayList<Curriculo>()));
     	f2rhFacade.expects(once()).method("removeCandidatoInseridoSolicitacao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Curriculo>()));

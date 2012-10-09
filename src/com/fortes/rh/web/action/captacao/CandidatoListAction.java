@@ -475,14 +475,21 @@ public class CandidatoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	private void montaFiltroF2rh() 
+	private void montaFiltroF2rh() throws Exception 
 	{
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
-		cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+		populaCheckListCidadeMarcados();
 		setShowFilter(true);
+	}
+
+	private void populaCheckListCidadeMarcados() throws Exception 
+	{
+		Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"});
+		cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+		cidadesCheckList = CheckListBoxUtil.marcaCheckListBox(cidadesCheckList, StringUtil.LongToString(cidadesCheck));
 	}
 	
 	public String prepareBuscaF2rh() throws Exception
