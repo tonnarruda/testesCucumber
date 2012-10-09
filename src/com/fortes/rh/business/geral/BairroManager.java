@@ -11,7 +11,7 @@ public interface BairroManager extends GenericManager<Bairro>
 	Collection<Bairro> list(int page, int pagingSize, Bairro bairro);
 	public boolean existeBairro(Bairro bairro);
 	public Collection<Bairro> getBairrosBySolicitacao(Long solicitacaoId);
-	Collection<Bairro> findAllSelect(Long cidadeId);
+	Collection<Bairro> findAllSelect(Long... cidadeIds);
 	public Collection<Bairro> getBairrosByIds(Long[] bairrosIds);
 	void migrarRegistros(Bairro bairro, Bairro bairroDestino) throws Exception;
 	public Bairro findByIdProjection(Long id);

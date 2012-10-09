@@ -92,7 +92,7 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		return result.size() > 0;
 	}
 
-	public Collection<Bairro> findAllSelect(Long cidadeId)
+	public Collection<Bairro> findAllSelect(Long... cidadeIds)
 	{
 		Criteria criteria = getSession().createCriteria(Bairro.class, "b");
 
@@ -101,7 +101,7 @@ public class BairroDaoHibernate extends GenericDaoHibernate<Bairro> implements B
 		p.add(Projections.property("b.nome"), "nome");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("b.cidade.id", cidadeId));
+		criteria.add(Expression.in("b.cidade.id", cidadeIds));
 		criteria.addOrder(Order.asc("b.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

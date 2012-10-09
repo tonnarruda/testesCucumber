@@ -39,6 +39,18 @@ public class BairroDWR
 		return new HashMap();
 	}
 
+	public Map getBairrosCheckList(Long[] cidadesChecks)
+	{
+		if(cidadesChecks != null && cidadesChecks.length > 0)
+		{
+			Collection<Bairro> bairros = bairroManager.findAllSelect(cidadesChecks);
+			
+			return new CollectionUtil<Bairro>().convertCollectionToMap(bairros,"getId","getNome");
+		}
+		
+		return new HashMap();
+	}
+	
 	public Long novoBairro(String nomeBairro, String cidadeId)
 	{
 		Cidade cidade = new Cidade();

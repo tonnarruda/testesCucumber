@@ -44,9 +44,9 @@
 			enviaEmpresa($('#empresaSelect').val());
 			
 			populaCidadesCheckList();
+			 populaBairros();
 			var obj = document.getElementById("legendas");
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
-			
 		});
 	
 		function enviaEmpresa(empresaId)
@@ -64,7 +64,10 @@
 		function populaBairros()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			BairroDWR.getBairrosMap(createListBairros, document.getElementById("cidade").value);
+			
+			var cidadesIds = getArrayCheckeds(document.forms[0], 'cidadesCheck');
+			
+			BairroDWR.getBairrosCheckList(createListBairros, cidadesIds);
 		}
 
 		function createListBairros(data)
@@ -100,7 +103,6 @@
 			}
 
 			populaCidadesCheckList();
-			populaBairros();
 			document.getElementById('cpfBusca').value = valueCpf;
 			document.getElementById('dataCadIni').value = valueData;
 			document.getElementById('dataCadFim').value = valueData;
@@ -171,8 +173,9 @@
 			<@ww.select label="Escolaridade mínima" name="escolaridade" id="escolaridade" list="escolaridades" liClass="liLeft" cssStyle="width: 220px;" headerKey="" headerValue=""/>
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			<@ww.select label="Nível" name="nivel" id="nivel" list="nivels" cssStyle="width: 150px;" headerKey="" headerValue=""/>
-			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList();"/>
-			<@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />
+			<@ww.select label="Estado" name="uf" id="uf" list="ufs" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList();"/>
+			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" onClick="populaBairros();"/>
+			<!-- <@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />-->
 			<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" />
 
 			<li style="clear:both;"></li>

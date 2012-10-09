@@ -56,12 +56,11 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void atualizaTextoOcr(Candidato candidato);
 	public Collection<Candidato> getCandidatosByNome(String candidatoNome);
 	public int getTotalSize();
-	public Collection<Candidato> getCandidatosByExperiencia(Map<String, Object> parametros, long empresaId);
 	public Candidato findByCandidatoId(Long candidatoId);
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao) throws ColecaoVaziaException;
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId);
 	public void migrarBairro(String bairro, String bairroDestino);
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar);
+	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar);
 	public Collection<Candidato> findByNomeCpfAllEmpresas(Candidato candidato);
 	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);

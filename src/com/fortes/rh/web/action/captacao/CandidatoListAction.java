@@ -554,7 +554,6 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("sexo", sexo);
 		parametros.put("idadeMin", idadeMin);
 		parametros.put("idadeMax", idadeMax);
-		parametros.put("cidade", cidade);
 		parametros.put("uf", uf);
 		parametros.put("escolaridade", escolaridade);
 		parametros.put("veiculo", veiculo);
@@ -573,6 +572,7 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("cargosIds", cargosCheckLong);
 		parametros.put("conhecimentosIds", conhecimentosCheckLong);
 		parametros.put("bairrosIds", bairrosCheckLong);
+		parametros.put("cidadesIds", cidadesCheck);
 		
 		if (!tempoExperiencia.equals("") || !tempoExperiencia.equals("0")){
 			if (experienciasCheckLong.length > 0)
@@ -617,7 +617,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidade, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");

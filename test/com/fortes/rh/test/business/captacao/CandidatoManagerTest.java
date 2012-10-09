@@ -1396,19 +1396,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoManager.migrarBairro("bairro", "bairroDestino");
     }
 
-	public void testGetCandidatosByExperiencia()
-	{
-		Collection<Candidato> candidatos = new ArrayList<Candidato>();
-		candidatos.add(new Candidato());
-		candidatos.add(new Candidato());
-
-		candidatoDao.expects(once()).method("getCandidatosByExperiencia").with(ANYTHING,ANYTHING).will(returnValue(candidatos));
-
-		Map<String, Object> parametros = new HashMap<String, Object>();
-		assertEquals(2, candidatoManager.getCandidatosByExperiencia(parametros ,1L).toArray().length);
-
-	}
-
 	public void testSaveCandidatoCurriculoException() throws Exception
 	{
 		Candidato candidato = CandidatoFactory.getCandidato();

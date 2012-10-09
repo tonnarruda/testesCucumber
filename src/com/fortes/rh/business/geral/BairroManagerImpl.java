@@ -37,9 +37,9 @@ public class BairroManagerImpl extends GenericManagerImpl<Bairro, BairroDao> imp
 		return getDao().existeBairro(bairro);
 	}
 
-	public Collection<Bairro> findAllSelect(Long cidadeId)
+	public Collection<Bairro> findAllSelect(Long... cidadeIds)
 	{
-		return getDao().findAllSelect(cidadeId);
+		return getDao().findAllSelect(cidadeIds);
 	}
 
 	public Collection<Bairro> getBairrosBySolicitacao(Long solicitacaoId)

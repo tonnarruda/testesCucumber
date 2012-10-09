@@ -101,8 +101,10 @@ public class BairroManagerTest extends MockObjectTestCase
 
 		Collection<Bairro> bairros = new ArrayList<Bairro>();
 		bairros.add(bairro);
+		
+		Long[] cidadeIds = new Long[]{cidade.getId()};
 
-		bairroDao.expects(once()).method("findAllSelect").with(eq(cidade.getId())).will(returnValue(bairros));
+		bairroDao.expects(once()).method("findAllSelect").with(eq(cidadeIds)).will(returnValue(bairros));
 
 		assertEquals(1, bairroManager.findAllSelect(cidade.getId()).size());
 	}
@@ -161,8 +163,9 @@ public class BairroManagerTest extends MockObjectTestCase
 		bairros.add(bairro);
 		
 		Cidade cidade = CidadeFactory.getEntity(1L);
+		Long[] cidadeIds = new Long[]{cidade.getId()};
 		
-		bairroDao.expects(once()).method("findAllSelect").with(eq(cidade.getId())).will(returnValue(bairros));		
+		bairroDao.expects(once()).method("findAllSelect").with(eq(cidadeIds)).will(returnValue(bairros));		
 		assertEquals(1, bairroManager.findByCidade(cidade).size());
 	}
 	

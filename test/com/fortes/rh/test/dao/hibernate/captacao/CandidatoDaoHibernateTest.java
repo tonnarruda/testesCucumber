@@ -2184,8 +2184,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		String[] cargosCheck = new String[]{cargo.getNomeMercado()};
 		String[] conhecimentosCheck = new String[]{conhecimento.getNome()};
+		Long[] cidadesIds = new Long[]{cidade.getId()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidade.getId(), cargosCheck, conhecimentosCheck, null, false, null, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidadesIds, cargosCheck, conhecimentosCheck, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 
@@ -2208,8 +2209,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Long[] cargosIds = new Long[]{cargo.getId()};
 		Long[] conhecimentosIds = new Long[]{conhecimento.getId()};
+		Long[] cidadesIds = new Long[]{cidade.getId()};
 
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidade.getId(), cargosIds, conhecimentosIds, null, false, null, null);
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacaoByEmpresa(empresa.getId(),indicadoPor, nomeBusca, cpfBusca, escolaridade, estado.getId(), cidadesIds, cargosIds, conhecimentosIds, null, false, null, null);
 		assertEquals(1, resultados.size());
 	}
 	

@@ -420,8 +420,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		}
 
 		// Cidade
-		if( parametros.get("cidade") != null && ((Long)parametros.get("cidade")) != -1)
-			criteria.add(Expression.eq("cd.id", parametros.get("cidade")));
+		if( parametros.get("cidadesIds") != null && ((Long[])parametros.get("cidadesIds")).length > 0)
+			criteria.add(Expression.in("cd.id", (Long[]) parametros.get("cidadesIds")));
 
 		// UF
 		if( parametros.get("uf") != null)
@@ -912,7 +912,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.executeUpdate();
 	}
 
-	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
+	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -922,7 +922,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		ProjectionList p = Projections.projectionList().create();
 		criteria = montaProjectionGroup(criteria, p);
 
-		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidade, candidatosJaSelecionados, criteria);
+		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, candidatosJaSelecionados, criteria);
 
 		if(cargosCheck != null && cargosCheck.length > 0)
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", cargosCheck));
@@ -944,7 +944,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
+	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -955,7 +955,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria = montaProjectionGroup(criteria, p);
 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidade, candidatosJaSelecionados, criteria);
+		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, candidatosJaSelecionados, criteria);
 
 		if(cargosCheck != null && cargosCheck.length > 0)
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", cargosCheck));
@@ -977,7 +977,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	private void whereBusca(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long cidade, Collection<Long> candidatosJaSelecionados, Criteria criteria)
+	private void whereBusca(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, Collection<Long> candidatosJaSelecionados, Criteria criteria)
 	{
 		criteria.add(Expression.eq("c.disponivel", true));
 		criteria.add(Expression.eq("c.contratado", false));
@@ -995,8 +995,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(isNotBlank(escolaridade))
 			criteria.add(Expression.sqlRestriction("cast(this_.escolaridade as integer) >= ?", Integer.parseInt(escolaridade), Hibernate.INTEGER)); 
 		
-		if(cidade != null && cidade != -1)
-			criteria.add(Expression.eq("cd.id", cidade));
+		if(cidadesCheck != null && cidadesCheck.length > 0)
+			criteria.add(Expression.in("cd.id", cidadesCheck));
 
 		if(uf != null)
 			criteria.add(Expression.eq("uf.id", uf));
