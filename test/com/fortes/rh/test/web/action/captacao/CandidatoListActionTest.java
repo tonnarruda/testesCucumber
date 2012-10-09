@@ -1,6 +1,8 @@
 package com.fortes.rh.test.web.action.captacao;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -62,6 +64,7 @@ public class CandidatoListActionTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	idiomaManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Idioma>()));
     	manager.expects(once()).method("montaStringBuscaF2rh");
+    	cidadeManager.expects(once()).method("find").withAnyArguments();
     	
     	f2rhFacade.expects(once()).method("buscarCurriculos").with(ANYTHING).will(returnValue(new ArrayList<Curriculo>()));
     	f2rhFacade.expects(once()).method("removeCandidatoInseridoSolicitacao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Curriculo>()));

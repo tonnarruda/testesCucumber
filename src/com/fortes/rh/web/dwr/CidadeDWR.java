@@ -38,7 +38,7 @@ public class CidadeDWR
 
 	}
 	
-	public Map getCidadesCheckList(String ufId)
+	public Map getCidadesCheckList(String ufId, Long[] cidadesCheck)
 	{
 		if(ufId != null && !ufId.equals("-1"))
 		{

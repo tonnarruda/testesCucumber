@@ -74,6 +74,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.rh.web.dwr.CidadeDWR;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -312,9 +313,7 @@ public class CandidatoListAction extends MyActionSupportList
 				uf = solicitacao.getCidade().getUf().getId();
 				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
-            	
 				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
-				
 				Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
             	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
             	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
@@ -481,10 +480,8 @@ public class CandidatoListAction extends MyActionSupportList
 		escolaridades = new Escolaridade();
 		sexos = new Sexo();
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
-		if(uf != null)
-			cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
-		
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
+		cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 		setShowFilter(true);
 	}
 	
@@ -505,7 +502,7 @@ public class CandidatoListAction extends MyActionSupportList
 		try {
 			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadesCheck, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas, getPage());
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
-
+			
 			setTotalSize(curriculos.size());
 			curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
 			

@@ -20,10 +20,14 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
 	<script type="text/javascript">
+	
+		$(document).ready(function(){
+			populaCidadesCheckList();
+		});
+	
 		function stopEvent(e){
 			if(!e) var e = window.event;
 			
@@ -109,10 +113,7 @@
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList()"/>
 			<@ww.textfield label="Bairro" id="bairro" name="curriculo.bairro" cssStyle="width: 264px;"/>
 			
-			<@frt.checkListBox label="Cidade" name="cidadesCheck" id="createListCidades" list="cidadesCheckList" />
-			
-			
-			
+			<@frt.checkListBox label="Cidade" name="cidadesCheck" id="cidadesCheck" list="cidadesCheckList" />
 			<@ww.textfield label="Palavra chave(Ex.: programador superior completo)" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 525px;"/>
 			
 			<@ww.hidden name="filtro" value="true"/>

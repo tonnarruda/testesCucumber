@@ -1568,7 +1568,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Collection<Idioma> idiomas = new ArrayList<Idioma>();
 		idiomas.add(idioma);
 		
-		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadeValue, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas, 1);
+		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas, 1);
 		
 		String[] camposInformados = new String[]{"",
 				"",
@@ -1582,9 +1582,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
 				"idade_fim=35",
 				"",
 				"",
-				"",				
 				"",
-				"page=1"
+				"page=1",
+				""				
 		};
 		
 		assertEquals(15, camposInformados.length);
@@ -1601,10 +1601,10 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		assertEquals("idade_ini", camposInformados[8], retorno[8]);
 		assertEquals("idade_fim", camposInformados[9], retorno[9]);
 		assertEquals("estado", camposInformados[10], retorno[10]);
-		assertEquals("cidade", camposInformados[11], retorno[11]);
 		assertEquals("bairro", camposInformados[12], retorno[12]);
 		assertEquals("palavra_chave", camposInformados[13], retorno[13]);
 		assertEquals("page", camposInformados[14], retorno[14]);
+		assertEquals("cidade", camposInformados[11], retorno[11]);
 	}
 		
 	public void testGetCurriculosF2rhSave() throws Exception

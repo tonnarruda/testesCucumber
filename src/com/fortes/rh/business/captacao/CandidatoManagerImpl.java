@@ -1155,7 +1155,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
 		
-		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, cidade, bairro, palavra_chave, pagina};
+		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, bairro, palavra_chave, pagina, cidade};
 	}
 
 	private String montaParametroCidade(String variavel, String chave,Long[] cidadesValue, Map cidades) {

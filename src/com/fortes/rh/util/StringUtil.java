@@ -132,6 +132,20 @@ public final class StringUtil
 		}
 		return longs;
 	}
+	
+	public static String[] LongToString(Long[] chaves)
+	{
+		if (chaves == null || chaves.length == 0)
+			return new String[]{};
+		
+		String[] strings = new String[chaves.length];
+		
+		for (int i = 0; i < chaves.length; i++)
+		{
+			strings[i] = chaves[i].toString();
+		}
+		return strings;
+	}
 
 	public static String getSenhaRandom(int tamanho)
 	{
