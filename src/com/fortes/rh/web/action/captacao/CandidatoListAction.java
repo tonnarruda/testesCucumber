@@ -232,7 +232,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private boolean mostraOpcaoSolicitacaoPessoal;
 	
-	private int filtrarPor;
+	private int filtrarPor = 1;
 
 	public String list() throws Exception
 	{

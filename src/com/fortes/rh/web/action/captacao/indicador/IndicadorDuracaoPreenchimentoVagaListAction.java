@@ -16,7 +16,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;

@@ -12,7 +12,13 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script type="text/javascript">
-
+		$(function () {
+			<#if filtrarPor?exists>
+				filtrarOpt(${filtrarPor});
+				$('#filtrarPor option').attr('selected',${filtrarPor}-1);
+			</#if>
+		});
+		
 		function populaCargosByGrupo(frm, nameCheck)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -41,19 +47,12 @@
 
 		function validaForm()
 		{
-			var filtrarPorValue = document.getElementById('filtrarPor').value;
-
 			var validaAreaCargo = '@areasCheck';
-
-			if(filtrarPorValue == "2")
-			{
+			if($('#filtrarPor').val() == "2")
 				validaAreaCargo = '@cargosCheck';
-			}
 
-			return validaFormularioEPeriodo('form', new Array('filtrarPor', 'dataIni', 'dataFim'), new Array('dataIni','dataFim'));
+			return validaFormularioEPeriodo('form', new Array('filtrarPor', 'dataIni', 'dataFim', validaAreaCargo), new Array('dataIni','dataFim'));
 		}
-
-
 	</script>
 
 	<#if dataCadIni?exists>
@@ -67,7 +66,7 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<title>Relatório de Avaliações de Candidatos</title>
+	<title>Avaliações de Candidatos</title>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -106,9 +105,5 @@
 		<button onclick="validaForm();" class="btnRelatorio">
 		</button>
 	</div>
-
-	<script type="text/javascript">
-		filtrarOpt(document.getElementById('filtrarPor').value);
-	</script>
 </body>
 </html>
