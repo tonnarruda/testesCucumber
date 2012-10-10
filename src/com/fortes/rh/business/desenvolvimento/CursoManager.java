@@ -15,9 +15,6 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findAllSelect(Long empresaId);
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
-	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
-	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
-	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds);
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado);
@@ -29,4 +26,6 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public String somaCargaHoraria(Collection<Turma> turmas);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
 }

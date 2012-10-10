@@ -17,6 +17,7 @@ import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
 {
@@ -59,76 +60,64 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByCertificacao(certificacaoId);
 	}
 
-	public void findCustoMedioHora(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
-		if (indicadorTreinamento != null)
-		{
-			IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
+		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds);
+		indicadorTreinamento.setDataIni(dataIni);
+		indicadorTreinamento.setDataFim(dataFim);
+		
+		Double somaHoras = indicadorTreinamento.getSomaHoras();
+		Double qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0);
+		Double custoPerCapita = 0d;
+		Double horasPerCapita = 0d;
+		Double percentualFrequencia = 0d;
+		Double percentualInvestimento = 0d;
+		
+		Double somaCustos = getDao().somaCustosTreinamentos(dataIni, dataFim, empresaIds);
+		indicadorTreinamento.setSomaCustos(somaCustos);
+		
+		if (somaHoras != null && somaHoras > 0)
+			indicadorTreinamento.setCustoMedioHora( somaCustos / somaHoras );
+		
+		Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
 
-			Double custoMedioHora = 0d;
+		if (qtdInscritos != null && qtdInscritos > 0)
+			custoPerCapita = (somaCustos / qtdInscritos);
 
-			Double somaCusto = indicadorTmp.getSomaCustos();
-			Integer somaHoras = indicadorTmp.getSomaHoras();
+		indicadorTreinamento.setCustoPerCapita(custoPerCapita);
+		indicadorTreinamento.setQtdColaboradoresInscritos(qtdInscritos);
 
-			if (somaHoras != null && somaHoras > 0)
-				custoMedioHora = (somaCusto / somaHoras);
+		Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaIds);
 
-			indicadorTreinamento.setCustoMedioHora(custoMedioHora);
-			// aproveita e seta o custo total e quantidade de horas
-			indicadorTreinamento.setCustoTotal(somaCusto);
-			indicadorTreinamento.setSomaHoras(somaHoras);
-		}
+		if (qtdAtivos != null && qtdAtivos > 0)
+			horasPerCapita = qtdHoras / qtdAtivos;
+
+		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
+		
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
+		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds);
+		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
+		
+		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
+		percentualInvestimento = turmaManager.getPercentualInvestimento(dataIni, dataFim, empresaIds);
+		indicadorTreinamento.setPercentualInvestimento(percentualInvestimento);
+		
+		return indicadorTreinamento;
 	}
-
-	public void findCustoPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
+	
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
-		if (indicadorTreinamento != null)
-		{
-			//Prepara o custo total se ainda não existir
-			if (indicadorTreinamento.getCustoTotal() == null)
-			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
-				indicadorTreinamento.setCustoTotal(indicadorTmp.getCustoTotal());
-			}
-
-			Double custoPerCapita = 0d;
-			Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
-			
-			if (qtdInscritos != null && qtdInscritos > 0)
-				custoPerCapita = (indicadorTreinamento.getCustoTotal() / qtdInscritos);
-
-			indicadorTreinamento.setCustoPerCapita(custoPerCapita);
-			// aproveita e seta os inscritos
-			indicadorTreinamento.setQtdColaboradoresInscritos(qtdInscritos);
+		double somaHoras = 0.0;
+		
+		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds);
+		
+		for (IndicadorTreinamento indicadorTreinamento : indicadoresPorCurso) {
+			somaHoras += indicadorTreinamento.getSomaHoras();
 		}
+		
+		return new IndicadorTreinamento(null, somaHoras);
 	}
-
-	public void findHorasPerCapita(IndicadorTreinamento indicadorTreinamento, Date dataIni, Date dataFim, Long[] empresaIds)
-	{
-		if (indicadorTreinamento != null)
-		{
-			// Prepara dados se ainda não existem
-			if (indicadorTreinamento.getSomaHoras() == null)
-			{
-				IndicadorTreinamento indicadorTmp = getDao().findSomaCustoEHorasTreinamentos(dataIni, dataFim, empresaIds, true);
-				indicadorTreinamento.setSomaHoras(indicadorTmp.getSomaHoras());
-			}
-			if (indicadorTreinamento.getQtdColaboradoresInscritos() == null)
-			{
-				Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
-				indicadorTreinamento.setQtdColaboradoresInscritos(qtdInscritos);
-			}
-
-			Integer qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0);
-			Integer qtdParticipantes = indicadorTreinamento.getQtdColaboradoresInscritos();
-
-			Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaIds);
-			Double horasPerCapita = ((qtdHoras.doubleValue()/60) * qtdParticipantes.doubleValue()) / qtdAtivos;
-
-			indicadorTreinamento.setHorasPerCapita(horasPerCapita);
-		}
-	}
-
+	
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);

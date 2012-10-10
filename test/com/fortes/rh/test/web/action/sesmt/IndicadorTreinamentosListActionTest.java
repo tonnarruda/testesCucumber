@@ -77,9 +77,7 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		action.setUsuarioLogado(usuarioLogado);
 		
 		empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(compartilharCandidato), eq(empresaId), eq(usuarioLogado.getId()), ANYTHING).will(returnValue(Arrays.asList(empresa)));
-		cursoManager.expects(once()).method("findCustoMedioHora").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}));
-		cursoManager.expects(once()).method("findCustoPerCapita").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}));
-		cursoManager.expects(once()).method("findHorasPerCapita").with(eq(indicadorTreinamento), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}));
+		cursoManager.expects(once()).method("montaIndicadoresTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(indicadorTreinamento));
 		cursoManager.expects(once()).method("findQtdColaboradoresInscritosTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Integer(2)));
 		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Double(0.0)));

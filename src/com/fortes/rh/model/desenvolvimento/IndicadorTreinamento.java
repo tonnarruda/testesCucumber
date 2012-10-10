@@ -6,16 +6,17 @@ import com.fortes.rh.util.MathUtil;
 
 public class IndicadorTreinamento
 {
+	private Long cursoId;
+
 	private Date dataIni;
 	private Date dataFim;
 
-	private Double custoTotal;
 	private Double custoMedioHora;
 	private Double custoPerCapita;
 	private Double horasPerCapita;
 
 	private Double somaCustos;
-	private Integer somaHoras;
+	private Double somaHoras;
 	private Integer qtdColaboradoresInscritos;
 	private Integer qtdColaboradoresPrevistos;
 
@@ -26,23 +27,26 @@ public class IndicadorTreinamento
 	private Integer graficoQtdAprovados = 0;
 	private Integer graficoQtdReprovados = 0;
 
+	private Double percentualFrequencia;
+	private Double percentualInvestimento;
+
 	private String alertMsg = "";
 
 	public IndicadorTreinamento()
 	{
 	}
 
-	public IndicadorTreinamento(Double somaCustos, Integer somaHoras)
+	public IndicadorTreinamento(Long cursoId, Double somaHoras)
 	{
-		this.somaCustos = (somaCustos != null ? somaCustos : 0);
+		this.cursoId = cursoId;
 		this.somaHoras = (somaHoras != null ? somaHoras : 0);
 	}
 
 	public String getCustoTotalFmt()
 	{
 		String retorno = "-";
-		if (custoTotal != null && custoTotal > 0)
-			retorno = MathUtil.formataValor(custoTotal);
+		if (somaCustos != null && somaCustos > 0)
+			retorno = MathUtil.formataValor(somaCustos);
 
 		return retorno;
 	}
@@ -76,7 +80,7 @@ public class IndicadorTreinamento
 	{
 		return somaCustos;
 	}
-	public Integer getSomaHoras()
+	public Double getSomaHoras()
 	{
 		return somaHoras;
 	}
@@ -124,16 +128,6 @@ public class IndicadorTreinamento
 		this.alertMsg = alertMsg;
 	}
 
-	public Double getCustoTotal()
-	{
-		return custoTotal;
-	}
-
-	public void setCustoTotal(Double custoTotal)
-	{
-		this.custoTotal = custoTotal;
-	}
-
 	public Date getDataFim()
 	{
 		return dataFim;
@@ -154,7 +148,7 @@ public class IndicadorTreinamento
 		this.dataIni = dataIni;
 	}
 
-	public void setSomaHoras(Integer somaHoras)
+	public void setSomaHoras(Double somaHoras)
 	{
 		this.somaHoras = somaHoras;
 	}
@@ -227,6 +221,34 @@ public class IndicadorTreinamento
 	public void setGraficoQtdVagasOciosas(Integer graficoQtdVagasOciosas)
 	{
 		this.graficoQtdVagasOciosas = graficoQtdVagasOciosas;
+	}
+
+	public Long getCursoId() {
+		return cursoId;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
+	}
+
+	public Double getPercentualFrequencia() {
+		return percentualFrequencia;
+	}
+
+	public void setPercentualFrequencia(Double percentualFrequencia) {
+		this.percentualFrequencia = percentualFrequencia;
+	}
+
+	public Double getPercentualInvestimento() {
+		return percentualInvestimento;
+	}
+
+	public void setPercentualInvestimento(Double percentualInvestimento) {
+		this.percentualInvestimento = percentualInvestimento;
+	}
+
+	public void setSomaCustos(Double somaCustos) {
+		this.somaCustos = somaCustos;
 	}
 
 }

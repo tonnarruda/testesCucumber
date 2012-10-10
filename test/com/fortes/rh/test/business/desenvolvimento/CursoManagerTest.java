@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -57,22 +58,6 @@ public class CursoManagerTest extends MockObjectTestCase
 		assertEquals("teste" , cursoManager.getConteudoProgramatico(curso.getId()));
 	}
 
-	public void testFindHorasPerCapita()
-	{
-
-		IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
-		indicadorTreinamento.setSomaHoras(80);
-		indicadorTreinamento.setQtdColaboradoresInscritos(20);
-
-		colaboradorManager.expects(once()).method("getCountAtivos").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(3000));
-
-		cursoManager.findHorasPerCapita(indicadorTreinamento, new Date(), new Date(), new Long[]{4L});
-
-		Double calculoHorasPerCapita = (((double)80*20)/3000)/60;
-		assertEquals(calculoHorasPerCapita, indicadorTreinamento.getHorasPerCapita());
-
-	}
-
 	public void testFindByFiltro()
 	{
 		Integer page=1, pagingSize=15;
@@ -116,5 +101,20 @@ public class CursoManagerTest extends MockObjectTestCase
 		turmas.add(turma3);
 		
 		assertEquals("4:30", cursoManager.somaCargaHoraria(turmas));
+	}
+	
+	public void testFindSomaCustoEHorasTreinamentos()
+	{
+		IndicadorTreinamento indicador1 = new IndicadorTreinamento(1L, 60.25);
+		IndicadorTreinamento indicador2 = new IndicadorTreinamento(2L, 45.0);
+		IndicadorTreinamento indicador3 = new IndicadorTreinamento(3L, 1.56);
+		
+		Collection<IndicadorTreinamento> indicadoresPorCurso = Arrays.asList(indicador1, indicador2, indicador3);
+		
+		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(indicadoresPorCurso));
+		
+		IndicadorTreinamento indicadorTreinamento = cursoManager.findIndicadorHorasTreinamentos(new Date(), new Date(), new Long[] { 1L }); 
+		
+		assertEquals(106.81, indicadorTreinamento.getSomaHoras());
 	}
 }

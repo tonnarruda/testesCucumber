@@ -110,26 +110,42 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return query.list();
 	}
 
-	public IndicadorTreinamento findSomaCustoEHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizada)
+	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(sum(t.custo), sum(curso.cargaHoraria)) ");
-		hql.append("from Turma t ");
-		hql.append("join t.curso curso ");
-		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
-		hql.append("and curso.empresa.id in (:empresaIds) ");
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+		criteria.createCriteria("c.turmas", "t");
 
-		if(realizada != null)
-			hql.append("and t.realizada = :realizada ");
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.sum("t.custo"), "somaCusto");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.between("t.dataPrevIni", dataIni, dataFim));
+		criteria.add(Expression.in("c.empresa.id", empresaIds));
+
+		return (Double) criteria.uniqueResult();
+	}
+	
+	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	{
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(c.id, cast((c.cargaHoraria/60 * count(ct.id)) as double)) ");
+		hql.append("from Curso c ");
+		hql.append("left join c.turmas t ");
+		hql.append("left join t.colaboradorTurmas ct "); 
+		hql.append("inner join ct.colaborador co "); 
+		hql.append("where c.empresa.id in (:empresaIds) ");
+		hql.append("and co.empresa.id in (:empresaIds) ");
+		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
+		hql.append("and t.realizada = true "); 
+		hql.append("group by c.id ");
+		hql.append("order by c.id ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
 		
-		if(realizada != null)
-			query.setBoolean("realizada", realizada);
-
-		return (IndicadorTreinamento)query.uniqueResult();
+		return query.list();
 	}
 
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)

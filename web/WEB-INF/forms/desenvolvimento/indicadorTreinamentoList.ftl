@@ -115,7 +115,7 @@
 						'&nbsp&nbsp que não esteja desligado ou com data de desligamento depois da data fim do filtro.<br/>'+
 						'<br/>'+
 						'<strong>- Horas de treinamento per capita</strong><br/>'+
-						'&nbsp&nbsp horasPerCapita = ((QtdHoras / 60) * QtdParticipantes) / QtdAtivos<br/><br/>'+
+						'&nbsp&nbsp horasPerCapita = (QtdHoras * QtdParticipantes) / QtdAtivos<br/><br/>'+
 						'&nbsp&nbsp QtdHoras: soma das horas.<br/>'+
 						'&nbsp&nbsp QtdParticipantes: colaboradores da turma que estejam dentro do período do filtro.<br/>'+
 						'&nbsp&nbsp QtdAtivos: colaboradores ativos na empresa com data admissao menor que a data fim do filtro e<br/>'+
@@ -185,9 +185,9 @@
 								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
 								<dd>${indicadorTreinamento.custoTotalFmt}</dd>
 								<dt>Percentual de investimentos em relação ao faturamento</dt>
-								<dd>${percentualInvestimentoEmTeD?string(",##0.00")}%</dd>
+								<dd>${indicadorTreinamento.percentualInvestimento?string(",##0.00")}%</dd>
 								<dt>Percentual de frequência (aprovados) </dt>
-								<dd>${percentualFrequencia?string(",##0.00")}%</dd>
+								<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
 							</dl>
 							<dl>
 								<dt>Investimento médio da hora de treinamento (R$)</dt>

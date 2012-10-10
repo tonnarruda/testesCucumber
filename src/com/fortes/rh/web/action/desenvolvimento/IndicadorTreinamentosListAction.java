@@ -73,9 +73,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 			empresasCheck = cUtil.convertCollectionToArrayIds(empresasCheckList);
 		}
    		
-		cursoManager.findCustoMedioHora(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
-		cursoManager.findCustoPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
-		cursoManager.findHorasPerCapita(indicadorTreinamento, indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
+		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
@@ -98,6 +96,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 			calendar.set(Calendar.MONTH, 0);
 			calendar.set(Calendar.DAY_OF_MONTH, 1);
 			indicadorTreinamento.setDataIni(calendar.getTime());
+			
 			calendar.add(Calendar.YEAR, +1);
 			calendar.add(Calendar.DAY_OF_MONTH, -1);
 			indicadorTreinamento.setDataFim(calendar.getTime());
@@ -154,16 +153,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 			grfCustoTipoDespesa.add(new DataGrafico(null, tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), ""));
 			
 		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);
-	}
-	
-	public Double getPercentualFrequencia() 
-	{
-		return colaboradorTurmaManager.percentualFrequencia(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
-	}
-
-	public Double getPercentualInvestimentoEmTeD() 
-	{
-		return turmaManager.getPercentualInvestimento(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);
 	}
 	
 	public void setCursoManager(CursoManager cursoManager)
