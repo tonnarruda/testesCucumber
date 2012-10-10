@@ -153,7 +153,9 @@
 						backcolor="#FFFFFF"
 						key="textField"
 						positionType="Float"
-						isRemoveLineWhenBlank="true"/>
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean( $V{PAGE_NUMBER}.equals( new Integer(1) ) )]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font/>
