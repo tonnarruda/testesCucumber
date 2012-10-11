@@ -32,7 +32,7 @@
 		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
 		#atualizacao img { margin-right: 5px; }
 		
-		.column { width: 50%; float: left; }
+		.column { width: 50%; float: left; height: 50px; }
 		.left .portlet { margin: 0 0.5em 1em 0; }
 		.right .portlet { margin: 0 0 1em 0.5em; }
 		.portlet-header { margin: 0.3em; padding: 3px; }
