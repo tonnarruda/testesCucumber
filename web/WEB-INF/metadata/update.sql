@@ -19246,3 +19246,6 @@ delete from usuariomensagem where mensagem_id in (select id from mensagem where 
 delete from mensagem where tipo not in ('C', 'P', 'A', 'T', 'F', 'S', 'U', 'D');--.go
 insert into migrations values('20121004143617');--.go
 update parametrosdosistema set appversao = '1.1.89.86';--.go
+-- versao 1.1.90.87
+
+update parametrosdosistema set appversao = '1.1.90.87';--.go

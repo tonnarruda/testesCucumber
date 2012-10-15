@@ -137,7 +137,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("and co.empresa.id in (:empresaIds) ");
 		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
 		hql.append("and t.realizada = true "); 
-		hql.append("group by c.id ");
+		hql.append("group by c.id, c.cargaHoraria ");
 		hql.append("order by c.id ");
 		
 		Query query = getSession().createQuery(hql.toString());

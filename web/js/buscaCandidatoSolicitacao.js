@@ -18,8 +18,10 @@ function createListCidades(data)
 
 function populaCidadesCheckList()
 {
-	DWRUtil.useLoadingMessage('Carregando...');
-	CidadeDWR.getCidadesCheckList(createListCidadesCheck, document.getElementById("uf").value);
+	if(document.getElementById('uf').value != ""){
+		DWRUtil.useLoadingMessage('Carregando...');
+		CidadeDWR.getCidadesCheckList(createListCidadesCheck, document.getElementById("uf").value);
+	}
 }
 
 function createListCidadesCheck(data)
