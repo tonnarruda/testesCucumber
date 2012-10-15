@@ -43,7 +43,6 @@
 		$(function(){
 			enviaEmpresa($('#empresaSelect').val());
 			
-			populaCidadesCheckList();
 			 populaBairros();
 			var obj = document.getElementById("legendas");
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";

@@ -32,7 +32,7 @@
 		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
 		#atualizacao img { margin-right: 5px; }
 		
-		.column { width: 50%; float: left; height: 50px; }
+		.column { width: 50%; float: left; min-height: 50px; }
 		.left .portlet { margin: 0 0.5em 1em 0; }
 		.right .portlet { margin: 0 0 1em 0.5em; }
 		.portlet-header { margin: 0.3em; padding: 3px; }
@@ -196,7 +196,8 @@
 			</#if>
 		</@authz.authorize>
 		
-		<br clear="all"/>
+		<div style="clear:both;"></div>
+		
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_SOLICITACAO_PESSOAL">
 			<#if solicitacaos?exists && 0 < solicitacaos?size >
 				<div class="waDivTituloX">Existem solicitações de pessoal aguardando liberação</div>
@@ -216,6 +217,7 @@
 			</#if>
 			<br>
 		</@authz.authorize>
+		
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
 			<#if integradoAC && pendenciaACs?exists>
 				<div class="waDivTituloX">Pendências com o AC Pessoal</div>

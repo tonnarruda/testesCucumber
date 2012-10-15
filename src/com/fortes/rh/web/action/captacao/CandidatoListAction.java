@@ -310,10 +310,11 @@ public class CandidatoListAction extends MyActionSupportList
 			{
 				Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"});
 				
-				uf = solicitacao.getCidade().getUf().getId();
-				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
+				uf = uf==null?solicitacao.getCidade().getUf().getId():uf;
+				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 				cidade = (cidade==null?solicitacao.getCidade().getId():cidade);
 				cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+				cidadesCheckList = CheckListBoxUtil.marcaCheckListBox(cidadesCheckList, StringUtil.LongToString(cidadesCheck));
 				Collection<Bairro> bairroList = bairroManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"cidade.id"}, new Object[]{solicitacao.getCidade().getId()}, new String[]{"nome"});
             	bairrosCheckList = CheckListBoxUtil.populaCheckListBox(bairroList, "getId", "getNome");
             	Collection<Bairro> marcados = bairroManager.getBairrosBySolicitacao(solicitacao.getId());
@@ -359,7 +360,8 @@ public class CandidatoListAction extends MyActionSupportList
 	public String prepareBusca() throws Exception
 	{
 		prepareBuscaCandidato();
-	
+		populaCheckListCidadeMarcados();
+		
 		if (!msgAlert.equals(""))
 			addActionMessage(msgAlert);
 		
@@ -381,27 +383,17 @@ public class CandidatoListAction extends MyActionSupportList
 		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)
 		{
 			solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
-
-			if(solicitacao.getCidade() != null)
-			{
-				uf = solicitacao.getCidade().getUf().getId();
-				cidade = solicitacao.getCidade().getId();
-				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{solicitacao.getCidade().getUf().getId()}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
-			}
-
 			Collection<Cargo> cargosDaSolicitacao = cargoManager.findBySolicitacao(solicitacao.getId());
 			cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosDaSolicitacao, "getId");
 		}
 		else
 		{
-			if(uf != null)
-				cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
-
 			cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 			conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, conhecimentosCheck);
 		}
 
 		ufs = CollectionUtil.convertCollectionToMap(estadoManager.findAll(new String[]{"sigla"}), "getId", "getSigla", Estado.class);
+		populaCheckListCidadeMarcados();
 		escolaridades = new Escolaridade();
 		
 		setShowFilter(true);
@@ -487,8 +479,19 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private void populaCheckListCidadeMarcados() throws Exception 
 	{
+		if (uf == null && solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getUf() != null)
+			uf = solicitacao.getCidade().getUf().getId();
+			
 		Collection<Cidade> cidadesList = cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"});
 		cidadesCheckList = CheckListBoxUtil.populaCheckListBox(cidadesList, "getId", "getNome");
+		
+		if(cidadesCheck == null || cidadesCheck.length == 0)
+		{
+			if(solicitacao != null && solicitacao.getCidade() != null && solicitacao.getCidade().getId() != null)
+				cidade = solicitacao.getCidade().getId();
+			if (cidade != null)
+				cidadesCheck = new Long[]{cidade};
+		}
 		cidadesCheckList = CheckListBoxUtil.marcaCheckListBox(cidadesCheckList, StringUtil.LongToString(cidadesCheck));
 	}
 	
