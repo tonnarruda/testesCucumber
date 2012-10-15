@@ -200,5 +200,11 @@
 		<action name="pdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="pdi">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
 		</action>
+		<action name="prepareAplicarPdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="prepareAplicarPdi">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividualTurmas.ftl</result>
+		</action>
+		<action name="aplicarPdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="aplicarPdi">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
+		</action>
 	</package>
 </xwork>
