@@ -170,7 +170,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		hql.append("left join s.faixaSalarial as fs ");
 
 		hql.append("where date_part('year', hc.data) = :ano ");
-		
+		hql.append("and hc.data >= s.data ");
 		if(cargoId != null)
 			hql.append("and fs.cargo.id = :cargoId ");
 		

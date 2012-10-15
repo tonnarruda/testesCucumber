@@ -204,6 +204,7 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEmpresa(empresa);
+		solicitacao.setData(hoje);
 		solicitacao.setFaixaSalarial(faixaSalarial);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
@@ -215,31 +216,45 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacao = candidatoSolicitacaoDao.save(candidatoSolicitacao);
 
+		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva1.setNome("Etapa A");
+		etapaSeletiva1.setEmpresa(empresa);
+		etapaSeletivaDao.save(etapaSeletiva1);
+		
 		EtapaSeletiva etapaSeletiva = EtapaSeletivaFactory.getEntity();
+		etapaSeletiva1.setNome("Etapa B");
 		etapaSeletiva.setEmpresa(empresa);
 		etapaSeletiva = etapaSeletivaDao.save(etapaSeletiva);
 
+		//historico ok
 		HistoricoCandidato historicoCandidato = new HistoricoCandidato();
 		historicoCandidato.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato.setEtapaSeletiva(etapaSeletiva);
 		historicoCandidato.setData(hoje);
 		historicoCandidato = historicoCandidatoDao.save(historicoCandidato);
 
-		//fora da data
+		//fora da data(ano diferente)
 		HistoricoCandidato historicoCandidato2 = new HistoricoCandidato();
 		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato2.setEtapaSeletiva(etapaSeletiva);
-		historicoCandidato2.setData(DateUtil.criarAnoMesDia(1900, 1, 1));
+		historicoCandidato2.setData(DateUtil.criarDataMesAno(01, 01, 1900));
 		historicoCandidato2 = historicoCandidatoDao.save(historicoCandidato2);
 
-		//sem etapa seletiva
+		//fora da data(data da etapa seletiva antes da solicitção)
 		HistoricoCandidato historicoCandidato3 = new HistoricoCandidato();
 		historicoCandidato3.setCandidatoSolicitacao(candidatoSolicitacao);
-		historicoCandidato3.setEtapaSeletiva(null);
-		historicoCandidato3.setData(hoje);
+		historicoCandidato3.setEtapaSeletiva(etapaSeletiva1);
+		historicoCandidato3.setData(DateUtil.criarDataMesAno(31, 01, 2010));
 		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
+		
+		//sem etapa seletiva
+		HistoricoCandidato historicoCandidato4 = new HistoricoCandidato();
+		historicoCandidato4.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidato4.setEtapaSeletiva(null);
+		historicoCandidato4.setData(hoje);
+		historicoCandidato4 = historicoCandidatoDao.save(historicoCandidato4);
 
-		Collection<HistoricoCandidato> historicos = historicoCandidatoDao.findQtdParticipantes("2010", cargo.getId(), new Long[]{etapaSeletiva.getId()});
+		Collection<HistoricoCandidato> historicos = historicoCandidatoDao.findQtdParticipantes("2010", cargo.getId(), new Long[]{etapaSeletiva.getId(), etapaSeletiva1.getId()});
 
 		assertEquals(1, historicos.size());
 	}
