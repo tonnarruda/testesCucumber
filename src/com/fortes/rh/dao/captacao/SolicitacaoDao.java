@@ -19,7 +19,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 
 public interface SolicitacaoDao extends GenericDao<Solicitacao>
 {
-	Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId);
+	Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca);
 	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long solcitacaoId);

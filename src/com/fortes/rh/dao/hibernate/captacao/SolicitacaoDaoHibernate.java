@@ -38,12 +38,12 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
-	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId)
+	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, null);
+		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca);
 
 		return (Integer) criteria.list().get(0);
 	}
@@ -108,7 +108,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		}
 		
 		if(descricaoBusca != null && !descricaoBusca.equals(""))
-			criteria.add(Expression.eq("s.descricao", descricaoBusca)); 
+			criteria.add(Expression.sqlRestriction("normalizar({alias}.descricao) ilike normalizar(?)", "%"+descricaoBusca+"%", Hibernate.STRING)); 
 
 		if(usuario != null && usuario.getId() != null && !liberaSolicitacao)
 			criteria.add(Expression.eq("s.solicitante.id", usuario.getId()));

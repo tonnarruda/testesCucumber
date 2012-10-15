@@ -104,11 +104,12 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long cargoId = -1L;
 
 		Solicitacao solicitacao = getEntity();
+		solicitacao.setDescricao("Desenvolvedor");
 		solicitacao.setEncerrada(true);
 		solicitacao.setEmpresa(empresa);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		assertEquals(new Integer(1), solicitacaoDao.getCount('E', false, empresa.getId(), null, cargoId));
+		assertEquals(new Integer(1), solicitacaoDao.getCount('E', false, empresa.getId(), null, cargoId, "dese"));
 	}
 
 	public void testFindAllByVisualizacaoEncerrada()
@@ -406,10 +407,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setFaixaSalarial(faixaSalarial);
 		solicitacao = solicitacaoDao.save(solicitacao);
 
-		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedor");
-		Collection<Solicitacao> solicitacaos2 = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedores");
-		assertEquals(1, solicitacaos.size());
-		assertEquals(0, solicitacaos2.size());
+		Collection<Solicitacao> solicitacaos1 = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedor");
+		Collection<Solicitacao> solicitacaos2 = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "DESENV");
+		Collection<Solicitacao> solicitacaos3 = solicitacaoDao.findAllByVisualizacao(1, 10,'A', false, empresa.getId(), solicitante, cargo.getId(), "Desenvolvedores");
+		
+		assertEquals(1, solicitacaos1.size());
+		assertEquals(1, solicitacaos2.size());
+		assertEquals(0, solicitacaos3.size());
 	}
 
 	public void testFindAllByVisualizacaoSuspensa()
