@@ -34,6 +34,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Transient
 	private String competenciaDescricao;	
 	@Transient
+	private Long cursoId;	
+	@Transient
 	private String cursoNome;	
 	@Transient
 	private NivelCompetencia nivelCompetenciaColaborador;
@@ -45,7 +47,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 
 	// findColaboradoresCompetenciasAbaixoDoNivel
-	public ConfiguracaoNivelCompetencia(BigInteger colaboradorId, String colaboradorNome, BigInteger faixaSalarialId, String empresaNome, String estabelecimentoNome, BigInteger competenciaId, Character tipoCompetencia, String nivelCompetenciaDescricao, String nivelCompetenciaColaboradorDescricao, String competenciaDescricao, String cursoNome)
+	public ConfiguracaoNivelCompetencia(BigInteger colaboradorId, String colaboradorNome, BigInteger faixaSalarialId, String empresaNome, String estabelecimentoNome, BigInteger competenciaId, Character tipoCompetencia, String nivelCompetenciaDescricao, String nivelCompetenciaColaboradorDescricao, String competenciaDescricao, BigInteger cursoId, String cursoNome)
 	{
 		Colaborador colaborador = new Colaborador();
 		colaborador.setId(colaboradorId.longValue());
@@ -65,7 +67,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setNivelCompetenciaColaborador(new NivelCompetencia());
 		this.getNivelCompetenciaColaborador().setDescricao(nivelCompetenciaColaboradorDescricao);
 		this.setCompetenciaDescricao(competenciaDescricao);
-		this.setCursoNome(cursoNome);
+		
+		if (cursoId != null)
+		{
+			this.setCursoId(cursoId.longValue());
+			this.setCursoNome(cursoNome);
+		}
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, Long faixaSalarialId, Long nivelCompetenciaId, Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
@@ -290,5 +297,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setCursoNome(String cursoNome) {
 		this.cursoNome = cursoNome;
+	}
+
+	public Long getCursoId() {
+		return cursoId;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
 	}
 }

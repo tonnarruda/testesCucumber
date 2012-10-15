@@ -313,8 +313,10 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds) 
 	{
+		getSession().flush();
+		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select c.id as colabId, c.nome as colabNome, fs.id as faixaId, emp.nome as empNome, est.nome as estNome, cnc.competencia_id as compId, cnc.tipoCompetencia as tipoComp, nc.descricao as nivelCompetenciaDescricao, nc2.descricao as nivelCompetenciaColaboradorDescricao, COALESCE(a.nome, conhe.nome, h.nome) as competencia, COALESCE (cconhe.nome, chabil.nome, cati.nome ) as cursoNome ");
+		sql.append("select c.id as colabId, c.nome as colabNome, fs.id as faixaId, emp.nome as empNome, est.nome as estNome, cnc.competencia_id as compId, cnc.tipoCompetencia as tipoComp, nc.descricao as nivelCompetenciaDescricao, nc2.descricao as nivelCompetenciaColaboradorDescricao, COALESCE(a.nome, conhe.nome, h.nome) as competencia, COALESCE (cconhe.id, chabil.id, cati.id ) as cursoId, COALESCE (cconhe.nome, chabil.nome, cati.nome ) as cursoNome ");
 		sql.append("from HistoricoColaborador hc ");
 		sql.append("inner join faixaSalarial fs on fs.id = hc.faixasalarial_id ");
 		sql.append("inner join estabelecimento est on est.id = hc.estabelecimento_id ");
@@ -343,7 +345,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador_id = c.id and cncc2.data <= :hoje) or cncc.data is null) ");
 		
 		if (empresaId != null)
-			sql.append("and c.empresa.id = :empresaId ");
+			sql.append("and c.empresa_id = :empresaId ");
 		
 		if (areaIds != null && areaIds.length > 0)
 			sql.append("and hc.areaOrganizacional_id in (:areaIds) ");
@@ -351,7 +353,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			sql.append("and hc.estabelecimento_id in (:estabelecimentoIds) ");
 		
-		sql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoNome ");
+		sql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoId, cursoNome ");
 		sql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
 		sql.append("order by emp.nome, est.nome, c.nome, c.id, cursoNome");
 		
@@ -374,7 +376,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (BigInteger)res[2], (String)res[3], (String)res[4], (BigInteger)res[5], (Character)res[6], (String)res[7], (String)res[8], (String)res[9], (String)res[10]));
+			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (BigInteger)res[2], (String)res[3], (String)res[4], (BigInteger)res[5], (Character)res[6], (String)res[7], (String)res[8], (String)res[9], (BigInteger)res[10], (String)res[11]));
 		}
 		
 		return lista;	

@@ -21,6 +21,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.security.SecurityUtil;
@@ -57,6 +58,9 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<Curso> cursos;
 	private Collection<AvaliacaoCurso> avaliacaoCursos;
 	private Collection<AvaliacaoTurma> avaliacaoTurmas;
+	
+	private String[] colaboradoresCursos;
+	private Map<Curso, Collection<Colaborador>> cursosColaboradores;
 
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
@@ -70,6 +74,8 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] diasCheck;
+	private Collection<CheckBox> diasCheckList = new ArrayList<CheckBox>();
 
 	private Date dataIni;
 	private Date dataFim;
@@ -165,6 +171,36 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	public String prepareAplicarPdi()
+	{
+		cursosColaboradores = new HashMap<Curso, Collection<Colaborador>>();
+		String[] dados = null;
+		Curso curso = null;
+		Colaborador colaborador = null;
+		
+		for (int i = 0; i < colaboradoresCursos.length; i++)
+		{
+			dados = colaboradoresCursos[i].split(",");
+			
+			colaborador = new Colaborador(dados[1], Long.parseLong(dados[0]));
+			curso = new Curso(Long.parseLong(dados[2]), dados[3]);
+			
+			if (!cursosColaboradores.containsKey(curso))
+				cursosColaboradores.put(curso, new ArrayList<Colaborador>());
+			
+			cursosColaboradores.get(curso).add(colaborador);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String aplicarPdi()
+	{
+		pdi();
+		
+		return SUCCESS;
+	}
+
 	private void prepareEmpresas(String role)
 	{
 		empresas = empresaManager.findEmpresasPermitidas(false , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
@@ -524,5 +560,34 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setAgruparPor(char agruparPor) {
 		this.agruparPor = agruparPor;
+	}
+
+	public String[] getColaboradoresCursos() {
+		return colaboradoresCursos;
+	}
+
+	public void setColaboradoresCursos(String[] colaboradoresCursos) {
+		this.colaboradoresCursos = colaboradoresCursos;
+	}
+
+	public Map<Curso, Collection<Colaborador>> getCursosColaboradores() {
+		return cursosColaboradores;
+	}
+
+	public Collection<Colaborador> getColaboradoresCurso(Curso curso) {
+		return cursosColaboradores.get(curso);
+	}
+
+	public void setCursosColaboradores(
+			Map<Curso, Collection<Colaborador>> cursosColaboradores) {
+		this.cursosColaboradores = cursosColaboradores;
+	}
+
+	public Collection<CheckBox> getDiasCheckList() {
+		return diasCheckList;
+	}
+
+	public void setDiasCheck(String[] diasCheck) {
+		this.diasCheck = diasCheck;
 	}
 }

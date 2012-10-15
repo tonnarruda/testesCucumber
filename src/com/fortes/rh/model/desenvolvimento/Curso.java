@@ -55,18 +55,11 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="curso")
 	private Collection<Turma> turmas;
 
-	public Collection<Turma> getTurmas()
-	{
-		return turmas;
-	}
-	public void setTurmas(Collection<Turma> turmas)
-	{
-		this.turmas = turmas;
-	}
 	public Curso()
 	{
 
 	}
+	
 	public Curso(Long id, String nome, Integer cargaHoraria, String conteudoProgramatico, String criterioAvaliacao, Double percentualMinimoFrequencia)
 	{
 		this.setId(id);
@@ -75,6 +68,12 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		this.conteudoProgramatico = conteudoProgramatico;
 		this.criterioAvaliacao = criterioAvaliacao;
 		this.percentualMinimoFrequencia = percentualMinimoFrequencia;
+	}
+	
+	public Curso(Long id, String nome)
+	{
+		this.setId(id);
+		this.nome = nome;
 	}
 
 	public void setProjectionEmpresaId(Long empresaId)
@@ -247,5 +246,15 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	public void setAtitudes(Collection<Atitude> atitudes)
 	{
 		this.atitudes = atitudes;
+	}
+	
+	public Collection<Turma> getTurmas()
+	{
+		return turmas;
+	}
+	
+	public void setTurmas(Collection<Turma> turmas)
+	{
+		this.turmas = turmas;
 	}
 }
