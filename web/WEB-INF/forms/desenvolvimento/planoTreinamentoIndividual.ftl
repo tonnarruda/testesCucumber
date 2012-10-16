@@ -48,6 +48,24 @@
 			addChecks('areasCheck',data);
 		}
 		
+		function prepareCriarTurmas()
+		{
+			var qtdMarcados = $(":checkbox[name='colaboradoresCursos']:checked").size();
+			<#if agruparPor == 'C'>
+				var mensagem = 'Selecione os treinamentos para formação das turmas';
+			<#else>
+				var mensagem = 'Selecione os colaboradores para formação das turmas';
+			</#if>
+			
+			if (qtdMarcados < 1)
+			{
+				jAlert(mensagem);
+				return false;
+			}
+			
+			document.formAplicar.submit();
+		}
+		
 		$(function($)
 		{
 			var empresa = $('#empresa').val();
@@ -82,7 +100,7 @@
 
 	<#if configuracaoNivelCompetencias?exists>
 	
-		<@ww.form name="formAplicar" action="prepareAplicarPdi.action" method="POST">
+		<form name="formAplicar" action="prepareAplicarPdi.action" method="POST">
 	
 			<#assign estabelecimentoAnterior = ""/>
 			<#assign colaboradorAnterior = ""/>
@@ -90,76 +108,113 @@
 			<#assign competenciaDescricaoAnterior = ""/>
 
 			<#list configuracaoNivelCompetencias as configNivel>
-				<#if estabelecimentoAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome>
-					<#if estabelecimentoAnterior != "">	
-							</tbody>
-						</table>
-					</#if>
-			
-					<table class="dados">
-						<thead>
-							<tr>
-								<th colspan="4" class="empresaEstabelecimento">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome} - ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}</th>
-							</tr>
-						</thead>
-				</#if>
-				
 				<#if agruparPor == 'C'>
-					<#if colaboradorAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome>
-						<#assign i = 0/>			
-						<tbody>
-							<tr>
-								<td colspan="4" class="colaborador">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}</td>
-							</tr>
-							<tr>
-								<td class="titulo" width="200">Competência</td>
-								<td class="titulo" width="100">Nível Cargo/Faixa</td>
-								<td class="titulo" width="100">Nível Colaborador</td>
-								<td class="titulo">Treinamentos Sugeridos</td>
-							</tr>
-					</#if>
+					<#if estabelecimentoAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome>
+						<#if estabelecimentoAnterior != "">	
+								</tbody>
+							</table>
+						</#if>
 				
-				<#else>
-					<#if cursoAnterior != configNivel.cursoNome>
-						<#assign i = 0/>
-						<tbody>
-							<tr>
-								<td colspan="4" class="colaborador">${configNivel.cursoNome}</td>
-							</tr>
-							<tr>
-								<td class="titulo" width="200">Competência</td>
-								<td class="titulo" width="100">Nível Cargo/Faixa</td>
-								<td class="titulo" width="100">Nível Colaborador</td>
-								<td class="titulo">Colaboradores Sugeridos</td>
-							</tr>
-					</#if>
-				</#if>
-	
-				<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao>
-					<#if estabelecimentoAnterior != "">	
-							</td>
-						</tr>
+						<table class="dados">
+							<thead>
+								<tr>
+									<th colspan="4" class="empresaEstabelecimento">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome} - ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}</th>
+								</tr>
+							</thead>
+							<tbody>
 					</#if>
 					
-					<tr class="<#if i%2 == 0>odd<#else>even</#if>">
-						<td>${configNivel.competenciaDescricao}</td>
-						<td>${configNivel.nivelCompetencia.descricao}</td>
-						<td>
-							<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
-								${configNivel.nivelCompetenciaColaborador.descricao}
-							<#else>
-								-
-							</#if>
-						</td>
-						<td>
+					<#if colaboradorAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome>
+						<#assign i = 0/>			
+						<tr>
+							<td colspan="4" class="colaborador">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}</td>
+						</tr>
+						<tr>
+							<td class="titulo" width="200">Competência</td>
+							<td class="titulo" width="100">Nível Cargo/Faixa</td>
+							<td class="titulo" width="100">Nível Colaborador</td>
+							<td class="titulo">Treinamentos Sugeridos</td>
+						</tr>
+					</#if>
+		
+					<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao>
+						<#if estabelecimentoAnterior != "">	
+								</td>
+							</tr>
+						</#if>
 						
-					<#assign i = i + 1/>
-				</#if>
-				
-				<#if agruparPor == 'C'>
+						<tr class="<#if i%2 == 0>odd<#else>even</#if>">
+							<td valign="top">${configNivel.competenciaDescricao}</td>
+							<td valign="top">${configNivel.nivelCompetencia.descricao}</td>
+							<td valign="top">
+								<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
+									${configNivel.nivelCompetenciaColaborador.descricao}
+								<#else>
+									-
+								</#if>
+							</td>
+							<td>
+							
+						<#assign i = i + 1/>
+					</#if>
+					
 					<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.cursoNome}<br />
+				
 				<#else>
+					<#-- ESTABELECIMENTO -->
+					<#if estabelecimentoAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome>
+						<#if estabelecimentoAnterior != "">	
+								</tbody>
+							</table>
+						</#if>
+				
+						<table class="dados">
+							<thead>
+								<tr>
+									<th colspan="4" class="empresaEstabelecimento">${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome} - ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}</th>
+								</tr>
+							</thead>
+							<tbody>
+					</#if>
+					
+					<#-- CURSO -->
+					<#if cursoAnterior != configNivel.cursoNome>
+						<#assign i = 0/>
+						<tr>
+							<td colspan="4" class="colaborador">${configNivel.cursoNome}</td>
+						</tr>
+						<tr>
+							<td class="titulo" width="200">Competência</td>
+							<td class="titulo" width="100">Nível Cargo/Faixa</td>
+							<td class="titulo" width="100">Nível Colaborador</td>
+							<td class="titulo">Colaboradores Sugeridos</td>
+						</tr>
+					</#if>
+
+					<#-- COMPETENCIA -->
+					<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao || cursoAnterior != configNivel.cursoNome>
+						<#if estabelecimentoAnterior != "">	
+								</td>
+							</tr>
+						</#if>
+						
+						<tr class="<#if i%2 == 0>odd<#else>even</#if>">
+							<td valign="top">${configNivel.competenciaDescricao}</td>
+							<td valign="top">${configNivel.nivelCompetencia.descricao}</td>
+							<td valign="top">
+								<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
+									${configNivel.nivelCompetenciaColaborador.descricao}
+								<#else>
+									-
+								</#if>
+							</td>
+							<td>
+							
+						<#assign i = i + 1/>
+					</#if>
+
 					<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}<br />
+
 				</#if>
 					 
 				<#assign estabelecimentoAnterior = configNivel.configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome/>
@@ -171,11 +226,11 @@
 					</tr>
 				</tbody>
 			</table>
+		</form>
 
-			<div class="buttonGroup">
-				<button type="submit" class="btnAplicar"></button>
-			</div>
-		</@ww.form>
+		<div class="buttonGroup">
+			<button type="button" onclick="prepareCriarTurmas()" class="btnCriarTurmas"></button>
+		</div>
 	</#if>
 </body>
 </html>

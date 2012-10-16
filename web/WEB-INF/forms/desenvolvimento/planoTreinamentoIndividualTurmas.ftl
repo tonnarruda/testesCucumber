@@ -9,6 +9,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		
 		.dados { float: right; width: 400px; }
+		fieldset { padding: 10px; }
 	</style>
 
 	<@ww.head/>

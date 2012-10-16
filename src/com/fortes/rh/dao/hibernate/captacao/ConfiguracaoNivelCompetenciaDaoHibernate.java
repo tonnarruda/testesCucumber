@@ -354,7 +354,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			sql.append("and hc.estabelecimento_id in (:estabelecimentoIds) ");
 		
-		sql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoId, cursoNome ");
+		sql.append("group by emp.nome, est.nome, c.id, c.nome, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoId, cursoNome ");
 		sql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
 		
 		if (agruparPor == 'C')

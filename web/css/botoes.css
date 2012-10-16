@@ -704,7 +704,8 @@
 .btnLiberarAvalEmLote,
 .btnLiberar, 
 .btnResponderPorColaboradores,
-.btnBackup
+.btnBackup,
+.btnCriarTurmas
 {
 	border: 0;
 	background-repeat: no-repeat;
@@ -799,4 +800,10 @@
 {
 	background-image:url(../imgs/btnListaDeManutencaoExtintores.gif);
 	width: 290px !important;
+}
+
+.btnCriarTurmas
+{
+	background-image:url(../imgs/btnCriarTurmas.gif);
+	width: 115px !important;
 }
