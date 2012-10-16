@@ -311,7 +311,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds) 
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, char agruparPor) 
 	{
 		getSession().flush();
 		
@@ -343,6 +343,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("where c.desligado = false ");
 		sql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status and hc2.data <= :hoje) ");
 		sql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador_id = c.id and cncc2.data <= :hoje) or cncc.data is null) ");
+		sql.append("and COALESCE (cconhe.id, chabil.id, cati.id ) is not null ");
 		
 		if (empresaId != null)
 			sql.append("and c.empresa_id = :empresaId ");
@@ -355,7 +356,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		sql.append("group by emp.nome, est.nome, c.id, fs.id, cnc.competencia_id, cnc.tipoCompetencia, nc.id, nc.descricao, nc.ordem, nc2.id, nc2.descricao, nc2.ordem, competencia, cursoId, cursoNome ");
 		sql.append("having (coalesce(nc2.ordem, 0) - nc.ordem) < 0 ");
-		sql.append("order by emp.nome, est.nome, c.nome, c.id, cursoNome");
+		
+		if (agruparPor == 'C')
+			sql.append("order by emp.nome, est.nome, c.nome, c.id, COALESCE(a.nome, conhe.nome, h.nome), cursoNome");
+		else
+			sql.append("order by emp.nome, est.nome, cursoNome, COALESCE(a.nome, conhe.nome, h.nome), c.nome, c.id");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);

@@ -166,7 +166,7 @@ public class TurmaListAction extends MyActionSupportList
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
-		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), agruparPor);
 		
 		return SUCCESS;
 	}

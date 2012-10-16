@@ -283,8 +283,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findByColaborador(colaboradorId);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds) 
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, char agruparPor) 
 	{
-		return getDao().findColaboradoresCompetenciasAbaixoDoNivel(	empresaId, estabelecimentoIds, areaIds);
+		return getDao().findColaboradoresCompetenciasAbaixoDoNivel(	empresaId, estabelecimentoIds, areaIds, agruparPor);
 	}
 }

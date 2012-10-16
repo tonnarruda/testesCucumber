@@ -16,6 +16,7 @@ import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
@@ -45,6 +47,7 @@ import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -64,6 +67,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private ColaboradorDao colaboradorDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private EstabelecimentoDao estabelecimentoDao;
+	private CursoDao cursoDao; 
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -777,17 +781,24 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+
+		Curso cursoConhecimento = CursoFactory.getEntity();
+		cursoConhecimento.setNome("cursoConhecimento");
+		cursoDao.save(cursoConhecimento);
 		
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
 		conhecimento.setNome("conhecimento");
+		conhecimento.setCursos(Arrays.asList(cursoConhecimento));
 		conhecimentoDao.save(conhecimento);
+		
+		Curso cursoAtitude = CursoFactory.getEntity();
+		cursoAtitude.setNome("cursoAtitude");
+		cursoDao.save(cursoAtitude);
 		
 		Atitude atitude = AtitudeFactory.getEntity();
 		atitude.setNome("atitude");
+		atitude.setCursos(Arrays.asList(cursoAtitude));
 		atitudeDao.save(atitude);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial);
 
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
 		nivelPessimo.setDescricao("pessimo");
@@ -803,6 +814,9 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelBom.setDescricao("bom");
 		nivelBom.setOrdem(3);
 		nivelCompetenciaDao.save(nivelBom);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
 		
 		ConfiguracaoNivelCompetencia configFaixa1 = new ConfiguracaoNivelCompetencia();
 		configFaixa1.setConfiguracaoNivelCompetenciaColaborador(null);
@@ -857,12 +871,6 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configAtaliba.setFaixaSalarial(faixaSalarial);
 		configAtaliba.setData(DateUtil.criarDataMesAno(17, 8, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configAtaliba);
-
-		ConfiguracaoNivelCompetenciaColaborador configTiburcio = new ConfiguracaoNivelCompetenciaColaborador();
-		configAtaliba.setColaborador(tiburcio);
-		configAtaliba.setFaixaSalarial(faixaSalarial);
-		configAtaliba.setData(DateUtil.criarDataMesAno(17, 8, 2011));
-		configuracaoNivelCompetenciaColaboradorDao.save(configTiburcio);
 		
 		ConfiguracaoNivelCompetencia configAtaliba1 = new ConfiguracaoNivelCompetencia();
 		configAtaliba1.setConfiguracaoNivelCompetenciaColaborador(configAtaliba);
@@ -879,8 +887,27 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configAtaliba2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configAtaliba2);
 		
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null);
+		ConfiguracaoNivelCompetenciaColaborador configTiburcio = new ConfiguracaoNivelCompetenciaColaborador();
+		configTiburcio.setColaborador(tiburcio);
+		configTiburcio.setFaixaSalarial(faixaSalarial);
+		configTiburcio.setData(DateUtil.criarDataMesAno(17, 8, 2011));
+		configuracaoNivelCompetenciaColaboradorDao.save(configTiburcio);
+		
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, 'C');
+		ConfiguracaoNivelCompetencia[] configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});
+		
 		assertEquals(3, configs.size());
+		assertEquals("Ordenado por nome para agrupar por colaborador", ataliba.getNome(), configsArray[0].getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
+		assertEquals("Ordenado por nome para agrupar por colaborador", tiburcio.getNome(), configsArray[1].getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
+		assertEquals("Ordenado por nome para agrupar por colaborador", tiburcio.getNome(), configsArray[2].getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
+		
+		configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, 'T');
+		configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});
+		
+		assertEquals(3, configs.size());
+		assertEquals("Ordenado por treinamento", cursoAtitude.getNome(), configsArray[0].getCursoNome());
+		assertEquals("Ordenado por treinamento", cursoConhecimento.getNome(), configsArray[1].getCursoNome());
+		assertEquals("Ordenado por treinamento", cursoConhecimento.getNome(), configsArray[2].getCursoNome());
 	}
 	
 	@Override
@@ -945,5 +972,9 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 
 	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
 		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	public void setCursoDao(CursoDao cursoDao) {
+		this.cursoDao = cursoDao;
 	}
 }
