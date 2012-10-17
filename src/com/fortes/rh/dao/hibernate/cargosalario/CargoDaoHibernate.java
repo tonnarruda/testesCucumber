@@ -139,7 +139,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		if(idsLong != null && idsLong.length > 0)
 			criteria.add(Expression.in("a.id", idsLong));
-		if(empresaId != null)
+		if(empresaId != null && empresaId > 0)
 			criteria.add(Expression.eq("e.id", empresaId));
 
 		criteria.addOrder(Order.asc("c.nomeMercado"));

@@ -45,7 +45,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
-	private String[] areaOrganizacionalsCheck;
+	private String[] areasCheck;
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
 
 	private String[] cargosCheck;
@@ -89,7 +89,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		try
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
-			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
+			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areasCheck);
 			Collection<Long> cargos = LongUtil.arrayStringToCollectionLong(cargosCheck);
 				
 			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), null, null, null, null, null, null, null);
@@ -186,16 +186,6 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
-	}
-
-	public String[] getAreaOrganizacionalsCheck()
-	{
-		return areaOrganizacionalsCheck;
-	}
-
-	public void setAreaOrganizacionalsCheck(String[] areaOrganizacionalsCheck)
-	{
-		this.areaOrganizacionalsCheck = areaOrganizacionalsCheck;
 	}
 
 	public Collection<CheckBox> getAreaOrganizacionalsCheckList()
@@ -306,6 +296,18 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	public Collection<CheckBox> getCargosCheckList()
 	{
 		return cargosCheckList;
+	}
+
+	
+	public String[] getAreasCheck()
+	{
+		return areasCheck;
+	}
+
+	
+	public void setAreasCheck(String[] areasCheck)
+	{
+		this.areasCheck = areasCheck;
 	}
 
 }
