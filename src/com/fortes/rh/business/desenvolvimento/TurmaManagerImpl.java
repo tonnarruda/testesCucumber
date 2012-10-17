@@ -84,21 +84,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByIdProjection(turmaId);
 	}
 
-	public void setColaboradorTurmaManager(
-			ColaboradorTurmaManager colaboradorTurmaManager) {
-		this.colaboradorTurmaManager = colaboradorTurmaManager;
-	}
-
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
-	{
-		this.diaTurmaManager = diaTurmaManager;
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
-	}
-
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON) throws Exception
 	{
 		save(turma);
@@ -107,6 +92,19 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		
 		if (!StringUtil.isBlank(despesaJSON))
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
+	}
+	
+	public void salvarTurmaDiasColaboradores(Turma turma, String[] dias, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
+	{
+		save(turma);
+		
+		diaTurmaManager.saveDiasTurma(turma, dias);
+
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			colaboradorTurma.setTurma(turma);
+			colaboradorTurmaManager.save(colaboradorTurma);
+		}
 	}
 
 	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception
@@ -208,11 +206,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findTurmas(page, pagingSize, cursoId);
 	}
 
-	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
-	{
-		this.colaboradorPresencaManager = colaboradorPresencaManager;
-	}
-
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada)
 	{
 		Collection<Turma> turmas = getDao().findPlanosDeTreinamento(page, pagingSize, cursoId, dataIni, dataFim, realizadaValue(realizada));
@@ -267,11 +260,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return (respondidas == null) ? false : (respondidas.size() > 0);
 	}
 	
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-	
 	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresaIds);
@@ -305,6 +293,26 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return percentual;
 	}
 
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
+	{
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+
+	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager)
+	{
+		this.diaTurmaManager = diaTurmaManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
+	}
+	
+	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
+	{
+		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
+	}
+	
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}
@@ -320,5 +328,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-
+	
+	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
+	{
+		this.colaboradorPresencaManager = colaboradorPresencaManager;
+	}
 }
