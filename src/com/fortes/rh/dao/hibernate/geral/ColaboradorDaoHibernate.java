@@ -3196,7 +3196,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
 	{		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) + 1 as int), ao.nome, aoMae.nome, e.nome) ");
@@ -3222,9 +3222,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		hql.append("and co.dataAdmissao <= :periodoFim ");
 		
-		if(tempoDeEmpresa != null)
-			hql.append("and (:periodoFim - co.dataAdmissao) + 1  <= :tempoDeEmpresa and (:periodoFim - co.dataAdmissao) + 1 >= :menorPeriodo ");
-
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");
 
@@ -3242,11 +3239,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("periodoFim", periodoFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		if(tempoDeEmpresa != null)
-		{
-			query.setInteger("tempoDeEmpresa", tempoDeEmpresa);
-			query.setInteger("menorPeriodo", menorPeriodo);
-		}
 
 		if (areasCheck != null && areasCheck.length > 0)
 			query.setParameterList("areasCheck", StringUtil.stringToLong(areasCheck));
@@ -3257,7 +3249,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 	
-	public Collection<Colaborador> findComAvaliacoesExperiencias(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa, int menorPeriodo) 
+	public Collection<Colaborador> findComAvaliacoesExperiencias(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, cq.respondidaEm, cq.performance, cast((cq.respondidaEm - co.dataAdmissao) + 1 as int), av.periodoExperiencia.id) ");
@@ -3281,8 +3273,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		hql.append("and cq.respondidaEm <= :periodoFim ");
 			
-		if(tempoDeEmpresa != null)
-			hql.append("and (:periodoFim - co.dataAdmissao) + 1  <= :tempoDeEmpresa and (:periodoFim - co.dataAdmissao) + 1 >= :menorPeriodo ");
 
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");
@@ -3301,12 +3291,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-		if(tempoDeEmpresa != null)
-		{
-			query.setInteger("tempoDeEmpresa", tempoDeEmpresa);
-			query.setInteger("menorPeriodo", menorPeriodo);
-		}
-
 		if (areasCheck != null && areasCheck.length > 0)
 			query.setParameterList("areasCheck", StringUtil.stringToLong(areasCheck));
 

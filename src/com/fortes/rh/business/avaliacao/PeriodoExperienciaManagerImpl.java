@@ -20,6 +20,11 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		return getDao().findAllSelect(empresaId, orderDiasDesc);
 	}
 
+	public Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] PeriodoExperienciaIds)
+	{
+		return getDao().findByIdsOrderDias(PeriodoExperienciaIds);
+	}
+
 	public String findRodapeDiasDoPeriodoDeExperiencia(Collection<PeriodoExperiencia> periodoExperiencias) {
 		String rodapeRelatorioPeriodoExperiencia = ""; 
 		boolean decisao = false;

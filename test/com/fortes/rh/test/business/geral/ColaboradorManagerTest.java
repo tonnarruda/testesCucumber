@@ -257,25 +257,25 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     
     public void testGetAvaliacoesExperienciaPendentesPeriodo() throws Exception
     {
-    	Date dataReferencia = DateUtil.criarDataMesAno(25, 01, 2011);
+    	Date dataIni = DateUtil.criarDataMesAno(20, 01, 2011);
+    	Date dataFim = DateUtil.criarDataMesAno(25, 01, 2011);
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	Integer tempoDeEmpresa = 150;
     	
     	String[] areasCheck = new String[1];
     	String[] estabelecimentoCheck = new String[1];
     	
-    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataReferencia, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	Colaborador colaborador1 = new Colaborador(1L, "joao","", dataFim, "", "", null, "pedro", 40, "areaNome", "areaMaeNome", "estabelecimentoNome");
     	colaborador1.setMatricula("1232456");
-    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataReferencia, "", "", null, "pedro", 12, "areaNome", "areaMaeNome", "estabelecimentoNome");
+    	Colaborador colaborador2 = new Colaborador(2L, "maria","", dataFim, "", "", null, "pedro", 12, "areaNome", "areaMaeNome", "estabelecimentoNome");
     	colaborador2.setMatricula("9999999");
     	
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(colaborador1);
     	colaboradores.add(colaborador2);
     	
-    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataReferencia, 1.0, 30, 1L);
-    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataReferencia, 1.0, 55, 3L);
-    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataReferencia, 1.0, 33, 2L);
+    	Colaborador colaboradorResposta3 = new Colaborador(2L, dataFim, 1.0, 30, 1L);
+    	Colaborador colaboradorResposta4 = new Colaborador(2L, dataFim, 1.0, 55, 3L);
+    	Colaborador colaboradorResposta5 = new Colaborador(5L, dataFim, 1.0, 33, 2L);
     	
     	Collection<Colaborador> colaboradoresComAvaliacoes = new ArrayList<Colaborador>();
     	colaboradoresComAvaliacoes.add(colaboradorResposta3);
@@ -305,19 +305,19 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
     	
-    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataIni, dataFim, empresa, areasCheck, estabelecimentoCheck, periodoExperiencias);
     	assertEquals(2, acompanhamentos.size());
     	
     	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
     	assertEquals(3, acompanhamentos.get(0).getPeriodoExperiencias().size());
-    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(0));
-    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(1));
-    	assertNull(acompanhamentos.get(0).getPeriodoExperiencias().get(2));
+    	assertEquals("Previsto: 24/02/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(0));
+    	assertEquals("Previsto: 26/03/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(1));
+    	assertEquals("Previsto: 25/04/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(2));
 
     	assertEquals("9999999", acompanhamentos.get(1).getMatricula());
     	assertEquals(3, acompanhamentos.get(1).getPeriodoExperiencias().size());
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(0));
-    	assertNull(acompanhamentos.get(1).getPeriodoExperiencias().get(1));
+    	assertEquals("Previsto: 26/03/2011", acompanhamentos.get(1).getPeriodoExperiencias().get(1));
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(2));
     }
     

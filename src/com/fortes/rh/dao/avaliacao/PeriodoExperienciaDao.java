@@ -8,6 +8,6 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 public interface PeriodoExperienciaDao extends GenericDao<PeriodoExperiencia> 
 {
 	Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc);
-
 	Collection<PeriodoExperiencia> findAllSelectDistinctDias(Long empresaId);
+	Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] periodoExperienciaIds);
 }

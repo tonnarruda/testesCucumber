@@ -83,4 +83,10 @@ public class RankingPerformancePeriodoExperiencia extends GenericManagerImpl<Per
 	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception  {
 		return null;
 	}
+
+	public Collection<PeriodoExperiencia> findByIdsOrderDias(
+			Long[] PeriodoExperienciaIds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

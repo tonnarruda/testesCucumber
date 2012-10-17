@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.avaliacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -13,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.util.LongUtil;
 
 public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoExperiencia> implements PeriodoExperienciaDao
 {
@@ -51,4 +53,23 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 		
 		return criteria.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] periodoExperienciaIds) 
+	{
+		Criteria criteria = getSession().createCriteria(PeriodoExperiencia.class, "p");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("p.id"), "id");
+		p.add(Projections.property("p.dias"), "dias");
+		p.add(Projections.property("p.descricao"), "descricao");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.in("p.id",  periodoExperienciaIds));
+		
+		criteria.addOrder(Order.asc("p.dias"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(PeriodoExperiencia.class));
+
+		return criteria.list();
+	 }
 }

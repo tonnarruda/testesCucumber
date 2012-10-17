@@ -59,7 +59,8 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		tocorrencia.setCodigo(ocorrencia.getCodigoAC());
 		tocorrencia.setEmpresa(empresa.getCodigoAC());
 		tocorrencia.setDescricao(ocorrencia.getDescricao());
-
+        tocorrencia.setGrupoAC(empresa.getGrupoAC());
+        
 		return tocorrencia;
 	}
 

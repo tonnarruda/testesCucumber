@@ -4,7 +4,6 @@ package com.fortes.rh.web.action.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -141,21 +141,11 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
-	
-	public String prepareRelatorioAcompanhamentoExperienciaPrevisto() throws Exception{
-		prepare();
-		
-		periodoFim = new Date();
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-    	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-    	periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
-    	
-		return Action.SUCCESS;
-	}
 
 	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
 		prepare();
-				
+		
+		periodoFim = new Date();
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
@@ -196,8 +186,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto() throws Exception 
     {
 		try {
-			//dataReferencia = getDataReferencia();
-
 			if(periodoCheck == null || !(periodoCheck.length > 0))
 				periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 			else
@@ -220,7 +208,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
-			prepareRelatorioAcompanhamentoExperienciaPrevisto();
+			prepareRelatorioAcompanhamentoExperiencia();
 			return Action.INPUT;
 		}
 
@@ -230,13 +218,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
 	{
 		try {
-			dataReferencia = getDataReferencia();
 			
-			periodoExperiencias = periodoExperienciaManager.findById(periodoCheck);
+			periodoExperiencias = periodoExperienciaManager.findByIdsOrderDias(LongUtil.arrayStringToArrayLong(periodoCheck));
 			
-			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataReferencia, getEmpresaSistema(), areasCheck, estabelecimentoCheck, tempoDeEmpresa, periodoExperiencias);
+			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, periodoExperiencias);
 			
-			String filtro = "Data de Referência: " + DateUtil.formataDiaMesAno(dataReferencia) + "\n"; 
+			String filtro = "Período: " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n"; 
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Acompanhamento de Experiência", getEmpresaSistema(), filtro);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 

@@ -11,8 +11,8 @@ public class AcompanhamentoExperienciaColaborador implements Comparable<Acompanh
 	private String matricula;
 	private String nome;
 	private String cargoFaixa;
-	private AreaOrganizacional areaOrganizacional;
 	private Date dataAdmissao;
+	private AreaOrganizacional areaOrganizacional;
 	private List<String> periodoExperiencias = new ArrayList<String>();
 
 	public AcompanhamentoExperienciaColaborador(String matricula, String nome, String cargoFaixa, AreaOrganizacional areaOrganizacional, Date dataAdmissao)
@@ -29,12 +29,12 @@ public class AcompanhamentoExperienciaColaborador implements Comparable<Acompanh
 	
 	}
 
-	public void addPeriodo(Date respondidaEm, String performance) 
+	public void addPeriodo(Date respondidaEm, String performance, String dataPeridoExperienciaPrevista) 
 	{
 		if(respondidaEm != null)
 			this.periodoExperiencias.add(DateUtil.formataDiaMesAno(respondidaEm) + " (" + performance + ")");
 		else
-			this.periodoExperiencias.add(null);
+			this.periodoExperiencias.add("Previsto: " + dataPeridoExperienciaPrevista);
 	}
 
 	public Long getAreaOrganizacionalId() {
