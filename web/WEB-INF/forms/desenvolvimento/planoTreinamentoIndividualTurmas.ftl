@@ -113,7 +113,7 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button type="button" onclick="aplicar()" class="btnAplicar" ></button>
+		<button type="button" onclick="aplicar()" class="btnAplicar"></button>
 	</div>
 </body>
 </html>
