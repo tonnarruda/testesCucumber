@@ -15,6 +15,7 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
@@ -36,6 +37,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -63,6 +65,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
@@ -95,6 +98,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private ColaboradorTurmaDao colaboradorTurmaDao;
 	private TurmaAvaliacaoTurmaDao turmaAvaliacaoTurmaDao;
 	private ColaboradorPresencaDao colaboradorPresencaDao;
+	private CursoDao cursoDao;
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -983,7 +987,12 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		avaliacaoTurma.setQuestionario(questionario);
 		avaliacaoTurmaDao.save(avaliacaoTurma);
 
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso I");
+		cursoDao.save(curso);
+		
 		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
 		turmaDao.save(turma);
 
 		TurmaAvaliacaoTurma turmaAvaliacaoTurma = new TurmaAvaliacaoTurma();
@@ -1128,5 +1137,11 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	public void setColaboradorPresencaDao(
 			ColaboradorPresencaDao colaboradorPresencaDao) {
 		this.colaboradorPresencaDao = colaboradorPresencaDao;
+	}
+
+	
+	public void setCursoDao(CursoDao cursoDao)
+	{
+		this.cursoDao = cursoDao;
 	}
 }

@@ -874,9 +874,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select distinct new ColaboradorQuestionario(c, t, q.id, q.titulo) ");
+		hql.append("select distinct new ColaboradorQuestionario(c, t, q.id, q.titulo, cs.nome) ");
 		hql.append("from ColaboradorTurma ct "); 
 		hql.append("inner join ct.turma t ");
+		hql.append("inner join t.curso cs ");
 		hql.append("inner join t.turmaAvaliacaoTurmas tat "); 
 		hql.append("inner join tat.avaliacaoTurma at "); 
 		hql.append("inner join at.questionario q ");
@@ -887,7 +888,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		hql.append("and tat.liberada = true "); 
 		hql.append("and (cq.respondida is null or cq.respondida=false) ");
 		hql.append("and cp.presenca = true "); 
-		hql.append("order by q.titulo ");
+		hql.append("order by cs.nome, q.titulo ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("usuarioId", usuarioId);

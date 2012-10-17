@@ -100,7 +100,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionariosTeD) 
 		{
 			vo = new MensagemVO();
-			vo.setTexto(colaboradorQuestionario.getQuestionario().getTitulo());
+			vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
 			vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
 			vo.setTipo(TipoMensagem.AVALIACOES_TED);
 			vo.setLida(true);

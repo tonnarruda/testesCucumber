@@ -69,17 +69,20 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     @SuppressWarnings("unused")
 	@Transient
     private String pessoaVinculo;
+    @Transient
+    private String nomeCursoTurmaAvaliacao;
     
     public ColaboradorQuestionario() {
 	}
 
-    public ColaboradorQuestionario(Colaborador colaborador, Turma turma, Long questionarioId,  String questionarioTitulo) 
+    public ColaboradorQuestionario(Colaborador colaborador, Turma turma, Long questionarioId,  String questionarioTitulo, String cursoNome) 
     {
     	this.setTurma(turma);
     	this.colaborador = colaborador;
     	this.questionario = new Questionario();
     	this.questionario.setId(questionarioId);
     	this.questionario.setTitulo(questionarioTitulo);
+    	this.nomeCursoTurmaAvaliacao = "Curso: "+cursoNome + " - Turma: " + turma.getDescricao() + " - Avaliação: " + questionarioTitulo;
     }
 
     public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) {
@@ -651,5 +654,11 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 
 	public void setSolicitacao(Solicitacao solicitacao) {
 		this.solicitacao = solicitacao;
+	}
+
+	
+	public String getNomeCursoTurmaAvaliacao()
+	{
+		return nomeCursoTurmaAvaliacao;
 	}
 }
