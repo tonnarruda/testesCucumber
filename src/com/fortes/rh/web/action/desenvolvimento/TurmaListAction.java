@@ -12,7 +12,9 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -45,6 +47,8 @@ public class TurmaListAction extends MyActionSupportList
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 	private EmpresaManager empresaManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	private Collection<Turma> turmas;
@@ -156,6 +160,9 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 		
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaIds);
+		
 		return SUCCESS;
 	}
 	
@@ -163,10 +170,31 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 		
+		if (empresaId != null)
+		{
+			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaId);
+			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaId);
+		}
+		else
+		{
+			areasCheckList = areaOrganizacionalManager. populaCheckOrderDescricao(empresaIds);
+			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaIds);
+		}
+		
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
 		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), agruparPor);
+		
+		return SUCCESS;
+	}
+	
+	public String imprimirPdi()
+	{
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), agruparPor);
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Plano de Treinamento Individual", getEmpresaSistema(), "");
+		parametros.put("AGRUPAR_POR", String.valueOf(agruparPor));
 		
 		return SUCCESS;
 	}
@@ -621,5 +649,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setDiasTurmasCheckList(Collection<CheckBox> diasTurmasCheckList) {
 		this.diasTurmasCheckList = diasTurmasCheckList;
+	}
+
+	public void setEstabelecimentoManager(	EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

@@ -66,15 +66,17 @@
 			document.formAplicar.submit();
 		}
 		
-		$(function($)
+		function carregar()
 		{
-			var empresa = $('#empresa').val();
+			document.form.action = 'pdi.action';
+			return validaFormulario('form', null, null);
+		}
 		
-			DWREngine.setAsync(false);
-			
-			populaArea(empresa);
-			populaEstabelecimento(empresa);
-		});
+		function imprimir()
+		{
+			document.form.action = 'imprimirPdi.action';
+			document.form.submit();
+		}
 	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -85,7 +87,7 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<@ww.form name="form" action="pdi.action" method="POST">
+	<@ww.form name="form" action="" method="POST">
 		<@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value); populaArea(this.value);"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
@@ -93,7 +95,7 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="return validaFormulario('form', null, null);" class="btnCarregar" ></button>
+		<button onclick="carregar()" class="btnCarregar"></button>
 	</div>
 	
 	<br /><br />
@@ -230,6 +232,7 @@
 
 		<div class="buttonGroup">
 			<button type="button" onclick="prepareCriarTurmas()" class="btnCriarTurmas"></button>
+			<button type="button" onclick="imprimir()" class="btnImprimirPdf"></button>
 		</div>
 	</#if>
 </body>

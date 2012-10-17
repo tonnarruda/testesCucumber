@@ -200,6 +200,15 @@
 		<action name="pdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="pdi">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
 		</action>
+		<action name="imprimirPdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirPdi">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/pdi.jasper</param>
+				<param name="dataSource">configuracaoNivelCompetencias</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">pdi.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
+		</action>
 		<action name="prepareAplicarPdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="prepareAplicarPdi">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividualTurmas.ftl</result>
 		</action>
