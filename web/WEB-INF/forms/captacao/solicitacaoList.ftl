@@ -70,6 +70,7 @@
 												{
 													SolicitacaoDWR.getObsSolicitacao(solicitacaoId, function(data){
 														$('#obsAprova').val(data.obs);
+														$('#observacaoLiberador').val(data.obs);
 														$('#statusSolicitcao').val(data.status);
 													});
 												}
@@ -236,6 +237,7 @@
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
 		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
 			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" />
+			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador" id="observacaoLiberador" />
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
 			<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />
 		</@ww.form>
