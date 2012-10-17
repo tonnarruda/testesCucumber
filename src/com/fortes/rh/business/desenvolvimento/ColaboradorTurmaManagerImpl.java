@@ -56,23 +56,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
 
-	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-	{
-		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-	}
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-
 	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{
 		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
@@ -949,19 +932,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			}
 		}
 	}
-	
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
-		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
-	}
-
-	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
-	{
-		this.avaliacaoCursoManager = avaliacaoCursoManager;
-	}
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
-	}
 
 	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas) throws Exception
 	{
@@ -989,24 +959,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
 	}
-	
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
 
 	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId)
 	{
 		return getDao().findColaboradorByTurma(turmaId);
 	}
 	
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) 
-	{
-		this.diaTurmaManager = diaTurmaManager;
-	}
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
-	}
 	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		return getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds);
@@ -1073,6 +1031,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		return aprovadoPresenca && aprovadoNota;
 	}
+	
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada) 
 	{
 		return getDao().findColaboradoresComCustoTreinamentos(colaboradorId, dataIni, dataFim, realizada);
@@ -1086,8 +1045,59 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		return getDao().findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, cursoIds);
 	}
+	
 	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds) 
 	{
 		return getDao().findColaboradorByCursos(cursosIds);
+	}
+	
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+	{
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+	
+	public void setCursoManager(CursoManager cursoManager)
+	{
+		this.cursoManager = cursoManager;
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
+	{
+		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+	
+	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
+	{
+		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
+	}
+
+	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager)
+	{
+		this.avaliacaoCursoManager = avaliacaoCursoManager;
+	}
+	
+	public void setCertificacaoManager(CertificacaoManager certificacaoManager) 
+	{
+		this.certificacaoManager = certificacaoManager;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) 
+	{
+		this.diaTurmaManager = diaTurmaManager;
+	}
+	
+	public void setEmpresaManager(EmpresaManager empresaManager) 
+	{
+		this.empresaManager = empresaManager;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -39,4 +40,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds);
+	public void salvarTurmaDiasColaboradores(Turma turma, String[] dias, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception;
 }

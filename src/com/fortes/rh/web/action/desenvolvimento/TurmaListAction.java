@@ -74,8 +74,8 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
-	private String[] diasCheck;
-	private Collection<CheckBox> diasCheckList = new ArrayList<CheckBox>();
+	private Collection<String[]> diasTurmasCheck;
+	private Collection<CheckBox> diasTurmasCheckList = new ArrayList<CheckBox>();
 
 	private Date dataIni;
 	private Date dataFim;
@@ -194,10 +194,29 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	public String aplicarPdi()
+	public String aplicarPdi() throws Exception
 	{
-		pdi();
+		int i = 0;
+		String[] diasCheck = null;
 		
+		try 
+		{
+			for (Turma turma : turmas) 
+			{
+				turma.setEmpresa(getEmpresaSistema());
+				diasCheck = (String[]) diasTurmasCheck.toArray()[i++];
+				
+				turmaManager.salvarTurmaDiasColaboradores(turma, diasCheck, turma.getColaboradorTurmas());
+			}
+			
+			addActionMessage("Turmas criadas com sucesso");
+		
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao criar as turmas");
+		}
+
 		return SUCCESS;
 	}
 
@@ -336,6 +355,11 @@ public class TurmaListAction extends MyActionSupportList
 	public void setParametros(Map<String, Object> parametros)
 	{
 		this.parametros = parametros;
+	}
+	
+	public void setTurmas(Collection<Turma> turmas) 
+	{
+		this.turmas = turmas;
 	}
 
 	public Collection<Turma> getTurmas()
@@ -583,11 +607,19 @@ public class TurmaListAction extends MyActionSupportList
 		this.cursosColaboradores = cursosColaboradores;
 	}
 
-	public Collection<CheckBox> getDiasCheckList() {
-		return diasCheckList;
+	public Collection<String[]> getDiasTurmasCheck() {
+		return diasTurmasCheck;
 	}
 
-	public void setDiasCheck(String[] diasCheck) {
-		this.diasCheck = diasCheck;
+	public void setDiasTurmasCheck(Collection<String[]> diasTurmasCheck) {
+		this.diasTurmasCheck = diasTurmasCheck;
+	}
+
+	public Collection<CheckBox> getDiasTurmasCheckList() {
+		return diasTurmasCheckList;
+	}
+
+	public void setDiasTurmasCheckList(Collection<CheckBox> diasTurmasCheckList) {
+		this.diasTurmasCheckList = diasTurmasCheckList;
 	}
 }
