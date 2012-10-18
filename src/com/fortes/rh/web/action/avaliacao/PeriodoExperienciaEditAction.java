@@ -218,7 +218,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia() throws Exception 
 	{
 		try {
-			
 			periodoExperiencias = periodoExperienciaManager.findByIdsOrderDias(LongUtil.arrayStringToArrayLong(periodoCheck));
 			
 			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, periodoExperiencias);

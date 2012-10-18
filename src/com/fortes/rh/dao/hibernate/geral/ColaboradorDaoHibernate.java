@@ -3199,7 +3199,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
 	{		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, cast((:periodoFim - co.dataAdmissao) + 1 as int), ao.nome, aoMae.nome, e.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, ");
+		
+		if (periodoFim != null)
+			hql.append(" cast((:periodoFim - co.dataAdmissao) + 1 as int), ");
+		else
+			hql.append(" cast((current_date - co.dataAdmissao) + 1 as int), ");
+		
+		hql.append(" ao.nome, aoMae.nome, e.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.areaOrganizacional as ao ");
@@ -3212,15 +3219,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("   select max(hc2.data) ");
 		hql.append("   from HistoricoColaborador as hc2 ");
 		hql.append("   where hc2.colaborador.id = co.id ");
-		hql.append("   and hc2.data <= :periodoFim and hc2.status = :status ");
+		
+		if (periodoFim != null)
+			hql.append("   and hc2.data <= :periodoFim ");
+		
+		hql.append("   and hc2.status = :status ");
 		hql.append("  ) ");
 		hql.append("and co.desligado = false ");
 		hql.append("and co.empresa.id = :empresaId ");
 		
 		if (periodoIni != null)
 			hql.append("and :periodoIni <= co.dataAdmissao  ");
-		
-		hql.append("and co.dataAdmissao <= :periodoFim ");
+		if (periodoFim != null)
+			hql.append("and co.dataAdmissao <= :periodoFim ");
 		
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");
@@ -3236,7 +3247,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (periodoIni != null)
 			query.setDate("periodoIni", periodoIni);
 		
-		query.setDate("periodoFim", periodoFim);
+		if (periodoFim != null)
+			query.setDate("periodoFim", periodoFim);
+		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 
@@ -3262,17 +3275,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("   select max(hc2.data) ");
 		hql.append("   from HistoricoColaborador as hc2 ");
 		hql.append("   where hc2.colaborador.id = co.id ");
-		hql.append("   and hc2.data <= :periodoFim and hc2.status = :status ");
+		
+		if (periodoFim != null)
+			hql.append("   and hc2.data <= :periodoFim ");
+		
+		hql.append("   and hc2.status = :status ");
 		hql.append("  ) ");
 		hql.append("and co.desligado = false ");
 		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and co.dataAdmissao <= :periodoFim ");
+		
+		if (periodoFim != null)
+			hql.append("and co.dataAdmissao <= :periodoFim ");
 		
 		if (periodoIni != null)
 			hql.append("and :periodoIni <= cq.respondidaEm ");
-
-		hql.append("and cq.respondidaEm <= :periodoFim ");
-			
+		if (periodoFim != null)
+			hql.append("and cq.respondidaEm <= :periodoFim ");
 
 		if (areasCheck != null && areasCheck.length > 0)
 			hql.append("and ao.id in (:areasCheck) ");
@@ -3284,10 +3302,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
-		query.setDate("periodoFim", periodoFim);
 		
 		if (periodoIni != null)
 			query.setDate("periodoIni", periodoIni);
+		if (periodoFim != null)
+			query.setDate("periodoFim", periodoFim);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		

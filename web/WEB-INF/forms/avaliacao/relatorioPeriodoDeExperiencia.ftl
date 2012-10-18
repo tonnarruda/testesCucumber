@@ -15,8 +15,6 @@
 		$(function() 
 		{
 			$('#wwctrl_periodoCheck * span').eq(0).removeAttr('onclick').css('color', '#6E7B8B').css('cursor', 'default');
-			
-			$('#tooltipHelp').qtip({content: 'Caso queira visualizar todos os acompanhamentos atrasados,basta não informar a período inicial(deixá-lo em branco).'});
 		});
 		function validaQtd()
 		{
@@ -28,7 +26,7 @@
 	</script> 
 	<#assign dataIni = "" />
 	<#assign dataFim = "${periodoFim?date}" />
-	<#assign validarCampos="return validaFormulario('form', new Array('periodoFim','@periodoCheck'), new Array('periodoIni', 'periodoFim'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('periodoIni', 'periodoFim','@periodoCheck'), new Array('periodoIni', 'periodoFim'))"/>
 </head>
 
 <body>
@@ -37,10 +35,7 @@
 
 	<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
 
-		<div>
-			Período:
-			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -4px" />
-		</div>
+		Período:
 		<@ww.datepicker  id="periodoIni" name="periodoIni" required="true" value="${dataIni}" cssClass="mascaraData" liClass="liLeft"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker  id="periodoFim" name="periodoFim" required="true" value="${dataFim}" cssClass="mascaraData"  liClass="liLeft"/>

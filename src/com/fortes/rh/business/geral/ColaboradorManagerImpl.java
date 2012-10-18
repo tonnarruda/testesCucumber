@@ -1790,8 +1790,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		List<AcompanhamentoExperienciaColaborador> acompanhamentos = new ArrayList<AcompanhamentoExperienciaColaborador>();
 
-		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck);
-		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck);
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck);
+		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck);
 		
 		Date data;
 		String performance;
@@ -1811,8 +1811,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 						data = colaboradorResposta.getAvaliacaoRespondidaEm();
 					}
 				}
-				String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()));
-				experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
+				
+				Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias());
+				
+				if(dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime())
+				{
+					String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()));
+					experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
+				}
+				
 			}
 			
 			acompanhamentos.add(experienciaColaborador);
