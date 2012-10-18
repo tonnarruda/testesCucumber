@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#tooltipHelp').qtip({
-				content: 'Caso queira visualizar todos os acompanhamentos atrasados,basta não informar a período inicial(deixá-lo em branco).'
+				content: 'Caso queira visualizar todos os acompanhamentos atrasados, basta não informar a período inicial(deixá-lo em branco).'
 			});
 		});
 	</script>
