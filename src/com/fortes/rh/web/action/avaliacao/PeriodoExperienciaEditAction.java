@@ -142,15 +142,30 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception{
+	public String prepareRelatorioAcompanhamentoExperienciaPrevisto() throws Exception
+	{
 		prepare();
-		
+		populaEstabAreaPeriodoCheck();
 		periodoFim = new Date();
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
+
+		return Action.SUCCESS;
+	}
+	
+	public String prepareRelatorioAcompanhamentoExperiencia() throws Exception
+	{
+		prepare();
+		populaEstabAreaPeriodoCheck();
+		periodoIni = new Date();
+		periodoFim = DateUtil.incrementaMes(periodoIni, 1) ;
 		
 		return Action.SUCCESS;
+	}
+
+	private void populaEstabAreaPeriodoCheck() 
+	{
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
 	}
 	
 	public String prepareRelatorioRankingPerformance() throws Exception

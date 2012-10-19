@@ -1822,7 +1822,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				
 			}
 			
-			acompanhamentos.add(experienciaColaborador);
+			if(experienciaColaborador.getPeriodoExperiencias().size() > 0)
+				acompanhamentos.add(experienciaColaborador);
 		}
 			
 		if(acompanhamentos.isEmpty())

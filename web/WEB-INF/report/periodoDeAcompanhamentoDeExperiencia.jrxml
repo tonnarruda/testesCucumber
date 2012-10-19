@@ -316,7 +316,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Data Admissao]]></text>
+				<text><![CDATA[Admissão]]></text>
 				</staticText>
 			</band>
 		</columnHeader>

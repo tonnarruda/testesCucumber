@@ -24,8 +24,8 @@
 		        $("input[name='periodoCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
 		}
 	</script> 
-	<#assign dataIni = "" />
-	<#assign dataFim = "${periodoFim?date}" />
+	<#assign periodoIniFormatado = "${periodoIni?date}" />
+	<#assign periodoFimFormatado = "${periodoFim?date}" />
 	<#assign validarCampos="return validaFormulario('form', new Array('periodoIni', 'periodoFim','@periodoCheck'), new Array('periodoIni', 'periodoFim'))"/>
 </head>
 
@@ -35,12 +35,8 @@
 
 	<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
 
-		Período:
-		<@ww.datepicker  id="periodoIni" name="periodoIni" required="true" value="${dataIni}" cssClass="mascaraData" liClass="liLeft"/>
-		<@ww.label value="a" liClass="liLeft"/>
-		<@ww.datepicker  id="periodoFim" name="periodoFim" required="true" value="${dataFim}" cssClass="mascaraData"  liClass="liLeft"/>
-		<@ww.label value="*"/><br/>
-
+		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
+		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/><br/>
 		<@frt.checkListBox label="Período de Acompanhamento (máx. 4 opções) *" name="periodoCheck" id="periodoCheck" list="periodoCheckList" onClick="validaQtd();"/>						
 		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
 		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>

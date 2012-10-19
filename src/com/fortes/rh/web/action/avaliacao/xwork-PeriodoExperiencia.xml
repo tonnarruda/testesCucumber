@@ -32,7 +32,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/periodoExperienciaEdit.ftl</result>
 		</action>
 		
-		<action name="prepareRelatorioAcompanhamentoExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperiencia">
+		<action name="prepareRelatorioAcompanhamentoExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioAcompanhamentoExperienciaPrevisto">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperienciaPrevisto.ftl</result>
 		</action>
 		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaPrevisto">
