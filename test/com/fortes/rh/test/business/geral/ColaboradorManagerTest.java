@@ -305,7 +305,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         areaOrganizacinoalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
     	
-    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(dataIni, dataFim, empresa, areasCheck, estabelecimentoCheck, periodoExperiencias);
+    	List<AcompanhamentoExperienciaColaborador> acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(DateUtil.incrementaMes(dataIni, -2), DateUtil.incrementaAno(dataFim, 2), empresa, areasCheck, estabelecimentoCheck, periodoExperiencias);
     	assertEquals(2, acompanhamentos.size());
     	
     	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
