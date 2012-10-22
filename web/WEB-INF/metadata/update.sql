@@ -19252,12 +19252,3 @@ update parametrosdosistema set appversao = '1.1.90.87';--.go
 -- versao 1.1.91.88
 
 update parametrosdosistema set appversao = '1.1.91.88';--.go
--- versao 1.1.91.88
-
-update parametrosdosistema set appversao = '1.1.91.88';--.go
--- versao 1.1.91.88
-
-update parametrosdosistema set appversao = '1.1.91.88';--.go
--- versao 1.1.91.88
-
-update parametrosdosistema set appversao = '1.1.91.88';--.go
