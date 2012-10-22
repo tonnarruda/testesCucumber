@@ -27,68 +27,37 @@
 	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
 	<parameter name="AGRUPAR_POR" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome" class="java.lang.String">
-		<fieldDescription><![CDATA[Nome da empresa]]></fieldDescription>
-	</field>
-	<field name="configuracaoNivelCompetenciaColaborador.colaborador.nome" class="java.lang.String">
-		<fieldDescription><![CDATA[Nome do colaborador]]></fieldDescription>
-	</field>
-	<field name="nivelCompetencia.descricao" class="java.lang.String">
-		<fieldDescription><![CDATA[Nome do nivel da faixa salarial]]></fieldDescription>
-	</field>
-	<field name="nivelCompetenciaColaborador.descricao" class="java.lang.String">
-		<fieldDescription><![CDATA[Nome do nivel do colaborador]]></fieldDescription>
-	</field>
+	<field name="configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome" class="java.lang.String"/>
+	<field name="configuracaoNivelCompetenciaColaborador.colaborador.nome" class="java.lang.String"/>
+	<field name="nivelCompetencia.descricao" class="java.lang.String"/>
+	<field name="nivelCompetenciaColaborador.descricao" class="java.lang.String"/>
 	<field name="cursoNome" class="java.lang.String"/>
 	<field name="competenciaDescricao" class="java.lang.String"/>
-	<field name="configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome" class="java.lang.String">
-		<fieldDescription><![CDATA[Nome do estabelecimento]]></fieldDescription>
-	</field>
+	<field name="configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$P{AGRUPAR_POR}.equals( "T" ) ? $F{cursoNome} : $F{configuracaoNivelCompetenciaColaborador.colaborador.nome}]]></variableExpression>
 	</variable>
+	<variable name="grpComp" class="java.lang.Integer" resetType="Report" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{competenciaDescricao}]]></variableExpression>
+	</variable>
 
-		<group  name="grpEmpresa" >
-			<groupExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome}]]></groupExpression>
-			<groupHeader>
-			<band height="15"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="3"
-						width="361"
-						height="12"
-						key="textField-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome}]]></textFieldExpression>
-				</textField>
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<group  name="grpEstabelecimento" >
+		<group  name="grpEmpresaEstabelecimento" >
 			<groupExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="8"
+						x="0"
 						y="2"
-						width="361"
+						width="782"
 						height="12"
 						key="textField-15"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="9"/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.empresa.nome} + " - " + $F{configuracaoNivelCompetenciaColaborador.colaborador.estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
@@ -103,7 +72,7 @@
 			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="17"
+						x="14"
 						y="2"
 						width="765"
 						height="12"
@@ -114,6 +83,17 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[( $P{AGRUPAR_POR}.equals( "T" ) ? $F{cursoNome} : $F{configuracaoNivelCompetenciaColaborador.colaborador.nome} )]]></textFieldExpression>
 				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="grpCompetencia" >
+			<groupExpression><![CDATA[$F{competenciaDescricao}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -149,7 +129,7 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="56"  isSplitAllowed="true" >
+			<band height="42"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="0"
@@ -161,26 +141,13 @@
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Empresa]]></text>
+				<text><![CDATA[Empresa - Estabelecimento]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="8"
-						y="16"
-						width="774"
-						height="12"
-						key="staticText-23"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
-					</textElement>
-				<text><![CDATA[Estabelecimento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="242"
-						y="42"
-						width="199"
+						x="33"
+						y="30"
+						width="221"
 						height="12"
 						key="staticText-24"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -191,8 +158,8 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="17"
-						y="29"
+						x="14"
+						y="17"
 						width="765"
 						height="12"
 						key="textField-13"/>
@@ -204,9 +171,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="27"
-						y="42"
-						width="213"
+						x="256"
+						y="30"
+						width="207"
 						height="12"
 						key="textField-18"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -215,6 +182,32 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[( $P{AGRUPAR_POR}.equals( "T" ) ? "Colaborador" : "Treinamento" )]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="465"
+						y="30"
+						width="157"
+						height="12"
+						key="staticText-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Nível do Cargo/Faixa]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="624"
+						y="30"
+						width="157"
+						height="12"
+						key="staticText-26"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Nível do Colaborador]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -222,21 +215,23 @@
 				<rectangle>
 					<reportElement
 						mode="Opaque"
-						x="25"
-						y="1"
-						width="757"
-						height="12"
+						x="30"
+						y="0"
+						width="752"
+						height="15"
 						backcolor="#EEEEEE"
-						key="rectangle-1">
-							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+						key="rectangle-1"
+						stretchType="RelativeToBandHeight"
+						isPrintRepeatedValues="false">
+							<printWhenExpression><![CDATA[new Boolean($V{grpComp}.intValue() % 2 != 1)]]></printWhenExpression>
 						</reportElement>
-					<graphicElement stretchType="NoStretch" pen="None"/>
+					<graphicElement stretchType="RelativeToBandHeight" pen="None"/>
 				</rectangle>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="27"
+						x="256"
 						y="1"
-						width="213"
+						width="207"
 						height="12"
 						key="textField-19"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -247,16 +242,43 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="242"
+						x="33"
 						y="1"
-						width="213"
+						width="221"
 						height="12"
-						key="textField-20"/>
+						key="textField-20"
+						isPrintRepeatedValues="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{competenciaDescricao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="465"
+						y="1"
+						width="157"
+						height="12"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nivelCompetencia.descricao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="624"
+						y="1"
+						width="157"
+						height="12"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[( $F{nivelCompetenciaColaborador.descricao} == null ? "Não avaliado" : $F{nivelCompetenciaColaborador.descricao} )]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
