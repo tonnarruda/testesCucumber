@@ -15,6 +15,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.TipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
@@ -50,18 +52,19 @@ public class TurmaListAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-
-	private Collection<Turma> turmas;
+	private TipoDespesaManager tipoDespesaManager;
 
 	private Turma turma;
 	private Curso curso;
 	private String msgAlert = "";
 
-	private Map<String, Object> parametros = new HashMap<String, Object>();
+	private Collection<Turma> turmas;
 	private Collection<ColaboradorTurma> dataSource;
 	private Collection<Curso> cursos;
 	private Collection<AvaliacaoCurso> avaliacaoCursos;
 	private Collection<AvaliacaoTurma> avaliacaoTurmas;
+	private Collection<String> custos;
+	private Map<String, Object> parametros = new HashMap<String, Object>();
 	
 	private String[] colaboradoresCursos;
 	private Map<Curso, Collection<Colaborador>> cursosColaboradores;
@@ -80,6 +83,8 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Collection<String[]> diasTurmasCheck;
 	private Collection<CheckBox> diasTurmasCheckList = new ArrayList<CheckBox>();
+	private Collection<String[]> avaliacaoTurmasCheck;
+	private Map<Long, Collection<CheckBox>> avaliacoesTurmasCheckList; 
 
 	private Date dataIni;
 	private Date dataFim;
@@ -91,7 +96,9 @@ public class TurmaListAction extends MyActionSupportList
 	private Long[] empresaIds;
 	private Collection<Empresa> empresas;
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
+	private Collection<TipoDespesa> tipoDespesas;
 	
+	private char colaboradoresAvaliados;
 	private char agruparPor;
 
 	public String filtroPlanoTreinamento() throws Exception
@@ -184,14 +191,14 @@ public class TurmaListAction extends MyActionSupportList
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
-		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), agruparPor);
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), BooleanUtil.getValueCombo(colaboradoresAvaliados), agruparPor);
 		
 		return SUCCESS;
 	}
 	
 	public String imprimirPdi()
 	{
-		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), agruparPor);
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), BooleanUtil.getValueCombo(colaboradoresAvaliados), agruparPor);
 		
 		parametros = RelatorioUtil.getParametrosRelatorio("Plano de Treinamento Individual", getEmpresaSistema(), "");
 		parametros.put("AGRUPAR_POR", String.valueOf(agruparPor));
@@ -199,9 +206,12 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
-	public String prepareAplicarPdi()
+	public String prepareAplicarPdi() throws Exception
 	{
+		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
+
 		cursosColaboradores = new HashMap<Curso, Collection<Colaborador>>();
+		avaliacoesTurmasCheckList = new HashMap<Long, Collection<CheckBox>>();
 		String[] dados = null;
 		Curso curso = null;
 		Colaborador colaborador = null;
@@ -216,6 +226,12 @@ public class TurmaListAction extends MyActionSupportList
 			if (!cursosColaboradores.containsKey(curso))
 				cursosColaboradores.put(curso, new ArrayList<Colaborador>());
 			
+			if (!avaliacoesTurmasCheckList.containsKey(curso.getId()))
+			{
+				avaliacaoCursos = avaliacaoCursoManager.findByCurso(curso.getId());
+				avaliacoesTurmasCheckList.put(curso.getId(), CheckListBoxUtil.populaCheckListBox(avaliacaoCursos, "getId", "getTitulo"));
+			}
+			
 			cursosColaboradores.get(curso).add(colaborador);
 		}
 		
@@ -226,15 +242,19 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		int i = 0;
 		String[] diasCheck = null;
+		String custosTurma = null;
 		
 		try 
 		{
 			for (Turma turma : turmas) 
 			{
 				turma.setEmpresa(getEmpresaSistema());
-				diasCheck = (String[]) diasTurmasCheck.toArray()[i++];
+				diasCheck = (String[]) diasTurmasCheck.toArray()[i];
+				custosTurma = (String) custos.toArray()[i];
+
+				turmaManager.salvarTurmaDiasCustosColaboradores(turma, diasCheck, custosTurma, turma.getColaboradorTurmas());
 				
-				turmaManager.salvarTurmaDiasColaboradores(turma, diasCheck, turma.getColaboradorTurmas());
+				i++;
 			}
 			
 			addActionMessage("Turmas criadas com sucesso");
@@ -245,6 +265,8 @@ public class TurmaListAction extends MyActionSupportList
 			addActionError("Ocorreu um erro ao criar as turmas");
 		}
 
+		pdi();
+		
 		return SUCCESS;
 	}
 
@@ -657,5 +679,45 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public char getColaboradoresAvaliados() {
+		return colaboradoresAvaliados;
+	}
+
+	public void setColaboradoresAvaliados(char colaboradoresAvaliados) {
+		this.colaboradoresAvaliados = colaboradoresAvaliados;
+	}
+
+	public Collection<TipoDespesa> getTipoDespesas() {
+		return tipoDespesas;
+	}
+
+	public void setTipoDespesas(Collection<TipoDespesa> tipoDespesas) {
+		this.tipoDespesas = tipoDespesas;
+	}
+
+	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager) {
+		this.tipoDespesaManager = tipoDespesaManager;
+	}
+
+	public Collection<String> getCustos() {
+		return custos;
+	}
+
+	public void setCustos(Collection<String> custos) {
+		this.custos = custos;
+	}
+
+	public Collection<String[]> getAvaliacaoTurmasCheck() {
+		return avaliacaoTurmasCheck;
+	}
+
+	public void setAvaliacaoTurmasCheck(Collection<String[]> avaliacaoTurmasCheck) {
+		this.avaliacaoTurmasCheck = avaliacaoTurmasCheck;
+	}
+
+	public Map<Long, Collection<CheckBox>> getAvaliacoesTurmasCheckList() {
+		return avaliacoesTurmasCheckList;
 	}
 }

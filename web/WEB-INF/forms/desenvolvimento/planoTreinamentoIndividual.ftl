@@ -91,6 +91,7 @@
 		<@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value); populaArea(this.value);"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
+		<@ww.select label="Filtrar colaboradores" name="colaboradoresAvaliados" id="colaboradoresAvaliados" list=r"#{'S':'Somente colaboradores com avaliação de nível de competência','N':'Somente colaboradores sem avaliação de nível de competência','T':'Todos os colaboradores'}" />
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Treinamento'}" />
 	</@ww.form>
 	
@@ -139,7 +140,7 @@
 						</tr>
 					</#if>
 		
-					<#if competenciaDescricaoAnterior != configNivel.competenciaDescricao>
+					<#if colaboradorAnterior != configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome || competenciaDescricaoAnterior != configNivel.competenciaDescricao>
 						<#if estabelecimentoAnterior != "">	
 								</td>
 							</tr>
@@ -152,7 +153,7 @@
 								<#if configNivel.nivelCompetenciaColaborador.descricao?exists>
 									${configNivel.nivelCompetenciaColaborador.descricao}
 								<#else>
-									-
+									Não avaliado
 								</#if>
 							</td>
 							<td>
@@ -160,7 +161,9 @@
 						<#assign i = i + 1/>
 					</#if>
 					
-					<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.cursoNome}<br />
+					<label>
+						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.cursoNome}<br />
+					</label>
 				
 				<#else>
 					<#-- ESTABELECIMENTO -->

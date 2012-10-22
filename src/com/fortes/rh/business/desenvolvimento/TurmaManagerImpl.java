@@ -94,11 +94,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
 	}
 	
-	public void salvarTurmaDiasColaboradores(Turma turma, String[] dias, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
+	public void salvarTurmaDiasCustosColaboradores(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
 	{
-		save(turma);
-		
-		diaTurmaManager.saveDiasTurma(turma, dias);
+		salvarTurmaDiasCusto(turma, dias, custos);
 
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{

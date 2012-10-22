@@ -893,7 +893,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configTiburcio.setData(DateUtil.criarDataMesAno(17, 8, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configTiburcio);
 		
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, 'C');
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, null, 'C');
 		ConfiguracaoNivelCompetencia[] configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});
 		
 		assertEquals(3, configs.size());
@@ -901,7 +901,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals("Ordenado por nome para agrupar por colaborador", tiburcio.getNome(), configsArray[1].getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
 		assertEquals("Ordenado por nome para agrupar por colaborador", tiburcio.getNome(), configsArray[2].getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome());
 		
-		configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, 'T');
+		configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, null, 'T');
 		configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});
 		
 		assertEquals(3, configs.size());
