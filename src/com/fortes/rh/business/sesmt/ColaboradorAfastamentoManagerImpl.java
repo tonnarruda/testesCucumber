@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidManager;
@@ -84,8 +86,12 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		{
 			for (ColaboradorAfastamento colaboradorAfastamentotemp : colaboradorAfastamentos)
 			{
-				String descricaoCid = cidManager.findDescricaoByCodigo(colaboradorAfastamentotemp.getCid());
-				colaboradorAfastamentotemp.setCid(colaboradorAfastamentotemp.getCid() +  (descricaoCid.equals("")?"":" - " + descricaoCid));
+				if (StringUtils.isBlank(colaboradorAfastamentotemp.getCid())) {
+					colaboradorAfastamentotemp.setCid("");
+				} else {
+					String descricaoCid = cidManager.findDescricaoByCodigo(colaboradorAfastamentotemp.getCid());
+					colaboradorAfastamentotemp.setCid(colaboradorAfastamentotemp.getCid() + " - " + (descricaoCid.equals("")?"Não identificado":descricaoCid));
+				}
 			}
 		}
 		
