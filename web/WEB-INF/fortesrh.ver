@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.91.88" data="22/10/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Relatório > Acompanhamento do Período de Experiência: Nova forma de filtrar por período e novo relatório apresentando data de admissão e data do período de experiência previsto.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.90.87" data="15/10/2012">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Nova coluna de Telefone Fixo/Celular na listagem.

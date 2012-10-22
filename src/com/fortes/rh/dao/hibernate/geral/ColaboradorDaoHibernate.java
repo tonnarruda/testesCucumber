@@ -3270,7 +3270,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join co.colaboradorQuestionarios as cq ");
 		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("right join cq.avaliacao as av ");
+		hql.append("inner join cq.avaliacao as av ");
 		hql.append("where hc.data = ( ");
 		hql.append("   select max(hc2.data) ");
 		hql.append("   from HistoricoColaborador as hc2 ");

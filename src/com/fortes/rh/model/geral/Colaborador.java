@@ -2402,7 +2402,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	@NaoAudita
 	public String getPerformance() {
-		Double result = (performance * 100);
+		Double result = performance == null ? 0.0 : (performance * 100);
 		
 		NumberFormat formata = new DecimalFormat("#0.00");
 		return formata.format(result).toString() + " %"; 

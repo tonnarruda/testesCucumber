@@ -57,6 +57,7 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 		montaMockGrupoAC();
 		
 		tOcorrenciaEmpregado.setCodigo("001");
+		tOcorrenciaEmpregado.setGrupoAC("001");
 		assertEquals(true, acPessoalClientColaboradorOcorrenciaImpl.criarColaboradorOcorrencia(tOcorrenciaEmpregado, empresa));
 
 		ResultSet result = query("select ocr_codigo, data from oce where emp_codigo = '" + empCodigo + "' and epg_codigo ='" + epgCodigo + "'");
