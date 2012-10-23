@@ -716,8 +716,7 @@ public class TurmaListAction extends MyActionSupportList
 		return cursosColaboradores;
 	}
 
-	public void setCursosColaboradores(
-			Map<Curso, Set<Colaborador>> cursosColaboradores) {
+	public void setCursosColaboradores(Map<Curso, Set<Colaborador>> cursosColaboradores) {
 		this.cursosColaboradores = cursosColaboradores;
 	}
 }
