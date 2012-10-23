@@ -86,6 +86,7 @@
 				<param name="location">WEB-INF/report/colaboradores_sem_treinamento.jasper</param>
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_sem_treinamento.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
@@ -94,6 +95,7 @@
 				<param name="location">WEB-INF/report/colaboradores_com_treinamento.jasper</param>
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_com_treinamento.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
@@ -108,6 +110,7 @@
 				<param name="location">WEB-INF/report/colaborador_sem_indicacao_treinamento.jasper</param>
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaborador_sem_indicacao_treinamento.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorSemIndicacaoTreinamento.ftl</result>
 		</action>
@@ -120,6 +123,7 @@
 				<param name="location">WEB-INF/report/colaboradores_certificacoes.jasper</param>
 				<param name="dataSource">colaboradoresCertificacoes</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_certificacoes.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>
