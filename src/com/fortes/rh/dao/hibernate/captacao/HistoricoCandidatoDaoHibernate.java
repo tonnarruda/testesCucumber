@@ -283,4 +283,24 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 
 		return criteria.list();
 	}
+
+	public int findQtdEtapasRealizadas(Long empresaId, Long[] solicitacoesIds, Date dataIni, Date dataFim)
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
+		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.candidato", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.count("hc.id"));
+		
+		criteria.setProjection(p);
+		
+		if(LongUtil.isNotEmpty(solicitacoesIds))
+			criteria.add(Expression.in("cs.solicitacao.id", solicitacoesIds));
+		
+		criteria.add(Expression.between("hc.data", dataIni, dataFim));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		return (Integer) criteria.uniqueResult();
+	}
 }

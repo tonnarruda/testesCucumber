@@ -165,7 +165,8 @@
 		    	<div id="indicadores">
 		    		<ul>
 		    			<li>Nº de Currículos Recebidos/Cadastrados:	${qtdCandidatosCadastrados}</li>
-		    			<li>Nº de Candidatos Atendidos:	${qtdCandidatosAtendidos}</li>
+		    			<li>Nº de Candidatos Participantes de Uma ou Mais Etapa Seletiva: ${qtdCandidatosAtendidos}</li>
+		    			<li>Nº de Etapas Realizadas: ${qtdEtapasRealizadas?string(",##0.##")}</li>
 		    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
 		    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
 		    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")}%

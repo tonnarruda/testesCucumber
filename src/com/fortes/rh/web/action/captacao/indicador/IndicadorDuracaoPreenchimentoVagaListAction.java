@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
+import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -37,6 +38,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private SolicitacaoManager solicitacaoManager;
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
+	private HistoricoCandidatoManager historicoCandidatoManager;
 
 	private Date dataDe;
 	private Date dataAte;
@@ -63,6 +65,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private int qtdCandidatosCadastrados;
 	private int qtdCandidatosAtendidos;
 	private int qtdVagasPreenchidas;
+	private int qtdEtapasRealizadas;
 	private double qtdCandidatosAtendidosPorVaga;
 	private double indiceProcSeletivo;
 	
@@ -72,6 +75,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String grfContratadosArea = "";
 	private String grfContratadosMotivo = "";
 	private String grfDivulgacaoVaga = "";
+
 
 	
 	public String painel() throws Exception
@@ -93,6 +97,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
+		qtdEtapasRealizadas = historicoCandidatoManager.findQtdEtapasRealizadas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte); 
 		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), dataAte);
 		
 		try {
@@ -320,95 +325,118 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		this.parametros = parametros;
 	}
 
-	public String getReportFilter() {
+	public String getReportFilter()
+	{
 		return reportFilter;
 	}
 
-	public String getReportTitle() {
+	public String getReportTitle()
+	{
 		return reportTitle;
 	}
 
-	public char getStatusSolicitacao() {
+	public char getStatusSolicitacao()
+	{
 		return statusSolicitacao;
 	}
 
-	public void setStatusSolicitacao(char statusSolicitacao) {
+	public void setStatusSolicitacao(char statusSolicitacao)
+	{
 		this.statusSolicitacao = statusSolicitacao;
 	}
 
-	public Collection<FaixaSalarial> getFaixaSalarials() {
+	public Collection<FaixaSalarial> getFaixaSalarials()
+	{
 		return faixaSalarials;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager)
+	{
 		this.solicitacaoManager = solicitacaoManager;
 	}
 
-	public int getQtdCandidatosCadastrados() {
+	public int getQtdCandidatosCadastrados()
+	{
 		return qtdCandidatosCadastrados;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager) {
+	public void setCandidatoManager(CandidatoManager candidatoManager)
+	{
 		this.candidatoManager = candidatoManager;
 	}
 
-	public String getGrfContratadosFaixa() {
+	public String getGrfContratadosFaixa()
+	{
 		return grfContratadosFaixa;
 	}
 
-	public String getGrfContratadosArea() {
+	public String getGrfContratadosArea()
+	{
 		return grfContratadosArea;
 	}
 
-	public String getGrfContratadosMotivo() {
+	public String getGrfContratadosMotivo()
+	{
 		return grfContratadosMotivo;
 	}
 
-	public String getGrfDivulgacaoVaga() {
+	public String getGrfDivulgacaoVaga()
+	{
 		return grfDivulgacaoVaga;
 	}
 
-	public int getQtdCandidatosAtendidos() {
+	public int getQtdCandidatosAtendidos()
+	{
 		return qtdCandidatosAtendidos;
 	}
 
-	public int getQtdVagasPreenchidas() {
+	public int getQtdVagasPreenchidas()
+	{
 		return qtdVagasPreenchidas;
 	}
 
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public double getQtdCandidatosAtendidosPorVaga() {
+	public double getQtdCandidatosAtendidosPorVaga()
+	{
 		return qtdCandidatosAtendidosPorVaga;
 	}
 
-	public double getIndiceProcSeletivo() {
+	public double getIndiceProcSeletivo()
+	{
 		return indiceProcSeletivo;
 	}
 
-	
 	public Collection<CheckBox> getSolicitacaosCheck()
 	{
 		return solicitacaosCheck;
 	}
 
-	
 	public void setSolicitacaosCheck(Collection<CheckBox> solicitacaosCheck)
 	{
 		this.solicitacaosCheck = solicitacaosCheck;
 	}
 
-	
 	public String[] getSolicitacaosCheckIds()
 	{
 		return solicitacaosCheckIds;
 	}
 
-	
 	public void setSolicitacaosCheckIds(String[] solicitacaosCheckIds)
 	{
 		this.solicitacaosCheckIds = solicitacaosCheckIds;
+	}
+
+	public int getQtdEtapasRealizadas()
+	{
+		return qtdEtapasRealizadas;
+	}
+
+	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
+	{
+		this.historicoCandidatoManager = historicoCandidatoManager;
 	}
 }

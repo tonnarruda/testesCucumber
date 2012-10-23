@@ -400,6 +400,63 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		assertFalse(retorno);
 	}
 
+	public void testFindQtdEtapasRealizadas()
+	{
+		Date hoje = DateUtil.criarDataMesAno(01, 01, 1980);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Solicitacao sol1 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(sol1);
+		
+		Solicitacao sol2 = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(sol2);
+		
+		Candidato joao = CandidatoFactory.getCandidato();
+		joao.setNome("joao");
+		joao.setEmpresa(empresa);
+		candidatoDao.save(joao);
+
+		Candidato maria = CandidatoFactory.getCandidato();
+		maria.setNome("maria");
+		maria.setEmpresa(empresa);
+		candidatoDao.save(maria);
+		
+		CandidatoSolicitacao candSolJoao = new CandidatoSolicitacao();
+		candSolJoao.setCandidato(joao);
+		candSolJoao.setSolicitacao(sol1);
+		candidatoSolicitacaoDao.save(candSolJoao);
+
+		CandidatoSolicitacao candSolMaria = new CandidatoSolicitacao();
+		candSolMaria.setCandidato(maria);
+		candSolMaria.setSolicitacao(sol2);
+		candidatoSolicitacaoDao.save(candSolMaria);
+
+		HistoricoCandidato historicoCandidato = new HistoricoCandidato();
+		historicoCandidato.setCandidatoSolicitacao(candSolJoao);
+		historicoCandidato.setData(hoje);
+		historicoCandidato = historicoCandidatoDao.save(historicoCandidato);
+
+		HistoricoCandidato historicoCandidato2 = new HistoricoCandidato();
+		historicoCandidato2.setCandidatoSolicitacao(candSolJoao);
+		historicoCandidato2.setData(hoje);
+		historicoCandidato2 = historicoCandidatoDao.save(historicoCandidato2);
+
+		HistoricoCandidato historicoCandidato3 = new HistoricoCandidato();
+		historicoCandidato3.setCandidatoSolicitacao(candSolMaria);
+		historicoCandidato3.setData(hoje);
+		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
+		
+		Long[] solicitacaoIds = new Long[]{ sol1.getId() };
+
+		int qtd1 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), solicitacaoIds, hoje, hoje);
+		int qtd2 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), null, hoje, hoje);
+
+		assertEquals("Considerando solicitação",2, qtd1);
+		assertEquals("Não considerando solicitação", 3, qtd2);
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;
