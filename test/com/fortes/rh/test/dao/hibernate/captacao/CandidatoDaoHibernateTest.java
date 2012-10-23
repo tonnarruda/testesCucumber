@@ -2012,39 +2012,44 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		Cargo cargo1 = CargoFactory.getEntity();
 		cargoDao.save(cargo1);
-		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		cargos.add(cargo1);
 
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial1);
+		
 		Cargo cargo2 = CargoFactory.getEntity();
 		cargoDao.save(cargo2);
-		Collection<Cargo> cargos2 = new ArrayList<Cargo>();
-		cargos2.add(cargo2);
 
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCargo(cargo2);
+		faixaSalarialDao.save(faixaSalarial2);
+		
 		Candidato candidato1 = getCandidato();
 		candidato1.setEmpresa(empresa);
 		candidato1.setNome("chico");
-		candidato1.setCargos(cargos);
 		candidatoDao.save(candidato1);
 
-		Candidato candidatoForaDaConsultaCargoDiferente = getCandidato();
-		candidatoForaDaConsultaCargoDiferente.setEmpresa(empresa);
-		candidatoForaDaConsultaCargoDiferente.setNome("Zé Mané");
-		candidatoForaDaConsultaCargoDiferente.setCargos(cargos2);
-		candidatoDao.save(candidatoForaDaConsultaCargoDiferente);
+		Candidato candidato2 = getCandidato();
+		candidato2.setEmpresa(empresa);
+		candidato2.setNome("Zé Mané");
+		candidatoDao.save(candidato2);
 
 		Solicitacao solicitacaoEncerrada = new Solicitacao();
+		solicitacaoEncerrada.setFaixaSalarial(faixaSalarial1);
 		solicitacaoEncerrada.setEstabelecimento(estabelecimento);
 		solicitacaoEncerrada.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoEncerrada.setDataEncerramento(dataDoisMesesAtras.getTime());
 		solicitacaoDao.save(solicitacaoEncerrada);
 		
 		Solicitacao solicitacaoAberta = new Solicitacao();
+		solicitacaoAberta.setFaixaSalarial(faixaSalarial1);
 		solicitacaoAberta.setEstabelecimento(estabelecimento);
 		solicitacaoAberta.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoAberta.setDataEncerramento(DateUtil.criarDataMesAno(01, 01, 2030));
 		solicitacaoDao.save(solicitacaoAberta);
 
 		Solicitacao solicitacaoFora = new Solicitacao();
+		solicitacaoFora.setFaixaSalarial(faixaSalarial2);
 		solicitacaoFora.setEstabelecimento(estabelecimento);
 		solicitacaoFora.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(solicitacaoFora);
@@ -2055,12 +2060,12 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoSolicitacaoDao.save(candidatoSolicitacaoEncerrada);
 		
 		CandidatoSolicitacao candidatoSolicitacaoAberta = new CandidatoSolicitacao();
-		candidatoSolicitacaoAberta.setCandidato(candidatoForaDaConsultaCargoDiferente);
+		candidatoSolicitacaoAberta.setCandidato(candidato2);
 		candidatoSolicitacaoAberta.setSolicitacao(solicitacaoAberta);
 		candidatoSolicitacaoDao.save(candidatoSolicitacaoAberta);
 
 		CandidatoSolicitacao candidatoSolicitacaoFora = new CandidatoSolicitacao();
-		candidatoSolicitacaoFora.setCandidato(candidatoForaDaConsultaCargoDiferente);
+		candidatoSolicitacaoFora.setCandidato(candidato2);
 		candidatoSolicitacaoFora.setSolicitacao(solicitacaoFora);
 		candidatoSolicitacaoDao.save(candidatoSolicitacaoFora);
 
@@ -2096,7 +2101,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<AvaliacaoCandidatosRelatorio> resultadosComStatusSolicitacaoTodas = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()}, StatusSolicitacao.TODAS);
 		Collection<AvaliacaoCandidatosRelatorio> resultadosComStatusSolicitacaoEncerradas = candidatoDao.findRelatorioAvaliacaoCandidatos(dataDoisMesesAtras.getTime(), hoje, empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo1.getId()}, StatusSolicitacao.ENCERRADA);
 
-		assertEquals(1, resultadosComStatusSolicitacaoTodas.size());
+		assertEquals(2, resultadosComStatusSolicitacaoTodas.size());
 		assertEquals(1, resultadosComStatusSolicitacaoEncerradas.size());
 		assertEquals(Integer.valueOf(1), ((AvaliacaoCandidatosRelatorio)resultadosComStatusSolicitacaoTodas.toArray()[0]).getTotal());
 	}
