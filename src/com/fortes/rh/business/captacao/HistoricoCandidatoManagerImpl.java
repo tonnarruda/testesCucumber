@@ -273,4 +273,9 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 	public Collection<HistoricoCandidato> getEventos(Long empresaId, Date dataIni, Date dataFim) {
 		return getDao().getEventos("", empresaId, dataIni, dataFim);
 	}
+
+	public int findQtdEtapasRealizadas(Long empresaId, Long[] solicitacoesIds, Date dataIni, Date dataFim)
+	{
+		return getDao().findQtdEtapasRealizadas(empresaId, solicitacoesIds, dataIni, dataFim);
+	}
 }

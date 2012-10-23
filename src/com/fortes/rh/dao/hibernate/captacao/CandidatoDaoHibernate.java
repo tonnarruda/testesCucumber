@@ -830,6 +830,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		hql.append("from Candidato c ");
 		hql.append("join c.candidatoSolicitacaos cs ");
 		hql.append("join cs.solicitacao sol ");
+		hql.append("join sol.faixaSalarial fs ");
 		hql.append("join cs.historicoCandidatos hc ");
 		hql.append("join hc.etapaSeletiva es ");
 		hql.append("where c.empresa.id = :empresaId ");
@@ -847,7 +848,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			hql.append("and sol.areaOrganizacional.id in (:areaIds) ");
 
 		if (cargoIds != null && cargoIds.length > 0)
-			hql.append("and c.cargos.id in (:cargoIds) ");
+			hql.append("and fs.cargo.id in (:cargoIds) ");
 
 
 		hql.append("group by hc.apto, es.nome order by es.nome ");

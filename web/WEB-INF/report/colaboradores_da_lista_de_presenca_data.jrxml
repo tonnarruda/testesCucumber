@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="colaboradores_da_lista_de_presenca"
+		 name="colaboradores_da_lista_de_presenca_data"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -66,9 +66,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="21"
+						x="17"
 						y="2"
-						width="39"
+						width="44"
 						height="13"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -79,7 +79,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="248"
+						x="247"
 						y="2"
 						width="135"
 						height="13"
@@ -108,9 +108,9 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="514"
+						x="511"
 						y="2"
-						width="23"
+						width="26"
 						height="13"
 						key="staticText-12"
 						positionType="FixRelativeToBottom">
@@ -124,7 +124,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="386"
+						x="384"
 						y="2"
 						width="125"
 						height="13"
