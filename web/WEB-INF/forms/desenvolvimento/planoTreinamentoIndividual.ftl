@@ -77,6 +77,16 @@
 			document.form.action = 'imprimirPdi.action';
 			document.form.submit();
 		}
+		
+		function marcarDesmarcarTodos(marcar, id)
+		{
+			var classe = id ? '.check' + id : '.check';
+		
+			if (marcar)
+				$(classe).attr('checked', 'checked');
+			else 
+				$(classe).removeAttr('checked');
+		}
 	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -91,7 +101,7 @@
 		<@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value); populaArea(this.value);"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
-		<@ww.select label="Filtrar colaboradores" name="colaboradoresAvaliados" id="colaboradoresAvaliados" list=r"#{'S':'Somente colaboradores com avaliação de nível de competência','N':'Somente colaboradores sem avaliação de nível de competência','T':'Todos os colaboradores'}" />
+		<@ww.select label="Filtrar colaboradores" name="colaboradoresAvaliados" id="colaboradoresAvaliados" list=r"#{'S':'Somente colaboradores com avaliação de nível de competência','N':'Somente colaboradores sem avaliação de nível de competência','T':'Todos os colaboradores'}" cssStyle="width:500px;" />
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Treinamento'}" />
 	</@ww.form>
 	
@@ -99,9 +109,14 @@
 		<button onclick="carregar()" class="btnCarregar"></button>
 	</div>
 	
-	<br /><br />
-
 	<#if configuracaoNivelCompetencias?exists>
+		
+		<label style="float: right;">
+			<input type="checkbox" onclick="marcarDesmarcarTodos(this.checked)"/> 
+			Marcar/Desmarcar todos
+		</label>
+		
+		<br clear="all"/><br />
 	
 		<form name="formAplicar" action="prepareAplicarPdi.action" method="POST">
 	
@@ -136,7 +151,10 @@
 							<td class="titulo" width="200">Competência</td>
 							<td class="titulo" width="100">Nível Cargo/Faixa</td>
 							<td class="titulo" width="100">Nível Colaborador</td>
-							<td class="titulo">Treinamentos Sugeridos</td>
+							<td class="titulo">
+								<input type="checkbox" onclick="marcarDesmarcarTodos(this.checked, ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id});" class="check"/> 
+								Treinamentos Sugeridos
+							</td>
 						</tr>
 					</#if>
 		
@@ -162,8 +180,10 @@
 					</#if>
 					
 					<label>
-						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.cursoNome}<br />
+						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" class="check check${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id}"/> 
+						${configNivel.cursoNome}
 					</label>
+					<br />
 				
 				<#else>
 					<#-- ESTABELECIMENTO -->
@@ -192,7 +212,10 @@
 							<td class="titulo" width="200">Competência</td>
 							<td class="titulo" width="100">Nível Cargo/Faixa</td>
 							<td class="titulo" width="100">Nível Colaborador</td>
-							<td class="titulo">Colaboradores Sugeridos</td>
+							<td class="titulo">
+								<input type="checkbox" onclick="marcarDesmarcarTodos(this.checked, ${configNivel.cursoId});" class="check"/>
+								Colaboradores Sugeridos
+							</td>
 						</tr>
 					</#if>
 
@@ -218,7 +241,11 @@
 						<#assign i = i + 1/>
 					</#if>
 
-					<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" /> ${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}<br />
+					<label>
+						<input type="checkbox" name="colaboradoresCursos" value="${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.id},${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome},${configNivel.cursoId},${configNivel.cursoNome}" class="check check${configNivel.cursoId}"/> 
+						${configNivel.configuracaoNivelCompetenciaColaborador.colaborador.nome}
+					</label>
+					<br />
 
 				</#if>
 					 

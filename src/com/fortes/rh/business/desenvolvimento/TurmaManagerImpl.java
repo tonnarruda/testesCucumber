@@ -13,7 +13,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
-import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -24,6 +23,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
@@ -37,7 +37,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	private CursoManager cursoManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private FaturamentoMensalManager faturamentoMensalManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -94,14 +93,23 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
 	}
 	
-	public void salvarTurmaDiasCustosColaboradores(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception 
+	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck) throws Exception 
 	{
 		salvarTurmaDiasCusto(turma, dias, custos);
 
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
+		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmasCheck);
+		
+		if (colaboradorTurmas != null)
 		{
-			colaboradorTurma.setTurma(turma);
-			colaboradorTurmaManager.save(colaboradorTurma);
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+			{
+				if (colaboradorTurma != null)
+				{
+					colaboradorTurma.setTurma(turma);
+					colaboradorTurmaManager.save(colaboradorTurma);
+				}
+			}
 		}
 	}
 
@@ -323,10 +331,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.faturamentoMensalManager = faturamentoMensalManager;
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
-	}
-	
 	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
 	{
 		this.colaboradorPresencaManager = colaboradorPresencaManager;

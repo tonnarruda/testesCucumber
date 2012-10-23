@@ -40,5 +40,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds);
 	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds);
-	public void salvarTurmaDiasCustosColaboradores(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas) throws Exception;
+	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck) throws Exception;
 }

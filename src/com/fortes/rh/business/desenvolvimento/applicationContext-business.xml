@@ -86,9 +86,6 @@
     <property name="faturamentoMensalManager">
       <ref bean="faturamentoMensalManager" />
     </property>
-    <property name="gerenciadorComunicacaoManager">
-      <ref bean="gerenciadorComunicacaoManager" />
-    </property>
   </bean>
   <bean id="turmaManager" parent="parentManager">
     <property name="proxyInterfaces">

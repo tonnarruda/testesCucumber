@@ -155,16 +155,13 @@ public class AvaliacaoCursoDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		empresaDao.save(empresa);
 		
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
-		avaliacaoCurso.setTitulo("teste1");
+		avaliacaoCurso.setTitulo("Avaliação de Teste 1");
 		avaliacaoCursoDao.save(avaliacaoCurso);
+		
 		AvaliacaoCurso avaliacaoCurso2 = AvaliacaoCursoFactory.getEntity();
-		avaliacaoCurso2.setTitulo("teste2");
+		avaliacaoCurso2.setTitulo("Avaliação de Teste 2");
 		avaliacaoCursoDao.save(avaliacaoCurso2);
 		
-		Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
-		avaliacaoCursos.add(avaliacaoCurso);
-		avaliacaoCursos.add(avaliacaoCurso2);
-		
-		assertEquals(2, avaliacaoCursoDao.buscaFiltro("test").size());
+		assertEquals(2, avaliacaoCursoDao.buscaFiltro("AVALIAÇÃO de tes").size());
 	}
 }

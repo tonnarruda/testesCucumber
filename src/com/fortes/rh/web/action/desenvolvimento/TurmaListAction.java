@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
@@ -67,7 +69,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	
 	private String[] colaboradoresCursos;
-	private Map<Curso, Collection<Colaborador>> cursosColaboradores;
+	private Map<Curso, Set<Colaborador>> cursosColaboradores;
 
 	// Indica se a requisição veio do plano de treinamento
 	private boolean planoTreinamento;
@@ -84,7 +86,7 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<String[]> diasTurmasCheck;
 	private Collection<CheckBox> diasTurmasCheckList = new ArrayList<CheckBox>();
 	private Collection<String[]> avaliacaoTurmasCheck;
-	private Map<Long, Collection<CheckBox>> avaliacoesTurmasCheckList; 
+	private Collection<CheckBox> avaliacaoTurmasCheckList = new ArrayList<CheckBox>();
 
 	private Date dataIni;
 	private Date dataFim;
@@ -210,8 +212,10 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 
-		cursosColaboradores = new HashMap<Curso, Collection<Colaborador>>();
-		avaliacoesTurmasCheckList = new HashMap<Long, Collection<CheckBox>>();
+		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(getEmpresaSistema().getId(), true);
+		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
+		
+		cursosColaboradores = new HashMap<Curso, Set<Colaborador>>();
 		String[] dados = null;
 		Curso curso = null;
 		Colaborador colaborador = null;
@@ -224,13 +228,7 @@ public class TurmaListAction extends MyActionSupportList
 			curso = new Curso(Long.parseLong(dados[2]), dados[3]);
 			
 			if (!cursosColaboradores.containsKey(curso))
-				cursosColaboradores.put(curso, new ArrayList<Colaborador>());
-			
-			if (!avaliacoesTurmasCheckList.containsKey(curso.getId()))
-			{
-				avaliacaoCursos = avaliacaoCursoManager.findByCurso(curso.getId());
-				avaliacoesTurmasCheckList.put(curso.getId(), CheckListBoxUtil.populaCheckListBox(avaliacaoCursos, "getId", "getTitulo"));
-			}
+				cursosColaboradores.put(curso, new HashSet<Colaborador>());
 			
 			cursosColaboradores.get(curso).add(colaborador);
 		}
@@ -242,6 +240,7 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		int i = 0;
 		String[] diasCheck = null;
+		String[] avaliacoesCheck = null;
 		String custosTurma = null;
 		
 		try 
@@ -250,9 +249,10 @@ public class TurmaListAction extends MyActionSupportList
 			{
 				turma.setEmpresa(getEmpresaSistema());
 				diasCheck = (String[]) diasTurmasCheck.toArray()[i];
+				avaliacoesCheck = (String[]) avaliacaoTurmasCheck.toArray()[i];
 				custosTurma = (String) custos.toArray()[i];
 
-				turmaManager.salvarTurmaDiasCustosColaboradores(turma, diasCheck, custosTurma, turma.getColaboradorTurmas());
+				turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), LongUtil.arrayStringToArrayLong(avaliacoesCheck));
 				
 				i++;
 			}
@@ -265,7 +265,7 @@ public class TurmaListAction extends MyActionSupportList
 			addActionError("Ocorreu um erro ao criar as turmas");
 		}
 
-		pdi();
+		preparePdi();
 		
 		return SUCCESS;
 	}
@@ -644,17 +644,8 @@ public class TurmaListAction extends MyActionSupportList
 		this.colaboradoresCursos = colaboradoresCursos;
 	}
 
-	public Map<Curso, Collection<Colaborador>> getCursosColaboradores() {
-		return cursosColaboradores;
-	}
-
 	public Collection<Colaborador> getColaboradoresCurso(Curso curso) {
 		return cursosColaboradores.get(curso);
-	}
-
-	public void setCursosColaboradores(
-			Map<Curso, Collection<Colaborador>> cursosColaboradores) {
-		this.cursosColaboradores = cursosColaboradores;
 	}
 
 	public Collection<String[]> getDiasTurmasCheck() {
@@ -717,7 +708,16 @@ public class TurmaListAction extends MyActionSupportList
 		this.avaliacaoTurmasCheck = avaliacaoTurmasCheck;
 	}
 
-	public Map<Long, Collection<CheckBox>> getAvaliacoesTurmasCheckList() {
-		return avaliacoesTurmasCheckList;
+	public Collection<CheckBox> getAvaliacaoTurmasCheckList() {
+		return avaliacaoTurmasCheckList;
+	}
+
+	public Map<Curso, Set<Colaborador>> getCursosColaboradores() {
+		return cursosColaboradores;
+	}
+
+	public void setCursosColaboradores(
+			Map<Curso, Set<Colaborador>> cursosColaboradores) {
+		this.cursosColaboradores = cursosColaboradores;
 	}
 }

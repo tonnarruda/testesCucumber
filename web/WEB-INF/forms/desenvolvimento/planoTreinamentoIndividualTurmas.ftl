@@ -10,8 +10,9 @@
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	
 		#formDialog { display: none; }
-		.dados { float: right; width: 400px; }
-		fieldset { padding: 10px; }
+		.tabela_colabs { float: right; width: 400px; height: 546px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #7E9DB9; }
+		.tabela_colabs .dados { width: 385px; border: none; }
+		fieldset { padding: 10px; margin-bottom: 20px; }
 		legend { font-weight: bold; }
 	</style>
 
@@ -138,14 +139,18 @@
 			
 			for (var i = 0; i < ${cursosColaboradores?size}; i++)
 			{
-				obrigatorios.push('desc' + i);
-				obrigatorios.push('inst' + i);
-				obrigatorios.push('prevIni' + i);
-				obrigatorios.push('prevFim' + i);
-				obrigatorios.push('@diasTurmasCheck[' + i + ']');
-
-				validados.push('prevIni' + i);
-				validados.push('prevFim' + i);
+				if ($("#fset_" + i).length > 0)
+				{
+					obrigatorios.push('desc' + i);
+					obrigatorios.push('inst' + i);
+					obrigatorios.push('prevIni' + i);
+					obrigatorios.push('prevFim' + i);
+					obrigatorios.push('custo' + i);
+					obrigatorios.push('@diasTurmasCheck[' + i + ']');
+	
+					validados.push('prevIni' + i);
+					validados.push('prevFim' + i);
+				}
 			}
 			
 			return validaFormularioEPeriodo('form', obrigatorios, validados);
@@ -167,32 +172,37 @@
 		<#assign i = 0/>
 		
 		<#list cursosColaboradores?keys as curso>
-			<fieldset>
-				<legend>Curso: ${curso.nome}</legend>
+			<fieldset id="fset_${i}">
+				<legend>
+					<a href="javascript:;" onclick="newConfirm('Deseja realmente cancelar a criação da turma para o curso<br /> ${curso.nome}?', function(){ $('#fset_${i}').remove(); });"><img border="0" title="Cancelar criação de turma para este curso" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					Curso: ${curso.nome}
+				</legend>
 				
-				<table class="dados" id="tabela_${i}">
-					<thead>
-						<tr>
-							<th width="30">&nbsp;</th>
-							<th>Colaboradores Inscritos</th>
-						</tr>
-					</thead>
-					<tbody>
-						<#assign j = 0/>
-						<#list action.getColaboradoresCurso(curso) as colab>
-							<tr id="colab_${i}_${j}" class="<#if j%2 == 0>odd<#else>even</#if>">
-								<td align="center">
-									<a href="javascript:;" onclick="newConfirm('Confirma exclusão do colaborador ${colab.nome}?', function(){ $('#colab_${i}_${j}').remove(); ajustaListras(${i}); });"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-								</td>
-								<td>
-									${colab.nome}
-									<@ww.hidden name="turmas[${i}].colaboradorTurmas[${j}].colaborador.id" value="${colab.id}"/>
-								</td>
+				<div class="tabela_colabs">
+					<table class="dados" id="tabela_${i}">
+						<thead>
+							<tr>
+								<th width="30">&nbsp;</th>
+								<th>Colaboradores Inscritos</th>
 							</tr>
-							<#assign j = j + 1/>
-						</#list>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<#assign j = 0/>
+							<#list action.getColaboradoresCurso(curso) as colab>
+								<tr id="colab_${i}_${j}" class="<#if j%2 == 0>odd<#else>even</#if>">
+									<td align="center">
+										<a href="javascript:;" onclick="newConfirm('Confirma exclusão do colaborador ${colab.nome}?', function(){ $('#colab_${i}_${j}').remove(); ajustaListras(${i}); });"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+									</td>
+									<td>
+										${colab.nome}
+										<@ww.hidden name="turmas[${i}].colaboradorTurmas[${j}].colaborador.id" value="${colab.id}"/>
+									</td>
+								</tr>
+								<#assign j = j + 1/>
+							</#list>
+						</tbody>
+					</table>
+				</div>
 				
 				<@ww.hidden name="custos[${i}]" id="custos${i}"/>
 				<@ww.hidden name="turmas[${i}].curso.id" value="${curso.id}"/>
@@ -217,11 +227,9 @@
 				<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
 				<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" label="Dias Previstos" list="diasTurmasCheckList"/>
 				
-				<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacoesTurmasCheckList[${curso.id}]"/>
+				<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList"/>
 			</fieldset>
-			
-			<br />
-			
+
 			<#assign i = i + 1/>
 		</#list>
 	</@ww.form>
