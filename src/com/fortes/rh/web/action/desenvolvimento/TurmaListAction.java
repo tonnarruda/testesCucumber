@@ -39,6 +39,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.components.ActionMessage;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -194,6 +195,9 @@ public class TurmaListAction extends MyActionSupportList
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
 		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), BooleanUtil.getValueCombo(colaboradoresAvaliados), agruparPor);
+		
+		if(configuracaoNivelCompetencias.isEmpty())
+			addActionMessage("Não existem Colaboradores para o filtro informado.");
 		
 		return SUCCESS;
 	}

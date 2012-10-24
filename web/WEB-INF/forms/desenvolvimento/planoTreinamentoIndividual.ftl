@@ -109,7 +109,7 @@
 		<button onclick="carregar()" class="btnCarregar"></button>
 	</div>
 	
-	<#if configuracaoNivelCompetencias?exists>
+	<#if configuracaoNivelCompetencias?exists && 0 < configuracaoNivelCompetencias?size>
 		
 		<label style="float: right;">
 			<input type="checkbox" onclick="marcarDesmarcarTodos(this.checked)"/> 

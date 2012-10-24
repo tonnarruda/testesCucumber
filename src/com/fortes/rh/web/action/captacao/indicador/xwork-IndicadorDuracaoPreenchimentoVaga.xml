@@ -44,6 +44,13 @@
 				<param name="location">/WEB-INF/report/indicadorMotivosPreenchimentoVagas.jasper</param>
 				<param name="dataSource">indicador</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">IndicadorDuracaoPreechimentoVagas.pdf</param>
+			</result>
+			<result name="indicadorResumido" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorMotivosPreenchimentoVagasResumido.jasper</param>
+				<param name="dataSource">indicador</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">IndicadorDuracaoPreechimentoVagasResumido.pdf</param>
 			</result>
 			<result name="acessonegado" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorMotivoPreechimentoVagas.ftl</result>
 			<result name="error" type="redirect">prepareMotivo.action</result>

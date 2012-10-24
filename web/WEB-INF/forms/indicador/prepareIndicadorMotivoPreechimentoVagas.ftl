@@ -34,6 +34,8 @@
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
 
 	<@ww.select id="statusSolicitacao" label="Considerar Solicitações de Pessoal" name="statusSolicitacao" list=r"#{'T':'Abertas e Encerradas', 'A':'Abertas', 'E':'Encerradas'}"/>
+	
+	<@ww.checkbox label="Relatório resumido" id="indicadorResumido" name="indicadorResumido" labelPosition="left"/>
 </@ww.form>
 
 

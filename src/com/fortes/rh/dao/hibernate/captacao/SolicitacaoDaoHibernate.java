@@ -512,10 +512,15 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         return query.list();
     }
 	
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, boolean indicadorResumido)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga( ");
-		consulta.append("estabelecimento.id, areaOrganizacional.id, cargo.id, motivo.id, motivo.descricao, count(solicitacao.id)) ");
+		
+		if (!indicadorResumido)
+			consulta.append("estabelecimento.nome, areaOrganizacional.id, cargo.nome, motivo.id, motivo.descricao, count(solicitacao.id)) ");
+		else
+			consulta.append("estabelecimento.nome, motivo.id, motivo.descricao, count(solicitacao.id)) ");
+		
 		consulta.append("from Solicitacao solicitacao ");
 		consulta.append("left join solicitacao.motivoSolicitacao as motivo ");
 		consulta.append("join solicitacao.areaOrganizacional as areaOrganizacional ");
@@ -539,18 +544,32 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	consulta.append("group by ");
     	consulta.append("   estabelecimento.id, ");
     	consulta.append("   estabelecimento.nome, ");
-    	consulta.append("	areaOrganizacional.id, ");
-    	consulta.append("	areaOrganizacional.nome, ");
+    	
+    	if (!indicadorResumido){
+    		consulta.append("	areaOrganizacional.id, ");
+    		consulta.append("	areaOrganizacional.nome, ");
+		}
+    	
     	consulta.append("   motivo.id, ");
-    	consulta.append("   motivo.descricao, ");
-    	consulta.append("	cargo.id, ");
-    	consulta.append("	cargo.nome ");
+    	consulta.append("   motivo.descricao ");
+
+    	if (!indicadorResumido){
+    		consulta.append(",	cargo.id, ");
+    		consulta.append("	cargo.nome ");
+    	}
+    	
+    	
     	consulta.append("order by ");
     	consulta.append("  estabelecimento.nome, ");
-    	consulta.append("  areaOrganizacional.nome, ");
+    	
+    	if (!indicadorResumido)
+    		consulta.append("  areaOrganizacional.nome, ");
+    	
     	consulta.append("  motivo.id, ");
-    	consulta.append("  motivo.descricao, ");
-    	consulta.append("  cargo.nome ");
+    	consulta.append("  motivo.descricao ");
+    	
+    	if (!indicadorResumido)
+    		consulta.append(",  cargo.nome ");
 
 		Query query = getSession().createQuery(consulta.toString());
 		query.setDate("dataDe", dataDe);

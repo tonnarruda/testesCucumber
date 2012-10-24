@@ -69,14 +69,25 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
     }
 	
 	// usado por getIndicadorMotivosSolicitacao
-	public IndicadorDuracaoPreenchimentoVaga(Long estabelecimentoId, Long areaId, Long cargoId, Long motivoSolicitacaoID, String motivoDescricao, Integer qtdAberturas)
+	public IndicadorDuracaoPreenchimentoVaga(String estabelecimentoNome, Long areaId, String cargoNome, Long motivoSolicitacaoID, String motivoDescricao, Integer qtdAberturas)
 	{
 		this.estabelecimento = new Estabelecimento();
-		this.estabelecimento.setId(estabelecimentoId);
+		this.estabelecimento.setNome(estabelecimentoNome);
 		this.areaOrganizacional = new AreaOrganizacional();
 		this.areaOrganizacional.setId(areaId);
-		this.cargo = new Cargo(); 
-		this.cargo.setId(cargoId);
+		this.cargo = new Cargo();
+		this.cargo.setNome(cargoNome);
+		this.qtdAberturas = qtdAberturas;
+		this.motivoSolicitacao = new MotivoSolicitacao();
+		this.motivoSolicitacao.setId(motivoSolicitacaoID);
+		this.motivoSolicitacao.setDescricao(motivoDescricao);
+	}
+
+	// usado por getIndicadorMotivosSolicitacao
+	public IndicadorDuracaoPreenchimentoVaga(String estabelecimentoNome, Long motivoSolicitacaoID, String motivoDescricao, Integer qtdAberturas)
+	{
+		this.estabelecimento = new Estabelecimento();
+		this.estabelecimento.setNome(estabelecimentoNome);
 		this.qtdAberturas = qtdAberturas;
 		this.motivoSolicitacao = new MotivoSolicitacao();
 		this.motivoSolicitacao.setId(motivoSolicitacaoID);

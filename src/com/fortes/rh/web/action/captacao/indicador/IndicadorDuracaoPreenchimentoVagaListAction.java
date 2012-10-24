@@ -68,6 +68,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private int qtdEtapasRealizadas;
 	private double qtdCandidatosAtendidosPorVaga;
 	private double indiceProcSeletivo;
+	private boolean indicadorResumido;
 	
 	private char statusSolicitacao;
 
@@ -168,23 +169,19 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		Collection<Long> areasOrganizacionais = LongUtil.arrayStringToCollectionLong(areasCheck);
 		Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 
-//		if(areaOrganizacionalManager.findAreasQueNaoPertencemAEmpresa(areasOrganizacionais, getEmpresaSistema()))
-//		{
-//			prepareMotivo();
-//			addActionError("Algumas das Áreas Organizacionais selecionadas não existem na empresa " + getEmpresaSistema().getNome() +".");
-//			return "acessonegado";
-//		}
-
 		try
 		{
-			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), statusSolicitacao);
+			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), statusSolicitacao, indicadorResumido);
 			
 			StatusSolicitacao status = new StatusSolicitacao();
 			reportFilter = status.get(statusSolicitacao) + " - Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
 			
 			parametros = getParametrosRelatorio("Indicador - Estatísticas de Vagas por Motivo", reportFilter);
 			
-			return Action.SUCCESS;
+			if (indicadorResumido)
+				return "indicadorResumido";
+			else
+				return Action.SUCCESS;
 		} 
 		catch (ColecaoVaziaException e)
 		{
@@ -438,5 +435,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
 	{
 		this.historicoCandidatoManager = historicoCandidatoManager;
+	}
+
+	public void setIndicadorResumido(boolean indicadorResumido) {
+		this.indicadorResumido = indicadorResumido;
 	}
 }

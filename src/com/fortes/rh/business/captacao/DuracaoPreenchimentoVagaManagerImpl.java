@@ -80,29 +80,28 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 		return indicadoresDuracaoPreenchimentoVagas;
 	}
 
-	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao) throws Exception
+	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, boolean indicadorResumido) throws Exception
 	{
-		Map<Long, String> mapNomesAreasOrganizacionais = getAreas(empresaId);
-		Map<Long, String> mapNomesEstabelecimentos = getEstabelecimentos(empresaId);
-		
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresMotivos = solicitacaoManager.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao);
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresMotivos = solicitacaoManager.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao, indicadorResumido);
 		
 		if(indicadoresMotivos == null || indicadoresMotivos.isEmpty())
 			throw new ColecaoVaziaException();
 		
+		if (!indicadorResumido)
+			montaFamiliaArea(empresaId, indicadoresMotivos);
+		
+		return indicadoresMotivos;
+	}
+
+	private void montaFamiliaArea(Long empresaId, Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresMotivos)	throws Exception 
+	{
+		Map<Long, String> mapNomesAreasOrganizacionais = getAreas(empresaId);
+	
 		for (IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga : indicadoresMotivos)
 		{
 			Long areaId = indicadorDuracaoPreenchimentoVaga.getAreaOrganizacional().getId();
-			Long estabelecimentoId = indicadorDuracaoPreenchimentoVaga.getEstabelecimento().getId();
-			
 			indicadorDuracaoPreenchimentoVaga.getAreaOrganizacional().setNome(mapNomesAreasOrganizacionais.get(areaId));
-			indicadorDuracaoPreenchimentoVaga.getEstabelecimento().setNome(mapNomesEstabelecimentos.get(estabelecimentoId));
-			
-			Cargo cargo = cargoManager.findByIdProjection(indicadorDuracaoPreenchimentoVaga.getCargo().getId());
-			indicadorDuracaoPreenchimentoVaga.setCargo(cargo);
 		}
-		
-		return indicadoresMotivos;
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {

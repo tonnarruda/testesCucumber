@@ -131,20 +131,16 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	estabelecimentosIds.add(1L);
     	
     	Collection<AreaOrganizacional> areaOrganizacionals = Arrays.asList(AreaOrganizacionalFactory.getEntity(1L));
-    	Collection<Estabelecimento> estabelecimentos = Arrays.asList(EstabelecimentoFactory.getEntity(10L));
 
     	Long empresaId=1L;
-    	
-    	IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = new IndicadorDuracaoPreenchimentoVaga(1L, 1L, 1L, 1L, "Aumento de Quadro", 65);
+    	IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = new IndicadorDuracaoPreenchimentoVaga("Estabelecimento", 1L, "Cargo", 1L, "Aumento de Quadro", 65);
     	List<IndicadorDuracaoPreenchimentoVaga> indicadores = Arrays.asList(indicadorDuracaoPreenchimentoVaga);
     	
 		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
-    	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(estabelecimentos));
-    	cargoManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(CargoFactory.getEntity(1L)));
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId),ANYTHING}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId),ANYTHING,ANYTHING}).will(returnValue(indicadores));
 
-		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId, StatusSolicitacao.TODAS);
+		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId, StatusSolicitacao.TODAS, false);
 		
 		assertEquals(1, resultado.size());
 		assertEquals(65, ((IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[0]).getQtdAberturas().intValue());
