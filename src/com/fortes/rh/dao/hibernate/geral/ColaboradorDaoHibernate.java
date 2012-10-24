@@ -3933,8 +3933,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim)
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.count("c.id"));
@@ -3944,6 +3952,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.isNotNull("c.solicitacao.id"));
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+	
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentoIds));
+		
+		if(LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areaIds));
 		
 		if (LongUtil.isNotEmpty(solicitacaoIds)) 
 			criteria.add(Expression.in("c.solicitacao.id", solicitacaoIds));
@@ -4007,33 +4022,73 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public int qtdDemitidosEm90Dias(Long empresaId, Date dataAte) 
+	public int qtdDemitidosEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
+		hql.append("	inner join co.historicoColaboradors hc ");
 		hql.append("	where co.empresa.id = :empresaId ");
 		hql.append("	and co.desligado = true ");
 		hql.append("	and co.dataDesligamento between :dataIni and :dataFim ");
 		hql.append("	and (co.dataDesligamento - co.dataAdmissao) <= :qtdDias ");
+		hql.append("    and hc.data = ( ");
+		hql.append("      select max(hc2.data) ");
+		hql.append("      from HistoricoColaborador as hc2 ");
+		hql.append("      where hc2.colaborador.id = co.id ");
+		hql.append("      and hc2.status = :status ");
+		hql.append("   ) ");
+		
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
+
+		if (LongUtil.isNotEmpty(areaIds))
+			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setDate("dataIni", DateUtil.incrementaDias(dataAte, -90));
 		query.setDate("dataFim", dataAte);
 		query.setInteger("qtdDias", 90);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if (LongUtil.isNotEmpty(areaIds))
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+			
 		return (Integer) query.uniqueResult();
 	}
 
-	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Date dataAte) 
+	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
+		hql.append("	inner join co.historicoColaboradors hc ");
 		hql.append("	where co.empresa.id = :empresaId ");
 		hql.append("	and co.dataAdmissao between :dataIni and :dataFim ");
+		hql.append("    and hc.data = ( ");
+		hql.append("      select max(hc2.data) ");
+		hql.append("      from HistoricoColaborador as hc2 ");
+		hql.append("      where hc2.colaborador.id = co.id ");
+		hql.append("      and hc2.status = :status ");
+		hql.append("   ) ");
 
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
+
+		if (LongUtil.isNotEmpty(areaIds))
+			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
+		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setDate("dataIni", DateUtil.incrementaDias(dataAte, -90));
 		query.setDate("dataFim", dataAte);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if (LongUtil.isNotEmpty(areaIds))
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 
 		return (Integer) query.uniqueResult();
 	}

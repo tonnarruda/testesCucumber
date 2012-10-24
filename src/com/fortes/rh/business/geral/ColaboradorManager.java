@@ -173,10 +173,10 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception;
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao, Long empresaId);
 	public Collection<CartaoAcompanhamentoExperienciaVO> montaCartoesPeriodoExperiencia(Long[] colaboradoresIds, Long[] dias, String observacao) throws Exception;
-	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
-	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataAte);
+	public double calculaIndiceProcessoSeletivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);

@@ -14,7 +14,9 @@ import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -23,9 +25,12 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
@@ -33,6 +38,7 @@ import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<HistoricoCandidato>
@@ -46,6 +52,8 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 	private FaixaSalarialDao faixaSalarialDao;
 	private CargoDao cargoDao;
 	private UsuarioDao usuarioDao;
+	private EstabelecimentoDao estabelecimentoDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
 
 	public HistoricoCandidato getEntity()
 	{
@@ -304,11 +312,19 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
 
 		Solicitacao sol1 = SolicitacaoFactory.getSolicitacao();
+		sol1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(sol1);
 		
 		Solicitacao sol2 = SolicitacaoFactory.getSolicitacao();
+		sol2.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(sol2);
 		
 		Candidato joao = CandidatoFactory.getCandidato();
@@ -347,12 +363,18 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
 		
 		Long[] solicitacaoIds = new Long[]{ sol1.getId() };
+		Long[] estabelecimentoIds = new Long[]{ estabelecimento.getId() };
+		Long[] areaIds = new Long[]{ areaOrganizacional.getId() };
 
-		int qtd1 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), solicitacaoIds, hoje, hoje);
-		int qtd2 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, hoje, hoje);
+		int qtd1 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		int qtd2 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, null, null, hoje, hoje);
+		int qtd3 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		int qtd4 = historicoCandidatoDao.findQtdAtendidos(empresa.getId(), null, areaIds, null, hoje, hoje);
 
 		assertEquals("Considerando solicitação",1, qtd1);
 		assertEquals("Não considerando solicitação", 2, qtd2);
+		assertEquals("Considerando estabelecimento",1, qtd3);
+		assertEquals("Considerando área organizacional",1, qtd4);
 	}
 
 	public void testFindByIdProjection()
@@ -407,10 +429,18 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
 		Solicitacao sol1 = SolicitacaoFactory.getSolicitacao();
+		sol1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(sol1);
 		
 		Solicitacao sol2 = SolicitacaoFactory.getSolicitacao();
+		sol2.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(sol2);
 		
 		Candidato joao = CandidatoFactory.getCandidato();
@@ -449,12 +479,18 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato3 = historicoCandidatoDao.save(historicoCandidato3);
 		
 		Long[] solicitacaoIds = new Long[]{ sol1.getId() };
-
-		int qtd1 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), solicitacaoIds, hoje, hoje);
-		int qtd2 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), null, hoje, hoje);
+		Long[] estabelecimentoIds = new Long[]{ estabelecimento.getId() };
+		Long[] areaIds = new Long[]{ areaOrganizacional.getId() };
+		
+		int qtd1 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		int qtd2 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), null, null, null, hoje, hoje);
+		int qtd3 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		int qtd4 = historicoCandidatoDao.findQtdEtapasRealizadas(empresa.getId(), null, areaIds, null, hoje, hoje);
 
 		assertEquals("Considerando solicitação",2, qtd1);
 		assertEquals("Não considerando solicitação", 3, qtd2);
+		assertEquals("Considerando estabelecimento",2, qtd3);
+		assertEquals("Considerando área organizacioanl",1, qtd4);
 	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)
@@ -495,6 +531,18 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 	public void setUsuarioDao(UsuarioDao usuarioDao)
 	{
 		this.usuarioDao = usuarioDao;
+	}
+
+	
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
+	{
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+
+	
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
 }

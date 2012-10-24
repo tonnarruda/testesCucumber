@@ -2166,8 +2166,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return vos;
 	}
 	
-	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
-		return getDao().findQtdVagasPreenchidas(empresaId, solicitacaoIds, dataIni, dataFim);
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasPreenchidas(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 	
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {
@@ -2198,11 +2198,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByQuestionarioNaoRespondido(questionarioId);
 	}
 
-	public double calculaIndiceProcessoSeletivo(Long empresaId, Date dataAte) 
+	public double calculaIndiceProcessoSeletivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte) 
 	{
 		//(demitidos em até 90 dias / admitidos no periodo * 100)
-		double qtdDemitidosEm90Dias = getDao().qtdDemitidosEm90Dias(empresaId, dataAte);
-		double qtdAdmitidosPeriodo = getDao().qtdAdmitidosPeriodoEm90Dias(empresaId, dataAte);
+		double qtdDemitidosEm90Dias = getDao().qtdDemitidosEm90Dias(empresaId, estabelecimentoIds, areaIds, dataAte);
+		double qtdAdmitidosPeriodo = getDao().qtdAdmitidosPeriodoEm90Dias(empresaId, estabelecimentoIds, areaIds, dataAte);
 		
 		if(qtdDemitidosEm90Dias == 0.0)
 			return 100.0;

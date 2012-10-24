@@ -16,7 +16,6 @@
 		.divFiltro { margin-left: 5px; }
 	</style>
 	
-
 	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
@@ -24,6 +23,7 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
@@ -33,6 +33,8 @@
 
 	<script type="text/javascript">
 		$(function () {
+		
+			$(":checkbox[name='estabelecimentosCheck'], :checkbox[name='areasCheck']").click(populaSolicitacaoByEstabelecimentosAreas);
 		
 			$('#tooltipHelp').qtip({
 				content: 'Esse índice servirá para que o RH avalie a eficiência no processo seletivo. Ele mostrará o resultado com o percentual de colaboradores que se mantiveram na empresa após o período de experiência. <br />Fórmula utilizada: 100 - (colab. desligados em até 90 dias / nº de admitidos em até 90 dias * 100). Apenas a data final do período é considerada para este cálculo.' 
@@ -115,6 +117,20 @@
 		{
 			return validaFormularioEPeriodo('formBusca', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
 		}
+
+		function populaSolicitacaoByEstabelecimentosAreas()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
+			var estabelecimentosIds = getArrayCheckeds(document.forms[0],'estabelecimentosCheck');
+			
+			SolicitacaoDWR.getByEmpresaEstabelecimentosAreas(createListSolicitacoesByAreas, ${empresaSistema.id}, estabelecimentosIds , areasIds);
+		}
+		
+		function createListSolicitacoesByAreas(data)
+		{
+			addChecks('solicitacaosCheckIds',data);
+		}
 	</script>
 
 	<#include "../ftl/mascarasImports.ftl" />
@@ -138,6 +154,8 @@
 			<@ww.datepicker name="dataDe" id="dataDe"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" />
 			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
 			
 			<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>

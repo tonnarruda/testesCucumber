@@ -44,14 +44,13 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private Date dataAte;
 	private String[] areasCheck;
 	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> solicitacaosCheck = new ArrayList<CheckBox>();
+	
 	private Collection<FaixaSalarial> faixaSalarials;
 
-	private Collection<Solicitacao> solicitacaos;
-	private Collection<CheckBox> solicitacaosCheck;
 	private String[] solicitacaosCheckIds;
-	
-	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private DuracaoPreenchimentoVagaManager duracaoPreenchimentoVagaManager;
@@ -77,8 +76,6 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private String grfContratadosMotivo = "";
 	private String grfDivulgacaoVaga = "";
 
-
-	
 	public String painel() throws Exception
 	{
 		Date hoje = new Date();
@@ -87,22 +84,27 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		if (dataDe == null)
 			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 2, true);
 		
-    	solicitacaos = solicitacaoManager.findSolicitacaoList(getEmpresaSistema().getId(), null, null, null);
-
-    	solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacaos, "getId", "getDescricaoFormatada");
-
+		Collection<Solicitacao> solicitacoes = solicitacaoManager.findByEmpresaEstabelecimentosAreas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
+		
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		solicitacaosCheck = CheckListBoxUtil.populaCheckListBox(solicitacoes, "getId", "getDescricaoFormatada");
+		
+		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
     	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
 
-		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
-		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
-		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		qtdEtapasRealizadas = historicoCandidatoManager.findQtdEtapasRealizadas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte); 
+		qtdVagasPreenchidas = colaboradorManager.findQtdVagasPreenchidas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdCandidatosAtendidosPorVaga = (qtdVagasPreenchidas > 0) ? (double)qtdCandidatosAtendidos/qtdVagasPreenchidas : 0; 
-		qtdEtapasRealizadas = historicoCandidatoManager.findQtdEtapasRealizadas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte); 
-		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), dataAte);
+		
+		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), dataAte);
 		
 		try {
-			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, null, null, getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds));
+			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte,  LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds));
 		} catch (Exception e) {
 			
 		}

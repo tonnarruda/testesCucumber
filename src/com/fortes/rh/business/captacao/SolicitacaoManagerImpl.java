@@ -307,8 +307,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findAllByCandidato(candidatoId);
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
-		return getDao().findQtdVagasDisponiveis(empresaId, solicitacaoIds, dataIni, dataFim);
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+		return getDao().findQtdVagasDisponiveis(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 
 	public Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
@@ -339,6 +339,11 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			graficoContratadosMotivo.add(new DataGrafico(null, motivo.getDescricao(), motivo.getQtdContratados(), ""));
 		
 		return graficoContratadosMotivo;
+	}
+	
+	public Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds)
+	{
+		return getDao().findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
 	}
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
