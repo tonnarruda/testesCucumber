@@ -457,45 +457,51 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Long[] solicitacaoIds = null;
+		Long[] estabelecimentoIds = null;
+		Long[] areaIds = null;
 		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> faixas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosFaixa").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(faixas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosFaixa").with(new Constraint[] {eq(empresa.getId()), eq(estabelecimentoIds), eq(areaIds), eq(solicitacaoIds), eq(dataDe), eq(dataAte)}).will(returnValue(faixas));
 		
-		assertEquals(faixas, solicitacaoManager.findQtdContratadosPorFaixa(empresa.getId(), solicitacaoIds, dataDe, dataAte));
+		assertEquals(faixas, solicitacaoManager.findQtdContratadosPorFaixa(empresa.getId(), estabelecimentoIds, areaIds, solicitacaoIds, dataDe, dataAte));
 	}
 	
 	public void testFindQtdContratadosPorArea(){
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Long[] solicitacaoIds = null;
+		Long[] estabelecimentoIds = null;
+		Long[] areaIds = null;
 		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> areas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosArea").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(areas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosArea").with(new Constraint[] {eq(empresa.getId()), eq(estabelecimentoIds), eq(areaIds), eq(solicitacaoIds), eq(dataDe), eq(dataAte)}).will(returnValue(areas));
 		
-		assertEquals(areas, solicitacaoManager.findQtdContratadosPorArea(empresa.getId(), solicitacaoIds, dataDe, dataAte));
+		assertEquals(areas, solicitacaoManager.findQtdContratadosPorArea(empresa.getId(), estabelecimentoIds, areaIds, solicitacaoIds, dataDe, dataAte));
 	}
 
 	public void testFindQtdContratadosPorMotivo(){
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Long[] solicitacaoIds = null;
+		Long[] estabelecimentoIds = null;
+		Long[] areaIds = null;
 		
 		Date dataDe = DateUtil.criarDataMesAno(1, 11, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 11, 2011);
 		
 		Collection<DataGrafico> areas = new ArrayList<DataGrafico>();
 		
-		solicitacaoDao.expects(once()).method("findQtdContratadosMotivo").with(eq(empresa.getId()), eq(solicitacaoIds), eq(dataDe), eq(dataAte)).will(returnValue(areas));
+		solicitacaoDao.expects(once()).method("findQtdContratadosMotivo").with(new Constraint[] {eq(empresa.getId()), eq(estabelecimentoIds), eq(areaIds), eq(solicitacaoIds), eq(dataDe), eq(dataAte)}).will(returnValue(areas));
 		
-		assertEquals(areas, solicitacaoManager.findQtdContratadosPorMotivo(empresa.getId(), solicitacaoIds, dataDe, dataAte));
+		assertEquals(areas, solicitacaoManager.findQtdContratadosPorMotivo(empresa.getId(), estabelecimentoIds, areaIds, solicitacaoIds, dataDe, dataAte));
 	}
 	
 	// TODO . Por que ta dando pau pra mockar o Mail? 

@@ -109,13 +109,13 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 			
 		}
 
-		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosFaixa = solicitacaoManager.findQtdContratadosPorFaixa(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosFaixa = StringUtil.toJSON(graficoContratadosFaixa, null);
 
-		Collection<DataGrafico> graficoContratadosArea = solicitacaoManager.findQtdContratadosPorArea(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosArea = solicitacaoManager.findQtdContratadosPorArea(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosArea = StringUtil.toJSON(graficoContratadosArea, null);
 
-		Collection<DataGrafico> graficoContratadosMotivo = solicitacaoManager.findQtdContratadosPorMotivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+		Collection<DataGrafico> graficoContratadosMotivo = solicitacaoManager.findQtdContratadosPorMotivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		grfContratadosMotivo = StringUtil.toJSON(graficoContratadosMotivo, null);
 		
 		Collection<DataGrafico> graficoDivulgacaoVaga = candidatoManager.countComoFicouSabendoVagas(getEmpresaSistema().getId(), dataDe, dataAte);

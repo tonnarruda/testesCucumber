@@ -280,6 +280,12 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo = cargoDao.save(cargo);
 		
@@ -297,12 +303,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setFaixaSalarial(faixa1);
+		solicitacao1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(solicitacao1);
 
 		Solicitacao solicitacao2 = getEntity();
 		solicitacao2.setData(hoje);
 		solicitacao2.setEmpresa(empresa);		
 		solicitacao2.setFaixaSalarial(faixa2);
+		solicitacao2.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(solicitacao2);
 		
 		Colaborador joao = ColaboradorFactory.getEntity();
@@ -318,9 +326,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaboradorDao.save(pedro);
 		
 		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
 		
-		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, hoje, hoje);
-		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), solicitacaoIds, hoje, hoje);
+		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<FaixaSalarial> faixasComEstabelecimento = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<FaixaSalarial> faixasComAreaOrganizacional = solicitacaoDao.findQtdContratadosFaixa(empresa.getId(), null, areaIds, null, hoje, hoje);
 		
 		assertEquals(2, faixasSemSolicitacao.size());
 		assertEquals(2, ((FaixaSalarial) (faixasSemSolicitacao.toArray()[0])).getQtdContratados());
@@ -328,12 +340,23 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		assertEquals(1, faixasComSolicitacao.size());
 		assertEquals(2, ((FaixaSalarial) (faixasComSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, faixasComEstabelecimento.size());
+		assertEquals(faixa1.getId(), ((FaixaSalarial) (faixasComEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, faixasComAreaOrganizacional.size());
+		assertEquals(faixa2.getId(), ((FaixaSalarial) (faixasComAreaOrganizacional.toArray()[0])).getId());
+		
+		
 	}
 	
 	public void testFindQtdContratadosArea()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
 		
 		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area1);
@@ -347,6 +370,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setAreaOrganizacional(area1);
+		solicitacao1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(solicitacao1);
 		
 		Solicitacao solicitacao2 = getEntity();
@@ -368,22 +392,39 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaboradorDao.save(pedro);
 		
 		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{area2.getId()};
 		
-		Collection<AreaOrganizacional> areasSemSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, hoje, hoje);
-		Collection<AreaOrganizacional> areasComSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), solicitacaoIds, hoje, hoje);
+		Collection<AreaOrganizacional> contratados = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorSolicitacao = solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorEstabelecimento = solicitacaoDao.findQtdContratadosArea(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<AreaOrganizacional> contratadosPorAreaOrganizacional= solicitacaoDao.findQtdContratadosArea(empresa.getId(), null, areaIds, null, hoje, hoje);
 		
-		assertEquals(2, areasSemSolicitacao.size());
-		assertEquals(2, ((AreaOrganizacional) (areasSemSolicitacao.toArray()[0])).getQtdContratados());
-		assertEquals(1, ((AreaOrganizacional) (areasSemSolicitacao.toArray()[1])).getQtdContratados());
+		assertEquals(2, contratados.size());
+		assertEquals(2, ((AreaOrganizacional) (contratados.toArray()[0])).getQtdContratados());
+		assertEquals(1, ((AreaOrganizacional) (contratados.toArray()[1])).getQtdContratados());
 		
-		assertEquals(1, areasComSolicitacao.size());
-		assertEquals(2, ((AreaOrganizacional) (areasComSolicitacao.toArray()[0])).getQtdContratados());
+		assertEquals(1, contratadosPorSolicitacao.size());
+		assertEquals(2, ((AreaOrganizacional) (contratadosPorSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, contratadosPorEstabelecimento.size());
+		assertEquals(area1.getId(), ((AreaOrganizacional) (contratadosPorEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, contratadosPorAreaOrganizacional.size());
+		assertEquals(area2.getId(), ((AreaOrganizacional) (contratadosPorAreaOrganizacional.toArray()[0])).getId());
 	}
 	
 	public void testFindQtdContratadosMotivo()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
 		
 		MotivoSolicitacao motivo1 = MotivoSolicitacaoFactory.getEntity();
 		motivoSolicitacaoDao.save(motivo1);
@@ -397,11 +438,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setMotivoSolicitacao(motivo1);
+		solicitacao1.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(solicitacao1);
 		
 		Solicitacao solicitacao2 = getEntity();
 		solicitacao2.setData(hoje);
 		solicitacao2.setEmpresa(empresa);		
+		solicitacao2.setEstabelecimento(estabelecimento);		
 		solicitacao2.setMotivoSolicitacao(motivo2);
 		solicitacaoDao.save(solicitacao2);
 		
@@ -418,9 +461,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaboradorDao.save(pedro);
 		
 		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional.getId()};
 		
-		Collection<MotivoSolicitacao> motivosSemSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, hoje, hoje);
-		Collection<MotivoSolicitacao> motivosComSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), solicitacaoIds, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosSemSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, null, null, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComSolicitacao = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComEstabelecimento = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		Collection<MotivoSolicitacao> motivosComAreaOrganizacional = solicitacaoDao.findQtdContratadosMotivo(empresa.getId(), null, areaIds, null, hoje, hoje);
 		
 		assertEquals(2, motivosSemSolicitacao.size());
 		assertEquals(2, ((MotivoSolicitacao) (motivosSemSolicitacao.toArray()[0])).getQtdContratados());
@@ -428,6 +475,12 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		assertEquals(1, motivosComSolicitacao.size());
 		assertEquals(2, ((MotivoSolicitacao) (motivosComSolicitacao.toArray()[0])).getQtdContratados());
+		
+		assertEquals(1, motivosComEstabelecimento.size());
+		assertEquals(motivo2.getId(), ((MotivoSolicitacao) (motivosComEstabelecimento.toArray()[0])).getId());
+		
+		assertEquals(1, motivosComAreaOrganizacional.size());
+		assertEquals(motivo1.getId(), ((MotivoSolicitacao) (motivosComAreaOrganizacional.toArray()[0])).getId());
 	}
 
 	public void testFindAllByVisualizacaoAbertaComCargo()
