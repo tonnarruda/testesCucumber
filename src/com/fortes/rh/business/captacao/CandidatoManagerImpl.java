@@ -54,6 +54,7 @@ import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.model.geral.Contato;
@@ -1114,7 +1115,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	}
 
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidadesValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Map cidades, Collection<Idioma> idiomas, Integer page) 
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidadesValue, String escolaridadeValue, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idiomaValue, Map ufs, Collection<Idioma> idiomas, Integer page) 
 	{
 		String nome = "";
 		String cpf = "";
@@ -1143,9 +1144,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		idade_ini = montaParametro(idade_ini, "idade_ini", idadeMin);
 		idade_fim = montaParametro(idade_fim, "idade_fim", idadeMax);
 		estado = montaParametro(estado, "estado", (String) ufs.get(uf));
-		if(cidades != null && cidades.size() > 0)
-			cidade = montaParametroCidade(cidade, "cidade", cidadesValue, cidades);
-		
+		cidade = montaParametroCidade(cidade, "cidade", cidadesValue, uf);
 		pagina = montaParametro(pagina, "page", String.valueOf(page));
 		bairro = montaParametro(bairro, "bairro", curriculo.getBairro());
 		palavra_chave = montaParametro(palavra_chave, "palavra_chave", curriculo.getObservacoes_complementares());
@@ -1153,9 +1152,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return new String[]{nome, cpf, escolaridade, idioma, data_cad_ini, data_cad_fim, cargo, sexo, idade_ini, idade_fim, estado, bairro, palavra_chave, pagina, cidade};
 	}
 
-	private String montaParametroCidade(String variavel, String chave,Long[] cidadesValue, Map cidades) {
+	private String montaParametroCidade(String variavel, String chave,Long[] cidadesValue, Long uf) 
+	{
 		if(cidadesValue != null && cidadesValue.length > 0)
 		{
+			Map cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 			try {
 				variavel = chave + "=";
 				for (Long cidadeId : cidadesValue)
