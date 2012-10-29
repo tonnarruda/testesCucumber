@@ -1540,7 +1540,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		
 		Long uf = 1L;
 		Long cidadeValue = 2L;
-		String escolaridadeValue = "09";
+		String escolaridadeValue = "11";
 		Date dataCadIni = hoje;
 		Date dataCadFim = hoje;
 		String idadeMin = "15";
