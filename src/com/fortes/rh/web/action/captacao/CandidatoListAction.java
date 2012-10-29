@@ -366,7 +366,7 @@ public class CandidatoListAction extends MyActionSupportList
 			addActionMessage(msgAlert);
 		
 		setShowFilter(true);
-
+		
 		return Action.SUCCESS;
 	}
 
@@ -510,12 +510,17 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroF2rh();
 		
 		try {
-			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadesCheck, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, cidades, idiomas, getPage());
+			String[] consulta_basica = candidatoManager.montaStringBuscaF2rh(curriculo, uf, cidadesCheck, escolaridade, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma, ufs, idiomas, getPage());
 			curriculos = f2rhFacade.buscarCurriculos(consulta_basica);
 			
-			setTotalSize(curriculos.size());
-			curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
-			
+			if(curriculos != null && curriculos.size() > 0){
+				setTotalSize(curriculos.size());
+				curriculos = f2rhFacade.removeCandidatoInseridoSolicitacao(solicitacao.getId(), curriculos);
+				setShowFilter(false);
+			}else{
+				addActionMessage("Não existem candidatos para o filtro informado.");
+			}
+
 		} catch (ConnectException e) {
 			addActionError("Erro ao tentar se conectar ao F2rh. verifique se o site do F2rh está no ar, clicando <a href=\"http://www.f2rh.com.br/\" target=\"_blank\">aqui</a>.");
 			e.printStackTrace();
@@ -595,10 +600,14 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
+		prepareBusca();
+
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados!");
+		else
+			setShowFilter(false);
 
-		prepareBusca();
+		
 
 		cidades = CollectionUtil.convertCollectionToMap(cidadeManager.find(new String[]{"uf.id"},new Object[]{uf}, new String[]{"nome"}), "getId", "getNome", Cidade.class);
 
