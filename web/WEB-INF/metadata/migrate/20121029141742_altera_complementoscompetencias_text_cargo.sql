@@ -1,0 +1,1 @@
+alter table cargo alter column complementoconhecimento type text; --.go
