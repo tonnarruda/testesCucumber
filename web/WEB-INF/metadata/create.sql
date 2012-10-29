@@ -470,6 +470,18 @@ CREATE TABLE atitude_areaorganizacional (
 ALTER TABLE public.atitude_areaorganizacional OWNER TO postgres;
 
 --
+-- Name: atitude_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE atitude_curso (
+    atitudes_id bigint NOT NULL,
+    cursos_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.atitude_curso OWNER TO postgres;
+
+--
 -- Name: atitude_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -541,7 +553,8 @@ CREATE TABLE avaliacao (
     empresa_id bigint,
     tipomodeloavaliacao character(1) NOT NULL,
     periodoexperiencia_id bigint,
-    exiberesultadoautoavaliacao boolean DEFAULT false NOT NULL
+    exiberesultadoautoavaliacao boolean DEFAULT false NOT NULL,
+    avaliarcompetenciascargo boolean DEFAULT false NOT NULL
 );
 
 
@@ -2511,6 +2524,18 @@ CREATE TABLE conhecimento_areaorganizacional (
 ALTER TABLE public.conhecimento_areaorganizacional OWNER TO postgres;
 
 --
+-- Name: conhecimento_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE conhecimento_curso (
+    conhecimentos_id bigint NOT NULL,
+    cursos_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.conhecimento_curso OWNER TO postgres;
+
+--
 -- Name: conhecimento_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -4085,6 +4110,18 @@ CREATE TABLE habilidade_areaorganizacional (
 ALTER TABLE public.habilidade_areaorganizacional OWNER TO postgres;
 
 --
+-- Name: habilidade_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE habilidade_curso (
+    habilidades_id bigint NOT NULL,
+    cursos_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.habilidade_curso OWNER TO postgres;
+
+--
 -- Name: habilidade_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -4866,7 +4903,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 563, false);
+SELECT pg_catalog.setval('papel_sequence', 564, false);
 
 
 --
@@ -6362,6 +6399,12 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 --
 -- Data for Name: atitude_areaorganizacional; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: atitude_curso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -27144,6 +27187,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: conhecimento_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: curso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -27492,6 +27541,12 @@ INSERT INTO grupoac (id, codigo, descricao, acurlsoap, acurlwsdl, acusuario, acs
 
 
 --
+-- Data for Name: habilidade_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: historicoambiente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -27791,6 +27846,7 @@ INSERT INTO migrations (name) VALUES ('20121001135135');
 INSERT INTO migrations (name) VALUES ('20121002105225');
 INSERT INTO migrations (name) VALUES ('20121002153027');
 INSERT INTO migrations (name) VALUES ('20121004143617');
+INSERT INTO migrations (name) VALUES ('20121029104931');
 
 
 --
@@ -28076,13 +28132,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (357, 'ROLE_R&S', 'R&S', '#', 4, true, 'R', NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 13, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.91.88', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.92.89', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
 
 
 --
@@ -28295,6 +28352,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 558);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 559);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 560);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 562);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 
 
 --
@@ -29894,6 +29952,22 @@ ALTER TABLE ONLY atitude_areaorganizacional
 
 
 --
+-- Name: atitude_curso_atitude_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY atitude_curso
+    ADD CONSTRAINT atitude_curso_atitude_fk FOREIGN KEY (atitudes_id) REFERENCES atitude(id);
+
+
+--
+-- Name: atitude_curso_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY atitude_curso
+    ADD CONSTRAINT atitude_curso_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);
+
+
+--
 -- Name: atitude_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -30838,6 +30912,22 @@ ALTER TABLE ONLY conhecimento_areaorganizacional
 
 
 --
+-- Name: conhecimento_curso_conhecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY conhecimento_curso
+    ADD CONSTRAINT conhecimento_curso_conhecimento_fk FOREIGN KEY (conhecimentos_id) REFERENCES conhecimento(id);
+
+
+--
+-- Name: conhecimento_curso_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY conhecimento_curso
+    ADD CONSTRAINT conhecimento_curso_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);
+
+
+--
 -- Name: conhecimento_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -31371,6 +31461,22 @@ ALTER TABLE ONLY habilidade_areaorganizacional
 
 ALTER TABLE ONLY habilidade_areaorganizacional
     ADD CONSTRAINT habilidade_areaorganizaciona_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id);
+
+
+--
+-- Name: habilidade_curso_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY habilidade_curso
+    ADD CONSTRAINT habilidade_curso_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);
+
+
+--
+-- Name: habilidade_curso_habilidade_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY habilidade_curso
+    ADD CONSTRAINT habilidade_curso_habilidade_fk FOREIGN KEY (habilidades_id) REFERENCES habilidade(id);
 
 
 --

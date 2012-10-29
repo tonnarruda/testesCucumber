@@ -805,7 +805,7 @@ SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 563, false);
+SELECT pg_catalog.setval('papel_sequence', 564, false);
 
 
 --
@@ -7043,6 +7043,16 @@ ALTER TABLE atitude_areaorganizacional DISABLE TRIGGER ALL;
 
 
 ALTER TABLE atitude_areaorganizacional ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: atitude_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE atitude_curso DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE atitude_curso ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: auditoria; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -22620,6 +22630,16 @@ ALTER TABLE conhecimento_areaorganizacional DISABLE TRIGGER ALL;
 ALTER TABLE conhecimento_areaorganizacional ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: conhecimento_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE conhecimento_curso DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE conhecimento_curso ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: curso_avaliacaocurso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -23011,6 +23031,16 @@ ALTER TABLE habilidade_areaorganizacional DISABLE TRIGGER ALL;
 ALTER TABLE habilidade_areaorganizacional ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: habilidade_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE habilidade_curso DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE habilidade_curso ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: historicoambiente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -23365,6 +23395,7 @@ INSERT INTO migrations (name) VALUES ('20121001135135');
 INSERT INTO migrations (name) VALUES ('20121002105225');
 INSERT INTO migrations (name) VALUES ('20121002153027');
 INSERT INTO migrations (name) VALUES ('20121004143617');
+INSERT INTO migrations (name) VALUES ('20121029104931');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23624,6 +23655,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (357, 'ROLE_R&S', 'R&S', '#', 4, true, 'R', NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 13, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23646,7 +23678,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.91.88', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.92.89', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -23855,6 +23887,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 558);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 559);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 560);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 562);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;

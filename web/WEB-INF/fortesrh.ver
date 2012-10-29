@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.92.89" data="29/10/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Relatório > Estatisticas de Vagas por Motivo: Nova opção para gerar relatório resumido.
+			:: R&S > Painel de Indicadores > Indicadores de R&S: Novo indicador, Nº de Etapas Realizadas.
+			:: T&D > Movimentações > Plano de Desenvolvimento Individual (PDI): Nova implementação com impressão.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.91.88" data="22/10/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Aval. Desempenho > Relatório > Acompanhamento do Período de Experiência: Nova forma de filtrar por período e novo relatório apresentando data de admissão e data do período de experiência previsto.
