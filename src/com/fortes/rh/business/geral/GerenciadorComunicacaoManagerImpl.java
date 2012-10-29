@@ -65,6 +65,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<GerenciadorComunicacao, GerenciadorComunicacaoDao> implements GerenciadorComunicacaoManager
 {
@@ -106,6 +107,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.GERAR_BACKUP, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.TERMINO_CONTRATO_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.CANCELAR_CONTRATACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 	}
 	
 	public void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception {
@@ -957,7 +959,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem) 
 	{
 		StringBuilder mensagemFinal = new StringBuilder();
-		mensagemFinal.append("Cancelamento da contratação do colaborador. ");
+		mensagemFinal.append("Cancelamento da contratação no AC Pessoal do colaborador " + colaborador.getNome() + StringUtils.rightPad(" ", 100));
 		mensagemFinal.append("\r\n\r\n");
 		mensagemFinal.append("<b>Motivo do cancelamento:</b> ");
 		mensagemFinal.append("\r\n");
@@ -974,13 +976,16 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mensagemFinal.append("Cargo: "+colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNomeMercado());
 		mensagemFinal.append("\r\n");
 
-		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(colaborador.getEmpresa().getCodigoAC(), colaborador.getEmpresa().getGrupoAC());
-
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_CONTRATACAO_AC.getId(), colaborador.getEmpresa().getId());
-		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
+		if(!StringUtil.isBlank(colaborador.getEmpresa().getCodigoAC()) && !StringUtil.isBlank(colaborador.getEmpresa().getGrupoAC()))
 		{
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
+			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(colaborador.getEmpresa().getCodigoAC(), colaborador.getEmpresa().getGrupoAC());	
+			
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CANCELAR_CONTRATACAO_AC.getId(), colaborador.getEmpresa().getId());
+			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
+			{
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
+			}
 		}
 	}
 

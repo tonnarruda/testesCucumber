@@ -400,7 +400,7 @@ public class RHServiceImpl implements RHService
 			if(historico == null)
 				throw new Exception();
 			
-			colaboradorManager.cancelarContratacaoNoAC(empregado, historico, mensagem);
+			colaboradorManager.cancelarContratacaoNoAC(colaborador, historico, mensagem);
 			
 			return new FeedbackWebService(true);
 		}
