@@ -65,7 +65,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);
 	public void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
-	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidade, String escolaridade, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idioma, Map ufs, Map cidades, Collection<Idioma> idiomas, Integer page);
+	public String[] montaStringBuscaF2rh(Curriculo curriculo, Long uf, Long[] cidade, String escolaridade, Date dataCadIni, Date dataCadFim, String idadeMin, String idadeMax, Long idioma, Map ufs, Collection<Idioma> idiomas, Integer page);
 	public Collection<Candidato> getCurriculosF2rh(String[] curriculosId, Empresa empresa);
 	public void habilitaByColaborador(Long colaboradorId);
 	public void reabilitaByColaborador(Long colaboradorId);
