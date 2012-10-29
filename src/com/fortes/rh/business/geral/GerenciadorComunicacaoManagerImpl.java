@@ -1246,6 +1246,24 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
+	public void enviaEmailCartaoAniversariantes()
+	{
+		try 
+		{
+			Collection<Empresa> empresas = getDao().findEmpresasByOperacaoId(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
+			
+			if (empresas != null && empresas.size() > 0)
+			{
+				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+				colaboradorManager.enviaEmailAniversariantes(empresas);
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

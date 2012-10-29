@@ -227,20 +227,6 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Palmacia", empresaDao.findCidade(empresa.getId()));
 	}
 	
-	public void testFindEmpresasByCartaoAniversario()
-	{
-		Empresa empresaConfigurada = EmpresaFactory.getEmpresa();
-		empresaConfigurada.setEnviarEmailAniversariante(true);
-		empresaConfigurada.setImgAniversarianteUrl("backgroundAniv.jpg");
-		empresaDao.save(empresaConfigurada);
-
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setEnviarEmailAniversariante(false);
-		empresaDao.save(empresa);
-		
-		assertTrue(empresaDao.findByCartaoAniversario().size() >= 1);//pode ter empresas configuradas no banco
-	}
-	
 	public void testFindEmailsEmpresa()
 	{
 		Empresa fox = EmpresaFactory.getEmpresa();

@@ -505,10 +505,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
 
-	public Collection<Empresa> findByCartaoAniversario() {
-		return getDao().findByCartaoAniversario();
-	}
-
 	public boolean checkEmpresaIntegradaAc() {
 		return getDao().checkEmpresaIntegradaAc();
 	}

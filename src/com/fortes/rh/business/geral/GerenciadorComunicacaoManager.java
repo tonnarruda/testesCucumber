@@ -26,15 +26,15 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 {
 	void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception;
 	void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
-	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
-	public void enviarLembreteResponderAvaliacaoDesempenho();
-	public void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
+	boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
+	void enviarLembreteResponderAvaliacaoDesempenho();
+	void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 	void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);
 	void enviaEmailQuestionario(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 	void enviaLembreteDeQuestionarioNaoLiberado();
-	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);
-	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores);
+	void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas, Date inicioMes, Date fimMes, Collection<Candidato> candidatos);
+	void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores);
 	void enviaLembreteExamesPrevistos(Collection<Empresa> empresas);
 	void enviaMensagemLembretePeriodoExperiencia();
 	void notificaBackup(String arquivoDeBackup);
@@ -42,7 +42,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemCancelamentoSituacao(TSituacao situacao, String mensagem, HistoricoColaborador historicoColaborador);
 	boolean existeConfiguracaoParaCandidatosModuloExterno(Long emrpesaId);
 	void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa);
-	public void enviaEmailConfiguracaoLimiteColaborador(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresa);
+	void enviaEmailConfiguracaoLimiteColaborador(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresa);
 	void enviarAvisoEmailLiberacao(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId);
 	void enviarAvisoEmail(Turma turma, Long empresaId);
 	void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa);
@@ -56,4 +56,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaAvisoContratacao(HistoricoColaborador historicoColaborador);
 	void enviarEmailTerminoContratoTemporarioColaborador() throws Exception;
 	void enviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId);
+	void enviaEmailCartaoAniversariantes();
 }

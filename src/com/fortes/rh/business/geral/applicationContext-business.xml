@@ -128,12 +128,6 @@
     <property name="estadoManager">
       <ref bean="estadoManager" />
     </property>
-    <property name="usuarioEmpresaManager">
-      <ref bean="usuarioEmpresaManager" />
-    </property>
-    <property name="usuarioMensagemManager">
-      <ref bean="usuarioMensagemManager" />
-    </property>
     <property name="mensagemManager">
       <ref bean="mensagemManager" />
     </property>

@@ -44,7 +44,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
@@ -125,8 +124,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private FaixaSalarialManager faixaSalarialManager;
 	private EstadoManager estadoManager;
 	private CamposExtrasManager camposExtrasManager;
-	private UsuarioEmpresaManager usuarioEmpresaManager;
-	private UsuarioMensagemManager usuarioMensagemManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
@@ -134,50 +131,44 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private SolicitacaoManager solicitacaoManager;
 	
-	public void enviaEmailAniversariantes() throws Exception
+	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
-		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		if(parametrosDoSistema.getEnviarEmail())
+		Date data = new Date();
+		int dia = DateUtil.getDia(data);
+		int mes = DateUtil.getMes(data);
+		
+		char barra = java.io.File.separatorChar;
+		String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+		path = path + barra + "WEB-INF" + barra + "report" + barra; 
+
+		Map<String,Object> parametros = new HashMap<String, Object>();
+    	parametros.put("SUBREPORT_DIR", path);
+    	
+		for (Empresa empresa : empresas) 
 		{
-			Collection<Empresa> empresas = empresaManager.findByCartaoAniversario();
-			Date data = new Date();
-			int dia = DateUtil.getDia(data);
-			int mes = DateUtil.getMes(data);
-			
-			char barra = java.io.File.separatorChar;
-			String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
-			path = path + barra + "WEB-INF" + barra + "report" + barra; 
-
-			Map<String,Object> parametros = new HashMap<String, Object>();
-	    	parametros.put("SUBREPORT_DIR", path);
+	    	String pathBackGroundRelatorio = "";
 	    	
-			for (Empresa empresa : empresas) 
+	    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
+	    	java.io.File logo = new java.io.File(pathLogo);
+	    	if(logo.exists())
+	    		pathBackGroundRelatorio = pathLogo;
+	    	
+			parametros.put("BACKGROUND", pathBackGroundRelatorio);
+			
+			Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
+			for (Colaborador aniversariante : aniversariantes)
 			{
-		    	String pathBackGroundRelatorio = "";
-		    	
-		    	String pathLogo = ArquivoUtil.getPathLogoEmpresa() + empresa.getImgAniversarianteUrl();
-		    	java.io.File logo = new java.io.File(pathLogo);
-		    	if(logo.exists())
-		    		pathBackGroundRelatorio = pathLogo;
-		    	
-				parametros.put("BACKGROUND", pathBackGroundRelatorio);
-				
-				Collection<Colaborador> aniversariantes = getDao().findAniversariantesByEmpresa(empresa.getId(), dia, mes);
-				for (Colaborador aniversariante : aniversariantes)
-				{
-					parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
-					String subject = "Feliz Aniversário " + aniversariante.getNome();
-					String body = "Cartão em anexo, feliz aniversário.";
+				parametros.put("MSG", empresa.getMensagemCartaoAniversariante().replaceAll("#NOMECOLABORADOR#", aniversariante.getNome()));					
+				String subject = "Feliz Aniversário " + aniversariante.getNome();
+				String body = "Cartão em anexo, feliz aniversário!";
 
-					Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
-					DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
+				Collection<Colaborador> colaboradores = Arrays.asList(new Colaborador());
+				DataSource[] files = ArquivoUtil.montaRelatorio(parametros, colaboradores, "cartaoAniversariante.jasper");
 
-					if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
-						mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
-					}
-
+				if(StringUtils.isNotEmpty(aniversariante.getContato().getEmail())){
+					mail.send(empresa, subject, files, body, aniversariante.getContato().getEmail());		
 				}
-			}			
+			}
 		}
 	}
 	
@@ -227,7 +218,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (colaborador.getPessoal().getRgUf().getId() == null)
 			colaborador.getPessoal().setRgUf(null);
 		
-		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() == null)
+		if (colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() == null)
 			colaborador.setSolicitacao(null);
 
 		colaborador.setEmpresa(empresa);
@@ -2191,14 +2182,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId) {
 		return getDao().findSemCodigoAC(empresaId);
-	}
-
-	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) {
-		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public void setUsuarioMensagemManager(UsuarioMensagemManager usuarioMensagemManager) {
-		this.usuarioMensagemManager = usuarioMensagemManager;
 	}
 
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {

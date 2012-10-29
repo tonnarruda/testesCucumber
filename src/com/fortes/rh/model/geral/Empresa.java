@@ -75,7 +75,6 @@ public class Empresa extends AbstractModel implements Serializable
     private String imgAniversarianteUrl;
     @Column(length=300)
     private String mensagemCartaoAniversariante;
-    private boolean enviarEmailAniversariante;
     @Column(length=3)
     private String grupoAC;
    
@@ -431,14 +430,6 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setMensagemCartaoAniversariante(String mensagemCartaoAniversariante) {
 		this.mensagemCartaoAniversariante = mensagemCartaoAniversariante;
-	}
-
-	public boolean isEnviarEmailAniversariante() {
-		return enviarEmailAniversariante;
-	}
-
-	public void setEnviarEmailAniversariante(boolean enviarEmailAniversariante) {
-		this.enviarEmailAniversariante = enviarEmailAniversariante;
 	}
 
 	public boolean isTurnoverPorSolicitacao() {

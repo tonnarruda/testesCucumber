@@ -6,14 +6,18 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GerenciadorComunicacao;
 
 @SuppressWarnings("unchecked")
 public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<GerenciadorComunicacao> implements GerenciadorComunicacaoDao
 {
-	public Collection<GerenciadorComunicacao> findByOperacaoId(Integer operacaoId, Long empresaId) {
+	public Collection<GerenciadorComunicacao> findByOperacaoId(Integer operacaoId, Long empresaId) 
+	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
 		criteria = criteria.createCriteria("gc.empresa", "e");
 		
@@ -24,7 +28,32 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		return criteria.list();	
 	}
 
-	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao){
+	public Collection<Empresa> findEmpresasByOperacaoId(Integer operacaoId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
+		criteria = criteria.createCriteria("gc.empresa", "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
+		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
+		p.add(Projections.property("e.logoUrl"),"logoUrl");
+		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
+		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("gc.operacao", operacaoId));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
+		
+		return criteria.list();
+	}
+	
+	public boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao)
+	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "gc");
 	
 		ProjectionList p = Projections.projectionList().create();

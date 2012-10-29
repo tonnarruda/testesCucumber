@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(26, Operacao.values().length);
+		assertEquals(27, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -50,6 +50,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Contratar colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Terminar contrato temporário do colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Atualizar dados pessoais", Operacao.getDescricaoById(++i));
+		assertEquals("Houver aniversariantes no dia para envio automático de cartão de aniversário", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -92,41 +93,42 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 24 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 25 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 26 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 27 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
-		
 	}
 
 	
 	public void testChave()
 	{
 		int i = 0;
-		assertEquals(++i, Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId());       // 1 
-		assertEquals(++i, Operacao.QTD_CURRICULOS_CADASTRADOS.getId());              // 2 
-		assertEquals(++i, Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId());   // 3 
-		assertEquals(++i, Operacao.ENCERRAR_SOLICITACAO.getId());                // 4 
-		assertEquals(++i, Operacao.ALTERAR_STATUS_SOLICITACAO.getId());              // 5 
-		assertEquals(++i, Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId());    // 6 
-		assertEquals(++i, Operacao.LIBERAR_PESQUISA.getId());                    // 7 
-		assertEquals(++i, Operacao.PESQUISA_NAO_LIBERADA.getId());      // 8 
-		assertEquals(++i, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId());  // 9 
-		assertEquals(++i, Operacao.EXAMES_PREVISTOS.getId());                        // 10
-		assertEquals(++i, Operacao.LIBERAR_AVALIACAO_TURMA.getId());                           // 11
-		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR_AC.getId());                   // 12
-		assertEquals(++i, Operacao.CANCELAR_SITUACAO_AC.getId());                    // 13
-		assertEquals(++i, Operacao.DESLIGAR_COLABORADOR_AC.getId());                 // 14
-		assertEquals(++i, Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO.getId());         // 15
-		assertEquals(++i, Operacao.GERAR_BACKUP.getId());                       // 16
-		assertEquals(++i, Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()); // 17
-		assertEquals(++i, Operacao.CANCELAR_CONTRATACAO_AC.getId());                 // 18
-		assertEquals(++i, Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId());       // 19
-		assertEquals(++i, Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId());        // 20
-		assertEquals(++i, Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId());    // 21
-		assertEquals(++i, Operacao.CADASTRAR_OCORRENCIA.getId());					 // 22
-		assertEquals(++i, Operacao.CADASTRAR_AFASTAMENTO.getId());			 // 23
-		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR.getId());			 // 24
-		assertEquals(++i, Operacao.TERMINO_CONTRATO_COLABORADOR.getId());			 // 25
-		assertEquals(++i, Operacao.ATUALIZAR_INFO_PESSOAIS.getId());			 // 26
+		assertEquals(++i, Operacao.CADASTRAR_CANDIDATO_MODULO_EXTERNO.getId()); 			// 1
+		assertEquals(++i, Operacao.QTD_CURRICULOS_CADASTRADOS.getId()); 					// 2
+		assertEquals(++i, Operacao.CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO.getId()); 	// 3
+		assertEquals(++i, Operacao.ENCERRAR_SOLICITACAO.getId()); 							// 4
+		assertEquals(++i, Operacao.ALTERAR_STATUS_SOLICITACAO.getId()); 					// 5
+		assertEquals(++i, Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId()); 				// 6
+		assertEquals(++i, Operacao.LIBERAR_PESQUISA.getId()); 								// 7
+		assertEquals(++i, Operacao.PESQUISA_NAO_LIBERADA.getId()); 							// 8
+		assertEquals(++i, Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()); 		// 9
+		assertEquals(++i, Operacao.EXAMES_PREVISTOS.getId()); 								// 10
+		assertEquals(++i, Operacao.LIBERAR_AVALIACAO_TURMA.getId()); 						// 11
+		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR_AC.getId()); 						// 12
+		assertEquals(++i, Operacao.CANCELAR_SITUACAO_AC.getId()); 							// 13
+		assertEquals(++i, Operacao.DESLIGAR_COLABORADOR_AC.getId()); 						// 14
+		assertEquals(++i, Operacao.CADASTRAR_LIMITE_COLABORADOR_CARGO.getId()); 			// 15
+		assertEquals(++i, Operacao.GERAR_BACKUP.getId()); 									// 16
+		assertEquals(++i, Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()); 		// 17
+		assertEquals(++i, Operacao.CANCELAR_CONTRATACAO_AC.getId()); 						// 18
+		assertEquals(++i, Operacao.NAO_ABERTURA_SOLICITACAO_EPI.getId()); 					// 19
+		assertEquals(++i, Operacao.NAO_ENTREGA_SOLICITACAO_EPI.getId()); 					// 20
+		assertEquals(++i, Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId()); 			// 21
+		assertEquals(++i, Operacao.CADASTRAR_OCORRENCIA.getId()); 							// 22
+		assertEquals(++i, Operacao.CADASTRAR_AFASTAMENTO.getId()); 							// 23
+		assertEquals(++i, Operacao.CONTRATAR_COLABORADOR.getId()); 							// 24
+		assertEquals(++i, Operacao.TERMINO_CONTRATO_COLABORADOR.getId()); 					// 25
+		assertEquals(++i, Operacao.ATUALIZAR_INFO_PESSOAIS.getId()); 						// 26
+		assertEquals(++i, Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());					// 27
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -406,6 +408,17 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testEnviarCartaoAniversariantes()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.ENVIAR_CARTAO_ANIVERSARIANTES;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	

@@ -40,6 +40,30 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(2 , gerenciadorComunicacaoDao.findByOperacaoId(Operacao.ENCERRAR_SOLICITACAO.getId(), empresa.getId()).size());
 	}
 	
+	public void testFindEmpresasByOperacaoId() 
+	{		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Empresa empresa3 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa3);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = getEntity();
+		gerenciadorComunicacao1.setOperacao(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
+		gerenciadorComunicacao1.setEmpresa(empresa1);
+		gerenciadorComunicacaoDao.save(gerenciadorComunicacao1);
+		
+		GerenciadorComunicacao gerenciadorComunicacao2 = getEntity();
+		gerenciadorComunicacao2.setOperacao(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());
+		gerenciadorComunicacao2.setEmpresa(empresa3);
+		gerenciadorComunicacaoDao.save(gerenciadorComunicacao2);
+		
+		assertEquals(2, gerenciadorComunicacaoDao.findEmpresasByOperacaoId(Operacao.ENCERRAR_SOLICITACAO.getId()).size());
+	}
+	
 	public void testVerifyExists() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

@@ -118,7 +118,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.emailRespLimiteContrato"), "emailRespLimiteContrato");
 		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
 		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
-		p.add(Projections.property("e.enviarEmailAniversariante"), "enviarEmailAniversariante");
 		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
 		criteria.setProjection(p);
 
@@ -382,31 +381,6 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return (Empresa) criteria.uniqueResult();
 	}
 	
-	public Collection<Empresa> findByCartaoAniversario()
-	{
-		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.nome"),"nome");
-		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
-		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
-		p.add(Projections.property("e.logoUrl"),"logoUrl");
-		p.add(Projections.property("e.imgAniversarianteUrl"), "imgAniversarianteUrl");
-		p.add(Projections.property("e.mensagemCartaoAniversariante"), "mensagemCartaoAniversariante");
-		p.add(Projections.property("e.enviarEmailAniversariante"), "enviarEmailAniversariante");
-		
-		criteria.add(Expression.eq("e.enviarEmailAniversariante", true));
-		criteria.add(Expression.not(Expression.eq("e.imgAniversarianteUrl", "")));
-		
-		criteria.setProjection(Projections.distinct(p));
-		
-		criteria.addOrder(Order.asc("e.nome"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-		
-		return criteria.list();
-	}
-
 	public void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 
 	{
 		String whereId = " where e.id = :empresaId ";

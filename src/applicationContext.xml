@@ -130,16 +130,15 @@
     <property name="targetObject" ref="importadorGastosACJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
-
-  <bean name="emailCartaoAniversariantesJob" class="com.fortes.rh.business.geral.ColaboradorManagerImpl">
+  
+  <bean name="emailCartaoAniversariantesJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
     <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
-    <property name="empresaManager" ref="empresaManager" />
     <property name="mail" ref="mail" />
-    <property name="dao" ref="colaboradorDaoTarget" />
   </bean>
   <bean name="emailCartaoAniversariantes" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="emailCartaoAniversariantesJob"/>
-    <property name="targetMethod" value="enviaEmailAniversariantes"/>
+    <property name="targetMethod" value="enviaEmailCartaoAniversariantes"/>
   </bean>
   
   <bean name="quantidadeCurriculosJob" class="com.fortes.rh.business.captacao.QuantidadeCurriculos">

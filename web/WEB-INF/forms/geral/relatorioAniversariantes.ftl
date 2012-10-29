@@ -38,6 +38,8 @@
 		
 		$(document).ready(function($)
 		{
+			DWREngine.setAsync(false);
+		
 			var empresa = $('#empresa').val();
 			
 			populaArea(empresa);
@@ -48,7 +50,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<@ww.head/>
-	<title>Relatório - Aniversariantes do mês</title>
+	<title>Aniversariantes do mês</title>
 
 </head>
 <body>

@@ -255,6 +255,14 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	}, 
+	ENVIAR_CARTAO_ANIVERSARIANTES(27, "Houver aniversariantes no dia para envio automático de cartão de aniversário", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 
 	private int id;
