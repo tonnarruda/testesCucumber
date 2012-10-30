@@ -137,10 +137,11 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return criteria.list();
 	}
 	
-	public int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataDe, Date dataAte) 
+	public int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataDe, Date dataAte) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("cs.candidato", "c");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -150,6 +151,12 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		
 		if(LongUtil.isNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("cs.solicitacao.id", solicitacaoIds));
+		
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if (LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		criteria.add(Expression.between("hc.data", dataDe, dataAte));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -284,16 +291,23 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return criteria.list();
 	}
 
-	public int findQtdEtapasRealizadas(Long empresaId, Long[] solicitacoesIds, Date dataIni, Date dataFim)
+	public int findQtdEtapasRealizadas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacoesIds, Date dataIni, Date dataFim)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
+		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("cs.candidato", "c");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.count("hc.id"));
 		
 		criteria.setProjection(p);
+		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if(LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		if(LongUtil.isNotEmpty(solicitacoesIds))
 			criteria.add(Expression.in("cs.solicitacao.id", solicitacoesIds));

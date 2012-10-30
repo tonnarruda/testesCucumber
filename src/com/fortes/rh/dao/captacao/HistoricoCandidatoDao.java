@@ -31,7 +31,7 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 
 	Collection<HistoricoCandidato> getEventos(String responsavel, Long empresaId,  Date dataIni, Date dataFim);
 	
-	int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataDe, Date dataAte);
+	int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataDe, Date dataAte);
 
-	int findQtdEtapasRealizadas(Long empresaId, Long[] solicitacoesIds, Date dataIni, Date dataFim);
+	int findQtdEtapasRealizadas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacoesIds, Date dataIni, Date dataFim);
 }

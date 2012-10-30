@@ -44,10 +44,11 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
-	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
-	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception;
 	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
+	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 }

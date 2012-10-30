@@ -114,11 +114,11 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao, Long empresaId);
 	public Collection<Colaborador> findColaboradoresByIds(Long[] colaboradoresIds);
-	public int findQtdVagasPreenchidas(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	public Collection<Colaborador> findSemCodigoAC(Long empresaId);
 	public Collection<Colaborador> findByQuestionarioNaoRespondido(Long questionarioId);
-	public int qtdDemitidosEm90Dias(Long empresaId, Date dataAte);
-	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Date dataAte);
+	public int qtdDemitidosEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
+	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public String findCodigoACDuplicado(Long empresaId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);

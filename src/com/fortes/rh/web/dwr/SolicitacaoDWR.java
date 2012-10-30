@@ -30,6 +30,13 @@ public class SolicitacaoDWR {
 		return solicitacaoMap;  
 	}
 	
+	public Map<Long, String> getByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds) 
+	{
+		Collection<Solicitacao> solicitacoes = solicitacaoManager.findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
+		
+		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacoes, "getId", "getDescricaoFormatada");
+	}
+	
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
 	}

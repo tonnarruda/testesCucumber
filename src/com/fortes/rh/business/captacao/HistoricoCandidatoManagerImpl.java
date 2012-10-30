@@ -107,9 +107,9 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		return getDao().findByPeriodo(parametros);
 	}
 
-	public int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim)
+	public int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim)
 	{
-		return getDao().findQtdAtendidos(empresaId, solicitacaoIds, dataIni, dataFim);
+		return getDao().findQtdAtendidos(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 
 	public Collection<ProdutividadeRelatorio> getProdutividade(String ano, Long empresaId)
@@ -274,8 +274,8 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		return getDao().getEventos("", empresaId, dataIni, dataFim);
 	}
 
-	public int findQtdEtapasRealizadas(Long empresaId, Long[] solicitacoesIds, Date dataIni, Date dataFim)
+	public int findQtdEtapasRealizadas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacoesIds, Date dataIni, Date dataFim)
 	{
-		return getDao().findQtdEtapasRealizadas(empresaId, solicitacoesIds, dataIni, dataFim);
+		return getDao().findQtdEtapasRealizadas(empresaId, estabelecimentoIds, areaIds, solicitacoesIds, dataIni, dataFim);
 	}
 }

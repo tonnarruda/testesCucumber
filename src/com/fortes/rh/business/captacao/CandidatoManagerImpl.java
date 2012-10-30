@@ -1337,8 +1337,8 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return graficoDivulgacaoVaga;
 	}
 
-	public int findQtdAtendidos(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
-		return historicoCandidatoManager.findQtdAtendidos(empresaId, solicitacaoIds, dataIni, dataFim);
+	public int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
+		return historicoCandidatoManager.findQtdAtendidos(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
 	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)

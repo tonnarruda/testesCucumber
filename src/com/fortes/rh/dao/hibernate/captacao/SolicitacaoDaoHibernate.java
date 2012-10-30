@@ -117,7 +117,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 			criteria.add(Expression.eq("c.id", cargoId));
 	}
 
-	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa)
+	private Criteria montaCriteria()
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
@@ -139,6 +139,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		criteria.setProjection(p);
 
+		return criteria;
+	}
+	
+	public Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa)
+	{
+		Criteria criteria = montaCriteria();
+		
 		if (encerrada != null)
 			criteria.add(Expression.eq("s.encerrada", encerrada));
 		if (status != null)
@@ -608,7 +615,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.faixaSalarial", "f");
@@ -616,7 +623,6 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.alias(Projections.sum("s.quantidade"), "qtdVagasAbertas"));
-		
 		p.add(Projections.alias(Projections.groupProperty("f.nome"), "nome"));
 		p.add(Projections.alias(Projections.groupProperty("c.nome"), "nomeCargo"));
 		
@@ -627,6 +633,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		if (LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if (LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		if (LongUtil.isNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
@@ -639,7 +651,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
+	public Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -657,6 +669,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if(LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
+		
 		if (LongUtil.isNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
@@ -668,7 +686,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 	
-	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
+	public Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -684,6 +702,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if(LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("a.id", areaIds));
+		
 		if (LongUtil.isNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
@@ -695,7 +719,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 	
-	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
+	public Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.solicitacao", "s");
@@ -711,6 +735,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
+		if(LongUtil.isNotEmpty(estabelecimentoIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
+		
+		if(LongUtil.isNotEmpty(areaIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
+		
 		if (LongUtil.isNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
@@ -721,4 +751,22 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		return criteria.list();
 	}
+
+	public Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds)
+	{
+		Criteria criteria = montaCriteria();
+		
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		
+		if (LongUtil.isNotEmpty(areasIds))
+			criteria.add(Expression.in("s.areaOrganizacional.id", areasIds));
+		
+		if (LongUtil.isNotEmpty(estabelecimentosIds))
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentosIds));
+		
+		criteria.addOrder(Order.asc("s.descricao"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	}
 }

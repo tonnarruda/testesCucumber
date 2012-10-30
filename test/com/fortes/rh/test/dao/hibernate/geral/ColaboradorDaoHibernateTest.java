@@ -1,4 +1,3 @@
-
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
@@ -4474,12 +4473,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Date dataAte = DateUtil.montaDataByString("11/11/2010");
 		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+		
 		Colaborador mariaNaoDesligada = ColaboradorFactory.getEntity();
 		mariaNaoDesligada.setEmpresa(empresa);
 		mariaNaoDesligada.setDesligado(false);
 		colaboradorDao.save(mariaNaoDesligada);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMaria.setData(dataAte);
+		historicoColaboradorMaria.setColaborador(mariaNaoDesligada);
+		historicoColaboradorDao.save(historicoColaboradorMaria);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador joaoDesligadoAntesDoPeriodo = ColaboradorFactory.getEntity();
 		joaoDesligadoAntesDoPeriodo.setEmpresa(empresa);
@@ -4487,7 +4503,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		joaoDesligadoAntesDoPeriodo.setDataDesligamento(DateUtil.montaDataByString("01/01/2000"));
 		colaboradorDao.save(joaoDesligadoAntesDoPeriodo);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorJoao.setData(dataAte);
+		historicoColaboradorJoao.setColaborador(joaoDesligadoAntesDoPeriodo);
+		historicoColaboradorDao.save(historicoColaboradorJoao);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador marciaDesligadoDepoisPeriodo = ColaboradorFactory.getEntity();
 		marciaDesligadoDepoisPeriodo.setEmpresa(empresa);
@@ -4495,7 +4516,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		marciaDesligadoDepoisPeriodo.setDataDesligamento(DateUtil.montaDataByString("22/12/2022"));
 		colaboradorDao.save(marciaDesligadoDepoisPeriodo);
 		
-		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorMarcia = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMarcia.setData(dataAte);
+		historicoColaboradorMarcia.setColaborador(marciaDesligadoDepoisPeriodo);
+		historicoColaboradorDao.save(historicoColaboradorMarcia);
+		
+		assertEquals(0, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
 
 		Colaborador pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias = ColaboradorFactory.getEntity();
 		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setEmpresa(empresa);
@@ -4503,11 +4529,24 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias.setDataDesligamento(DateUtil.montaDataByString("20/01/2010"));
 		colaboradorDao.save(pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias);
 		
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorPedro.setData(dataAte);
+		historicoColaboradorPedro.setColaborador(pedroDesligadoNoPeriodoForaDoPeriodoDe90Dias);
+		historicoColaboradorDao.save(historicoColaboradorPedro);
+		
+		
 		Colaborador toinDesligadoNoPeriodo = ColaboradorFactory.getEntity();
 		toinDesligadoNoPeriodo.setEmpresa(empresa);
 		toinDesligadoNoPeriodo.setDesligado(true);
 		toinDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("11/11/2010"));
 		colaboradorDao.save(toinDesligadoNoPeriodo);
+		
+		HistoricoColaborador historicoColaboradorToin = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorToin.setData(dataAte);
+		historicoColaboradorToin.setColaborador(toinDesligadoNoPeriodo);
+		historicoColaboradorToin.setAreaOrganizacional(area1);
+		historicoColaboradorToin.setEstabelecimento(estabelecimento1);
+		historicoColaboradorDao.save(historicoColaboradorToin);
 		
 		Colaborador bebelDesligadoNoPeriodo = ColaboradorFactory.getEntity();
 		bebelDesligadoNoPeriodo.setEmpresa(empresa);
@@ -4515,13 +4554,34 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		bebelDesligadoNoPeriodo.setDataDesligamento(DateUtil.montaDataByString("20/09/2010"));
 		colaboradorDao.save(bebelDesligadoNoPeriodo);
 		
-		assertEquals(2, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorBebel = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorBebel.setData(dataAte);
+		historicoColaboradorBebel.setColaborador(bebelDesligadoNoPeriodo);
+		historicoColaboradorBebel.setAreaOrganizacional(area2);
+		historicoColaboradorBebel.setEstabelecimento(estabelecimento2);
+		historicoColaboradorDao.save(historicoColaboradorBebel);
+		
+		assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, null, dataAte));
+		assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
+		assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdDemitidosEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
 	}
 	
 	public void testQtdAdmitidosPeriodo() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
 		
 		Date dataAte = DateUtil.montaDataByString("11/11/2010");
 		
@@ -4530,30 +4590,67 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		maria.setDataAdmissao(DateUtil.montaDataByString("01/01/2000"));
 		colaboradorDao.save(maria);
 		
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMaria.setData(dataAte);
+		historicoColaboradorMaria.setColaborador(maria);
+		historicoColaboradorMaria.setAreaOrganizacional(area1);
+		historicoColaboradorMaria.setEstabelecimento(estabelecimento1);
+		historicoColaboradorDao.save(historicoColaboradorMaria);
+		
 		Colaborador bebel = ColaboradorFactory.getEntity();
 		bebel.setEmpresa(empresa);
 		bebel.setDesligado(true);
 		bebel.setDataAdmissao(DateUtil.montaDataByString("22/12/2022"));
 		colaboradorDao.save(bebel);
 		
-		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorBebel = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorBebel.setData(dataAte);
+		historicoColaboradorBebel.setColaborador(bebel);
+		historicoColaboradorBebel.setAreaOrganizacional(area2);
+		historicoColaboradorBebel.setEstabelecimento(estabelecimento2);
+		historicoColaboradorDao.save(historicoColaboradorBebel);
+		
+		assertEquals(0, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
 		
 		Colaborador joaoFora = ColaboradorFactory.getEntity();
 		joaoFora.setEmpresa(empresa);
 		joaoFora.setDataAdmissao(DateUtil.montaDataByString("20/01/2010"));
 		colaboradorDao.save(joaoFora);
 		
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorJoao.setData(dataAte);
+		historicoColaboradorJoao.setColaborador(joaoFora);
+		historicoColaboradorJoao.setAreaOrganizacional(area1);
+		historicoColaboradorJoao.setEstabelecimento(estabelecimento1);
+		historicoColaboradorDao.save(historicoColaboradorJoao);
+		
 		Colaborador marcia = ColaboradorFactory.getEntity();
 		marcia.setEmpresa(empresa);
 		marcia.setDataAdmissao(DateUtil.montaDataByString("01/10/2010"));
 		colaboradorDao.save(marcia);
+		
+		HistoricoColaborador historicoColaboradorMarcia = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMarcia.setData(dataAte);
+		historicoColaboradorMarcia.setColaborador(marcia);
+		historicoColaboradorMarcia.setAreaOrganizacional(area1);
+		historicoColaboradorMarcia.setEstabelecimento(estabelecimento1);
+		historicoColaboradorDao.save(historicoColaboradorMarcia);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity();
 		pedro.setEmpresa(empresa);
 		pedro.setDataAdmissao(DateUtil.montaDataByString("11/11/2010"));
 		colaboradorDao.save(pedro);
 		
-		assertEquals(2, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), dataAte));
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorPedro.setData(dataAte);
+		historicoColaboradorPedro.setColaborador(pedro);
+		historicoColaboradorPedro.setAreaOrganizacional(area2);
+		historicoColaboradorPedro.setEstabelecimento(estabelecimento2);
+		historicoColaboradorDao.save(historicoColaboradorPedro);
+		
+		assertEquals("Sem considerar area nem estabelecimento", 2, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, null, dataAte));
+		assertEquals("Considerando estabelecimento", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), new Long[] { estabelecimento1.getId() }, null, dataAte));
+		assertEquals("Considerando area organizacional", 1, colaboradorDao.qtdAdmitidosPeriodoEm90Dias(empresa.getId(), null, new Long[] { area1.getId() }, dataAte));
 	}
 	
 	public void testFindCodigoACDuplicado() 
@@ -4916,9 +5013,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testFindQtdVagasPreenchidas() {
 		
 		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
-
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacaoDao.save(solicitacao1);
@@ -4932,11 +5041,27 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		pedro.setEmpresa(empresa);
 		colaboradorDao.save(pedro);
 		
+		HistoricoColaborador historicoPedro = new HistoricoColaborador();
+		historicoPedro.setData(hoje);
+		historicoPedro.setColaborador(pedro);
+		historicoPedro.setEstabelecimento(estabelecimento1);
+		historicoPedro.setAreaOrganizacional(areaOrganizacional1);
+		historicoPedro.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoPedro);
+		
 		Colaborador maria = ColaboradorFactory.getEntity();
 		maria.setDataAdmissao(hoje);
 		maria.setSolicitacao(solicitacao1);
 		maria.setEmpresa(empresa);
 		colaboradorDao.save(maria);
+		
+		HistoricoColaborador historicoMaria = new HistoricoColaborador();
+		historicoMaria.setData(hoje);
+		historicoMaria.setColaborador(maria);
+		historicoMaria.setEstabelecimento(estabelecimento1);
+		historicoMaria.setAreaOrganizacional(areaOrganizacional1);
+		historicoMaria.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoMaria);
 		
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setDataAdmissao(hoje);
@@ -4944,18 +5069,40 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		joao.setEmpresa(empresa);
 		colaboradorDao.save(joao);
 		
+		HistoricoColaborador historicoJoao = new HistoricoColaborador();
+		historicoJoao.setData(hoje);
+		historicoJoao.setColaborador(joao);
+		historicoJoao.setEstabelecimento(estabelecimento2);
+		historicoJoao.setAreaOrganizacional(areaOrganizacional2);
+		historicoJoao.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJoao);
+		
 		Colaborador jose = ColaboradorFactory.getEntity();
 		jose.setDataAdmissao(hoje);
 		jose.setEmpresa(empresa);
 		colaboradorDao.save(jose);
 		
-		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		HistoricoColaborador historicoJose = new HistoricoColaborador();
+		historicoJose.setData(hoje);
+		historicoJose.setColaborador(jose);
+		historicoJose.setEstabelecimento(estabelecimento2);
+		historicoJose.setAreaOrganizacional(areaOrganizacional2);
+		historicoJose.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoJose);
 		
-		int qtd1 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), solicitacaoIds, hoje, hoje);
-		int qtd2 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, hoje, hoje);
+		Long[] solicitacaoIds = new Long[]{solicitacao1.getId()};
+		Long[] estabelecimentoIds = new Long[]{estabelecimento1.getId()};
+		Long[] areaIds = new Long[]{areaOrganizacional2.getId()};
+		
+		int qtd1 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, null, solicitacaoIds, hoje, hoje);
+		int qtd2 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, null, null, hoje, hoje);
+		int qtd3 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), estabelecimentoIds, null, null, hoje, hoje);
+		int qtd4 = colaboradorDao.findQtdVagasPreenchidas(empresa.getId(), null, areaIds, null, hoje, hoje);
 		
 		assertEquals("Com solicitação especificada", 2, qtd1);
 		assertEquals("Sem solicitação especificada", 3, qtd2);
+		assertEquals("Com estabelecimento especificado", 2, qtd3);
+		assertEquals("Com área organizacional especificada(solicitação not null)", 1, qtd4);
 	}
 	
 	public void testFindSemCodigoAC() {
