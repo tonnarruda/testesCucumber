@@ -47,6 +47,7 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -223,7 +224,7 @@ public class Index extends ActionSupport
 			String jsonText = readAll(rd);
 			
 			listaVideos = (Collection<Video>) StringUtil.simpleJSONtoArrayJava(jsonText, Video.class);
-			
+			listaVideos = new CollectionUtil<Video>().sortCollectionStringIgnoreCase(listaVideos, "titulo");
 		
 		} catch (Exception e) 
 		{
