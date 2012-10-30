@@ -136,6 +136,23 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), null, dados);
 	}
 	
+	public Auditavel cancelarContratacaoNoAC(MetodoInterceptado metodo) throws Throwable 
+	{
+		
+		metodo.processa();
+		
+		Colaborador colaborador= (Colaborador) metodo.getParametros()[0];
+		String mensagem = (String) metodo.getParametros()[2];
+		
+		Map<String, Object> cancelamentoContratacaoAC = new LinkedHashMap<String, Object>();
+		cancelamentoContratacaoAC.put("Nome do colaborador", colaborador.getNome());
+		cancelamentoContratacaoAC.put("Mensagem", mensagem);
+		
+		String dados = new GeraDadosAuditados(null, cancelamentoContratacaoAC).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), null, dados);
+	}
+	
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {
 		ColaboradorManager manager = (ColaboradorManager) metodo.getComponente();
 		return manager.findEntidadeComAtributosSimplesById(colaborador.getId());
