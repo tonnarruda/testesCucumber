@@ -35,7 +35,6 @@ public class GerenciadorComunicacaoDaoHibernate extends GenericDaoHibernate<Gere
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.nome"), "nome");
 		p.add(Projections.property("e.nome"),"nome");
 		p.add(Projections.property("e.emailRemetente"),"emailRemetente");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");

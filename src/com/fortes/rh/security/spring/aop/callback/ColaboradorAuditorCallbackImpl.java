@@ -14,8 +14,8 @@ import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
-public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 
+public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	public Auditavel processa(MetodoInterceptado metodo) throws Throwable 
 	{
 		Method method = this.getClass().getMethod(metodo.getMetodo().getName(), MetodoInterceptado.class);

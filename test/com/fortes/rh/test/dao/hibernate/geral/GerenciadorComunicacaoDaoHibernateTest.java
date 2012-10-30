@@ -61,7 +61,7 @@ public class GerenciadorComunicacaoDaoHibernateTest extends GenericDaoHibernateT
 		gerenciadorComunicacao2.setEmpresa(empresa3);
 		gerenciadorComunicacaoDao.save(gerenciadorComunicacao2);
 		
-		assertEquals(2, gerenciadorComunicacaoDao.findEmpresasByOperacaoId(Operacao.ENCERRAR_SOLICITACAO.getId()).size());
+		assertEquals(2, gerenciadorComunicacaoDao.findEmpresasByOperacaoId(Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId()).size());
 	}
 	
 	public void testVerifyExists() 

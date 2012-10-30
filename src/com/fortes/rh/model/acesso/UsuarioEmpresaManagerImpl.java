@@ -32,7 +32,7 @@ public class UsuarioEmpresaManagerImpl extends GenericManagerImpl<UsuarioEmpresa
 	{
 		return getDao().findUsuariosByEmpresaRole(empresaCodigoAC, grupoAC, null, "RECEBE_ALERTA_SETORPESSOAL");
 	}
-	
+
 	public Collection<UsuarioEmpresa> findUsuariosByEmpresaRole(Long empresaId, String role)
 	{
 		return getDao().findUsuariosByEmpresaRole(empresaId, role);

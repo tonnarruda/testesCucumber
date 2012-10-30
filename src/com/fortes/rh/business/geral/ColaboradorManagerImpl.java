@@ -1451,18 +1451,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
-	public void cancelarContratacaoNoAC(TEmpregado empregado, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
+	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
 	{
-		Empresa empresa = new Empresa();
-		empresa.setCodigoAC(empregado.getEmpresaCodigoAC());
-		empresa.setGrupoAC(empregado.getGrupoAC());
-		
-		Colaborador colaborador = new Colaborador();
-		colaborador.setId(Long.valueOf(empregado.getId()));
-		colaborador.setNomeComercial(empregado.getNomeComercial());
-		colaborador.setEmpresa(empresa);
-		colaborador.setHistoricoColaborador(historicoColaborador);
-		
 		historicoColaboradorManager.remove(historicoColaborador);
 		removeColaboradorDependencias(colaborador);		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
