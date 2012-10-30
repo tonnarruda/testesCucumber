@@ -59,7 +59,7 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="278"  isSplitAllowed="true" >
+			<band height="248"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="0"
@@ -289,7 +289,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="218"
+						y="189"
 						width="535"
 						height="14"
 						key="staticText-6"
@@ -303,7 +303,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="232"
+						y="203"
 						width="535"
 						height="14"
 						key="textField-6"
@@ -317,7 +317,7 @@
 				<staticText>
 					<reportElement
 						x="0"
-						y="246"
+						y="217"
 						width="535"
 						height="14"
 						key="staticText-7"
@@ -359,7 +359,7 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="260"
+						y="231"
 						width="535"
 						height="14"
 						key="textField-7"
@@ -387,46 +387,6 @@
 						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["TEMPO DE EXPOSIÇÃO: " + $P{PPRA}.getTempoExposicao()]]></textFieldExpression>
-				</textField>
-				<rectangle>
-					<reportElement
-						x="0"
-						y="187"
-						width="535"
-						height="14"
-						backcolor="#CCCCCC"
-						key="rectangle-8"
-						positionType="Float"/>
-					<graphicElement stretchType="NoStretch" pen="None"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						x="0"
-						y="187"
-						width="535"
-						height="14"
-						backcolor="#CCCCCC"
-						key="staticText-10"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
-				<text><![CDATA[RISCOS OCUPACIONAIS]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="201"
-						width="535"
-						height="14"
-						key="textField-9"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement isStyledText="true">
-						<font size="10"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{PPRA}.getRiscosOcupacionais()]]></textFieldExpression>
 				</textField>
 			</band>
 		</summary>
