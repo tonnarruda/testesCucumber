@@ -193,9 +193,9 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="63"
+						x="65"
 						y="168"
-						width="182"
+						width="181"
 						height="12"
 						key="staticText-22"
 						positionType="Float"
@@ -330,7 +330,7 @@
 					<reportElement
 						x="16"
 						y="168"
-						width="46"
+						width="48"
 						height="12"
 						key="staticText-36"
 						positionType="Float"

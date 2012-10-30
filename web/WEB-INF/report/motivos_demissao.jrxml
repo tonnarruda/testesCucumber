@@ -146,7 +146,7 @@
 					<reportElement
 						x="8"
 						y="12"
-						width="41"
+						width="44"
 						height="11"
 						key="staticText-3"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -157,9 +157,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="50"
+						x="53"
 						y="12"
-						width="120"
+						width="117"
 						height="11"
 						key="staticText-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
@@ -229,9 +229,9 @@
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="50"
+						x="53"
 						y="1"
-						width="120"
+						width="117"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -247,7 +247,7 @@
 						mode="Transparent"
 						x="8"
 						y="1"
-						width="41"
+						width="44"
 						height="12"
 						backcolor="#FFFFFF"
 						key="textField"/>
