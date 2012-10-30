@@ -36,7 +36,6 @@ import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.BairroManager;
-import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -113,7 +112,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	private Mock solicitacaoExameManager;
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock gerenciadorComunicacaoManager;
-	private Mock cidadeManager;
 
     protected void setUp() throws Exception
     {
@@ -135,7 +133,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
         solicitacaoExameManager = new Mock(SolicitacaoExameManager.class); 
         configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class); 
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class); 
-        cidadeManager = new Mock(CidadeManager.class); 
         
         candidatoManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         candidatoManager.setDao((CandidatoDao) candidatoDao.proxy());
@@ -152,7 +149,6 @@ public class CandidatoManagerTest extends MockObjectTestCase
         candidatoManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
         candidatoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
         candidatoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
-        candidatoManager.setCidadeManager((CidadeManager) cidadeManager.proxy());
 		
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
@@ -1559,8 +1555,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Collection<Idioma> idiomas = new ArrayList<Idioma>();
 		idiomas.add(idioma);
 		
-		cidadeManager.expects(once()).method("find").withAnyArguments();
-		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, idiomas, 1);
+		String[] retorno = candidatoManager.montaStringBuscaF2rh(curriculo, uf, new Long[]{cidadeValue}, escolaridadeValue, dataCadIni, dataCadFim, idadeMin, idadeMax, idioma.getId(), ufs, cidades, idiomas, 1);
 		
 		String[] camposInformados = new String[]{"",
 				"",
@@ -1576,9 +1571,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
 				"",
 				"",
 				"page=1",
-				"cidade="				
+				""				
 		};
-
 		
 		assertEquals(15, camposInformados.length);
 		assertEquals(15, retorno.length);
