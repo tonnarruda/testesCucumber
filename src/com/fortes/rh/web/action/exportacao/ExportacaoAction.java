@@ -13,6 +13,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
@@ -27,16 +28,18 @@ public class ExportacaoAction extends MyActionSupport
 	
 	private Long empresaId;
 	private Collection<Empresa> empresas;
-	
-	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
-	private String[] areasCheck;
-
-	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
-	private String[] estabelecimentosCheck;
-	
 	private Collection<Curso> cursos = new ArrayList<Curso>();
+	
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
+	
+	private String[] estabelecimentosCheck;
+	private String[] areasCheck;
 	private String[] cursosCheck;
+	private String[] turmasCheck;
+	
 	private String textoTru;
 	
 	public String prepareExportacaoTreinamentos() throws Exception
@@ -83,7 +86,7 @@ public class ExportacaoAction extends MyActionSupport
 			for (Curso curso : cursos)
 			{
 				//Ocorrências dos colaboradores
-				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()});
+				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()}, LongUtil.arrayStringToArrayLong(turmasCheck));
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 				{
 					texto.append("1"); 
@@ -230,5 +233,17 @@ public class ExportacaoAction extends MyActionSupport
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
+	}
+
+	public String[] getTurmasCheck() {
+		return turmasCheck;
+	}
+
+	public void setTurmasCheck(String[] turmasCheck) {
+		this.turmasCheck = turmasCheck;
+	}
+
+	public Collection<CheckBox> getTurmasCheckList() {
+		return turmasCheckList;
 	}
 }

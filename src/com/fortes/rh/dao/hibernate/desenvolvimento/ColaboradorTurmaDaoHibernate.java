@@ -1083,7 +1083,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds) 
+	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, t.dataPrevIni, t.dataPrevFim) ");
@@ -1098,6 +1098,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if (areaIds != null && areaIds.length > 0)
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+
+		if (turmaIds != null && turmaIds.length > 0)
+			hql.append("and t.id in (:turmasIds) ");
 
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and co.codigoAC is not null ");
@@ -1126,6 +1129,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if (areaIds != null && areaIds.length > 0)
 			query.setParameterList("areasIds", areaIds, Hibernate.LONG);
+		
+		if (turmaIds != null && turmaIds.length > 0)
+			query.setParameterList("turmasIds", turmaIds, Hibernate.LONG);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 

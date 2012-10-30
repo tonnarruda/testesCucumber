@@ -282,8 +282,13 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	java.setDataPrevFim(DateUtil.criarDataMesAno(01, 07, 2010));
     	turmaDao.save(java);
     	
+    	Turma scrum = TurmaFactory.getEntity();
+    	scrum.setCurso(curso);
+    	scrum.setDataPrevIni(DateUtil.criarDataMesAno(01, 06, 2010));
+    	scrum.setDataPrevFim(DateUtil.criarDataMesAno(01, 07, 2010));
+    	turmaDao.save(scrum);
+    	
     	Colaborador joao = ColaboradorFactory.getEntity();
-    	java.setCurso(curso);
     	joao.setDesligado(false);
     	joao.setEmailColaborador("b@b.com.br");
     	joao.setEmpresa(empresa);
@@ -299,7 +304,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htJoao = historicoColaboradorDao.save(htJoao);
     	
     	Colaborador maria = ColaboradorFactory.getEntity();
-    	java.setCurso(curso);
     	maria.setDesligado(true);
     	maria.setEmailColaborador("teste@b.com.br");
     	maria.setEmpresa(empresa);
@@ -315,7 +319,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htMaria = historicoColaboradorDao.save(htMaria);
     	
     	Colaborador pedro = ColaboradorFactory.getEntity();
-    	java.setCurso(curso);
     	pedro.setDesligado(false);
     	pedro.setEmailColaborador("");
     	pedro.setEmpresa(empresaFora);
@@ -331,7 +334,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         htPedro = historicoColaboradorDao.save(htPedro);
     	
     	Colaborador debora = ColaboradorFactory.getEntity();
-    	java.setCurso(curso);
     	debora.setDesligado(false);
     	debora.setEmailColaborador(null);
     	debora.setEmpresa(empresa);
@@ -353,7 +355,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	ColaboradorTurma colaboradorTurmaMaria = getEntity();
     	colaboradorTurmaMaria.setColaborador(maria);
-    	colaboradorTurmaMaria.setTurma(java);
+    	colaboradorTurmaMaria.setTurma(scrum);
     	colaboradorTurmaDao.save(colaboradorTurmaMaria);
     	
     	ColaboradorTurma colaboradorTurmaPedro = getEntity();
@@ -366,11 +368,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurmaDebora.setTurma(java);
     	colaboradorTurmaDao.save(colaboradorTurmaDebora);
     	
-    	Date dataInicial = DateUtil.criarDataMesAno(01, 01, 2010);
-    	Date dataFinal = DateUtil.criarDataMesAno(01, 01, 2012);
-    	
-    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()});
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, null);
     	assertEquals(2, retorno.size());
+
+    	retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, new Long[]{scrum.getId()});
+    	assertEquals(1, retorno.size());
     }
     
     public void testFindEmpresaDoColaborador()
