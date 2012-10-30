@@ -21,14 +21,9 @@ import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.security.spring.aop.callback.GerenciadorComunicacaoAuditorCallbackImpl;
-import com.fortes.security.auditoria.Audita;
-import com.fortes.security.auditoria.Modulo;
 
-@Modulo("Gerenc.Comunicação")
 public interface GerenciadorComunicacaoManager extends GenericManager<GerenciadorComunicacao>
 {
-	@Audita(operacao="CancelarContratação", auditor=GerenciadorComunicacaoAuditorCallbackImpl.class)
 	void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem);
 	void enviaEmailCandidatosNaoAptos(Empresa empresa, Long solicitacaoId) throws Exception;
 	void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);

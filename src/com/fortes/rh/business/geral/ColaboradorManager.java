@@ -53,6 +53,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
+	@Audita(operacao="Cancel. Contrat.AC", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
@@ -184,7 +186,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
-	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<PendenciaAC> findPendencias(Long empresaId);
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception;
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria);
