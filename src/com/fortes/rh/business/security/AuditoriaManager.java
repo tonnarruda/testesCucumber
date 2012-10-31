@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.security.Auditoria;
 
 public interface AuditoriaManager extends GenericManager<Auditoria>
@@ -34,5 +35,6 @@ public interface AuditoriaManager extends GenericManager<Auditoria>
 	 * Busca todas as operações existente de um módulo.
 	 */
 	public List<String> findOperacoesPeloModulo(String modulo);
-	public String getDetalhes(String dados);	
+	public String getDetalhes(String dados);
+	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,String mensagem);	
 }

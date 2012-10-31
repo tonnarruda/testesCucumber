@@ -310,14 +310,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	assertEquals("1232456", acompanhamentos.get(0).getMatricula());
     	assertEquals(3, acompanhamentos.get(0).getPeriodoExperiencias().size());
-    	assertEquals("Previsto: 24/02/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(0));
-    	assertEquals("Previsto: 26/03/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(1));
-    	assertEquals("Previsto: 25/04/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(2));
+    	assertEquals("Previsto: 23/02/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(0));
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(1));
+    	assertEquals("Previsto: 24/04/2011", acompanhamentos.get(0).getPeriodoExperiencias().get(2));
 
     	assertEquals("9999999", acompanhamentos.get(1).getMatricula());
     	assertEquals(3, acompanhamentos.get(1).getPeriodoExperiencias().size());
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(0));
-    	assertEquals("Previsto: 26/03/2011", acompanhamentos.get(1).getPeriodoExperiencias().get(1));
+    	assertEquals("Previsto: 25/03/2011", acompanhamentos.get(1).getPeriodoExperiencias().get(1));
     	assertNotNull(acompanhamentos.get(1).getPeriodoExperiencias().get(2));
     }
     

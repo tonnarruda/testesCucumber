@@ -53,9 +53,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
-	@Audita(operacao="Cancel. Contrat.AC", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 
+	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
@@ -64,7 +63,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public Long religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);
-	
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa);
 	public String recuperaSenha(String cpf,Empresa empresa);

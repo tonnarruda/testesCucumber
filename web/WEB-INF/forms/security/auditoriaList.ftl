@@ -89,7 +89,7 @@
 
 	<@display.table name="auditorias" id="auditoria" class="dados" >
 		<@display.column property="data" title="Data / Hora" format="{0,date,dd/MM/yyyy HH:mm}" style="text-align: center;width: 150px;"/>
-		<@display.column property="usuario.nome" title="Usuário"/>
+		<@display.column property="usuario.nomeFormatado" title="Usuário"/>
 		<@display.column property="entidade" title="Movimentação"/>
 		<@display.column title="Operação" property="operacao" />
 		<@display.column title="Detalhes" style="text-align: center;width:50px;">

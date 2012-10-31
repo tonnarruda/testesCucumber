@@ -62,7 +62,7 @@
 						<h3>Usuário</h3>
 					</td>
 					<td>
-						${auditoriaView.usuario.nome}
+						${auditoriaView.usuario.nomeFormatado}
 					</td>
 				</tr>
 				<tr>
