@@ -16,6 +16,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
@@ -99,6 +101,8 @@ public class Index extends ActionSupport
 	
 	private ConfiguracaoCaixasMensagens configuracaoCaixasMensagens;
 	private Character tipo;
+	
+	private String modulo;
 	
 	public String index()
 	{
@@ -225,6 +229,15 @@ public class Index extends ActionSupport
 			
 			listaVideos = (Collection<Video>) StringUtil.simpleJSONtoArrayJava(jsonText, Video.class);
 			listaVideos = new CollectionUtil<Video>().sortCollectionStringIgnoreCase(listaVideos, "titulo");
+			
+			if (!StringUtil.isBlank(modulo))
+			{
+				CollectionUtils.filter(listaVideos, new Predicate() {
+														public boolean evaluate(Object obj) {
+															return (((Video)obj).getTitulo().startsWith(modulo));
+														}
+													});
+			}
 		
 		} catch (Exception e) 
 		{
@@ -509,5 +522,13 @@ public class Index extends ActionSupport
 
 	public void setTipo(Character tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getModulo() {
+		return modulo;
+	}
+
+	public void setModulo(String modulo) {
+		this.modulo = modulo;
 	}
 }

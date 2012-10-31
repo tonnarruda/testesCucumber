@@ -28,12 +28,50 @@
 			var remote = null;
 			remote = window.open(path,'Janela1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=auto,resizable=no,menubar=no,width=380,height=550')
 		}
+		
+		function exibeOcultaFiltro() 
+		{
+			$('#divFiltroForm').toggle();
+			
+			if ( $('#divFiltroForm').is(':visible') )
+			{
+				$('#linkFiltro img').attr('src','<@ww.url includeParams="none" value="/imgs/"/>arrow_up.gif');
+				$('#labelLink').text('Ocultar filtro');
+			}
+			else
+			{
+				$('#linkFiltro img').attr('src','<@ww.url includeParams="none" value="/imgs/"/>arrow_down.gif');
+				$('#labelLink').text('Exibir filtro');
+			}
+		}
+		
+		$(function() {
+			<#if modulo?exists && modulo != ''>
+				exibeOcultaFiltro();
+			</#if>
+		});
 	</script>
 </head>
 
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+
+	<div class="divFiltro">
+		<div class="divFiltroLink">
+			<a href="javascript:exibeOcultaFiltro();" id="linkFiltro">
+				<img alt="Ocultar\Exibir Filtro" src="<@ww.url includeParams="none" value="/imgs/"/>arrow_down.gif"> 
+				<span id="labelLink" class="labelLink">Exibir Filtro</span>
+			</a>
+		</div>
+		<div id="divFiltroForm" class="divFiltroForm hidden">
+			<@ww.form name="formBusca" action="videoteca.action" method="POST" id="formBusca">
+				<@ww.select label="Módulo" name="modulo" list=r"#{'R&S':'R&S', 'C&S':'C&S', 'Pesquisas':'Pesquisas', 'Aval. de Desempenho':'Aval. de Desempenho', 'T&D':'T&D', 'Info. Funcionais':'Info. Funcionais', 'SESMT':'SESMT', 'Utilitários':'Utilitários'}" headerKey="" headerValue="Todos"/>
+				<button type="submit" class="btnPesquisar grayBGE"></button>
+			</@ww.form>
+		</div>
+	</div>
+	<br />
 
 	<@display.table name="listaVideos" id="video" class="dados">
 		<@display.column title="Ações" media="html" style="text-align:center; width:80px;" >
