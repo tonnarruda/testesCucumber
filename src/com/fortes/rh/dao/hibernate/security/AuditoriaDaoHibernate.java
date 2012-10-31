@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -44,7 +45,7 @@ public class AuditoriaDaoHibernate extends GenericDaoHibernate<Auditoria> implem
 	private Criteria getCriteriaAuditoria()
 	{
 		Criteria criteria = getSession().createCriteria(Auditoria.class, "a");
-		criteria.createCriteria("a.usuario", "u");
+		criteria.createCriteria("a.usuario", "u", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("a.id"), "id");

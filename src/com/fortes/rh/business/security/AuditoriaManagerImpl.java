@@ -2,6 +2,7 @@ package com.fortes.rh.business.security;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,9 +15,12 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.dao.security.AuditoriaDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
+import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
@@ -164,5 +168,20 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 			return " ";
 		else
 			return chaveParaAuditoria;
+	}
+
+	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,	String mensagem) 
+	{
+		Map<String, Object> cancelamentoContratacaoAC = new LinkedHashMap<String, Object>();
+		cancelamentoContratacaoAC.put("Colaborador", colaborador.getNome());
+		cancelamentoContratacaoAC.put("Mensagem", "Contratação cancelada no AC Pessoal. Obs: "+mensagem);
+		
+		String dados = new GeraDadosAuditados(null, cancelamentoContratacaoAC).gera();
+		Empresa empresa = colaborador.getEmpresa();
+		
+		Auditoria auditoria = new Auditoria();
+		auditoria.audita(null, empresa, "Colaborador", "Cancel. Contrat.AC", colaborador.getNome(), dados);
+		
+		this.getDao().save(auditoria);
 	}
 }
