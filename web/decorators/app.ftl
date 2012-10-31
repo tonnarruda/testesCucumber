@@ -29,6 +29,10 @@
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/menu.css"/>');
 		
+		.buttonGroup { width: 970px; }
+		.buttonGroupRelative { position: relative; }
+		.buttonGroupFixed { position: fixed; bottom: 0px; background: url('<@ww.url includeParams="none" value="/imgs/branco_70.png"/>'); }
+		.buttonGroupFixed button { margin: 5px 0px; }
 	</style>
 	
 	${head}
@@ -78,8 +82,29 @@
 
 	<script type="text/javascript" >
 		$(document).ready(function(){
-			// Adiciona setinhas aos submenus que possuem nodes filhos;
+			// Adiciona setas aos submenus que possuem nodes filhos;
 			$("#menuDropDown ul li:has(ul)").addClass("subMenuArrow");
+			
+
+			// Mantem o menu visivel
+			var sticky_navigation_offset_top = $('#menuDropDown').offset().top;
+			
+			var sticky_navigation = function(){
+				var scroll_top = $(window).scrollTop();
+				
+				if (scroll_top > sticky_navigation_offset_top) { 
+					$('#menuDropDown').css({ 'position': 'fixed', 'top':0, 'left':0 });
+				} else {
+					$('#menuDropDown').css({ 'position': 'relative' }); 
+				}
+			};
+			
+			sticky_navigation();
+			
+			$(window).scroll(function() {
+				 sticky_navigation();
+			});
+			
 			
 			// Calcula tempo de expiracao da sessao
 			var expiracao;

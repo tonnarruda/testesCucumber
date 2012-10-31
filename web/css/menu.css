@@ -4,6 +4,7 @@
 	width: 100%;
 	list-style: none;
 	background: url(../imgs/bgMenu2.gif);
+	z-index: 9999;
 }
 #menuDropDown li {
 	float: left;
