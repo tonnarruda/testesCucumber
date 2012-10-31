@@ -39,6 +39,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
+import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
@@ -87,6 +88,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -130,6 +132,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private SolicitacaoManager solicitacaoManager;
+	private AuditoriaManager auditoriaManager;
 	
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -1456,6 +1459,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		historicoColaboradorManager.remove(historicoColaborador);
 		removeColaboradorDependencias(colaborador);		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
+		auditoriaManager.auditaCancelarContratacaoNoAC(colaborador, mensagem);
 	}
 	
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador) 
@@ -1793,11 +1797,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					}
 				}
 				
-				Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias());
+				Date dataDoPeriodoDeExperiencia = DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1);
 				
 				if(dataDoPeriodoDeExperiencia.getTime() <= periodoFim.getTime() && dataDoPeriodoDeExperiencia.getTime() >= periodoIni.getTime())
 				{
-					String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()));
+					String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1));
 					experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
 				}
 				
@@ -2418,6 +2422,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
+	}
+
+	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
+		this.auditoriaManager = auditoriaManager;
 	}
 
 }

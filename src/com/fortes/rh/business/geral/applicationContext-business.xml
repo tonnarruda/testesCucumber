@@ -152,6 +152,9 @@
     <property name="solicitacaoManager">
       <ref bean="solicitacaoManager" />
     </property>
+    <property name="auditoriaManager">
+      <ref bean="auditoriaManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

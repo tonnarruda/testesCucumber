@@ -116,6 +116,14 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 		return nome;
 	}
 
+	public String getNomeFormatado()
+	{
+		if(nome == null)
+			return "Usuário não Identificado";
+		
+		return nome;
+	}
+
 	public void setNome(String nome)
 	{
 		this.nome = nome;

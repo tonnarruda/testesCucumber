@@ -223,7 +223,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
-			prepareRelatorioAcompanhamentoExperiencia();
+			prepareRelatorioAcompanhamentoExperienciaPrevisto();
 			return Action.INPUT;
 		}
 
