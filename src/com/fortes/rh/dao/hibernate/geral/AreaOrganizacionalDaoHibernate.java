@@ -483,4 +483,15 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		
 		return criteria.list();
 	}
+
+	public void desvinculaResponsavel(Long colaboradorId)
+	{
+		String hql = "update AreaOrganizacional set responsavel.id = null where responsavel.id = :responsavelId";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("responsavelId", colaboradorId);
+
+		query.executeUpdate();
+	}
 }

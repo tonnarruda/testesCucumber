@@ -440,6 +440,28 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(resultadoAreaFilha1, areaOrganizacionalDao.findIdsAreasFilhas(Arrays.asList( areaFilha1.getId() )));
 	}
 
+	public void testDesvinculaResponsavel()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setUsuario(usuario);
+		colaboradorDao.save(colaborador);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacional.setResponsavel(colaborador);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		areaOrganizacionalDao.desvinculaResponsavel(colaborador.getId());
+		
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional.getId()).getResponsavel().getId());
+		
+	}
 	
 	public void setCargoDao(CargoDao cargoDao)
 	{

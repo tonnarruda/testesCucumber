@@ -818,6 +818,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
         usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
         candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
+        areaOrganizacinoalManager.expects(once()).method("desvinculaResponsavel").with(eq(colaborador.getId()));
         candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
         colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
@@ -832,6 +833,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
     	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
     	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
+    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsavel").with(eq(colaborador.getId()));
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);

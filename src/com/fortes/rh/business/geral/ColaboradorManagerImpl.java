@@ -651,6 +651,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
 	{
+		Colaborador colaborador = findByCodigoAC(codigoAC, empresa);
+		
+		areaOrganizacionalManager.desvinculaResponsavel(colaborador.getId());
 		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
 	}
 
@@ -1010,6 +1013,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
 			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
+			areaOrganizacionalManager.desvinculaResponsavel(colaboradorId);
 			getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
 			
 			transactionManager.commit(status);
