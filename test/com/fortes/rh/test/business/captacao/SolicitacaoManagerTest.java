@@ -281,7 +281,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoManager.updateSolicitacao(solicitacao, empresa, UsuarioFactory.getEntity());
+			solicitacaoManager.updateSolicitacao(solicitacao, null, empresa, UsuarioFactory.getEntity());
 		}
 		catch (Exception e)
 		{

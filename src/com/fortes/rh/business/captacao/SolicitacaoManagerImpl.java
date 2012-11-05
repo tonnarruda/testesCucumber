@@ -39,6 +39,7 @@ import com.opensymphony.xwork.ActionContext;
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
 {
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
 	private Mail mail;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
@@ -161,7 +162,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().updateSuspendeSolicitacao(suspender, obsSuspensao, solicitacaoId);
 	}
 	
-	public void updateSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario) throws Exception 
+	public void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception 
 	{
 		Solicitacao solicitacaoAux = findByIdProjectionForUpdate(solicitacao.getId());
 
@@ -179,15 +180,14 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
         	solicitacao.setFaixaSalarial(solicitacaoAux.getFaixaSalarial());
         if (solicitacao.getEmpresa() == null || solicitacao.getEmpresa().getId() == null)
         	solicitacao.setEmpresa(solicitacaoAux.getEmpresa());
-
-        if (solicitacao.getAvaliacao().getId() == null)
-        	solicitacao.setAvaliacao(null);
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
       	if(solicitacao.getLiberador() == null || solicitacao.getLiberador().getId() == null)
     		solicitacao.setLiberador(null);
         
         update(solicitacao);
+        
+        solicitacaoAvaliacaoManager.saveAvaliacoesSolicitacao(solicitacao.getId(), avaliacaoIds);
 		
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
@@ -348,5 +348,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
 	}
 }

@@ -51,6 +51,7 @@
     <mapping class="com.fortes.rh.model.captacao.EtapaSeletiva" />
     <mapping class="com.fortes.rh.model.captacao.Solicitacao" />
     <mapping class="com.fortes.rh.model.captacao.SolicitacaoBairro" />
+    <mapping class="com.fortes.rh.model.captacao.SolicitacaoAvaliacao" />
     <mapping class="com.fortes.rh.model.captacao.EmpresaBds" />
     <mapping class="com.fortes.rh.model.captacao.SolicitacaoBDS" />
     <mapping class="com.fortes.rh.model.captacao.CandidatoSolicitacao" />

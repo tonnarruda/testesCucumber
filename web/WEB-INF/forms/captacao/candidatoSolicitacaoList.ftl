@@ -188,6 +188,7 @@
 				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" title="Documentos Anexos"><img border="0"  src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			
+			<#-- 
 			<#if solicitacao.avaliacao.id?exists>
 				<#if candidatoSolicitacao.colaboradorQuestionarioId?exists>
 					<#assign jaResponderam = true/>
@@ -196,6 +197,7 @@
 					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 				</#if>
 			</#if>
+			-->
 		</@authz.authorize>
 		</@display.column>
 

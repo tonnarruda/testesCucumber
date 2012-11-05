@@ -173,7 +173,6 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		hql.append("						solicitacao.encerrada,  ");
 		hql.append("						solicitacao.empresa.id,  ");
 		hql.append("						historicoFaixaSalarial.valor, ");
-		hql.append("						solicitacao.avaliacao.id, ");
 		hql.append("						faixaSalarial.id, ");
 		hql.append("						cargo.id, ");
 		hql.append("						cargo.nome, ");
@@ -239,7 +238,6 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.motivoSolicitacao", "m", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.estabelecimento", "es", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.cidade", "ci", Criteria.LEFT_JOIN);
-		criteria.createCriteria("s.avaliacao", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.liberador", "l", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ci.uf", "est", Criteria.LEFT_JOIN);
 
@@ -284,8 +282,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("ci.nome"), "projectionCidadeNome");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");
 		p.add(Projections.property("est.sigla"), "projectionCidadeUfSigla");
-		p.add(Projections.property("a.id"), "projectionAvaliacaoId");
-		p.add(Projections.property("a.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("s.solicitacaoAvaliacaos"), "solicitacaoAvaliacaos");
 		p.add(Projections.property("l.nome"), "liberadorNome");
 		p.add(Projections.property("l.id"), "liberadorId");
 

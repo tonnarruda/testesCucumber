@@ -172,11 +172,10 @@
 			<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
 		</#if>
 		
-		<#if !clone && somenteLeitura && solicitacao.avaliacao?exists && solicitacao.avaliacao.id?exists>
-			<@ww.textfield readonly="true" label="Modelo Avaliação do Candidato" name="solicitacao.avaliacao.titulo" id="avaliacaoId" cssStyle="width: 347px;background: #EBEBEB;"/>
-			<@ww.hidden name="solicitacao.avaliacao.id"/>
+		<#if !clone && somenteLeitura && solicitacao.solicitacaoAvaliacaos?exists && (solicitacao.solicitacaoAvaliacaos?size > 0)>
+			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=true />
 		<#else>
-			<@ww.select label="Modelo Avaliação do Candidato" name="solicitacao.avaliacao.id" id="avaliacaoId" list="avaliacoes" cssStyle="width: 250px;" listKey="id" listValue="titulo"  headerKey="" headerValue="" />
+			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=false />
 		</#if>
 		
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />

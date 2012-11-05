@@ -118,6 +118,9 @@
     <property name="candidatoSolicitacaoManager">
       <ref bean="candidatoSolicitacaoManager" />
     </property>
+    <property name="solicitacaoAvaliacaoManager">
+      <ref bean="solicitacaoAvaliacaoManager" />
+    </property>
     <property name="anuncioManager">
       <ref bean="anuncioManager" />
     </property>
@@ -163,6 +166,19 @@
     </property>
     <property name="target">
       <ref bean="solicitacaoBDSManagerTarget" />
+    </property>
+  </bean>
+  <bean id="solicitacaoAvaliacaoManagerTarget" class="com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManagerImpl">
+    <property name="dao">
+      <ref bean="solicitacaoAvaliacaoDao" />
+    </property>
+  </bean>
+  <bean id="solicitacaoAvaliacaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="solicitacaoAvaliacaoManagerTarget" />
     </property>
   </bean>
   <bean id="candidatoSolicitacaoManagerTarget" class="com.fortes.rh.business.captacao.CandidatoSolicitacaoManagerImpl">
