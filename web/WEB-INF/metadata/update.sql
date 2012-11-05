@@ -19287,3 +19287,29 @@ insert into perfil_papel(perfil_id, papeis_id) values (1, 563);--.go
 alter sequence papel_sequence restart with 564;--.go
 insert into migrations values('20121029104931');--.go
 update parametrosdosistema set appversao = '1.1.92.89';--.go
+-- versao 1.1.93.90
+
+alter table cargo alter column complementoconhecimento type text; --.go
+insert into migrations values('20121029141742');--.go
+update candidato set escolaridade = '14' where escolaridade = '11'; --.go
+update candidato set escolaridade = '13' where escolaridade = '10'; --.go
+update candidato set escolaridade = '11' where escolaridade = '09'; --.go
+update candidato set escolaridade = '10' where escolaridade = '08'; --.go
+
+update colaborador set escolaridade = '14' where escolaridade = '11'; --.go
+update colaborador set escolaridade = '13' where escolaridade = '10'; --.go
+update colaborador set escolaridade = '11' where escolaridade = '09'; --.go
+update colaborador set escolaridade = '10' where escolaridade = '08'; --.go
+insert into migrations values('20121029144427');--.go
+insert into gerenciadorcomunicacao(id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao)  
+select nextval('gerenciadorcomunicacao_sequence'), 27, 2, 6, null, id, null, false from empresa where enviaremailaniversariante = true; --.go
+
+update mensagem set tipo = 'F' where tipo = 'E';--.go
+update mensagem set tipo = 'A' where tipo = 'I';--.go
+delete from usuariomensagem where mensagem_id in (select id from mensagem where tipo not in ('C', 'P', 'A', 'T', 'F', 'S', 'U', 'D') or tipo is null);--.go
+delete from mensagem where tipo not in ('C', 'P', 'A', 'T', 'F', 'S', 'U', 'D') or tipo is null;--.go
+
+alter table empresa drop column enviaremailaniversariante; --.go
+insert into migrations values('20121105101911');--.go
+
+update parametrosdosistema set appversao = '1.1.93.90';--.go
