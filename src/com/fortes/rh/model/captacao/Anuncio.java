@@ -36,7 +36,6 @@ public class Anuncio extends AbstractModel implements Serializable
     private boolean mostraSexo;
     private boolean mostraIdade;
     private boolean exibirModuloExterno;
-    private boolean responderAvaliacaoModuloExterno;
    
     @Transient
     private boolean candidatoCadastrado;
@@ -167,13 +166,5 @@ public class Anuncio extends AbstractModel implements Serializable
 
 	public void setCandidatoCadastrado(boolean candidatoCadastrado) {
 		this.candidatoCadastrado = candidatoCadastrado;
-	}
-
-	public boolean isResponderAvaliacaoModuloExterno() {
-		return responderAvaliacaoModuloExterno;
-	}
-
-	public void setResponderAvaliacaoModuloExterno(boolean responderAvaliacaoModuloExterno) {
-		this.responderAvaliacaoModuloExterno = responderAvaliacaoModuloExterno;
 	}
 }

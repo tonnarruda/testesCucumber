@@ -23,7 +23,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -99,8 +98,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Lob
 	private String obsSuspensao;
 	
-	@ManyToOne
-	private Avaliacao avaliacao;
+	@OneToMany (mappedBy="solicitacao", fetch = FetchType.LAZY)
+	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 
 	@Transient
 	private String valorPromocao;
@@ -108,12 +107,15 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Integer qtdVagasPreenchidas;
 	
+	@Transient
+	private Integer qtdAvaliacoes;
+	
 	public Solicitacao()
 	{
 
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long avaliacaoId, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas)
 	{
 		setId(id);
 		setQuantidade(quantidade);
@@ -123,9 +125,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setProjectionEmpresaId(empresaId);
 		this.encerrada = encerrada;
 		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
-		
-		setAvaliacao(new Avaliacao());
-		getAvaliacao().setId(avaliacaoId);
 		
 		setProjectionFaixaSalarialId(faixaSalarialId);
 		getFaixaSalarial().setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -630,31 +629,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		return StringUtil.valueOf(this.idadeMaxima);
 	}
 
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-	
-	public void setProjectionAvaliacaoId(Long avaliacaoId) 
-	{
-		inicializaAvaliacao();
-		avaliacao.setId(avaliacaoId);
-	}
-
-	public void setProjectionAvaliacaoTitulo(String avaliacaoTitulo)
-	{
-		inicializaAvaliacao();
-		avaliacao.setTitulo(avaliacaoTitulo);
-	}
-
-	private void inicializaAvaliacao() {
-		if(this.avaliacao == null)
-			avaliacao = new Avaliacao();
-	}
-
 	public Usuario getLiberador() {
 		return liberador;
 	}
@@ -729,4 +703,20 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
 	}
 
+	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() {
+		return solicitacaoAvaliacaos;
+	}
+
+	public void setSolicitacaoAvaliacaos(
+			Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos) {
+		this.solicitacaoAvaliacaos = solicitacaoAvaliacaos;
+	}
+
+	public Integer getQtdAvaliacoes() {
+		return qtdAvaliacoes;
+	}
+
+	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
+		this.qtdAvaliacoes = qtdAvaliacoes;
+	}
 }

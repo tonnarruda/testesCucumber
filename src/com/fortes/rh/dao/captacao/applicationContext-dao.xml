@@ -114,6 +114,14 @@
       <ref bean="solicitacaoBairroDaoTarget" />
     </property>
   </bean>
+  <bean id="solicitacaoAvaliacaoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="solicitacaoAvaliacaoDaoTarget" />
+    </property>
+  </bean>
   <bean id="configuracaoImpressaoCurriculoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.captacao.ConfiguracaoImpressaoCurriculoDao</value>

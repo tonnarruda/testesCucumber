@@ -72,6 +72,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="solicitacaoAvaliacaoDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.SolicitacaoAvaliacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="configuracaoImpressaoCurriculoDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

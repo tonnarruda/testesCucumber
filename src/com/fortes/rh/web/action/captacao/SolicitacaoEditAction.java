@@ -16,6 +16,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.captacao.relatorio.ProcessoSeletivoRelatorio;
 import com.fortes.rh.model.captacao.relatorio.SolicitacaoPessoalRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -58,6 +60,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -86,6 +89,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private EmpresaManager empresaManager;
     private AvaliacaoManager avaliacaoManager;
     private ColaboradorManager colaboradorManager;
+    private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -102,6 +106,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private Collection<CheckBox> bairrosCheckList = new ArrayList<CheckBox>();
     private String[] emailsCheck;
     private Collection<CheckBox> emailsCheckList = new ArrayList<CheckBox>();
+    private String[] etapaCheck;
+    private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
+    private String[] avaliacoesCheck;
+    private Collection<CheckBox> avaliacoesCheckList = new ArrayList<CheckBox>();
+    
     private Collection<Cargo> cargos = new ArrayList<Cargo>();
     private Long cargoId;
 
@@ -110,9 +119,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private HashMap vinculos;
     private HashMap situacoes;
     private HashMap status;
-
-    private Collection<CheckBox> etapaSeletivaCheckList = new ArrayList<CheckBox>();
-    private String[] etapaCheck;
 
     private String ano;
     private String nomeLiberador;
@@ -152,6 +158,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		Long faixaInativaId = null;
 		Long areaInativaId = null;
 		
+		avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
+        avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
+		
     	if (solicitacao != null && solicitacao.getId() != null)
         {
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
@@ -174,6 +183,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             
             Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId());
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
+			
+			Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaosList = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId());
+			avaliacoesCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesCheckList, solicitacaoAvaliacaosList, "getAvaliacaoId");
         }
 
 		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
@@ -194,8 +206,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
         
-        avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
-
         escolaridades = new Escolaridade();
         sexos = new Sexo();
         vinculos = new Vinculo();
@@ -243,7 +253,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     {
         if (bairrosCheck != null)
         {
-        	Collection<Bairro> bairrosTmp = montaCargos();
+        	Collection<Bairro> bairrosTmp = montaBairros();
         	solicitacao.setBairros(bairrosTmp);
         }
 
@@ -253,9 +263,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         
         if (solicitacao.getCidade() != null && solicitacao.getCidade().getId() == null)
         	solicitacao.setCidade(null);
-        
-        if (solicitacao.getAvaliacao() != null && solicitacao.getAvaliacao().getId() == null)
-        	solicitacao.setAvaliacao(null);
         
         if(solicitacao.getStatus() == StatusAprovacaoSolicitacao.APROVADO)
            	solicitacao.setLiberador(usuarioLogado);
@@ -270,19 +277,16 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public String update() throws Exception
     {
         if (bairrosCheck != null)
-        {
-        	Collection<Bairro> bairrosTmp = montaCargos();
-        	solicitacao.setBairros(bairrosTmp);
-        }
+        	solicitacao.setBairros(montaBairros());
         else
         	solicitacao.setBairros(null);
         
-        solicitacaoManager.updateSolicitacao(solicitacao,getEmpresaSistema(), getUsuarioLogado());
+        solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), getUsuarioLogado());
         
         return Action.SUCCESS;
     }
 
-	private Collection<Bairro> montaCargos() {
+	private Collection<Bairro> montaBairros() {
 		Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
 
 		for (int i = 0; i < bairrosCheck.length; i++)
@@ -806,5 +810,18 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setImprimirObservacao(boolean imprimirObservacao)
 	{
 		this.imprimirObservacao = imprimirObservacao;
+	}
+
+	public void setAvaliacoesCheck(String[] avaliacoesCheck) {
+		this.avaliacoesCheck = avaliacoesCheck;
+	}
+
+	public Collection<CheckBox> getAvaliacoesCheckList() {
+		return avaliacoesCheckList;
+	}
+
+	public void setSolicitacaoAvaliacaoManager(
+			SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
 	}
 }
