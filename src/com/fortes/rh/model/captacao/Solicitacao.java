@@ -34,6 +34,7 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -100,6 +101,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
+	
+	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
 
 	@Transient
 	private String valorPromocao;
@@ -718,5 +722,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
 		this.qtdAvaliacoes = qtdAvaliacoes;
+	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+		return colaboradorQuestionarios;
+	}
+
+	public void setColaboradorQuestionarios(
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
+		this.colaboradorQuestionarios = colaboradorQuestionarios;
 	}
 }

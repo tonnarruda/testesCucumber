@@ -100,6 +100,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private Collection<FaixaSalarial> faixaSalarials;
     private Collection<MotivoSolicitacao> motivoSolicitacaos;
     private Collection<Estabelecimento> estabelecimentos;
+    Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 
     private Collection<Funcao> funcoes;
     private Collection<Ambiente> ambientes;
@@ -188,8 +189,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId());
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
 			
-			Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaosList = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId());
-			avaliacoesCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesCheckList, solicitacaoAvaliacaosList, "getAvaliacaoId");
+			solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId());
+			avaliacoesCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesCheckList, solicitacaoAvaliacaos, "getAvaliacaoId");
 			
 			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
         }
@@ -838,5 +839,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public int getQtdAvaliacoesRespondidas() {
 		return qtdAvaliacoesRespondidas;
+	}
+
+	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() {
+		return solicitacaoAvaliacaos;
 	}
 }

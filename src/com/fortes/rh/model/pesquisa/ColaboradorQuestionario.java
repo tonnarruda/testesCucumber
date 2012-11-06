@@ -85,7 +85,8 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.nomeCursoTurmaAvaliacao = "Curso: "+cursoNome + " - Turma: " + turma.getDescricao() + " - Avaliação: " + questionarioTitulo;
     }
 
-    public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) {
+    public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) 
+    {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 		
 		if (avaliacaoDesempenho != null)
@@ -98,10 +99,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.avaliador.setId(avaliadorId);
 	}
 
-	public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho) {
-		this.avaliacaoDesempenho = avaliacaoDesempenho;
-	}
-	
+    public ColaboradorQuestionario(Long id, Long avaliacaoId, String avaliacaoTitulo, Long candidatoId) 
+    {
+    	this.setId(id);
+    	this.setProjectionAvaliacaoId(avaliacaoId);
+    	this.setProjectionAvaliacaoTitulo(avaliacaoTitulo);
+    	this.setProjectionCandidatoId(candidatoId);
+    }
+
 	public void setAvaliadoOuAvaliador(Long colaboradorId, boolean isAvaliado) {
 		
 		Colaborador colaborador = new Colaborador();
@@ -472,6 +477,10 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     		this.questionario = new Questionario();
 	}
 
+	public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho) {
+		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
+    
  	public Colaborador getColaborador()
 	{
 		return colaborador;

@@ -158,7 +158,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		try 
 		{
 			colaboradores = colaboradorQuestionarioManager.findRespondidasBySolicitacao(solicitacao.getId());
-			Avaliacao modelo = avaliacaoManager.findById(solicitacao.getAvaliacao().getId());
+			Avaliacao modelo = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Avaliação da Solicitação", getEmpresaSistema(), "Modelo de Avaliação: " + modelo.getTitulo());
 			return Action.SUCCESS;		
 		}
