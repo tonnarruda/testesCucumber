@@ -47,18 +47,20 @@
 			
 			<#list pergunta.respostas as resposta>
 				<#assign checked = "" />
-				<#list pergunta.colaboradorRespostas as colaboradorResposta >
-					<#if colaboradorResposta.temResposta() && (resposta.id == colaboradorResposta.resposta.id)>
-						<#assign checked = "checked" />
-						<#break/>
-					</#if>
+				<#if pergunta.colaboradorRespostas?exists>
+					<#list pergunta.colaboradorRespostas as colaboradorResposta >
+						<#if colaboradorResposta.temResposta() && (resposta.id == colaboradorResposta.resposta.id)>
+							<#assign checked = "checked" />
+							<#break/>
+						</#if>
+						
+						<#if colaboradorResposta.comentario?exists>
+							<#assign valueComentario = colaboradorResposta.comentario />
+						</#if>
+						
+					</#list>
+				</#if>
 					
-					<#if colaboradorResposta.comentario?exists>
-						<#assign valueComentario = colaboradorResposta.comentario />
-					</#if>
-					
-				</#list>
-				
 				<input type="checkbox" class="opcaoResposta${pergunta.id},radio" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.id" value="${pergunta.id}"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}"/>
