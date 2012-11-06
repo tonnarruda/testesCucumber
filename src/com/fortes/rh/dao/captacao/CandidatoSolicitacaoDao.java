@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("unchecked")
 public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao>
@@ -28,4 +29,5 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Collection<Integer> getIdF2RhCandidato(Long solicitacaoId);
 	void setStatusByColaborador(Long colaboradorId, char status);
 	void removeByCandidato(Long candidatoId);
+	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
 }

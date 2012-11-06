@@ -11,7 +11,6 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -194,27 +193,6 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().getCount(solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, observacaoRH, nomeBusca);
 	}
 
-	public void setColaboradorQuestionarioId(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Avaliacao avaliacao, Long solicitacaoId) 
-	{
-		if (avaliacao != null && avaliacao.getId() != null) 
-		{
-			colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
-			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacaoId);
-			
-			for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos) 
-			{
-				for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) 
-				{
-					if(candidatoSolicitacao.getCandidato().equals(colaboradorQuestionario.getCandidato()))
-					{
-						candidatoSolicitacao.setColaboradorQuestionarioId(colaboradorQuestionario.getId());
-						break;
-					}
-				}
-			}
-		}
-	}
-	
 	//TODO BACALHAU, findById apenas para update no status
 	public void setStatus(Long candidatoSolicitacaoId, char status)
 	{
@@ -236,5 +214,10 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	public void removeCandidato(Long candidatoId) 
 	{
 		getDao().removeByCandidato(candidatoId);
+	}
+
+	public Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId) 
+	{
+		return getDao().findAvaliacoesCandidatoSolicitacao(solicitacaoId, candidatoId);
 	}
 }

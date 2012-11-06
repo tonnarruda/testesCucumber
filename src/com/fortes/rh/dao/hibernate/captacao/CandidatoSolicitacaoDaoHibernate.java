@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("unchecked")
 public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<CandidatoSolicitacao> implements CandidatoSolicitacaoDao
@@ -509,5 +510,24 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		query = getSession().createQuery(hql);
 		query.setLong("candidatoId", candidatoId);
 		query.executeUpdate();
+	}
+
+	public Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ColaboradorQuestionario(cq.id, a.id, a.titulo, cs.candidato.id) ");
+		hql.append("from CandidatoSolicitacao cs ");
+		hql.append("left join cs.solicitacao s ");
+		hql.append("left join s.colaboradorQuestionarios cq with cq.candidato.id = cs.candidato.id ");
+		hql.append("left join s.solicitacaoAvaliacaos sa ");
+		hql.append("left join sa.avaliacao a ");
+		hql.append("where cs.solicitacao.id = :solicitacaoId ");
+		hql.append("and cs.candidato.id = :candidatoId");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("solicitacaoId", solicitacaoId);
+		query.setLong("candidatoId", candidatoId);
+		
+		return query.list();
 	}
 }

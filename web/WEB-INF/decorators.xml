@@ -37,6 +37,7 @@
 		<pattern>/geral/cid/find.action*</pattern>
 		<pattern>/desenvolvimento/colaboradorTurma/findNotas.action*</pattern>
 		<pattern>/desenvolvimento/turma/popUpTurmaAvaliacaoAcao.action*</pattern>
+		<pattern>/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action*</pattern>
 		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
 		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>		
 		<pattern>/grafico.jsp*</pattern>

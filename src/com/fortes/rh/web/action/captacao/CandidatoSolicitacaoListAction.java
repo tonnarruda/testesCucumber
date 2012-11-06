@@ -6,6 +6,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -14,7 +15,9 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -29,12 +32,15 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
 	private Collection<EtapaSeletiva> etapas;
+	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
 
 	private CandidatoSolicitacao candidatoSolicitacao;
 	private Long[] candidatoSolicitacaoIdsSelecionados;
@@ -61,7 +67,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		setTotalSize(candidatoSolicitacaoManager.getCount(solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, observacaoRH, nomeBusca));
 		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca);
 
-		//candidatoSolicitacaoManager.setColaboradorQuestionarioId(candidatoSolicitacaos, solicitacao.getAvaliacao(), solicitacao.getId());
+		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId());
 		
 		if(candidatoSolicitacaos == null || candidatoSolicitacaos.size() == 0)
 		{
@@ -166,6 +172,13 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			e.printStackTrace();
 			addActionError("Erro ao mover Candidatos.");
 		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String popupAvaliacoesCandidatoSolicitacao()
+	{
+		colaboradorQuestionarios = candidatoSolicitacaoManager.findAvaliacoesCandidatoSolicitacao(solicitacao.getId(), candidato.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -355,11 +368,21 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	{
 		return candidatoSolicitacaoIdsSelecionados;
 	}
-
 	
 	public void setCandidatoSolicitacaoIdsSelecionados(Long[] candidatoSolicitacaoIdsSelecionados)
 	{
 		this.candidatoSolicitacaoIdsSelecionados = candidatoSolicitacaoIdsSelecionados;
 	}
 
+	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() {
+		return solicitacaoAvaliacaos;
+	}
+
+	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
+	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+		return colaboradorQuestionarios;
+	}
 }

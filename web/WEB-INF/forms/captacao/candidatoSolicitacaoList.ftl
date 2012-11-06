@@ -25,7 +25,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type="text/javascript">
-	
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)
 		{
 			var link = "${baseUrl}geral/colaborador/prepareContrata.action?candidato.id=" + candidatoId + "&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=" + candidatoSolicitacaoId;
@@ -74,6 +73,19 @@
 													] 
 													});
 			
+		}
+		
+		function getMenuAvaliacoes(event, solicitacaoId, candidatoId)
+		{
+			evt = event;
+			
+			$('#popup').dialog({modal: true, 
+								width: 320, 
+								position: [event.pageX, event.pageY],
+								create: function (event, ui) {
+							        $(".ui-dialog-titlebar").hide();
+							    }
+							}).load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action"/>', { 'solicitacao.id': solicitacaoId, 'candidato.id': candidatoId });
 		}
 	</script>
 	
@@ -188,16 +200,11 @@
 				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" title="Documentos Anexos"><img border="0"  src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			
-			<#-- 
-			<#if solicitacao.avaliacao.id?exists>
-				<#if candidatoSolicitacao.colaboradorQuestionarioId?exists>
-					<#assign jaResponderam = true/>
-					<a href="prepareUpdateAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.id=${candidatoSolicitacao.colaboradorQuestionarioId}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Editar Respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<#else>
-					<a href="prepareInsertAvaliacaoSolicitacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacao.avaliacao.id}&candidato.id=${candidatoSolicitacao.candidato.id}"><img border="0" title="Responder Avaliação" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
-				</#if>
+			<#if solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)>
+				<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})"><img border="0" title="Avaliações da Solicitação" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>"></a>
+			<#else>
+				<a href="javascript:;"><img border="0" title="Não há avaliações definidas para essa solicitação" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
 			</#if>
-			-->
 		</@authz.authorize>
 		</@display.column>
 
@@ -236,10 +243,8 @@
 		</#if>
 		
 		<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
-
-		<#if jaResponderam>
-			<button onclick="window.location='imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&solicitacao.avaliacao.id=${solicitacao.avaliacao.id}'" class="btnResultadoAvaliacao"></button>
-		</#if>
+		
+		<button onclick="$('#popupImpressao').dialog({ modal:true });" class="btnResultadoAvaliacao"></button>
 
 		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 			<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
@@ -259,7 +264,24 @@
 			</#if>
 		</@authz.authorize>
 	</div>
+	
 	<div style="clear: both;"></div>
+	
+	<div id="popup"></div>
+	
+	<div id="popupImpressao" title="Selecione a avaliação" style="display:none;">
+		<@display.table name="solicitacaoAvaliacaos" id="solicitacaoAvaliacao" class="dados" >
+			<@display.column title="Ações" style="width:30px;text-align:center;">
+				<a href="imprimeRankingAvaliacao.action?solicitacao.id=${solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacaoAvaliacao.avaliacao.id}" title="Imprimir"><img src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"/></a>
+			</@display.column>
+			
+			<@display.column property="avaliacao.titulo" title="Avaliação" />
+		</@display.table>
+			
+		<div style="text-align:right;">
+			<button onclick="$('#popupImpressao').dialog('close');" class="btnFechar"></button>
+		</div>
+	</div>
 
 	<script>
 		var obj = document.getElementById("legendas");

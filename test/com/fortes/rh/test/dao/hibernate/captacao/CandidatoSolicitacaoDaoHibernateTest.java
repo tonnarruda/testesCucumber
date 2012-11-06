@@ -6,10 +6,12 @@ import java.util.Collection;
 import org.apache.tools.ant.taskdefs.Apt;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
+import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -17,11 +19,14 @@ import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstadoDao;
+import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
@@ -32,7 +37,9 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -57,6 +64,9 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	private HistoricoCandidatoDao historicoCandidatoDao;
 	private EtapaSeletivaDao etapaSeletivaDao;
 	private ColaboradorDao colaboradorDao;
+	private AvaliacaoDao avaliacaoDao;
+	private SolicitacaoAvaliacaoDao solicitacaoAvaliacaoDao;
+	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 
 	private Candidato candidato;
 	private Solicitacao solicitacao;
@@ -468,6 +478,52 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(1, solicitacaoDao.findAllByCandidato(candidato2.getId()).size());
 	}
 	
+	public void testFindAvaliacoesCandidatoSolicitacao()
+	{
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao1);
+
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao2);
+		
+		SolicitacaoAvaliacao solicitacaoAvaliacao1 = new SolicitacaoAvaliacao();
+		solicitacaoAvaliacao1.setSolicitacao(solicitacao);
+		solicitacaoAvaliacao1.setAvaliacao(avaliacao1);
+		solicitacaoAvaliacaoDao.save(solicitacaoAvaliacao1);
+
+		SolicitacaoAvaliacao solicitacaoAvaliacao2 = new SolicitacaoAvaliacao();
+		solicitacaoAvaliacao2.setSolicitacao(solicitacao);
+		solicitacaoAvaliacao2.setAvaliacao(avaliacao2);
+		solicitacaoAvaliacaoDao.save(solicitacaoAvaliacao2);
+		
+		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao1.setCandidato(candidato1);
+		candidatoSolicitacao1.setSolicitacaoId(solicitacao.getId());
+		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+		
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato2);
+		candidatoSolicitacao2.setSolicitacaoId(solicitacao.getId());
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setCandidato(candidato1);
+		colaboradorQuestionario.setSolicitacao(solicitacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		assertEquals("Uma avaliação respondida e uma não respondida", 2, candidatoSolicitacaoDao.findAvaliacoesCandidatoSolicitacao(solicitacao.getId(), candidato1.getId()).size());
+		assertEquals("Duas avaliações não respondidas", 2, candidatoSolicitacaoDao.findAvaliacoesCandidatoSolicitacao(solicitacao.getId(), candidato2.getId()).size());
+	}
+	
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;
@@ -502,5 +558,19 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+		this.avaliacaoDao = avaliacaoDao;
+	}
+
+	public void setSolicitacaoAvaliacaoDao(
+			SolicitacaoAvaliacaoDao solicitacaoAvaliacaoDao) {
+		this.solicitacaoAvaliacaoDao = solicitacaoAvaliacaoDao;
+	}
+
+	public void setColaboradorQuestionarioDao(
+			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
 	}
 }
