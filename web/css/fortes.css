@@ -65,6 +65,11 @@
 	color: black;
 	cursor: pointer;
 }
+
+.linkCheckDisabled {
+	color: #5C5C5A;
+}
+
 a.botaoNovo *
 {
 	border: 0;

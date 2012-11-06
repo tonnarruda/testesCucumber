@@ -172,7 +172,7 @@
 			<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
 		</#if>
 		
-		<#if !clone && somenteLeitura && solicitacao.solicitacaoAvaliacaos?exists && (solicitacao.solicitacaoAvaliacaos?size > 0)>
+		<#if !clone && somenteLeitura && (qtdAvaliacoesRespondidas > 0)>
 			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=true />
 		<#else>
 			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=false />

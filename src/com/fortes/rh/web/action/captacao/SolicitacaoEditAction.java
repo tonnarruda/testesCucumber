@@ -27,6 +27,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -90,6 +91,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private AvaliacaoManager avaliacaoManager;
     private ColaboradorManager colaboradorManager;
     private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -113,6 +115,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     
     private Collection<Cargo> cargos = new ArrayList<Cargo>();
     private Long cargoId;
+    private Cargo cargo;
 
 	private HashMap escolaridades;
     private HashMap sexos;
@@ -131,6 +134,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private Collection<ProcessoSeletivoRelatorio> processoSeletivoRelatorios;
 	private Collection<Estado> estados = new ArrayList<Estado>();
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
+	private Collection<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	private Estado estado;
 	private Cidade cidade;
@@ -144,8 +148,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private char statusSolicitacao;
 	private char situacaoCandidato;
 	private char visualizar;
-	private Cargo cargo;
-	private Collection<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+
+	private int qtdAvaliacoesRespondidas;
 
     private void prepare() throws Exception
     {
@@ -186,6 +190,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			
 			Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaosList = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId());
 			avaliacoesCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesCheckList, solicitacaoAvaliacaosList, "getAvaliacaoId");
+			
+			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
         }
 
 		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
@@ -823,5 +829,14 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setSolicitacaoAvaliacaoManager(
 			SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
 		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
+	}
+
+	public void setColaboradorQuestionarioManager(
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public int getQtdAvaliacoesRespondidas() {
+		return qtdAvaliacoesRespondidas;
 	}
 }

@@ -282,7 +282,6 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("ci.nome"), "projectionCidadeNome");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");
 		p.add(Projections.property("est.sigla"), "projectionCidadeUfSigla");
-		p.add(Projections.property("s.solicitacaoAvaliacaos"), "solicitacaoAvaliacaos");
 		p.add(Projections.property("l.nome"), "liberadorNome");
 		p.add(Projections.property("l.id"), "liberadorId");
 

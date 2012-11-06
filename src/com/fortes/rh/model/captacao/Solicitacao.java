@@ -98,7 +98,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Lob
 	private String obsSuspensao;
 	
-	@OneToMany (mappedBy="solicitacao", fetch = FetchType.LAZY)
+	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 
 	@Transient
