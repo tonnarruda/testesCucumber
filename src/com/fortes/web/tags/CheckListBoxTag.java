@@ -7,8 +7,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import com.fortes.web.tags.CheckBox;
-
 public class CheckListBoxTag extends TagSupport
 {
 	private String name = ""; // nome do componente
@@ -60,9 +58,13 @@ public class CheckListBoxTag extends TagSupport
 			checkGroup += "<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>";
 
 			if(!readonly)
-			checkGroup += "&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">" +
-					"Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">" +
-					"Desmarcar todos</span></div>";
+				checkGroup += "&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">" +
+						"Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">" +
+						"Desmarcar todos</span></div>";
+			else
+				checkGroup += "&nbsp;<span class='linkCheckDisabled'>" +
+						"Marcar todos</span> | <span class='linkCheckDisabled'>" +
+						"Desmarcar todos</span></div>";
 
 			checkGroup += "<div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">";
 
