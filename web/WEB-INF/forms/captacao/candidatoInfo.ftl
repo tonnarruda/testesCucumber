@@ -73,7 +73,6 @@
 
 		function popUp(caminho)
 		{
-		alert(1);
 			path = caminho;
 			window.open(caminho,'Currículo','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,menubar=no,left=10,top=10')
 		}
