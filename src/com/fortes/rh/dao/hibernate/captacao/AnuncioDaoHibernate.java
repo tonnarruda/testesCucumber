@@ -91,7 +91,6 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		p.add(Projections.property("a.mostraIdade"), "mostraIdade");
 		p.add(Projections.property("a.solicitacao"), "solicitacao");
 		p.add(Projections.property("a.exibirModuloExterno"), "exibirModuloExterno");
-		p.add(Projections.property("a.responderAvaliacaoModuloExterno"), "responderAvaliacaoModuloExterno");
 			
 		criteria.setProjection(p);
 		

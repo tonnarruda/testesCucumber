@@ -13,7 +13,6 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
@@ -85,7 +84,6 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		solicitacao.setCidade(CidadeFactory.getEntity());
-		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		
 		action.setBairrosCheck(new String[]{"1"});
