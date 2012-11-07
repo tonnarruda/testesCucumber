@@ -1,3 +1,5 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
+
 <html>
 <head>
 <@ww.head/>
@@ -14,11 +16,10 @@
 <script language='javascript'>
 	$(function(){
 		$('#exibirModuloExterno').change(function(){
-				$('#responderAvaliacaoModuloExterno').attr('disabled', $(this).val()=='false');
+			$(":input[name='solicitacaoAvaliacaosCheck']").attr('disabled', $(this).val()=='false');
 		});
 		
 		$('#exibirModuloExterno').change();
-		
 	});
 	
 	function anunciar(param)
@@ -36,11 +37,10 @@
 		<@ww.textarea label="Descrição" required="true" name="anuncio.cabecalho" id="cabecalho" cssStyle="width: 600px;"/>
 		<@ww.select label="Exibir no módulo externo" id="exibirModuloExterno" name="anuncio.exibirModuloExterno" list=r"#{true:'Sim',false:'Não'}" required="true"/>
 
-<#-- 
-		<#if anuncio.solicitacao.avaliacao?exists && anuncio.solicitacao.avaliacao.id?exists>
-			<@ww.checkbox label="Permitir que o candidato responda o modelo de avaliação no modulo externo ao se candidatar." id="responderAvaliacaoModuloExterno" name="anuncio.responderAvaliacaoModuloExterno" labelPosition="left"/>
+		<#if solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)>
+			<@frt.checkListBox id="solicitacaoAvaliacaosCheck" label="Permitir que o candidato responda os seguintes modelos de avaliação no modulo externo ao se candidatar" name="solicitacaoAvaliacaosCheck" list="solicitacaoAvaliacaosCheckList" width="600"/>
 		</#if>
--->
+		
 		<@ww.hidden name="anuncio.id" />
 		<@ww.hidden name="anuncio.solicitacao.id" />
 		<@ww.hidden name="solicitacao.id" />

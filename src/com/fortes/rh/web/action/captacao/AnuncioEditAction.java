@@ -3,18 +3,25 @@ package com.fortes.rh.web.action.captacao;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.AnuncioManager;
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.web.action.MyActionSupportEdit;
+import com.fortes.web.tags.CheckBox;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -31,7 +38,13 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 {
 	private AnuncioManager anuncioManager;
 	private SolicitacaoManager solicitacaoManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 
+	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
+	
+	private String[] solicitacaoAvaliacaosCheck;
+    private Collection<CheckBox> solicitacaoAvaliacaosCheckList = new ArrayList<CheckBox>();
+	
 	private Mail mail;
 	private Anuncio anuncio;
 	private Solicitacao solicitacao;
@@ -45,13 +58,13 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 
 	private void prepare() throws Exception
 	{
-		if(anuncio != null && anuncio.getId() != null)
-			anuncio = anuncioManager.findByIdProjection(anuncio.getId());
+		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);
+		solicitacaoAvaliacaosCheckList = CheckListBoxUtil.populaCheckListBox(solicitacaoAvaliacaos, "getId", "getAvaliacaoTitulo");
 	}
 
 	public String anunciar() throws Exception
 	{
-		if(anuncioManager.verifyExists(new String[]{"solicitacao.id"}, new Object[]{solicitacao.getId()}))
+		if (anuncioManager.verifyExists(new String[]{"solicitacao.id"}, new Object[]{solicitacao.getId()}))
 			return "success2";
 
 		return Action.SUCCESS;
@@ -63,19 +76,21 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		if (anuncio == null)
 			anuncio = new Anuncio();
 		anuncio.setSolicitacao(solicitacao);
+		
 		prepare();
 			
 		return Action.SUCCESS;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
-	{
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
 	public String prepareUpdate() throws Exception
 	{
 		anuncio = anuncioManager.findBySolicitacao(solicitacao.getId());
+		
+		prepare();
+		
+		Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), true);
+		solicitacaoAvaliacaosCheckList = CheckListBoxUtil.marcaCheckListBox(solicitacaoAvaliacaosCheckList, solicitacaoAvaliacaos, "getId");
+		
 		return Action.SUCCESS;
 	}
 
@@ -84,6 +99,8 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 		anuncio.setSolicitacao(solicitacao);
 		anuncio = anuncioManager.save(anuncio);
 
+		solicitacaoAvaliacaoManager.setResponderModuloExterno(solicitacao.getId(), LongUtil.arrayStringToArrayLong(solicitacaoAvaliacaosCheck));
+		
 		if(acao.equals("I"))
 		{
 			return "successimprime";
@@ -98,6 +115,8 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	{
 		anuncioManager.update(anuncio);
 
+		solicitacaoAvaliacaoManager.setResponderModuloExterno(solicitacao.getId(), LongUtil.arrayStringToArrayLong(solicitacaoAvaliacaosCheck));
+		
 		if(acao.equals("I"))
 		{
 			return "successimprime";
@@ -118,8 +137,9 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String email() throws Exception
 	{
-		prepare();
-//		Long empresaId = getEmpresaSistema().getId();
+		if (anuncio != null && anuncio.getId() != null)
+			anuncio = anuncioManager.findByIdProjection(anuncio.getId());
+		
 		return Action.SUCCESS;
 	}
 
@@ -374,6 +394,11 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setAnuncio(Anuncio anuncio){
 		this.anuncio=anuncio;
 	}
+	
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
+	{
+		this.solicitacaoManager = solicitacaoManager;
+	}
 
 	public Object getModel()
 	{
@@ -418,5 +443,30 @@ public class AnuncioEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setMail(Mail mail)
 	{
 		this.mail = mail;
+	}
+
+	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) 
+	{
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
+	}
+
+	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() 
+	{
+		return solicitacaoAvaliacaos;
+	}
+
+	public void setSolicitacaoAvaliacaos(Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos) 
+	{
+		this.solicitacaoAvaliacaos = solicitacaoAvaliacaos;
+	}
+
+	public Collection<CheckBox> getSolicitacaoAvaliacaosCheckList() 
+	{
+		return solicitacaoAvaliacaosCheckList;
+	}
+
+	public void setSolicitacaoAvaliacaosCheck(String[] solicitacaoAvaliacaosCheck) 
+	{
+		this.solicitacaoAvaliacaosCheck = solicitacaoAvaliacaosCheck;
 	}
 }

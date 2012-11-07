@@ -53,6 +53,14 @@ public class SolicitacaoAvaliacao extends AbstractModel implements Serializable,
 		
 		return this.avaliacao.getId();
 	}
+	
+	public String getAvaliacaoTitulo()
+	{
+		if (this.avaliacao == null)
+			return null;
+		
+		return this.avaliacao.getTitulo();
+	}
 
 	public void setProjectionAvaliacaoId(Long avaliacaoId) 
 	{

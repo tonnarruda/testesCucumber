@@ -29,7 +29,6 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
-import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -269,7 +268,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		solicitacao.setCidade(CidadeFactory.getEntity());
-		solicitacao.setAvaliacao(AvaliacaoFactory.getEntity());
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
 		
 		Solicitacao solicitacaoAux = SolicitacaoFactory.getSolicitacao();

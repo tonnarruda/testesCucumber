@@ -23,8 +23,16 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 		}
 	}
 
-	public Collection<SolicitacaoAvaliacao> findBySolicitacaoId(Long solicitacaoId) 
+	public Collection<SolicitacaoAvaliacao> findBySolicitacaoId(Long solicitacaoId, Boolean responderModuloExterno) 
 	{
-		return getDao().findBySolicitacaoId(solicitacaoId);
+		return getDao().findBySolicitacaoId(solicitacaoId, responderModuloExterno);
+	}
+
+	public void setResponderModuloExterno(Long solicitacaoId, Long[] solicitacaoAvaliacaoIds) 
+	{
+		getDao().setResponderModuloExterno(solicitacaoId, null, false);
+		
+		if (solicitacaoAvaliacaoIds != null && solicitacaoAvaliacaoIds.length > 0)
+			getDao().setResponderModuloExterno(solicitacaoId, solicitacaoAvaliacaoIds, true);
 	}
 }
