@@ -59,6 +59,7 @@ public class ExternoAction extends MyActionSupport
 
 	private boolean moduloExterno=true; // flag para regra em recuperaSenhaLogin
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
+	private boolean sucessoRespostaAvaliacao; // flag de alerta ftl
 	
 	public String checaLogin() throws Exception
 	{
@@ -415,5 +416,13 @@ public class ExternoAction extends MyActionSupport
 
 	public String getMensagemLogin() {
 		return mensagemLogin;
+	}
+
+	public boolean isSucessoRespostaAvaliacao() {
+		return sucessoRespostaAvaliacao;
+	}
+
+	public void setSucessoRespostaAvaliacao(boolean sucessoRespostaAvaliacao) {
+		this.sucessoRespostaAvaliacao = sucessoRespostaAvaliacao;
 	}
 }

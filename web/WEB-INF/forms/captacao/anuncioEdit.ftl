@@ -38,7 +38,7 @@
 		<@ww.select label="Exibir no módulo externo" id="exibirModuloExterno" name="anuncio.exibirModuloExterno" list=r"#{true:'Sim',false:'Não'}" required="true"/>
 
 		<#if solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)>
-			<@frt.checkListBox id="solicitacaoAvaliacaosCheck" label="Permitir que o candidato responda os seguintes modelos de avaliação no modulo externo ao se candidatar" name="solicitacaoAvaliacaosCheck" list="solicitacaoAvaliacaosCheckList" width="600"/>
+			<@frt.checkListBox id="solicitacaoAvaliacaosCheck" label="Modelos de avaliação a serem respondidos ao se candidatar pelo modulo externo" name="solicitacaoAvaliacaosCheck" list="solicitacaoAvaliacaosCheckList" width="600"/>
 		</#if>
 		
 		<@ww.hidden name="anuncio.id" />

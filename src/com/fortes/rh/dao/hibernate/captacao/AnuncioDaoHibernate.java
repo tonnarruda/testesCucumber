@@ -25,7 +25,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.empresa.id", empresaIdExterno));
-		criteria.add(Expression.eq("a.exibirModuloExterno", true ));
+		criteria.add(Expression.eq("a.exibirModuloExterno", true));
 
 		criteria.addOrder(Order.asc("a.titulo"));
 
