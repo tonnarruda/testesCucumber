@@ -649,25 +649,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByUsuario(usuario, empresaId);
 	}
 
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
-	{
-		Colaborador colaborador = findByCodigoAC(codigoAC, empresa);
-		
-		areaOrganizacionalManager.desvinculaResponsavel(colaborador.getId());
-		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
-	}
-
-	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
-	{
-		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
-
-		candidatoManager.reabilitaByColaborador(colaboradorId);
-		mensagemManager.removeMensagemDesligamento(colaboradorId);
-		getDao().religaColaborador(colaboradorId);
-
-		return colaboradorId;
-	}
-
 	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId)
 	{
 			return getDao().findColaboradorUsuarioByCpf(cpf, empresaId);
@@ -742,61 +723,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findbyCandidato(candidatoId, empresaId);
 	}
-
-//	@SuppressWarnings("deprecation")
-//	public void aplicaPromocaoNoColaborador(Long candidatoId, Long colaboradorId, Solicitacao solicitacao) throws Exception
-//	{
-//		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//		TransactionStatus status = transactionManager.getTransaction(def);
-//
-//		try
-//		{
-//			candidatoManager.updateSetContratado(candidatoId);
-//
-//			Double valorAux = Double.valueOf(solicitacao.getValorPromocao());
-//
-//			Colaborador colaborador = new Colaborador();
-//			colaborador.setId(colaboradorId);
-//
-//			solicitacao = solicitacaoManager.findByIdProjectionAreaFaixaSalarial(solicitacao.getId());
-//
-//			ReajusteColaborador reajusteTmp = new ReajusteColaborador();
-//			reajusteTmp.setColaborador(colaborador);
-//
-//			reajusteTmp.setFaixaSalarialProposta(solicitacao.getFaixaSalarial());
-//			reajusteTmp.setSalarioProposto(valorAux);
-//			reajusteTmp.setAreaOrganizacionalProposta(solicitacao.getAreaOrganizacional());
-//
-//			HistoricoColaborador historico = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
-//			HistoricoColaborador historicoAnterior = historico;
-//
-//			reajusteTmp.setSalarioAtual(historico.getSalarioCalculado());
-//			reajusteTmp.setFaixaSalarialAtual(historico.getFaixaSalarial());
-//			reajusteTmp.setAreaOrganizacionalProposta(solicitacao.getAreaOrganizacional());
-//			reajusteTmp.setTipoSalarioAtual(historico.getTipoSalario());
-//			reajusteTmp.setTipoSalarioProposto(solicitacao.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getTipo());
-//
-//			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
-//			historicoColaborador.setAreaOrganizacional(solicitacao.getAreaOrganizacional());
-//			historicoColaborador.setColaborador(colaborador);
-//			historicoColaborador.setData(new Date());
-//			historicoColaborador.setMotivo(HistoricoColaboradorUtil.getMotivoReajuste(reajusteTmp, historico));
-//			historicoColaborador.setSalario(valorAux);
-//			historicoColaborador.setReajusteColaborador(null);
-//			historicoColaborador.setHistoricoAnterior(historicoAnterior);
-//
-//			historicoColaboradorManager.save(historicoColaborador);
-//
-//			transactionManager.commit(status);
-//		}
-//		catch (Exception e)
-//		{
-//			transactionManager.rollback(status);
-//			throw e;
-//		}
-//
-//	}
 
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds)
 	{
@@ -997,11 +923,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
 			getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, colaboradorId);
-			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
 		}
 	}
 	
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -1014,7 +940,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			candidatoManager.habilitaByColaborador(colaboradorId);
 			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
 			areaOrganizacionalManager.desvinculaResponsavel(colaboradorId);
-			getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
+			
+			if(!desligaByAC)
+				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
 			
 			transactionManager.commit(status);
 		}
@@ -1034,6 +962,32 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
+	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
+	{
+		Colaborador colaborador = findByCodigoAC(codigoAC, empresa);
+		
+		try {
+			desligaColaborador(true, dataDesligamento, "", null, colaborador.getId(), true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
+	}
+
+	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
+	{
+		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
+
+		candidatoManager.reabilitaByColaborador(colaboradorId);
+		mensagemManager.removeMensagemDesligamento(colaboradorId);
+		getDao().religaColaborador(colaboradorId);
+
+		return colaboradorId;
+	}
+
+	
 	public Collection<Colaborador> findProjecaoSalarial(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds,
 			Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId) throws Exception
 	{

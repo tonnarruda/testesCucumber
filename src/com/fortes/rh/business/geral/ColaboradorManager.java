@@ -45,7 +45,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
 	@Audita(operacao="Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId) throws Exception;
+	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception;
 	@Audita(operacao="Religamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void religaColaborador(Long colaboradorId) throws Exception;
 	//TODO Auditoria não ta passando
