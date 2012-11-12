@@ -44,10 +44,11 @@
 			<td colspan="3" width="400px">
 				<@display.table name="anuncios" id="anuncio" class="dados" >
 					<@display.column title="Título da Vaga">
-						<#if anuncio.candidatoCadastrado>
+						<#if anuncio.candidatoSolicitacao?exists && anuncio.candidatoSolicitacao.id?exists>
 							<strong>${anuncio.titulo}</strong>  
 							(Você já está concorrendo a esta vaga) <br />
 							
+							<#--  
 							<#if (anuncio.solicitacao.solicitacaoAvaliacaos?size > 0)>
 								<a href="javascript:;" onclick="$('#avaliacoes${anuncio.id}').dialog();">Responder às avaliações</a><br />
 								
@@ -57,6 +58,7 @@
 									</#list>
 								</div>
 							</#if>
+							-->
 						<#else>
 							<strong>${anuncio.titulo}</strong> <br />
 							<a href="verAnuncio.action?anuncio.id=${anuncio.id}">Visualizar</a>

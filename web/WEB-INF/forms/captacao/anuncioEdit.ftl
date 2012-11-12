@@ -16,7 +16,7 @@
 <script language='javascript'>
 	$(function(){
 		$('#exibirModuloExterno').change(function(){
-			$(":input[name='solicitacaoAvaliacaosCheck']").attr('disabled', $(this).val()=='false');
+			$("#wwgrp_solicitacaoAvaliacaosCheck").toggle( $(this).val() == 'true' );
 		});
 		
 		$('#exibirModuloExterno').change();

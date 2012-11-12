@@ -34,6 +34,28 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		return criteria.list();
 	}
 
+	public Collection<Anuncio> findAnunciosModuloExterno(Long empresaId, Long candidatoId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Anuncio(a.id, a.titulo, s.id, s.quantidade, cs.id, count(sa.id) as qtdAvaliacoes, count(cq.id) as qtdRespondidas) "); 
+		hql.append("from Anuncio a ");
+		hql.append("inner join a.solicitacao s "); 
+		hql.append("left join s.candidatoSolicitacaos cs with cs.candidato.id = :candidatoId "); 
+		hql.append("left join s.solicitacaoAvaliacaos sa ");
+		hql.append("left join s.colaboradorQuestionarios cq with cq.avaliacao.id = sa.avaliacao.id and cq.candidato.id = :candidatoId ");
+		hql.append("where s.encerrada = false ");
+		hql.append("and s.empresa.id = :empresaId ");
+		hql.append("and a.exibirModuloExterno = true "); 
+		hql.append("group by a.id, a.titulo, s.id, cs.id "); 
+		hql.append("order by a.titulo");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setLong("candidatoId", candidatoId);
+		
+		return query.list();
+	}
+
 	public void removeBySolicitacao(Long solicitacaoId)
 	{
 		String hql = "delete Anuncio a where a.solicitacao.id = :solicitacaoId";
@@ -62,7 +84,6 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		p.add(Projections.property("a.mostraIdade"), "mostraIdade");
 		p.add(Projections.property("a.solicitacao.id"), "projectionSolicitacaoId");
 		p.add(Projections.property("a.exibirModuloExterno"), "exibirModuloExterno");
-		p.add(Projections.property("a.responderAvaliacaoModuloExterno"), "responderAvaliacaoModuloExterno");
 
 		criteria.setProjection(p);
 

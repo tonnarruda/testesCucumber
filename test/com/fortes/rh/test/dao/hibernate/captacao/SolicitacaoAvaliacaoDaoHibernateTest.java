@@ -2,6 +2,8 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.Collection;
 
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
@@ -33,6 +35,33 @@ public class SolicitacaoAvaliacaoDaoHibernateTest extends GenericDaoHibernateTes
 		return solicitacaoAvaliacao;
 	}
 
+	public void testRemove()
+	{
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		SolicitacaoAvaliacao solicitacaoAvaliacao = new SolicitacaoAvaliacao();
+		solicitacaoAvaliacao.setAvaliacao(avaliacao);
+		solicitacaoAvaliacao.setSolicitacao(solicitacao);
+		solicitacaoAvaliacaoDao.save(solicitacaoAvaliacao);
+		
+		solicitacaoAvaliacaoDao.remove(solicitacaoAvaliacao);
+
+		Exception ex = null;
+
+		try {
+			solicitacaoAvaliacao = solicitacaoAvaliacaoDao.findById(solicitacaoAvaliacao.getId());
+		} catch (Exception e) {
+			ex = e;
+		}
+
+		assertNotNull(ex);
+		assertTrue(ex instanceof HibernateObjectRetrievalFailureException);
+	}
+	
 	public void testRemoveBySolicitacaoId()
 	{
 		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();

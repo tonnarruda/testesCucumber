@@ -14,6 +14,7 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -50,6 +51,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock parametrosDoSistemaManager;
 	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
+	private Mock solicitacaoAvaliacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -63,6 +65,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
 		solicitacaoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+
+		solicitacaoAvaliacaoManager = new Mock(SolicitacaoAvaliacaoManager.class);
+		solicitacaoManager.setSolicitacaoAvaliacaoManager((SolicitacaoAvaliacaoManager) solicitacaoAvaliacaoManager.proxy());
 
 		usuarioManager = new Mock(UsuarioManager.class);
 
@@ -275,6 +280,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		MockSecurityUtil.verifyRole = false;
 		solicitacaoDao.expects(once()).method("findByIdProjectionForUpdate").with(eq(solicitacao.getId())).will(returnValue(solicitacaoAux));
 		solicitacaoDao.expects(once()).method("update").with(eq(solicitacao));
+		solicitacaoAvaliacaoManager.expects(once()).method("saveAvaliacoesSolicitacao").with(eq(solicitacao.getId()), ANYTHING);
 		
 		Exception exception = null;
 		try

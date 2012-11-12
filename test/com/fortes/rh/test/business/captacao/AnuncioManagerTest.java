@@ -76,14 +76,14 @@ public class AnuncioManagerTest extends MockObjectTestCase
 		assertEquals("Test 2", "2@2.com", mails[1]);
 	}
 
-	public void testFindAnunciosSolicitacaoAberta() throws Exception
+	public void testFindAnunciosModuloExterno() throws Exception
 	{
 
 		Collection<Anuncio> anuncios = new ArrayList<Anuncio>();
 
-		anuncioDao.expects(once()).method("findAnunciosSolicitacaoAberta").with(eq(1L)).will(returnValue(anuncios));
+		anuncioDao.expects(once()).method("findAnunciosModuloExterno").with(eq(1L), eq(null)).will(returnValue(anuncios));
 
-		assertEquals(anuncios, anuncioManager.findAnunciosSolicitacaoAberta(1L, null));
+		assertEquals(anuncios, anuncioManager.findAnunciosModuloExterno(1L, null));
 	}
 	
 	public void testFindByIdProjection() throws Exception

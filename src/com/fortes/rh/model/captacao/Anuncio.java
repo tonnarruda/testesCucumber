@@ -38,16 +38,27 @@ public class Anuncio extends AbstractModel implements Serializable
     private boolean exibirModuloExterno;
    
     @Transient
-    private boolean candidatoCadastrado;
+    private CandidatoSolicitacao candidatoSolicitacao;
+    @Transient
+    private Integer qtdAvaliacoes;
+    @Transient
+    private Integer qtdAvaliacoesRespondidas;
 
-	public void setProjectionSolicitacaoId(Long projectionSolicitacaoId)
+	public Anuncio() 
 	{
-		if(this.solicitacao == null)
-			this.solicitacao = new Solicitacao();
-		
-		this.solicitacao.setId(projectionSolicitacaoId);
 	}
-    
+	
+	public Anuncio(Long id, String titulo, Long solicitacaoId, Integer solicitacaoQtde, Long candidatoSolicitacaoId, Integer qtdAvaliacoes, Integer qtdAvaliacoesRespondidas) 
+	{
+		this.setId(id);
+		this.setTitulo(titulo);
+		this.setProjectionSolicitacaoId(solicitacaoId);
+		this.setProjectionSolicitacaoQtde(solicitacaoQtde);
+		this.setProjectionCandidatoSolicitacaoId(candidatoSolicitacaoId);
+		this.setQtdAvaliacoes(qtdAvaliacoes);
+		this.setQtdAvaliacoesRespondidas(qtdAvaliacoesRespondidas);
+	}
+
 	public String getCabecalho()
 	{
 		return cabecalho;
@@ -60,6 +71,30 @@ public class Anuncio extends AbstractModel implements Serializable
 			this.cabecalho = cabecalho.replaceAll("\n", "<br>");
 			
 		return cabecalho;
+	}
+	
+	public void setProjectionSolicitacaoId(Long solicitacaoId)
+	{
+		if(this.solicitacao == null)
+			this.solicitacao = new Solicitacao();
+		
+		this.solicitacao.setId(solicitacaoId);
+	}
+	
+	private void setProjectionSolicitacaoQtde(Integer solicitacaoQtde) 
+	{
+		if(this.solicitacao == null)
+			this.solicitacao = new Solicitacao();
+		
+		this.solicitacao.setQuantidade(solicitacaoQtde);
+	}
+	
+	private void setProjectionCandidatoSolicitacaoId(Long candidatoSolicitacaoId) 
+	{
+		if(this.candidatoSolicitacao == null)
+			this.candidatoSolicitacao = new CandidatoSolicitacao();
+		
+		this.candidatoSolicitacao.setId(candidatoSolicitacaoId);
 	}
 	
 	public void setCabecalho(String cabecalho)
@@ -160,11 +195,27 @@ public class Anuncio extends AbstractModel implements Serializable
 		this.exibirModuloExterno = exibirModuloExterno;
 	}
 
-	public boolean isCandidatoCadastrado() {
-		return candidatoCadastrado;
+	public CandidatoSolicitacao getCandidatoSolicitacao() {
+		return candidatoSolicitacao;
 	}
 
-	public void setCandidatoCadastrado(boolean candidatoCadastrado) {
-		this.candidatoCadastrado = candidatoCadastrado;
+	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) {
+		this.candidatoSolicitacao = candidatoSolicitacao;
+	}
+
+	public Integer getQtdAvaliacoes() {
+		return qtdAvaliacoes;
+	}
+
+	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
+		this.qtdAvaliacoes = qtdAvaliacoes;
+	}
+
+	public Integer getQtdAvaliacoesRespondidas() {
+		return qtdAvaliacoesRespondidas;
+	}
+
+	public void setQtdAvaliacoesRespondidas(Integer qtdAvaliacoesRespondidas) {
+		this.qtdAvaliacoesRespondidas = qtdAvaliacoesRespondidas;
 	}
 }

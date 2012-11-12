@@ -31,7 +31,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(Long id);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Date periodoIni, Date periodoFim, Long turmaId, Integer totalColaboradores, Long empresaId);
 	@Audita(operacao="Inserção", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
-	void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId);
+	void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long candidatoId);
 	@Audita(operacao="Atualização", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
 	void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId);
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);

@@ -465,7 +465,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
     	
-		colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId());
+		colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId(), null);
     }
     
     public void testSavePerformance()
@@ -518,7 +518,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
 
-    	colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId());
+    	colaboradorRespostaManager.save(colaboradorRespostas, colaboradorQuestionario, usuarioLogado.getId(), null);
     	
     	assertEquals("55,1%", colaboradorQuestionario.getPerformanceFormatada());
     }

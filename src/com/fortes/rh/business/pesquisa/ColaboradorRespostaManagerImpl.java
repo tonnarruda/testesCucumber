@@ -398,8 +398,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	
 	/**
 	 * @param usuarioLogadoId : O ID do usuario logado eh utilizado na auditoria.
+	 * @param candidatoId : O ID do candidato logado no modulo externo eh utilizado na auditoria.
 	 */
-	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId)
+	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long candidatoId)
 	{
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);

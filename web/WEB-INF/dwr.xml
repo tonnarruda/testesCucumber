@@ -146,19 +146,19 @@
 			<param name="beanName" value="morroDWR"/>
 		</create>
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
-		// GERAL
+		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
-		// CARGO E SALARIO
+		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
-		// CAPTACAO
+		<!-- CAPTACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
-		// PESQUISA
+		<!-- PESQUISA -->
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.AvaliacaoTurma"/>
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.Questionario"/>
-		// DESENVOLVIMENTO
+		<!-- DESENVOLVIMENTO -->
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
     </allow>
 

@@ -88,7 +88,7 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
-		solicitacaoManager.expects(once()).method("updateSolicitacao").with(eq(solicitacao), ANYTHING, ANYTHING).isVoid();
+		solicitacaoManager.expects(once()).method("updateSolicitacao").with(eq(solicitacao), ANYTHING, ANYTHING, ANYTHING).isVoid();
 		
 		Exception exception = null;
 		try

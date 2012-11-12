@@ -1,14 +1,20 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.captacao.AnuncioManager;
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
@@ -20,6 +26,7 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 	private AnuncioEditAction action;
 	private Mock anuncioManager;
 	private Mock solicitacaoManager;
+	private Mock solicitacaoAvaliacaoManager;
 	private Solicitacao solicitacao = new Solicitacao();
 
 	protected void setUp() throws Exception
@@ -33,6 +40,9 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		solicitacaoManager = mock(SolicitacaoManager.class);
         action.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
         
+        solicitacaoAvaliacaoManager = mock(SolicitacaoAvaliacaoManager.class);
+        action.setSolicitacaoAvaliacaoManager((SolicitacaoAvaliacaoManager) solicitacaoAvaliacaoManager.proxy());
+        
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
@@ -40,10 +50,10 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 	public void testPrepareInsert() throws Exception
 	{
 		Anuncio anuncio = anuncio();
-		solicitacao(anuncio);;
+		solicitacao(anuncio);
 		
 		solicitacaoManager.expects(once()).method("findByIdProjectionAreaFaixaSalarial").with(eq(solicitacao.getId())).will(returnValue(solicitacao));
-		anuncioManager.expects(once()).method("findByIdProjection").with(eq(anuncio.getId())).will(returnValue(anuncio));
+		solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<SolicitacaoAvaliacao>()));
 		
 		assertEquals("success", action.prepareInsert());
 	}
@@ -66,6 +76,8 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		solicitacao(anuncio);
 		
 		anuncioManager.expects(once()).method("findBySolicitacao").with(ANYTHING).will(returnValue(anuncio));
+		solicitacaoAvaliacaoManager.expects(atLeastOnce()).method("findBySolicitacaoId").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<SolicitacaoAvaliacao>()));
+		
 		assertEquals("success", action.prepareUpdate());
 	}
 	
@@ -75,10 +87,12 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		solicitacao(anuncio);
 		
 		anuncioManager.expects(once()).method("save").with(eq(anuncio)).will(returnValue(anuncio));
+		solicitacaoAvaliacaoManager.expects(once()).method("setResponderModuloExterno").with(ANYTHING, ANYTHING);
 		assertEquals("successemail", action.insert());
 
 		action.setAcao("I");
 		anuncioManager.expects(once()).method("save").with(eq(anuncio)).will(returnValue(anuncio));
+		solicitacaoAvaliacaoManager.expects(once()).method("setResponderModuloExterno").with(ANYTHING, ANYTHING);
 		assertEquals("successimprime", action.insert());
 	}
 
@@ -88,10 +102,12 @@ public class AnuncioEditActionTest extends MockObjectTestCase
 		solicitacao(anuncio);
 		
 		anuncioManager.expects(once()).method("update").with(eq(anuncio));
+		solicitacaoAvaliacaoManager.expects(once()).method("setResponderModuloExterno").with(ANYTHING, ANYTHING);
 		assertEquals("successemail", action.update());
 		
 		action.setAcao("I");
 		anuncioManager.expects(once()).method("update").with(eq(anuncio));
+		solicitacaoAvaliacaoManager.expects(once()).method("setResponderModuloExterno").with(ANYTHING, ANYTHING);
 		assertEquals("successimprime", action.update());
 	}
 

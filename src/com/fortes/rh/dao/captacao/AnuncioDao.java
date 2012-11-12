@@ -9,6 +9,8 @@ public interface AnuncioDao extends GenericDao<Anuncio>
 {
 
 	Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno);
+	
+	Collection<Anuncio> findAnunciosModuloExterno(Long empresaId, Long candidatoId);
 
 	void removeBySolicitacao(Long solicitacaoId);
 

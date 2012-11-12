@@ -63,18 +63,6 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 		return emails;
 	}
 
-	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaIdExterno, Long candidatoIdExterno)
-	{
-		Collection<Anuncio> anuncios = getDao().findAnunciosSolicitacaoAberta(empresaIdExterno);
-		
-		for (Anuncio anuncio : anuncios)
-			for (CandidatoSolicitacao candSolicitacao : anuncio.getSolicitacao().getCandidatoSolicitacaos()) 
-				if(candidatoIdExterno != null && candidatoIdExterno.equals(candSolicitacao.getCandidato().getId()))
-					anuncio.setCandidatoCadastrado(true);
-			
-		return anuncios;
-	}
-
 	public void removeBySolicitacao(Long solicitacaoId)
 	{
 		getDao().removeBySolicitacao(solicitacaoId);
@@ -88,6 +76,11 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 	public Anuncio findBySolicitacao(Long solicitacaoId)
 	{
 		return getDao().findBySolicitacao(solicitacaoId);
+	}
+
+	public Collection<Anuncio> findAnunciosModuloExterno(Long empresaId, Long candidatoId) 
+	{
+		return getDao().findAnunciosModuloExterno(empresaId, candidatoId);
 	}
 
 }

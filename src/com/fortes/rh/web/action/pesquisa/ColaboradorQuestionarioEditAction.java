@@ -421,7 +421,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		//      que o "colaboradorQuestionarioManager" inserisse as respostas e nao o contrario.
 		ajustaSolicitacao();
 		
-		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+		Long usuarioId = (getUsuarioLogado() != null) ? getUsuarioLogado().getId() : null;
+		Long candidatoId = (candidato != null) ? candidatoId = candidato.getId() : null;
+		
+		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, usuarioId, candidatoId);
 		
 		if (respostaColaborador)
 			return "sucessoIndex";

@@ -22,12 +22,23 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 	public Auditavel save(MetodoInterceptado metodo) throws Throwable 
 	{
 		ColaboradorQuestionario colaboradorQuestionario = (ColaboradorQuestionario) metodo.getParametros()[1];
-		Usuario usuario = carregaUsuario(metodo, (Long) metodo.getParametros()[2]);
+		Long usuarioId = (Long) metodo.getParametros()[2];
+		Long candidatoId = (Long) metodo.getParametros()[3];
 		
 		StringBuilder dados = new StringBuilder();
 		dados.append("\nMensagem: ");
-		dados.append("\nAs respostas foram salvas pelo usuário ");
-		dados.append(usuario.getNome());
+
+		if (candidatoId != null)
+		{
+			dados.append("\nAs respostas foram salvas pelo candidato ID " + candidatoId + " pelo modulo externo");
+		}
+		else 
+		{
+			Usuario usuario = carregaUsuario(metodo, usuarioId);
+			dados.append("\nAs respostas foram salvas pelo usuário ");
+			dados.append(usuario.getNome());
+		}
+		
 		dados.append(".\n");
 		dados.append(new GeraDadosAuditados(new Object[]{}, colaboradorQuestionario).gera());
 		 
