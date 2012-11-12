@@ -935,7 +935,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		try
 		{
-			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
 			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
