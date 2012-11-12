@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.93.90" data="05/10/2012">
+	<Versao id="1.1.93.91" data="12/11/2012">
 		<Modulo nome=" "><![CDATA[
-			:: Menu Flutuante.
-			:: Auditoria ao cancelar contratação do colaborador no AC Pessoal.
-			:: R&S > Cadastros > Candidatos > inserir > Escolaridade: Novas opções para selecionar a escolaridade, "Curso Técnico em andamento" e "Curso Técnico em completo". 
+			:: Melhoria nas configurações de integração com AC Pessoal.
+    	]]></Modulo>
+    </Versao>
+	<Versao id="1.1.93.90" data="05/11/2012">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Candidatos > Inserir : Novas opções no campo [Escolaridade](Curso Técnico em andamento e Curso Técnico completo). 
 			:: R&S > Painel de Indicadores : Novas opções de filtro por estabelecimento e área organizacional.
 			:: Utilitários > Configurações > Gerenciador de Comunicação: Nova configuração para envio automático de cartão para aniversariantes do dia.
 			:: Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Novo filtro por turmas.

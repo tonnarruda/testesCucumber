@@ -19313,3 +19313,6 @@ alter table empresa drop column enviaremailaniversariante; --.go
 insert into migrations values('20121105101911');--.go
 
 update parametrosdosistema set appversao = '1.1.93.90';--.go
+-- versao 1.1.93.91
+
+update parametrosdosistema set appversao = '1.1.93.91';--.go
