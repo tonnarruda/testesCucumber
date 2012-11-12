@@ -14,8 +14,6 @@ public class TipoMensagem extends LinkedHashMap<Character, String>
 	public static final char SESMT = 'S';
 	public static final char UTILITARIOS = 'U';
 
-	public static final char DESLIGAMENTO = 'D';
-
 	public TipoMensagem() 
 	{
 		put(CARGO_SALARIO, "Cargos & Salários");
@@ -25,6 +23,5 @@ public class TipoMensagem extends LinkedHashMap<Character, String>
 		put(INFO_FUNCIONAIS, "Informações Funcionais");
 		put(SESMT, "SESMT");
 		put(UTILITARIOS, "Utilitários");
-		put(DESLIGAMENTO, "Desligamentos");
 	}
 }

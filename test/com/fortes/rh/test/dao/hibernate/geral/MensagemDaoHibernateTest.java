@@ -46,7 +46,7 @@ public class MensagemDaoHibernateTest extends GenericDaoHibernateTest
 		
 		Mensagem mensagem = MensagemFactory.getEntity();
 		mensagem.setColaborador(colaborador);
-		mensagem.setTipo(TipoMensagem.DESLIGAMENTO);
+		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
 		mensagemDao.save(mensagem);
 		
 		Collection<Mensagem> msgs = mensagemDao.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()});
