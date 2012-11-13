@@ -823,7 +823,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId());
+        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), false);
     }
     
     public void testDesligaColaborador() throws Exception
@@ -838,7 +838,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
-    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId());
+    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), false);
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {

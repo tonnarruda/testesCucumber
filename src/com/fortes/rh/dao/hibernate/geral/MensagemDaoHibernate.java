@@ -15,13 +15,13 @@ public class MensagemDaoHibernate extends GenericDaoHibernate<Mensagem> implemen
 		String  hql = " delete from UsuarioMensagem where mensagem_id in (select id from Mensagem where colaborador.id = :colaboradorId and tipo = :tipo) ";
 		Query query = getSession().createQuery(hql);
 		query.setLong("colaboradorId", colaboradorId);
-		query.setCharacter("tipo", TipoMensagem.DESLIGAMENTO);
+		query.setCharacter("tipo", TipoMensagem.INFO_FUNCIONAIS);
 		query.executeUpdate();	
 		
 		hql = " delete from Mensagem as m where m.colaborador.id = :colaboradorId and m.tipo = :tipo ";
 		query = getSession().createQuery(hql);
 		query.setLong("colaboradorId", colaboradorId);
-		query.setCharacter("tipo", TipoMensagem.DESLIGAMENTO);
+		query.setCharacter("tipo", TipoMensagem.INFO_FUNCIONAIS);
 		query.executeUpdate();
 	}
 }

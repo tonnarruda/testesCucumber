@@ -1,0 +1,1 @@
+update mensagem set tipo = 'F' where texto ilike '%foi desligado no AC Pessoal%';--.go
