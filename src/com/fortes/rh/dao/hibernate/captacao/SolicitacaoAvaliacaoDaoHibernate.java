@@ -49,4 +49,24 @@ public class SolicitacaoAvaliacaoDaoHibernate extends GenericDaoHibernate<Solici
 			
 		query.executeUpdate();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<SolicitacaoAvaliacao> findAvaliacaoesNaoRespondidas(Long solicitacaoId, Long candidatoId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new SolicitacaoAvaliacao(s.id, a.id, a.titulo) "); 
+		hql.append("from Solicitacao s ");
+		hql.append("inner join s.solicitacaoAvaliacaos sa "); 
+		hql.append("inner join sa.avaliacao a ");
+		hql.append("left join s.colaboradorQuestionarios cq with cq.candidato.id = :candidatoId and cq.solicitacao.id = s.id and cq.avaliacao.id = sa.avaliacao.id "); 
+		hql.append("where s.id = :solicitacaoId ");
+		hql.append("and cq.id is null ");
+		hql.append("and sa.responderModuloExterno = true ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("candidatoId", candidatoId);
+		query.setLong("solicitacaoId", solicitacaoId);
+		
+		return query.list();
+	}
 }

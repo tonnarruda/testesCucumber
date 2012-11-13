@@ -10,4 +10,5 @@ public interface SolicitacaoAvaliacaoDao extends GenericDao<SolicitacaoAvaliacao
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<SolicitacaoAvaliacao> findBySolicitacaoId(Long solicitacaoId, Boolean responderModuloExterno);
 	void setResponderModuloExterno(Long solicitacaoId, Long[] solicitacaoAvaliacaoIds, boolean responderModuloExterno);
+	Collection<SolicitacaoAvaliacao> findAvaliacaoesNaoRespondidas(Long solicitacaoId, Long candidatoId);
 }

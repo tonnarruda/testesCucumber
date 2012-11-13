@@ -35,4 +35,9 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 		if (solicitacaoAvaliacaoIds != null && solicitacaoAvaliacaoIds.length > 0)
 			getDao().setResponderModuloExterno(solicitacaoId, solicitacaoAvaliacaoIds, true);
 	}
+
+	public Collection<SolicitacaoAvaliacao> findAvaliacaoesNaoRespondidas(Long solicitacaoId, Long candidatoId) 
+	{
+		return getDao().findAvaliacaoesNaoRespondidas(solicitacaoId, candidatoId);
+	}
 }

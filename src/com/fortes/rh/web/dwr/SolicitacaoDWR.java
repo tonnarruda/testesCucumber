@@ -4,16 +4,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.util.CollectionUtil;
 
+@SuppressWarnings("unchecked")
 public class SolicitacaoDWR {
 
 	private SolicitacaoManager solicitacaoManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager; 
 
-	public Map getSolicitacoes(Long empresaId) 
+	public Map<Long, String> getSolicitacoes(Long empresaId) 
 	{
 		Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.APROVADO, false);
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacaos, "getId", "getDescricaoFormatada");
@@ -37,7 +41,18 @@ public class SolicitacaoDWR {
 		return new CollectionUtil<Solicitacao>().convertCollectionToMap(solicitacoes, "getId", "getDescricaoFormatada");
 	}
 	
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+	public Collection<SolicitacaoAvaliacao> findAvaliacoesNaoRespondidas(Long solicitacaoId, Long candidatoId)
+	{
+		return solicitacaoAvaliacaoManager.findAvaliacaoesNaoRespondidas(solicitacaoId, candidatoId);
+	}
+	
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
+	{
 		this.solicitacaoManager = solicitacaoManager;
+	}
+
+	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) 
+	{
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
 	}
 }

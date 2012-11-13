@@ -2,17 +2,41 @@
 
 <html>
 <head>
-<@ww.head/>
-
-<style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
-	@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+	<@ww.head/>
 	
-	.dados a { color: blue; }
-</style>
-
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
-
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		
+		.dados a, 
+		#popup a { color: blue; }
+		#popup ul li { margin: 5px 0px; list-style: disc; }
+	</style>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript'>
+		function menuAvaliacoesSolicitacao(anuncioId, anuncioTitulo, solicitacaoId) 
+		{
+			$('#popup h5').text(anuncioTitulo);
+			
+			SolicitacaoDWR.findAvaliacoesNaoRespondidas(solicitacaoId, ${SESSION_CANDIDATO_ID}, 
+														function(dados) {
+															var lista = "";
+															$(dados).each(  function(item, solicitacaoAvaliacao) {
+																				lista += "<li><a href='prepareInsertAvaliacaoSolicitacao.action?anuncioId=" + anuncioId + "&solicitacao.id=" + solicitacaoAvaliacao.solicitacaoId + "&colaboradorQuestionario.avaliacao.id=" + solicitacaoAvaliacao.avaliacaoId + "&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true'>" + solicitacaoAvaliacao.avaliacaoTitulo + "</a></li>\n";
+																			});
+														
+															$('#popup ul').html(lista);
+														
+															$('#popup').dialog({
+																modal: true
+															});
+														});	
+	    }
+	</script>
 </head>
 <body>
 
@@ -48,17 +72,17 @@
 							<strong>${anuncio.titulo}</strong>  
 							(Você já está concorrendo a esta vaga) <br />
 							
-							<#--  
-							<#if (anuncio.solicitacao.solicitacaoAvaliacaos?size > 0)>
-								<a href="javascript:;" onclick="$('#avaliacoes${anuncio.id}').dialog();">Responder às avaliações</a><br />
+							<#if (anuncio.qtdAvaliacoes > 0) && (anuncio.qtdAvaliacoes > anuncio.qtdAvaliacoesRespondidas)>
+								<a href="javascript:;" onclick="menuAvaliacoesSolicitacao(${anuncio.id}, '${anuncio.titulo}', ${anuncio.solicitacao.id});">Responder as avaliações</a><br />
 								
+								<#--  
 								<div id="avaliacoes${anuncio.id}" title="Selecione uma avaliação" style="display:none;">
 									<#list anuncio.solicitacao.solicitacaoAvaliacaos as solicitacaoAvaliacao>
 										<a title="Responder" href="prepareInsertAvaliacaoSolicitacao.action?anuncioId=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacaoAvaliacao.avaliacao.id}&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true">${solicitacaoAvaliacao.avaliacao.titulo}</a><br />
 									</#list>
 								</div>
+								-->
 							</#if>
-							-->
 						<#else>
 							<strong>${anuncio.titulo}</strong> <br />
 							<a href="verAnuncio.action?anuncio.id=${anuncio.id}">Visualizar</a>
@@ -74,12 +98,22 @@
 	<#else>
 		<tr><td colspan="3"><div align='center'><br><br><b>Não há vagas no momento.</b></div></td></tr>
 	</#if>
+	
 	</table>
+	
 	<#if msgAlert?exists && msgAlert != "">
 		<script>
 			jAlert('${msgAlert}');
 		</script>
 	</#if>
+
+	<div id="popup" title="Responder Avaliações da Vaga" style="display:none;">
+		<h5>Técnico de SESMT</h5>
+		<ul>
+			<li><a href="#">Avaliação A</a></li>
+			<li><a href="#">Avaliação B</a></li>
+		<ul>
+	</div>
 
 	<script language='javascript'>
 		<#if sucessoEnvioCurriculo>

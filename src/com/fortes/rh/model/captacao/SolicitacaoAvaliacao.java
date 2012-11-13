@@ -21,6 +21,18 @@ public class SolicitacaoAvaliacao extends AbstractModel implements Serializable,
 	private Avaliacao avaliacao;
 	
 	private boolean responderModuloExterno;
+	
+	public SolicitacaoAvaliacao() 
+	{
+		
+	}
+	
+	public SolicitacaoAvaliacao(Long solicitacaoId, Long avaliacaoId, String avaliacaoTitulo) 
+	{
+		this.setProjectionSolicitacaoId(solicitacaoId);
+		this.setProjectionAvaliacaoId(avaliacaoId);
+		this.setProjectionAvaliacaoTitulo(avaliacaoTitulo);
+	}
 
 	public Solicitacao getSolicitacao() {
 		return solicitacao;
@@ -61,6 +73,14 @@ public class SolicitacaoAvaliacao extends AbstractModel implements Serializable,
 		
 		return this.avaliacao.getTitulo();
 	}
+	
+	public Long getSolicitacaoId()
+	{
+		if (this.solicitacao == null)
+			return null;
+		
+		return this.solicitacao.getId();
+	}
 
 	public void setProjectionAvaliacaoId(Long avaliacaoId) 
 	{
@@ -68,6 +88,14 @@ public class SolicitacaoAvaliacao extends AbstractModel implements Serializable,
 			this.avaliacao = new Avaliacao();
 		
 		this.avaliacao.setId(avaliacaoId);
+	}
+	
+	public void setProjectionAvaliacaoTitulo(String avaliacaoTitulo) 
+	{
+		if (this.avaliacao == null)
+			this.avaliacao = new Avaliacao();
+		
+		this.avaliacao.setTitulo(avaliacaoTitulo);
 	}
 	
 	public void setProjectionSolicitacaoId(Long solicitacaoId) 
