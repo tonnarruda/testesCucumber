@@ -29,6 +29,7 @@ import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -36,6 +37,7 @@ import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioMensagemFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -74,6 +76,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
 
 	protected void tearDown() throws Exception
