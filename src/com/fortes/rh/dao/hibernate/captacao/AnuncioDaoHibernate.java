@@ -46,7 +46,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		hql.append("where s.encerrada = false ");
 		hql.append("and s.empresa.id = :empresaId ");
 		hql.append("and a.exibirModuloExterno = true "); 
-		hql.append("group by a.id, a.titulo, s.id, cs.id "); 
+		hql.append("group by a.id, a.titulo, s.id, s.quantidade, cs.id "); 
 		hql.append("order by a.titulo");
 		
 		Query query = getSession().createQuery(hql.toString());

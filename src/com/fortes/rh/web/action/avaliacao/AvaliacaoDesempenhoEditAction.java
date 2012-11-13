@@ -425,7 +425,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliador == null)
 			avaliador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		
-		if(SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO"}) )
+		if(SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}) )
 			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, empresaId );//pega todas liberadas
 		else
 			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, empresaId);
@@ -433,7 +433,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho == null && ! avaliacaoDesempenhos.isEmpty())
 			avaliacaoDesempenho = (AvaliacaoDesempenho) avaliacaoDesempenhos.toArray()[0];
 		
-		if(avaliacaoDesempenho != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO"}) )
+		if(avaliacaoDesempenho != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}) )
 			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false);
 		
 		if(avaliacaoDesempenho != null)

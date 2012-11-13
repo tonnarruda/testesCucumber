@@ -116,7 +116,7 @@
 		<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">
 			<@display.column title="Ações" class="acao">
 
-				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO">
+				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO">
 					<#if turma.turmaAvaliacaoTurmas?exists && 0 < turma.turmaAvaliacaoTurmas?size>
 						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Avaliações" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
 					<#else>

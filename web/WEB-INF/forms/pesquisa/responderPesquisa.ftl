@@ -212,6 +212,7 @@ function agrupaPerguntaseRespostas(formulario)
 	</form>
 	</div>
 	<div class="buttonGroup">
+
 		<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
 			<button onclick="${validarCampos}" class="${buttonClass}"></button>
 		</#if>
