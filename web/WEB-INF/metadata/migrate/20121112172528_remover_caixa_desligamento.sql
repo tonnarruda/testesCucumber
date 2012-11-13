@@ -1,1 +1,0 @@
-update usuario set caixasmensagens = replace(caixasmensagens, ',"D",', ',');--.go

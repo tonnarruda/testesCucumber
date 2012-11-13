@@ -605,6 +605,9 @@
     <property name="usuarioEmpresaManager">
       <ref bean="usuarioEmpresaManager" />
     </property>
+    <property name="candidatoSolicitacaoManager">
+      <ref bean="candidatoSolicitacaoManager" />
+    </property>
   </bean>
   <bean id="usuarioMensagemManager" parent="parentManager">
     <property name="proxyInterfaces">

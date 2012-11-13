@@ -198,26 +198,6 @@
 		
 		<div style="clear:both;"></div>
 		
-		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_SOLICITACAO_PESSOAL">
-			<#if solicitacaos?exists && 0 < solicitacaos?size >
-				<div class="waDivTituloX">Existem solicitações de pessoal aguardando liberação</div>
-				<div class="waDivFormularioX">
-					<a href="<@ww.url includeParams="none" value="/captacao/solicitacao/list.action"/>">Clique aqui para visualizar</a>
-				</div>
-			</#if>
-			<br>
-	
-			<#if candidatoSolicitacaos?exists && 0 < candidatoSolicitacaos?size>
-				<div class="waDivTituloX">Existem currículos aguardando aprovação para participar de seleção (Triagem do módulo externo)</div>
-				<div class="waDivFormularioX">
-					<#list candidatoSolicitacaos as candidatoSolicitacao>
-						<a href="<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/listTriagem.action?solicitacao.id=${candidatoSolicitacao.solicitacao.id}"/>">${candidatoSolicitacao.solicitacao.descricao}</a><br>
-					</#list>
-				</div>
-			</#if>
-			<br>
-		</@authz.authorize>
-		
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
 			<#if integradoAC && pendenciaACs?exists>
 				<div class="waDivTituloX">Pendências com o AC Pessoal</div>

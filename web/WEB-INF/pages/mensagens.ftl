@@ -29,6 +29,8 @@
 				<@ww.hidden name="tipo"/>
 				<@ww.hidden name="fromTodasMensagens" value="true"/>
 			
+				<#assign exibirBotaoExcluir = false/>
+			
 				<@display.table name="getMensagens(tipo)" id="msg" class="dados">
 					<#if !msg.lida>
 						<#assign style="font-weight:bold;"/>
@@ -38,26 +40,36 @@
 						<#assign status>Sim</#assign>
 					</#if>
 					
-					<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkMensagem\", this.checked);' />" style="width: 30px; text-align: center;">
-						<input type="checkbox" class="checkMensagem" value="${msg.usuarioMensagemId}" name="usuarioMensagemIds" />
-					</@display.column>
+					<#if msg.usuarioMensagemId?exists>
+						<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkMensagem\", this.checked);' />" style="width: 30px; text-align: center;">
+							<input type="checkbox" class="checkMensagem" value="${msg.usuarioMensagemId}" name="usuarioMensagemIds" />
+						</@display.column>
 					
-					<@display.column title="Ações" media="html" style="text-align:center; width:50px;">
-						<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
-						<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}&amp;fromTodasMensagens=true&amp;tipo=${tipo}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
-					</@display.column>
+						<@display.column title="Ações" media="html" style="text-align:center; width:50px;">
+							<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="/fortesrh/imgs/olho.jpg"></a>
+							<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}&amp;fromTodasMensagens=true&amp;tipo=${tipo}'});"><img border="0" title="Excluir" src="/fortesrh/imgs/delete.gif"/></a>
+						</@display.column>
 					
-					<@display.column title="De" style="${style} text-align:center; width:70px;">
-						${msg.remetente}
-					</@display.column>
-					
-					<@display.column title="Data" style="${style} text-align:center; width:100px;">
-						${msg.data?string("dd/MM/yyyy HH:mm")}
-					</@display.column>
+						<@display.column title="De" style="${style} text-align:center; width:70px;">
+							${msg.remetente}
+						</@display.column>
+						
+						<@display.column title="Data" style="${style} text-align:center; width:100px;">
+							${msg.data?string("dd/MM/yyyy HH:mm")}
+						</@display.column>
+						
+						<#assign exibirBotaoExcluir = true/>
+					</#if>
 					
 					<@display.column title="Mensagem" style="${style}">
 						<div class="tituloMensagem">
-							${msg.textoAbreviado}
+							<#if msg.link?exists && msg.link != "">
+								<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}">
+									${msg.textoAbreviado}
+								</a>
+							<#else>
+								<a style="${style}">${msg.textoAbreviado}</a>
+							</#if>
 						</div>
 					</@display.column>
 					
@@ -68,7 +80,9 @@
 			</@ww.form>
 			
 			<div class="buttonGroup">
-				<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.formMensagemUsuario.submit();});" class="btnExcluir"></button>
+				<#if exibirBotaoExcluir>
+					<button onclick="javascript: newConfirm('Confirma exclusão das mensagens selecionadas?', function(){document.formMensagemUsuario.submit();});" class="btnExcluir"></button>
+				</#if>
 				<button onclick="javascript: location.href='index.action';" class="btnVoltar"></button>
 			</div>
 		<#else>

@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
@@ -15,6 +17,9 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
@@ -24,12 +29,15 @@ import com.fortes.rh.model.geral.UsuarioMensagem;
 import com.fortes.rh.model.geral.relatorio.MensagemVO;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.opensymphony.xwork.ActionContext;
 
 public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensagem, UsuarioMensagemDao> implements UsuarioMensagemManager
 {
 	private MensagemManager mensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	
 	public Map<Character, CaixaMensagem> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
 	{
@@ -107,6 +115,43 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			
 			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
 			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).incrementaNaoLidas();
+		}
+		
+
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
+		{
+			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
+			
+			Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.ANALISE, null);
+			if (solicitacaos != null && solicitacaos.size() > 0) 
+			{
+				vo = new MensagemVO();
+				vo.setTexto("Existem solicitações de pessoal aguardando liberação");
+				vo.setLink("captacao/solicitacao/list.action");
+				vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
+				vo.setLida(true);
+				
+				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
+				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();
+			}
+			
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager");
+	
+			if (gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresaId))
+			{
+				Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
+				for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos) 
+				{
+					vo = new MensagemVO();
+					vo.setTexto("Currículo aguardando aprovação para " + candidatoSolicitacao.getSolicitacao().getDescricao());
+					vo.setLink("captacao/candidatoSolicitacao/listTriagem.action?solicitacao.id=" + candidatoSolicitacao.getSolicitacao().getId());
+					vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
+					vo.setLida(true);
+					
+					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
+					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();
+				}
+			}
 		}
 		
 		return caixasMensagens;
@@ -212,5 +257,9 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) 
 	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 }
