@@ -27,7 +27,7 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public List getConhecimentosByCandidatoId(Long id);
 	public Collection<Candidato> getCandidatosByCpf(String[] cpfs, Long empresaId);
 	public Candidato findCandidatoCpf(String cpf, Long empresaId);
-	public void updateSetContratado(Long candidatoId);
+	public void updateSetContratado(Long candidatoId, Long empresaId);
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds);
 	public Candidato findByCandidatoId(Long id);
 	public void atualizaSenha(Long id, String senha);

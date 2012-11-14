@@ -251,7 +251,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		// Caso seja a contratação de um candidato
 		if (idCandidato != null)
 		{
-			candidatoManager.updateSetContratado(idCandidato);
+			candidatoManager.updateSetContratado(idCandidato, empresa.getId());
 			
 			// Transfere as competências configuradas no candidato
 			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidato(idCandidato);

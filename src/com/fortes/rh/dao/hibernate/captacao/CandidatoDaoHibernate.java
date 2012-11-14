@@ -631,12 +631,15 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return (Candidato) criteria.uniqueResult();
 	}
 
-	public void updateSetContratado(Long candidatoId)
+	public void updateSetContratado(Long candidatoId, Long empresaId)
 	{
-		String queryHQL = "update Candidato c set c.contratado = true, c.disponivel = false where c.id = :candidatoId";
-
-		Session session = getSession();
-		session.createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+		String queryHQL = "update Candidato c set c.contratado = true, c.disponivel = false, c.empresa.id = :empresaId where c.id = :candidatoId";
+		Query query = getSession().createQuery(queryHQL);
+		
+		query.setLong("candidatoId",candidatoId);
+		query.setLong("empresaId",empresaId);
+		
+		query.executeUpdate();
 	}
 
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds)

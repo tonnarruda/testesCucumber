@@ -715,9 +715,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
-	public void updateSetContratado(Long candidatoId)
+	public void updateSetContratado(Long candidatoId, Long empresaId)
 	{
-		getDao().updateSetContratado(candidatoId);
+		getDao().updateSetContratado(candidatoId, empresaId);
 	}
 
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds)

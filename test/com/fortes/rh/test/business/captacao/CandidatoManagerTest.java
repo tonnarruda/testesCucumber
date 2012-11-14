@@ -1258,13 +1258,14 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
 	public void testUpdateSetContratado() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidato.setId(1L);
 		candidato.setContratado(true);
 
-		candidatoDao.expects(once()).method("updateSetContratado").with(eq(candidato.getId()));
+		candidatoDao.expects(once()).method("updateSetContratado").with(eq(candidato.getId()), eq(empresa.getId()));
 
-		candidatoManager.updateSetContratado(candidato.getId());
+		candidatoManager.updateSetContratado(candidato.getId(), empresa.getId());
 
 		assertTrue(candidato.isContratado());
 	}

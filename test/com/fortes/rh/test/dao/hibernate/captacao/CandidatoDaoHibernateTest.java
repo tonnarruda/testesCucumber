@@ -1747,7 +1747,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	public void testUpdateSetContratado()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
 
 		Candidato c1 = getCandidato();
 		c1.setEmpresa(empresa);
@@ -1757,14 +1760,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setContratado(false);
 		c1.setBlackList(false);
 
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
+		
+		candidatoDao.updateSetContratado(c1.getId(), empresa2.getId());
+		Candidato retorno = candidatoDao.findByIdProjection(c1.getId());
 
-		candidatoDao.updateSetContratado(c1.getId());
-
-		@SuppressWarnings("unused")
-		Candidato retorno = candidatoDao.findByCandidatoId(c1.getId());
-
-//		assertTrue(retorno.isContratado());
+		assertEquals(empresa2.getId(), retorno.getEmpresa().getId());
+		assertTrue(retorno.isContratado());
 	}
 
 	public void testFindByIdProjection()

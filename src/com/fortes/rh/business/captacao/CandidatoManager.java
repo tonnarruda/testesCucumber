@@ -43,7 +43,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Candidato saveOrUpdateCandidatoByColaborador(Colaborador colaborador);
 	public String recuperaSenha(String cpf, Empresa empresa);
 	public void enviaNovaSenha(Candidato candidato, Empresa empresa);
-	public void updateSetContratado(Long candidatoId);
+	public void updateSetContratado(Long candidatoId, Long empresaId);
 	public void updateBlackList(String observacao, boolean blackList, Long... candidatoIds);
 	public void setBlackList(HistoricoCandidato historicoCandidato, Long candidatoSolicitacaoId, boolean blacklist);
 	public void setBlackList(HistoricoCandidato historicoCandidato, String[] candidatosCheck, boolean blacklist) throws Exception;
