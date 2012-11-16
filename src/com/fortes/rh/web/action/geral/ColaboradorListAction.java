@@ -1,6 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
-import java.io.ByteArrayInputStream;
+import java.awt.Color;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,9 +9,28 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.commons.lang.StringUtils;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
+
+import ar.com.fdvs.dj.core.DynamicJasperHelper;
+import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
+import ar.com.fdvs.dj.domain.DynamicReport;
+import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
+import ar.com.fdvs.dj.domain.constants.Border;
+import ar.com.fdvs.dj.domain.constants.Font;
+import ar.com.fdvs.dj.domain.constants.Page;
+import ar.com.fdvs.dj.domain.constants.VerticalAlign;
+import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -39,7 +58,6 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -49,6 +67,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -293,73 +312,72 @@ public class ColaboradorListAction extends MyActionSupportList
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
 			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
-
+			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
-			Context cx = Context.enter();
-	        try {
-	            cx.setLanguageVersion(Context.VERSION_1_7);
-	            Scriptable scope = cx.initStandardObjects();
-	            
-	            String xml = ArquivoUtil.getReportSource("relatorioDinamico.jrxml");
-	            if(agruparPorTempoServico)
-	            	xml = ArquivoUtil.getReportSource("relatorioDinamicoAgrupado.jrxml");
-	            
-	            xml = xml.replaceAll("<\\?.*\\s+<!.*\\s+<!.*\\s+", "");
-	            
-	            StringBuilder sb = new StringBuilder();
-	            sb.append("    var xml = " + xml + ";");
-	           
-	            int posicaoX = 0;
-	            int valueWidth = 0;
-	            int valueX = 0;
+			JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
 
-	            montaColunas();
-	            String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-	            filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
-	            
-	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), filtro);
-	            
-	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
-	            
-	            int count = 1;
-	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
-	            {
-            		parametros.put("TITULO" + (count), coluna.getName());
-            		
-	            	valueWidth = coluna.getSize();
-		            valueX = posicaoX;
-		            			
-		            if(agruparPorTempoServico)
-		            	valueX += 18;
-		            
-		            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
-		            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
-		            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
-		            sb.append(DynaRecord.montaEval("detail", "x", count, valueX));
-		            
-		            posicaoX += valueWidth + ReportColumn.getSpace();
-		            count++;
-				}
-	            	            
-				sb.append("    obj = xml.toXMLString();");
-	            Object result = cx.evaluateString(scope, sb.toString(),	"MySource", 1,	null);
+			String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+			filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
+            
+			montaColunas();
+            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
+            
+            // Montagem do relatorio
+            
+		    Style headerStyle = new Style();
+		    headerStyle.setBlankWhenNull(true);
+		    headerStyle.setFont(new Font(8, "Arial", true));
+		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
+		    
+		    Style detailStyle = new Style();
+		    detailStyle.setBlankWhenNull(true);
+		    detailStyle.setFont(new Font(8, "Arial", false));
+		    detailStyle.setVerticalAlign(VerticalAlign.TOP);
+		    detailStyle.setOverridesExistingStyle(true);
+		    
+		    Style oddDetailStyle = new Style();
+		    oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
+		    
+		    DynamicReportBuilder drb = new DynamicReportBuilder();
+		    drb.setTemplateFile("../../WEB-INF/report/modeloDinamico.jrxml", true, true, true, true);
+		    drb.setDetailHeight(15);
+		    drb.setMargins(15, 20, 30, 15);
+		    drb.setDefaultStyles(null, null, headerStyle, detailStyle);
+		    drb.setColumnsPerPage(1);
+		    drb.setPageSizeAndOrientation(Page.Page_A4_Landscape());
+		    drb.setUseFullPageWidth(true);
+		    drb.setColumnSpace(4);
+		    drb.setOddRowBackgroundStyle(oddDetailStyle);
+		    drb.setPrintBackgroundOnOddRows(true);
 
-	            String relatorioDinamico = "" +
-	            		"<?xml version=\"1.0\" encoding=\"UTF-8\"  ?>" +
-	            		"<!DOCTYPE jasperReport PUBLIC \"//JasperReports//DTD Report Design//EN\" \"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd\">" +
-	            		result.toString();
-	            
-	            reportInputStream = new ByteArrayInputStream(relatorioDinamico.getBytes());
-	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, tempoServicoIni, tempoServicoFim);
+		    AbstractColumn aCol;
 
-	        }
-	        finally 
-	        {
-	            Context.exit();
-	        }
-		
+		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
+            {
+	            aCol = ColumnBuilder.getNew()
+	            					.setColumnProperty(coluna.getProperty(), String.class.getName())
+	            					.setTitle(coluna.getName())
+	            					.setWidth(coluna.getSize())
+	            					.build();
+	            
+	            drb.addColumn(aCol);
+			}
+	
+	        DynamicReport report = drb.build();
+	        	        
+		    JasperReport jreport = DynamicJasperHelper.generateJasperReport(report, new ClassicLayoutManager(), parametros);
+		    JasperPrint jprint = JasperFillManager.fillReport(jreport, parametros, dataSource);
+		    
+		    HttpServletResponse response = ServletActionContext.getResponse();
+		    response.setContentType("application/octet-stream");
+		    response.setHeader("Content-Disposition", "attachment;filename=\"relatorioDinamico.pdf\"");
+		    
+		    JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
+			
 			return Action.SUCCESS;
 			
 		}
