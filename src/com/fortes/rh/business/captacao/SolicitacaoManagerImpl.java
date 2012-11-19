@@ -209,9 +209,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		getDao().migrarBairro(bairroId, bairroDestinoId);
 	}
 	
-	public Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados)
+	public Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados, Long[] avaliacaoIds)
 	{
 		super.save(solicitacao);
+		solicitacaoAvaliacaoManager.saveAvaliacoesSolicitacao(solicitacao.getId(), avaliacaoIds);
 		
 		try {
 			enviarEmailParaResponsaveis(solicitacao, solicitacao.getEmpresa(), emailsMarcados);

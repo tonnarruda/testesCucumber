@@ -62,7 +62,7 @@ public class SolicitacaoEditActionTest extends MockObjectTestCase
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		action.setBairrosCheck(new String[]{"1"});
 		action.setSolicitacao(solicitacao);
-		solicitacaoManager.expects(once()).method("save").with(eq(solicitacao), ANYTHING);
+		solicitacaoManager.expects(once()).method("save").with(eq(solicitacao), ANYTHING, ANYTHING);
 		
 		Exception exception = null;
 		try
