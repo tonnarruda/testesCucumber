@@ -222,8 +222,7 @@ CREATE TABLE anuncio (
     mostrasexo boolean NOT NULL,
     mostraidade boolean NOT NULL,
     exibirmoduloexterno boolean DEFAULT false,
-    solicitacao_id bigint,
-    responderavaliacaomoduloexterno boolean DEFAULT false
+    solicitacao_id bigint
 );
 
 
@@ -5719,7 +5718,6 @@ CREATE TABLE solicitacao (
     empresa_id bigint,
     faixasalarial_id bigint,
     descricao character varying(100),
-    avaliacao_id bigint,
     liberador_id bigint,
     horariocomercial character varying(20),
     status character varying(1),
@@ -5761,6 +5759,41 @@ ALTER TABLE public.solicitacao_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('solicitacao_sequence', 1, false);
+
+
+--
+-- Name: solicitacaoavaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE solicitacaoavaliacao (
+    id bigint NOT NULL,
+    solicitacao_id bigint NOT NULL,
+    avaliacao_id bigint NOT NULL,
+    respondermoduloexterno boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.solicitacaoavaliacao OWNER TO postgres;
+
+--
+-- Name: solicitacaoavaliacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE solicitacaoavaliacao_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.solicitacaoavaliacao_sequence OWNER TO postgres;
+
+--
+-- Name: solicitacaoavaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoavaliacao_sequence', 1, false);
 
 
 --
@@ -27845,6 +27878,13 @@ INSERT INTO migrations (name) VALUES ('20121029104931');
 INSERT INTO migrations (name) VALUES ('20121029141742');
 INSERT INTO migrations (name) VALUES ('20121029144427');
 INSERT INTO migrations (name) VALUES ('20121105101911');
+INSERT INTO migrations (name) VALUES ('20121112152919');
+INSERT INTO migrations (name) VALUES ('20121112154945');
+INSERT INTO migrations (name) VALUES ('20121112161335');
+INSERT INTO migrations (name) VALUES ('20121112162450');
+INSERT INTO migrations (name) VALUES ('20121113113500');
+INSERT INTO migrations (name) VALUES ('20121113143059');
+INSERT INTO migrations (name) VALUES ('20121113153336');
 
 
 --
@@ -28089,7 +28129,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (8, 'ROLE_COLAB_LIST', 'Colaboradores', '/geral/colaborador/list.action', 7, true, NULL, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (463, 'INATIVOS', 'Inativos', '#', 100, true, NULL, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (539, 'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 12, true, NULL, 37);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode Responder Avaliação Por Outro Usuário', '#', 14, false, NULL, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 7, false, NULL, 75);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 7, false, NULL, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (546, 'ROLE_COLAB_LIST_DESLIGAR', 'Desligar', '#', 2, false, NULL, 8);
@@ -28106,8 +28145,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (554, 'ROLE_COLAB_LIST_VISUALIZARCURRICULO', 'Visualizar currículo', '#', 12, false, NULL, 8);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (555, 'ROLE_CAD_COLABORADOR', 'Cadastrar', '#', 1, false, NULL, 8);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções com Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Apagar Respostas', '#', 1, false, NULL, 55);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_POR_OUTRO_USUARIO', 'Pode ver e responder Aval. Desempenho', '#', 3, false, NULL, 382);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (396, 'ROLE_REL_AREAORGANIZACIONAL', 'Colaboradores por Área Organizacional', '/geral/areaOrganizacionalRelatorio/formFiltro.action', 3, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (406, 'ROLE_MOV_TABELA', 'Análise de Tabela Salarial', '/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro.action', 6, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (70, 'ROLE_REL_PROMOCAO', 'Promoções', '/cargosalario/historicoColaborador/prepareRelatorioPromocoes.action', 7, true, NULL, 364);
@@ -28131,13 +28168,16 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 13, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO', 'Pode Ver e Responder Aval. Desempenho Por Outro Usuário', '#', 1, false, NULL, 483);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO', 'Pode Responder Avaliação De Turma Por Outro Usuário', '#', 14, false, NULL, 365);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Excluir Respostas', '#', 2, false, NULL, 483);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.93.91', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.50.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.94.92', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
 
 
 --
@@ -28462,6 +28502,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 
 
 --
+-- Data for Name: solicitacaoavaliacao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: solicitacaobds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -28543,7 +28589,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 -- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (1, 'Fortes', 'fortes', 'MTIzNA==', true, NULL, false, '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}');
+INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superadmin, caixasmensagens) VALUES (1, 'Fortes', 'fortes', 'MTIzNA==', true, NULL, false, '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","R","A","S"],"caixasMinimizadas":[]}');
 
 
 --
@@ -29684,6 +29730,14 @@ ALTER TABLE ONLY riscomedicaorisco
 
 ALTER TABLE ONLY solicitacao
     ADD CONSTRAINT solicitacao_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solicitacaoavaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY solicitacaoavaliacao
+    ADD CONSTRAINT solicitacaoavaliacao_pkey PRIMARY KEY (id);
 
 
 --
@@ -32094,14 +32148,6 @@ ALTER TABLE ONLY solicitacao
 
 
 --
--- Name: solicitacao_avaliacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY solicitacao
-    ADD CONSTRAINT solicitacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
-
-
---
 -- Name: solicitacao_bairro_bairro_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -32171,6 +32217,22 @@ ALTER TABLE ONLY solicitacao
 
 ALTER TABLE ONLY solicitacao
     ADD CONSTRAINT solicitacao_usuario_fk FOREIGN KEY (solicitante_id) REFERENCES usuario(id);
+
+
+--
+-- Name: solicitacaoavaliacao_avaliacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacaoavaliacao
+    ADD CONSTRAINT solicitacaoavaliacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
+
+
+--
+-- Name: solicitacaoavaliacao_solicitacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacaoavaliacao
+    ADD CONSTRAINT solicitacaoavaliacao_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --

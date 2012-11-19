@@ -19316,3 +19316,45 @@ update parametrosdosistema set appversao = '1.1.93.90';--.go
 -- versao 1.1.93.91
 
 update parametrosdosistema set appversao = '1.1.93.91';--.go
+-- versao 1.1.94.92
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.51.2';--.go
+insert into migrations values('20121112152919');--.go
+update gerenciadorcomunicacao set enviarpara = 13 where operacao = 14 and meiocomunicacao =1 and enviarpara = 14;--.go
+insert into migrations values('20121112154945');--.go
+update mensagem set tipo = 'F' where texto ilike '%foi desligado no AC Pessoal%';--.go
+insert into migrations values('20121112161335');--.go
+update mensagem set tipo = 'A' where texto ilike 'Período de Experiência:%';--.go
+insert into migrations values('20121112162450');--.go
+
+UPDATE papel SET nome = 'Pode Ver e Responder Aval. Desempenho Por Outro Usuário', codigo = 'ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO', 
+	   papelmae_id = 483, ordem = 1 where id = 484;--.go
+UPDATE papel SET nome = 'Pode Responder Avaliação De Turma Por Outro Usuário', codigo = 'ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO' where id = 487;--.go
+UPDATE papel SET nome = 'Excluir Respostas', papelmae_id = 483, ordem = 2  where id = 560;--.go
+
+insert into migrations values('20121113113500');--.go
+CREATE TABLE solicitacaoavaliacao (
+  id bigint NOT NULL,
+  solicitacao_id bigint NOT NULL,
+  avaliacao_id bigint NOT NULL,
+  respondermoduloexterno boolean NOT NULL default false 
+);--.go
+
+ALTER TABLE solicitacaoavaliacao ADD CONSTRAINT solicitacaoavaliacao_pkey PRIMARY KEY(id);--.go
+ALTER TABLE solicitacaoavaliacao ADD CONSTRAINT solicitacaoavaliacao_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao (id); --.go
+ALTER TABLE solicitacaoavaliacao ADD CONSTRAINT solicitacaoavaliacao_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao (id); --.go
+CREATE SEQUENCE solicitacaoavaliacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+insert into solicitacaoavaliacao 
+select nextval('solicitacaoavaliacao_sequence'), s.id, s.avaliacao_id, coalesce(a.responderavaliacaomoduloexterno, false) 
+from solicitacao s 
+left join anuncio a on s.id = a.solicitacao_id  
+where s.avaliacao_id is not null; --.go
+
+alter table solicitacao drop column avaliacao_id; --.go
+alter table anuncio drop column responderavaliacaomoduloexterno; --.go
+insert into migrations values('20121113143059');--.go
+update usuario set caixasmensagens = replace(caixasmensagens, 'D', 'R');--.go
+update usuario set caixasmensagens = replace(caixasmensagens, 'caixasRireita', 'caixasDireita');--.go
+insert into migrations values('20121113153336');--.go
+update parametrosdosistema set appversao = '1.1.94.92';--.go
