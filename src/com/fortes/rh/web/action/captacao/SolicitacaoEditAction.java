@@ -276,7 +276,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         else
            	solicitacao.setLiberador(null);
 
-        solicitacaoManager.save(solicitacao, emailsCheck);
+        solicitacaoManager.save(solicitacao, emailsCheck, LongUtil.arrayStringToArrayLong(avaliacoesCheck));
         
         return Action.SUCCESS;
     }
