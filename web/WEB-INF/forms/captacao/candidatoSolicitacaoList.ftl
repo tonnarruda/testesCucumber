@@ -10,6 +10,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 				@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
+		#legendas { float: right; margin-bottom: 10px; }
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }
 		.indiferente { color: #555 !important; }
@@ -122,7 +123,14 @@
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
-	<div id="legendas" align="right"></div>
+	
+	<div id="legendas">
+		<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos
+		<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente
+		<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos
+		<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos
+	</div>
+	
 	<#assign jaResponderam = false/>
 
 	<@display.table name="candidatoSolicitacaos" id="candidatoSolicitacao" class="dados" >
@@ -282,13 +290,5 @@
 			<button onclick="$('#popupImpressao').dialog('close');" class="btnFechar"></button>
 		</div>
 	</div>
-
-	<script>
-		var obj = document.getElementById("legendas");
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos";
-		obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos";
-	</script>
 </body>
 </html>
