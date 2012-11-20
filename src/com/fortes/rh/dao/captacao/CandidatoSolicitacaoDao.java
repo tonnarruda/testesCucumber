@@ -23,7 +23,7 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	void updateTriagem(Long[] candidatoSolicitacaoIdsSelecionados, boolean triagem);
 	CandidatoSolicitacao getCandidatoSolicitacaoByCandidato(Long id);
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
-	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca);
+	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato);
 	Collection<Integer> getIdF2RhCandidato(Long solicitacaoId);

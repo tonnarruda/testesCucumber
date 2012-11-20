@@ -21,7 +21,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos,Long empresaId);
 	CandidatoSolicitacao findCandidatoSolicitacaoById(Long candidatoSolicitacaoId);
 	Collection<CandidatoSolicitacao> findCandidatoSolicitacaoById(Long[] candidatoSolicitacaoIds);
-	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca);
+	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status);
 	Collection<CandidatoSolicitacao> findBySolicitacaoTriagem(Long solicitacaoId);
 	Collection<CandidatoSolicitacao> findByFiltroSolicitacaoTriagem(Boolean triagem);
 	void updateTriagem(Long[] candidatoSolicitacaoIdsSelecionados, boolean triagem);

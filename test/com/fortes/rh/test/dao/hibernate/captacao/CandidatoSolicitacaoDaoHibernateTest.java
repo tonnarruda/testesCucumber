@@ -302,7 +302,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao);
 		historicoCandidato2 = historicoCandidatoDao.save(historicoCandidato2);
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, false, null, null);
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, false, null, null, null);
 		assertEquals(1, candidatoSolicitacaos.size());
 
 		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];

@@ -138,7 +138,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
     }
 
     //TODO BACALHAU, ajustar parametros. Ex.: o contratado passa true e usa false
-    public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca)
+    public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status)
     {
     	//cuidado com a ordem das joins, tem um sql amarrado...h2_ IMUNDO
         Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
@@ -155,6 +155,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("c.contato.foneFixo"), "candidatoFoneFixo");
         p.add(Projections.property("c.contato.foneCelular"), "candidatoFoneCelular");
         p.add(Projections.property("c.contato.ddd"), "candidatoDdd");
+        p.add(Projections.property("c.contato.email"), "candidatoEmail");
         p.add(Projections.property("c.idF2RH"), "candidatoIdF2RH");
         p.add(Projections.property("c.contratado"), "candidatoContratado");
         p.add(Projections.property("c.pessoal.indicadoPor"), "candidatoIndicadoPor");
@@ -167,7 +168,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("emp.id"), "projectionCandidatoEmpresaId");
         p.add(Projections.property("emp.nome"), "projectionCandidatoEmpresaNome");
         criteria.setProjection(p);
-
+        
         criteria.add(Expression.eq("cs.triagem", false));
 
         if(contratado)
@@ -197,6 +198,15 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         			criteria.add(Expression.eq("h.apto", Apto.NAO));
         	}
         }
+        
+        if(status != null && status == 'I'){
+        	criteria.add(Expression.eq("cs.status", status));
+        	criteria.add(Expression.isNull("h.apto"));
+        }
+        if(status != null && status == 'A')
+        	criteria.add(Expression.isNotNull("h.apto"));
+        if(status != null && status == 'P')
+        	criteria.add(Expression.ne("cs.status", 'I'));
 
         if(etapaSeletivaId != null)
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));

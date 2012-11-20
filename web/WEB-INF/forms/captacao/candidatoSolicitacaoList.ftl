@@ -14,7 +14,6 @@
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }
 		.indiferente { color: #555 !important; }
-		.indiferente { color: #555 !important; }
 		.contratado { color: #008000 !important; }
 		.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar { margin: 5px 5px 0px 0px; }
 	</style>
@@ -25,6 +24,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	
 	<script type="text/javascript">
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)
 		{
@@ -88,9 +88,11 @@
 							    }
 							}).load('<@ww.url includeParams="none" value="/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action"/>', { 'solicitacao.id': solicitacaoId, 'candidato.id': candidatoId });
 		}
+		
 	</script>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	<#assign validarRelatorioListagem = "$('#ImprimirCandSol').attr('disabled', true); return validaFormulario('formImprimirListagemCandidatoSolicitacao', new Array(), null)"/>
 
 	<#include "../ftl/showFilterImports.ftl" />
 </head>
@@ -112,7 +114,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" id="form" action="list.action" validate="true" method="POST">
 			<@ww.select label="Etapa" name="etapaSeletivaId" list="etapas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" liClass="liLeft"/>
-			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos/Indiferente','N':'Não Aptos'}" />
+			<@ww.select label="Situação" name="visualizar" list=r"#{'T':'Todas','A':'Aptos', 'I':'Indiferente', 'N':'Não Aptos', 'P':'Contratados/Promovidos'}" />
 			<@ww.textfield label="Nome" name="nomeBusca"/>
 			<@ww.textfield label="Indicado por" name="indicadoPor"/>
 			<@ww.textfield label="Observações do RH" name="observacaoRH"  cssStyle="width: 240px;"/>
@@ -244,6 +246,33 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup" style="margin: 0px;">
+
+		<#if !etapaSeletivaId?exists>
+			<#assign _etapaSeletivaId= "" />
+		<#else>
+			<#assign _etapaSeletivaId= etapaSeletivaId />		
+		</#if>
+		
+		<#if !nomeBusca?exists>
+			<#assign _nomeBusca= "" />
+		<#else>
+			<#assign _nomeBusca= nomeBusca />		
+		</#if>
+		
+		<#if !indicadoPor?exists>
+			<#assign _indicadoPor= "" />
+		<#else>
+			<#assign _indicadoPor= indicadoPor/>		
+		</#if>
+		
+		<#if !observacaoRH?exists>
+			<#assign _observacaoRH= "" />
+		<#else>
+			<#assign _observacaoRH= observacaoRH/>		
+		</#if>
+		
+		<button onclick="window.location='../candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action?solicitacao.id=${solicitacao.id}&etapaSeletivaId=${_etapaSeletivaId}&visualizar=${visualizar}&nomeBusca=${_nomeBusca}&indicadoPor=${_indicadoPor}&observacaoRH=${_observacaoRH}'" class="btnImprimir"></button>
+		
 		<#if !solicitacao.encerrada>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
 				<button class="btnTriagem" onclick="window.location='../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}'"></button>
@@ -290,5 +319,6 @@
 			<button onclick="$('#popupImpressao').dialog('close');" class="btnFechar"></button>
 		</div>
 	</div>
+	
 </body>
 </html>

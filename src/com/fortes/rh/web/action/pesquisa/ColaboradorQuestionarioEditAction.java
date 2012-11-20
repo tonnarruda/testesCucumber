@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
@@ -25,6 +26,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -48,6 +50,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
+import com.fortes.rh.web.action.captacao.RelatorioCandidatoSolicitacaoList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -74,6 +77,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -81,8 +85,15 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Colaborador avaliador;
 	private Candidato candidato;
 	private ColaboradorQuestionario colaboradorQuestionario;
+	private RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList;
+	private Long etapaSeletivaId;
+	private String indicadoPor;
+	private String observacaoRH;
+	private String nomeBusca;
+	private char visualizar;
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
+	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<RespostaQuestionarioVO> respostaQuestionarioVOs;
 	private Collection<Pergunta> perguntas;
 	private Collection<Avaliacao> avaliacaoExperiencias = new ArrayList<Avaliacao>();
@@ -170,6 +181,32 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		}
 	}
 
+	public String imprimirListagemCandidatoSolicitacao()
+	{
+		try 
+		{
+			candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca, visualizar);
+			parametros = RelatorioUtil.getParametrosRelatorio("Candidatos da Seleção", getEmpresaSistema(), "");
+			
+			return Action.SUCCESS;		
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao gerar relatório.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+	}
+
+	private Boolean getValueApto(char visual)
+	{
+		if(visual == 'A')
+			return true;
+		else if(visual == 'N')
+			return false;
+
+		return null;
+	}
 	public String listFiltro() throws Exception
 	{
 		double valorPercentual = (percentual == null || percentual.equals("")) ? 0 : Double.parseDouble(percentual);
@@ -882,5 +919,42 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvos() {
 		return niveisCompetenciaFaixaSalariaisSalvos;
+	}
+
+	public void setCandidatoSolicitacaoManager(
+			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos() {
+		return candidatoSolicitacaos;
+	}
+
+	public void setEtapaSeletivaId(Long etapaSeletivaId) {
+		this.etapaSeletivaId = etapaSeletivaId;
+	}
+
+	public void setIndicadoPor(String indicadoPor) {
+		this.indicadoPor = indicadoPor;
+	}
+
+	public void setObservacaoRH(String observacaoRH) {
+		this.observacaoRH = observacaoRH;
+	}
+
+	public void setNomeBusca(String nomeBusca) {
+		this.nomeBusca = nomeBusca;
+	}
+
+	public void setVisualizar(char visualizar) {
+		this.visualizar = visualizar;
+	}
+
+	public RelatorioCandidatoSolicitacaoList getRelatorioCandidatoSolicitacaoList() {
+		return relatorioCandidatoSolicitacaoList;
+	}
+
+	public void setRelatorioCandidatoSolicitacaoList(RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
+		this.relatorioCandidatoSolicitacaoList = relatorioCandidatoSolicitacaoList;
 	}
 }

@@ -19,7 +19,7 @@ public class HistoricoCandidatoDWR
 		if(etapaId == -1)
 			etapaId = null;
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacaoId, etapaId, null, true, true, true, null, null);
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacaoId, etapaId, null, true, true, true, null, null, null);
 
 		return new CollectionUtil<CandidatoSolicitacao>().convertCollectionToMap(candidatoSolicitacaos, "getId", "getCandidatoNome");
 	}

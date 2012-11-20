@@ -912,6 +912,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 			contato = new Contato();
 		contato.setFoneCelular(foneCelular);
 	}
+	
+	public void setEmail (String email)
+	{
+		if (contato == null)
+			contato = new Contato();
+		contato.setEmail(email);
+	}
 
 	public void setDdd(String ddd)
 	{

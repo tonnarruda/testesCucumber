@@ -270,9 +270,9 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
     	Collection<CandidatoSolicitacao> candidatoSolicitacaosMock = new ArrayList<CandidatoSolicitacao>();
     	candidatoSolicitacaosMock.add(cs1);
 
-    	candidatoSolicitacaoDao.expects(once()).method("getCandidatoSolicitacaoList").with(new Constraint[]{ANYTHING, ANYTHING, eq(solicitacao.getId()), eq(etapaSeletiva.getId()), ANYTHING, ANYTHING, eq(true), eq(false),ANYTHING, ANYTHING}).will(returnValue(candidatoSolicitacaosMock));
+    	candidatoSolicitacaoDao.expects(once()).method("getCandidatoSolicitacaoList").with(new Constraint[]{ANYTHING, ANYTHING, eq(solicitacao.getId()), eq(etapaSeletiva.getId()), ANYTHING, ANYTHING, eq(true), eq(false),ANYTHING, ANYTHING, ANYTHING}).will(returnValue(candidatoSolicitacaosMock));
 
-    	Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), etapaSeletiva.getId(), null, null, true, false, null, null);
+    	Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), etapaSeletiva.getId(), null, null, true, false, null, null, null);
 
     	assertEquals("Test 1", 1, candidatoSolicitacaos.size());
     }

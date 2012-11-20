@@ -52,6 +52,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private String observacaoRH;
 	private String nomeBusca;
 	private boolean existeCompetenciaParaFaixa;
+	private RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList;
 
 	private Long etapaSeletivaId;//usado no ftl para manter dados do filtro
 	private char visualizar;
@@ -65,7 +66,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 		
 		setTotalSize(candidatoSolicitacaoManager.getCount(solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, observacaoRH, nomeBusca));
-		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca);
+		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca, visualizar);
 
 		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);
 		
@@ -74,7 +75,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			if (getPage() > 1)
 			{
 				setPage(getPage()-1);
-				candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, false, observacaoRH, null);
+				candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, false, observacaoRH, null, null);
 			}
 			else
 				addActionMessage("Não existem candidatos para o filtro informado.");
@@ -150,7 +151,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	{
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 
-		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, observacaoRH, null);
+		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, observacaoRH, null, null);
 
 		solicitacaos = solicitacaoManager.findSolicitacaoList(null, false, null, false);
 		solicitacaos.remove(solicitacao);
@@ -384,5 +385,14 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
+	}
+
+	public RelatorioCandidatoSolicitacaoList getRelatorioCandidatoSolicitacaoList() {
+		return relatorioCandidatoSolicitacaoList;
+	}
+
+	public void setRelatorioCandidatoSolicitacaoList(
+			RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
+		this.relatorioCandidatoSolicitacaoList = relatorioCandidatoSolicitacaoList;
 	}
 }
