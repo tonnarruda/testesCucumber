@@ -135,7 +135,12 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	candidato = candidatoManager.findByCandidatoId(candidato.getId());
         	colaborador = new Colaborador(candidato.getNome(), "", candidato.getId(), null, null);//Envia dados do Candidato para o ftl encapsulado no Colaborador
 
-        	colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId());
+        	if(!inserirFichaMedica){
+        		if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
+        			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+        		else
+        			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId());
+        	}
         }
         else
         	colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
@@ -144,8 +149,14 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         	addActionMessage("Não existe pergunta neste questionario.");
         
         if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || (questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'C' && !inserirFichaMedica ))
-        	colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), turmaId);
-
+        {
+        	if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
+        		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+    		else
+    			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), turmaId);
+        }
+        
+        
         retorno = voltarPara;
 
         return Action.SUCCESS;
@@ -179,7 +190,11 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
     public String salvaQuestionarioRespondido() throws Exception
     {
-    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionario.getId(), inserirFichaMedica);
+    	Long colaboradorQuestionarioId = null;
+    	if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
+    		colaboradorQuestionarioId = colaboradorQuestionario.getId();
+    	
+    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionarioId, inserirFichaMedica);
 
         if (tela.equals("index"))
         {
