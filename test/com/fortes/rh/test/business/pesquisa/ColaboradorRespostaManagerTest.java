@@ -162,7 +162,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	transactionManager.expects(once()).method("commit").with(ANYTHING).isVoid();
 
-    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date());
+    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date(), null, false);
 
     }
     
@@ -249,7 +249,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date());
+    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date(), null, false);
 
     }
 
@@ -296,7 +296,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	try
     	{
-    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date());
+    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), null, ' ', new Date(), null, false);
 		}
 		catch (Exception e)
 		{

@@ -162,6 +162,8 @@ function agrupaPerguntaseRespostas(formulario){
 		<@ww.hidden name="voltarPara" />
 		<@ww.hidden name="vinculo" />
 		<@ww.hidden name="turmaId"  />
+		<@ww.hidden name="inserirFichaMedica"  />
+		<@ww.hidden name="colaboradorQuestionario.id"  />
 	<@ww.token />
 	</@ww.form>
 

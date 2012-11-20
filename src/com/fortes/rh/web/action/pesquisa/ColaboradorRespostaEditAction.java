@@ -64,6 +64,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     private String tela = "";
     private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 
+    private boolean inserirFichaMedica;
     private Boolean validarFormulario;// default
     private char vinculo;
 
@@ -142,7 +143,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         if(questionario.getPerguntas().isEmpty())
         	addActionMessage("Não existe pergunta neste questionario.");
         
-        if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || (questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'C'))
+        if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || (questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'C' && !inserirFichaMedica ))
         	colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), turmaId);
 
         retorno = voltarPara;
@@ -166,7 +167,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     public String salvaQuestionarioRespondidoTrafego() throws Exception
     {
     	try {			
-    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm);
+    		colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, null, false);
     		actionMsg = "Respostas gravadas com sucesso.";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +179,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
     public String salvaQuestionarioRespondido() throws Exception
     {
-    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm);
+    	colaboradorRespostaManager.salvaQuestionarioRespondido(respostas, questionario, colaborador.getId(), turmaId, vinculo, respondidaEm, colaboradorQuestionario.getId(), inserirFichaMedica);
 
         if (tela.equals("index"))
         {
@@ -519,6 +520,14 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 
     public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
+	}
+
+	public boolean isInserirFichaMedica() {
+		return inserirFichaMedica;
+	}
+
+	public void setInserirFichaMedica(boolean inserirFichaMedica) {
+		this.inserirFichaMedica = inserirFichaMedica;
 	}
 
 }

@@ -118,6 +118,7 @@
 		<@ww.select label="Ficha" name="questionario.id" id="ficha" list="fichaMedicas" cssStyle="width: 500px;" required="true" headerKey="" listKey="questionario.id" listValue="questionario.titulo" headerValue="Selecione..."/>
 
 		<@ww.hidden name="voltarPara" value="../../sesmt/fichaMedica/prepareInsertFicha.action"/>
+		<@ww.hidden name="inserirFichaMedica" value="true"/>
 	</@ww.form>
 
 

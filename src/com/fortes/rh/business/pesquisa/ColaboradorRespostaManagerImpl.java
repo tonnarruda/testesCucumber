@@ -58,7 +58,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return getDao().findInPerguntaIds(perguntasIds, estabelecimentosIds, areasIds, periodoIni, periodoFim, turmaId, questionario, empresaId);
     }
 
-    public void salvaQuestionarioRespondido(String respostas,Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm) throws Exception
+    public void salvaQuestionarioRespondido(String respostas,Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception
     {
     	Long candidatoId = null;
     	AreaOrganizacional areaOrganizacional = null;
@@ -87,11 +87,18 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         		colaboradorManager.respondeuEntrevista(colaboradorId);
 
         	ColaboradorQuestionario colaboradorQuestionario = null;
-        	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
-        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionarioCandidato(questionario.getId(), candidatoId);
-        	else
-        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionario(questionario.getId(), colaboradorId, turmaId);
-
+	        if(!inserirFichaMedica)
+	        {
+		        if(colaboradorQuestionarioId == null)
+		        {
+	        		if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
+		        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionarioCandidato(questionario.getId(), candidatoId);
+		        	else
+		        		colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionario(questionario.getId(), colaboradorId, turmaId);
+		        }else
+		        	colaboradorQuestionario = colaboradorQuestionarioManager.findById(colaboradorQuestionarioId);
+            }
+        
         	if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA) || questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
         	{
         		if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
