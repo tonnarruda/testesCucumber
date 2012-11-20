@@ -746,8 +746,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoId) {
-		
+	public Collection<Colaborador> findRespondidasBySolicitacao(Long solicitacaoId, Long avaliacaoId) 
+	{
 		StringBuilder hql = new StringBuilder();
 		  hql.append("select new Colaborador(ca.nome, ca.nome, av.titulo, cq.respondidaEm, cq.performance, av.titulo) ");
 		  hql.append("from ColaboradorQuestionario as cq ");
@@ -756,11 +756,13 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		  hql.append("where ");
 		  hql.append("cq.respondida = true ");
 		  hql.append("and cq.solicitacao.id = :solicitacaoId ");
+		  hql.append("and cq.avaliacao.id = :avaliacaoId ");
 		  		  		  
 		  hql.append("order by cq.performance desc, ca.nome asc ");
 		  
 		  Query query = getSession().createQuery(hql.toString());
 		  query.setLong("solicitacaoId", solicitacaoId);
+		  query.setLong("avaliacaoId", avaliacaoId);
 		  
 		  return query.list();
 	}

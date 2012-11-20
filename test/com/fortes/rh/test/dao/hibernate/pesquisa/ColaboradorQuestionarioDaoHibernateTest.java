@@ -1,6 +1,5 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -40,7 +39,6 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -73,7 +71,6 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PesquisaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorQuestionario>
 {
@@ -180,18 +177,33 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacaoDao.save(solicitacao);
 		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao2);
+		
 		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
 		colaboradorQuestionario1.setRespondida(true);
 		colaboradorQuestionario1.setCandidato(candidato);
 		colaboradorQuestionario1.setSolicitacao(solicitacao);
+		colaboradorQuestionario1.setAvaliacao(avaliacao);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 		
 		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
 		colaboradorQuestionario2.setRespondida(false);
 		colaboradorQuestionario2.setSolicitacao(solicitacao);
+		colaboradorQuestionario2.setAvaliacao(avaliacao);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		Collection<Colaborador> retorno = colaboradorQuestionarioDao.findRespondidasBySolicitacao(solicitacao.getId());
+		ColaboradorQuestionario colaboradorQuestionario3 = new ColaboradorQuestionario();
+		colaboradorQuestionario3.setRespondida(true);
+		colaboradorQuestionario3.setCandidato(candidato);
+		colaboradorQuestionario3.setSolicitacao(solicitacao);
+		colaboradorQuestionario3.setAvaliacao(avaliacao2);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		Collection<Colaborador> retorno = colaboradorQuestionarioDao.findRespondidasBySolicitacao(solicitacao.getId(), avaliacao.getId());
 		
 		assertEquals(1, retorno.size());
 		
