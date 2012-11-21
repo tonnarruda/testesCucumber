@@ -274,7 +274,10 @@ public class ExameListActionTest extends MockObjectTestCase
 	public void testDeveriaGerarRelatorioDeExamesPrevitos() throws Exception {
 		
 		Long empresaId = 1L;
+		
+		ExamesPrevistosRelatorio examesPrevistosRelatorio = new ExamesPrevistosRelatorio();
 		Collection<ExamesPrevistosRelatorio> colecaoRelatorio = new ArrayList<ExamesPrevistosRelatorio>();
+		colecaoRelatorio.add(examesPrevistosRelatorio);
 
 		exameManager.expects(atLeastOnce())
 			.method("findRelatorioExamesPrevistos")

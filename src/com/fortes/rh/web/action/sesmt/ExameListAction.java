@@ -219,6 +219,10 @@ public class ExameListAction extends MyActionSupportList
 		try
 		{
 			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados);
+			
+			if(colecaoExamesPrevistos == null || colecaoExamesPrevistos.size() == 0)
+				throw new ColecaoVaziaException();
+			
 			parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), getEmpresaSistema(), nomeEstabelecimento );
 			
 			switch (agruparPor) {

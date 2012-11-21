@@ -102,7 +102,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("from SolicitacaoExame se ");
 		hql.append("join se.exameSolicitacaoExames ese ");
 		hql.append("join ese.exame e ");
-		hql.append("join ese.realizacaoExame re ");
+		hql.append("left join ese.realizacaoExame re ");
 		hql.append("join se.colaborador co ");
 		hql.append("left join co.colaboradorAfastamento afa ");
 		hql.append("left join co.historicoColaboradors as hc ");
