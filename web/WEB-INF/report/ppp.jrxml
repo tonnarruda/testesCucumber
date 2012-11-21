@@ -139,7 +139,7 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="2"
+						x="3"
 						y="5"
 						width="106"
 						height="15"
@@ -362,7 +362,7 @@
 					<reportElement
 						x="3"
 						y="53"
-						width="101"
+						width="110"
 						height="15"
 						key="staticText-70"
 						positionType="Float"/>
@@ -374,9 +374,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="105"
+						x="117"
 						y="53"
-						width="174"
+						width="268"
 						height="15"
 						key="staticText-71"
 						positionType="Float"/>
@@ -408,9 +408,9 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="104"
+						x="115"
 						y="93"
-						width="430"
+						width="419"
 						height="0"
 						key="line-131"
 						positionType="Float"/>
@@ -418,9 +418,9 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="106"
+						x="117"
 						y="70"
-						width="117"
+						width="102"
 						height="9"
 						key="staticText-72"
 						positionType="Float"/>
@@ -448,7 +448,7 @@
 					<reportElement
 						x="20"
 						y="96"
-						width="66"
+						width="84"
 						height="12"
 						key="textField-2"
 						positionType="Float"/>
@@ -474,9 +474,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="107"
+						x="117"
 						y="80"
-						width="133"
+						width="122"
 						height="12"
 						key="textField-4"
 						positionType="Float"/>
@@ -518,7 +518,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="103"
+						x="115"
 						y="52"
 						width="0"
 						height="17"
@@ -576,7 +576,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="103"
+						x="115"
 						y="69"
 						width="0"
 						height="70"
@@ -643,7 +643,7 @@
 						mode="Opaque"
 						x="3"
 						y="127"
-						width="138"
+						width="110"
 						height="15"
 						key="textField"
 						positionType="Float"/>
@@ -655,9 +655,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="143"
+						x="116"
 						y="127"
-						width="272"
+						width="298"
 						height="15"
 						key="textField"
 						positionType="Float"/>
@@ -727,7 +727,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 					<reportElement
 						x="3"
 						y="117"
-						width="140"
+						width="110"
 						height="9"
 						key="staticText-20"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -738,9 +738,9 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="143"
+						x="116"
 						y="117"
-						width="274"
+						width="300"
 						height="9"
 						key="staticText-21"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -831,7 +831,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</textField>
 				<staticText>
 					<reportElement
-						x="104"
+						x="115"
 						y="172"
 						width="51"
 						height="9"
@@ -898,7 +898,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 					<reportElement
 						x="3"
 						y="182"
-						width="83"
+						width="106"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -935,7 +935,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="104"
+						x="115"
 						y="182"
 						width="48"
 						height="15"
@@ -1081,7 +1081,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="141"
+						x="114"
 						y="117"
 						width="0"
 						height="26"
@@ -1117,7 +1117,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="101"
+						x="113"
 						y="171"
 						width="0"
 						height="29"
@@ -1657,7 +1657,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 					<reportElement
 						x="3"
 						y="405"
-						width="91"
+						width="110"
 						height="13"
 						key="staticText-80"
 						positionType="Float"/>
@@ -1669,7 +1669,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="101"
+						x="116"
 						y="405"
 						width="42"
 						height="13"
@@ -1693,7 +1693,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="99"
+						x="114"
 						y="405"
 						width="0"
 						height="26"
@@ -1723,7 +1723,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="145"
+						x="160"
 						y="404"
 						width="0"
 						height="27"
@@ -1733,7 +1733,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				</line>
 				<staticText>
 					<reportElement
-						x="147"
+						x="161"
 						y="405"
 						width="74"
 						height="13"
@@ -1922,7 +1922,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 						mode="Opaque"
 						x="177"
 						y="182"
-						width="37"
+						width="127"
 						height="15"
 						key="textField-5"
 						positionType="Float"/>
@@ -1930,37 +1930,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.pessoal.ctps.ctpsNumero}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="218"
-						y="182"
-						width="38"
-						height="15"
-						key="textField-6"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.pessoal.ctps.serieMaisDv}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="258"
-						y="182"
-						width="15"
-						height="15"
-						key="textField-8"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.pessoal.ctps.ctpsUf.sigla}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.pessoal.ctps.ctpsNumero} + " " + $F{colaborador.pessoal.ctps.serieMaisDv} + " " + $F{colaborador.pessoal.ctps.ctpsUf.sigla}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

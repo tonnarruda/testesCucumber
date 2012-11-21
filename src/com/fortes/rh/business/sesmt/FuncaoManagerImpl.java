@@ -231,6 +231,9 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 			}
 		}
 		
+		if (pppFatorRiscos2 == null || pppFatorRiscos2.isEmpty())
+			pppFatorRiscos2.add(new PppFatorRisco());
+		
 		return pppFatorRiscos2;
 	}
 
@@ -294,7 +297,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				
 				if (historicoAmbiente == null)
 					pppRelatorioException.addHistoricoSemHistoricoAmbiente(historicoColaborador.getData());
-				else  
+				else if (historicoAmbiente.getRiscoAmbientes() != null && historicoAmbiente.getRiscoAmbientes().size() > 0)
 					validaMedicaoNoHistoricoAmbiente(pppRelatorioException, historicoColaborador.getAmbiente(), historicoColaborador.getData());
 			}
 		}

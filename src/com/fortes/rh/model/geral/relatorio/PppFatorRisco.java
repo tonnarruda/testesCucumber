@@ -139,7 +139,7 @@ public class PppFatorRisco implements Serializable, Cloneable
 	
 	public String getPeriodo()
 	{
-		return DateUtil.formataDiaMesAno(this.dataInicio) + " a " + (this.dataFim != null ? DateUtil.formataDiaMesAno(this.dataFim) : "__/__/___");
+		return (this.dataInicio != null ? DateUtil.formataDiaMesAno(this.dataInicio) : "__/__/___") + " a " + (this.dataFim != null ? DateUtil.formataDiaMesAno(this.dataFim) : "__/__/___");
 	}
 
 	public String getIntensidade() {

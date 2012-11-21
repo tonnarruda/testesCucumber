@@ -74,7 +74,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="101"
+						x="114"
 						y="0"
 						width="49"
 						height="13"
@@ -97,7 +97,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="99"
+						x="113"
 						y="0"
 						width="0"
 						height="13"
@@ -125,7 +125,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="148"
+						x="161"
 						y="0"
 						width="0"
 						height="13"
@@ -134,7 +134,7 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="150"
+						x="163"
 						y="0"
 						width="74"
 						height="13"
@@ -148,7 +148,7 @@
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="234"
+						x="247"
 						y="0"
 						width="0"
 						height="13"
@@ -157,7 +157,7 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="240"
+						x="248"
 						y="0"
 						width="53"
 						height="13"
@@ -171,7 +171,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="296"
+						x="304"
 						y="0"
 						width="66"
 						height="13"
@@ -185,7 +185,7 @@
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="294"
+						x="302"
 						y="0"
 						width="0"
 						height="13"
@@ -194,9 +194,9 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="384"
+						x="392"
 						y="0"
-						width="48"
+						width="43"
 						height="13"
 						key="staticText-7"
 						positionType="Float"/>
@@ -208,7 +208,7 @@
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
-						x="382"
+						x="390"
 						y="0"
 						width="0"
 						height="13"
@@ -217,9 +217,9 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="435"
+						x="438"
 						y="0"
-						width="45"
+						width="42"
 						height="13"
 						key="staticText-8"
 						positionType="Float"/>
@@ -254,7 +254,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="433"
+						x="437"
 						y="0"
 						width="0"
 						height="13"
@@ -277,7 +277,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="99"
+						x="113"
 						y="-1"
 						width="0"
 						height="17"
@@ -308,7 +308,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="148"
+						x="161"
 						y="-1"
 						width="0"
 						height="17"
@@ -318,7 +318,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="234"
+						x="247"
 						y="-1"
 						width="0"
 						height="17"
@@ -328,7 +328,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="294"
+						x="302"
 						y="-1"
 						width="0"
 						height="17"
@@ -338,7 +338,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="382"
+						x="390"
 						y="-1"
 						width="0"
 						height="17"
@@ -360,7 +360,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="97"
+						width="110"
 						height="15"
 						key="textField-1"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -369,9 +369,9 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{periodo}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="101"
+						x="114"
 						y="1"
 						width="45"
 						height="13"
@@ -382,11 +382,11 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{risco.descricaoGrupoRisco}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="150"
+						x="163"
 						y="0"
-						width="86"
+						width="83"
 						height="15"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -397,7 +397,7 @@
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="433"
+						x="437"
 						y="-1"
 						width="0"
 						height="17"
@@ -407,7 +407,7 @@
 				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="240"
+						x="248"
 						y="0"
 						width="52"
 						height="15"
@@ -420,7 +420,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="296"
+						x="304"
 						y="0"
 						width="85"
 						height="15"
@@ -439,7 +439,9 @@
 						height="15"
 						key="textField"
 						positionType="Float"
-						isPrintWhenDetailOverflows="true"/>
+						isPrintWhenDetailOverflows="true">
+							<printWhenExpression><![CDATA[new Boolean($F{risco.descricao} != null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="6"/>
@@ -448,11 +450,13 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="435"
+						x="438"
 						y="0"
-						width="45"
+						width="42"
 						height="15"
-						key="textField"/>
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($F{risco.descricao} != null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
@@ -461,11 +465,13 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="384"
+						x="392"
 						y="0"
-						width="48"
+						width="43"
 						height="15"
-						key="textField"/>
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($F{risco.descricao} != null)]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>

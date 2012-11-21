@@ -88,6 +88,6 @@ public class PppRelatorioException extends Exception
 		
 		// adiciona a mensagem apenas se ainda não houver para esta data
 		if (historicoAmbienteSemMedicao.indexOf(dataFmt) == -1)
-			historicoAmbienteSemMedicao.append(dataFmt + " - Ambiente (" + ambiente.getNome()  + ") não possui Medição nesta data.<br>");
+			historicoAmbienteSemMedicao.append(dataFmt + " - Ambiente (" + ambiente.getNome()  + ") possui riscos mas não possui medição nesta data.<br>");
 	}
 }
