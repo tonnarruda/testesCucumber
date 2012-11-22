@@ -87,6 +87,10 @@
 				    $(this).select();
 				});
 			</#if>
+			
+			<#if cargo.id?exists>
+				populaCHA(document.forms[0], "areasCheck");
+			</#if>
 		});
 	</script>
 
