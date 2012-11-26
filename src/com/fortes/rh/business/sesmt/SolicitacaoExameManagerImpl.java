@@ -17,6 +17,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
@@ -155,19 +156,19 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			throw new ColecaoVaziaException("Solicitação/Atendimento médico inválido.");
 		
 		solicitacaoExame = getDao().findById(solicitacaoExame.getId());
-		
 		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
 		
-		if(empresa.isExibirDadosAmbiente() && solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
+		if(solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
 		{
 			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(solicitacaoExame.getColaborador().getId());
-			
-			if(historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null)
+				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
+
+			if(empresa.isExibirDadosAmbiente() && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
 			{
 				Collection<Risco> riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
 				asoRelatorio.formataRiscos(riscos);
 			}
-			
 		}
 		
 //		medicoCoordenador = medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId());

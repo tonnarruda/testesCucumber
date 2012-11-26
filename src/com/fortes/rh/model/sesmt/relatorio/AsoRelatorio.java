@@ -63,6 +63,11 @@ public class AsoRelatorio
 
 		return null;
 	}
+	
+	public Colaborador getColaborador()
+	{
+		return colaborador;
+	}
 
 	public String getDataNascimento()
 	{

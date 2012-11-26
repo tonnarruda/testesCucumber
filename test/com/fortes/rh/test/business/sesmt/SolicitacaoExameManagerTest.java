@@ -10,6 +10,7 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
 import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManagerImpl;
@@ -34,6 +35,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 	private Mock exameSolicitacaoExameManager;
 	private Mock realizacaoExameManager;
 	private Mock transactionManager;
+	private Mock historicoColaboradorManager;
 	private Mock solicitacaoExameDao;
 
 	protected void setUp() throws Exception
@@ -44,6 +46,9 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
         solicitacaoExameManager.setRealizacaoExameManager((RealizacaoExameManager)realizacaoExameManager.proxy());
         solicitacaoExameDao = new Mock(SolicitacaoExameDao.class);
         solicitacaoExameManager.setDao((SolicitacaoExameDao) solicitacaoExameDao.proxy());
+        
+        historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+        solicitacaoExameManager.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
 
         transactionManager = new Mock(PlatformTransactionManager.class);
         solicitacaoExameManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
@@ -238,6 +243,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		solicitacaoExame.setMedicoCoordenador(medicoCoordenador);
 		
 		solicitacaoExameDao.expects(once()).method("findById").will(returnValue(solicitacaoExame));
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(null));
 		
 		SolicitacaoExame solicitacaoExameParametro = SolicitacaoExameFactory.getEntity(2L);
 		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExameParametro);
