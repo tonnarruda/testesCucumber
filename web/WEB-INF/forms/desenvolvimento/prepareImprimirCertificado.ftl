@@ -118,8 +118,12 @@
 			$('#certificadoDe').change(function(){
 				filtrarOpt($(this).val(), true);
 			});
+			
 			$('#certificadoTamanho').change(function(){
-				filtrarOpt($(this).val());
+				if ($(this).val() == 'declaracao')
+					$('.btnImprimirVersoPdf').attr('disabled', 'disabled').fadeTo(100, 0.3);
+				else
+					$('.btnImprimirVersoPdf').removeAttr('disabled').fadeTo(100, 1);
 			});
 
 			$('#curso').change(function(){

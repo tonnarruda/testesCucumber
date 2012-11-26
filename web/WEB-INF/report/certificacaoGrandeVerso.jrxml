@@ -48,13 +48,14 @@
 		</columnHeader>
 		<detail>
 			<band height="595"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
+						x="36"
 						y="18"
-						width="842"
+						width="768"
 						height="28"
-						key="textField-1"/>
+						key="textField-1"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif" pdfFontName="Times-Bold" size="18" isBold="true"/>
@@ -67,7 +68,8 @@
 						y="73"
 						width="768"
 						height="496"
-						key="subreport-1"/>
+						key="subreport-1"
+						positionType="Float"/>
 					<subreportParameter  name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{cursos}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -79,7 +81,8 @@
 						y="54"
 						width="556"
 						height="19"
-						key="staticText-1"/>
+						key="staticText-1"
+						positionType="Float"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif" pdfFontName="Times-Bold" size="12" isBold="true"/>
@@ -92,7 +95,8 @@
 						y="54"
 						width="212"
 						height="19"
-						key="staticText-2"/>
+						key="staticText-2"
+						positionType="Float"/>
 					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif" pdfFontName="Times-Bold" size="12" isBold="true"/>

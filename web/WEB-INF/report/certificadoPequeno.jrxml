@@ -7,7 +7,7 @@
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="595"
-		 pageHeight="842"
+		 pageHeight="840"
 		 columnWidth="595"
 		 columnSpacing="0"
 		 leftMargin="0"
@@ -51,13 +51,13 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="421"  isSplitAllowed="true" >
+			<band height="410"  isSplitAllowed="true" >
 				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="0"
 						width="595"
-						height="421"
+						height="410"
 						key="image-4">
 							<printWhenExpression><![CDATA[$F{imprimirMoldura}]]></printWhenExpression>
 						</reportElement>
@@ -65,84 +65,23 @@
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.lang.String"><![CDATA[$P{PATH_IMG} + "molduraPequena.jpg"]]></imageExpression>
 				</image>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="30"
-						y="35"
-						width="58"
-						height="57"
-						key="image-6">
-							<printWhenExpression><![CDATA[$F{imprimirLogo}]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
-				</image>
-				<line direction="TopDown">
-					<reportElement
-						x="30"
-						y="365"
-						width="249"
-						height="1"
-						key="line-1">
-							<printWhenExpression><![CDATA[new Boolean($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="310"
-						y="365"
+						y="359"
 						width="249"
-						height="1"
-						key="line-2">
-							<printWhenExpression><![CDATA[new Boolean($F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="85"
-						width="595"
-						height="28"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Serif" pdfFontName="Times-Bold" size="18" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{titulo}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="69"
-						y="144"
-						width="454"
-						height="118"
+						height="31"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{conteudo}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="276"
-						width="595"
-						height="18"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{data}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ass2}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="30"
-						y="370"
+						y="359"
 						width="249"
 						height="31"
 						key="textField">
@@ -156,21 +95,100 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="310"
-						y="370"
+						x="172"
+						y="359"
 						width="249"
 						height="31"
-						key="textField"/>
+						key="textField-1">
+							<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals("")))]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ass2}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ass1}]]></textFieldExpression>
+				</textField>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="30"
+						y="24"
+						width="58"
+						height="57"
+						key="image-6">
+							<printWhenExpression><![CDATA[$F{imprimirLogo}]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+				</image>
+				<line direction="TopDown">
+					<reportElement
+						x="30"
+						y="360"
+						width="249"
+						height="1"
+						key="line-1">
+							<printWhenExpression><![CDATA[new Boolean($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="310"
+						y="360"
+						width="249"
+						height="1"
+						key="line-2">
+							<printWhenExpression><![CDATA[new Boolean($F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="74"
+						width="454"
+						height="28"
+						key="textField"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Serif" pdfFontName="Times-Bold" size="18" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{titulo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="133"
+						width="454"
+						height="118"
+						key="textField"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{conteudo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="265"
+						width="595"
+						height="18"
+						key="textField"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{data}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						x="0"
-						y="42"
+						y="31"
 						width="595"
 						height="40"
 						key="staticText-1"/>
@@ -183,7 +201,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="172"
-						y="365"
+						y="360"
 						width="249"
 						height="1"
 						key="line-3">
@@ -191,21 +209,6 @@
 						</reportElement>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="172"
-						y="370"
-						width="249"
-						height="31"
-						key="textField-1">
-							<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals("")))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Serif" pdfFontName="Times-Roman" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ass1}]]></textFieldExpression>
-				</textField>
 			</band>
 		</detail>
 		<columnFooter>

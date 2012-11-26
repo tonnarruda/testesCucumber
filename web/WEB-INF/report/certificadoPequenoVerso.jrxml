@@ -62,12 +62,12 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
+						x="72"
 						y="55"
-						width="595"
+						width="450"
 						height="342"
 						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="15" rightBorder="None" rightBorderColor="#000000" rightPadding="15" bottomBorder="None" bottomBorderColor="#000000"/>
+					<box topBorder="Thin" topBorderColor="#000000" topPadding="15" leftBorder="Thin" leftBorderColor="#000000" leftPadding="15" rightBorder="Thin" rightBorderColor="#000000" rightPadding="15" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="15"/>
 					<textElement>
 						<font fontName="Serif" pdfFontName="Times-Roman" size="9"/>
 					</textElement>
