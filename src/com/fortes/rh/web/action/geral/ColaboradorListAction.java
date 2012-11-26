@@ -292,7 +292,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			Collection<Colaborador> colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+			Collection<Colaborador> colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -376,6 +376,11 @@ public class ColaboradorListAction extends MyActionSupportList
  			return Action.INPUT;
 		}
 	}
+
+	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas) 
+	{
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+	}
 	
 	public String relatorioDinamicoXLS() throws Exception
 	{
@@ -388,7 +393,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 				orderField = " co.dataAdmissao desc, " + orderField;
 			
-			colaboradores = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, null, tempoServicoIni, tempoServicoFim);
+			colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
