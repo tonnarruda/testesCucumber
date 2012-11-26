@@ -130,8 +130,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasFormacaoCheckList = areaFormacaoManager.populaCheckOrderNome();
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		atitudesCheckList = atitudeManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(null, getEmpresaSistema().getId());
+		atitudesCheckList = atitudeManager.populaCheckOrderNome(null, getEmpresaSistema().getId());
 		etapaSeletivaCheckList = etapaSeletivaManager.populaCheckOrderNome(getEmpresaSistema().getId());
 	}
 
@@ -301,21 +301,29 @@ public class CargoEditAction extends MyActionSupportEdit
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, cargo.getAreasOrganizacionais(), "getId");
 		areasFormacaoCheckList = CheckListBoxUtil.marcaCheckListBox(areasFormacaoCheckList, cargo.getAreaFormacaos(), "getId");
 		etapaSeletivaCheckList = CheckListBoxUtil.marcaCheckListBox(etapaSeletivaCheckList, cargo.getEtapaSeletivas(), "getId");
+		populaCHA();
+		
+		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(cargo.getCboCodigo());
+		
+		return Action.SUCCESS;
+	}
 
-		if (cargo.getAreasOrganizacionais() == null || cargo.getAreasOrganizacionais().size() == 0)
+	private void populaCHA() throws Exception 
+	{
+		Long[] areaOrganizacionalIds = null;
+		if(cargo.getAreasOrganizacionais() != null  && cargo.getAreasOrganizacionais().size() > 0)
+		{
+			areaOrganizacionalIds =  new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(cargo.getAreasOrganizacionais());
+			conhecimentosCheckList = conhecimentoManager.populaCheckOrderNomeByAreaOrganizacionals(areaOrganizacionalIds, getEmpresaSistema().getId());
+		}else
 			conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		else
-			conhecimentosCheckList = conhecimentoManager.populaCheckOrderNomeByAreaOrganizacionals(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(cargo.getAreasOrganizacionais()), getEmpresaSistema().getId());
 
-		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		atitudesCheckList = atitudeManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		habilidadesCheckList = habilidadeManager.populaCheckOrderNome(areaOrganizacionalIds, getEmpresaSistema().getId());
+		atitudesCheckList = atitudeManager.populaCheckOrderNome(areaOrganizacionalIds, getEmpresaSistema().getId());
 		
 		conhecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(conhecimentosCheckList, cargo.getConhecimentos(), "getId");
 		habilidadesCheckList = CheckListBoxUtil.marcaCheckListBox(habilidadesCheckList, cargo.getHabilidades(), "getId");
 		atitudesCheckList = CheckListBoxUtil.marcaCheckListBox(atitudesCheckList, cargo.getAtitudes(), "getId");
-		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(cargo.getCboCodigo());
-		
-		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception

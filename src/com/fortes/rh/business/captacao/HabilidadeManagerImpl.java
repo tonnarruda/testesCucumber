@@ -41,12 +41,17 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 		return habilidades;
 	}
 
-	public Collection<CheckBox> populaCheckOrderNome(long empresaId)
+	public Collection<CheckBox> populaCheckOrderNome(Long[] areasIds, long empresaId)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<Habilidade> habilidades = getDao().findAllSelect(empresaId);
+			Collection<Habilidade> habilidades;
+			if(areasIds != null)
+				habilidades =  findByAreasOrganizacionalIds(areasIds,empresaId);
+			else
+				habilidades = getDao().findAllSelect(empresaId);
+			
 			checks = CheckListBoxUtil.populaCheckListBox(habilidades, "getId", "getNome");
 		}
 		catch (Exception e)

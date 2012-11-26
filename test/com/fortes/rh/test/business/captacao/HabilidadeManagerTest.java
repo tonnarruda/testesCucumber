@@ -63,7 +63,7 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 
     	habilidadeDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(HabilidadeFactory.getCollection()));
 
-    	assertEquals(1, habilidadeManagerImpl.populaCheckOrderNome(empresa.getId()).size());
+    	assertEquals(1, habilidadeManagerImpl.populaCheckOrderNome(null, empresa.getId()).size());
     }
 
     public void testPopulaCheckOrderNomeException()
@@ -73,7 +73,7 @@ public class HabilidadeManagerTest extends MockObjectTestCase
 
     	habilidadeManagerImpl.setDao(null);
 
-    	Collection<CheckBox> checks = habilidadeManagerImpl.populaCheckOrderNome(empresa.getId());
+    	Collection<CheckBox> checks = habilidadeManagerImpl.populaCheckOrderNome(null, empresa.getId());
 		assertTrue(checks.isEmpty());
     }
     

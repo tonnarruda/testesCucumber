@@ -24,6 +24,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	
 	<style type="text/css">
 	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
@@ -43,28 +45,28 @@
 		function populaCHA(frm, nameCheck)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
+
 			var areasIds = getArrayCheckeds(frm, nameCheck);
+			var conhecimentosIds = getArrayCheckeds(frm,'conhecimentosCheck');
+			var habilidadesIds = getArrayCheckeds(frm,'habilidadesCheck');
+			var atitudesIds = getArrayCheckeds(frm,'atitudesCheck');
 
-			ConhecimentoDWR.getConhecimentos(createListConhecimentos, areasIds, <@authz.authentication operation="empresaId"/>);
-			HabilidadeDWR.getHabilidades(createListHabilidades, areasIds, <@authz.authentication operation="empresaId"/>);
-			AtitudeDWR.getAtitudes(createListAtitudes, areasIds, <@authz.authentication operation="empresaId"/>);
+			ConhecimentoDWR.getConhecimentos(areasIds, <@authz.authentication operation="empresaId"/>, function(data){
+																											addChecks('conhecimentosCheck',data);
+																											marcarListCheckBox(frm, 'conhecimentosCheck', conhecimentosIds);			
+																										});
+			
+			HabilidadeDWR.getHabilidades(areasIds, <@authz.authentication operation="empresaId"/>, function(data){
+																									addChecks('habilidadesCheck',data);
+																									marcarListCheckBox(frm, 'habilidadesCheck', habilidadesIds);			
+																								});
+
+			AtitudeDWR.getAtitudes(areasIds, <@authz.authentication operation="empresaId"/>, function(data){
+																								addChecks('atitudesCheck',data);
+																								marcarListCheckBox(frm, 'atitudesCheck', atitudesIds);			
+																							});
 		}
 
-		function createListConhecimentos(data)
-		{
-			addChecks('conhecimentosCheck',data)
-		}
-
-		function createListHabilidades(data)
-		{
-			addChecks('habilidadesCheck',data)
-		}
-
-		function createListAtitudes(data)
-		{
-			addChecks('atitudesCheck',data)
-		}
-	
 		$(document).ready(function() {
 			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
 			
@@ -86,10 +88,6 @@
 				$('#descricaoCBO').focus(function() {
 				    $(this).select();
 				});
-			</#if>
-			
-			<#if cargo.id?exists>
-				populaCHA(document.forms[0], "areasCheck");
 			</#if>
 		});
 	</script>

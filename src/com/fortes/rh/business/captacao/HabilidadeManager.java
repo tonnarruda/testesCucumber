@@ -9,7 +9,7 @@ import com.fortes.web.tags.CheckBox;
 
 public interface HabilidadeManager extends GenericManager<Habilidade>
 {
-	public Collection<CheckBox> populaCheckOrderNome(long empresaId);
+	public Collection<CheckBox> populaCheckOrderNome(Long[] areasIds, long empresaId);
 	public Collection<Habilidade> findByCargo(Long cargoId);
 	public Collection<Habilidade> populaHabilidades(String[] habilidadesCheck);
 	public Collection<Habilidade> findByAreasOrganizacionalIds(Long[] areaOrganizacionalIds, Long empresasId);

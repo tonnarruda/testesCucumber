@@ -19358,3 +19358,6 @@ update usuario set caixasmensagens = replace(caixasmensagens, 'D', 'R');--.go
 update usuario set caixasmensagens = replace(caixasmensagens, 'caixasRireita', 'caixasDireita');--.go
 insert into migrations values('20121113153336');--.go
 update parametrosdosistema set appversao = '1.1.94.92';--.go
+-- versao 1.1.94.93
+
+update parametrosdosistema set appversao = '1.1.94.93';--.go

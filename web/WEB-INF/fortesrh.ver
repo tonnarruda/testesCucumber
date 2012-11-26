@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.94.93" data="26/11/2012">
+		<Modulo nome=" "><![CDATA[
+			::  R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Nova opção de imprimir a listagem de candidatos da seleção.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.94.92" data="19/11/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Criação da caixa de mensagens "Recrutamento & Seleção", com notificações sobre solicitações de pessoal pendentes e currículos aguardando confirmação.

@@ -63,7 +63,7 @@ public class AtitudeManagerTest extends MockObjectTestCase
 
     	atitudeDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(AtitudeFactory.getCollection()));
 
-    	assertEquals(1, atitudeManager.populaCheckOrderNome(empresa.getId()).size());
+    	assertEquals(1, atitudeManager.populaCheckOrderNome(null, empresa.getId()).size());
     }
 
     public void testPopulaCheckOrderNomeException()
@@ -73,7 +73,7 @@ public class AtitudeManagerTest extends MockObjectTestCase
 
     	atitudeManager.setDao(null);
 
-    	Collection<CheckBox> checks = atitudeManager.populaCheckOrderNome(empresa.getId());
+    	Collection<CheckBox> checks = atitudeManager.populaCheckOrderNome(null, empresa.getId());
 		assertTrue(checks.isEmpty());
     }
     

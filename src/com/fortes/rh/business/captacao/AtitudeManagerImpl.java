@@ -41,12 +41,17 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 		return atitudes;
 	}
 
-	public Collection<CheckBox> populaCheckOrderNome(long empresaId)
+	public Collection<CheckBox> populaCheckOrderNome(Long[] areasIds, long empresaId)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<Atitude> atitudes = getDao().findAllSelect(empresaId);
+			Collection<Atitude> atitudes;
+			if(areasIds != null)
+				atitudes =  findByAreasOrganizacionalIds(areasIds, empresaId);
+			else			
+				atitudes = getDao().findAllSelect(empresaId);
+			
 			checks = CheckListBoxUtil.populaCheckListBox(atitudes, "getId", "getNome");
 		}
 		catch (Exception e)
