@@ -292,6 +292,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		
 		//riscoMedicaoRiscoManager.expects(atLeastOnce()).method("findUltimaAteData").will(returnValue(new MedicaoRisco()));
 		
+		historicoColaboradorManager.expects(once()).method("filtraHistoricoColaboradorParaPPP").withAnyArguments().will(returnValue(historicoColaboradors));
 		historicoFuncaoManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(funcao.getId()), eq(historicoColaboradorSemAmbiente.getData())).will(returnValue(null));
 		historicoFuncaoManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(funcao.getId()), eq(historicoColaboradorComAmbienteSemHistorico.getData())).will(returnValue(historicoFuncao));
 		historicoFuncaoManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(funcao.getId()), eq(historicoColaboradorComHistoricoAmbienteSemMedicao.getData())).will(returnValue(historicoFuncao));

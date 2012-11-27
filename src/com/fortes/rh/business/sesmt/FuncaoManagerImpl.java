@@ -58,23 +58,23 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	{
 		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager"); 
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
-		Collection<HistoricoColaborador> historicosDoColaborador = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
+		Collection<HistoricoColaborador> historicosDoColaboradors = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
-		historicosDoColaborador = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaborador); 
+		historicosDoColaboradors = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaboradors); 
 				
-		this.validarPpp(historicosDoColaborador);
+		this.validarPpp(historicosDoColaboradors);
 		
 		Collection<Cat> cats = catManager.findCatsColaboradorByDate(colaborador,data);
 		colaborador = colaboradorManager.findById(colaborador.getId());
 		
-		HistoricoColaborador ultimoHistorico = ((HistoricoColaborador) historicosDoColaborador.toArray()[historicosDoColaborador.size()-1]);
+		HistoricoColaborador ultimoHistorico = ((HistoricoColaborador) historicosDoColaboradors.toArray()[historicosDoColaboradors.size()-1]);
 		Estabelecimento estabelecimento = ultimoHistorico.getEstabelecimento();
 
-		historicosDoColaborador = historicoColaboradorManager.inserirPeriodos(historicosDoColaborador);
+		historicosDoColaboradors = historicoColaboradorManager.inserirPeriodos(historicosDoColaboradors);
 
-		Collection<PppFatorRisco> pppFatorRiscos = this.populaFatoresDeRiscos(data, historicosDoColaborador);
+		Collection<PppFatorRisco> pppFatorRiscos = this.populaFatoresDeRiscos(data, historicosDoColaboradors);
 		
-		Collection<HistoricoColaborador> historicosColaboradorFuncao = historicoColaboradorManager.findDistinctFuncao(historicosDoColaborador);
+		Collection<HistoricoColaborador> historicosColaboradorFuncao = historicoColaboradorManager.findDistinctFuncao(historicosDoColaboradors);
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findHistoricoFuncaoColaborador(historicosColaboradorFuncao,data);
 		
 //		Collection<HistoricoColaborador> historicosColaboradorAmbienteFuncao = historicoColaboradorManager.findDistinctAmbienteFuncao(historicosDoColaborador);
@@ -85,7 +85,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		PppRelatorio pppRelatorio = new PppRelatorio(colaborador, estabelecimento, data);
 		pppRelatorio.setRespostas(respostas);
 		pppRelatorio.setCats(cats);
-		pppRelatorio.setHistoricos(historicosDoColaborador);
+		pppRelatorio.setHistoricos(historicosDoColaboradors);
 		pppRelatorio.setHistoricoFuncaos(historicoFuncaos);
 		pppRelatorio.setFatoresRiscosDistinct(pppFatorRiscos);
 		pppRelatorio.setNit(nit);
