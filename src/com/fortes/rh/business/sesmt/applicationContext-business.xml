@@ -368,6 +368,9 @@
     <property name="riscoAmbienteManager">
       <ref bean="riscoAmbienteManager" />
     </property>
+    <property name="riscoFuncaoManager">
+      <ref bean="riscoFuncaoManager" />
+    </property>
   </bean>
   <bean id="solicitacaoExameManager" parent="parentManager">
     <property name="proxyInterfaces">

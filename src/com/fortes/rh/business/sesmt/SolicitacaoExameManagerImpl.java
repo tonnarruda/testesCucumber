@@ -33,6 +33,7 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	private RealizacaoExameManager realizacaoExameManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
+	private RiscoFuncaoManager riscoFuncaoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 
 	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame)
@@ -160,30 +161,23 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		
 		if(solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
 		{
+			Collection<Risco> riscos = null;
 			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(solicitacaoExame.getColaborador().getId());
+
 			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null)
 				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
 
-			if(empresa.isExibirDadosAmbiente() && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+			if (empresa.getControlaRiscoPor() == 'A' && empresa.isExibirDadosAmbiente() && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
 			{
-				Collection<Risco> riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
+				riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
+				asoRelatorio.formataRiscos(riscos);
+			}
+			else if (empresa.getControlaRiscoPor() == 'F' && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
+			{
+				riscos = riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData());
 				asoRelatorio.formataRiscos(riscos);
 			}
 		}
-		
-//		medicoCoordenador = medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId());
-//		String cidadeNome = getEmpresaSistema().getCidade().getNome();
-//
-//		if (colaborador.getId() != null)
-//		{
-//			colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
-//			asoRelatorio.setColaborador(colaborador);
-//		}
-//		else if (candidato.getId() != null)
-//		{
-//			candidato = candidatoManager.findByCandidatoId(candidato.getId());
-//			asoRelatorio.setCandidato(candidato);
-//		}
 		
 		return asoRelatorio;
 	}
@@ -258,5 +252,9 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 				getDao().ajustaOrdem(dataAtual, novaOrdem, ordemAnterior, 1);
 			}
 		}
+	}
+
+	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
+		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 }
