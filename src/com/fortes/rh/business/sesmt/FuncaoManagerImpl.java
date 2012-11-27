@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -59,6 +60,8 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoColaborador> historicosDoColaborador = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
+		historicosDoColaborador = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaborador); 
+				
 		this.validarPpp(historicosDoColaborador);
 		
 		Collection<Cat> cats = catManager.findCatsColaboradorByDate(colaborador,data);
