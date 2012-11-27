@@ -31,7 +31,7 @@ public class AmbienteDWR
 		else{
 			ambienteVazio.setNome("Selecione...");
 		}
-				
+		Map<Object, Object> a = new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
 		return  new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
 	}
 	

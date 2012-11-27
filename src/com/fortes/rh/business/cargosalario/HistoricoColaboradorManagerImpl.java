@@ -22,6 +22,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -1450,6 +1451,39 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		montaAreaOrganizacional(empresaId, historicos);
 		
 		return historicos;
+	}
+
+	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception 
+	{
+		if (todosHistoricos == null)
+			return null;
+		
+		HistoricoColaborador ultimoHistoricoValido = (HistoricoColaborador) todosHistoricos.toArray()[0];
+		
+		Collection<HistoricoColaborador> historicosFiltrados = new ArrayList<HistoricoColaborador>();
+		historicosFiltrados.add(ultimoHistoricoValido);
+		
+		for (HistoricoColaborador historicoColaborador : todosHistoricos) {
+			if( !(historicoColaborador.getEstabelecimento().getId().equals(ultimoHistoricoValido.getEstabelecimento().getId())) 
+					|| (!(historicoColaborador.getFaixaSalarial().getCargo().getId().equals(ultimoHistoricoValido.getFaixaSalarial().getCargo().getId())))
+					|| (validaIdNulo(historicoColaborador.getAmbiente()) && !(historicoColaborador.getAmbiente().getId().equals(ultimoHistoricoValido.getAmbiente().getId())))
+					|| (validaIdNulo(historicoColaborador.getFuncao()) && !(historicoColaborador.getFuncao().getId().equals(ultimoHistoricoValido.getFuncao().getId()))) ){
+				
+				historicosFiltrados.add(historicoColaborador);
+				ultimoHistoricoValido = historicoColaborador;
+			}
+		}
+		
+		
+		return historicosFiltrados;
+	}
+	
+	private boolean validaIdNulo(AbstractModel entidade) throws Exception 
+	{
+		if(entidade == null || entidade.getId() == null)
+			return false;
+		
+		return true;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
