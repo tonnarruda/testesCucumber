@@ -75,7 +75,8 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private Collection<Empresa> empresas;
 	private Boolean compartilharColaboradores;
 	private Boolean exibirProvidencia;
-
+	private boolean agruparPorColaborador = true;
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -162,7 +163,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
 			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
 			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento);
+			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
 
 			parametros.put("dataIni", dataIni);
 			parametros.put("dataFim", dataFim);
@@ -175,10 +176,14 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			if(detalhamento)
 			{
-				if(exibirProvidencia)
-					return "providencia";
-				else
-					return Action.SUCCESS;
+				if (agruparPorColaborador)
+				{
+					if(exibirProvidencia)
+						return "providencia";
+					else
+						return Action.SUCCESS;
+				}else
+					return "providenciaAgrupada";
 			}
 			else
 				return "relatorio_sem_detalhe";
@@ -494,6 +499,14 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	public void setEmpresas(Collection<Empresa> empresas) {
 		this.empresas = empresas;
+	}
+
+	public boolean isAgruparPorColaborador() {
+		return agruparPorColaborador;
+	}
+
+	public void setAgruparPorColaborador(boolean agruparPorColaborador) {
+		this.agruparPorColaborador = agruparPorColaborador;
 	}
 
 

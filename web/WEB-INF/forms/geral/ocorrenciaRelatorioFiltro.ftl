@@ -5,7 +5,7 @@
 <head>
 <@ww.head/>
 
-	<title>Relatório de Ocorrências</title>
+	<title>Ocorrências</title>
 	<#assign formAction="buscaOcorrencia.action"/>
 	<#assign accessKey="F"/>
 
@@ -105,6 +105,19 @@
 		{
 			$('#detalhe').click(function() {
 			  	if($(this).attr('checked'))
+			    {
+			 		$('#providencia').removeAttr('disabled');
+			 		$('#agruparPorColaborador').removeAttr('disabled');
+			 	}
+			 	else
+			 	{
+			 		$('#providencia').attr("disabled", true);
+					$('#agruparPorColaborador').attr("disabled", true);
+				}
+			});
+			
+			$('#agruparPorColaborador').click(function() {
+			  	if($(this).val() == 'true')
 			 		$('#providencia').removeAttr('disabled');
 			 	else
 					$('#providencia').attr("disabled", true);
@@ -141,6 +154,7 @@
 		<@frt.checkListBox name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="500" height="180"/>
 
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
+		<@ww.select label="Agrupar Por:" name="agruparPorColaborador" list=r"#{true:'Colaborador',false:'Providência'}" id="agruparPorColaborador"/>
 		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
 		
 	</@ww.form>

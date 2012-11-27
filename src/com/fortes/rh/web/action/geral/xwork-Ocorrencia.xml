@@ -49,6 +49,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias_com_providencia.pdf</param>
 			</result>
+			<result name="providenciaAgrupada" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia_agrupado_por_providencia.jasper</param>
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrencias_com_providencia.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
