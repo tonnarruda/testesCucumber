@@ -141,6 +141,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 					
 					posicao++;
 					
+					
 					// no início do período prevalece a data mais recente: 
 					// 		histórico do ambiente, data da medição ou histórico do colaborador
 					if (dataMedicao.compareTo(pppFatorRiscoIni) == 1)
@@ -167,19 +168,24 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 					{
 						pppFatorRiscoFim = dataAmbienteFim;
 					}
-
-					PppFatorRisco tmp = new PppFatorRisco(pppFatorRiscoIni, pppFatorRiscoFim, dadosAmbienteRisco.getRiscoId(), dadosAmbienteRisco.getRiscoTipo(), dadosAmbienteRisco.getRiscoDescricao(), riscoMedicaoRiscoTemp.getMedicaoRisco().getId(), riscoMedicaoRiscoTemp.getIntensidadeMedida(), riscoMedicaoRiscoTemp.getTecnicaUtilizada(), dadosAmbienteRisco.isEpcEficaz(), epis);
-					tmp.setDataHistoricoAmbiente(dadosAmbienteRisco.getHistoricoAmbienteData());
-					pppFatorRiscos.add(tmp);
+					
+					if(pppFatorRiscoIni.before(pppFatorRiscoFim))
+					{
+						PppFatorRisco tmp = new PppFatorRisco(pppFatorRiscoIni, pppFatorRiscoFim, dadosAmbienteRisco.getRiscoId(), dadosAmbienteRisco.getRiscoTipo(), dadosAmbienteRisco.getRiscoDescricao(), riscoMedicaoRiscoTemp.getMedicaoRisco().getId(), riscoMedicaoRiscoTemp.getIntensidadeMedida(), riscoMedicaoRiscoTemp.getTecnicaUtilizada(), dadosAmbienteRisco.isEpcEficaz(), epis);
+						tmp.setDataHistoricoAmbiente(dadosAmbienteRisco.getHistoricoAmbienteData());
+						pppFatorRiscos.add(tmp);
+					}
+					
 				}
 			}
 		}
 		
+
 		// Relacionando datas de Histórico dos Ambientes e Riscos
 		HashMap<Date, Collection<Long>> riscosPorHistoricoAmbiente = this.relacionarRiscosPorHistoricoAmbiente(pppFatorRiscos); 
 		
 		List<PppFatorRisco> pppFatorRiscos2 = new ArrayList<PppFatorRisco>();
-		
+
 		// tratando os fatores riscos repetidos 
 		for (int i=0; i< pppFatorRiscos.size(); i++) 
 		{
@@ -195,7 +201,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				Date histAmbData = pppFatorRiscoTmp.getDataHistoricoAmbiente();
 				
 				// se o risco deixou de existir nessa data
-				if (! riscosPorHistoricoAmbiente.get(histAmbData).contains(riscoId) && !pppFatorRiscoInicial.isDataFinalJaSetada())
+				if (!riscosPorHistoricoAmbiente.get(histAmbData).contains(riscoId) && !pppFatorRiscoInicial.isDataFinalJaSetada())
 				{
 					pppFatorRiscoInicial.setDataFim(pppFatorRiscoTmp.getDataInicio());
 					break;
@@ -222,14 +228,13 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		
 		// remover os "flagados" e deixar datas em aberto se a data final do PPP for HOJE.
 		Date hoje=Calendar.getInstance().getTime();
-		
 		for (PppFatorRisco pppFatorRisco : pppFatorRiscos) 
 		{
 			if (!pppFatorRisco.isFlagRemover())
 			{
 				if (DateUtil.equals(hoje, pppFatorRisco.getDataFim()))
 					pppFatorRisco.setDataFim(null);
-				
+	
 				pppFatorRiscos2.add(pppFatorRisco);
 			}
 		}

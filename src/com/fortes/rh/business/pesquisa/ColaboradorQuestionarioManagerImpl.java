@@ -35,9 +35,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findByQuestionario(questionarioId);
 	}
 
-	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioId, Boolean respondida, Long empresaId )
+	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioId, Boolean respondida, Collection<Long> estabelecimentoIds, Long empresaId )
 	{
-		return getDao().findByQuestionarioEmpresaRespondida(questionarioId, respondida, empresaId);
+		return getDao().findByQuestionarioEmpresaRespondida(questionarioId, respondida, estabelecimentoIds, empresaId);
 	}
 
 	public Collection<Colaborador> selecionaColaboradores(Collection<Colaborador> colaboradores, char qtdPercentual, double percentual, int quantidade)

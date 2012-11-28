@@ -26,6 +26,7 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao
@@ -65,7 +66,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioOrAvaliacaoId, Boolean respondida, Long empresaId)
+	public Collection<ColaboradorQuestionario> findByQuestionarioEmpresaRespondida(Long questionarioOrAvaliacaoId, Boolean respondida, Collection<Long> estabelecimentoIds, Long empresaId)
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
         ProjectionList pSub = Projections.projectionList().create();
@@ -110,6 +111,9 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		if(empresaId != null && !empresaId.equals(-1L))
 			criteria.add(Expression.eq("emp.id", empresaId));
+
+		if(estabelecimentoIds != null && estabelecimentoIds.size() > 0)
+			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentoIds));
 		
 		if(respondida != null)
 			criteria.add(Expression.eq("cq.respondida", respondida));

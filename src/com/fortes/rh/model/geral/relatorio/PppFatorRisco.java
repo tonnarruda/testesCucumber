@@ -79,8 +79,7 @@ public class PppFatorRisco implements Serializable, Cloneable
 	
 	public boolean equalsMedicao(PppFatorRisco pppFatorRisco) 
 	{
-		return this.medicaoId.equals(pppFatorRisco.getMedicaoId()) || 
-				(this.intensidade.equals(pppFatorRisco.getIntensidade()) && this.tecnicaUtilizada.equals(pppFatorRisco.getTecnicaUtilizada()));
+		return this.medicaoId.equals(pppFatorRisco.getMedicaoId()) || 	(this.intensidade.equals(pppFatorRisco.getIntensidade()) && this.tecnicaUtilizada.equals(pppFatorRisco.getTecnicaUtilizada()));
 	}
 
 	public String getCaEpi()
