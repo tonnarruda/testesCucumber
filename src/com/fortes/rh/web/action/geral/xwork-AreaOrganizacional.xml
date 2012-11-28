@@ -48,5 +48,8 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalList.ftl</result>
 		</action>
+		<action name="organograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="organograma">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalOrganograma.ftl</result>
+		</action>
 	</package>
 </xwork>

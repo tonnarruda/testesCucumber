@@ -10,6 +10,7 @@ import java.util.Map;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class AreaOrganizacionalDWR
 {
@@ -88,6 +89,30 @@ public class AreaOrganizacionalDWR
 			emailsResponsaveis.put(email, email);
 		
 		return emailsResponsaveis;
+	}
+	
+	public String getByEmpresaJson(Long empresaId, Long areaId) throws Exception
+	{
+		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(empresaId);
+		
+		if (areaId == null)
+			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		else
+			areaOrganizacionals = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, areaId, new ArrayList<AreaOrganizacional>());
+
+		if (areaOrganizacionals.isEmpty())
+			areaOrganizacionals.add(areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId));
+		
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, ((empresaId == null || empresaId < 0) ? "descricaoComEmpresaStatusAtivo" : "descricaoStatusAtivo"));
+		
+		Collection<String[]> dados = new ArrayList<String[]>();
+		
+		for (AreaOrganizacional area : areaOrganizacionals)
+			dados.add(new String[] { area.getNome(), area.getAreaMaeNome() });
+		
+		return StringUtil.toJSON(dados, null); 
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
