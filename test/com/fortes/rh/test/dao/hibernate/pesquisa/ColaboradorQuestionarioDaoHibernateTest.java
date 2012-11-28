@@ -163,7 +163,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionario.setQuestionario(questionario);
 		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, empresa.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, null, empresa.getId());
 		
 		assertEquals(1, retorno.size());
 	}
@@ -313,7 +313,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 		historicoColaboradorDao.save(historicoColaboradorAtual1);
 		
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, empresa.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByQuestionarioEmpresaRespondida(questionario.getId(), true, null, empresa.getId());
 		
 		assertEquals(1, retorno.size());
 	}

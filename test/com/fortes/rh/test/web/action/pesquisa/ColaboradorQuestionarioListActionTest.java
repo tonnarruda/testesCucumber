@@ -1,5 +1,6 @@
 package com.fortes.rh.test.web.action.pesquisa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -9,6 +10,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -25,6 +27,7 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction;
+import com.fortes.web.tags.CheckBox;
 
 public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 {
@@ -35,6 +38,7 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 	private Mock questionarioManager;
 	private Mock empresaManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock estabelecimentoManager;
 
     protected void setUp() throws Exception
     {
@@ -59,6 +63,9 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
         colaboradorQuestionarioAction.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        
+        estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+        colaboradorQuestionarioAction.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -89,8 +96,9 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
-    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionarios));
+    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorQuestionarios));
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").withAnyArguments().will(returnValue(new ArrayList<CheckBox>()));
 
     	assertEquals("success", colaboradorQuestionarioAction.list());
     	assertEquals(colaboradorQuestionarios, colaboradorQuestionarioAction.getColaboradorQuestionarios());

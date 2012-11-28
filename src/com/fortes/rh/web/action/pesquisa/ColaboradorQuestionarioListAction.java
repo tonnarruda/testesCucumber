@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -26,7 +27,10 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -42,10 +46,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private QuestionarioManager questionarioManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private EstabelecimentoManager estabelecimentoManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
 	private Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	private ColaboradorQuestionario colaboradorQuestionario;
 	private Colaborador colaborador;
@@ -90,18 +97,31 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		
 		if(empresaId == null)
 			empresaId = getEmpresaSistema().getId();
-		
+
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores ,empresaId,SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_PESQUISA");
 		
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
 		
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), BooleanUtil.getValueCombo(respondida), empresaId);
-
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionarioEmpresaRespondida(questionario.getId(), BooleanUtil.getValueCombo(respondida), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), empresaId);
+		
 		urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), null);
 		
 		calcularTotalRespondidas();
+		populaEstabelecimentos();
 		
 		return Action.SUCCESS;
+	}
+
+	private void populaEstabelecimentos() 
+	{
+		Long[] empresaIds;
+		if(empresaId != null && empresaId.equals(-1L))
+			empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
+		else
+			empresaIds = new Long[]{empresaId};
+		
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaIds);
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 	}
 
 	public String imprimirColaboradores() throws Exception
@@ -438,6 +458,28 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setOcultarBotaoVoltar(boolean ocultarBotaoVoltar) {
 		this.ocultarBotaoVoltar = ocultarBotaoVoltar;
+	}
+
+	public String[] getEstabelecimentosCheck() {
+		return estabelecimentosCheck;
+	}
+
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
+	}
+
+	public void setEstabelecimentosCheckList(
+			Collection<CheckBox> estabelecimentosCheckList) {
+		this.estabelecimentosCheckList = estabelecimentosCheckList;
+	}
+
+	public void setEstabelecimentoManager(
+			EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
 	}
 	
 }

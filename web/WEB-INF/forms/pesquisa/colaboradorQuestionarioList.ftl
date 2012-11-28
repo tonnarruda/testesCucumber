@@ -12,9 +12,32 @@
 
     <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+    
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
+	
+	<script type="text/javascript">
+		function populaEstabelecimento(empresaId)
+		{
+			var empresaIds = new Array(); 
+			$('#empresaId option').each(function() {
+				if($(this).val() != null && $(this).val() != -1)
+					empresaIds.push($(this).val());
+			});
+			
+			DWRUtil.useLoadingMessage('Carregando...');
+			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
+		}
+
+		function createListEstabelecimento(data)
+		{
+			addChecks('estabelecimentosCheck',data);
+		}
+	</script>
 </head>
 <body>
 
@@ -25,7 +48,7 @@
         <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
 
             <#if compartilharColaboradores>
-	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"  disabled="!compartilharColaboradores"/>
+	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"  disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);"/>
 			<#else>
 				<@ww.hidden id="empresa" name="empresaId"/>
 				<li class="wwgrp">
@@ -35,6 +58,7 @@
 			</#if>
             
             <@ww.select label="Respondida" name="respondida" id="respondida" list=r"#{'S':'Sim','N':'Não'}" headerValue="Todas" headerKey="T"/>
+            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
             <@ww.hidden name="questionario.id"/>
 
             <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">

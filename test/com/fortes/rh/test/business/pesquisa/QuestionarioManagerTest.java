@@ -321,7 +321,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarios.add(colaboradorQuestionario);
 
-    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), eq(false), eq(empresa.getId())).will(returnValue(colaboradorQuestionarios));
+    	colaboradorQuestionarioManager.expects(once()).method("findByQuestionarioEmpresaRespondida").with(eq(questionario.getId()), eq(false), eq(null), eq(empresa.getId())).will(returnValue(colaboradorQuestionarios));
     	MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
     	questionarioDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(questionario));
     	gerenciadorComunicacaoManager.expects(once()).method("enviaEmailQuestionario").with(eq(empresa), eq(questionario), eq(colaboradorQuestionarios)).isVoid();
