@@ -148,7 +148,7 @@ public class CandidatoEleicao extends AbstractModel implements Serializable
 
 	public Integer getQtdVoto()
 	{
-		return qtdVoto;
+		return qtdVoto == null ? 0 : qtdVoto;
 	}
 
 	public void setQtdVoto(Integer qtdVoto)
