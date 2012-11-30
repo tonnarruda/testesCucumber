@@ -138,7 +138,7 @@
 					<tbody id="listaCargos"></tbody>
 				</table>
 				<br>
-				<@ww.select name="" id="cargoId" list="cargos" cssStyle="width: 452px;" listKey="id" listValue="nomeMercado" 
+				<@ww.select name="cargo" id="cargoId" list="cargos" cssStyle="width: 452px;" listKey="id" listValue="nomeMercado" 
 				headerKey="" headerValue="Selecione o cargo que você deseja adicionar à lista de limites..." liClass="liLeft" />
 				
 				<a href="javascript:;" onclick="javascript:novoCargo();" style="text-decoration: none;">
