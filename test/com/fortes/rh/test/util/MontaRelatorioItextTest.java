@@ -17,11 +17,11 @@ public class MontaRelatorioItextTest extends TestCase
 	public void testMontaCelula(){
 		PdfPCell cell = MontaRelatorioItext.montaCelula("texto",false,1F,false,1,1F,false);
 		assertFalse("Test 1", cell.hasBorders());
-		assertEquals("Test 2", 1F, cell.grayFill());
+		assertEquals("Test 2", 1F, cell.getGrayFill());
 
 		cell = MontaRelatorioItext.montaCelula("texto",true,1F,false,1,1F,true);
 		assertTrue("Test 3", cell.hasBorders());
-		assertEquals("Test 4", 1F, cell.grayFill());
+		assertEquals("Test 4", 1F, cell.getGrayFill());
 
 	}
 

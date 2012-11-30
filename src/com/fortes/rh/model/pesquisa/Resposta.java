@@ -93,7 +93,7 @@ public class Resposta extends AbstractModel implements Serializable, Cloneable
 
 	public Integer getQtdRespostas()
 	{
-		return qtdRespostas;
+		return qtdRespostas == null ? 0 : qtdRespostas;
 	}
 
 	public void setQtdRespostas(Integer qtdRespostas)
