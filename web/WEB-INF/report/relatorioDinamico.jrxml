@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioDinamico" pageWidth="842" pageHeight="594" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="49ba7dc0-e778-4015-b5ba-d81d30971023">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -496,9 +496,9 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="14" splitType="Stretch">
+		<band height="13" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="d6aae0c9-dcdd-478f-8730-0ad49ec1dd23" key="rectangle-5" x="0" y="0" width="779" height="14" backcolor="#D4D3D3"/>
+				<reportElement uuid="d6aae0c9-dcdd-478f-8730-0ad49ec1dd23" key="rectangle-5" x="-1" y="0" width="779" height="13" backcolor="#D4D3D3"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
