@@ -26,6 +26,7 @@ public class SolicitacaoEpiItemVO
 	private String epiNome;
 	private Long itemId;
 	private Integer qtdSolicitadoItem;
+	private Integer qtdEntregueItem;
 	
 	public Long getSolicitacaoEpiId() {
 		return solicitacaoEpiId;
@@ -159,11 +160,23 @@ public class SolicitacaoEpiItemVO
 		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacao);
 	}
 
-	public Long getColaboradorId() {
+	public Long getColaboradorId()
+	{
 		return colaboradorId;
 	}
 
-	public void setColaboradorId(Long colaboradorId) {
+	public void setColaboradorId(Long colaboradorId)
+	{
 		this.colaboradorId = colaboradorId;
+	}
+
+	public Integer getQtdEntregueItem()
+	{
+		return qtdEntregueItem;
+	}
+
+	public void setQtdEntregueItem(Integer qtdEntregueItem)
+	{
+		this.qtdEntregueItem = qtdEntregueItem;
 	}
 }
