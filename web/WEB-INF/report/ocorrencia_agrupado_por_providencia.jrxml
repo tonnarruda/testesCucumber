@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="ocorrencia_com_providencia"
+		 name="ocorrencia_agrupado_por_providencia"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
@@ -37,12 +37,12 @@
 	<field name="dataFim" class="java.util.Date"/>
 	<field name="providencia.descricao" class="java.lang.String"/>
 
-	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Sum">
+	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="providencia" calculation="Sum">
 		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 
-		<group  name="colaborador" >
+		<group  name="providencia" >
 			<groupExpression><![CDATA[$F{providencia.descricao}]]></groupExpression>
 			<groupHeader>
 			<band height="14"  isSplitAllowed="true" >
@@ -93,6 +93,19 @@
 					</textElement>
 				<text><![CDATA[Total:]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="14"
+						y="2"
+						width="220"
+						height="13"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Total de Providências: " + $V{providencia_COUNT}]]></textFieldExpression>
+				</textField>
 			</band>
 			</groupFooter>
 		</group>
