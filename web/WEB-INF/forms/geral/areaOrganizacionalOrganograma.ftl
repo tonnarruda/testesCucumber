@@ -52,18 +52,22 @@
 			});
 		});
 		
+		var data, chart;
+		
 		function montaOrganograma(dados)
 		{
 			try {
 				$('#organogramaAreas, #btnImprimir').show();
 			
-				var data = new google.visualization.DataTable();
+				data = new google.visualization.DataTable();
 				data.addColumn('string', 'nome');
 				data.addColumn('string', 'nomeMae');
 				data.addRows(eval(dados));
 				
-				var chart = new google.visualization.OrgChart(document.getElementById('organogramaAreas'));
+				chart = new google.visualization.OrgChart(document.getElementById('organogramaAreas'));
 				chart.draw(data, { allowHtml:true, size:'medium' });
+				
+				$("td").filter(function() { return $.text([this]) == $("#areaOrganizacional option:selected").text().split('>').pop().trim(); }).addClass('google-visualization-orgchart-nodesel');
 			
 			} catch (e) { console.log(e); }
 		}

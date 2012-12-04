@@ -93,13 +93,23 @@ public class AreaOrganizacionalDWR
 	
 	public String getByEmpresaJson(Long empresaId, Long areaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+		Collection<AreaOrganizacional> areaOrganizacionals 	= new ArrayList<AreaOrganizacional>();
+		Collection<AreaOrganizacional> areasAncestrais 		= new ArrayList<AreaOrganizacional>();
+		Collection<AreaOrganizacional> areasDescendentes 	= new ArrayList<AreaOrganizacional>();
+		
 		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(empresaId);
 		
-		if (areaId == null)
-			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		else
-			areaOrganizacionals = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, areaId, new ArrayList<AreaOrganizacional>());
+		if (areaId != null)
+		{
+			areasAncestrais = areaOrganizacionalManager.getAncestrais(areaOrganizacionals, areaId);
+			areasDescendentes = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, areaId, new ArrayList<AreaOrganizacional>());
+			
+			areaOrganizacionals.clear();
+			areaOrganizacionals.addAll(areasAncestrais);
+			areaOrganizacionals.addAll(areasDescendentes);
+		}
+
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 		if (areaOrganizacionals.isEmpty())
 			areaOrganizacionals.add(areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId));
