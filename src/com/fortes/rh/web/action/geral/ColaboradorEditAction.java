@@ -477,6 +477,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			{
 				solicitacao = solicitacaoManager.findByIdProjection(solicitacao.getId());
 				colaborador.setRegimeRevezamento(solicitacao.getHorarioComercial());
+				
+				historicoColaborador = populaHistoricoColaborador();
+				colaborador.setHistoricoColaborador(historicoColaborador);
 			}
 			
 			colaborador.setNome(candidato.getNome());
@@ -498,6 +501,20 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		colaborador.setCandidato(candidato);
 
 		return Action.SUCCESS;
+	}
+
+	private HistoricoColaborador populaHistoricoColaborador()
+	{
+		Estabelecimento estabelecimento = solicitacao.getEstabelecimento();
+		AreaOrganizacional areaOrganizacional = solicitacao.getAreaOrganizacional();;
+		FaixaSalarial faixaSalarial = solicitacao.getFaixaSalarial();
+		
+		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		
+		return historicoColaborador;
 	}
 
 	public String insert() throws Exception
