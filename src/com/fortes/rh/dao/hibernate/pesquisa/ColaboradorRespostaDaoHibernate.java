@@ -9,15 +9,20 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -27,11 +32,13 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
-	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
 		String whereAreasSub = "";
+		String whereCargos = "";
+		String whereCargosSub = "";
 		String whereEstabelecimentos = "";
 		String whereEstabelecimentosSub = "";
 		String wherePerguntas = "";
@@ -47,11 +54,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
+		
 		if(areasIds != null && areasIds.length > 0)
 		{
 			whereAreas = "and a.id in (:areasIds) ";
 			whereAreasSub = "and crsub.areaOrganizacional.id in (:areasIds) ";
 		}
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			whereCargos = "and ca.id in (:cargosIds) ";
+
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 		{
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
@@ -76,6 +88,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id, " +
 							"(select count(crsub.pergunta.id) from ColaboradorResposta as crsub " +
 							"left join crsub.colaboradorQuestionario as cqsub " +
+							"left join cqsub.colaborador as csub " +
 							"where crsub.pergunta.id = p.id " +
 							"and crsub.resposta.id is not null " +
 							whereAreasSub +
@@ -90,11 +103,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"left join cr.resposta as r "	+
 							"left join cr.pergunta as p "	+
 							"left join cr.colaboradorQuestionario as cq "	+
-							"left join cq.colaborador as c "	+
+							"left join cq.colaborador as c " +
+							"left join c.historicoColaboradors as hc " +
+							"left join hc.faixaSalarial as fs " +
+							"left join fs.cargo as ca " +
 							"where p.tipo = :tipoPergunta "+
+							"and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
 							"and cr.resposta.id is not null " +
 							wherePerguntas +
 							whereAreas +
+							whereCargos +
 							whereEstabelecimentos +
 							wherePeriodoIni +
 							wherePeriodoFim +
@@ -105,12 +123,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.OBJETIVA);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(perguntasIds != null && perguntasIds.length > 0)
 			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
 
 		if(areasIds != null && areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 
 		if(empresaId != null && empresaId != -1)
 			query.setLong("empresaId", empresaId);
@@ -123,16 +145,18 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		if(periodoFim != null)
 			query.setDate("periodoFim", periodoFim);
+		
 		if(turmaId != null)
 			query.setLong("turmaId", turmaId);
 		
 		return query.list();
 	}
 
-	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
+		String whereCargos = "";
 		String whereEstabelecimentos = "";
 		String wherePerguntas = "";
 		String wherePeriodoIni = "";
@@ -145,6 +169,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			wherePerguntas = "and p.id in (:perguntasIds) ";
 		if(areasIds != null && areasIds.length > 0)
 			whereAreas = "and a.id in (:areasIds) ";
+		if(cargosIds != null && cargosIds.length > 0)
+			whereAreas = "and ca.id in (:cargosIds) ";
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
 		if(periodoIni != null)
@@ -162,10 +188,15 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		"left join cr.pergunta as p "	+
 		"left join cr.colaboradorQuestionario as cq "	+
 		"left join cq.colaborador as c "	+
+		"left join c.historicoColaboradors as hc " +
+		"left join hc.faixaSalarial as fs " +
+		"left join fs.cargo as ca " +
 		"where p.tipo = :tipoPergunta "+
 		"and cr.resposta.id is not null " +
+		"and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
 		wherePerguntas +
 		whereAreas +
+		whereCargos +
 		whereEstabelecimentos +
 		wherePeriodoIni +
 		wherePeriodoFim +
@@ -176,12 +207,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.MULTIPLA_ESCOLHA);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
 		
 		if(areasIds != null && areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 
 		if(empresaId != null && empresaId != -1)
 			query.setLong("empresaId", empresaId);
@@ -200,17 +235,28 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 	
-	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId)
+	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId)
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "ca");
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.pergunta", "p", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.resposta", "r", Criteria.LEFT_JOIN);
+		
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cr.id"), "id");
@@ -234,6 +280,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("a.id", areasIds));
+
+		if(cargosIds != null && cargosIds.length > 0)
+			criteria.add(Expression.in("ca.id", cargosIds));
 		
 		if(empresaId != null && empresaId != -1)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));

@@ -523,7 +523,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
 
-    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, null, null, null, null, null, null, questionario);
+    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, null, null, null, null, null, null, null, questionario);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());

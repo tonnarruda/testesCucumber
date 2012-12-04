@@ -45,7 +45,7 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	Collection<Questionario> findQuestionarioPorUsuario(Long usuarioId);
 	void updateQuestionario(Questionario questionario);
 	void removerPerguntasDoQuestionario(Long questionarioId);
-	Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario)throws Exception;
+	Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario)throws Exception;
 	Collection<PerguntaFichaMedica> montaImpressaoFichaMedica(Long id, Long colaboradorQuestionarioId, Map<String, Object> parametros);
 	public Collection<PerguntaFichaMedica> montaImpressaoAvaliacaoRespondida(Long colaboradorQuestionarioId, Map<String, Object> parametros);
 	public Collection<Questionario> findQuestionario(Long colaboradorId);

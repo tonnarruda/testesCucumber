@@ -43,9 +43,22 @@
 			return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 		}
 		
+		$(function() {
+			var empresa = $('#empresa').val();
+	
+			populaArea(empresa);
+			populaEstabelecimento(empresa);
+			populaCargosByArea(empresa);
+			verificaCargoSemAreaRelacionada(empresa);
+			
+			$('#cargoSemArea').click(function() {
+				if($(this).is(":checked"))
+					addCheckCargoSemArea();
+				else
+					populaCargosByArea(empresa);
+			});
+		});
 	</script>
-
-
 </head>
 <body>
 	<@ww.actionerror />
