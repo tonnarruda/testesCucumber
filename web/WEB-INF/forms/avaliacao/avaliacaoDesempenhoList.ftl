@@ -57,8 +57,8 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
-			<@ww.textfield label="Título" name="nomeBusca" id="nomeBusca" liClass="liLeft" cssStyle="width: 350px;"/>
-			<@ww.select label="Modelo." name="avaliacaoId" list="avaliacaos" listKey="id" listValue="titulo" headerValue="selecione..." headerKey=""/>
+			<@ww.textfield label="Título" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
+			<@ww.select label="Modelo." name="avaliacaoId" list="avaliacaos" listKey="id" listValue="titulo" headerValue="selecione..." headerKey="" cssStyle="width: 500px;"/>
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
