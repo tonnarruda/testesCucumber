@@ -60,6 +60,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	private Long[] empresaIds;//repassado para o DWR
 	private Empresa empresa;
 	private Boolean compartilharColaboradores;
+	private String reportTitle;
 	
 	public String execute() throws Exception
 	{
@@ -99,6 +100,8 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 				msg = bundle.getString("error.relatorio.vazio");
 				throw new Exception(msg);
 			}
+
+			reportTitle = "Relatório de Colaboradores por Área Organizacional";
 
 			dataSource = colaboradorManager.ordenaPorEstabelecimentoArea(getEmpresaSistema().getId(), dataSource);
 
@@ -157,7 +160,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		this.dataSource = dataSource;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Map getParametros()
 	{
 		return parametros;
@@ -298,16 +301,18 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		return cargosCheckList;
 	}
 
-	
 	public String[] getAreasCheck()
 	{
 		return areasCheck;
 	}
 
-	
 	public void setAreasCheck(String[] areasCheck)
 	{
 		this.areasCheck = areasCheck;
 	}
 
+	public String getReportTitle()
+	{
+		return reportTitle;
+	}
 }
