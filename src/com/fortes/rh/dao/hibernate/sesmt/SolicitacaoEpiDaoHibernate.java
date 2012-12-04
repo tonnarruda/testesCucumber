@@ -273,7 +273,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, sse.qtdentregue, sse.solicitacaoepisituacao ");
+		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, ");
+		sql.append("       e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, ");
+		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacao ");
 		sql.append("from situacaosolicitacaoepi sse ");
 		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
 		sql.append("join epi e on item.epi_id = e.id ");
@@ -297,11 +299,11 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if (colaborador != null)
 		{
-			if (colaborador.getMatricula() != null)
-				sql.append("and lower(sse.colaboradorMatricula) like :colaboradorMatricula ");
+			if (StringUtils.isNotBlank(colaborador.getMatricula()))
+				sql.append("and sse.colaboradorMatricula ilike :colaboradorMatricula ");
 
-			if (colaborador.getNome() != null)
-				sql.append("and lower(sse.colaboradorNome) like :colaboradorNome ");
+			if (StringUtils.isNotBlank(colaborador.getNome()))
+				sql.append("and sse.colaboradorNome ilike :colaboradorNome ");
 		}
 		
 		sql.append("order by sse.solicitacaoepidata desc, sse.colaboradornome ");
@@ -324,10 +326,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if (colaborador != null)
 		{
-			if (colaborador.getMatricula() != null)
+			if (StringUtils.isNotBlank(colaborador.getMatricula()))
 				query.setString("colaboradorMatricula", "%" + colaborador.getMatricula() + "%");
 
-			if (colaborador.getNome() != null)
+			if (StringUtils.isNotBlank(colaborador.getNome()))
 				query.setString("colaboradorNome", "%" + colaborador.getNome() + "%");
 		}
 		
@@ -362,6 +364,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setItemId(((BigInteger) obj[++countCampo]).longValue());
 			vo.setQtdSolicitadoItem(new Integer(obj[++countCampo].toString()));
 			vo.setQtdEntregue(new Integer(obj[++countCampo].toString()));
+			vo.setQtdEntregueItem((new Integer(obj[++countCampo].toString())));
 			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString().charAt(0));
 			
 			lista.add(vo);
