@@ -1,13 +1,3 @@
-rh_local_francisco:
-  host: 10.1.3.120
-  user: web
-  password: 123456
-  tomcat_home: /home/web/temp/apache-tomcat-6.0.29
-  fortes_home_properties: name=FORTES_HOME
-  app_name: fortesrh
-  db_name: fortesrh
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
-
 rhhomologacao:
   host: 10.1.3.48
   user: fortes
@@ -18,8 +8,6 @@ rhhomologacao:
   run_migrates: true
   backup_folder: /home/fortes/fortes/RHHOMOLOGACAO/backup_db
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
-  environment:
-    FORTES_HOME_HOMOLOGACAO: /home/fortes/fortes/RHHOMOLOGACAO
 	
 rhcomercial_informatica:
   host: 10.1.254.247
@@ -31,57 +19,16 @@ rhcomercial_informatica:
   backup_folder: /home/fortes/RHCOMERCIAL/backup_db
   repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/versaoHomologacao/fortesrh.war
   environment:
-    FORTES_HOME_COMERCIAL: /home/fortes/RHCOMERCIAL
     JRE_HOME: /usr
 	
 rhoficial_informatica:
-  host: 10.1.254.77
+  host: 10.1.254.247
   user: root
-  password: fortes$01
-  tomcat_home: /usr/local/apache-tomcat-6.0.26
+  password: 8KyHNnFT
+  tomcat_home: /usr/local/tomcat
   app_name: fortesrh
   db_name: fortesrh
   backup_folder: /home/fortes/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_65_58/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_94_93/fortesrh.war
   environment:
-    FORTES_HOME: /home/fortes
     JRE_HOME: /usr	
-	
-rh_pae_unifor:
-  host: 184.106.64.61
-  user: root
-  password: rhuniforO0vuDXg37
-  tomcat_home: /var/lib/tomcat6
-  fortes_home_properties: name=FORTES_UNIFOR
-  app_name: unifor
-  db_name: unifor
-  backup_folder: /usr/fortes/unifor/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_65_58/fortesrh.war
-  environment:
-    FORTES_UNIFOR: /usr/fortes/unifor
-	
-rh_pae_darcy:
-  host: 184.106.64.61
-  user: root
-  password: rhuniforO0vuDXg37
-  tomcat_home: /var/lib/tomcat6
-  fortes_home_properties: name=FORTES_DARCY
-  app_name: darcyribeiro
-  db_name: darcyribeiro
-  backup_folder: /usr/fortes/darcy/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_65_58/fortesrh.war
-  environment:
-    FORTES_DARCY: /usr/fortes/darcy
-	
-rh_pae_fa7:
-  host: 184.106.64.61
-  user: root
-  password: rhuniforO0vuDXg37
-  tomcat_home: /var/lib/tomcat6
-  fortes_home_properties: name=FORTES_FA7
-  app_name: fa7
-  db_name: fa7
-  backup_folder: /usr/fortes/fa7/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_65_58/fortesrh.war
-  environment:
-    FORTES_FA7: /usr/fortes/fa7
