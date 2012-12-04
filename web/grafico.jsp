@@ -15,13 +15,14 @@
 	<!--[if lte IE 8]><script type='text/javascript' src='<ww:url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 	
 	<style type="text/css">
+		.legendColorBox {width: 20px;}
 		* { font-family: Arial, Helvetica, sans-serif; }
 		h3 { font-size: 16px; }
 		table { width: 100%; }
 		table tr td { vertical-align: top; }
 		table tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
-		#popupGrafico { width: 500px; height: 300px; }
-		#popupGraficoLegenda { width: 500px; height: 300px; }
+		#popupGrafico { width: 800px; height: 300px; }
+		#popupGraficoLegenda { width: 800px; height: 300px; text-align: left}
 	</style>
 </head>
 <body>

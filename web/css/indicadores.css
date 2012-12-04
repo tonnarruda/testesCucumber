@@ -130,6 +130,20 @@ div.graph3 {
 	position: relative;
 }
 
+.grid-cell.small{
+	left: 190px;
+	width: 330px !important;
+	border-spacing: 0px !important;
+}
+
+.grid-cell.medium{
+	width: 610px !important;
+}
+
+.grid-cell.bigger{
+	width: 490px !important;
+}
+
 .grid .graph {
 	float: none;
 	width: 220px !important;
