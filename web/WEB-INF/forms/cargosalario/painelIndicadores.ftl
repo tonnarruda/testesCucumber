@@ -16,7 +16,6 @@
 		
 	</style>
 	
-
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -39,16 +38,16 @@
 				});
 			
 				
-				montaGrafico(${grfFaixaEtarias}, "#faixaEtaria", {}, "Faixa Etária");
-				montaGrafico(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02}, "Estado Civil");
-				montaGrafico(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03}, "Deficiência");
-				montaGrafico(${grfColocacao}, "#colocacao", {percentMin: 0.02}, "Colocação");
-				montaGrafico(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências");
-				montaGrafico(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9}, "Providências");
-				montaGrafico(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
-				montaGrafico(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
+				montaGraficoPizza(${grfFaixaEtarias}, "#faixaEtaria", {}, "Faixa Etária");
+				montaGraficoPizza(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02}, "Estado Civil");
+				montaGraficoPizza(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03}, "Deficiência");
+				montaGraficoPizza(${grfColocacao}, "#colocacao", {percentMin: 0.02}, "Colocação");
+				montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências");
+				montaGraficoPizza(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9}, "Providências");
+				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
+				montaGraficoPizza(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
 
-				montaPie(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190});
+				montaGraficoPizza(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190}, "Motivo Desligamento");
 				
 				var absenteismo = ${grfEvolucaoAbsenteismo};
 				var turnover = ${grfEvolucaoTurnover};
@@ -60,8 +59,8 @@
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
-				montaLine(absenteismo, "#evolucaoAbsenteismo");
-				montaLine(turnover, "#evolucaoTurnover");
+				montaGraficoLinha(absenteismo, "#evolucaoAbsenteismo", "Absenteismo");
+				montaGraficoLinha(turnover, "#evolucaoTurnover", "Turnover");
 				
 				populaAreas();
 				
@@ -69,7 +68,30 @@
 			
 			var popup;
 			
-			function montaGrafico(dados, obj, configGrafico, titulo)
+			function montaGraficoLinha(dados, obj, titulo)
+			{
+				montaLine(dados, obj);
+				$(obj + "Imprimir")
+						.unbind()
+						.bind('click', 
+							function(event) 
+							{ 
+								popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+								popup.window.onload = function() 
+								{
+									popup.focus();
+									popup.document.getElementById('popupTitulo').innerHTML = titulo;
+									popup.document.getElementById('popupGraficoLegenda').innerHTML = '<br />' + $(obj + 'Info .formula').text()+'<br /><br />' + $(obj + 'Info .fieldDados').text();
+									popup.window.opener.montaLine(dados, popup.document.getElementById('popupGrafico'));
+									popup.window.print();
+									popup.window.close();
+								}
+							}
+						);
+			}
+			
+			
+			function montaGraficoPizza(dados, obj, configGrafico, titulo)
 			{
 				configGrafico.noColumns = 2;
 				configGrafico.container = obj + "Legenda"; 
@@ -249,7 +271,7 @@
 				<td class="grid-cell small">
 					<div class="cell-title">
 						Sexo 
-						<img id="formacaoEscolarImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						<img id="sexoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</div>
 					<div id="sexo" class="graph"></div>
 			    	<div style="clear:both"></div>
@@ -260,7 +282,7 @@
 				<td class="grid-cell bigger" colspan="2">
 					<div class="cell-title">
 						Motivos de Desligamentos
-						<img onclick="imprimirDados('Vagas Disponíveis', $('#vagasDisponiveis').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						<img id="desligamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</div>
 					<div class="graphWrapper " style="height: 390px !important;">
 				    	<div id="desligamento" class="graph2"></div>
@@ -271,38 +293,42 @@
 				<td class="grid-cell bigger" colspan="2">
 					<div class="cell-title">
 						Turnover
-						<img onclick="imprimirDados('Vagas Disponíveis', $('#vagasDisponiveis').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						<img id="evolucaoTurnoverImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</div>
 					<div class="graphWrapper" style="height: 350px !important;">
 				    	<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
 				    </div>
-					<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
-			    
-					<div style="clear: both"></div>
-					
-					<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-						<div>Admitidos: ${countAdmitidos}</div>
-						<div>Demitidos: ${countDemitidos}</div>
-						<div>Turnover: ${turnover}</div>
-					</div>
+					<div id="evolucaoTurnoverInfo">
+						<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
+				    
+						<div style="clear: both"></div>
+						
+						<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+							<div>Admitidos: ${countAdmitidos}</div>
+							<div>Demitidos: ${countDemitidos}</div>
+							<div>Turnover: ${turnover}</div>
+						</div>
+				 	</div>
 				</td>
 			</tr>
 			<tr>
 				<td class="grid-cell bigger" colspan="2">
 					<div class="cell-title">
 						Absenteísmo
-						<img onclick="imprimirDados('Vagas Disponíveis', $('#vagasDisponiveis').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</div>
 					<div class="graphWrapper" style="height: 360px !important;">
 				    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
 				    </div>
-					<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
-					
-					<div style="clear: both"></div>
-					
-					<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-						<div id="mediaAbsenteismo"></div>
-					</div>
+					<div id="evolucaoAbsenteismoInfo">
+						<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+						
+						<div style="clear: both"></div>
+						
+						<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+							<div id="mediaAbsenteismo"></div>
+						</div>
+				 	</div>
 				</td>
 			</tr>
 		</table>	    
