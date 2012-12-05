@@ -24,12 +24,12 @@
 					</#if>
 				
 					<tr class="${class}">
-						<#if msg.usuarioMensagemId?exists>
-							<td width="40" align="center">
+						<td width="40" align="center">
+							<#if msg.usuarioMensagemId?exists>
 								<a href="javascript: popup('geral/usuarioMensagem/leituraUsuarioMensagemPopup.action?usuarioMensagem.empresa.id=${empresaId}&amp;usuarioMensagem.id=${msg.usuarioMensagemId}&amp;tipo=${tipo}', 400, 500)"><img border="0" title="Visualizar mensagem"  src="<@ww.url value="/imgs/olho.jpg"/>"/> </a>
 								<a href="javascript: newConfirm('Confirma exclusão?', function(){window.location='geral/usuarioMensagem/delete.action?usuarioMensagem.id=${msg.usuarioMensagemId}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"/></a>
-							</td>
-						</#if>
+							</#if>
+						</td>
 						<td>
 							<#if msg.remetente?exists && msg.data?exists>
 								${status}&nbsp;&nbsp;<span class="remetenteHora">${msg.remetente} - ${msg.data?string("dd/MM/yyyy HH:mm")}</span><br />
