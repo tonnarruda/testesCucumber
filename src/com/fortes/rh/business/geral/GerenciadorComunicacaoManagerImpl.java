@@ -412,31 +412,51 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		String appUrl = parametrosDoSistema.getAppUrl();
 		String subject = "[Fortes RH] Avaliação do Período de Experiência";
+		StringBuilder mensagem;
 		StringBuilder body;
+		String link = "";
 		
 		for (ColaboradorPeriodoExperienciaAvaliacao colaboradorAvaliacao : colaboradores) 
 		{
+			mensagem = new StringBuilder();
 			body = new StringBuilder();
+
 			body.append("Sr(a) " + colaboradorAvaliacao.getColaborador().getNome() + ", <br><br>");
-			body.append("Por gentileza, preencha sua avaliação para o período de experiência de " + colaboradorAvaliacao.getPeriodoExperiencia().getDias() + " dias <br>");
+			mensagem.append("Por gentileza, preencha sua avaliação para o período de experiência de " + colaboradorAvaliacao.getPeriodoExperiencia().getDias() + " dias");
+			body.append(mensagem.toString().replace("dias", "dias <br>"));
+
+			link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliacao.getColaborador().getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id=" + colaboradorAvaliacao.getAvaliacao().getId();
 			body.append("disponível em ");
-			body.append("<a href='" + appUrl + "/avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliacao.getColaborador().getId() + "&respostaColaborador=true&colaboradorQuestionario.avaliacao.id=" + colaboradorAvaliacao.getAvaliacao().getId() +  
-						"'>" + colaboradorAvaliacao.getAvaliacao().getTitulo() + "</a>");			
+			body.append("<a href='" + appUrl + "/" + link + "'>" + colaboradorAvaliacao.getAvaliacao().getTitulo() + "</a>");			
 			
 			try
 			{
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), colaboradorAvaliacao.getColaborador().getEmpresa().getId());
-	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
-	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
-	    			} 		
-	    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
+	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+	    		{
+	    			for (String diasLembreteGerenciadorComunicacao : gerenciadorComunicacao.getQtdDiasLembrete().split("&")) 
 	    			{
-	    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-	    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, emails);
-	    			} 		
+	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(colaboradorAvaliacao.getColaborador().getDataAdmissao(), new Date());
+
+	    				if( (colaboradorAvaliacao.getPeriodoExperiencia().getDias() - Integer.parseInt(diasLembreteGerenciadorComunicacao)) == diasDeEmpresaDoColaborador)
+						{
+		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
+			    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
+			    			} 		
+			    		
+		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
+			    				Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findByColaboradorId(colaboradorAvaliacao.getColaborador().getId());
+			    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresas, colaboradorAvaliacao.getColaborador(), TipoMensagem.AVALIACAO_DESEMPENHO);
+			    			} 		
+			    			
+		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
+			    			{
+			    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+			    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, emails);
+			    			}
+						}
+	    			}
 	    		}
-				
 			}
 			catch (Exception e)
 			{

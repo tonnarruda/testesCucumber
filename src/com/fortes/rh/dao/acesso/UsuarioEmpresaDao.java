@@ -23,4 +23,6 @@ public interface UsuarioEmpresaDao extends GenericDao<UsuarioEmpresa>
 	public Collection<UsuarioEmpresa> findPerfisEmpresas();
 
 	public Collection<UsuarioEmpresa> findUsuariosAtivo(Collection<Long> usuarioIds, Long empresaId);
+
+	public Collection<UsuarioEmpresa> findByColaboradorId(Long colaboradorId);
 }
