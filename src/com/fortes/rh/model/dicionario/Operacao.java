@@ -100,6 +100,7 @@ public enum Operacao
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COLABORADOR_AVALIADO);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR_AVALIADO);
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);

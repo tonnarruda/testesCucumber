@@ -1,6 +1,7 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class ColaboradorPeriodoExperienciaAvaliacao extends AbstractModel implem
     public ColaboradorPeriodoExperienciaAvaliacao() {
 	}
     
-    public ColaboradorPeriodoExperienciaAvaliacao(Long colaboradorId, String colaboradorNome, String colaboradorEmail, String empresaEmailRemetente, Long avaliacaoId, String avaliacaoTitulo, Integer peridoExperienciaDias, Long empresaId)
+    public ColaboradorPeriodoExperienciaAvaliacao(Long colaboradorId, String colaboradorNome, String colaboradorEmail, Date colaboradorDataAdmissao, String empresaEmailRemetente, Long avaliacaoId, String avaliacaoTitulo, Integer peridoExperienciaDias, Long empresaId)
     {
     	if (colaborador == null)
     		colaborador = new Colaborador();
@@ -52,6 +53,7 @@ public class ColaboradorPeriodoExperienciaAvaliacao extends AbstractModel implem
     	
     	colaborador.setId(colaboradorId);
     	colaborador.setNome(colaboradorNome);
+    	colaborador.setDataAdmissao(colaboradorDataAdmissao);
     	colaborador.getContato().setEmail(colaboradorEmail);
     	colaborador.getEmpresa().setId(empresaId);
     	colaborador.getEmpresa().setEmailRemetente(empresaEmailRemetente);

@@ -16,4 +16,5 @@ public interface UsuarioEmpresaManager extends GenericManager<UsuarioEmpresa>
 	Collection<UsuarioEmpresa> findUsuarioResponsavelAreaOrganizacional(Collection<Long> areasIds);
 	Collection<UsuarioEmpresa> findPerfisEmpresas();
 	Collection<UsuarioEmpresa> findUsuariosAtivo(Collection<Long> usuarioIds, Long empresaId);
+	Collection<UsuarioEmpresa> findByColaboradorId(Long colaboradorId);
 }
