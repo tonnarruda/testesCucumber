@@ -19361,3 +19361,12 @@ update parametrosdosistema set appversao = '1.1.94.92';--.go
 -- versao 1.1.94.93
 
 update parametrosdosistema set appversao = '1.1.94.93';--.go
+-- versao 1.1.94.94
+
+update mensagem set tipo = 'F' where tipo = 'E';
+update mensagem set tipo = 'F' where tipo = 'D';
+update mensagem set tipo = 'A' where tipo = 'I';
+delete from usuariomensagem where mensagem_id in (select id from mensagem where tipo not in ('C', 'P', 'A', 'T', 'F', 'S', 'U', 'R') or tipo is null);
+delete from mensagem where tipo not in ('C', 'P', 'A', 'T', 'F', 'S', 'U', 'R') or tipo is null;
+insert into migrations values('20121203111221');--.go
+update parametrosdosistema set appversao = '1.1.94.94';--.go

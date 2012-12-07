@@ -15,5 +15,17 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalRelatorioFiltro.ftl</result>
 		</action>
+		<action name="gerarRelatorioXLS" class="com.fortes.rh.web.action.geral.AreaOrganizacionalRelatorioAction" method="gerarRelatorio">
+			<result name="success" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">areaOrganizacionalPorColaborador.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa</param>
+				<param name="properties">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao,nome,cargoFaixa</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalRelatorioFiltro.ftl</result>
+		</action>
 	</package>
 </xwork>

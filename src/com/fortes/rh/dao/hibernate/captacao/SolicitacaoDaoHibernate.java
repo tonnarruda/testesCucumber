@@ -204,6 +204,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ci.uf", "est", Criteria.LEFT_JOIN);
 
@@ -214,6 +215,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.idadeMinima"), "idadeMinima");
 		p.add(Projections.property("s.idadeMaxima"), "idadeMaxima");
 		p.add(Projections.property("s.sexo"), "sexo");
+		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("c.id"), "cargoId");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("a.id"), "projectionAreaId");

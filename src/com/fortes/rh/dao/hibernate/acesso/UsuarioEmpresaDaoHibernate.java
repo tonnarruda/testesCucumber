@@ -16,6 +16,7 @@ import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 
 @SuppressWarnings("unchecked")
 public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpresa> implements UsuarioEmpresaDao
@@ -197,6 +198,27 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.add(Expression.eq("u.acessoSistema", true));
 		
 		criteria.addOrder(Order.asc("u.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
+		
+		return criteria.list();
+	}
+
+	public Collection<UsuarioEmpresa> findByColaboradorId(Long colaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.usuario", "u", Criteria.LEFT_JOIN);
+		criteria.createCriteria("u.usuarioEmpresas", "ue", Criteria.LEFT_JOIN);
+	
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ue.id"), "id");
+		p.add(Projections.property("ue.usuario"), "usuario");
+		p.add(Projections.property("ue.empresa"), "empresa");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.id", colaboradorId));
+		criteria.add(Expression.eq("u.acessoSistema", true));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
 		

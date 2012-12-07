@@ -75,7 +75,9 @@ public class QuestionarioListAction extends MyActionSupportList
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 
 	private String[] areasCheck;
-	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
+	private String[] cargosCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] aspectosCheck;
 	private Collection<CheckBox> aspectosCheckList = new ArrayList<CheckBox>();
  	private String[] perguntasCheck;
@@ -262,8 +264,8 @@ public class QuestionarioListAction extends MyActionSupportList
 
 		entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), null);
 
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
 
 		urlVoltar = "menu";
 
@@ -284,9 +286,9 @@ public class QuestionarioListAction extends MyActionSupportList
     	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
     		fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), null);
     	
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
+		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
 
-		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
 		aspectosCheckList = aspectoManager.populaCheckOrderNome(questionario.getId());
 		aspectosCheckList = CheckListBoxUtil.marcaCheckListBox(aspectosCheckList, aspectosCheck);
 		perguntasCheckList = perguntaManager.populaCheckOrderTexto(questionario.getId());
@@ -307,8 +309,8 @@ public class QuestionarioListAction extends MyActionSupportList
     	
     	fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), null);
     	
-    	areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-    	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+    	areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+    	areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
     	
     	urlVoltar = TipoQuestionario.getUrlVoltarList(questionario.getTipo(), null);
     	
@@ -339,12 +341,13 @@ public class QuestionarioListAction extends MyActionSupportList
 	    	CollectionUtil<Pergunta> clu = new CollectionUtil<Pergunta>();
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
+	    	Long[] cargoIds = LongUtil.arrayStringToArrayLong(cargosCheck);
 	    	Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 	
 	    	areasIds = StringUtil.converteArrayToString(areasCheck);
 	    	estabelecimentosIds = StringUtil.converteArrayToString(estabelecimentosCheck);
 
-    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, periodoIni, periodoFim, turmaId, questionario);
+    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, turmaId, questionario);
 
     		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds);
     		String areas = areaOrganizacionalManager.nomeAreas(areaIds);
@@ -528,9 +531,9 @@ public class QuestionarioListAction extends MyActionSupportList
 		this.perguntasCheck = perguntasCheck;
 	}
 
-	public Collection<CheckBox> getAreasCheckList()
+	public Collection<CheckBox> getAreasOrganizacionalsCheckList()
 	{
-		return areasCheckList;
+		return areaOrganizacionalsCheckList;
 	}
 
 	public Collection<CheckBox> getAspectosCheckList()
@@ -733,5 +736,21 @@ public class QuestionarioListAction extends MyActionSupportList
 	public void setExibirCabecalho(boolean exibirCabecalho)
 	{
 		this.exibirCabecalho = exibirCabecalho;
+	}
+
+	public Collection<CheckBox> getCargosCheckList() {
+		return cargosCheckList;
+	}
+
+	public void setCargosCheckList(Collection<CheckBox> cargosCheckList) {
+		this.cargosCheckList = cargosCheckList;
+	}
+	
+	public void setCargosCheck(String[] cargosCheck) {
+		this.cargosCheck = cargosCheck;
+	}
+
+	public Collection<CheckBox> getAreaOrganizacionalsCheckList() {
+		return areaOrganizacionalsCheckList;
 	}
 }

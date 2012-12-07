@@ -23,7 +23,7 @@ Funcionalidade: Fichas Médicas
     Então eu devo ver o título "Ficha médica - admissional"
     E eu devo ver "Colaborador: geraldo"
     E eu preencho o campo (JS) "respondidaEm" com "29/07/2011"
-    E eu preencho "RS10000" com "acido acetil salicilico"
+    E eu preencho "RS1" com "acido acetil salicilico"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Fichas Médicas"
     E eu devo ver "Respostas gravadas com sucesso."
@@ -36,7 +36,7 @@ Funcionalidade: Fichas Médicas
     E eu devo ver "Colaborador: geraldo"
     E o campo "respondidaEm" deve conter "29/07/2011"
     E eu preencho o campo (JS) "respondidaEm" com "27/07/2011"
-    E eu preencho "RS10000" com "dipirona"
+    E eu preencho "RS1" com "dipirona"
     E eu clico no botão "Gravar"
     E eu devo ver "27/07/2011"
 

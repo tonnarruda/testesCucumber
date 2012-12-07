@@ -1,5 +1,6 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -13,10 +14,35 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js"/>"></script>
 
 	<script type='text/javascript'>
+		var empresaIds = new Array();
+		<#if empresaIds?exists>
+			<#list empresaIds as empresaId>
+				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
+		
+		
+		$(function() {
+			DWREngine.setAsync(true);
+		
+			var empresa = $('#empresa').val();
+	
+			populaCargosByArea(empresa);
+			verificaCargoSemAreaRelacionada(empresa);
+			
+			$('#cargoSemArea').click(function() {
+				if($(this).is(":checked"))
+					addCheckCargoSemArea();
+				else
+					populaCargosByArea();
+			});
+		});
 	
 		function populaPerguntasPorAspecto(questionarioId)
 		{
@@ -27,6 +53,7 @@
 	
 		function populaPesquisaAspecto(questionarioId)
 		{
+			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
 			PerguntaDWR.getPerguntas(createListPerguntas, questionarioId);
 			AspectoDWR.getAspectosId(createListAspectos, questionarioId);
@@ -76,6 +103,8 @@
 	</#if>
 
 		<@ww.form name="form" action="imprimeResultado.action" onsubmit="${validarCampos}" method="POST">
+			<@ww.hidden id="empresa" name="empresaSistema.id"/>
+		
 			<#if questionario.tipo == tipoQuestionario.getENTREVISTA()>
 				<@ww.select label="Modelo de Entrevista" required="true" name="questionario.id" id="entrevista" list="entrevistas" listKey="questionario.id" listValue="questionario.titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
 				<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
@@ -98,7 +127,10 @@
 				<@frt.checkListBox label="Empresa - Estabelecimento" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList"/>
 			</#if>
 
-			<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areasCheckList"/>
+			<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();"/>
+			<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
+			<@frt.checkListBox label="Cargos" id="cargosCheck" name="cargosCheck" list="cargosCheckList"/>
+			
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" onClick="${populaPerguntasPorAspecto}"/>
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList"/>
 

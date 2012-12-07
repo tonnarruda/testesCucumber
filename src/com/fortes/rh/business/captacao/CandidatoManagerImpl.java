@@ -666,7 +666,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private void enviaSenha(Candidato candidato, Empresa empresa, String senha)
 	{
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-		String link = parametrosDoSistema.getAppUrl();
+		String link = parametrosDoSistema.getAppUrl() + "/externo/prepareLogin.action?empresaId=" + empresa.getId();
 		String subject = "Reenvio de senha.";
 
 		String nomeUsuario = candidato.getNome();

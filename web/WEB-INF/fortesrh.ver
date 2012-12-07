@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.94.94" data="03/12/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Pesquisa > Movimentações > Pesquisa > Colaboradores: Novo filtro por estabelecimento.
+			:: Info. Funcionais > Relatórios > Ocorrências: Nova opção de agrupar o relatório por providência.
+			:: SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir ASO: Exibir função do colaborador.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.94.93" data="26/11/2012">
 		<Modulo nome=" "><![CDATA[
-			::  R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Nova opção de imprimir a listagem de candidatos da seleção.
+			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Nova opção de imprimir a listagem de candidatos da seleção.
     	]]></Modulo>
     </Versao>
 	<Versao id="1.1.94.92" data="19/11/2012">

@@ -1,21 +1,3 @@
-$(document).ready(function($)
-{
-	var empresa = $('#empresa').val();
-	
-	populaArea(empresa);
-	populaEstabelecimento(empresa);
-	populaCargosByArea(empresa);
-	verificaCargoSemAreaRelacionada(empresa);
-	
-	$('#cargoSemArea').click(function() {
-		if($(this).is(":checked"))
-			addCheckCargoSemArea();
-		else
-			populaCargosByArea();
-	});
-	
-});
-
 function populaCargosByArea()
 {
 	DWRUtil.useLoadingMessage('Carregando...');

@@ -31,19 +31,18 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 		return criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje() 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, e.emailRemetente, a.id, a.titulo, pe.dias, e.id) ");
+		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, c.dataAdmissao, e.emailRemetente, a.id, a.titulo, pe.dias, e.id) ");
 		hql.append("from ColaboradorPeriodoExperienciaAvaliacao as cpea ");
 		hql.append("join cpea.periodoExperiencia as pe ");
 		hql.append("join cpea.colaborador as c ");
 		hql.append("join cpea.avaliacao as a ");
 		hql.append("join c.empresa as e ");
-
-		hql.append("where pe.dias = date_part('day', (now() - c.dataAdmissao)) ");
-		hql.append("and c.contato.email is not null and c.contato.email <> '' ");
-		hql.append("and c.desligado = false ");
+		
+		hql.append("where c.desligado = false ");
 		hql.append("and cpea.tipo = 'C' ");
 		hql.append("and c.id not in (select cq.colaborador.id from ColaboradorQuestionario cq where cq.avaliacao.id = a.id and cq.colaborador.id = c.id) ");
 		

@@ -42,7 +42,20 @@
 			DWREngine.setAsync(false);
 		
 			getAgruparPorMotivo();	
-					
+			
+			var empresa = $('#empresa').val();
+	
+			populaArea(empresa);
+			populaEstabelecimento(empresa);
+			populaCargosByArea(empresa);
+			verificaCargoSemAreaRelacionada(empresa);
+			
+			$('#cargoSemArea').click(function() {
+				if($(this).is(":checked"))
+					addCheckCargoSemArea();
+				else
+					populaCargosByArea();
+			});
 		});
 	</script>
 

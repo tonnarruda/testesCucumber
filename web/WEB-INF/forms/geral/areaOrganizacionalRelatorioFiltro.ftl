@@ -43,9 +43,22 @@
 			return validaFormulario('form', new Array(), new Array('naoApague' ${validaDataCamposExtras}));
 		}
 		
+		$(function() {
+			var empresa = $('#empresa').val();
+	
+			populaArea(empresa);
+			populaEstabelecimento(empresa);
+			populaCargosByArea(empresa);
+			verificaCargoSemAreaRelacionada(empresa);
+			
+			$('#cargoSemArea').click(function() {
+				if($(this).is(":checked"))
+					addCheckCargoSemArea();
+				else
+					populaCargosByArea(empresa);
+			});
+		});
 	</script>
-
-
 </head>
 <body>
 	<@ww.actionerror />
@@ -78,7 +91,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="return validarCampos();"></button>
+		<button class="btnRelatorio" onclick="$('form[name=form]').attr('action', 'gerarRelatorio.action');return validarCampos();"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'gerarRelatorioXLS.action');return validarCampos();"></button>
 	</div>
 </body>
 </html>

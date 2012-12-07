@@ -35,30 +35,34 @@ end
 def popula_db conn
     puts "Populando banco de dados com dados iniciais..."
     i = 0
+    sql = "";
     File.readlines("./web/WEB-INF/metadata/create_data.sql").each do |linha|
         if linha =~ /^(set|select)/i
-          conn.exec(linha)
+          sql << linha
         elsif linha =~ /( cid | codigoCBO | cidade )/i
           if linha =~ /^insert into cidade.*Fortaleza/i
-            conn.exec(linha)
+            sql << linha
           elsif linha =~ /^insert into/i and i <= 6
-            conn.exec(linha)
             i+=1
+            sql << linha
           elsif linha =~ /^alter table/i
-            conn.exec(linha)
-            i = 0          
+            i = 0 
+            sql << linha     
           end
         elsif linha =~ /^(alter table|insert into)/i
-            conn.exec(linha)
+          sql << linha
         end
         
         if linha =~ /^alter table (.*) disable trigger all/i
           begin
-            conn.exec("select pg_catalog.setval('#{$1}_sequence',10000 , false);")
-          rescue Exception => e
+            sql << conn.exec("select pg_catalog.setval('#{$1}_sequence',10000 , false);")
+      	  rescue Exception => e
           end
         end
     end
+    
+    conn.exec(sql);
+    
     puts "Banco de dados populado com sucesso."
 end
 
