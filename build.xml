@@ -46,7 +46,7 @@
 			<src>
 				<fileset dir="${ant.project.name}/web/WEB-INF/report">
 					<include name="*.jrxml" />
-	                <!--<date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>-->
+	                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
 				</fileset>
 			</src>
 		</jaspercompile>
