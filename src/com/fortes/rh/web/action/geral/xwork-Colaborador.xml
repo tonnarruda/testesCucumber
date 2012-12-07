@@ -189,7 +189,7 @@
 		</action>
 		<action name="relatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioDinamico">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/colaboradorDinamico2.jrxml</param>
+				<param name="location">WEB-INF/report/modeloDinamicoNaoRemoverEsseNome.jrxml</param>
 				<param name="reportInputStream">reportInputStream</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>

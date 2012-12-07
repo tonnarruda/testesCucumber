@@ -22,17 +22,20 @@ import org.apache.commons.lang.StringUtils;
 
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.DJCrosstab;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
+import ar.com.fdvs.dj.domain.builders.GroupBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
+import ar.com.fdvs.dj.domain.constants.GroupLayout;
+import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Page;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.DJGroup;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -55,7 +58,6 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
-import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
@@ -149,7 +151,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String sexo;
 	private String deficiencia;
 
-	private Collection<DynaRecord> dataSource;
 	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
 	private String colunasJson;
 	private String orderField;
@@ -299,7 +300,6 @@ public class ColaboradorListAction extends MyActionSupportList
 				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, orderField, configuracaoCampoExtra.getSize(), false));
 			}
 		}
-		
 	}
 
 	public String relatorioDinamico() throws Exception
@@ -310,10 +310,23 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 			
+			String nomeRelatorio = "modeloDinamico.jrxml";
+			
+			String orderAgrupadoPor = "";
 			if(agruparPorTempoServico)
+			{
+				orderAgrupadoPor = orderField;
 				orderField = " co.dataAdmissao desc, " + orderField;
+				
+			}
 			
 			Collection<Colaborador> colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
+
+			if(agruparPorTempoServico)
+			{
+				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, orderAgrupadoPor);
+				nomeRelatorio = "modeloDinamicoAgrupadoTempoServico.jrxml";
+			}
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
@@ -331,10 +344,13 @@ public class ColaboradorListAction extends MyActionSupportList
             
             // Montagem do relatorio
             
+            Font arialBold = new Font(10, "Arial", true);
+            
 		    Style headerStyle = new Style();
 		    headerStyle.setBlankWhenNull(true);
-		    headerStyle.setFont(new Font(8, "Arial", true));
+		    headerStyle.setFont(arialBold);
 		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
+		    
 		    
 		    Style detailStyle = new Style();
 		    detailStyle.setBlankWhenNull(true);
@@ -342,12 +358,23 @@ public class ColaboradorListAction extends MyActionSupportList
 		    detailStyle.setVerticalAlign(VerticalAlign.TOP);
 		    detailStyle.setOverridesExistingStyle(true);
 		    
+		    Style style = new Style();
+		    style.setFont(arialBold);
+		    style.setHorizontalAlign(HorizontalAlign.LEFT);
+		    style.setVerticalAlign(VerticalAlign.MIDDLE);
+		    
+		    if(agruparPorTempoServico){
+		    	headerStyle.setPaddingLeft(10);
+		    	style.setPaddingLeft(10);
+		    }
+		    
 		    Style oddDetailStyle = new Style();
 		    oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
 		    
 		    DynamicReportBuilder drb = new DynamicReportBuilder();
-		    drb.setTemplateFile("../../WEB-INF/report/modeloDinamico.jrxml", true, true, true, true);
+		    drb.setTemplateFile("../../WEB-INF/report/" + nomeRelatorio, true, true, true, true);
 		    drb.setDetailHeight(15);
+		    drb.setHeaderHeight(10);
 		    drb.setMargins(15, 20, 30, 15);
 		    drb.setDefaultStyles(null, null, headerStyle, detailStyle);
 		    drb.setColumnsPerPage(1);
@@ -356,20 +383,48 @@ public class ColaboradorListAction extends MyActionSupportList
 		    drb.setColumnSpace(4);
 		    drb.setOddRowBackgroundStyle(oddDetailStyle);
 		    drb.setPrintBackgroundOnOddRows(true);
-
+            
 		    AbstractColumn aCol;
-
 		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
             {
 	            aCol = ColumnBuilder.getNew()
 	            					.setColumnProperty(coluna.getProperty(), String.class.getName())
 	            					.setTitle(coluna.getName())
-	            					.setWidth(coluna.getSize())
+	            					.setWidth(coluna.getSize() + 30)
+	            					.setStyle(style)
 	            					.build();
 	            
 	            drb.addColumn(aCol);
 			}
+
+		    if(agruparPorTempoServico)
+		    {
+			    Style styleGroup = new Style();
+	            styleGroup.setFont(arialBold);
+	            styleGroup.setHorizontalAlign(HorizontalAlign.LEFT);
+	            styleGroup.setVerticalAlign(VerticalAlign.MIDDLE);
 	
+			    AbstractColumn columnTempoServico = ColumnBuilder.getNew()
+			            .setColumnProperty("tempoServicoString", String.class.getName())
+			            .setTitle("Tempo de Serviço")
+			            .setWidth(new Integer(100))
+			            .setStyle(styleGroup)
+			            .build();
+
+			    drb.addColumn(columnTempoServico);
+			    
+			    GroupBuilder gb  = new GroupBuilder();
+			    DJGroup g = gb.setCriteriaColumn((PropertyColumn) columnTempoServico)
+			    		.setGroupLayout(GroupLayout.VALUE_IN_HEADER)
+			    		.setAllowFooterSplit(true)
+			    		.setStartInNewPage(true)
+			    		.build();
+			    
+			    g.setName("Tempo de Serviço");
+			    
+			    drb.addGroup(g);
+		    }
+		    
 	        DynamicReport report = drb.build();
 	        	        
 		    JasperReport jreport = DynamicJasperHelper.generateJasperReport(report, new ClassicLayoutManager(), parametros);
@@ -887,14 +942,6 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColunasMarcadas(Collection<String> colunasMarcadas) {
 		this.colunasMarcadas = colunasMarcadas;
-	}
-
-	public Collection<DynaRecord> getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(Collection<DynaRecord> dataSource) {
-		this.dataSource = dataSource;
 	}
 
 	public void setParametros(Map<String, Object> parametros) {
