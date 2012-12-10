@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.95.95" data="10/12/2012">
+		<Modulo nome=" "><![CDATA[
+			:: C&S > Relatórios > Colaboradores por Área Organizacional: Novo botão "Exportar" para gerar relatório em excel.
+			:: Info. Funcionais > Relatórios > Ocorrências > Imprimir: Novo contador "Total de Providências" quando agrupado por providência.
+			:: Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro por cargo.
+			:: Info. Funcionais > Painel de Indicadores: Impressão dos gráficos.
+			:: SESMT > Movimentação > Entrega de EPIs > Imprimir: Novos campos "Qtd. Entregue" e "Qtd. Pendente".
+			:: Utilitários > Configuração > Gerenciador de Comunicação: Nova configuração de notificação, por mensagem, de aviso de período de experiência a vencer para o colaborador avaliado.
+			:: Utilitários > Configuração > Sistema: Novo campo "Email Remetente" para envio de emails com assuntos que envolvem todas as empresas.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.94.94" data="03/12/2012">
 		<Modulo nome=" "><![CDATA[
 			:: Pesquisa > Movimentações > Pesquisa > Colaboradores: Novo filtro por estabelecimento.

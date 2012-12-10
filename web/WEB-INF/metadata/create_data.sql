@@ -23415,6 +23415,8 @@ INSERT INTO migrations (name) VALUES ('20121113113500');
 INSERT INTO migrations (name) VALUES ('20121113143059');
 INSERT INTO migrations (name) VALUES ('20121113153336');
 INSERT INTO migrations (name) VALUES ('20121203111221');
+INSERT INTO migrations (name) VALUES ('20121205141501');
+INSERT INTO migrations (name) VALUES ('20121210093742');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23431,7 +23433,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (358, 'ROLE_R&S_CAD', 'Cadastros', '#', 1, true, NULL, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (2, 'ROLE_CAD_CANDIDATO', 'Candidatos', '/captacao/candidato/list.action', 1, true, NULL, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (3, 'ROLE_CAD_ETAPA', 'Etapas Seletivas', '/captacao/etapaSeletiva/list.action', 2, true, NULL, 358);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (6, 'ROLE_CAD_BDS_EMPRESA', 'Empresas BDS', '/captacao/empresaBds/list.action', 3, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (4, 'ROLE_CAD_AREA', 'Áreas de Interesse', '/geral/areaInteresse/list.action', 4, true, NULL, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (397, 'ROLE_AREAFORMACAO', 'Áreas de Formação', '/geral/areaFormacao/list.action', 5, true, NULL, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (57, 'ROLE_MOTIVO_SOLICITACAO', 'Motivos de Solicitação de Pessoal', '/captacao/motivoSolicitacao/list.action', 6, true, NULL, 358);
@@ -23443,7 +23444,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (510, 'ROLE_MOV_PALOGRAFICO', 'Exame Palográfico', '/captacao/candidato/prepareExamePalografico.action', 3, true, NULL, 359);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (544, 'EXIBIR_COMPETENCIA_SOLICITACAO', 'Visualizar competência dos candidatos da solicitação', '#', 11, false, NULL, 359);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (496, 'ROLE_VISUALIZAR_SOLICITACAO_PESSOAL', 'Visualizar Solicitação de Pessoal', '#', 14, false, NULL, 359);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (50, 'ROLE_BD_SOLIDARIO', 'Banco de Dados Solidário', '/captacao/candidato/prepareBusca.action?BDS=true', 2, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (360, 'ROLE_R&S_REL', 'Relatórios', '#', 3, true, NULL, 357);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (48, 'ROLE_REL_PROCESSO_SELETIVO', 'Análise das Etapas Seletivas', '/captacao/solicitacao/prepareRelatorioProcessoSeletivo.action', 2, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (424, 'ROLE_REL_AVALIACAO_CANDIDATOS', 'Avaliações de Candidatos', '/captacao/candidato/prepareRelatorioAvaliacaoCandidatos.action', 3, true, NULL, 360);
@@ -23488,20 +23488,15 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (55, 'ROLE_MOV_AVALIACAO', 'Avaliações de Desempenho', '/avaliacao/desempenho/list.action', 1, true, NULL, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (483, 'ROLE_MOV_AVALIACAO', 'Responder Avaliações de Desempenho', '/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList.action', 2, true, NULL, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (366, 'ROLE_T&D_CAD', 'Cadastros', '#', 1, true, NULL, 365);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (13, 'ROLE_CAD_PRIORIDADETREINAMENTO', 'Prioridades de Treinamento', '/desenvolvimento/prioridadeTreinamento/list.action', 1, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (23, 'ROLE_MOV_CURSO', 'Cursos/Treinamentos', '/desenvolvimento/curso/list.action', 2, true, NULL, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Cursos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, NULL, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Turma', '/pesquisa/avaliacaoTurma/list.action', 4, true, NULL, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (420, 'ROLE_CAD_CERTIFICACAO', 'Certificações', '/desenvolvimento/certificacao/list.action', 5, true, NULL, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (534, 'ROLE_TIPO_DESPESA', 'Tipo de Despesa', '/geral/tipoDespesa/list.action', 6, true, NULL, 366);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (367, 'ROLE_T&D_MOV', 'Movimentações', '#', 2, true, NULL, 365);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (64, 'ROLE_MOV_CURSO_DNT', 'DNT', '/desenvolvimento/dnt/list.action', 1, true, NULL, 463);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (72, 'ROLE_MOV_CURSO_DNT_GESTOR', 'Preenchimento da DNT', '/desenvolvimento/dnt/list.action?gestor=true', 2, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (71, 'ROLE_FREQUENCIA', 'Frequência', '/desenvolvimento/turma/prepareFrequencia.action', 3, true, NULL, 367);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (414, 'ROLE_MOV_PLANO_TREINAMENTO', 'Plano de Treinamento', '/desenvolvimento/turma/filtroPlanoTreinamento.action', 4, true, NULL, 367);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (368, 'ROLE_T&D_REL', 'Relatórios', '#', 3, true, NULL, 365);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (31, 'ROLE_REL_MATRIZ', 'Matriz de Qualificação', '/desenvolvimento/turma/prepareImprimirMatriz.action', 1, true, NULL, 463);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (32, 'ROLE_REL_PLANO', 'Plano de Treinamento', '/desenvolvimento/turma/prepareImprimirTurma.action', 2, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (33, 'ROLE_REL_SEM_INDICACAO', 'Colaboradores sem Indicação de Trein.', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorSemIndicacao.action', 3, true, NULL, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (61, 'ROLE_CERTIFICADO_CURSO', 'Certificados', '/desenvolvimento/turma/prepareImprimirCertificado.action', 5, true, NULL, 368);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (418, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Cronograma de Treinamento', '/desenvolvimento/turma/filtroCronogramaTreinamento.action', 6, true, NULL, 368);
@@ -23515,9 +23510,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (454, 'ROLE_T&D_REL', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, NULL, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (63, 'ROLE_MOV_TURMA', 'Pode Cadastrar Turma', '/desenvolvimento/turma/list.action', 4, false, NULL, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (374, 'ROLE_COLAB_CAD', 'Cadastros', '#', 1, true, NULL, 373);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (15, 'ROLE_CAD_GRUPOGASTO', 'Grupos de Investimento', '/geral/grupoGasto/list.action', 1, true, NULL, 463);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (16, 'ROLE_CAD_GASTO', 'Investimentos', '/geral/gasto/list.action', 2, true, NULL, 463);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (12, 'ROLE_CAD_BENEFICIO', 'Benefícios', '/geral/beneficio/list.action', 3, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (60, 'ROLE_CAD_MOTIVO_DEMISSAO', 'Motivos de Desligamento', '/geral/motivoDemissao/list.action', 4, true, NULL, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (402, 'ROLE_MOV_QUESTIONARIO', 'Modelos de Entrevistas de Desligamento', '/pesquisa/entrevista/list.action', 5, true, NULL, 374);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (62, 'ROLE_CAD_OCORRENCIA', 'Tipos de Ocorrência', '/geral/ocorrencia/list.action', 6, true, NULL, 374);
@@ -23528,7 +23520,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 4, true, NULL, 384);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (480, 'ROLE_CAD_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 2, true, NULL, 469);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, NULL, 455);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (29, 'ROLE_MOV_GASTO_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/list.action', 11, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (377, 'ROLE_COLAB_REL', 'Relatórios', '#', 3, true, NULL, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 1, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (400, 'ROLE_REL_MOTIVO_DEMISSAO', 'Desligamentos', '/geral/motivoDemissao/prepareRelatorioMotivoDemissao.action', 2, true, NULL, 377);
@@ -23539,17 +23530,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (490, 'ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO', 'Acompanhamento de Experiência Previsto', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperienciaPrevisto.action', 2, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (491, 'ROLE_REL_ACOMP_RANKING_PERIODO_EXPERIENCIA', 'Ranking de Performance das Avaliações de Desempenho', '/avaliacao/periodoExperiencia/prepareRelatorioRankingPerformancePeriodoDeExperiencia.action', 4, true, NULL, 486);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (66, 'ROLE_SESMT_MUDANCA_FUNCAO', 'Mudança de Função', '/sesmt/funcao/mudancaFuncaoFiltro.action', 5, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (528, 'ROLE_REL_ACOMP_PERFORMANCE', 'Relatório de Auto Avaliação', '/avaliacao/periodoExperiencia/prepareRelatorioPerformanceAvaliacaoDesempenho.action', 6, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (73, 'ROLE_IND', 'Estatísticas de Vagas por Motivo', '/indicador/duracaoPreenchimentoVaga/prepareMotivo.action', 5, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (69, 'ROLE_IND', 'Duração para Preenchimento de Vagas', '/indicador/duracaoPreenchimentoVaga/prepare.action', 6, true, NULL, 360);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (47, 'ROLE_REL_PRODUTIVIDADE', 'Análise das Etapas Seletivas', '/captacao/produtividade/prepareProdutividade.action', 3, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 6, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 7, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 8, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (504, 'ROLE_INFO_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadores.action', 3, true, NULL, 373);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 6, true, NULL, 463);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (390, 'ROLE_UTI', 'Cadastros', '#', 1, true, NULL, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (58, 'ROLE_UTI_EMPRESA', 'Empresas', '/geral/empresa/list.action', 1, true, NULL, 390);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (18, 'ROLE_CAD_PERFIL', 'Perfis', '/acesso/perfil/list.action', 2, true, NULL, 390);
@@ -23669,12 +23657,26 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (361, 'ROLE_C&S', 'C&S', '#', 5, true, 'C', NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (353, 'ROLE_PES', 'Pesquisas', '#', 6, true, 'P', NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (357, 'ROLE_R&S', 'R&S', '#', 4, true, 'R', NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 13, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO', 'Pode Ver e Responder Aval. Desempenho Por Outro Usuário', '#', 1, false, NULL, 483);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO', 'Pode Responder Avaliação De Turma Por Outro Usuário', '#', 14, false, NULL, 365);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Excluir Respostas', '#', 2, false, NULL, 483);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (47, 'ROLE_REL_PRODUTIVIDADE', 'Análise das Etapas Seletivas', '/captacao/produtividade/prepareProdutividade.action', 1, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (50, 'ROLE_BD_SOLIDARIO', 'Banco de Dados Solidário', '/captacao/candidato/prepareBusca.action?BDS=true', 2, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (12, 'ROLE_CAD_BENEFICIO', 'Benefícios', '/geral/beneficio/list.action', 3, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 4, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (64, 'ROLE_MOV_CURSO_DNT', 'DNT', '/desenvolvimento/dnt/list.action', 5, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (6, 'ROLE_CAD_BDS_EMPRESA', 'Empresas BDS', '/captacao/empresaBds/list.action', 6, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (15, 'ROLE_CAD_GRUPOGASTO', 'Grupos de Investimento', '/geral/grupoGasto/list.action', 7, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (16, 'ROLE_CAD_GASTO', 'Investimentos', '/geral/gasto/list.action', 8, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 9, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (29, 'ROLE_MOV_GASTO_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/list.action', 10, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (31, 'ROLE_REL_MATRIZ', 'Matriz de Qualificação', '/desenvolvimento/turma/prepareImprimirMatriz.action', 11, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (66, 'ROLE_SESMT_MUDANCA_FUNCAO', 'Mudança de Função', '/sesmt/funcao/mudancaFuncaoFiltro.action', 12, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (32, 'ROLE_REL_PLANO', 'Plano de Treinamento', '/desenvolvimento/turma/prepareImprimirTurma.action', 13, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (72, 'ROLE_MOV_CURSO_DNT_GESTOR', 'Preenchimento da DNT', '/desenvolvimento/dnt/list.action?gestor=true', 14, true, NULL, 463);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (13, 'ROLE_CAD_PRIORIDADETREINAMENTO', 'Prioridades de Treinamento', '/desenvolvimento/prioridadeTreinamento/list.action', 15, true, NULL, 463);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23697,7 +23699,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.94.94', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.95.95', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
