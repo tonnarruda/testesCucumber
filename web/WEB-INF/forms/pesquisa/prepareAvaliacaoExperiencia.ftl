@@ -11,13 +11,14 @@
 			<#assign formAction="updateAvaliacaoSolicitacao.action"/>
 		</#if>
 	<#else>
-		<title>Inserir Acompanhamento do Período de Experiência</title>
 		<#assign desabilitarAvaliacaoSelect="false"/>
 		
 		<#if colaborador?exists && colaborador.id?exists>
 			<#assign formAction="insertAvaliacaoExperiencia.action"/>
+			<title>Inserir Acompanhamento do Período de Experiência</title>
 		<#else>
 			<#assign formAction="insertAvaliacaoSolicitacao.action"/>
+			<title>Responder Avaliação da Solicitação</title>
 		</#if>
 	</#if>
 
