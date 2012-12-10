@@ -1,4 +1,4 @@
-- versao 1.0.1.0
+-- versao 1.0.1.0
 alter table candidato add column observacaorh text; --.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (397, 'ROLE_AREAFORMACAO', 'Área de Formação', '/geral/areaFormacao/list.action', 5, true, 357); --.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 397); --.go

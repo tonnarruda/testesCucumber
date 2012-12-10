@@ -120,9 +120,14 @@ public class Mail
 		BodyMessage bodyMessage = new BodyMessage(body);
 
 		if(empresa != null && empresa.getEmailRemetente() != null)
+		{
 			message.setFrom(empresa.getEmailRemetente());
-		else
+		}
+		else if(params.getEmailRemetente() != null){
+			message.setFrom(params.getEmailRemetente());
+		} else {
 			message.setFrom("fortesrh@grupofortes.com.br");
+		}
 
         mailSender.setHost(params.getEmailSmtp());
         mailSender.setPort(params.getEmailPort());

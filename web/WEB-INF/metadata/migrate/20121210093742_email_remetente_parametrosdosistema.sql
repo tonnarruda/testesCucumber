@@ -1,0 +1,1 @@
+ALTER TABLE parametrosdosistema ADD COLUMN emailRemetente character varying(100);--.go
