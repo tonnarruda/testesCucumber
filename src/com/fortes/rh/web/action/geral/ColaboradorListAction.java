@@ -311,21 +311,18 @@ public class ColaboradorListAction extends MyActionSupportList
 			camposExtras.setId(1l);
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
+			Collection<Colaborador> colaboradores;
+			montaColunas();
 			
-			String orderAgrupadoPor = "";
 			if(agruparPorTempoServico)
 			{
-				orderAgrupadoPor = orderField;
-				orderField = " co.dataAdmissao desc, " + orderField;
-				
-			}
-			
-			Collection<Colaborador> colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
-
-			if(agruparPorTempoServico)
-			{
-				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, orderAgrupadoPor);
 				nomeRelatorio = "modeloDinamicoAgrupadoTempoServico.jrxml";
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
+			}
+			else 
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
 			}
 
 			if(colaboradores.isEmpty())
@@ -339,18 +336,16 @@ public class ColaboradorListAction extends MyActionSupportList
 			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
             parametros.put("TOTALREGISTROS", colaboradores.size());
             
-			montaColunas();
             Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
             
             // Montagem do relatorio
             
-            Font arialBold = new Font(10, "Arial", true);
+            Font arialBold = new Font(8, "Arial", true);
             
 		    Style headerStyle = new Style();
 		    headerStyle.setBlankWhenNull(true);
 		    headerStyle.setFont(arialBold);
 		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
-		    
 		    
 		    Style detailStyle = new Style();
 		    detailStyle.setBlankWhenNull(true);
@@ -453,9 +448,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 	}
 
-	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas) 
+	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), order, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
@@ -466,26 +461,28 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 			
-			if(agruparPorTempoServico)
-				orderField = " co.dataAdmissao desc, " + orderField;
+			montaColunas();
+			dinamicColumns = new ArrayList<String>();
+			dinamicProperts = new ArrayList<String>();
+			Collection<Colaborador> colaboradores;
 			
-			colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
+			if(agruparPorTempoServico)
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
+				dinamicColumns.add("Tempo de serviço");  
+				dinamicProperts.add("tempoServicoString");
+			}
+			else 
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
+			}
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
 			reportTitle = configuracaoRelatorioDinamico.getTitulo();
-			
-			dinamicColumns = new ArrayList<String>();
-			dinamicProperts = new ArrayList<String>();
-			montaColunas();
-			
-			if(agruparPorTempoServico){
-				colaboradores = colaboradorManager.insereGrupoPorTempoServico(colaboradores, tempoServicoIni, tempoServicoFim);
-				dinamicColumns.add("Tempo de serviço");  
-				dinamicProperts.add("intervaloTempoServico");
-			}
 			
 			for (String marcada : colunasMarcadas) 
 			{
