@@ -247,16 +247,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.historicoColaboradors", "hc");
-		criteria.createCriteria("hc.faixaSalarial", "fs");
-		criteria.createCriteria("fs.cargo", "ca");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.pergunta", "p", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.resposta", "r", Criteria.LEFT_JOIN);
 		
-		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+		criteria.add(Expression.or(Property.forName("hc.data").eq(subQueryHc), Expression.isNull("hc.data")));
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cr.id"), "id");
@@ -294,6 +294,55 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if (questionario != null && questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
 			periodo = "c.dataDesligamento";
 			
+		if(periodoIni != null)
+			criteria.add(Expression.ge(periodo, periodoIni));
+
+		if(periodoFim != null)
+			criteria.add(Expression.le(periodo, periodoFim));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorResposta.class));
+
+		return criteria.list();
+	}
+	
+	public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
+		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.estabelecimento", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.pergunta", "p", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cr.resposta", "r", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cr.id"), "id");
+		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
+		p.add(Projections.property("cr.comentario"), "comentario");
+		p.add(Projections.property("cr.valor"), "valor");
+		p.add(Projections.property("r.id"), "projectionRespostaId");
+		p.add(Projections.property("r.ordem"), "projectionRespostaOrdem");
+		p.add(Projections.property("p.id"), "projectionPerguntaId");
+		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
+		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("cand.nome"), "projectionColaboradorNomeComercial");
+
+		criteria.setProjection(p);
+
+			
+		if(perguntasIds != null && perguntasIds.length > 0)
+			criteria.add(Expression.in("p.id", perguntasIds));
+
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("a.id", areasIds));
+
+		if(empresaId != null && empresaId != -1)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		String periodo = "cq.respondidaEm";
 		if(periodoIni != null)
 			criteria.add(Expression.ge(periodo, periodoIni));
 
@@ -609,4 +658,5 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		}
 		return vos;
 	}
+
 }

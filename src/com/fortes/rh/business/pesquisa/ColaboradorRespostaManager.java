@@ -14,11 +14,12 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorRespostaAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
-@SuppressWarnings("unchecked")
 public interface ColaboradorRespostaManager extends GenericManager<ColaboradorResposta>
 {
+	@SuppressWarnings("rawtypes")
 	List countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId);
 	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId);
+	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId);
 	void salvaQuestionarioRespondido(String respostas, Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception;
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId);
 	Collection<ColaboradorResposta> findRespostasColaborador(Long questionarioId, Boolean aplicarPorAspecto);

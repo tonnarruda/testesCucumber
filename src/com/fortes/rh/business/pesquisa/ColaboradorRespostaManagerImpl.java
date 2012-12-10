@@ -58,6 +58,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return getDao().findInPerguntaIds(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, turmaId, questionario, empresaId);
     }
 
+    public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId)
+    {
+    	return getDao().findInPerguntaIdsAvaliacao(perguntasIds, areasIds, periodoIni, periodoFim, empresaId);
+    }
+
     public void salvaQuestionarioRespondido(String respostas,Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception
     {
     	Long candidatoId = null;
