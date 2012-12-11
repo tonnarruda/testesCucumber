@@ -39,7 +39,6 @@ import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
-import com.fortes.rh.dao.geral.MensagemDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.dao.geral.ProvidenciaDao;
@@ -73,6 +72,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -173,7 +173,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private OcorrenciaDao ocorrenciaDao;
 	private ColaboradorOcorrenciaDao colaboradorOcorrenciaDao;
-	private MensagemDao mensagemDao;
 	private HistoricoFuncaoDao historicoFuncaoDao;
 	private EpiDao epiDao;
 	private SolicitacaoEpiDao solicitacaoEpiDao;
@@ -1805,82 +1804,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(joao, colaboradores.toArray()[0]);
 	}
 	
-	public void testFindIdsByAreaOrganizacionalEstabelecimento() {
-		Empresa empresa = new Empresa();
-		empresa = empresaDao.save(empresa);
-		
-		Colaborador colaborador1 = getColaborador();
-		colaborador1.setEmpresa(empresa);
-		colaborador1.setNome("Pedro Jose");
-		colaboradorDao.save(colaborador1);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento);
-		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador1.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(historicoColaborador1);
-		
-		Collection<Long> areaIds = new ArrayList<Long>();
-		areaIds.add(areaOrganizacional.getId());
-		
-		Collection<Long> ids = colaboradorDao.findIdsByAreaOrganizacionalEstabelecimento(areaIds, null, false);
-		assertEquals(1, ids.size());
-		
-		Collection<Long> estabelecimentoIds = new ArrayList<Long>();
-		estabelecimentoIds.add(estabelecimento.getId());
-		
-		ids = colaboradorDao.findIdsByAreaOrganizacionalEstabelecimento(null, estabelecimentoIds, false);
-		assertEquals(1, ids.size());
-		
-		ids = colaboradorDao.findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
-		assertEquals(1, ids.size());
-	}
-
-	public void testFindByAreaOrganizacionalEstabelecimento() {
-		Empresa empresa = new Empresa();
-		empresa = empresaDao.save(empresa);
-
-		Colaborador colaborador1 = getColaborador();
-		colaborador1.setEmpresa(empresa);
-		colaborador1.setNome("Pedro Jose");
-		colaboradorDao.save(colaborador1);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento);
-
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador1.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(historicoColaborador1);
-
-		Collection<Long> areaIds = new ArrayList<Long>();
-		areaIds.add(areaOrganizacional.getId());
-
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areaIds, null, false);
-		assertEquals(1, colaboradores.size());
-
-		Collection<Long> estabelecimentoIds = new ArrayList<Long>();
-		estabelecimentoIds.add(estabelecimento.getId());
-		
-		colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(null, estabelecimentoIds, false);
-		assertEquals(1, colaboradores.size());
-
-		colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, false);
-		assertEquals(1, colaboradores.size());
-	}
-
 	public void testFindByAreaEstabelecimento() {
 		Empresa empresa = new Empresa();
 		empresa.setNome("empresa");
@@ -2210,6 +2133,79 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaboradorDoBanco = (Colaborador) colaboradores.toArray()[0];
 		assertEquals(areaOrganizacionalAtual, colaboradorDoBanco.getAreaOrganizacional());
 		assertEquals(estabelecimentoAtual, colaboradorDoBanco.getEstabelecimento());
+	}
+	
+	public void testFindByAreaOrganizacionalEstabelecimento() 
+	{
+		Empresa empresa = new Empresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = getColaborador();
+		colaborador.setDesligado(false);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaborador2 = getColaborador();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setDesligado(true);
+		colaboradorDao.save(colaborador2);
+		
+		AreaOrganizacional areaOrganizacionalAtual = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacionalAtual);
+		
+		AreaOrganizacional areaOrganizacionalAntiga = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacionalAntiga);
+		
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(areaOrganizacionalAtual.getId());
+		
+		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
+		estabelecimentoAtual.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimentoAtual);
+		
+		Estabelecimento estabelecimentoAntigo = EstabelecimentoFactory.getEntity();
+		estabelecimentoAntigo.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimentoAntigo);
+		
+		Collection<Long> estabelecimentosIds = new ArrayList<Long>();
+		estabelecimentosIds.add(estabelecimentoAtual.getId());
+		
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacionalAtual);
+		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+		
+		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaboradorAntigo.setColaborador(colaborador);
+		historicoColaboradorAntigo.setAreaOrganizacional(areaOrganizacionalAntiga);
+		historicoColaboradorAntigo.setEstabelecimento(estabelecimentoAntigo);
+		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacionalAtual);
+		historicoColaborador2.setEstabelecimento(estabelecimentoAtual);
+		historicoColaborador2 = historicoColaboradorDao.save(historicoColaborador2);
+		
+		Collection<Colaborador> colaboradoresAtivos = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.ATIVO);
+		Collection<Colaborador> colaboradoresDesligados = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.DESLIGADO);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalEstabelecimento(areasIds, estabelecimentosIds, SituacaoColaborador.TODOS);
+		
+		assertEquals(2, colaboradores.size());
+		
+		Colaborador colaboradorAtivo = (Colaborador) colaboradoresAtivos.toArray()[0];
+		
+		assertEquals(1, colaboradoresAtivos.size());
+		assertEquals(colaborador.getId(), colaboradorAtivo.getId());
+		
+		Colaborador colaboradorInativo = (Colaborador) colaboradoresDesligados.toArray()[0];
+		
+		assertEquals(1, colaboradoresDesligados.size());
+		assertEquals(colaborador2.getId(), colaboradorInativo.getId());
 	}
 
 	public void testFindByCargoIdsEstabelecimentoIds() {
@@ -3262,20 +3258,22 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setEmpresa(vega);
-		colaborador1 = colaboradorDao.save(colaborador1);
+		colaboradorDao.save(colaborador1);
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setEmpresa(urbana);
-		colaborador2 = colaboradorDao.save(colaborador2);
+		colaboradorDao.save(colaborador2);
 
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
 		colaborador3.setEmpresa(vega);
 		colaborador3.setDesligado(true);
-		colaborador3 = colaboradorDao.save(colaborador3);
+		colaboradorDao.save(colaborador3);
 
 		Long[] empresaIds = new Long[] { vega.getId(), urbana.getId() };
 
-		assertEquals(2, colaboradorDao.findAllSelect(empresaIds).size());
+		assertEquals(2, colaboradorDao.findAllSelect(SituacaoColaborador.ATIVO, empresaIds).size());
+		assertEquals(1, colaboradorDao.findAllSelect(SituacaoColaborador.DESLIGADO, empresaIds).size());
+		assertEquals(3, colaboradorDao.findAllSelect(SituacaoColaborador.TODOS, empresaIds).size());
 	}
 
 	public void testSetMatriculaColaborador() {
@@ -5775,11 +5773,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setColaboradorOcorrenciaDao(ColaboradorOcorrenciaDao colaboradorOcorrenciaDao)
 	{
 		this.colaboradorOcorrenciaDao = colaboradorOcorrenciaDao;
-	}
-
-	public void setMensagemDao(MensagemDao mensagemDao)
-	{
-		this.mensagemDao = mensagemDao;
 	}
 
 	public QuestionarioDao getQuestionarioDao()

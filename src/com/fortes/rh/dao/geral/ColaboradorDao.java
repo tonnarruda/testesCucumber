@@ -57,7 +57,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula);
 	public Colaborador findByIdComHistorico(Long colaboradorId, Integer statusRetornoAC);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
-	public Collection<Colaborador> findAllSelect(Long... empresaIds);
+	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	public void updateInfoPessoais(Colaborador colaborador);
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
@@ -73,8 +73,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosByEstabelecimento(Long estabelecimentoId);
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado);
-	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado);
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, String situacao);
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Long[] perfilIds, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId);
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos);

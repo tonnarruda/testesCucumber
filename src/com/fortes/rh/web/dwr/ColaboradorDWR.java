@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -115,14 +116,14 @@ public class ColaboradorDWR
         Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
         if(areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
-        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, false);        	
+        	colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), null, SituacaoColaborador.ATIVO);        	
         else
             colaboradores = colaboradorManager.findAllSelect(empresaId, "nomeComercial");
 
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
-    public Map getByAreaEstabelecimentoEmpresas(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds)
+    public Map getByAreaEstabelecimentoEmpresas(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId, Long[] empresaIds, String situacao)
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	
@@ -131,11 +132,11 @@ public class ColaboradorDWR
     		if(empresaId != null && empresaId != 0)
     			empresaIds = new Long[]{empresaId};
     			
-    		colaboradores = colaboradorManager.findAllSelect(empresaIds);
+    		colaboradores = colaboradorManager.findAllSelect(situacao, empresaIds);
     	}
     	else
     	{
-    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), false);        	
+    		colaboradores = colaboradorManager.findByAreaOrganizacionalEstabelecimento(LongUtil.arrayStringToCollectionLong(areaOrganizacionalIds), LongUtil.arrayStringToCollectionLong(estabelecimentoIds), situacao);        	
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialEmpresa", Colaborador.class);

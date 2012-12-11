@@ -35,6 +35,7 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -1333,7 +1334,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setInteger(numeroValue + "Fim", numeroFim);
 	}
 
-	private Query montaQueryFindByAreaEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado, StringBuilder hql) {
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("right join hc1.areaOrganizacional as ao ");
 		hql.append("right join hc1.estabelecimento as es ");
@@ -1350,7 +1354,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	 	or hc1.data is null ");
 		hql.append("	) ");
 		
-		if(desligado != null)
+		if(situacao.equals(SituacaoColaborador.ATIVO) || situacao.equals(SituacaoColaborador.DESLIGADO))
 			hql.append("	and co.desligado = :desligado");
 		
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
@@ -1362,8 +1366,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(desligado != null)
-			query.setBoolean("desligado", desligado);
+		if(situacao.equals(SituacaoColaborador.ATIVO))
+			query.setBoolean("desligado", false);
+		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
+			query.setBoolean("desligado", true);
 		
 		query.setDate("hoje", new Date());
 		
@@ -1371,24 +1377,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
-		
-		return query;
-	}
-	
-	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select co.id ");
-		Query query = montaQueryFindByAreaEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado, hql);
-		
-		return query.list();
-	}
-	
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.nome, co.nomeComercial, co.id, e.id, e.nome) ");
-		Query query = montaQueryFindByAreaEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado, hql);
 
 		return query.list();
 	}
@@ -2150,7 +2138,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 	
 	//a ordenação tem que ser empresa nome e colaborador nome, usado no DWR 
-	public Collection<Colaborador> findAllSelect(Long... empresaIds)
+	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("empresa", "e");
@@ -2166,7 +2154,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(empresaIds != null && empresaIds.length > 0)
 			criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
-		criteria.add(Expression.eq("c.desligado", false));
+		if(situacao.equals(SituacaoColaborador.ATIVO))
+			criteria.add(Expression.eq("c.desligado", false));
+		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
+			criteria.add(Expression.eq("c.desligado", true));
 		
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.addOrder(Order.asc("c.nomeComercial"));
