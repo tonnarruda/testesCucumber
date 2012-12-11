@@ -24,17 +24,22 @@
 					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
 				});
 				
+				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
+					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
+					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#BFC0C3');
+				</#list>
+
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('border','2px solid #99ccff');
+						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#ECECEC');
+						<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
+							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}')
+								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#7CC0B9');
+						</#list>
 					</#list>
 				</#if>
 				
-				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec');
-				</#list>
 			</#if>
 		});
 		
@@ -84,17 +89,17 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
 			
-			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo && exibirCompetencia>
 				<br />
 				<fieldset>
 					<legend>Reavaliar as Competências do Colaborador para o Cargo</legend><br />
 					
 					<div id="legendas">
-						<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
+						<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
 						<br /><br />
-						<span style='border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
+						<span style='background-color: #ECECEC;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
 						<br /><br />
-						<span style='background-color: #ececec; border: 2px solid #99ccff;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador coincide com o nível exigido para o Cargo/Faixa Salarial
+						<span style='background-color: #7CC0B9;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador é igual ao nível exigido para o Cargo/Faixa Salarial
 					</div>
 		
 					<br /><br />
