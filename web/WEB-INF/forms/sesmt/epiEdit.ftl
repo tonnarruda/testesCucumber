@@ -81,15 +81,15 @@
 		<@ww.select label="Categorias de EPI" name="epi.tipoEPI.id" id="tipoEpi" listKey="id" listValue="nome" list="tipos" required="true" headerKey="" headerValue="Selecione..." />
 		<@ww.textfield label="Nome do Fabricante" id="fabricante" name="epi.fabricante" cssClass="inputNome" maxLength="100"  required="true"/>
 
+		<@ww.select label="Status" name="epi.ativo" id="ativo" list=r"#{true:'Ativo',false:'Inativo'}"/>
   		<@ww.checkbox theme="simple" id="fardamento" name="epi.fardamento" onclick="setCamposObrigatorios(this);" /> 
   		Fardamento
 		<img id="help_fardamento" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle"/>
-		<@ww.checkbox id="ativo" name="epi.ativo" label="Ativo" labelPosition="left"/>
-		
 		<@ww.hidden name="epi.id" />
 		<@ww.token/>
-
+		
 		<#if !epi.id?exists>
+			</BR></BR>
 			<#if dataHoje?exists>
 				<#assign dataEpi = dataHoje?date/>
 			<#else>

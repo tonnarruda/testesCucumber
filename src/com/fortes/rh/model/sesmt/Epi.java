@@ -30,7 +30,7 @@ public class Epi extends AbstractModel implements Serializable
     private TipoEPI tipoEPI;
 
     private boolean fardamento;
-    private boolean ativo;
+    private boolean ativo = true;
     
     @Transient
     private boolean relacionadoAoColaborador;
