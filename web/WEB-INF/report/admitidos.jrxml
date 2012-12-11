@@ -193,7 +193,7 @@
 						width="240"
 						height="12"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
@@ -206,7 +206,7 @@
 						width="277"
 						height="12"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
@@ -232,7 +232,7 @@
 						width="54"
 						height="12"
 						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
