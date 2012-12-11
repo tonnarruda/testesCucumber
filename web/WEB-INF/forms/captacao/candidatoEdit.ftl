@@ -106,7 +106,7 @@
 					$(this).hide();
 			});
 
-			$('#wwgrp_comoFicouSabendoVagaQual').toggle($('#selectComoFicouSabendoVaga').val()==1);			
+			$('#wwgrp_comoFicouSabendoVagaQual').toggle($('#comoFicouSabendoVaga').val()==1);			
 
 			$.each(camposCandidatoObrigatorio.split(','), function (index, idCampo) {
 			    var lblAntigo = $('label[for='+idCampo+']');
@@ -164,20 +164,39 @@
 				var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
 				var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
 				var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
+				var ficouSabendoVaga = $.inArray('comoFicouSabendoVaga', arrayObrigatorios) > -1 && $('#comoFicouSabendoVaga').val() == 1 && ($('#comoFicouSabendoVagaQual').val() == null || $('#comoFicouSabendoVagaQual').val() == '');
 				
 				if (formacaoInvalido)
+				{
+					$('#formacao').css('backgroundColor','#ffeec2');
 		    		msg += "Formação Escolar<br />";
+				}
 
 				if (idiomaInvalido)
+				{
+					$('#idioma').css('backgroundColor','#ffeec2');
 		    		msg += "Idiomas<br />";
+				}
 
 				if (expInvalido)
+				{
+					$('#expProfissional').css('backgroundColor','#ffeec2');
 		    		msg += "Experiência Profissional<br />";
+				}
 		    		
 		    	if ($("#cpf").val() == "   .   .   -  ")
+		    	{
 		    		msg += "CPF<br />";
+		    		$('#cpf').css('backgroundColor','#ffeec2');
+		    	}
 		    	
-		    	if (formacaoInvalido || idiomaInvalido || expInvalido || $("#cpf").val() == "   .   .   -  ") {
+		    	if(ficouSabendoVaga )
+		    	{
+		    		msg += "Qual?<br />";
+		    		$('#comoFicouSabendoVagaQual').css('backgroundColor','#ffeec2');
+		    	}
+		    			    	
+		    	if (ficouSabendoVaga  || formacaoInvalido || idiomaInvalido || expInvalido || $("#cpf").val() == "   .   .   -  ") {
 		    		jAlert(msg);
 		    		return false;
 		    	}
@@ -197,7 +216,6 @@
 				arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
 					return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 				});
-				
 				
 				
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
@@ -294,7 +312,7 @@
 		
 		function habilitaPagaPensao()
 		{
-			 var pagaPensao = document.getElementById('pagaPensaoId');
+			 var pagaPensao = document.getElementById('pensao');
 			 var quantidade = document.getElementById('quantidadeId');
 			 var valor      = document.getElementById('valorId');
 			
@@ -597,7 +615,7 @@
 			<li>
 				<@ww.div id="wwgrp_comoFicouSabendoVaga" cssClass="campo">
 					<ul>
-						<@ww.select label="Como Ficou Sabendo da Vaga" id="selectComoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga.id" list="comoFicouSabendoVagas" listKey="id" listValue="nome" onchange="comoFicouSabendoVagaChange(this)" headerKey="" headerValue="Selecione..." cssStyle="width: 200px;" liClass="liLeft"/>
+						<@ww.select label="Como Ficou Sabendo da Vaga" id="comoFicouSabendoVaga" name="candidato.comoFicouSabendoVaga.id" list="comoFicouSabendoVagas" listKey="id" listValue="nome" onchange="comoFicouSabendoVagaChange(this)" headerKey="" headerValue="Selecione..." cssStyle="width: 200px;" liClass="liLeft"/>
 						<@ww.textfield label="Qual?" id="comoFicouSabendoVagaQual" name="candidato.comoFicouSabendoVagaQual" cssStyle="width: 300px;" maxLength="100" liClass="liLeft"/>
 					</ul>
 				</@ww.div>
@@ -606,7 +624,7 @@
 			<li>
 				<@ww.div id="wwgrp_pensao" cssClass="campo">
 					<ul>
-						<@ww.select label="Paga Pensão" id="pagaPensaoId" name="candidato.socioEconomica.pagaPensao" list=r"#{true:'Sim',false:'Não'}" onchange="habilitaPagaPensao();" cssStyle="width: 110px;" liClass="liLeft"/>
+						<@ww.select label="Paga Pensão" id="pensao" name="candidato.socioEconomica.pagaPensao" list=r"#{true:'Sim',false:'Não'}" onchange="habilitaPagaPensao();" cssStyle="width: 110px;" liClass="liLeft"/>
 						<@ww.textfield label="Qtd." id="quantidadeId" disabled="true"  name="candidato.socioEconomica.quantidade" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{}'));" cssStyle="width:25px; text-align:right;" maxLength="2" />
 						<@ww.textfield label="Valor" id="valorId" disabled="true" name="candidato.socioEconomica.valor" liClass="liLeft" maxLength="12" onkeypress = "return(somenteNumeros(event,','));" cssStyle="width:85px; text-align:right;"/>
 					</ul>
@@ -806,7 +824,7 @@
         mostrar(document.getElementById('fotoUpLoad'));
       }
 
-      if(document.getElementById('pagaPensaoId').value == "true")
+      if(document.getElementById('pensao').value == "true")
       {
         document.getElementById('quantidadeId').disabled = false;
         document.getElementById('valorId').disabled = false;
