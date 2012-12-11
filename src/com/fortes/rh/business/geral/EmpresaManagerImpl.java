@@ -299,7 +299,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role)
 	{
-		if(empresa == null || empresa.getId() == null)
+		if(empresa == null || empresa.getId() == null || empresa.getId() == 0)
 		{
 			Collection<Empresa> empresas = findByUsuarioPermissao(usuarioId, role);
 			
