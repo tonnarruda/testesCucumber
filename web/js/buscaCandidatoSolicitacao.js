@@ -26,7 +26,7 @@ function populaCidadesCheckList()
 
 function createListCidadesCheck(data)
 {
-	addChecks('cidadesCheck',data, 'populaBairros()');
+	addChecks('cidadesCheck',data,'populaBairros()');
 }
 
 function marcarDesmarcar(frm)

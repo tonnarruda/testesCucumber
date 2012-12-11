@@ -144,7 +144,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(3L);
     	
     	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
-    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIdsAvaliacao").will(returnValue(colaboradorRespostas));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	
@@ -168,7 +168,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity(3L);
 		
 		respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(new ArrayList<Resposta>()));
-		colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(new ArrayList<ColaboradorResposta>()));
+		colaboradorRespostaManager.expects(once()).method("findInPerguntaIdsAvaliacao").will(returnValue(new ArrayList<ColaboradorResposta>()));
 		Exception exception=null;
 		
 		try {
