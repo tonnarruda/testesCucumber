@@ -32,7 +32,8 @@
 			});
 			
 			var obj = document.getElementById("legendas");
-			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
+			if(obj != null)
+				obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
 		});
 	
 		function populaCargosConhecimentos(empresaId)
@@ -56,16 +57,15 @@
 		function limparFiltro()
 		{
 			var valueCpf = "   .   .   -  ";
-			var campos = new Array('indicadoPor', 'nomeBusca', 'uf', 'cidade');
+
 			$('#qtdRegistros').val(100);
 			$('#ordenar').val('dataAtualizacao');
-			
-			for(var contador = 0; contador < campos.length; contador++)
-			{
-				document.getElementById(campos[contador]).value = "";
-			}
-			
-			populaCidadesCheckList();
+			$('#listCheckBoxcidadesCheck').empty();
+			$('#uf').val('');
+			$('#indicadoPor').val('');
+			$('#nomeBusca').val('');
+			$('#escolaridade').val('');
+
 			document.getElementById('cpfBusca').value = valueCpf; 
 			marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'conhecimentosCheck',false);
@@ -127,11 +127,11 @@
 		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 	</#if>
 
-
 	<#if candidatos?exists >
+		</BR>
 		<div id="legendas" align="right"></div>
-		<br>
-		
+		</BR>
+
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 
 		<#if solicitacao?exists && solicitacao.id?exists>

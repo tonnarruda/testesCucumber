@@ -45,7 +45,8 @@
 			
 			 populaBairros();
 			var obj = document.getElementById("legendas");
-			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
+			if(obj != null)
+				obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
 		});
 	
 		function enviaEmpresa(empresaId)
@@ -92,9 +93,10 @@
 		{
 			var valueCpf = "   .   .   -  ";
 			var valueData = "  /  /    ";
-			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChave', 'escolaridade', 'idioma', 'nivel', 'uf', 'cidade');
+			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChave', 'escolaridade', 'idioma', 'nivel', 'uf');
 			$('#qtdRegistros').val(100);
 			$('#ordenar').val('dataAtualizacao');
+			$('#listCheckBoxcidadesCheck').empty();
 			
 			for(var contador = 0; contador < campos.length; contador++)
 			{
@@ -242,9 +244,9 @@
 	</#if>
 
 	<#if candidatos?exists >
+		</BR>
 		<div id="legendas" align="right"></div>
-		<br>
-
+		</BR>
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 
 		<#if solicitacao?exists && solicitacao.id?exists>
