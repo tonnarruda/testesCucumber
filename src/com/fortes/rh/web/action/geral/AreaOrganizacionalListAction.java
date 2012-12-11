@@ -74,38 +74,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 	public String organograma() throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals 	= new ArrayList<AreaOrganizacional>();
-		Collection<AreaOrganizacional> areasAncestrais 		= new ArrayList<AreaOrganizacional>();
-		Collection<AreaOrganizacional> areasDescendentes 	= new ArrayList<AreaOrganizacional>();
-		
-		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
-		
 		if (areaId != null)
-		{
 			areaOrganizacional = areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId);
-			
-			areasAncestrais = areaOrganizacionalManager.getAncestrais(areaOrganizacionals, areaId);
-			areasDescendentes = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, areaId, new ArrayList<AreaOrganizacional>());
-			
-			areaOrganizacionals.clear();
-			areaOrganizacionals.addAll(areasAncestrais);
-			areaOrganizacionals.addAll(areasDescendentes);
-		}
-
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-
-		if (areaOrganizacional != null && areaOrganizacionals.isEmpty())
-			areaOrganizacionals.add(areaOrganizacional);
-		
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
-		
-		Collection<String[]> dados = new ArrayList<String[]>();
-		
-		for (AreaOrganizacional area : areaOrganizacionals)
-			dados.add(new String[] { area.getNome(), area.getAreaMaeNome() });
-		
-		areasOrganizacionaisJson = StringUtil.toJSON(dados, null); 
 		
 		return Action.SUCCESS;
 	}
@@ -113,7 +83,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	public String imprimirOrganograma() throws Exception
 	{
 		HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
-		imageGenerator.loadUrl("http://localhost:8080/fortesrh/geral/areaOrganizacional/organograma.action?areaId=" + 11);
+		imageGenerator.loadUrl("http://localhost:8080/fortesrh/geral/areaOrganizacional/organograma.action?areaId=11");
 		imageGenerator.saveAsImage("/home/rubensgadelha/Downloads/organograma.png");
 		
 		return Action.SUCCESS;
