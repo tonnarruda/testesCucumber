@@ -42,7 +42,7 @@
 		
 		$(document).ready(function(){
 			$('#tooltipHelp').qtip({
-				content: 'Destinado à enviar emails referentes a assuntos que envolvem todas as empresas. <br /> Ex: Aviso de Backup'
+				content: 'Destinado ao envio de emails referentes a assuntos que envolvem todas as empresas. <br /> Ex: Aviso de Backup'
 			});
 		
 			if ($('#autenticacao').is(':checked')){
