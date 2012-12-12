@@ -30,6 +30,7 @@
 
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="ocorrencia.pontuacao" class="java.lang.Integer"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
@@ -75,7 +76,7 @@
 					<reportElement
 						x="2"
 						y="0"
-						width="458"
+						width="385"
 						height="11"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -96,6 +97,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{ocorrencia.pontuacao}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="389"
+						y="0"
+						width="72"
+						height="11"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -134,7 +148,7 @@
 						mode="Opaque"
 						x="2"
 						y="57"
-						width="458"
+						width="385"
 						height="11"
 						key="staticText-7"
 						positionType="Float"/>
@@ -157,6 +171,20 @@
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Total de pontos]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="389"
+						y="57"
+						width="72"
+						height="11"
+						key="staticText-9"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Matrícula]]></text>
 				</staticText>
 			</band>
 		</columnHeader>

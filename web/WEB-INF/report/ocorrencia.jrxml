@@ -35,6 +35,7 @@
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="colaborador.areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="dataFim" class="java.util.Date"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
 
 	<variable name="pontuacao_SUM" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Sum">
 		<variableExpression><![CDATA[$F{ocorrencia.pontuacao}]]></variableExpression>
@@ -57,7 +58,8 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.nome} +
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.nome} + 
+($F{colaborador.matricula}!=null?" - "+$F{colaborador.matricula}:"") +
 ($F{colaborador.estabelecimento.nome}!=null?" - "+$F{colaborador.estabelecimento.nome}:"") +
 ($F{colaborador.areaOrganizacional.nome}!=null?" - "+$F{colaborador.areaOrganizacional.nome}:"")]]></textFieldExpression>
 				</textField>
@@ -114,7 +116,7 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="493"
+						x="494"
 						y="69"
 						width="38"
 						height="11"
@@ -131,9 +133,9 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="225"
+						x="222"
 						y="69"
-						width="264"
+						width="270"
 						height="11"
 						backcolor="#FFFFFF"
 						key="staticText-7"
@@ -180,7 +182,7 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="169"
+						x="167"
 						y="69"
 						width="53"
 						height="11"
@@ -197,7 +199,7 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="113"
+						x="112"
 						y="69"
 						width="53"
 						height="11"
@@ -250,7 +252,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="113"
+						x="112"
 						y="1"
 						width="53"
 						height="11"
@@ -266,7 +268,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="169"
+						x="167"
 						y="1"
 						width="53"
 						height="11"
@@ -282,7 +284,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="493"
+						x="494"
 						y="1"
 						width="38"
 						height="11"
@@ -298,9 +300,9 @@
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="225"
+						x="222"
 						y="1"
-						width="264"
+						width="270"
 						height="11"
 						key="textField-8"
 						isPrintWhenDetailOverflows="true"/>

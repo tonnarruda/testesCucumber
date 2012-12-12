@@ -40,7 +40,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 
 	//Usado por colaboradorOcorrenciaDaoHibernate no metodo findColaboradorOcorrencia
     public ColaboradorOcorrencia(Long colaboradorOcorrenciaId, Date colaboradorOcorrenciaDataIni, Date colaboradorOcorrenciaDataFim,
-			String colaboradorOcorrenciaObservacao, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial,
+			String colaboradorOcorrenciaObservacao, Long colaboradorId, String colaboradorMatricula, String colaboradorNome, String colaboradorNomeComercial,
 			int ocorrenciaPontuacao, String ocorrenciaDescricao, String estabelecimentoNome, String areaOrganizacionalNome,
 			String descricaoProvidencia)
 	{	
@@ -53,6 +53,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 		setOcorrenciaPontuacao(ocorrenciaPontuacao);
 
 		setColaboradorId(colaboradorId);
+		setColaboradorMatricula(colaboradorMatricula);
 		setColaboradorNome(colaboradorNome);
 		setColaboradorNomeComercial(colaboradorNomeComercial);
 
@@ -61,9 +62,11 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 		setDescricaoProvidencia(descricaoProvidencia);
 	}
     
-    public ColaboradorOcorrencia(Long colaboradorId, String colaboradorNome, int ocorrenciaPontuacao)
+    //Usado por colaboradorOcorrenciaDaoHibernate no metodo findColaboradorOcorrencia
+    public ColaboradorOcorrencia(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, int ocorrenciaPontuacao)
     {
     	setColaboradorId(colaboradorId);
+    	setColaboradorMatricula(colaboradorMatricula);
     	setColaboradorNome(colaboradorNome);
     	setOcorrenciaPontuacao(ocorrenciaPontuacao);
     }
@@ -130,6 +133,13 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
     	if(colaborador == null)
     		colaborador = new Colaborador();
     	colaborador.setId(id);
+    }
+    
+    public void setColaboradorMatricula(String matricula)
+    {
+    	if(colaborador == null)
+    		colaborador = new Colaborador();
+    	colaborador.setMatricula(matricula);
     }
     
     public void setProjectionColaboradorCodigoAC(String colaboradorCodigoAC)
