@@ -11,24 +11,11 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 
 public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 {
-
-//	int getQtdComentarios(Long idPergunta);
-//
-//	Collection<ColaboradorResposta> findByPesquisa(Pesquisa pesquisa);
-//
-//	Collection<ColaboradorResposta> getRespostasByColaborador(Long colaboradorId, Collection<Pergunta> perguntas);
-//
-//	ColaboradorResposta getRespostasColaboradorByIdPergunta(Long colaboradorId, Long perguntaId);
-//
-//	Collection<ColaboradorResposta> getRespostasByColaboradorPerguntas(Long colaboradorId, Collection<Pergunta> perguntas);
-//
-//	Collection<ColaboradorResposta> getRespostasByColaboradoresPerguntas(Long[] colaboradores, Collection<Pergunta> perguntas);
-//
-//	void removeRespostas(Colaborador colaborador, Collection<Pergunta> perguntas);
-
 	List<Object[]> countRespostas(Long[] perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId);
 
 	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId);
+
+	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId);
 
 	Collection<ColaboradorResposta> findRespostasColaborador(Long colaboradorQuestionarioId, Boolean aplicarPorAspecto);
 

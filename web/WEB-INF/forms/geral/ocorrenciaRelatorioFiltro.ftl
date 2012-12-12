@@ -46,8 +46,9 @@
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areaCheck');
 			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
+			var situacao = $('#situacao').val();
 			
-			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds);
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao);
 		}
 
 		function createListcolaborador(data)
@@ -64,7 +65,7 @@
 
 		function createListEstabelecimento(data, empresaId)
 		{
-			addChecks('estabelecimentoCheck',data, "populaColaboradores(" + empresaId + ");");
+			addChecks('estabelecimentoCheck',data, populaColaboradores);
 		}
 		
 		function populaOcorrencia(empresaId)
@@ -87,22 +88,28 @@
 
 		function createListArea(data, empresaId)
 		{
-			addChecks('areaCheck', data, "populaColaboradores(" + empresaId + ");");
+			addChecks('areaCheck', data, populaColaboradores);
 		}
 		
-		function populaChecks(empresa)
+		function populaChecks()
 		{
 			$('#wwctrl_areaCheck [type="checkbox"]').attr('checked', false);
 			$('#wwctrl_estabelecimentoCheck [type="checkbox"]').attr('checked', false);
 			
-			populaArea(empresa);
-			populaEstabelecimento(empresa);
-			populaColaboradores(empresa);
-			populaOcorrencia(empresa);
+			var empresaId = $('#empresa').val() == 0 ? null : $('#empresa').val() ;
+			
+			populaArea(empresaId);
+			populaEstabelecimento(empresaId);
+			populaColaboradores(empresaId);
+			populaOcorrencia(empresaId);
 		}
 		
 		$(function()
 		{
+			$('#situacao').change(function(){
+			
+			});
+			
 			$('#detalhe').click(function() {
 			  	if($(this).attr('checked'))
 			    {
@@ -123,8 +130,7 @@
 					$('#providencia').attr("disabled", true);
 			});
 				
-			var empresa = $('#empresa').val();
-			populaChecks(empresa);
+			populaChecks();
 		});
 	</script>
 </head>
@@ -134,7 +140,7 @@
 	<@ww.actionmessage />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaChecks(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaChecks();"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -151,10 +157,16 @@
 		
 		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
 		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
-		<@frt.checkListBox name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="500" height="180"/>
-
 		
+		<fieldset class="fieldsetPadrao" style="padding: 5px 0px 5px 5px">
+			<legend>Colaboradores:</legend>
+					
+			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores($('#empresa').val());"/>
+			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180"/>
+		</fieldset>
+		<br />
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
+		
 		<@ww.select label="Agrupar Por:" name="agruparPorColaborador" list=r"#{true:'Colaborador',false:'Providência'}" id="agruparPorColaborador"/>
 		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
 		

@@ -32,8 +32,8 @@ public class TipoQuestionarioTest extends TestCase
 		assertEquals("Avaliação", TipoQuestionario.getDescricaoMaisc(0));
 		assertEquals("Entrevista de Desligamento", TipoQuestionario.getDescricaoMaisc(1));
 		assertEquals("Pesquisa", TipoQuestionario.getDescricaoMaisc(2));
-		assertEquals("Avaliação da turma", TipoQuestionario.getDescricaoMaisc(3));
-		assertEquals("Ficha médica", TipoQuestionario.getDescricaoMaisc(4));
+		assertEquals("Avaliação da Turma", TipoQuestionario.getDescricaoMaisc(3));
+		assertEquals("Ficha Médica", TipoQuestionario.getDescricaoMaisc(4));
 	}
 
 	public void testGetUrlVoltarList()

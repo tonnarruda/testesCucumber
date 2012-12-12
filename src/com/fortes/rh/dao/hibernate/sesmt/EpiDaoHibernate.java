@@ -246,6 +246,7 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		p.add(Projections.property("e.fardamento"), "fardamento");
 		p.add(Projections.property("e.fabricante"), "fabricante");
 		p.add(Projections.property("e.tipoEPI.id"), "tipoEPIIdProjection");
+		p.add(Projections.property("e.ativo"), "ativo");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("e.empresa.id", empresaOrigemId));

@@ -77,10 +77,10 @@ public class TipoQuestionario extends LinkedHashMap<Object, Object>
 				retorno = "Pesquisa";
 				break;
 			case AVALIACAOTURMA:
-				retorno = "Avaliação da turma";
+				retorno = "Avaliação da Turma";
 				break;
 			case FICHAMEDICA:
-				retorno = "Ficha médica";
+				retorno = "Ficha Médica";
 				break;
 		}
 

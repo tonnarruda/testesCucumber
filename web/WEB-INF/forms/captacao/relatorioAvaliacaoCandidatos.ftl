@@ -86,7 +86,7 @@
 			<li>
 				<@ww.div id="divAreas">
 					<ul>
-						<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
+						<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais*" list="areasCheckList"/>
 					</ul>
 				</@ww.div>
 			</li>

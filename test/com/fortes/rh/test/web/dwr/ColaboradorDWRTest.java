@@ -80,7 +80,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		colaboradors.add(colaborador);
 		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradors));
 		
-		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{});
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{}, null);
 		
 		assertEquals(1, retorno.size());
 	}
@@ -98,7 +98,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		
 		String [] areaIds = {areaOrganizacional.getId().toString()};
-		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(areaIds, null, empresa.getId(), new Long[]{});
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(areaIds, null, empresa.getId(), new Long[]{}, null);
 		
 		assertEquals(1, retorno.size());
 	}
@@ -116,7 +116,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByAreaOrganizacionalEstabelecimento").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		
 		String [] estabelecimentoIds = {estabelecimento.getId().toString()};
-		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, estabelecimentoIds, empresa.getId(), new Long[]{});
+		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, estabelecimentoIds, empresa.getId(), new Long[]{}, null);
 		
 		assertEquals(1, retorno.size());
 	}

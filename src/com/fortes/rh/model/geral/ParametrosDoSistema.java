@@ -38,6 +38,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String emailUser;
     @Column(length=50)
     private String emailPass;
+    @Column(length=100)
+    private String emailRemetente;
     @Column(length=10)
     private String codEmpresaSuporte;
     @Column(length=10)
@@ -316,5 +318,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setSessionTimeout(Integer sessionTimeout)
 	{
 		this.sessionTimeout = sessionTimeout;
+	}
+	public String getEmailRemetente() {
+		return emailRemetente;
+	}
+	public void setEmailRemetente(String emailRemetente) {
+		this.emailRemetente = emailRemetente;
 	}
 }

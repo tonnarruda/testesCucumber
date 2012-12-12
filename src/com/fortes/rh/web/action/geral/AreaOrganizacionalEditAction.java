@@ -52,7 +52,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		}
 
 		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaId);
-		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nomeComercial");
+		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nome");
 	}
 
 	public String prepareInsert() throws Exception

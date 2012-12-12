@@ -3,6 +3,9 @@
  * Requisito: RFA004 */
 package com.fortes.rh.web.action.geral;
 
+import gui.ava.html.image.generator.HtmlImageGenerator;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -25,6 +29,9 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
 	private Map<String,Object> parametros;
 
+	private Long areaId;
+	private String areasOrganizacionaisJson;
+	
 	private boolean integradoAC;
 	private char ativa = 'S';
 
@@ -54,13 +61,30 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String organograma() throws Exception
+	public String prepareOrganograma() throws Exception
 	{
 		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
+		
+		return Action.SUCCESS;
+	}
+
+	public String organograma() throws Exception
+	{
+		if (areaId != null)
+			areaOrganizacional = areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirOrganograma() throws Exception
+	{
+		HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
+		imageGenerator.loadUrl("http://localhost:8080/fortesrh/geral/areaOrganizacional/organograma.action?areaId=11");
+		imageGenerator.saveAsImage("/home/rubensgadelha/Downloads/organograma.png");
 		
 		return Action.SUCCESS;
 	}
@@ -143,4 +167,19 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		this.ativa = ativa;
 	}
 
+	public Long getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getAreasOrganizacionaisJson() {
+		return areasOrganizacionaisJson;
+	}
+
+	public void setAreasOrganizacionaisJson(String areasOrganizacionaisJson) {
+		this.areasOrganizacionaisJson = areasOrganizacionaisJson;
+	}
 }

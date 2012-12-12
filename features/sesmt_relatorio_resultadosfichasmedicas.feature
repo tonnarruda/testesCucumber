@@ -8,7 +8,7 @@ Funcionalidade: Resultado de Fichas Médicas
 
     Dado que eu esteja logado
     Quando eu acesso o menu "SESMT > Relatórios > Resultado de Fichas Médicas"
-    Então eu devo ver o título "Resultado da Ficha médica"
+    Então eu devo ver o título "Resultado da Ficha Médica"
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 

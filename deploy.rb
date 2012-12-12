@@ -12,7 +12,7 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
 	connect config['host'], config['user'], config['password'] do |conn|
 
 		tomcat_home = config['tomcat_home']
-		fortes_var = config['environment'].map{|key,value| "export #{key}=#{value};"}.join
+		fortes_var = config['environment'].map{|key,value| "export #{key}=#{value};"}.join if config['environment']
 		app_path = "#{tomcat_home}/webapps/#{config['app_name']}"
 		backup_folder = config['backup_folder']
 		
