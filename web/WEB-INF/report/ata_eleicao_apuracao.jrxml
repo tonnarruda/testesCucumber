@@ -1,474 +1,361 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="ata_eleicao_apuracao"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="537"
-		 columnSpacing="0"
-		 leftMargin="29"
-		 rightMargin="29"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isFloatColumnFooter="true"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="LOGO" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="VOTOS_BRANCOS" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="VOTOS_NULOS" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="VOTOS_TOTAL" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="TEXTO" isForPrompting="false" class="java.lang.String"/>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ata_eleicao_apuracao" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="1e68b872-cac4-4e1b-92a1-2610dff8a901">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="LOGO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="VOTOS_BRANCOS" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="VOTOS_NULOS" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="VOTOS_TOTAL" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="TEXTO" class="java.lang.String" isForPrompting="false"/>
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="candidato.nomeComercial" class="java.lang.String"/>
 	<field name="qtdVoto" class="java.lang.Integer"/>
 	<field name="percentualVotoFmt" class="java.lang.String"/>
 	<field name="candidato.funcao.nome" class="java.lang.String"/>
 	<field name="textoAtaEleicao" class="java.lang.String"/>
-
-	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{candidato.nome}]]></variableExpression>
 	</variable>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="47"  isSplitAllowed="true" >
-				<image  scaleImage="RetainShape" vAlign="Middle" hAlign="Center" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="0"
-						y="1"
-						width="67"
-						height="46"
-						key="image-1"
-						stretchType="RelativeToTallestObject"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($P{LOGO} != null && !$P{LOGO}.equals(""))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<graphicElement stretchType="RelativeToTallestObject"/>
-					<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
-				</image>
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="138"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="0"
-						y="2"
-						width="537"
-						height="36"
-						key="staticText-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
-					</textElement>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="47" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement uuid="c772723b-d8e1-4638-92a9-2f3fb3e483a3" key="image-1" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="1" width="67" height="46" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($P{LOGO} != null && !$P{LOGO}.equals(""))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="138" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0f0a3961-6538-48d6-8063-adf850d25a4a" key="staticText-1" x="0" y="2" width="537" height="36"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[ATA DA ELEIÇÃO DOS REPRESENTANTES DOS EMPREGADOS A MEMBRO DA COMISSÃO INTERNA DE PREVENÇÃO DE ACIDENTES]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="1"
-						y="122"
-						width="328"
-						height="16"
-						key="staticText-2"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="437cdcfd-4bfe-4edb-b277-f2be3a70c1b8" key="staticText-2" positionType="Float" x="1" y="122" width="328" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Colaborador]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="447"
-						y="122"
-						width="73"
-						height="16"
-						key="staticText-3"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="629858ab-0310-4fe5-b15a-adb81f3796f1" key="staticText-3" positionType="Float" x="447" y="122" width="73" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Nº de Votos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="334"
-						y="122"
-						width="107"
-						height="16"
-						key="staticText-8"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2350d33b-fec8-41a9-8f58-b1c823db4594" key="staticText-8" positionType="Float" x="334" y="122" width="107" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Função]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1"
-						y="48"
-						width="536"
-						height="43"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="10"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TEXTO}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="0"
-						y="98"
-						width="536"
-						height="17"
-						key="staticText-9"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0f56f303-fed3-47b8-ab2d-01267a927b92" key="textField" x="1" y="48" width="536" height="43"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TEXTO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="38217edf-4daf-4bf5-b15c-047f50a6db5a" key="staticText-9" positionType="Float" x="0" y="98" width="536" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Após a apuração chegou-se ao seguinte resultado:]]></text>
-				</staticText>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="13"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1"
-						y="0"
-						width="180"
-						height="13"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.nome}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="185"
-						y="0"
-						width="144"
-						height="13"
-						key="textField">
-							<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(" + $F{candidato.nomeComercial} + ")"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="447"
-						y="0"
-						width="73"
-						height="13"
-						key="textField">
-							<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{qtdVoto}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="334"
-						y="0"
-						width="107"
-						height="13"
-						key="textField-18">
-							<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{candidato.funcao.nome}]]></textFieldExpression>
-				</textField>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="357"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="0"
-						y="0"
-						width="77"
-						height="13"
-						key="staticText-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="f5c67f45-510c-4267-9330-3d1c306eb452" key="textField" x="1" y="0" width="180" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{candidato.nome}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="22e41c1e-31d8-4df5-b424-aadc8f054d24" key="textField" x="185" y="0" width="144" height="13">
+					<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(" + $F{candidato.nomeComercial} + ")"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="56f90b35-0301-400b-b225-5a14a0473d96" key="textField" x="447" y="0" width="73" height="13">
+					<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdVoto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="6d760b9f-ecee-4746-815b-1e3ecb99d50c" key="textField-18" x="334" y="0" width="107" height="13">
+					<printWhenExpression><![CDATA[new Boolean(!$F{candidato.nome}.equals("BRANCOS") && !$F{candidato.nome}.equals("NULOS"))]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{candidato.funcao.nome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="357" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8dc1a753-c6f3-49c1-9500-fe8285b60928" key="staticText-5" x="0" y="0" width="77" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Nulos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="13"
-						width="77"
-						height="13"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ce740e60-1250-4080-a0c4-9dde4894c226" key="staticText-6" x="0" y="13" width="77" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Brancos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="26"
-						width="113"
-						height="13"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="169effe8-891c-444b-87db-7df085c14dcc" key="staticText-7" x="0" y="26" width="113" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Total de votos]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="447"
-						y="25"
-						width="73"
-						height="13"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{VOTOS_TOTAL}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="447"
-						y="12"
-						width="73"
-						height="13"
-						key="textField-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{VOTOS_BRANCOS}]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="76"
-						width="200"
-						height="1"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="40"
-						y="81"
-						width="200"
-						height="14"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="17f0c454-9459-48c9-b66a-17d6d158b6d4" key="textField" x="447" y="25" width="73" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VOTOS_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="916e9230-b346-4fa5-9254-f60d0d7c094f" key="textField-13" x="447" y="12" width="73" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VOTOS_BRANCOS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="89ae9b35-e0d4-41be-a153-4e8d247708d8" key="line-2" x="40" y="76" width="200" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="8efdba65-bfca-47db-b64d-259dfeae39ee" key="staticText-10" x="40" y="81" width="200" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Presidente da Mesa]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="300"
-						y="81"
-						width="200"
-						height="14"
-						key="staticText-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a1097bbb-1abb-40cf-858a-fd9921db0a7a" key="staticText-12" x="300" y="81" width="200" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Secretário de Mesa]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="76"
-						width="200"
-						height="1"
-						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						x="0"
-						y="126"
-						width="537"
-						height="14"
-						key="staticText-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
-					</textElement>
+			</staticText>
+			<line>
+				<reportElement uuid="47480b4a-d869-4c9e-a843-8060e6b401e2" key="line-3" x="300" y="76" width="200" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="93e848a3-e067-474f-83c1-240e2b7b932a" key="staticText-13" x="0" y="126" width="537" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Demais participantes presentes:]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="169"
-						width="200"
-						height="1"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="200"
-						width="200"
-						height="1"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="231"
-						width="200"
-						height="1"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="262"
-						width="200"
-						height="1"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="293"
-						width="200"
-						height="1"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="40"
-						y="324"
-						width="200"
-						height="1"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="169"
-						width="200"
-						height="1"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="200"
-						width="200"
-						height="1"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="231"
-						width="200"
-						height="1"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="262"
-						width="200"
-						height="1"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="293"
-						width="200"
-						height="1"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="300"
-						y="324"
-						width="200"
-						height="1"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="447"
-						y="-358"
-						width="73"
-						height="13"
-						key="textField-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{VOTOS_NULOS}]]></textFieldExpression>
-				</textField>
-			</band>
-		</summary>
+			</staticText>
+			<line>
+				<reportElement uuid="7c910f6c-af44-4277-a665-c6aeb9a16f3d" key="line-4" x="40" y="169" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="eba096c0-c23c-4628-94b9-e62bb7078e4c" key="line-5" x="40" y="200" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="e67a8eef-e272-4119-82e2-b0982f33a55a" key="line-6" x="40" y="231" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="d5941f5f-85e7-4304-967a-90f3fe77007f" key="line-7" x="40" y="262" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="b5aece9a-5369-465e-b2ac-60c0da768a4c" key="line-8" x="40" y="293" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="df97a955-cb55-4f85-953e-924cd1db44d5" key="line-9" x="40" y="324" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="a9a2d4a5-ab34-4bbb-951b-81649bd127c4" key="line-10" x="300" y="169" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="9467ef19-eaef-46ae-a47c-e8d13f3df170" key="line-11" x="300" y="200" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="f6207793-885f-43e4-88df-85f495b3ed53" key="line-12" x="300" y="231" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="04dc2bf1-7d16-4e29-8c80-6ed962b5f73c" key="line-13" x="300" y="262" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="73608fe1-75cb-408a-be75-459f8520cf94" key="line-14" x="300" y="293" width="200" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="887ea35b-cb39-477c-a64b-1e4db5f6be64" key="line-15" x="300" y="324" width="200" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3647c36b-d4c4-4aa0-9c54-9b5299786d85" key="textField-14" x="447" y="-358" width="73" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VOTOS_NULOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>

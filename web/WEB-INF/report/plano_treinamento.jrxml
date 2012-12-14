@@ -1,40 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="plano_treinamento"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Landscape"
-		 pageWidth="842"
-		 pageHeight="595"
-		 columnWidth="782"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="NoPages"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="QTD_PREVISTA" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="QTD_REALIZADA" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CARGA_REALIZADA" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CARGA_PREVISTA" isForPrompting="false" class="java.lang.Integer"/>
-	<parameter name="CUSTO_PREVISTO" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="CUSTO_REALIZADO" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="CUMP_QTD" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="CUMP_CARGA" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="CUMP_CUSTO" isForPrompting="false" class="java.lang.Double"/>
-	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="plano_treinamento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="db5501c9-b96f-43fd-8d54-9333244e6328">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="QTD_PREVISTA" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="QTD_REALIZADA" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="CARGA_REALIZADA" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="CARGA_PREVISTA" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="CUSTO_PREVISTO" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="CUSTO_REALIZADO" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="CUMP_QTD" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="CUMP_CARGA" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="CUMP_CUSTO" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<field name="colaborador.nomeComercial" class="java.lang.String"/>
 	<field name="colaborador.areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="turma.descricao" class="java.lang.String"/>
@@ -46,703 +30,615 @@
 	<field name="curso.nome" class="java.lang.String"/>
 	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
 	<field name="custoRateado" class="java.lang.Double"/>
-
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="colaborador" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nomeComercial}]]></variableExpression>
 	</variable>
-
-		<group  name="grpEstabelecimento" >
-			<groupExpression><![CDATA[$F{colaborador.estabelecimento.nome}]]></groupExpression>
-			<groupHeader>
-			<band height="15"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1"
-						y="2"
-						width="272"
-						height="11"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+	<group name="grpEstabelecimento">
+		<groupExpression><![CDATA[$F{colaborador.estabelecimento.nome}]]></groupExpression>
+		<groupHeader>
+			<band height="15" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="c212ca6c-f96f-434c-aff6-ebeb959b244d" key="textField" x="1" y="2" width="272" height="11"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement>
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+						<font size="8" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.estabelecimento.nome}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.estabelecimento.nome}]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<group  name="areaOrganizacional" >
-			<groupExpression><![CDATA[$F{colaborador.areaOrganizacional.nome}]]></groupExpression>
-			<groupHeader>
-			<band height="16"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="11"
-						y="2"
-						width="262"
-						height="11"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="areaOrganizacional">
+		<groupExpression><![CDATA[$F{colaborador.areaOrganizacional.nome}]]></groupExpression>
+		<groupHeader>
+			<band height="16" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="8e366400-c15d-4fe8-bf4b-5620fdde73c8" key="textField" x="11" y="2" width="262" height="11"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement>
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+						<font size="8" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.areaOrganizacional.nome}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.areaOrganizacional.nome}]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="5"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="14"
-						y="2"
-						width="767"
-						height="0"
-						key="line-43"/>
-					<graphicElement stretchType="NoStretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="5" splitType="Stretch">
+				<line>
+					<reportElement uuid="9af41883-199f-4f3a-995a-cc013c0e9f71" key="line-43" x="14" y="2" width="767" height="1"/>
 				</line>
 			</band>
-			</groupFooter>
-		</group>
-		<group  name="colaborador" >
-			<groupExpression><![CDATA[$F{colaborador.nomeComercial}]]></groupExpression>
-			<groupHeader>
-			<band height="15"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="25"
-						y="2"
-						width="249"
-						height="11"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+		</groupFooter>
+	</group>
+	<group name="colaborador">
+		<groupExpression><![CDATA[$F{colaborador.nomeComercial}]]></groupExpression>
+		<groupHeader>
+			<band height="15" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="4b2f8784-02d2-4ee2-86c0-a3897d0420dc" key="textField" x="25" y="2" width="249" height="11"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+						<font size="8" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{colaborador.nomeComercial}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.nomeComercial}]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="60"  isSplitAllowed="true" >
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="0"
-						width="782"
-						height="51"
-						key="subreport-1"/>
-					<subreportParameter  name="SUBREPORT_DIR">
-						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CABECALHO">
-						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
-				</subreport>
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="46"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="22"
-						y="32"
-						width="205"
-						height="11"
-						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement uuid="898b823d-ef5a-4282-ac89-53d4fd5d8559" key="subreport-1" x="0" y="0" width="782" height="51"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="86fa961b-e930-4f34-84b1-800417b62b3d" key="staticText-3" x="22" y="32" width="205" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Colaborador]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="229"
-						y="32"
-						width="202"
-						height="11"
-						key="staticText-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="643ae563-bbde-48ba-be5c-6006bee37ca9" key="staticText-5" x="229" y="32" width="202" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Treinamento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="498"
-						y="32"
-						width="79"
-						height="11"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4391b721-e3f1-4fdc-96fc-8fd9146cb79c" key="staticText-6" x="498" y="32" width="79" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Instrutor]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="578"
-						y="32"
-						width="107"
-						height="11"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec2e4695-d3a7-41b7-9543-2cfcfe4a6ecd" key="staticText-7" x="578" y="32" width="107" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Período]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="687"
-						y="32"
-						width="33"
-						height="11"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="69eacd51-0393-4bcf-bf2b-514f8781b0f1" key="staticText-9" x="687" y="32" width="33" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[CH]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="722"
-						y="32"
-						width="57"
-						height="11"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1c101446-27ea-4bb9-b36b-21cf2894dc38" key="staticText-10" x="722" y="32" width="57" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Valor( R$ )]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="437"
-						y="32"
-						width="59"
-						height="11"
-						key="staticText-23"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b2229cf5-eea9-468e-9ff6-8844b59fcb80" key="staticText-23" x="437" y="32" width="59" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Turma]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="0"
-						y="0"
-						width="205"
-						height="11"
-						key="staticText-24"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e2590cdd-ab95-4464-9bd2-b8493287c3be" key="staticText-24" x="0" y="0" width="205" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Estabelecimento]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="11"
-						y="16"
-						width="205"
-						height="11"
-						key="staticText-25"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0fcea831-8cbf-42b1-9ee6-477d81e3da94" key="staticText-25" x="11" y="16" width="205" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Área Organizacional]]></text>
-				</staticText>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="15"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						mode="Opaque"
-						x="15"
-						y="0"
-						width="765"
-						height="11"
-						backcolor="#EEEEEE"
-						key="rectangle-1">
-							<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
-						</reportElement>
-					<graphicElement stretchType="NoStretch" pen="None"/>
-				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="498"
-						y="0"
-						width="79"
-						height="11"
-						key="textField-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{turma.instrutor}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="635"
-						y="0"
-						width="49"
-						height="11"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{turma.dataPrevFim}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="724"
-						y="0"
-						width="52"
-						height="11"
-						key="textField-8"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{custoRateado}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="687"
-						y="0"
-						width="33"
-						height="11"
-						key="textField-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{curso.cargaHorariaMinutos}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="578"
-						y="0"
-						width="50"
-						height="11"
-						key="textField-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{turma.dataPrevIni}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="525"
-						y="0"
-						width="7"
-						height="11"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="1c3404ba-3f7b-4637-b6bb-25022db5a1d0" key="rectangle-1" mode="Opaque" x="15" y="0" width="765" height="11" backcolor="#EEEEEE">
+					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4c4aa5e3-847e-47ce-a950-6f31cc29c969" key="textField-4" x="498" y="0" width="79" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.instrutor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="78389ca7-d1ff-4c0f-b5a6-7d27826d386b" key="textField-5" x="635" y="0" width="49" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.dataPrevFim}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a58ac82b-ce35-4504-867f-591975cb8235" key="textField-8" x="724" y="0" width="52" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{custoRateado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="4ee06a85-5df9-47e9-ad65-f941947565f1" key="textField-9" x="687" y="0" width="33" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso.cargaHorariaMinutos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="3c6b1cf1-cfb1-44e1-8ae9-3152bad4ccd1" key="textField-10" x="578" y="0" width="50" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.dataPrevIni}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9a7fd462-b793-418a-88a1-3e48529e6951" key="staticText-11" x="525" y="0" width="7" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[-]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="437"
-						y="0"
-						width="59"
-						height="11"
-						key="textField-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{turma.descricao}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="229"
-						y="0"
-						width="202"
-						height="11"
-						forecolor="#000000"
-						key="textField-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{turma.descricao} != null?$F{curso.nome}:""]]></textFieldExpression>
-				</textField>
-				<line direction="TopDown">
-					<reportElement
-						x="582"
-						y="0"
-						width="3"
-						height="15"
-						forecolor="#FFFFFF"
-						key="line-38"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="77"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="10"
-						width="66"
-						height="15"
-						backcolor="#CECCCC"
-						key="staticText-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d4e5a7b3-f8f0-43d8-8559-09145bd5be10" key="textField-12" x="437" y="0" width="59" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.descricao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="e913fd97-2377-4937-b00e-8e23e612c030" key="textField-13" x="229" y="0" width="202" height="11" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.descricao} != null?$F{curso.nome}:""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="444d3cce-5f50-423c-958f-a0176fbd3120" key="line-38" x="582" y="0" width="3" height="15" forecolor="#FFFFFF"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="77" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a8321ff1-3170-4266-bb3c-b76a12d98450" key="staticText-13" mode="Opaque" x="5" y="10" width="66" height="15" backcolor="#CECCCC"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Resumo]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="5"
-						y="56"
-						width="344"
-						height="0"
-						forecolor="#FFFFFF"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="175"
-						y="9"
-						width="0"
-						height="63"
-						forecolor="#FFFFFF"
-						key="line-16"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="279"
-						y="10"
-						width="0"
-						height="62"
-						forecolor="#FFFFFF"
-						key="line-17"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="72"
-						y="10"
-						width="102"
-						height="14"
-						backcolor="#EEEEEE"
-						key="staticText-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<line>
+				<reportElement uuid="2a3a551c-3058-4ce6-8ad1-8ca8b51321b4" key="line-14" x="5" y="56" width="344" height="1" forecolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement uuid="4b9909bc-14a8-4257-8d4c-d2013d7c6d9e" key="line-16" x="175" y="9" width="1" height="63" forecolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement uuid="402bcdaa-935e-411c-8368-4f913791db05" key="line-17" x="279" y="10" width="1" height="62" forecolor="#FFFFFF"/>
+			</line>
+			<staticText>
+				<reportElement uuid="e7e6fbc5-f3b2-4513-b9c8-0f1516c9bb69" key="staticText-14" mode="Opaque" x="72" y="10" width="102" height="14" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Previstos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="26"
-						width="65"
-						height="14"
-						backcolor="#EEEEEE"
-						key="staticText-15"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8a878fd-404f-474f-9b70-9e229097217d" key="staticText-15" mode="Opaque" x="5" y="26" width="65" height="14" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Qtd. Cursos]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="42"
-						width="65"
-						height="13"
-						backcolor="#EEEEEE"
-						key="staticText-16"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="18e6feeb-6f11-4372-be47-db728b9617eb" key="staticText-16" mode="Opaque" x="5" y="42" width="65" height="13" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Carga]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="57"
-						width="65"
-						height="14"
-						backcolor="#EEEEEE"
-						key="staticText-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="60283f44-d039-47c2-a2ea-174974940b4a" key="staticText-17" mode="Opaque" x="5" y="57" width="65" height="14" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Investimento (R$)]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="176"
-						y="10"
-						width="102"
-						height="14"
-						backcolor="#EEEEEE"
-						key="staticText-18"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b1546f45-83f3-41dd-b6ca-bf20fd08cb97" key="staticText-18" mode="Opaque" x="176" y="10" width="102" height="14" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Realizados]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="280"
-						y="10"
-						width="68"
-						height="14"
-						backcolor="#EEEEEE"
-						key="staticText-19"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3d8fb87e-6a66-4e04-9a14-30a6df44cfc3" key="staticText-19" mode="Opaque" x="280" y="10" width="68" height="14" backcolor="#EEEEEE"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Cumprimentos]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="74"
-						y="27"
-						width="98"
-						height="16"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{QTD_PREVISTA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="178"
-						y="27"
-						width="97"
-						height="17"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{QTD_REALIZADA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="74"
-						y="43"
-						width="98"
-						height="13"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{CARGA_PREVISTA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="180"
-						y="43"
-						width="95"
-						height="13"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{CARGA_REALIZADA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="75"
-						y="58"
-						width="97"
-						height="16"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{CUSTO_PREVISTO}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="179"
-						y="58"
-						width="96"
-						height="16"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{CUSTO_REALIZADO}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="287"
-						y="27"
-						width="45"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{CUMP_QTD}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="286"
-						y="42"
-						width="46"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{CUMP_CARGA}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="286"
-						y="58"
-						width="46"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{CUMP_CUSTO}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="335"
-						y="27"
-						width="10"
-						height="18"
-						key="staticText-20"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="b7ef3971-8131-4c91-b284-451b8f205c8c" key="textField" x="74" y="27" width="98" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{QTD_PREVISTA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="bd2599fa-feb4-4410-a67c-48c30df87aa3" key="textField" x="178" y="27" width="97" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{QTD_REALIZADA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="fd043bbd-6e80-46bd-a7b5-56e905479b08" key="textField" x="74" y="43" width="98" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CARGA_PREVISTA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="2df6afbd-3014-49b0-9d02-e85b41f2af42" key="textField" x="180" y="43" width="95" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CARGA_REALIZADA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement uuid="36fe4b86-9d1f-4940-8134-af588870338c" key="textField" x="75" y="58" width="97" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CUSTO_PREVISTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement uuid="c3500bb1-2c6a-4f29-8406-44bc567ce0a7" key="textField" x="179" y="58" width="96" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CUSTO_REALIZADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement uuid="a0293a5f-5bec-43a5-8ef7-500a9a3a8573" key="textField" x="287" y="27" width="45" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CUMP_QTD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement uuid="b3ef996c-90f8-4968-99fb-40b552cbe2ad" key="textField" x="286" y="42" width="46" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CUMP_CARGA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement uuid="80713788-b430-44ed-9363-6b62cfc1b9a7" key="textField" x="286" y="58" width="46" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CUMP_CUSTO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6ccd274b-5447-44fb-8bd4-d0e4cf358a7b" key="staticText-20" x="335" y="27" width="10" height="18"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="335"
-						y="42"
-						width="11"
-						height="16"
-						key="staticText-21"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31adefca-eae8-4839-b0db-e18d4f7a05b8" key="staticText-21" x="335" y="42" width="11" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="335"
-						y="58"
-						width="11"
-						height="15"
-						key="staticText-22"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4f55480c-99c4-457c-b788-ee7569c9200f" key="staticText-22" x="335" y="58" width="11" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[%]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="71"
-						y="10"
-						width="0"
-						height="62"
-						forecolor="#FFFFFF"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="5"
-						y="25"
-						width="344"
-						height="0"
-						forecolor="#FFFFFF"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="5"
-						y="41"
-						width="344"
-						height="0"
-						forecolor="#FFFFFF"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-			</band>
-		</summary>
+			</staticText>
+			<line>
+				<reportElement uuid="1173e712-dc69-473e-8d00-2cdd9d03d043" key="line-15" x="71" y="10" width="1" height="62" forecolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement uuid="cb931791-0d2e-43e3-aa52-59565af158e2" key="line-12" x="5" y="25" width="344" height="1" forecolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement uuid="86515656-afe5-4bce-b9df-0092703ac979" key="line-13" x="5" y="41" width="344" height="1" forecolor="#FFFFFF"/>
+			</line>
+		</band>
+	</summary>
 </jasperReport>

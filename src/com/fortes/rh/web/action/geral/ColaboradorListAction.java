@@ -1,6 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
-import java.io.ByteArrayInputStream;
+import java.awt.Color;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,9 +9,33 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.commons.lang.StringUtils;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
+
+import ar.com.fdvs.dj.core.DynamicJasperHelper;
+import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
+import ar.com.fdvs.dj.domain.DynamicReport;
+import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
+import ar.com.fdvs.dj.domain.builders.GroupBuilder;
+import ar.com.fdvs.dj.domain.constants.Border;
+import ar.com.fdvs.dj.domain.constants.Font;
+import ar.com.fdvs.dj.domain.constants.GroupLayout;
+import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.Page;
+import ar.com.fdvs.dj.domain.constants.VerticalAlign;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -34,12 +58,10 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
-import com.fortes.rh.model.geral.DynaRecord;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ReportColumn;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -49,6 +71,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -128,7 +151,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String sexo;
 	private String deficiencia;
 
-	private Collection<DynaRecord> dataSource;
 	private ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico;
 	private String colunasJson;
 	private String orderField;
@@ -278,7 +300,6 @@ public class ColaboradorListAction extends MyActionSupportList
 				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, orderField, configuracaoCampoExtra.getSize(), false));
 			}
 		}
-		
 	}
 
 	public String relatorioDinamico() throws Exception
@@ -289,77 +310,127 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 			
-			if(agruparPorTempoServico)
-				orderField = " co.dataAdmissao desc, " + orderField;
+			String nomeRelatorio = "modeloDinamico.jrxml";
+			Collection<Colaborador> colaboradores;
+			montaColunas();
 			
-			Collection<Colaborador> colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
+			if(agruparPorTempoServico)
+			{
+				nomeRelatorio = "modeloDinamicoAgrupadoTempoServico.jrxml";
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
+			}
+			else 
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
+			}
 
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
-			Context cx = Context.enter();
-	        try {
-	            cx.setLanguageVersion(Context.VERSION_1_7);
-	            Scriptable scope = cx.initStandardObjects();
-	            
-	            String xml = ArquivoUtil.getReportSource("relatorioDinamico.jrxml");
-	            if(agruparPorTempoServico)
-	            	xml = ArquivoUtil.getReportSource("relatorioDinamicoAgrupado.jrxml");
-	            
-	            xml = xml.replaceAll("<\\?.*\\s+<!.*\\s+<!.*\\s+", "");
-	            
-	            StringBuilder sb = new StringBuilder();
-	            sb.append("    var xml = " + xml + ";");
-	           
-	            int posicaoX = 0;
-	            int valueWidth = 0;
-	            int valueX = 0;
+			JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
 
-	            montaColunas();
-	            String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-	            filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+			String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+			filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
+            parametros.put("TOTALREGISTROS", colaboradores.size());
+            
+            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
+            
+            // Montagem do relatorio
+            
+            Font arialBold = new Font(8, "SansSerif", true);
+            
+		    Style headerStyle = new Style();
+		    headerStyle.setBlankWhenNull(true);
+		    headerStyle.setFont(arialBold);
+		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
+		    
+		    Style detailStyle = new Style();
+		    detailStyle.setBlankWhenNull(true);
+		    detailStyle.setFont(new Font(8, "Arial", false));
+		    detailStyle.setVerticalAlign(VerticalAlign.TOP);
+		    detailStyle.setOverridesExistingStyle(true);
+		    
+		    Style style = new Style();
+		    style.setFont(arialBold);
+		    style.setHorizontalAlign(HorizontalAlign.LEFT);
+		    style.setVerticalAlign(VerticalAlign.MIDDLE);
+		    
+		    if(agruparPorTempoServico){
+		    	headerStyle.setPaddingLeft(10);
+		    	style.setPaddingLeft(10);
+		    }
+		    
+		    Style oddDetailStyle = new Style();
+		    oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
+		    
+		    DynamicReportBuilder drb = new DynamicReportBuilder();
+		    drb.setTemplateFile("../../WEB-INF/report/" + nomeRelatorio, true, true, true, true);
+		    drb.setDetailHeight(15);
+		    drb.setHeaderHeight(10);
+		    drb.setMargins(15, 20, 30, 15);
+		    drb.setDefaultStyles(null, null, headerStyle, detailStyle);
+		    drb.setColumnsPerPage(1);
+		    drb.setPageSizeAndOrientation(Page.Page_A4_Landscape());
+		    drb.setUseFullPageWidth(true);
+		    drb.setColumnSpace(4);
+		    drb.setOddRowBackgroundStyle(oddDetailStyle);
+		    drb.setPrintBackgroundOnOddRows(true);
+            
+		    AbstractColumn aCol;
+		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
+            {
+	            aCol = ColumnBuilder.getNew()
+	            					.setColumnProperty(coluna.getProperty(), String.class.getName())
+	            					.setTitle(coluna.getName())
+	            					.setWidth(coluna.getSize() + 30)
+	            					.setStyle(style)
+	            					.build();
 	            
-	            parametros = RelatorioUtil.getParametrosRelatorio(configuracaoRelatorioDinamico.getTitulo(), getEmpresaSistema(), filtro);
-	            
-	            Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
-	            
-	            int count = 1;
-	            for (ReportColumn coluna : colunasMarcadasRedimensionadas)
-	            {
-            		parametros.put("TITULO" + (count), coluna.getName());
-            		
-	            	valueWidth = coluna.getSize();
-		            valueX = posicaoX;
-		            			
-		            if(agruparPorTempoServico)
-		            	valueX += 18;
-		            
-		            sb.append(DynaRecord.montaEval("columnHeader", "width", count, valueWidth));
-		            sb.append(DynaRecord.montaEval("columnHeader", "x", count, valueX));
-		            sb.append(DynaRecord.montaEval("detail", "width", count, valueWidth));
-		            sb.append(DynaRecord.montaEval("detail", "x", count, valueX));
-		            
-		            posicaoX += valueWidth + ReportColumn.getSpace();
-		            count++;
-				}
-	            	            
-				sb.append("    obj = xml.toXMLString();");
-	            Object result = cx.evaluateString(scope, sb.toString(),	"MySource", 1,	null);
+	            drb.addColumn(aCol);
+			}
 
-	            String relatorioDinamico = "" +
-	            		"<?xml version=\"1.0\" encoding=\"UTF-8\"  ?>" +
-	            		"<!DOCTYPE jasperReport PUBLIC \"//JasperReports//DTD Report Design//EN\" \"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd\">" +
-	            		result.toString();
-	            
-	            reportInputStream = new ByteArrayInputStream(relatorioDinamico.getBytes());
-	            dataSource = colaboradorManager.preparaRelatorioDinamico(colaboradores, colunasMarcadas, tempoServicoIni, tempoServicoFim);
+		    if(agruparPorTempoServico)
+		    {
+			    Style styleGroup = new Style();
+	            styleGroup.setFont(arialBold);
+	            styleGroup.setHorizontalAlign(HorizontalAlign.LEFT);
+	            styleGroup.setVerticalAlign(VerticalAlign.MIDDLE);
+	
+			    AbstractColumn columnTempoServico = ColumnBuilder.getNew()
+			            .setColumnProperty("tempoServicoString", String.class.getName())
+			            .setTitle("Tempo de Serviço")
+			            .setWidth(new Integer(100))
+			            .setStyle(styleGroup)
+			            .build();
 
-	        }
-	        finally 
-	        {
-	            Context.exit();
-	        }
-		
+			    drb.addColumn(columnTempoServico);
+			    
+			    GroupBuilder gb  = new GroupBuilder();
+			    DJGroup g = gb.setCriteriaColumn((PropertyColumn) columnTempoServico)
+			    		.setGroupLayout(GroupLayout.VALUE_IN_HEADER)
+			    		.setAllowFooterSplit(true)
+			    		.setStartInNewPage(true)
+			    		.build();
+			    
+			    g.setName("Tempo de Serviço");
+			    
+			    drb.addGroup(g);
+		    }
+		    
+	        DynamicReport report = drb.build();
+	        	        
+		    JasperReport jreport = DynamicJasperHelper.generateJasperReport(report, new ClassicLayoutManager(), parametros);
+		    JasperPrint jprint = JasperFillManager.fillReport(jreport, parametros, dataSource);
+		    
+		    HttpServletResponse response = ServletActionContext.getResponse();
+		    response.setContentType("application/octet-stream");
+		    response.setHeader("Content-Disposition", "attachment;filename=\"relatorioDinamico.pdf\"");
+		    
+		    JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
+			
 			return Action.SUCCESS;
 			
 		}
@@ -377,9 +448,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 	}
 
-	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas) 
+	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), order, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
@@ -390,26 +461,28 @@ public class ColaboradorListAction extends MyActionSupportList
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			camposExtras.setId(1l);
 			
-			if(agruparPorTempoServico)
-				orderField = " co.dataAdmissao desc, " + orderField;
+			montaColunas();
+			dinamicColumns = new ArrayList<String>();
+			dinamicProperts = new ArrayList<String>();
+			Collection<Colaborador> colaboradores;
 			
-			colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas);
+			if(agruparPorTempoServico)
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
+				dinamicColumns.add("Tempo de serviço");  
+				dinamicProperts.add("tempoServicoString");
+			}
+			else 
+			{
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
+			}
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
 			reportTitle = configuracaoRelatorioDinamico.getTitulo();
-			
-			dinamicColumns = new ArrayList<String>();
-			dinamicProperts = new ArrayList<String>();
-			montaColunas();
-			
-			if(agruparPorTempoServico){
-				colaboradores = colaboradorManager.insereGrupoPorTempoServico(colaboradores, tempoServicoIni, tempoServicoFim);
-				dinamicColumns.add("Tempo de serviço");  
-				dinamicProperts.add("intervaloTempoServico");
-			}
 			
 			for (String marcada : colunasMarcadas) 
 			{
@@ -866,14 +939,6 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColunasMarcadas(Collection<String> colunasMarcadas) {
 		this.colunasMarcadas = colunasMarcadas;
-	}
-
-	public Collection<DynaRecord> getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(Collection<DynaRecord> dataSource) {
-		this.dataSource = dataSource;
 	}
 
 	public void setParametros(Map<String, Object> parametros) {

@@ -1,135 +1,94 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="inscricao_eleicao"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="NoPages"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
-	<parameter name="COLABORADOR" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="MATRICULA" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="DATA" isForPrompting="false" class="java.util.Date"/>
-	<parameter name="DESCRICAO" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String"/>
-
-	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
-	</variable>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="194"  isSplitAllowed="true" >
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="7"
-						width="535"
-						height="67"
-						key="subreport-1"
-						isPrintRepeatedValues="false"/>
-					<subreportParameter  name="COLABORADOR">
-						<subreportParameterExpression><![CDATA[$P{COLABORADOR}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="MATRICULA">
-						<subreportParameterExpression><![CDATA[$P{MATRICULA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="EMPRESA">
-						<subreportParameterExpression><![CDATA[$P{EMPRESA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DATA">
-						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DESCRICAO">
-						<subreportParameterExpression><![CDATA[$P{DESCRICAO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CABECALHO">
-						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "inscricao_eleicao_sub.jasper"]]></subreportExpression>
-				</subreport>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="125"
-						width="535"
-						height="67"
-						key="subreport-2"
-						positionType="Float"
-						isPrintRepeatedValues="false"/>
-					<subreportParameter  name="COLABORADOR">
-						<subreportParameterExpression><![CDATA[$P{COLABORADOR}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="MATRICULA">
-						<subreportParameterExpression><![CDATA[$P{MATRICULA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="EMPRESA">
-						<subreportParameterExpression><![CDATA[$P{EMPRESA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DATA">
-						<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="DESCRICAO">
-						<subreportParameterExpression><![CDATA[$P{DESCRICAO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CABECALHO">
-						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "inscricao_eleicao_sub.jasper"]]></subreportExpression>
-				</subreport>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="100"
-						width="535"
-						height="0"
-						key="line-1"
-						positionType="Float"/>
-					<graphicElement stretchType="NoStretch" pen="Dotted"/>
-				</line>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="0"  isSplitAllowed="false" >
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inscricao_eleicao" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a71900e3-fa90-48ea-be72-09e696acdd06">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="COLABORADOR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="MATRICULA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="EMPRESA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DATA" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="DESCRICAO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="194" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement uuid="ed359572-1567-4fbe-b47a-75662266bb0c" key="subreport-1" isPrintRepeatedValues="false" x="0" y="7" width="535" height="67"/>
+				<subreportParameter name="COLABORADOR">
+					<subreportParameterExpression><![CDATA[$P{COLABORADOR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MATRICULA">
+					<subreportParameterExpression><![CDATA[$P{MATRICULA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATA">
+					<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DESCRICAO">
+					<subreportParameterExpression><![CDATA[$P{DESCRICAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "inscricao_eleicao_sub.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="false">
+				<reportElement uuid="14be8561-c1ed-4cbf-8d2b-e6572ad31d58" key="subreport-2" positionType="Float" isPrintRepeatedValues="false" x="0" y="125" width="535" height="67"/>
+				<subreportParameter name="COLABORADOR">
+					<subreportParameterExpression><![CDATA[$P{COLABORADOR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MATRICULA">
+					<subreportParameterExpression><![CDATA[$P{MATRICULA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATA">
+					<subreportParameterExpression><![CDATA[$P{DATA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DESCRICAO">
+					<subreportParameterExpression><![CDATA[$P{DESCRICAO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "inscricao_eleicao_sub.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement uuid="9d8a7663-6509-4161-943e-f7f8c73c6237" key="line-1" positionType="Float" x="0" y="100" width="535" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Prevent"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

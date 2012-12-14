@@ -1,224 +1,191 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="relatorio_presenca_estabelecimento"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="537"
-		 columnSpacing="0"
-		 leftMargin="29"
-		 rightMargin="29"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isFloatColumnFooter="true"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["./"]]></defaultValueExpression>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_presenca_estabelecimento" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="b234299d-7d83-4511-b2a0-379e188873ea">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="curso" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="turma" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="instrutor" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="dataPrevIni" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="dataPrevFim" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="enderecoEmpresa" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="cargaHoraria" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="periodo" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[$P{dataPrevIni}+" - "+$P{dataPrevFim}]]></defaultValueExpression>
+	<parameter name="curso" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="turma" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="instrutor" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dataPrevIni" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dataPrevFim" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="enderecoEmpresa" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cargaHoraria" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="periodo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{dataPrevIni}+" - "+$P{dataPrevFim}]]></defaultValueExpression>
 	</parameter>
-	<parameter name="CABECALHO" isForPrompting="false" class="com.fortes.rh.model.relatorio.Cabecalho"/>
-	<parameter name="horario" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="linha01" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="coluna02" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="coluna03" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="exibirNota" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="exibirCriteriosAvaliacao" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="exibirConteudoProgramatico" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="linha02" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="labelLinha01" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="labelLinha02" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="quebraPaginaEstabelecimento" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="exibirCnpj" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="exibirRazaoSocial" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="exibirEndereco" isForPrompting="false" class="java.lang.Boolean"/>
-
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="horario" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="linha01" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="coluna02" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="coluna03" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="exibirNota" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="exibirCriteriosAvaliacao" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="exibirConteudoProgramatico" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="linha02" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelLinha01" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelLinha02" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="quebraPaginaEstabelecimento" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="exibirCnpj" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="exibirRazaoSocial" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="exibirEndereco" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="data" class="java.lang.String"/>
 	<field name="colaboradorTurmas" class="java.lang.Object"/>
-
-	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
-	</variable>
-	<variable name="Numero_de_paginas" class="java.lang.Integer" resetType="Report" incrementType="Page" calculation="Nothing">
-	</variable>
-	<variable name="GROUP_PAGE_COUNT" class="java.lang.Integer" resetType="Group" incrementType="Page" resetGroup="listaPresenca" calculation="Count">
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
+	<variable name="Numero_de_paginas" class="java.lang.Integer" incrementType="Page"/>
+	<variable name="GROUP_PAGE_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="listaPresenca" incrementType="Page" calculation="Count">
 		<initialValueExpression><![CDATA[Integer.valueOf(0)]]></initialValueExpression>
 	</variable>
-
-		<group  name="listaPresenca" isStartNewPage="true" >
-			<groupExpression><![CDATA[$F{data}]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($V{listaPresenca_COUNT}.compareTo(new Integer(0)) > 0)]]></printWhenExpression>
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="17"  isSplitAllowed="true" >
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="3"
-						width="537"
-						height="14"
-						key="subreport-2"/>
-					<subreportParameter  name="REPORT_DATA_SOURCE">
-						<subreportParameterExpression><![CDATA[$F{colaboradorTurmas}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="SUBREPORT_DIR">
-						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="exibirNota">
-						<subreportParameterExpression><![CDATA[$P{exibirNota}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="coluna02">
-						<subreportParameterExpression><![CDATA[$P{coluna02}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="coluna03">
-						<subreportParameterExpression><![CDATA[$P{coluna03}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="data">
-						<subreportParameterExpression><![CDATA[$F{data}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="curso">
-						<subreportParameterExpression><![CDATA[$P{curso}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="periodo">
-						<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="linha01">
-						<subreportParameterExpression><![CDATA[$P{linha01}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="linha02">
-						<subreportParameterExpression><![CDATA[$P{linha02}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="turma">
-						<subreportParameterExpression><![CDATA[$P{turma}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="horario">
-						<subreportParameterExpression><![CDATA[$P{horario}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="instrutor">
-						<subreportParameterExpression><![CDATA[$P{instrutor}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="cargaHoraria">
-						<subreportParameterExpression><![CDATA[$P{cargaHoraria}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="CABECALHO">
-						<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="quebraPaginaEstabelecimento">
-						<subreportParameterExpression><![CDATA[$P{quebraPaginaEstabelecimento}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="labelLinha01">
-						<subreportParameterExpression><![CDATA[$P{labelLinha01}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="labelLinha02">
-						<subreportParameterExpression><![CDATA[$P{labelLinha02}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="exibirCnpj">
-						<subreportParameterExpression><![CDATA[$P{exibirCnpj}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="exibirRazaoSocial">
-						<subreportParameterExpression><![CDATA[$P{exibirRazaoSocial}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportParameter  name="exibirEndereco">
-						<subreportParameterExpression><![CDATA[$P{exibirEndereco}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/colaboradores_da_lista_de_presenca_estabelecimento.jasper"]]></subreportExpression>
-				</subreport>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="14"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="1"
-						y="2"
-						width="247"
-						height="12"
-						key="textField">
-							<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{enderecoEmpresa}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="316"
-						y="0"
-						width="186"
-						height="14"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="505"
-						y="0"
-						width="32"
-						height="14"
-						key="textField-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
-				</textField>
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+	<group name="listaPresenca" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{data}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean($V{listaPresenca_COUNT}.compareTo(new Integer(0)) > 0)]]></printWhenExpression>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement uuid="79b3ed45-76cc-4174-9655-6e9d835cb2c6" key="subreport-2" x="0" y="3" width="537" height="14"/>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$F{colaboradorTurmas}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exibirNota">
+					<subreportParameterExpression><![CDATA[$P{exibirNota}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="coluna02">
+					<subreportParameterExpression><![CDATA[$P{coluna02}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="coluna03">
+					<subreportParameterExpression><![CDATA[$P{coluna03}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="data">
+					<subreportParameterExpression><![CDATA[$F{data}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="curso">
+					<subreportParameterExpression><![CDATA[$P{curso}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="linha01">
+					<subreportParameterExpression><![CDATA[$P{linha01}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="linha02">
+					<subreportParameterExpression><![CDATA[$P{linha02}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="turma">
+					<subreportParameterExpression><![CDATA[$P{turma}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="horario">
+					<subreportParameterExpression><![CDATA[$P{horario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="instrutor">
+					<subreportParameterExpression><![CDATA[$P{instrutor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cargaHoraria">
+					<subreportParameterExpression><![CDATA[$P{cargaHoraria}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="quebraPaginaEstabelecimento">
+					<subreportParameterExpression><![CDATA[$P{quebraPaginaEstabelecimento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="labelLinha01">
+					<subreportParameterExpression><![CDATA[$P{labelLinha01}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="labelLinha02">
+					<subreportParameterExpression><![CDATA[$P{labelLinha02}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exibirCnpj">
+					<subreportParameterExpression><![CDATA[$P{exibirCnpj}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exibirRazaoSocial">
+					<subreportParameterExpression><![CDATA[$P{exibirRazaoSocial}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="exibirEndereco">
+					<subreportParameterExpression><![CDATA[$P{exibirEndereco}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/colaboradores_da_lista_de_presenca_estabelecimento.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="14" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="0936f70e-289b-4569-abac-6dd7f562448c" key="textField" x="1" y="2" width="247" height="12">
+					<printWhenExpression><![CDATA[new Boolean(false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enderecoEmpresa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="bff65394-00c5-4632-947d-5701b159a470" key="textField-1" x="316" y="0" width="186" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement uuid="fa3ffa22-63d5-44f9-ad6e-b1234ca47845" key="textField-2" x="505" y="0" width="32" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

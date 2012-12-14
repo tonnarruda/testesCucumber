@@ -41,14 +41,5 @@
 				<param name="height">200</param>
 			</result>
 		</action>
-		<action name="imprimir" class="com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction" method="imprimir">
-			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/indicadores_treinamentos.jasper</param>
-				<param name="dataSource">colecao</param>
-				<param name="parametersMap">parametros</param>
-			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/indicadorTreinamentoList.ftl</result>
-		</action>
-
 	</package>
 </xwork>

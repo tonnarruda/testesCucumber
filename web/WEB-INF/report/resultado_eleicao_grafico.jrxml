@@ -1,95 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="resultado_eleicao_grafico"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="529"
-		 pageHeight="802"
-		 columnWidth="529"
-		 columnSpacing="0"
-		 leftMargin="0"
-		 rightMargin="0"
-		 topMargin="0"
-		 bottomMargin="0"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="RESPOSTAS_GRAFICO" isForPrompting="false" class="java.util.Collection"/>
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[".\\"]]></defaultValueExpression>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultado_eleicao_grafico" pageWidth="529" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="529" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75618bb7-3d7f-4b55-96d4-0e9b22452a15">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="RESPOSTAS_GRAFICO" class="java.util.Collection" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EEE" isForPrompting="false" class="java.lang.Object"/>
-	<parameter name="VOTOS_TOTAL" isForPrompting="false" class="java.lang.Integer"/>
-
+	<parameter name="EEE" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="VOTOS_TOTAL" class="java.lang.Integer" isForPrompting="false"/>
 	<field name="percentualVotoFmt" class="java.lang.String"/>
 	<field name="candidato.nomeComercial" class="java.lang.String"/>
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="qtdVoto" class="java.lang.Integer"/>
-
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="217"  isSplitAllowed="true" >
-				<pie3DChart>
-					<chart isShowLegend="false"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="0"
-						y="0"
-						width="529"
-						height="217"
-						key="element-1"
-						isPrintInFirstWholeBand="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					</chart>
-					<pieDataset>
-						<dataset >
-						</dataset>
-						<keyExpression><![CDATA[$F{candidato.nome}]]></keyExpression>
-						<valueExpression><![CDATA[new Double(($F{qtdVoto}.doubleValue() / $P{VOTOS_TOTAL}.doubleValue())*100)]]></valueExpression>
-						<labelExpression><![CDATA[$F{candidato.nomeComercial} + " (" + $F{percentualVotoFmt} + "%)"]]></labelExpression>
-				<sectionHyperlink >
-				</sectionHyperlink>
-					</pieDataset>
-					<pie3DPlot isCircular="true" depthFactor="0.1" >
-						<plot backcolor="#FFFFFF" orientation="Horizontal" backgroundAlpha="0.8" foregroundAlpha="0.5" />
-					</pie3DPlot>
-				</pie3DChart>
-			</band>
-		</summary>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="217" splitType="Stretch">
+			<pie3DChart>
+				<chart isShowLegend="false">
+					<reportElement uuid="0656659a-7c9d-4ed6-8d75-7ae8b2c81fdc" key="element-1" mode="Opaque" x="0" y="0" width="529" height="217" isPrintInFirstWholeBand="true"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{candidato.nome}]]></keyExpression>
+					<valueExpression><![CDATA[new Double(($F{qtdVoto}.doubleValue() / $P{VOTOS_TOTAL}.doubleValue())*100)]]></valueExpression>
+					<labelExpression><![CDATA[$F{candidato.nomeComercial} + " (" + $F{percentualVotoFmt} + "%)"]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot backcolor="#FFFFFF" orientation="Horizontal" backgroundAlpha="0.0" foregroundAlpha="1.0"/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</summary>
 </jasperReport>
