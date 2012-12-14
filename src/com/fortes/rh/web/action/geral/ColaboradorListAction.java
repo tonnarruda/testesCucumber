@@ -340,7 +340,7 @@ public class ColaboradorListAction extends MyActionSupportList
             
             // Montagem do relatorio
             
-            Font arialBold = new Font(8, "Arial", true);
+            Font arialBold = new Font(8, "SansSerif", true);
             
 		    Style headerStyle = new Style();
 		    headerStyle.setBlankWhenNull(true);
