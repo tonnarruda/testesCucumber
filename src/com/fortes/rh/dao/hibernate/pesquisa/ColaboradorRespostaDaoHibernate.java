@@ -108,7 +108,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"left join hc.faixaSalarial as fs " +
 							"left join fs.cargo as ca " +
 							"where p.tipo = :tipoPergunta "+
-							"and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
+							"and (hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
+							"or hc.data is null) " +
 							"and cr.resposta.id is not null " +
 							wherePerguntas +
 							whereAreas +
@@ -193,7 +194,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		"left join fs.cargo as ca " +
 		"where p.tipo = :tipoPergunta "+
 		"and cr.resposta.id is not null " +
-		"and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
+		"and (hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
+		"or hc.data is null)  " +
 		wherePerguntas +
 		whereAreas +
 		whereCargos +
