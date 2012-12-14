@@ -78,7 +78,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradors.add(colaborador);
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		
 		Map retorno = colaboradorDWR.getByAreaEstabelecimentoEmpresas(null, null, empresa.getId(), new Long[]{}, null);
 		
