@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
@@ -77,6 +78,8 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 	private Boolean exibirProvidencia;
 	private boolean agruparPorColaborador = true;
 	
+	private Map situacaos = new SituacaoColaborador();
+
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -481,33 +484,43 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		this.empresaManager = empresaManager;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
+	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
-	public Boolean getCompartilharColaboradores() {
+	public Boolean getCompartilharColaboradores()
+	{
 		return compartilharColaboradores;
 	}
 
-	public Boolean getExibirProvidencia() {
+	public Boolean getExibirProvidencia()
+	{
 		return exibirProvidencia;
 	}
 
-	public void setExibirProvidencia(Boolean exibirProvidencia) {
+	public void setExibirProvidencia(Boolean exibirProvidencia)
+	{
 		this.exibirProvidencia = exibirProvidencia;
 	}
 
-	public void setEmpresas(Collection<Empresa> empresas) {
+	public void setEmpresas(Collection<Empresa> empresas)
+	{
 		this.empresas = empresas;
 	}
 
-	public boolean isAgruparPorColaborador() {
+	public boolean isAgruparPorColaborador()
+	{
 		return agruparPorColaborador;
 	}
 
-	public void setAgruparPorColaborador(boolean agruparPorColaborador) {
+	public void setAgruparPorColaborador(boolean agruparPorColaborador)
+	{
 		this.agruparPorColaborador = agruparPorColaborador;
 	}
 
-
+	public Map getSituacaos()
+	{
+		return situacaos;
+	}
 }

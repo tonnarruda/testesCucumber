@@ -102,7 +102,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findByIdComHistoricoConfirmados(Long colaboradorId);
 	public Colaborador findByIdComHistorico(Long colaboradorId);
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
-	public Collection<Colaborador> findAllSelect(Long... empresaIds);
+	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
 	
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception;
@@ -126,8 +126,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId);
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado);
-	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado);
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao);
 	public void validaQtdCadastros() throws Exception;
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId) throws Exception;

@@ -88,7 +88,6 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -1150,9 +1149,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findAllSelect(empresaId, ordenarPor);
 	}
 
-	public Collection<Colaborador> findAllSelect(Long... empresaIds)
+	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds)
 	{
-		return getDao().findAllSelect(empresaIds);
+		return getDao().findAllSelect(situacao, empresaIds);
 	}
 	
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado)
@@ -1488,9 +1487,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, Boolean desligado)
+	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao)
 	{
-		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, desligado);
+		return getDao().findByAreaOrganizacionalEstabelecimento(areaOrganizacionalIds, estabelecimentoIds, situacao);
 	}
 
 	public void validaQtdCadastros() throws Exception
@@ -2214,10 +2213,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
 
-	public Collection<Long> findIdsByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Boolean desligado) {
-		return getDao().findIdsByAreaOrganizacionalEstabelecimento(areaIds, estabelecimentoIds, desligado);
-	}
-	
 	public Collection<PendenciaAC> findPendencias(Long empresaId) {
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 
