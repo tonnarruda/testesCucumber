@@ -340,21 +340,21 @@ public class ColaboradorListAction extends MyActionSupportList
             
             // Montagem do relatorio
             
-            Font arialBold = new Font(8, "SansSerif", true);
+            Font SansSerif = new Font(8, "SansSerif", true);
             
 		    Style headerStyle = new Style();
 		    headerStyle.setBlankWhenNull(true);
-		    headerStyle.setFont(arialBold);
+		    headerStyle.setFont(SansSerif);
 		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
 		    
 		    Style detailStyle = new Style();
 		    detailStyle.setBlankWhenNull(true);
-		    detailStyle.setFont(new Font(8, "Arial", false));
+		    detailStyle.setFont(SansSerif);
 		    detailStyle.setVerticalAlign(VerticalAlign.TOP);
 		    detailStyle.setOverridesExistingStyle(true);
 		    
 		    Style style = new Style();
-		    style.setFont(arialBold);
+		    style.setFont(SansSerif);
 		    style.setHorizontalAlign(HorizontalAlign.LEFT);
 		    style.setVerticalAlign(VerticalAlign.MIDDLE);
 		    
@@ -365,6 +365,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		    
 		    Style oddDetailStyle = new Style();
 		    oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
+		    oddDetailStyle.setFont(SansSerif);
 		    
 		    DynamicReportBuilder drb = new DynamicReportBuilder();
 		    drb.setTemplateFile("../../WEB-INF/report/" + nomeRelatorio, true, true, true, true);
@@ -378,6 +379,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		    drb.setColumnSpace(4);
 		    drb.setOddRowBackgroundStyle(oddDetailStyle);
 		    drb.setPrintBackgroundOnOddRows(true);
+		    
             
 		    AbstractColumn aCol;
 		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
@@ -395,9 +397,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		    if(agruparPorTempoServico)
 		    {
 			    Style styleGroup = new Style();
-	            styleGroup.setFont(arialBold);
 	            styleGroup.setHorizontalAlign(HorizontalAlign.LEFT);
 	            styleGroup.setVerticalAlign(VerticalAlign.MIDDLE);
+	            styleGroup.setFont(SansSerif);
 	
 			    AbstractColumn columnTempoServico = ColumnBuilder.getNew()
 			            .setColumnProperty("tempoServicoString", String.class.getName())
@@ -413,9 +415,15 @@ public class ColaboradorListAction extends MyActionSupportList
 			    		.setGroupLayout(GroupLayout.VALUE_IN_HEADER)
 			    		.setAllowFooterSplit(true)
 			    		.setStartInNewPage(true)
+			    		.setDefaultColumnHeaderStyle(styleGroup)
+			    		.setDefaultFooterVariableStyle(styleGroup)
+			    		.setDefaultHeaderVariableStyle(styleGroup)
 			    		.build();
 			    
 			    g.setName("Tempo de Serviço");
+			    g.setDefaulFooterVariableStyle(styleGroup);
+			    g.setDefaulHeaderVariableStyle(styleGroup);
+			    g.setDefaultColumnHeaederStyle(styleGroup);
 			    
 			    drb.addGroup(g);
 		    }
