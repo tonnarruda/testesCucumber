@@ -19391,3 +19391,6 @@ insert into migrations values('20121205141501');--.go
 ALTER TABLE parametrosdosistema ADD COLUMN emailRemetente character varying(100);--.go
 insert into migrations values('20121210093742');--.go
 update parametrosdosistema set appversao = '1.1.95.95';--.go
+-- versao 1.1.95.96
+
+update parametrosdosistema set appversao = '1.1.95.96';--.go

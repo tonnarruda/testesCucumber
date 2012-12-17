@@ -18,13 +18,13 @@ Funcionalidade: Modelos de Fichas Médicas
     E eu preencho "Título" com "ficha1"
     E eu clico no botão "Avancar"
 
-    Então eu devo ver o título "Ficha médica - ficha1"
+    Então eu devo ver o título "Ficha Médica - ficha1"
     E eu clico no botão "Voltar"
     Então eu devo ver o título "Editar Modelo de Ficha Médica"
     E o campo "Título" deve conter "ficha1"
     E eu preencho "Título" com "ficha2"
     E eu clico no botão "Avancar"
-    Então eu devo ver o título "Ficha médica - ficha2"
+    Então eu devo ver o título "Ficha Médica - ficha2"
     E eu clico no botão "Voltar"
     E eu clico no botão "Cancelar"
     Então eu devo ver o título "Modelos de Fichas Médicas"
@@ -41,6 +41,6 @@ Funcionalidade: Modelos de Fichas Médicas
     Então eu não devo ver na listagem "ficha2 (Clone)"
 
     Então eu clico em excluir "ficha2"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
+    E eu devo ver o alert do confirmar e clico no ok
     E eu devo ver "Ficha Médica excluída com sucesso."
     Então eu não devo ver na listagem "ficha2"
