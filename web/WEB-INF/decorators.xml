@@ -20,7 +20,6 @@
 		<pattern>/captacao/candidato/infoCandidato.action*</pattern>	
 		<pattern>/captacao/candidatoSolicitacao/verHistoricoCandidato.action*</pattern>
 		<pattern>/geral/gastoEmpresaItem/**</pattern>
-		<pattern>/geral/areaOrganizacional/organograma.action*</pattern>
 		<pattern>/security/auditoria/viewAuditoria.action*</pattern>
 		<pattern>*prepareInsertFaixaPopup*</pattern>
 		<pattern>*prepareUpdateFaixaPopup*</pattern>

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -122,7 +123,55 @@ public class AreaOrganizacionalDWR
 		for (AreaOrganizacional area : areaOrganizacionals)
 			dados.add(new String[] { area.getNome(), area.getAreaMaeNome() });
 		
-		return StringUtil.toJSON(dados, null); 
+		return StringUtil.toJSON(dados, null);
+	}
+	
+	public String getByEmpresaJson2(Long empresaId, Long areaId) throws Exception
+	{
+		Collection<AreaOrganizacional> areaOrganizacionals 	= new ArrayList<AreaOrganizacional>();
+		Collection<AreaOrganizacional> areasAncestrais 		= new ArrayList<AreaOrganizacional>();
+		Collection<AreaOrganizacional> areasDescendentes 	= new ArrayList<AreaOrganizacional>();
+		
+		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(empresaId);
+		
+		if (areaId != null)
+		{
+			areasAncestrais = areaOrganizacionalManager.getAncestrais(areaOrganizacionals, areaId);
+			areasDescendentes = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, areaId, new ArrayList<AreaOrganizacional>());
+			
+			areaOrganizacionals.clear();
+			areaOrganizacionals.addAll(areasAncestrais);
+			areaOrganizacionals.addAll(areasDescendentes);
+		}
+
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+
+		if (areaOrganizacionals.isEmpty())
+			areaOrganizacionals.add(areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId));
+		
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, ((empresaId == null || empresaId < 0) ? "descricaoComEmpresaStatusAtivo" : "descricaoStatusAtivo"));
+		
+		Collection<AreaOrganizacionalOrganograma> dados = new ArrayList<AreaOrganizacionalOrganograma>();
+		
+		for (AreaOrganizacional area : areaOrganizacionals)
+		{
+			if (area.getAreaMae() == null || area.getAreaMae().getId() == null)
+				dados.add(new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), " ", "subordinate"));
+		}
+		
+		Collection<AreaOrganizacional> filhas = new ArrayList<AreaOrganizacional>();
+		for (AreaOrganizacionalOrganograma area : dados)
+		{
+			area.setChildren(new ArrayList<AreaOrganizacionalOrganograma>());
+
+			filhas = areaOrganizacionalManager.getDescendentes(areaOrganizacionals, Long.valueOf(area.getId()), new ArrayList<AreaOrganizacional>());
+			
+			for (AreaOrganizacional areaFilha : filhas)
+				area.getChildren().add(new AreaOrganizacionalOrganograma(areaFilha.getId().toString(), areaFilha.getNome(), " ", "subordinate"));
+		}
+		
+		return StringUtil.toJSON(dados, null);
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
