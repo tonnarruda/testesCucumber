@@ -267,10 +267,14 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		hql.append("                                             from IndiceHistorico hi2 ");
 		hql.append("                                             where hi2.indice.id = i.id ");
 		hql.append("                                              and hi2.data <= hf.data) ");
-		hql.append("where hf.data = (select max(fsh2.data)");
-		hql.append("                  from FaixaSalarialHistorico fsh2 ");
-		hql.append("                  where fsh2.faixaSalarial.id = f.id ");
-		hql.append("                  and fsh2.data <= :data) ");
+		hql.append("where true = true ");
+		
+		if(data != null) {
+			hql.append("and hf.data = (select max(fsh2.data)");
+			hql.append("               from FaixaSalarialHistorico fsh2 ");
+			hql.append("               where fsh2.faixaSalarial.id = f.id ");
+			hql.append("               and fsh2.data <= :data) ");
+		}
 
 		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
 			hql.append("and go.id in (:grupoOcupacionals) ");
@@ -285,7 +289,8 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 		Query query = getSession().createQuery(hql.toString());
 
-		query.setParameter("data", data);
+		if(data != null)
+			query.setParameter("data", data);
 
 		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
 			query.setParameterList("grupoOcupacionals", grupoOcupacionals, Hibernate.LONG);

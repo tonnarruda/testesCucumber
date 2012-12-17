@@ -560,6 +560,11 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().getCargosSemAreaRelacionada(empresaId);
 	}
 
+	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId) 
+	{
+		return getDao().getCargosSemGrupoRelacionado(empresaId);
+	}
+
 	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId) 
 	{
 		return getDao().findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
@@ -594,4 +599,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
+
+	
 }
