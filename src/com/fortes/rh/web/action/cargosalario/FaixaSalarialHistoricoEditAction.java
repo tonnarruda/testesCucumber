@@ -58,7 +58,6 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	private Date data;
 	
 	private Map<String, Object> parametros;
-
 	
 	private void prepare() throws Exception
 	{
@@ -99,6 +98,28 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
+	public String prepareRelatorioHistoricoFaixaSalarial() throws Exception
+	{
+		empresaId = getEmpresaSistema().getId();
+		
+		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome"), "getId", "getNome");
+		
+		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
+		
+		return Action.SUCCESS;
+	}
+
+	public String relatorioHistoricoFaixaSalarial() throws Exception
+	{
+		faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, null);
+		parametros = RelatorioUtil.getParametrosRelatorio("Análise de Tabela Salarial", getEmpresaSistema(), "");
+		return Action.SUCCESS;
+	}
+	
 	public String analiseTabelaSalarialList() throws Exception
 	{
 		try
@@ -316,5 +337,4 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	public Map<String, Object> getParametros() {
 		return parametros;
 	}
-
 }
