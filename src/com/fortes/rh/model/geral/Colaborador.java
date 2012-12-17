@@ -2160,11 +2160,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (this.empresa != null)
 		{
 			descricao.append(this.empresa.getNome());
-			
-			if(StringUtils.isEmpty(this.nomeComercial))
-				descricao.append(" - " + "(Sem Nome Comercial) " + this.nome);
-			else
-				descricao.append(" - " + this.nomeComercial);
+			descricao.append(" - " + getNomeMaisNomeComercial());
 		}
 		
 		return descricao.toString();
