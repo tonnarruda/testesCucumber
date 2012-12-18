@@ -276,6 +276,9 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		Date data1 = DateUtil.criarDataMesAno(01, 11, 2008);
 		Date data2 = DateUtil.criarDataMesAno(01, 12, 2008);
 
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
 		GrupoOcupacional grupoOcupacional1 = GrupoOcupacionalFactory.getGrupoOcupacional();
 		grupoOcupacional1 = grupoOcupacionalDao.save(grupoOcupacional1);
 
@@ -287,10 +290,12 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 
 		Cargo cargo1 = CargoFactory.getEntity();
 		cargo1.setGrupoOcupacional(grupoOcupacional1);
+		cargo1.setEmpresa(empresa);
 		cargo1 = cargoDao.save(cargo1);
 
 		Cargo cargo2Fora = CargoFactory.getEntity();
 		cargo2Fora.setGrupoOcupacional(grupoOcupacional2);
+		cargo2Fora.setEmpresa(empresa);
 		cargo2Fora = cargoDao.save(cargo2Fora);
 
 		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
@@ -325,7 +330,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistorico3.setIndice(indice);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1, Boolean.FALSE);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1, Boolean.FALSE, empresa.getId());
 
 		assertEquals(1, retorno.size());
 	}
@@ -358,6 +363,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		grupoIds.add(grupoOcupacional1.getId());
 
 		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setEmpresa(empresa);
 		cargo1.setAreasOrganizacionais(new ArrayList<AreaOrganizacional>());
 		cargo1.getAreasOrganizacionais().add(areaOrganizacional1);
 		cargo1.getAreasOrganizacionais().add(areaOrganizacional2);
@@ -366,6 +372,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		cargo1 = cargoDao.save(cargo1);
 
 		Cargo cargo2Fora = CargoFactory.getEntity();
+		cargo2Fora.setEmpresa(empresa);
 		cargo2Fora.setGrupoOcupacional(grupoOcupacional2);
 		cargo2Fora = cargoDao.save(cargo2Fora);
 
@@ -405,7 +412,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		areaIds.add(areaOrganizacional1.getId());
 		areaIds.add(areaOrganizacional2.getId());
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1, Boolean.FALSE);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1, Boolean.FALSE, empresa.getId());
 
 		assertEquals(1, retorno.size());
 	}
