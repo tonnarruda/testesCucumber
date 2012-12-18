@@ -90,6 +90,7 @@ import com.fortes.rh.model.dicionario.NaturezaExame;
 import com.fortes.rh.model.dicionario.NivelIdioma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.Reajuste;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SexoCadastro;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -559,6 +560,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new MotivoHistoricoColaborador());
 		cobreGetSet(new NaturezaExame());
 		cobreGetSet(new NivelIdioma());
+		cobreGetSet(new Reajuste());
 //		cobreGetSet(new OperacaoAuditoria());
 		cobreGetSet(new OrigemAnexo());
 		cobreGetSet(new OrigemCandidato());

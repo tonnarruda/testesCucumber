@@ -1,0 +1,1 @@
+alter table tabelareajustecolaborador add column tiporeajuste character(1) default 'C' not null;

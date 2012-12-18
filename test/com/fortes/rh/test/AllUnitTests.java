@@ -11,6 +11,7 @@ import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
+import com.fortes.rh.model.dicionario.NivelIdioma;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
@@ -321,6 +322,7 @@ import com.fortes.rh.test.dicionario.MotivoSolicitacaoExameTest;
 import com.fortes.rh.test.dicionario.NivelIdiomaTest;
 import com.fortes.rh.test.dicionario.OperacaoTest;
 import com.fortes.rh.test.dicionario.OrigemCandidatoTest;
+import com.fortes.rh.test.dicionario.ReajusteTest;
 import com.fortes.rh.test.dicionario.SexoTest;
 import com.fortes.rh.test.dicionario.SituacaoColaboradorTest;
 import com.fortes.rh.test.dicionario.SituacaoFormacaoTest;
@@ -1233,6 +1235,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(OperacaoTest.class);
         suite.addTestSuite(MeioComunicacaoTest.class);
         suite.addTestSuite(EnviarParaTest.class);
+        suite.addTestSuite(NivelIdiomaTest.class);
+        suite.addTestSuite(ReajusteTest.class);
 
         //EXCEPTIONS
         suite.addTestSuite(ColecaoVaziaExceptionTest.class);

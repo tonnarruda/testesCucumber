@@ -46,6 +46,7 @@ public abstract class GenericDaoHibernateTest<T> extends BaseDaoHibernateTest
 		T entity = getEntity();
 		entity = getGenericDao().save(entity);
 		Long id = getIdFrom(entity);
+		
 
 		getGenericDao().update(entity);
 
