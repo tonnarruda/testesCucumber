@@ -154,7 +154,7 @@
 					<textElement textAlignment="Left">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Faixa]]></text>
+				<text><![CDATA[Faixa Salarial]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
