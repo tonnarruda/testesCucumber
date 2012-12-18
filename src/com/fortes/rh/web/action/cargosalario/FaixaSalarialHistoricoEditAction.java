@@ -115,8 +115,8 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public String relatorioHistoricoFaixaSalarial() throws Exception
 	{
-		faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, null);
-		parametros = RelatorioUtil.getParametrosRelatorio("Análise de Tabela Salarial", getEmpresaSistema(), "");
+		faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, null, Boolean.FALSE);
+		parametros = RelatorioUtil.getParametrosRelatorio("Históricos das Faixas Salariais", getEmpresaSistema(), "");
 		return Action.SUCCESS;
 	}
 	
@@ -124,7 +124,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	{
 		try
 		{
-			faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, data);
+			faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, data, Boolean.TRUE);
 			cargos = cargoManager.getCargosFromFaixaSalarialHistoricos(faixaSalarialHistoricos);
 		}
 		catch (Exception e)

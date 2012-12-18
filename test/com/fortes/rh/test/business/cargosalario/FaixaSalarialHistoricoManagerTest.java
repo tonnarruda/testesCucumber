@@ -12,6 +12,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -486,9 +487,9 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricos.add(faixaSalarialHistorico1);
 		faixaSalarialHistoricos.add(faixaSalarialHistorico2);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data1.getTime())).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data1.getTime()), eq(Boolean.FALSE)}).will(returnValue(faixaSalarialHistoricos));
 
-		assertNotNull(faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data1.getTime()));
+		assertNotNull(faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data1.getTime(), Boolean.FALSE));
 	}
 
 	public void testFindByGrupoDataException()
@@ -500,12 +501,12 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		
 		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data)).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data), eq(Boolean.FALSE)}).will(returnValue(faixaSalarialHistoricos));
 
 		Exception exception = null;
 		try
 		{
-			faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data);
+			faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data, Boolean.FALSE);
 		}
 		catch (Exception e)
 		{

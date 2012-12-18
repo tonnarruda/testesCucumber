@@ -42,7 +42,7 @@
 		</action>		
 		<action name="relatorioHistoricoFaixaSalarial" class="com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction" method="relatorioHistoricoFaixaSalarial">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/analise_tabela_salarial.jasper</param>
+				<param name="location">WEB-INF/report/historico_faixa_salarial.jasper</param>
 				<param name="dataSource">faixaSalarialHistoricos</param>
 				<param name="parametersMap">parametros</param>
 			</result>

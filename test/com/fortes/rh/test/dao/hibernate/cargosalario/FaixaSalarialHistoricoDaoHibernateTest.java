@@ -325,7 +325,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistorico3.setIndice(indice);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1, Boolean.FALSE);
 
 		assertEquals(1, retorno.size());
 	}
@@ -405,7 +405,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		areaIds.add(areaOrganizacional1.getId());
 		areaIds.add(areaOrganizacional2.getId());
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1, Boolean.FALSE);
 
 		assertEquals(1, retorno.size());
 	}
