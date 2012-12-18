@@ -93,8 +93,7 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="aplicar();" class="btnGravar">
-		</button>
+		<button onclick="aplicar();" class="btnGravar"></button>
 	</div>
 
 	<script type='text/javascript'>
