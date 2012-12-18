@@ -12,6 +12,7 @@ import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
@@ -93,7 +94,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areasCheck);
 			Collection<Long> cargos = LongUtil.arrayStringToCollectionLong(cargosCheck);
 				
-			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), null, null, null, null, null, null, null);
+			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), null, null, null, null, null, null, null, SituacaoColaborador.ATIVO);
 			if(dataSource == null || dataSource.isEmpty())
 			{
 				ResourceBundle bundle = ResourceBundle.getBundle("application");

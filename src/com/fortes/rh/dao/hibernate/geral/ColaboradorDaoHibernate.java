@@ -1089,11 +1089,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, Collection<Long> cargoIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
+			Collection<Long> areaOrganizacionalIds, Collection<Long> cargoIds, CamposExtras camposExtras, Long empresaId, String order, 
+			Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
-				"co.nomeComercial, co.matricula, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.pessoal.estadoCivil,  " +
+				"co.nomeComercial, co.matricula, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.pessoal.estadoCivil,  " +
 				"co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
@@ -1136,8 +1137,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		) ");
 		hql.append("	 	or hc1.data is null ");
 		hql.append("	) ");
-		hql.append("	and co.desligado = :desligado ");
 		hql.append("	and hc1.status = :status ");
+		
+		if(situacao != null && !situacao.equals(SituacaoColaborador.TODOS))
+			hql.append("	and co.desligado = :desligado ");
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			hql.append("	and co.pessoal.sexo = :sexo ");
@@ -1228,8 +1231,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		// Parâmetros
 		query.setDate("hoje", new Date());
-		query.setBoolean("desligado", false);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(situacao != null && !situacao.equals(SituacaoColaborador.TODOS))
+			query.setBoolean("desligado", situacao.equals("D"));
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			query.setString("sexo", sexo);

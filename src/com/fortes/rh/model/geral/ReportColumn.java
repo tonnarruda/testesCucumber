@@ -34,6 +34,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Nome", "nome", "co.nome", 150, true));
 		columns.add(new ReportColumn("Nome Comercial", "nomeComercial", "co.nomeComercial", 150, true));
 		columns.add(new ReportColumn("Matrícula", "matricula", "co.matricula", 40, false));
+		columns.add(new ReportColumn("Status", "desligadoDescricao", "co.desligado", 40, false));
 		columns.add(new ReportColumn("Empresa", "empresaNome", "emp.nome", 80, false));
 		columns.add(new ReportColumn("Estabelecimento", "estabelecimentoNome", "es.nome", 120, false));
 		columns.add(new ReportColumn("Área Organizacional", "areaOrganizacional.nome", "co.areaOrganizacional.nome", 120, false));

@@ -22,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -579,7 +580,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	public Colaborador(
 						String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
-						String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
 						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -602,6 +603,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
+		this.desligado = BooleanUtils.toBoolean(desligado);
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
@@ -685,7 +687,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public Colaborador(
 			String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
-			String nomeComercial,  String matricula, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
 			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -713,6 +715,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
+		this.desligado = BooleanUtils.toBoolean(desligado);
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
@@ -2257,6 +2260,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			nomeMatricula += " (Desligado)";
 		
 		return nomeMatricula;
+	}
+	
+	@NaoAudita
+	public String getDesligadoDescricao()
+	{
+		if(desligado)
+			return "Desligado";
+		else
+			return "Ativo";
 	}
 
 	public Collection<SolicitacaoExame> getSolicitacaoExames()
