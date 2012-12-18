@@ -15,7 +15,7 @@ public class Reajuste extends LinkedHashMap
 	{
 		put(COLABORADOR, "Colaborador");
 		put(CARGO, "Cargo");
-		put(INDICE, "indice");
+		put(INDICE, "Índice");
 	}
 	
 	public String getReajusteDescricao(char reajuste)

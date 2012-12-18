@@ -55,7 +55,9 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private String filtro = "0";
 	private Double valorTotalFolha;
 	
-	private Map tipoReajustes;
+	private Map tipoReajustes = new Reajuste();
+	@SuppressWarnings("unused")
+	private String tipoReajusteString;
 
 	private void prepare() throws Exception
 	{
@@ -63,8 +65,6 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		{
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
 		}
-		
-		tipoReajustes = new Reajuste();
 	}
 
 	public String prepareInsert() throws Exception
@@ -102,6 +102,8 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		reajustes = reajusteColaboradorUtil.sortCollectionStringIgnoreCase(reajustes, "areaOrganizacionalProposta.descricao");
 
 		valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaborador.getData());
+		
+		tipoReajusteString = new Reajuste().getReajusteDescricao(tabelaReajusteColaborador.getTipoReajuste());
 		
 		return Action.SUCCESS;
 	}
@@ -360,8 +362,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	public Map getTipoReajustes() {
 		return tipoReajustes;
 	}
-
-	public void setTipoReajustes(Map tipoReajustes) {
-		this.tipoReajustes = tipoReajustes;
+	public String getTipoReajusteString() {
+		return tipoReajusteString;
 	}
 }
