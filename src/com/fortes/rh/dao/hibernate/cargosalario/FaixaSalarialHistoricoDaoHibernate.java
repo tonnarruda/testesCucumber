@@ -253,7 +253,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return query.list();
 	}
 	
-	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente)
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new FaixaSalarialHistorico(hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, i.nome, hi.valor, hi.data, c.id, c.nome, f.id, f.nome) ");
@@ -284,6 +284,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			hql.append("and a.id in (:areaIds) ");
+		
+		if(empresaId != null)
+			hql.append("and c.empresa.id = :empresaId ");
 
 		hql.append("order by c.nome, f.nome, hf.data ");
 		
@@ -303,6 +306,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		return query.list();
 	}

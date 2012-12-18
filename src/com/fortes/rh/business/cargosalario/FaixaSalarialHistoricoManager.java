@@ -28,7 +28,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	Double findUltimoHistoricoFaixaSalarial(Long faixaSalarialId);
 	FaixaSalarialHistorico findByHistoricoFaixaSalarial(Long faixaSalarialId);
 	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima);
-	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente) throws Exception;
+	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente, Long empresaId) throws Exception;
 	boolean verifyHistoricoIndiceNaData(Date data, Long indiceId);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);
 	@Audita(operacao="Remoção", auditor=FaixaSalarialHistoricoAuditorCallbackImpl.class)
