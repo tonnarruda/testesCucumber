@@ -435,4 +435,25 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		return  StringUtil.converteCollectionToString(query.list());
 	}
+
+	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) 
+	{
+		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
+		criteria.createCriteria("fs.cargo", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fs.id"), "id");
+		p.add(Projections.property("fs.nome"), "nome");
+		p.add(Projections.property("c.nome"), "nomeCargo");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("c.id", cargosIds));
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("fs.nome"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+
+		return criteria.list();
+	}
 }

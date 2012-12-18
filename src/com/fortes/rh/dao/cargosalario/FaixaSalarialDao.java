@@ -30,4 +30,5 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
 	String findCodigoACDuplicado(Long empresaId);
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId);
+	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 }

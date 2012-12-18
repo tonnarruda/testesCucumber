@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Reajuste Coletivo/Dissídio</title>
+	<title>Reajuste Coletivo/Dissídio para Colaboradores</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 	<script type='text/javascript'>

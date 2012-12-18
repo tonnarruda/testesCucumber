@@ -362,7 +362,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	}
 
 	public String findCodigoACDuplicado(Long empresaId) {
-		// TODO Auto-generated method stub
 		return getDao().findCodigoACDuplicado(empresaId);
+	}
+
+	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) {
+		return getDao().findByCargos(cargosIds);
 	}
 }

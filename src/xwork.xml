@@ -252,6 +252,7 @@
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-GrupoOcupacional.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-HistoricoColaborador.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-ReajusteColaborador.xml" />
+  <include file="/com/fortes/rh/web/action/cargosalario/xwork-ReajusteFaixaSalarial.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-TabelaReajusteColaborador.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-ReajusteRelatorio.xml" />
   <include file="/com/fortes/rh/web/action/cargosalario/xwork-FaixaSalarial.xml" />
