@@ -238,7 +238,6 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		assertEquals(0, segundaFaixaSalarial.getCompetencias().size());		
 	}
 	
-	
 	public void testFindByCargos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -264,11 +263,9 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		faixaSalarial3.setCargo(cargo2);
 		faixaSalarialDao.save(faixaSalarial3);
 		
-		Collection<Long> cargoIds = new ArrayList<Long>();
-		cargoIds.add(cargo1.getId());
-		cargoIds.add(cargo2.getId());
-		
-		assertEquals(3, faixaSalarialDao.findByCargos(cargoIds).size());
+		assertEquals(3, faixaSalarialDao.findByCargos(new Long[] {cargo1.getId(), cargo2.getId()}).size());
+		assertEquals(2, faixaSalarialDao.findByCargos(new Long[] {cargo1.getId()}).size());
+		assertEquals(1, faixaSalarialDao.findByCargos(new Long[] {cargo2.getId()}).size());
 	}
 
     public void testVerifyExistsNomeByCargo()

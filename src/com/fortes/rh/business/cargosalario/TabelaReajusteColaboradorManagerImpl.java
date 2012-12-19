@@ -16,6 +16,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
@@ -49,12 +50,12 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId)
 	{
-		return getDao().findAllSelect(empresaId, TODAS);
+		return getDao().findAllSelect(empresaId, TipoReajuste.COLABORADOR, TODAS);
 	}
 
-	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId)
+	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste)
 	{
-		return getDao().findAllSelect(empresaId, NAO_APROVADA);
+		return getDao().findAllSelect(empresaId, tipoReajuste, NAO_APROVADA);
 	}
 
 	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors)

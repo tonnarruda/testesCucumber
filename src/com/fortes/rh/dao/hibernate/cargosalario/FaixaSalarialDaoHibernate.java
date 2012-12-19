@@ -334,20 +334,27 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return faixaSalarials;
 		
 	}
-
-	public Collection<Long> findByCargos(Collection<Long> cargoIds)
+	
+	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) 
 	{
 		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
 		criteria.createCriteria("fs.cargo", "c");
-		
+
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("fs.id"), "id");
+		p.add(Projections.property("fs.nome"), "nome");
+		p.add(Projections.property("c.nome"), "nomeCargo");
 		criteria.setProjection(p);
+
+		if (cargosIds != null && cargosIds.length > 0)
+			criteria.add(Expression.in("c.id", cargosIds));
 		
-		criteria.add(Expression.in("c.id", cargoIds));
-		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("fs.nome"));
+
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+
 		return criteria.list();
 	}
 
@@ -421,7 +428,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return criteria.list();	
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
+	public String findCodigoACDuplicado(Long empresaId) 
+	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select fs.codigoAC from FaixaSalarial as fs "); 
 		hql.append("inner join fs.cargo as c ");
@@ -434,26 +442,5 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		query.setLong("empresaId", empresaId);
 
 		return  StringUtil.converteCollectionToString(query.list());
-	}
-
-	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) 
-	{
-		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
-		criteria.createCriteria("fs.cargo", "c");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("fs.id"), "id");
-		p.add(Projections.property("fs.nome"), "nome");
-		p.add(Projections.property("c.nome"), "nomeCargo");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.in("c.id", cargosIds));
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.addOrder(Order.asc("fs.nome"));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
-
-		return criteria.list();
 	}
 }

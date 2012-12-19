@@ -170,6 +170,7 @@ function getArrayCheckeds(frm, nameCheck)
 
 	return result;
 }
+
 function addChecks(divName, dados, onClick)
 {
 	var result = "";
@@ -207,6 +208,25 @@ function addChecksArray(divName, dados, onClick)
 		}
 	}
 	
+	var obj = document.getElementById('listCheckBox'+ divName);
+	obj.innerHTML = result;
+}
+
+function addChecksByCollection(divName, dados, label, onClick)
+{
+	var result = "";
+	var addOnClick = "";
+
+	if (onClick != null && onClick != "")
+		addOnClick = "onClick='"+ onClick +"'";
+
+	for (var prop in dados)
+	{
+		result += "<label for=\"checkGroup"+ divName + dados[prop]['id'] +"\" >";
+		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\">" + dados[prop][label];
+    	result += "</label><br>";
+	}
+
 	var obj = document.getElementById('listCheckBox'+ divName);
 	obj.innerHTML = result;
 }

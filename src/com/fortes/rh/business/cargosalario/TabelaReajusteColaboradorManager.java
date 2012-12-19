@@ -33,7 +33,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId);
 
-	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId);
+	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste);
 
 	public Integer getCount(Long empresaId);
 

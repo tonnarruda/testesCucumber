@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -80,7 +81,7 @@ public class ColaboradorReportAction extends MyActionSupport
 
         areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 
-        tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId());
+        tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.COLABORADOR);
 
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		gruposCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");

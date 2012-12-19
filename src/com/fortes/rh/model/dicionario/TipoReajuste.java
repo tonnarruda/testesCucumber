@@ -2,17 +2,27 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class TipoReajuste extends LinkedHashMap 
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public class TipoReajuste extends LinkedHashMap
 {
-	public static final String PORCENTAGEM = "P";
-	public static final String VALOR = "V";
-	
-	@SuppressWarnings("unchecked")
-	public TipoReajuste() 
+	private static final long serialVersionUID = 4151982962011616197L;
+
+	public static final char COLABORADOR = 'C';
+	public static final char FAIXA_SALARIAL = 'F';
+	public static final char INDICE = 'I';
+
+	public TipoReajuste()
 	{
-		super();
-		put(PORCENTAGEM, "%");
-		put(VALOR, "R$");
+		put(COLABORADOR, "Colaborador");
+		put(FAIXA_SALARIAL, "Faixa Salarial");
+		put(INDICE, "Índice");
+	}
+	
+	public static String getReajusteDescricao(Character tipoReajuste)
+	{
+		if (tipoReajuste == null)
+			return "";
+		
+		return (String) new TipoReajuste().get((tipoReajuste));
 	}
 }
-

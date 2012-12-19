@@ -16,8 +16,8 @@ import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
-import com.fortes.rh.model.dicionario.Reajuste;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -55,9 +55,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private String filtro = "0";
 	private Double valorTotalFolha;
 	
-	private Map tipoReajustes = new Reajuste();
-	@SuppressWarnings("unused")
-	private String tipoReajusteString;
+	private Map tipoReajustes = new TipoReajuste();
 
 	private void prepare() throws Exception
 	{
@@ -102,8 +100,6 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		reajustes = reajusteColaboradorUtil.sortCollectionStringIgnoreCase(reajustes, "areaOrganizacionalProposta.descricao");
 
 		valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaborador.getData());
-		
-		tipoReajusteString = new Reajuste().getReajusteDescricao(tabelaReajusteColaborador.getTipoReajuste());
 		
 		return Action.SUCCESS;
 	}
@@ -361,8 +357,5 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 
 	public Map getTipoReajustes() {
 		return tipoReajustes;
-	}
-	public String getTipoReajusteString() {
-		return tipoReajusteString;
 	}
 }

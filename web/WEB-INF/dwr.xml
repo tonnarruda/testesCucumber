@@ -153,6 +153,10 @@
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
 		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
+		<convert converter="bean" match="com.fortes.rh.model.cargosalario.FaixaSalarial">
+			<param name="include" value="id, descricao"/>
+		</convert>
+		
 		<!-- CAPTACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>

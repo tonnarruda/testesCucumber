@@ -23,6 +23,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -105,7 +106,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
 
-		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L);
+		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L, TipoReajuste.COLABORADOR);
 
 		assertEquals(tabelaReajusteColaboradors.size(), retorno.size());
 	}

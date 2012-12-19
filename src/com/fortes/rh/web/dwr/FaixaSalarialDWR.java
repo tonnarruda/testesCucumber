@@ -3,6 +3,7 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -60,12 +61,9 @@ public class FaixaSalarialDWR
 		return faixaSalarialManager.findByCargo(cargoId);
 	}
 
-	@SuppressWarnings("unchecked")
-	public Map<Long, String> getByCargos(String[] cargoIds)
+	public Collection<FaixaSalarial> getByCargos(String[] cargoIds)
 	{
-		Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds)); 
-		
-		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixas, "getId", "getDescricao");
+		return faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
 	}
 
 //	public Map getCidades(String ufId)

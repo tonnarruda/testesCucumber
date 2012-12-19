@@ -2,14 +2,14 @@ package com.fortes.rh.test.dicionario;
 
 import junit.framework.TestCase;
 
-import com.fortes.rh.model.dicionario.Reajuste;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 
 public class ReajusteTest extends TestCase
 {
 	public void testMap()
 	{
-		Reajuste reajuste = new Reajuste();
+		TipoReajuste tipoReajuste = new TipoReajuste();
 	
-		assertEquals(3, reajuste.size());
+		assertEquals(3, tipoReajuste.size());
 	}
 }

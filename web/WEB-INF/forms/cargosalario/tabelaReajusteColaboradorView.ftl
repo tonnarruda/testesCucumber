@@ -53,8 +53,8 @@
 
 	<#if tabelaReajusteColaborador.id?exists>
 		<p>Promoção/Reajuste<br> <b>${tabelaReajusteColaborador.nome}</b></p>
-		<p>A Partir de<br> <b>${tabelaReajusteColaborador.data}</b></p>
-		<p>A Tipo de Reajuste:<br> <b>${tipoReajusteString}</b></p>
+		<p>A partir de<br> <b>${tabelaReajusteColaborador.data}</b></p>
+		<p>Tipo de Reajuste:<br> <b>${tabelaReajusteColaborador.tipoReajusteDescricao}</b></p>
 		<br />
 
 		<#include "../util/topFiltro.ftl" />
@@ -85,7 +85,7 @@
 	</#if>
 
 	<@ww.div id="divColab">
-		<#include "../cargoSalario/tabelaReajusteColaborador.ftl" />
+		<#include "tabelaReajusteColaborador.ftl" />
 	</@ww.div>
 
 	<div class="buttonGroup">

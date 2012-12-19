@@ -24,7 +24,6 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC, String grupoAC);
 	public void updateNomeECargo(Long faixaSalarialId, Long cargoId, String faixaNome);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
-	Collection<Long> findByCargos(Collection<Long> cargoIds);
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);

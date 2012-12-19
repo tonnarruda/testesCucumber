@@ -33,7 +33,8 @@
 			</#if>
 		</@display.column>
 		<@display.column property="nome" title="Promoção/Reajuste"/>
-		<@display.column property="data" title="Data de Aplicação" format="{0,date,dd/MM/yyyy}"/>
+		<@display.column property="tipoReajusteDescricao" title="Tipo de Reajuste" style="width:120px;"/>
+		<@display.column property="data" title="Data de Aplicação" format="{0,date,dd/MM/yyyy}" style="width:120px;text-align:center;"/>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
