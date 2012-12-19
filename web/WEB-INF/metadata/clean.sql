@@ -1,3 +1,4 @@
+update parametrosdosistema set appcontext='/fortesrh', appurl = 'http://127.0.0.1:8080/fortesrh';
 update empresabds set email='samuelpinheiro@entetecnologia.com.br';
 update candidato set email='samuelpinheiro@entetecnologia.com.br';
 update colaborador set email='samuelpinheiro@entetecnologia.com.br';
