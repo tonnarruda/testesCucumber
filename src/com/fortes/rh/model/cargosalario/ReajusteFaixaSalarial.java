@@ -14,6 +14,8 @@ import com.fortes.model.AbstractModel;
 public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 {
 	@ManyToOne
+	private FaixaSalarial faixaSalarial;
+	@ManyToOne
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	private Integer tipoAtual;
 	private Integer tipoProposto;
@@ -80,5 +82,11 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 	}
 	public void setValorProposto(Double valorProposto) {
 		this.valorProposto = valorProposto;
+	}
+	public FaixaSalarial getFaixaSalarial() {
+		return faixaSalarial;
+	}
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
+		this.faixaSalarial = faixaSalarial;
 	}
 }

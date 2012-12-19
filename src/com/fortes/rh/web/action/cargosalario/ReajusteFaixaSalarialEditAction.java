@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -16,7 +18,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 {
 	private CargoManager cargoManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	
+	private FaixaSalarialManager faixaSalarialManager;
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
@@ -35,7 +37,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
-	public String aplicarDissidio() throws Exception
+	public String insertColetivo() throws Exception
 	{
 		return Action.SUCCESS;
 	}
@@ -78,5 +80,9 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 
 	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager) {
 		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
+	}
+
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
 	}
 }
