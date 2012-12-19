@@ -193,6 +193,150 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		assertEquals(2, colaboradorAfastamentoManager.getCountAfastamentosImportados().intValue());
 	}
 	
+	public void testPossuiAfastamentoNestePeriodoDuasDatasFalse() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		colabAfastamentoExistente.setFim(DateUtil.criarDataMesAno(05, 12, 2012));
+
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(03, 12, 2012));
+		colabAfastamentoNovo.setFim(DateUtil.criarDataMesAno(04, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+
+		assertFalse(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+
+	public void testPossuiAfastamentoNestePeriodoDuasDataTrue() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		colabAfastamentoExistente.setFim(DateUtil.criarDataMesAno(05, 12, 2012));
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(06, 12, 2012));
+		colabAfastamentoNovo.setFim(DateUtil.criarDataMesAno(07, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+		
+		assertTrue(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+	
+	public void testPossuiAfastamentoNestePeriodoUmaDataTrue() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		colabAfastamentoExistente.setFim(DateUtil.criarDataMesAno(05, 12, 2012));
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(06, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+		
+		assertTrue(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+
+	public void testPossuiAfastamentoNestePeriodoUmaDatafalse() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		colabAfastamentoExistente.setFim(DateUtil.criarDataMesAno(05, 12, 2012));
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(03, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+		
+		assertFalse(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+	
+	public void testPossuiAfastamentoNestePeriodoUmaData2True() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(03, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+		
+		assertTrue(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+	
+	public void testPossuiAfastamentoNestePeriodoUmaData2False() throws Exception
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setId(1L);
+		
+		ColaboradorAfastamento colabAfastamentoExistente = new ColaboradorAfastamento();
+		colabAfastamentoExistente.setAfastamentoDescricao("Existente");
+		colabAfastamentoExistente.setColaborador(colab);
+		colabAfastamentoExistente.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
+		colaboradorAfastamentos.add(colabAfastamentoExistente);
+		
+		ColaboradorAfastamento colabAfastamentoNovo = new ColaboradorAfastamento();
+		colabAfastamentoNovo.setColaborador(colab);
+		colabAfastamentoNovo.setAfastamentoDescricao("Novo");
+		colabAfastamentoNovo.setInicio(DateUtil.criarDataMesAno(01, 12, 2012));
+		
+		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(colabAfastamentoNovo.getColaborador().getId())).will(returnValue(colaboradorAfastamentos));
+		
+		assertFalse(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colabAfastamentoNovo, false));
+	}
+	
 	public void testFindByColaborador()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("findByColaborador").with(eq(1000L)).will(returnValue(new ArrayList<ColaboradorAfastamento>()));
