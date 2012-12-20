@@ -142,7 +142,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<AutoCompleteVO> data;
 	private String descricao;
 	private String json;
-	
+
 	public String find() throws Exception
 	{
 		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
@@ -379,7 +379,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao);
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception

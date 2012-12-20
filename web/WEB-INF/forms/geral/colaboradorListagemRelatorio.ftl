@@ -316,9 +316,9 @@
 			</li>
 		</#if>
 		
-		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos"  />
-		
-		<@ww.select id="deficiencia" label="Deficiência" name="deficiencia" list=r"#{'1':'Todas', '2':'Somente Deficientes', '3':'Sem Deficiência'}" />
+		<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 160px;"/>
+		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos" cssStyle="width: 160px;" />
+		<@ww.select label="Deficiência" id="deficiencia" name="deficiencia" list=r"#{'1':'Todas', '2':'Somente Deficientes', '3':'Sem Deficiência'}" cssStyle="width: 160px;"/>
 		
 		<fieldset class="fieldsetPadrao" style="width:578px; margin-bottom: 10px;">
 			<legend>Tempo de Serviço</legend>

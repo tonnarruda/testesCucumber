@@ -81,6 +81,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		action.setColaboradorAfastamento(afastamento);
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDeAfastamento").withAnyArguments().isVoid();
 		manager.expects(once()).method("save").with(eq(afastamento)).will(returnValue(afastamento));
+		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(false)).will(returnValue(true));
 
 		assertEquals("success", action.insert());
 	}
@@ -91,6 +92,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("save").with(eq(afastamento)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		colaboradorManager.expects(once()).method("findByNomeCpfMatricula");
+		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(false)).will(returnValue(true));
 
 		assertEquals("input", action.insert());
 	}
@@ -101,6 +103,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		action.setColaboradorAfastamento(afastamento);
 
 		manager.expects(once()).method("update").with(eq(afastamento)).isVoid();
+		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(true)).will(returnValue(true));
 
 		assertEquals("success", action.update());
 	}
@@ -110,6 +113,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		action.setColaboradorAfastamento(afastamento);
 
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("possuiAfastamentoNestePeriodo").with(eq(afastamento), eq(true)).will(returnValue(true));
 
 		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(afastamento));
 		afastamentoManager.expects(once()).method("findAll");

@@ -57,11 +57,21 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorAfastamentoManager.save(colaboradorAfastamento);
-			gerenciadorComunicacaoManager.enviaAvisoDeAfastamento(colaboradorAfastamento.getId(), getEmpresaSistema());
-			addActionMessage("Afastamento gravado com sucesso.");
+			if(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colaboradorAfastamento, false))
+			{
+				colaboradorAfastamentoManager.save(colaboradorAfastamento);
+				gerenciadorComunicacaoManager.enviaAvisoDeAfastamento(colaboradorAfastamento.getId(), getEmpresaSistema());
+				addActionMessage("Afastamento gravado com sucesso.");
 
-			return SUCCESS;
+				return SUCCESS;
+			}else
+			{
+				addActionMessage("O colaborador já possui um afastamento que compreende este período.");
+				filtrarColaboradores();
+
+				return INPUT;
+			}
+				
 		}
 		catch (Exception e)
 		{
@@ -75,8 +85,17 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			colaboradorAfastamentoManager.update(colaboradorAfastamento);
-			addActionMessage("Afastamento gravado com sucesso.");
+			if(colaboradorAfastamentoManager.possuiAfastamentoNestePeriodo(colaboradorAfastamento, true))
+			{
+				colaboradorAfastamentoManager.update(colaboradorAfastamento);
+				addActionMessage("Afastamento gravado com sucesso.");
+			}else
+			{
+				addActionMessage("O colaborador já possui um afastamento que compreende este período.");
+				prepare();
+
+				return INPUT;
+			}
 
 			return SUCCESS;
 		}
