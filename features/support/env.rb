@@ -50,7 +50,7 @@ end
 
 def exec_sql sql
   begin
-    conn = PGconn.connect( :dbname => $db_name, :user => 'postgres')
+    conn = PGconn.connect( :dbname => $db_name, :user => 'postgres', :host => 'localhost')
     conn.exec(sql)
   ensure
     conn.finish if conn
