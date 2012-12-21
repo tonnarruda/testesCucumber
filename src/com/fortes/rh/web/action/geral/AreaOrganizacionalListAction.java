@@ -41,6 +41,17 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String organograma() throws Exception
+	{
+		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
+		
+		return Action.SUCCESS;
+	}
+	
 	public String imprimirLista() throws Exception
 	{
 		getAreasOrdenadas();
@@ -57,26 +68,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareOrganograma() throws Exception
+	private void getAreasOrdenadas() throws Exception 
 	{
-		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
-		
-		return Action.SUCCESS;
-	}
-
-	public String organograma() throws Exception
-	{
-		if (areaId != null)
-			areaOrganizacional = areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId);
-		
-		return Action.SUCCESS;
-	}
-	
-	private void getAreasOrdenadas() throws Exception {
 		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
 		
 		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
