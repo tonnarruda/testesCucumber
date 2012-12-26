@@ -85,7 +85,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql = new StringBuilder("select sub.* ");
 
 		sql.append("from ( ");
-		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, se.data, ca.nome as nomeCargo, (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 where sei2.solicitacaoepi_id = se.id) as qtdSolicitado, coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, se.data, ca.nome as nomeCargo,  "); 
+		sql.append("(select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
+		sql.append("left join solicitacaoepiitementrega seie2 on seie2.solicitacaoepiitem_id=sei2.id "); 
+		sql.append("left join epihistorico ehist2 on ehist2.id=seie2.epihistorico_id ");
+		sql.append("left join epi e2 on e2.id=ehist2.epi_id "); 
+		sql.append("where sei2.solicitacaoepi_id = se.id "); 
+
+		if (tipoEpi != null)
+			sql.append("and e2.tipoepi_id = :tipoEpi ");
+		
+		sql.append(") as qtdSolicitado,  "); 
+		sql.append("coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
 		sql.append("from solicitacaoepi as se ");
 		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
 		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
