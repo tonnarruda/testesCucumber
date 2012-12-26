@@ -57,6 +57,7 @@ public class ClinicaAutorizadaEditActionTest extends MockObjectTestCase
 		action.setClinicaAutorizada(clinicaAutorizada);
 
 		manager.expects(once()).method("findById").with(eq(clinicaAutorizada.getId())).will(returnValue(clinicaAutorizada));
+		manager.expects(atLeastOnce()).method("findTipoOutrosDistinctByEmpresa").withAnyArguments();
 		Collection<Exame> exames = new ArrayList<Exame>();
 		exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(exames));
 
@@ -72,6 +73,7 @@ public class ClinicaAutorizadaEditActionTest extends MockObjectTestCase
     	action.setClinicaAutorizada(clinicaAutorizada);
 
     	manager.expects(atLeastOnce()).method("findById").with(eq(clinicaAutorizada.getId())).will(returnValue(clinicaAutorizada));
+    	manager.expects(atLeastOnce()).method("findTipoOutrosDistinctByEmpresa").withAnyArguments();
     	Collection<Exame> exames = new ArrayList<Exame>();
 		exameManager.expects(atLeastOnce()).method("findAllSelect").with(ANYTHING).will(returnValue(exames));
     	assertEquals(action.prepareUpdate(), "success");

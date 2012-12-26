@@ -45,6 +45,7 @@
 	<field name="clinicaTelefone" class="java.lang.String"/>
 	<field name="clinicaHorario" class="java.lang.String"/>
 	<field name="contExames" class="java.lang.Integer"/>
+	<field name="clinicaTipoDescricao" class="java.lang.String"/>
 
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Report" calculation="Count">
 	</variable>
@@ -134,20 +135,6 @@
 				<staticText>
 					<reportElement
 						x="3"
-						y="52"
-						width="35"
-						height="14"
-						key="staticText-2"
-						isRemoveLineWhenBlank="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font pdfFontName="Helvetica" size="10" isBold="false"/>
-					</textElement>
-				<text><![CDATA[Clínica:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="3"
 						y="114"
 						width="28"
 						height="14"
@@ -187,11 +174,11 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Solicitamos o(s) "+ $F{contExames} + " exame(s) complementar(es) abaixo:"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="38"
+						x="3"
 						y="52"
-						width="246"
+						width="281"
 						height="14"
 						key="textField-4"
 						isRemoveLineWhenBlank="true">
@@ -201,7 +188,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="10" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clinicaNome}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{clinicaTipoDescricao} + ": " +$F{clinicaNome}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -298,7 +285,8 @@
 						y="67"
 						width="257"
 						height="14"
-						key="textField-11"/>
+						key="textField-11"
+						positionType="Float"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
 						<font pdfFontName="Helvetica" size="10" isBold="false"/>
@@ -406,6 +394,7 @@
 						width="24"
 						height="14"
 						key="staticText-10"
+						positionType="Float"
 						isRemoveLineWhenBlank="true"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>

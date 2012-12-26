@@ -1,0 +1,1 @@
+alter table clinicaautorizada add column outro character varying(50);--.go

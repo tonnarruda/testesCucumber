@@ -39,7 +39,7 @@
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpArea" calculation="Count">
 		<variableExpression><![CDATA[$F{colaboradorNome}]]></variableExpression>
 	</variable>
-	<variable name="subTotalColaborador" class="java.lang.Long" resetType="Group" resetGroup="grpArea" calculation="DistinctCount">
+	<variable name="subTotalColaborador" class="java.lang.Long" resetType="Group" resetGroup="grpArea" calculation="Count">
 		<variableExpression><![CDATA[$F{colaboradorNome}]]></variableExpression>
 	</variable>
 	<variable name="totalColaborador" class="java.lang.Long" resetType="Report" calculation="Count">
