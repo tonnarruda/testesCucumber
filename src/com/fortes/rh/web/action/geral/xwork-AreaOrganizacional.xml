@@ -51,5 +51,8 @@
 		<action name="organograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="organograma">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalOrganograma.ftl</result>
 		</action>
+		<action name="downloadOrganograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="downloadOrganograma">
+			<result name="success" type="redirect">organograma.action</result>
+		</action>
 	</package>
 </xwork>

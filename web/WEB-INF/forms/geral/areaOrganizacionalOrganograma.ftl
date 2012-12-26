@@ -14,8 +14,13 @@
 		.buttonGroup { display: none }
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/lib_gg_orgchart/raphael-min.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/lib_gg_orgchart/lib_gg_orgchart_v041.js"/>'></script>
+	<!--[if IE]>
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/raphael/flashcanvas.js"/>"></script>
+	<![endif]-->
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/raphael/raphael-min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/raphael/lib_gg_orgchart_v041.js"/>'></script>
+	
+	<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
 	<script type='text/javascript' src='http://canvg.googlecode.com/svn/trunk/canvg.js'></script>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
@@ -69,9 +74,10 @@
 				
 				$('#organogramaAreas').show('fast', 
 											function() { 
-												oc_render(); 
-												$('.buttonGroup').show();
+												oc_render();
 												$('text').filter(function() { return $.text([this]) == $('#areaOrganizacional option:selected').text().split('>').pop().trim(); }).css('font-weight','bold'); 
+												if (!$.browser.msie)
+													$('.buttonGroup').show();
 											});
 
 			} catch (e) { console.log(e); }
@@ -82,19 +88,20 @@
 			var chartArea = document.getElementById('organogramaAreas');
 		
 			var configuracaoPadrao = 'left=20,top=20,width=' + chartArea.offsetWidth + ',height=' + chartArea.offsetHeight + ',toolbar=0,scrollbars=1,status=0';
-			var WinPrint = window.open('','', configuracaoPadrao);
+			var winPrint = window.open('','', configuracaoPadrao);
 		
-			WinPrint.document.write("<img src='" + getImgData() + "' width='670'/>");
+			winPrint.document.write("<img src='" + getImgData() + "' style='max-width:800px'/>");
 		
-			WinPrint.document.close();
-			WinPrint.focus();
-			WinPrint.print();
-			WinPrint.setTimeout(function() { WinPrint.close(); }, 3000);
+			winPrint.document.close();
+			winPrint.focus();
+			winPrint.print();
+			winPrint.setTimeout(function() { WinPrint.close(); }, 3000);
 		}
 		
 		function download()
 		{
-			AreaOrganizacionalDWR.downloadOrganograma( getImgData() );
+			$('#organograma').val(getImgData());
+			$('#downloadForm').submit();
 		}
 		
 		function getImgData() 
@@ -125,9 +132,13 @@
 
 	<div id="organogramaAreas"></div>
 	
+	<form name="downloadForm" id="downloadForm" action="downloadOrganograma.action" method="post">
+		<input type="hidden" name="organograma" id="organograma"/>
+	</form>
+	
 	<div class="buttonGroup">
 		<button class="btnImprimir" onclick="imprimir();"></button>
-		<button class="btnGravar" onclick="download();"></button>
+		<button class="btnDownload" onclick="download();"></button>
 	</div>
 </body>
 </html>

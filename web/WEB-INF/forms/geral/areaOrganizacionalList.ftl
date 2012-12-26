@@ -60,9 +60,9 @@
 	</@display.table>
 
 	<div class="buttonGroup">
-		<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
+		<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
 		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
+		<button type="button"class="btnOrganograma" onclick="window.location='organograma.action'" accesskey="O"></button>
 	</div>
 </body>
 </html>

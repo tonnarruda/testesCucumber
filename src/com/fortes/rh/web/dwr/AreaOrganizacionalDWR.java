@@ -1,32 +1,17 @@
 package com.fortes.rh.web.dwr;
 
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.codec.binary.Base64;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-
-import uk.ltd.getahead.dwr.WebContextFactory;
-
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
-import com.opensymphony.webwork.ServletActionContext;
 
 public class AreaOrganizacionalDWR
 {
@@ -167,22 +152,6 @@ public class AreaOrganizacionalDWR
 				areaOrg.getChildren().add(areaOrgFilha);
 			}
 		}
-	}
-	
-	public void downloadOrganograma(String imagemStr) throws IOException
-	{
-		String imagem = imagemStr.substring(imagemStr.indexOf(',') + 1);
-		
-		byte[] imgBytes = Base64.decodeBase64(imagem.getBytes());
-
-		BufferedImage bufImg = ImageIO.read(new ByteArrayInputStream(imgBytes));
-		//File imgOutFile = new File("/home/rubensgadelha/Downloads/organograma.png");
-		
-		HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
-		OutputStream os = response.getOutputStream();
-		ImageIO.write(bufImg, "png", os);
-
-		os.flush();
 	}
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
