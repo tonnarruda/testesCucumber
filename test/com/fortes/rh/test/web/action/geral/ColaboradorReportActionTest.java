@@ -17,6 +17,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
@@ -86,7 +87,7 @@ public class ColaboradorReportActionTest extends MockObjectTestCase
 	{
 	 	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(null));
 	 	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(null));
-	 	tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING).will(returnValue(null));
+	 	tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING, eq(TipoReajuste.COLABORADOR)).will(returnValue(null));
 	 	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(null));
 	 	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(null));
 
@@ -135,7 +136,7 @@ public class ColaboradorReportActionTest extends MockObjectTestCase
 
 		estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(null));
-		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING).will(returnValue(null));
+		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING, eq(TipoReajuste.COLABORADOR)).will(returnValue(null));
 		grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(null));
 		cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(null));
 

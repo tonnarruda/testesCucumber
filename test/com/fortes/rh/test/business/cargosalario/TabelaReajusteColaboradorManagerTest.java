@@ -93,7 +93,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	{
 		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 
-		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
+		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
 
 		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelect(1L);
 
@@ -104,7 +104,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	{
 		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 
-		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
+		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
 
 		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L, TipoReajuste.COLABORADOR);
 

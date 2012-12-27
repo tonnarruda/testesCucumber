@@ -3,13 +3,16 @@ package com.fortes.rh.web.dwr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoAplicacaoReajuste;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.web.tags.CheckBox;
 
 
 public class FaixaSalarialDWR
@@ -61,9 +64,30 @@ public class FaixaSalarialDWR
 		return faixaSalarialManager.findByCargo(cargoId);
 	}
 
-	public Collection<FaixaSalarial> getByCargos(String[] cargoIds)
+	public Collection<CheckBox> getByCargosDesabilitandoPorIndice(String[] cargoIds)
 	{
-		return faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
+		CheckBox checkBox = null;
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariais)
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(faixaSalarial.getId());
+			checkBox.setNome(faixaSalarial.getDescricao());
+			checkBox.setDesabilitado(true);
+			
+			if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Essa faixa salarial não possui histórico");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
+				checkBox.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
 	}
 
 //	public Map getCidades(String ufId)

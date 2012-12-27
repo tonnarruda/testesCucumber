@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
@@ -337,25 +338,30 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 	
 	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) 
 	{
-		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
-		criteria.createCriteria("fs.cargo", "c");
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarial(fs.id, fs.nome, c.id, c.nome, hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, hi.valor, hi.data) ");
+		hql.append("from FaixaSalarial fs ");
+		hql.append("inner join fs.cargo c ");
+		hql.append("left join fs.faixaSalarialHistoricos hf with hf.data = (select max(hf2.data) ");
+		hql.append("                                            from FaixaSalarialHistorico hf2 ");
+		hql.append("                                           where hf2.faixaSalarial.id = fs.id ");
+		hql.append("                                            and hf2.data <= :hoje ");
+		hql.append("											and	hf2.status = :status) ");
+		hql.append("left join hf.indice i ");
+		hql.append("left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                            from IndiceHistorico hi2 ");
+		hql.append("                                           where hi2.indice.id = i.id ");
+		hql.append("                                             and hi2.data <= :hoje) ");
+		hql.append("where c.id in (:cargosIds) ");
+		hql.append("order by c.nome, fs.nome ");
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("fs.id"), "id");
-		p.add(Projections.property("fs.nome"), "nome");
-		p.add(Projections.property("c.nome"), "nomeCargo");
-		criteria.setProjection(p);
+		Query query = getSession().createQuery(hql.toString());
 
-		if (cargosIds != null && cargosIds.length > 0)
-			criteria.add(Expression.in("c.id", cargosIds));
-		
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.addOrder(Order.asc("fs.nome"));
+		query.setDate("hoje", new Date());
+		query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
-
-		return criteria.list();
+		return query.list();
 	}
 
 	public void updateAC(TCargo tCargo)

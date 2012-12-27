@@ -14,12 +14,12 @@
 			var cargosIds = getArrayCheckeds(document.forms[0],'cargosCheck');
 			if (cargosIds.length == 0)
 				cargosIds = [-1];
-			FaixaSalarialDWR.getByCargos(createListFaixas, cargosIds);
+			FaixaSalarialDWR.getByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
 		}
 		
 		function createListFaixas(data)
 		{
-			addChecksByCollection('faixasCheck', data, 'descricao');
+			addChecksByCollection('faixasCheck', data);
 		}
 	</script>
 </head>

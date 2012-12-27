@@ -212,18 +212,25 @@ function addChecksArray(divName, dados, onClick)
 	obj.innerHTML = result;
 }
 
-function addChecksByCollection(divName, dados, label, onClick)
+function addChecksByCollection(divName, dados, onClick)
 {
 	var result = "";
 	var addOnClick = "";
+	var selecionado = '';
+	var desabilitado = '';
+	var titulo = '';
 
 	if (onClick != null && onClick != "")
 		addOnClick = "onClick='"+ onClick +"'";
 
 	for (var prop in dados)
 	{
+		selecionado = dados[prop]['selecionado'] ? 'checked="checked"' : '';
+		desabilitado = dados[prop]['desabilitado'] ? 'disabled="disabled"' : '';
+		titulo = dados[prop]['titulo'] ? 'title="' + dados[prop]['titulo'] + '"' : '';
+		
 		result += "<label for=\"checkGroup"+ divName + dados[prop]['id'] +"\" >";
-		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\">" + dados[prop][label];
+		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\" " + titulo + " " + selecionado + " " + desabilitado + " />" + dados[prop]['nome'];
     	result += "</label><br>";
 	}
 
