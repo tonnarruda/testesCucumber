@@ -28,65 +28,111 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 	private Double valorAtual;
 	private Double valorProposto;
 	
-	public TabelaReajusteColaborador getTabelaReajusteColaborador() {
+	public void setProjectionTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId) 
+	{
+		if (this.tabelaReajusteColaborador == null)
+			this.tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		
+		this.tabelaReajusteColaborador.setId(tabelaReajusteColaboradorId);
+	}	
+	
+	public TabelaReajusteColaborador getTabelaReajusteColaborador() 
+	{
 		return tabelaReajusteColaborador;
 	}
-	public void setTabelaReajusteColaborador(
-			TabelaReajusteColaborador tabelaReajusteColaborador) {
+	
+	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador) 
+	{
 		this.tabelaReajusteColaborador = tabelaReajusteColaborador;
 	}
-	public Integer getTipoAtual() {
+	
+	public Integer getTipoAtual() 
+	{
 		return tipoAtual;
 	}
-	public void setTipoAtual(Integer tipoAtual) {
+	
+	public void setTipoAtual(Integer tipoAtual) 
+	{
 		this.tipoAtual = tipoAtual;
 	}
-	public Integer getTipoProposto() {
+	
+	public Integer getTipoProposto() 
+	{
 		return tipoProposto;
 	}
-	public void setTipoProposto(Integer tipoProposto) {
+	
+	public void setTipoProposto(Integer tipoProposto) 
+	{
 		this.tipoProposto = tipoProposto;
 	}
-	public Indice getIndiceAtual() {
+	
+	public Indice getIndiceAtual() 
+	{
 		return indiceAtual;
 	}
-	public void setIndiceAtual(Indice indiceAtual) {
+	
+	public void setIndiceAtual(Indice indiceAtual) 
+	{
 		this.indiceAtual = indiceAtual;
 	}
-	public Indice getIndiceProposto() {
+	
+	public Indice getIndiceProposto() 
+	{
 		return indiceProposto;
 	}
-	public void setIndiceProposto(Indice indiceProposto) {
+	
+	public void setIndiceProposto(Indice indiceProposto) 
+	{
 		this.indiceProposto = indiceProposto;
 	}
-	public Double getQtdIndiceAtual() {
+	
+	public Double getQtdIndiceAtual() 
+	{
 		return qtdIndiceAtual;
 	}
-	public void setQtdIndiceAtual(Double qtdIndiceAtual) {
+	
+	public void setQtdIndiceAtual(Double qtdIndiceAtual) 
+	{
 		this.qtdIndiceAtual = qtdIndiceAtual;
 	}
-	public Double getQtdIndiceProposta() {
+	
+	public Double getQtdIndiceProposta() 
+	{
 		return qtdIndiceProposta;
 	}
-	public void setQtdIndiceProposta(Double qtdIndiceProposta) {
+	
+	public void setQtdIndiceProposta(Double qtdIndiceProposta) 
+	{
 		this.qtdIndiceProposta = qtdIndiceProposta;
 	}
-	public Double getValorAtual() {
+	
+	public Double getValorAtual() 
+	{
 		return valorAtual;
 	}
-	public void setValorAtual(Double valorAtual) {
+	
+	public void setValorAtual(Double valorAtual) 
+	{
 		this.valorAtual = valorAtual;
 	}
-	public Double getValorProposto() {
+	
+	public Double getValorProposto() 
+	{
 		return valorProposto;
 	}
-	public void setValorProposto(Double valorProposto) {
+	
+	public void setValorProposto(Double valorProposto) 
+	{
 		this.valorProposto = valorProposto;
 	}
-	public FaixaSalarial getFaixaSalarial() {
+	
+	public FaixaSalarial getFaixaSalarial() 
+	{
 		return faixaSalarial;
 	}
-	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
+	
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial) 
+	{
 		this.faixaSalarial = faixaSalarial;
 	}
 }

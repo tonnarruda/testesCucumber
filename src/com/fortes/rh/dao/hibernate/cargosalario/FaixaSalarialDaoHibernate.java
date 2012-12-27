@@ -159,6 +159,33 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		return (FaixaSalarial) query.uniqueResult();
 	}
+	
+	public Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarial(fs.id, hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, hi.valor, hi.data) ");
+		hql.append("from FaixaSalarial fs ");
+		hql.append("left join fs.faixaSalarialHistoricos hf with hf.data = (select max(hf2.data) ");
+		hql.append("                                            from FaixaSalarialHistorico hf2 ");
+		hql.append("                                           where hf2.faixaSalarial.id = fs.id ");
+		hql.append("                                            and hf2.data <= :hoje ");
+		hql.append("											and	hf2.status = :status) ");
+		hql.append("left join hf.indice i ");
+		hql.append("left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                            from IndiceHistorico hi2 ");
+		hql.append("                                           where hi2.indice.id = i.id ");
+		hql.append("                                             and hi2.data <= :hoje) ");
+		hql.append("where fs.id in (:faixasSalariaisIds) ");
+		hql.append("order by fs.id ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("hoje", new Date());
+		query.setParameterList("faixasSalariaisIds", faixasSalariaisIds, Hibernate.LONG);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		return query.list();
+	}
 
 	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId)
 	{

@@ -5,4 +5,5 @@ import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 
 public interface ReajusteFaixaSalarialManager extends GenericManager<ReajusteFaixaSalarial>
 {
+	void insertColetivo(Long tabelaReajusteColaboradorId, Long[] faixasSalariaisIds, char dissidioPor, double valorDissidio) throws Exception;
 }

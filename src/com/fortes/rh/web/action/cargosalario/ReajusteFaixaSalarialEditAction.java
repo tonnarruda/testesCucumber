@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
-import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoReajuste;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -18,7 +18,8 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 {
 	private CargoManager cargoManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
-	private FaixaSalarialManager faixaSalarialManager;
+	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
 	
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
@@ -27,6 +28,9 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();	
 	private String[] faixasCheck;
 	private Collection<CheckBox> faixasCheckList = new ArrayList<CheckBox>();
+	
+	private char dissidioPor;
+	private Double valorDissidio;
 	
 	public String prepareDissidio() throws Exception
 	{
@@ -39,6 +43,21 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 
 	public String insertColetivo() throws Exception
 	{
+		try
+		{
+			reajusteFaixaSalarialManager.insertColetivo(tabelaReajusteColaborador.getId(), LongUtil.arrayStringToArrayLong(faixasCheck), dissidioPor, valorDissidio);
+			addActionMessage("Propostas de reajuste gravadas com sucesso");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao gravar as propostas de reajuste coletivo");
+		}
+		finally
+		{
+			prepareDissidio();
+		}
+
 		return Action.SUCCESS;
 	}
 	
@@ -50,6 +69,10 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		return faixasCheckList;
 	}
 
+	public String[] getCargosCheck() {
+		return cargosCheck;
+	}
+	
 	public void setCargosCheck(String[] cargosCheck) {
 		this.cargosCheck = cargosCheck;
 	}
@@ -82,7 +105,23 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
 	}
 
-	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
-		this.faixaSalarialManager = faixaSalarialManager;
+	public char getDissidioPor() {
+		return dissidioPor;
+	}
+
+	public void setDissidioPor(char dissidioPor) {
+		this.dissidioPor = dissidioPor;
+	}
+
+	public Double getValorDissidio() {
+		return valorDissidio;
+	}
+
+	public void setValorDissidio(Double valorDissidio) {
+		this.valorDissidio = valorDissidio;
+	}
+
+	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
+		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
 	}
 }

@@ -28,16 +28,17 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<@ww.form name="form" action="insertColetivo.action" method="post">
+	<@ww.form name="form" id="form" action="insertColetivo.action" method="POST">
 		<@ww.select label="Tabela de Reajuste" name="tabelaReajusteColaborador.id" id="tabelaReajuste" list="tabelaReajusteColaboradors" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" required="true" cssStyle="width:500px;"/>
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" onClick="populaFaixas();"/>
 		<@frt.checkListBox name="faixasCheck" id="faixasCheck" label="Faixas Salariais*" list="faixasCheckList" />
-		<@ww.select id="optFiltro" label="Reajuste por" name="dissidioPor" list=r"#{'1':'Porcentagem sobre o salario atual(%)', '2':'Valor adicionado ao salário(R$)'}" liClass="liLeft" required="true"/>
+		<@ww.select id="dissidioPor" label="Reajuste por" name="dissidioPor" list=r"#{'1':'Porcentagem sobre o salario atual(%)', '2':'Valor adicionado ao salário(R$)'}" liClass="liLeft" required="true"/>
 		<@ww.textfield label="" name="valorDissidio" id="valorDissidio" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12"/>
+		
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="validaFormulario('form', ['@cargosCheck','@faixasCheck','valorDissidio'], ['valorDissidio']);" class="btnGravar"></button>
+		<button onclick="return validaFormulario('form', ['tabelaReajuste', '@cargosCheck','@faixasCheck','valorDissidio'], ['valorDissidio']);" class="btnGravar"></button>
 	</div>
 </body>
 </html>

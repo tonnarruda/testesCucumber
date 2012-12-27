@@ -43,4 +43,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	void deleteFaixaSalarial(Long[] faixaIds) throws Exception;
 	String findCodigoACDuplicado(Long empresaId);
 	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
+	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
 }

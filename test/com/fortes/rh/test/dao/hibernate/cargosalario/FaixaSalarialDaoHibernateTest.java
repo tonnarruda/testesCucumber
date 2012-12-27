@@ -11,6 +11,8 @@ import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
+import com.fortes.rh.dao.cargosalario.IndiceDao;
+import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.captacao.Competencia;
@@ -20,7 +22,10 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
@@ -30,12 +35,16 @@ import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarial>
 {
     private FaixaSalarialDao faixaSalarialDao;
     private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+    private IndiceDao indiceDao;
+    private IndiceHistoricoDao indiceHistoricoDao;
     private CargoDao cargoDao;
     private EmpresaDao empresaDao;
     private GrupoACDao grupoACDao;
@@ -355,6 +364,57 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 
         assertEquals(faixaSalarial.getId(), retorno.getId());
     }
+    
+    public void testFindComHistoricoAtual()
+    {
+    	Date hoje = new Date();
+    	
+    	FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+    	faixaSalarialDao.save(faixa1);
+
+    	FaixaSalarialHistorico histFaixa1 = FaixaSalarialHistoricoFactory.getEntity();
+    	histFaixa1.setFaixaSalarial(faixa1);
+    	histFaixa1.setData(DateUtil.retornaDataDiaAnterior(hoje));
+    	histFaixa1.setStatus(StatusRetornoAC.CONFIRMADO);
+    	faixaSalarialHistoricoDao.save(histFaixa1);
+    	
+    	FaixaSalarialHistorico histFaixa1AtualMasCancelado = FaixaSalarialHistoricoFactory.getEntity();
+    	histFaixa1AtualMasCancelado.setFaixaSalarial(faixa1);
+    	histFaixa1AtualMasCancelado.setData(hoje);
+    	histFaixa1AtualMasCancelado.setStatus(StatusRetornoAC.CANCELADO);
+    	faixaSalarialHistoricoDao.save(histFaixa1AtualMasCancelado);
+
+    	FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+    	faixaSalarialDao.save(faixa2);
+    	
+    	Indice indice = IndiceFactory.getEntity();
+    	indiceDao.save(indice);
+    	
+    	IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
+    	indiceHistorico.setIndice(indice);
+    	indiceHistorico.setValor(1.00);
+    	indiceHistorico.setData(hoje);
+    	indiceHistoricoDao.save(indiceHistorico);
+    	
+    	FaixaSalarialHistorico histFaixa2 = FaixaSalarialHistoricoFactory.getEntity();
+    	histFaixa2.setFaixaSalarial(faixa2);
+    	histFaixa2.setData(DateUtil.retornaDataDiaAnterior(hoje));
+    	histFaixa2.setStatus(StatusRetornoAC.CONFIRMADO);
+    	histFaixa2.setTipo(TipoAplicacaoIndice.INDICE);
+    	histFaixa2.setIndice(indice);
+    	faixaSalarialHistoricoDao.save(histFaixa2);
+    	
+    	Collection<FaixaSalarial> retorno = faixaSalarialDao.findComHistoricoAtual(new Long[] { faixa1.getId(), faixa2.getId() });
+    	
+    	assertEquals(2, retorno.size());
+    	
+    	FaixaSalarial faixa1retorno = (FaixaSalarial)retorno.toArray()[0];
+    	FaixaSalarial faixa2retorno = (FaixaSalarial)retorno.toArray()[1];
+    	
+    	assertEquals(histFaixa1.getId(), faixa1retorno.getFaixaSalarialHistoricoAtual().getId());
+    	assertEquals(histFaixa2.getId(), faixa2retorno.getFaixaSalarialHistoricoAtual().getId());
+    	assertEquals(indiceHistorico.getValor(), faixa2retorno.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor());
+    }
 
     public void testFindFaixas()
     {
@@ -557,5 +617,13 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 	public void setConfiguracaoNivelCompetenciaDao(ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao)
 	{
 		this.configuracaoNivelCompetenciaDao = configuracaoNivelCompetenciaDao;
+	}
+
+	public void setIndiceDao(IndiceDao indiceDao) {
+		this.indiceDao = indiceDao;
+	}
+
+	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao) {
+		this.indiceHistoricoDao = indiceHistoricoDao;
 	}
 }

@@ -357,6 +357,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findByCargos(cargosIds);
 	}
 
+	public Collection<FaixaSalarial> findComHistoricoAtual(	Long[] faixasSalariaisIds) 
+	{
+		return getDao().findComHistoricoAtual(faixasSalariaisIds);
+	}
+	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}

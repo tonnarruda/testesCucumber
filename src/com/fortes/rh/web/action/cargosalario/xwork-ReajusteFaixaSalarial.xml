@@ -7,7 +7,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioFaixaSalarial.ftl</result>
 		</action>
 		<action name="insertColetivo" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="insertColetivo">
-			<result name="success" type="redirect">prepareDissidio.action</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioFaixaSalarial.ftl</result>
 		</action>
 	</package>
 </xwork>
