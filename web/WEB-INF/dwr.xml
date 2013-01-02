@@ -150,6 +150,7 @@
 		
 		<!-- UTIL -->
 		<convert converter="bean" match="com.fortes.web.tags.CheckBox"/>
+		<convert converter="bean" match="com.fortes.web.tags.Option"/>
 
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>

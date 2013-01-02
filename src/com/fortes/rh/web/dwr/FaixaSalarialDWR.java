@@ -13,6 +13,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
+import com.fortes.web.tags.Option;
 
 
 public class FaixaSalarialDWR
@@ -89,36 +90,35 @@ public class FaixaSalarialDWR
 		
 		return checkboxes;
 	}
-
-//	public Map getCidades(String ufId)
-//	{
-//		if(ufId != null && !ufId.equals("-1"))
-//		{
-//			Collection<Cidade> cidades = cidadeManager.findAllSelect(Long.valueOf(ufId));
-//			Collection<Cidade> cidadesLista = new ArrayList<Cidade>();
-//
-//			if(!cidades.isEmpty())
-//			{
-//				Cidade cidadeVazio = new Cidade();
-//				cidadeVazio.setNome("Selecione...");
-//				cidadeVazio.setId(-1L);
-//
-//				cidadesLista.add(cidadeVazio);
-//
-//				cidadesLista.addAll(cidades);
-//			}
-//
-//			return CollectionUtil.convertCollectionToMap(cidadesLista, "getId", "getNome", Cidade.class);
-//		}
-//
-//		return new HashMap();
-//
-//	}
+	
+	public Collection<Option> getByCargoDesabilitandoPorIndice(Long cargoId)
+	{
+		Collection<Option> options = new ArrayList<Option>();
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(new Long[] { cargoId });
+		Option option = null;
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariais)
+		{
+			option = new Option();
+			option.setId(faixaSalarial.getId());
+			option.setNome(faixaSalarial.getDescricao());
+			option.setDesabilitado(true);
+			
+			if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
+				option.setTitulo("Essa faixa salarial não possui histórico");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
+				option.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				option.setDesabilitado(false);
+			
+			options.add(option);
+		}
+		
+		return options;
+	}
 
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
-
-
 }

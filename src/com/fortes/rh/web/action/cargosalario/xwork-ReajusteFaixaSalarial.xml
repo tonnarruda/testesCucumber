@@ -3,11 +3,17 @@
 
 <xwork>
 	<package name="reajusteFaixaSalarial" extends="default" namespace="/cargosalario/reajusteFaixaSalarial">
+		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteFaixaSalarial.ftl</result>
+		</action>
 		<action name="prepareDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="prepareDissidio">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioFaixaSalarial.ftl</result>
 		</action>
 		<action name="insertColetivo" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="insertColetivo">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioFaixaSalarial.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}]]></result>
 		</action>
 	</package>
 </xwork>

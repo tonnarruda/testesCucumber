@@ -6,6 +6,9 @@ import java.util.Collection;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.util.LongUtil;
@@ -21,8 +24,12 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
 	
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
+	private ReajusteFaixaSalarial reajusteFaixaSalarial;
+	private Cargo cargo;
+	private FaixaSalarial faixaSalarial;
 	
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
+	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();	
@@ -31,6 +38,15 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	
 	private char dissidioPor;
 	private Double valorDissidio;
+	
+	public String prepareInsert() throws Exception
+	{
+		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.FAIXA_SALARIAL);
+		
+		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
+		
+		return Action.SUCCESS;
+	}
 	
 	public String prepareDissidio() throws Exception
 	{
@@ -57,6 +73,13 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		{
 			prepareDissidio();
 		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String delete() throws Exception 
+	{
+		reajusteFaixaSalarialManager.remove(new Long[]{ reajusteFaixaSalarial.getId() });
 
 		return Action.SUCCESS;
 	}
@@ -123,5 +146,33 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 
 	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
 		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
+	}
+
+	public ReajusteFaixaSalarial getReajusteFaixaSalarial() {
+		return reajusteFaixaSalarial;
+	}
+
+	public void setReajusteFaixaSalarial(ReajusteFaixaSalarial reajusteFaixaSalarial) {
+		this.reajusteFaixaSalarial = reajusteFaixaSalarial;
+	}
+
+	public Collection<Cargo> getCargos() {
+		return cargos;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	public FaixaSalarial getFaixaSalarial() {
+		return faixaSalarial;
+	}
+
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
+		this.faixaSalarial = faixaSalarial;
 	}
 }

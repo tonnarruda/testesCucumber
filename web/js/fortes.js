@@ -238,6 +238,25 @@ function addChecksByCollection(divName, dados, onClick)
 	obj.innerHTML = result;
 }
 
+function addOptionsByCollection(selectId, dados)
+{
+	var result = "<option value=''>Selecione...</option>";
+	var selecionado = '';
+	var desabilitado = '';
+	var titulo = '';
+
+	for (var prop in dados)
+	{
+		selecionado = dados[prop]['selecionado'] ? 'selected="selected"' : '';
+		desabilitado = dados[prop]['desabilitado'] ? 'disabled="disabled" style="color:#cccccc"' : '';
+		titulo = dados[prop]['titulo'] ? 'title="' + dados[prop]['titulo'] + '"' : '';
+		
+		result += "<option value='" + dados[prop]['id'] + "' " + titulo + " " + selecionado + " " + desabilitado + ">" + dados[prop]['nome'] + "</option>\n";
+	}
+
+	document.getElementById(selectId).innerHTML = result;
+}
+
 function compararData(dataInicio, dataFinal)
 {
 	var dataIni = document.getElementById(dataInicio).value;

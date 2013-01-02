@@ -8,13 +8,16 @@ import java.util.Map;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
+import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoReajuste;
@@ -33,6 +36,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
+	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
@@ -44,6 +48,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private Collection<GrupoOcupacional> grupoOcupacionals;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private Collection<ReajusteColaborador> reajustes;
+	private Collection<ReajusteFaixaSalarial> reajustesFaixaSalarial;
 
 	private String[] areaOrganizacionalsCheck;
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
@@ -74,7 +79,34 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	public String visualizar() throws Exception
 	{
 		prepare();
+		
+		try {
+			if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.COLABORADOR))
+				return visualizarPorColaborador();
+			
+			else if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
+				return visualizarPorFaixaSalarial();
+			
+			else
+				throw new FortesException("Tipo de reajuste não identificado");
+		
+		} 
+		catch (FortesException e)
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao carregar os dados do reajuste");
+		}
 
+		return Action.SUCCESS;
+	}
+
+	private String visualizarPorColaborador() throws Exception
+	{
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);//busca area somente da empresa de sessaod
 
@@ -101,6 +133,13 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 
 		valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaborador.getData());
 		
+		return Action.SUCCESS;
+	}
+	
+	private String visualizarPorFaixaSalarial() throws Exception
+	{
+		reajustesFaixaSalarial = reajusteFaixaSalarialManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaborador.getId());
+				
 		return Action.SUCCESS;
 	}
 	
@@ -357,5 +396,17 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 
 	public Map getTipoReajustes() {
 		return tipoReajustes;
+	}
+
+	public Collection<ReajusteFaixaSalarial> getReajustesFaixaSalarial() {
+		return reajustesFaixaSalarial;
+	}
+
+	public void setReajustesFaixaSalarial(Collection<ReajusteFaixaSalarial> reajustesFaixaSalarial) {
+		this.reajustesFaixaSalarial = reajustesFaixaSalarial;
+	}
+
+	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
+		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
 	}
 }

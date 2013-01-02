@@ -32,6 +32,11 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 			getDao().save(reajuste);
 		}
 	}
+	
+	public Collection<ReajusteFaixaSalarial> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId) 
+	{
+		return getDao().findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
+	}
 
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) 
 	{

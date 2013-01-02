@@ -5,8 +5,11 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		.dados tfoot td { background-color: #f3f3f3; color: #333; }
 	</style>
-	<title>Planejamento de Realinhamentos</title>
+	
+	<title>Planejamento de Realinhamento por ${tabelaReajusteColaborador.tipoReajusteDescricao}</title>
+	
 	<script language='javascript'>
 		function prepareUpdate()
 		{
@@ -57,45 +60,28 @@
 		<p>Tipo de Reajuste:<br> <b>${tabelaReajusteColaborador.tipoReajusteDescricao}</b></p>
 		<br />
 
-		<#include "../util/topFiltro.ftl" />
-			<@ww.form name="form" action="" method="POST">
-				<@ww.hidden name="tabelaReajusteColaborador.id" id="id"/>
-				<@ww.hidden name="tabelaReajusteColaborador.data" id="id"/>
-
-				<!-- Filtro -->
-				<@ww.select id="optFiltro" label="Filtrar Por" name="filtro" required="true"  list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt();" headerKey="1"/>
-
-				<@ww.div id="areaOrganizacional">
-					<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" />
-				</@ww.div>
-
-				<@ww.div id="grupoOcupacional">
-					<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" />
-				</@ww.div>
-
-				<button onclick="prepareUpdate();" class="btnPesquisar grayBGE" accesskey="F">
-				</button>
-				<br>
-			</@ww.form>
-			<script>
-				document.getElementById('grupoOcupacional').style.display = "none";
-			</script>
-
-		<#include "../util/bottomFiltro.ftl" />
-	</#if>
-
-	<@ww.div id="divColab">
-		<#include "tabelaReajusteColaborador.ftl" />
-	</@ww.div>
-
-	<div class="buttonGroup">
-		<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
-		</button>
-		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P">
-			</button>
+		<#if tabelaReajusteColaborador.tipoReajuste == 'C'>
+			<#include "tabelaReajusteColaborador.ftl" />
+		
+		<#elseif tabelaReajusteColaborador.tipoReajuste == 'F'>
+			<#include "tabelaReajusteFaixaSalarial.ftl" />
+		
+		<#elseif tabelaReajusteColaborador.tipoReajuste == 'I'>
+			Tipo ÍNDICE
+		
+		<#else>
+			Tipo de reajuste não identificado.
 		</#if>
-	</div>
+	
+		<div class="buttonGroup">
+			<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
+			</button>
+			<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P">
+				</button>
+			</#if>
+		</div>
+	</#if>
 </body>
 </html>
