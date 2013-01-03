@@ -16,6 +16,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorEdit.ftl</result>
 		</action>
 		<action name="visualizar" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="visualizar">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="insert">

@@ -48,6 +48,40 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
+	public String insert() throws Exception
+	{
+		try
+		{
+			reajusteFaixaSalarialManager.insertReajustes(tabelaReajusteColaborador.getId(), new Long[] { faixaSalarial.getId() }, dissidioPor, valorDissidio);
+			addActionMessage("Proposta de reajuste gravada com sucesso");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao gravar as proposta de reajuste");
+		}
+		finally
+		{
+			prepareInsert();
+		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdate() throws Exception
+	{
+		reajusteFaixaSalarial = reajusteFaixaSalarialManager.findById(reajusteFaixaSalarial.getId());
+		
+		return Action.SUCCESS;
+	}
+	
+	public String update() throws Exception
+	{
+		addActionMessage("Atualizou...");
+		
+		return Action.SUCCESS;
+	}
+	
 	public String prepareDissidio() throws Exception
 	{
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.FAIXA_SALARIAL);
@@ -61,7 +95,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			reajusteFaixaSalarialManager.insertColetivo(tabelaReajusteColaborador.getId(), LongUtil.arrayStringToArrayLong(faixasCheck), dissidioPor, valorDissidio);
+			reajusteFaixaSalarialManager.insertReajustes(tabelaReajusteColaborador.getId(), LongUtil.arrayStringToArrayLong(faixasCheck), dissidioPor, valorDissidio);
 			addActionMessage("Propostas de reajuste gravadas com sucesso");
 		}
 		catch (Exception e)

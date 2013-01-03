@@ -18,6 +18,7 @@
 			<#list reajustesFaixaSalarial as reajusteFaixa>
 				<tr class="<#if i%2==0>odd<#else>even</#if>">
 					<td align="center" width="60">
+						<a href="../reajusteFaixaSalarial/prepareUpdate.action?reajusteFaixaSalarial.id=${reajusteFaixa.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
 						<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteFaixaSalarial/delete.action?reajusteFaixaSalarial.id=${reajusteFaixa.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
 					</td>
 					<td>${reajusteFaixa.faixaSalarial.descricao}</td>

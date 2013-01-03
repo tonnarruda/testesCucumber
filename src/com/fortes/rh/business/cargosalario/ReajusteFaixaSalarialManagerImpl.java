@@ -12,7 +12,7 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 {
 	private FaixaSalarialManager faixaSalarialManager;
 	
-	public void insertColetivo(Long tabelaReajusteColaboradorId, Long[] faixasSalariaisIds, char dissidioPor, double valorDissidio) throws Exception 
+	public void insertReajustes(Long tabelaReajusteColaboradorId, Long[] faixasSalariaisIds, char dissidioPor, double valorDissidio) throws Exception 
 	{
 		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findComHistoricoAtual(faixasSalariaisIds);
 		ReajusteFaixaSalarial reajuste;
