@@ -434,8 +434,8 @@ Dado /^que exista uma turma "([^"]*)" para o curso "([^"]*)"$/ do |turma_descric
      descricao turma_descricao
      curso :nome => curso_nome
      realizada false
-     dataprevini '01/07/2012'
-     dataprevfim '15/07/2012'
+     dataprevini '01/01/2013'
+     dataprevfim '15/01/2013'
      empresa :id => 1
    end
 end

@@ -17,14 +17,14 @@ Funcionalidade: Agenda
 
     Quando eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Agenda"
-    E eu preencho o campo (JS) "Mês/Ano" com "02/2012"
+    E eu preencho o campo (JS) "Mês/Ano" com "01/2013"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Semana da Saude" de "Evento"
     E eu clico no botão "Gravar"
 
     Então eu devo ver o título "Agenda"
     E eu devo ver "Semana da Saude"
-    E eu devo ver "02/2012"
+    E eu devo ver "01/2013"
 
     Então eu clico em excluir "Semana da Saude"
     E eu devo ver o alert do confirmar exclusão e clico no ok
