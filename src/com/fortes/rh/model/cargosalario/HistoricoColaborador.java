@@ -379,6 +379,11 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return tipoSalario;
 	}
 
+	public String getTipoSalarioDescricao()
+	{
+		return TipoAplicacaoIndice.getDescricao(tipoSalario);
+	}
+
 	public void setTipoSalario(int tipoSalario)
 	{
 		this.tipoSalario = tipoSalario;

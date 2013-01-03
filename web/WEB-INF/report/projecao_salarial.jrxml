@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="projecao_salarial" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="b923ef64-bf8e-4fa5-904b-0e15ae96498f">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="35"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -19,7 +19,7 @@
 	<field name="descricaoEstabelecimentoAreaOrganizacional" class="java.lang.String"/>
 	<field name="estabelecimento.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.grupoOcupacional.nome" class="java.lang.String"/>
-	<field name="historicoColaborador.tipoSalario" class="java.lang.Integer"/>
+	<field name="historicoColaborador.tipoSalarioDescricao" class="java.lang.Integer"/>
 	<field name="historicoColaborador.salarioCalculado" class="java.lang.Double"/>
 	<field name="ehProjecao" class="java.lang.Boolean"/>
 	<field name="historicoColaborador.status" class="java.lang.Integer"/>
@@ -274,7 +274,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.fortes.rh.model.dicionario.TipoAplicacaoIndice.getDescricao($F{historicoColaborador.tipoSalario})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{historicoColaborador.tipoSalarioDescricao}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="5c4814e5-433b-4e0d-bb3c-1af28a5b9c7b" key="textField-22" x="479" y="0" width="50" height="11">
@@ -311,13 +311,13 @@
 					<printWhenExpression><![CDATA[( $P{INTEGRA_AC}.booleanValue() ?
 new Boolean(
    (
-      $F{historicoColaborador.status}.intValue()==com.fortes.rh.model.dicionario.StatusRetornoAC.AGUARDANDO
+      $F{historicoColaborador.status}.intValue()==2
    )
    ||
    (
       $F{historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status}!=null
       &&
-      $F{historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status}.intValue()==com.fortes.rh.model.dicionario.StatusRetornoAC.AGUARDANDO
+      $F{historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status}.intValue()==2
    )
 )
 : new Boolean(false))]]></printWhenExpression>
