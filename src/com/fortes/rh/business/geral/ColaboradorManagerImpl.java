@@ -1946,57 +1946,51 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
 		Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
 		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-		double qtdAtivos = 0;
+		double qtdAtivos;
+		double qtdAdmitidos;
+		double qtdDemitidos;
 		
 		if(empresaIds != null)
 		{
-			for (Long empresaId : empresaIds) 
+			for (int i = 0; i <= ate; i++)
 			{
-				Empresa empresa = empresaManager.findByIdProjection(empresaId);
-				admitidos.addAll(getDao().countAdmitidosDemitidosPeriodoTurnover(dataIni, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, true));
-				demitidos.addAll(getDao().countAdmitidosDemitidosPeriodoTurnover(dataIni, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, false));
+				qtdAtivos = 0;
+				qtdAdmitidos = 0;
+				qtdDemitidos = 0;
+				dataFim = DateUtil.getUltimoDiaMes(dataTmp);
 
-				if (empresa.isTurnoverPorSolicitacao())
-					qtdAtivos += getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataIni), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, true);
-				else
-					qtdAtivos += getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIni), Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, null, false, null, false);
+				for (Long empresaId : empresaIds) 
+				{
+					Empresa empresa = empresaManager.findByIdProjection(empresaId);
+
+					admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, true);
+					if(admitidos != null && admitidos.size() > 0)
+						qtdAdmitidos += ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
+
+					demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, false);
+					if(demitidos != null && demitidos.size() > 0)
+						qtdDemitidos += ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
+
+					if (empresa.isTurnoverPorSolicitacao())
+						qtdAtivos += getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, true);
+					else
+						qtdAtivos += getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, null, false, null, false);
+				}
+
+				TurnOver turnOverTmp = new TurnOver();
+				turnOverTmp.setMesAno(dataTmp);
+				turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
+				turnOverTmp.setQtdDemitidos(qtdDemitidos);
+				turnOverTmp.setQtdAtivos(qtdAtivos);
+
+				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivos) * 100);
+				turnOvers.add(turnOverTmp);
+				dataTmp = DateUtil.setaMesPosterior(dataTmp);
 			}
 		}
-
-
-		for (int i = 0; i <= ate; i++)
-		{
-			double qtdAdmitidos = 0;
-			double qtdDemitidos = 0;
-			
-			for (TurnOver admitido : admitidos)
-			{
-				if(dataTmp.equals(admitido.getMesAno()))
-					qtdAdmitidos = admitido.getQtdAdmitidos();
-			}
-			
-			for (TurnOver demitido : demitidos)
-			{
-				if(dataTmp.equals(demitido.getMesAno()))
-					qtdDemitidos = demitido.getQtdDemitidos();
-			}
-		
-			TurnOver turnOverTmp = new TurnOver();
-			turnOverTmp.setMesAno(dataTmp);
-			turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
-			turnOverTmp.setQtdDemitidos(qtdDemitidos);
-			turnOverTmp.setQtdAtivos(qtdAtivos);
-			
-			turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivos) * 100);
-			turnOvers.add(turnOverTmp);
-
-			qtdAtivos = qtdAtivos + (qtdAdmitidos - qtdDemitidos);
-			dataTmp = DateUtil.setaMesPosterior(dataTmp);
-		}
-		
 		if (turnOvers == null || turnOvers.isEmpty())
 			throw new ColecaoVaziaException();
-		
+
 		return turnOvers;
 	}
 

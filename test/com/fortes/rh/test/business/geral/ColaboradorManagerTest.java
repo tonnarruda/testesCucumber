@@ -687,10 +687,36 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	demitidos.add(montaDemitido(11, 2010, 19));
     	demitidos.add(montaDemitido(12, 2010, 10));
 
-    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
-    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
+    	empresaManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+    	
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[0])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[1])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[2])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[3])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[4])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[5])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[6])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[7])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[8])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[9])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[10])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(Arrays.asList((TurnOver) admitidos.toArray()[11])));
+    	
+    	
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[0])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[1])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[2])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[3])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[4])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[5])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[6])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[7])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[8])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[9])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[10])));
+    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(Arrays.asList((TurnOver) demitidos.toArray()[11])));
+
+    	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
     	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, 1);
   
@@ -698,31 +724,31 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	TurnOver mes1 = turnOverArray[0];
     	assertEquals("01/01/2010" , DateUtil.formataDiaMesAno(mes1.getMesAno()));
-    	assertEquals(2.36 , mes1.getTurnOver());
+    	assertEquals(2.62 , mes1.getTurnOver());
     	
     	TurnOver mes2 = turnOverArray[1];
     	assertEquals("01/02/2010" , DateUtil.formataDiaMesAno(mes2.getMesAno()));
-    	assertEquals(3.10 , mes2.getTurnOver());
+    	assertEquals(2.16 , mes2.getTurnOver());
     	
     	TurnOver mes3 = turnOverArray[2];
     	assertEquals("01/03/2010" , DateUtil.formataDiaMesAno(mes3.getMesAno()));
-    	assertEquals(2.85 , mes3.getTurnOver());
+    	assertEquals(2.36 , mes3.getTurnOver());
     	
     	TurnOver mes4 = turnOverArray[3];
     	assertEquals("01/04/2010" , DateUtil.formataDiaMesAno(mes4.getMesAno()));
-    	assertEquals(1.99 , mes4.getTurnOver());
+    	assertEquals(2.21 , mes4.getTurnOver());
     	
     	TurnOver mes5 = turnOverArray[4];
     	assertEquals("01/05/2010" , DateUtil.formataDiaMesAno(mes5.getMesAno()));
-    	assertEquals(2.05 , mes5.getTurnOver());
+    	assertEquals(3.34 , mes5.getTurnOver());
     	
     	TurnOver mes6 = turnOverArray[5];
     	assertEquals("01/06/2010" , DateUtil.formataDiaMesAno(mes6.getMesAno()));
-    	assertEquals(1.68 , mes6.getTurnOver());
+    	assertEquals(3.34 , mes6.getTurnOver());
     	
     	TurnOver mes12 = turnOverArray[11];
     	assertEquals("01/12/2010" , DateUtil.formataDiaMesAno(mes12.getMesAno()));
-    	assertEquals(2.45 , mes12.getTurnOver());
+    	assertEquals(2.36 , mes12.getTurnOver());
     }
     
     public void testMontaTurnOverComMaisDeUmaEmpresa() throws Exception
@@ -740,15 +766,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	demitidos.add(montaDemitido(1, 2010, 25));
     	demitidos.add(montaDemitido(2, 2010, 15));
     	
-    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa1.getId())).will(returnValue(empresa1));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
-    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
+    	empresaManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(empresa1.getId())).will(returnValue(empresa1));
+    	empresaManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(empresa2.getId())).will(returnValue(empresa2));
+    	colaboradorDao.expects(atLeastOnce()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
+    	colaboradorDao.expects(atLeastOnce()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
+    	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
     	
-    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa2.getId())).will(returnValue(empresa2));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(true)}).will(returnValue(admitidos));
-    	colaboradorDao.expects(once()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
-    	colaboradorDao.expects(once()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(100));
     	
     	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa1.getId(), empresa2.getId()), null, null, null, 1);
     	assertEquals(12, turnOvers.size());
@@ -756,11 +779,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	TurnOver mes1 = turnOverArray[0];
     	assertEquals("01/01/2010" , DateUtil.formataDiaMesAno(mes1.getMesAno()));
-    	assertEquals(7.67 , mes1.getTurnOver());
-    	
-    	TurnOver mes2 = turnOverArray[1];
-    	assertEquals("01/02/2010" , DateUtil.formataDiaMesAno(mes2.getMesAno()));
-    	assertEquals(10.14 , mes2.getTurnOver());
+    	assertEquals(11.5 , mes1.getTurnOver());
     }
 
 	private TurnOver montaAdmitido(int mes, int ano, double qtdAdmitidos) 
