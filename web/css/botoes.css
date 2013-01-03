@@ -580,6 +580,19 @@
 	background-image:url(../imgs/btnBackup.gif);
 	width: 85px !important;
 }
+
+.btnDownload
+{
+	background-image:url(../imgs/btnDownload.gif);
+	width: 93px !important;
+}
+
+.btnOrganograma
+{
+	background-image:url(../imgs/btnOrganograma.gif);
+	width: 112px !important;
+}
+
 .btnVoltarInicial
 {
 	background-image:url(../imgs/btnVoltarInicial.gif);
@@ -705,6 +718,8 @@
 .btnLiberar, 
 .btnResponderPorColaboradores,
 .btnBackup,
+.btnDownload,
+.btnOrganograma,
 .btnCriarTurmas
 {
 	border: 0;

@@ -6,13 +6,19 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.codec.binary.Base64;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 
 public class AreaOrganizacionalListAction extends MyActionSupportList
@@ -27,6 +33,7 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 	private Long areaId;
 	private String areasOrganizacionaisJson;
+	private String organograma;
 	
 	private boolean integradoAC;
 	private char ativa = 'S';
@@ -40,6 +47,41 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 		return Action.SUCCESS;
 	}
+	
+	public String organograma() throws Exception
+	{
+		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String downloadOrganograma() throws Exception
+	{
+		if (!StringUtil.isBlank(organograma))
+		{
+			String imagem = organograma.substring(organograma.indexOf(',') + 1);
+			
+			byte[] imgBytes = Base64.decodeBase64(imagem.getBytes());
+	
+			HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)imgBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"organograma.png\"");
+
+			response.getOutputStream().write(imgBytes);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	
 	public String imprimirLista() throws Exception
 	{
@@ -57,26 +99,8 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareOrganograma() throws Exception
+	private void getAreasOrdenadas() throws Exception 
 	{
-		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
-		
-		return Action.SUCCESS;
-	}
-
-	public String organograma() throws Exception
-	{
-		if (areaId != null)
-			areaOrganizacional = areaOrganizacionalManager.findEntidadeComAtributosSimplesById(areaId);
-		
-		return Action.SUCCESS;
-	}
-	
-	private void getAreasOrdenadas() throws Exception {
 		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0,areaOrganizacional.getNome(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativa));
 		
 		Collection<AreaOrganizacional> areasTmp = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
@@ -168,5 +192,9 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 
 	public void setAreasOrganizacionaisJson(String areasOrganizacionaisJson) {
 		this.areasOrganizacionaisJson = areasOrganizacionaisJson;
+	}
+
+	public void setOrganograma(String organograma) {
+		this.organograma = organograma;
 	}
 }

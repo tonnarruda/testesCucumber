@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.97.98" data="03/01/2012">
+		<Modulo nome=" "><![CDATA[
+  			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Nova funcionalidade de visualizar e/ou imprimir o organograma das Áreas Organizacionais.
+            :: SESMT > Cadastros > Clinicas e Médicos Autorizados: Possibilidade de cadastrar outros tipos para a realização do exames.
+    	]]></Modulo>
+    </Versao>
+	<Versao id="1.1.96.97" data="26/12/2012">
+		<Modulo nome=" "><![CDATA[
+			:: C&S > Relatórios > Históricos das Faixas Salariais: Novo relatório dos históricos das faixas salariais.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de filtro por situação e possibilidade de impressão do campo "situação".
+    	]]></Modulo>
+    </Versao>
+	<Versao id="1.1.95.96" data="17/12/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Responder: Alteração das cores da legenda referente às competências para um melhor entendimento.
+			:: Info. Funcionais > Relatórios > Ocorrências: Novo filtro por "situação" do colaborador.
+			:: Utilitários > Configurações > Cadastro de Candidato(externo): Possibilitar que o usuário deixe a opção "Como ficou sabendo da vaga" como obrigatório.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.95.95" data="10/12/2012">
 		<Modulo nome=" "><![CDATA[
 			:: C&S > Relatórios > Colaboradores por Área Organizacional: Novo botão "Exportar" para gerar relatório em excel.

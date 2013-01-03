@@ -38,6 +38,9 @@ Funcionalidade: Cadastrar Candidato
 
 	#busca no F2rh de verdade
     Quando eu clico "Triagem no F2rh"
+
+    E eu seleciono "CE" de "uf"
+    E eu marco "Fortaleza"
     E eu clico no botão "Pesquisar"
     E eu espero 4 segundos
     Então eu devo ver "Fortaleza/CE"

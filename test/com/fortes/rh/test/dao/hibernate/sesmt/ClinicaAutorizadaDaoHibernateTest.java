@@ -141,6 +141,59 @@ public class ClinicaAutorizadaDaoHibernateTest extends GenericDaoHibernateTest<C
 
 		assertEquals(3, clinicas.size());
 	}
+	
+	public void testFindTipoOutrosDistinctByEmpresa()
+	{
+		Empresa empresa1 = new Empresa();
+		empresaDao.save(empresa1);
+
+		Empresa empresa2 = new Empresa();
+		empresaDao.save(empresa2);
+		
+		Exame exame = ExameFactory.getEntity();
+		exameDao.save(exame);
+		
+		Collection<Exame> exames = new ArrayList<Exame>();
+		exames.add(exame);
+		
+		Date hoje = new Date();
+		ClinicaAutorizada clinica1 = new ClinicaAutorizada();
+		clinica1.setEmpresa(empresa1);
+		clinica1.setExames(exames);
+		clinica1.setData(hoje);
+		clinica1.setTipo("03");
+		clinica1.setOutro("outroCorreto");
+		clinicaAutorizadaDao.save(clinica1);
+		
+		ClinicaAutorizada clinicaForaTipo = new ClinicaAutorizada();
+		clinicaForaTipo.setEmpresa(empresa1);
+		clinicaForaTipo.setExames(exames);
+		clinicaForaTipo.setData(DateUtil.montaDataByString("01/02/1990"));
+		clinicaForaTipo.setTipo("01");
+		clinicaForaTipo.setOutro("clinicaForaTipo");
+		clinicaAutorizadaDao.save(clinicaForaTipo);
+		
+		ClinicaAutorizada clinicaEmpresa2 = new ClinicaAutorizada();
+		clinicaEmpresa2.setEmpresa(empresa2);
+		clinicaEmpresa2.setData(hoje);
+		clinicaEmpresa2.setExames(exames);
+		clinicaEmpresa2.setTipo("03");
+		clinicaEmpresa2.setOutro("clinicaEmpresa2");
+		clinicaAutorizadaDao.save(clinicaEmpresa2);
+		
+		ClinicaAutorizada clinicaInativa = new ClinicaAutorizada();
+		clinicaInativa.setEmpresa(empresa1);
+		clinicaInativa.setExames(exames);
+		clinicaInativa.setTipo("03");
+		clinicaInativa.setOutro("clinicaInativa");
+		clinicaInativa.setDataInativa(DateUtil.montaDataByString("01/02/2000"));
+		clinicaAutorizadaDao.save(clinicaInativa);
+		
+		Collection<String> clinicas = clinicaAutorizadaDao.findTipoOutrosDistinctByEmpresa(empresa1.getId());
+		
+		assertEquals(1, clinicas.size());
+		assertEquals("outroCorreto", ((String) clinicas.toArray()[0]));
+	}
 
 	public void setExameDao(ExameDao exameDao)
 	{

@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.cargosalario;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -15,6 +16,7 @@ import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.Reajuste;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -52,6 +54,8 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
 	private String filtro = "0";
 	private Double valorTotalFolha;
+	
+	private Map tipoReajustes;
 
 	private void prepare() throws Exception
 	{
@@ -59,6 +63,8 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		{
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
 		}
+		
+		tipoReajustes = new Reajuste();
 	}
 
 	public String prepareInsert() throws Exception
@@ -349,5 +355,13 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	public Double getValorTotalFolha()
 	{
 		return valorTotalFolha;
+	}
+
+	public Map getTipoReajustes() {
+		return tipoReajustes;
+	}
+
+	public void setTipoReajustes(Map tipoReajustes) {
+		this.tipoReajustes = tipoReajustes;
 	}
 }

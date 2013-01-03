@@ -20,7 +20,7 @@ Funcionalidade: Fichas Médicas
     E eu seleciono "admissional" de "ficha"
     E eu clico no botão "Avancar"
 
-    Então eu devo ver o título "Ficha médica - admissional"
+    Então eu devo ver o título "Ficha Médica - admissional"
     E eu devo ver "Colaborador: geraldo"
     E eu preencho o campo (JS) "respondidaEm" com "29/07/2011"
     E eu preencho "RS1" com "acido acetil salicilico"
@@ -32,7 +32,7 @@ Funcionalidade: Fichas Médicas
     E eu devo ver "geraldo"
 
     Entao eu clico em editar "29/07/2011"
-    E eu devo ver o título "Ficha médica - admissional"
+    E eu devo ver o título "Ficha Médica - admissional"
     E eu devo ver "Colaborador: geraldo"
     E o campo "respondidaEm" deve conter "29/07/2011"
     E eu preencho o campo (JS) "respondidaEm" com "27/07/2011"

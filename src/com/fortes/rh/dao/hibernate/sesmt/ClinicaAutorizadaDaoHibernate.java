@@ -71,4 +71,23 @@ public class ClinicaAutorizadaDaoHibernate extends GenericDaoHibernate<ClinicaAu
 
 		return criteria.list();
 	}
+
+	public Collection<String> findTipoOutrosDistinctByEmpresa(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(ClinicaAutorizada.class, "ca");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ca.outro"), "outro");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("ca.tipo", "03"));
+		criteria.add(Expression.isNotNull("ca.outro"));
+		criteria.add(Expression.isNull("ca.dataInativa"));
+		criteria.add(Expression.eq("ca.empresa.id", empresaId));
+
+		criteria.addOrder(Order.asc("ca.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return criteria.list();
+	}
 }

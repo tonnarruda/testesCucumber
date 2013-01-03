@@ -231,6 +231,37 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return graficoAfastamentosPorMotivo;
 	}
 	
+	public boolean possuiAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate) 
+	{
+		Collection<ColaboradorAfastamento> colAfastamentos = getDao().findByColaborador(colaboradorAfastamento.getColaborador().getId());
+		
+		if(isUpdate)
+			colAfastamentos.remove(colaboradorAfastamento);
+
+		for (ColaboradorAfastamento colAfastamento : colAfastamentos) 
+		{
+			if(colAfastamento.getFim() != null && colaboradorAfastamento.getFim() != null)
+			{
+				if((colaboradorAfastamento.getInicio().getTime() >= colAfastamento.getInicio().getTime()  && colaboradorAfastamento.getInicio().getTime() <= colAfastamento.getFim().getTime() ) ||
+						(colaboradorAfastamento.getFim().getTime() >= colAfastamento.getInicio().getTime()   && colaboradorAfastamento.getFim().getTime() <= colAfastamento.getFim().getTime())	 )
+					return false;
+			}else
+			{
+				if(colAfastamento.getFim() != null && colaboradorAfastamento.getFim() == null && (colaboradorAfastamento.getInicio().getTime() >= colAfastamento.getInicio().getTime() && colaboradorAfastamento.getInicio().getTime() <= colAfastamento.getFim().getTime()))
+					return false;
+				else
+				{	
+					if(colAfastamento.getFim() == null && colaboradorAfastamento.getFim() != null && (colaboradorAfastamento.getInicio().getTime() <= colAfastamento.getInicio().getTime() && colaboradorAfastamento.getFim().getTime() >= colAfastamento.getInicio().getTime() ))
+						return false;
+					else if(colaboradorAfastamento.getInicio().getTime() == colAfastamento.getInicio().getTime())
+						return false;
+				}
+			}
+		}
+
+		return true;
+	}
+	
 	public Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss) 
 	{
 		return getDao().findQtdAfastamentosInss(empresaId, dataIni, dataFim, inss);
@@ -309,4 +340,6 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	{
 			return getDao().findByColaboradorAfastamentoId(colaboradorAfastamentoId);
 	}
+
+	
 }

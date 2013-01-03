@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ClinicaAutorizadaDao;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
+import com.fortes.rh.util.StringUtil;
 
 public class ClinicaAutorizadaManagerImpl extends GenericManagerImpl<ClinicaAutorizada, ClinicaAutorizadaDao> implements ClinicaAutorizadaManager
 {
@@ -30,5 +31,14 @@ public class ClinicaAutorizadaManagerImpl extends GenericManagerImpl<ClinicaAuto
 	public Collection<ClinicaAutorizada> findByExame(Long empresaId, Long exameId, Date date)
 	{
 		return getDao().findByExame(empresaId, exameId, date);
+	}
+	
+	public String findTipoOutrosDistinctByEmpresa(Long empresaId) 
+	{
+		Collection<String> fabricantes = getDao().findTipoOutrosDistinctByEmpresa(empresaId);
+		if(fabricantes == null || fabricantes.isEmpty())
+			return "";
+		else
+			return StringUtil.converteCollectionToStringComAspas(fabricantes);
 	}
 }

@@ -11,4 +11,6 @@ public interface ClinicaAutorizadaDao extends GenericDao<ClinicaAutorizada>
 	Collection<ClinicaAutorizada> findClinicasAtivasByDataEmpresa(Long empresaId, Date data);
 
 	Collection<ClinicaAutorizada> findByExame(Long empresaId, Long exameId, Date date);
+
+	Collection<String> findTipoOutrosDistinctByEmpresa(Long empresaId);
 }

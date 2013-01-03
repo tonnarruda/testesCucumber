@@ -239,13 +239,13 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return retorno;
 	}
 
-	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data) throws Exception
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente, Long empresaId) throws Exception
 	{
 		Collection<Long> grupoOcupacionalIds = LongUtil.arrayStringToCollectionLong(grupoOcupacionalsCheck);
 		Collection<Long> cargoIds = LongUtil.arrayStringToCollectionLong(cargosCheck);
 		Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areasCheck);
 		
-		Collection<FaixaSalarialHistorico> retorno = getDao().findByGrupoCargoAreaData(grupoOcupacionalIds, cargoIds, areaIds, data);
+		Collection<FaixaSalarialHistorico> retorno = getDao().findByGrupoCargoAreaData(grupoOcupacionalIds, cargoIds, areaIds, data, ordemDataDescendente, empresaId);
 		
 		if(retorno.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");

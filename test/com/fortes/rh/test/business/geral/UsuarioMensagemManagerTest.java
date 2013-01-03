@@ -117,7 +117,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<Questionario>()));
 		avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 
-		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), null);
+		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), 1L);
 
 		assertEquals(new TipoMensagem().size(), retorno.size());
 	}

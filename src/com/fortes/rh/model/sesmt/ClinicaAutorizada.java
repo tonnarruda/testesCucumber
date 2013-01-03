@@ -31,6 +31,8 @@ public class ClinicaAutorizada extends AbstractModel implements Serializable
     private String crm;
 	@Column(length=14)
     private String cnpj;
+	@Column(length=50)
+	private String outro;
 	@Column(length=5)
     private String tipo;
 	@Column(length=10)
@@ -140,6 +142,12 @@ public class ClinicaAutorizada extends AbstractModel implements Serializable
 	}
 	public void setHorarioAtendimento(String horarioAtendimento) {
 		this.horarioAtendimento = horarioAtendimento;
+	}
+	public String getOutro() {
+		return outro;
+	}
+	public void setOutro(String outro) {
+		this.outro = outro;
 	}
 
 }

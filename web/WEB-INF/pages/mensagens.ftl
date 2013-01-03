@@ -17,6 +17,24 @@
 		.dados td .tituloMensagem { font-size: 11px !important; width: 590px; white-space: nowrap; overflow: hidden; }
 		.remetenteHora { color: #069; }
 	</style>
+
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<script type='text/javascript'>
+		function marcarMensagemLida(usuarioMensagemId)
+		{
+			DWREngine.setErrorHandler(errorUsuarioMensagem);
+			UsuarioMensagemDWR.gravarMensagemLida(retorno, usuarioMensagemId, ${empresaId}, true);
+		}
+	
+		function retorno(){}
+		function errorUsuarioMensagem()	{}
+		
+	
+	</script>
+	
 </head>
 
 <body>

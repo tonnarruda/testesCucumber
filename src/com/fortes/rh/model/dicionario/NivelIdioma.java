@@ -2,7 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class NivelIdioma extends LinkedHashMap
 {
 	private static final long serialVersionUID = 4151982962011616197L;

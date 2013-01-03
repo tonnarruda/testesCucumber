@@ -30,4 +30,5 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Collection<ColaboradorAfastamento> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento)throws ColecaoVaziaException;
 	Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> afastamentosIds);
 	ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId);
+	boolean possuiAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate);
 }

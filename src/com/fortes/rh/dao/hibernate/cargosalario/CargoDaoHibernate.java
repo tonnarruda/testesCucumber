@@ -535,6 +535,22 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return query.list();
 	}
+	
+	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
+		hql.append("from Cargo as c ");
+		hql.append("left join c.empresa as e ");
+		hql.append("where e.id = :empresaId ");
+		hql.append("and c.grupoOcupacional.id is null ");
+		hql.append("order by c.nomeMercado ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+
+		return query.list();
+	}
 
 	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId) 
 	{
@@ -566,4 +582,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return query.list();
 	}
+
+	
 }

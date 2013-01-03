@@ -48,11 +48,11 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalList.ftl</result>
 		</action>
-		<action name="prepareOrganograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="prepareOrganograma">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalOrganogramaForm.ftl</result>
-		</action>
 		<action name="organograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="organograma">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalOrganograma.ftl</result>
+		</action>
+		<action name="downloadOrganograma" class="com.fortes.rh.web.action.geral.AreaOrganizacionalListAction" method="downloadOrganograma">
+			<result name="success" type="redirect">organograma.action</result>
 		</action>
 	</package>
 </xwork>

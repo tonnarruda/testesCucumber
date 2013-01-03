@@ -25,6 +25,7 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		tabelaReajusteColaborador.setNome("nome da tabela de reajuste");
 		tabelaReajusteColaborador.setReajusteColaboradors(null);
 		tabelaReajusteColaborador.setEmpresa(null);
+		tabelaReajusteColaborador.setTipoReajuste('C');
 
 		return tabelaReajusteColaborador;
 	}

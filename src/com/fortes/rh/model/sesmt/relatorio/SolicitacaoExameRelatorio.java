@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
+import com.fortes.rh.model.dicionario.TipoClinica;
 import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoExameRelatorio
@@ -16,6 +17,8 @@ public class SolicitacaoExameRelatorio
 	private String clinicaEndereco;
 	private String clinicaTelefone;
 	private String clinicaHorario;
+	private String clinicaTipo;
+	private String clinicaTipoDescricao;
 	private String exameNome;
 	private String colaboradorNome;
 	private String candidatoNome;
@@ -54,11 +57,13 @@ public class SolicitacaoExameRelatorio
 	{
 	}
 
-	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo)
+	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo)
 	{
 		this.medicoNome = medicoNome;
 		this.medicoCrm = medicoCrm;
 		this.clinicaNome = clinicaNome != null ? clinicaNome : "";
+		this.clinicaTipo = clinicaTipo;
+		this.clinicaTipoDescricao = clinicaTipo.equals("03") ? clinicaOutro : TipoClinica.getDescricao(clinicaTipo);  
 		this.clinicaEndereco = clinicaEndereco != null ? clinicaEndereco : "";
 		this.clinicaTelefone = clinicaTelefone != null ? clinicaTelefone : "";
 		this.clinicaHorario = clinicaHorario != null ? clinicaHorario : "";
@@ -175,5 +180,21 @@ public class SolicitacaoExameRelatorio
 	public void contaExames()
 	{
 		this.contExames++;
+	}
+
+	public String getClinicaTipo() {
+		return clinicaTipo;
+	}
+
+	public void setClinicaTipo(String clinicaTipo) {
+		this.clinicaTipo = clinicaTipo;
+	}
+
+	public String getClinicaTipoDescricao() {
+		return clinicaTipoDescricao;
+	}
+
+	public void setClinicaTipoDescricao(String clinicaTipoDescricao) {
+		this.clinicaTipoDescricao = clinicaTipoDescricao;
 	}
 }

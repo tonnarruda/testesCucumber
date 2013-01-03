@@ -13,4 +13,6 @@ public interface ClinicaAutorizadaManager extends GenericManager<ClinicaAutoriza
 	Collection<ClinicaAutorizada> selecionaPorTipo(Collection<ClinicaAutorizada> clinicasMedicosAutorizadas, String medico);
 
 	Collection<ClinicaAutorizada> findByExame(Long empresaId, Long exameId, Date date);
+	
+	String findTipoOutrosDistinctByEmpresa(Long empresaId);
 }

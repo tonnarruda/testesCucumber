@@ -72,6 +72,7 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -1070,11 +1071,11 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		colaboradorForaDaTabela.setNome("colaboradorForaDaTabela");
 		colaboradorDao.save(colaboradorForaDaTabela);
 		
-		TabelaReajusteColaborador tabelaReajusteColaborador1 = new TabelaReajusteColaborador();
+		TabelaReajusteColaborador tabelaReajusteColaborador1 = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador1.setData(DateUtil.criarDataMesAno(01, 02, 2000));
 		tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador1);
 		
-		TabelaReajusteColaborador tabelaReajusteColaborador2 = new TabelaReajusteColaborador();
+		TabelaReajusteColaborador tabelaReajusteColaborador2 = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador2.setData(DateUtil.criarDataMesAno(01, 02, 2000));
 		tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador2);
 		
@@ -1108,7 +1109,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
-		TabelaReajusteColaborador tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
 
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador();
@@ -1133,7 +1134,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		colaborador2.setNaoIntegraAc(true);
 		colaborador2 = colaboradorDao.save(colaborador2);
 
-		TabelaReajusteColaborador tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
 
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador();

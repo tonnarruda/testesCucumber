@@ -20,7 +20,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     E eu preencho "Observação" com "observações"
     E eu seleciono "Sim" de "Ativa"
     E eu clico no botão "Avancar"
-    E eu devo ver o título "Avaliação da turma - oratória"
+    E eu devo ver o título "Avaliação da Turma - oratória"
 
     E eu clico "Inserir pergunta aqui"
 
@@ -28,7 +28,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     E eu clico no botão "Gravar"
     E eu devo ver o alert do valida campos e clico no ok
     E eu clico no botão "Voltar"
-    E eu devo ver "Avaliação da turma - oratória"
+    E eu devo ver "Avaliação da Turma - oratória"
     Então eu clico "Inserir pergunta aqui"
 
     Então eu devo ver "Inserir Pergunta"
@@ -36,7 +36,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     E eu preencho "Pergunta" com "Quantos filhos?"
     E eu seleciono "Subjetiva" de "Tipos de Respostas"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Avaliação da turma - oratória"
+    Então eu devo ver "Avaliação da Turma - oratória"
 
     Entao eu clico no botão "Voltar"
     E eu devo ver o título "Modelos de Avaliação de Curso"
@@ -46,7 +46,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
     E o campo "Título" deve conter "oratória"
     E eu preencho "Título" com "contabilidade"
     E eu clico no botão "Avancar"
-    E eu devo ver o título "Avaliação da turma - contabilidade"
+    E eu devo ver o título "Avaliação da Turma - contabilidade"
 
     Então eu clico na imagem "Excluir" da pergunta "Quantos filhos?"
     E eu devo ver o alert do confirmar exclusão e clico no ok

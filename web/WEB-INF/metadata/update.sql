@@ -19391,3 +19391,24 @@ insert into migrations values('20121205141501');--.go
 ALTER TABLE parametrosdosistema ADD COLUMN emailRemetente character varying(100);--.go
 insert into migrations values('20121210093742');--.go
 update parametrosdosistema set appversao = '1.1.95.95';--.go
+-- versao 1.1.95.96
+
+update parametrosdosistema set appversao = '1.1.95.96';--.go
+-- versao 1.1.96.97
+
+update papel set ordem = ordem + 1 where papelmae_id = 364 and ordem > 4;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (564,'ROLE_RELATORIO_HISTORICO_FAIXA_SALARIAL', 'Históricos das Faixas Salariais', '/cargosalario/faixaSalarialHistorico/prepareRelatorioHistoricoFaixaSalarial.action', 5, true, NULL, 364);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=564 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+insert into perfil_papel(perfil_id, papeis_id) values (1, 564);--.go
+alter sequence papel_sequence restart with 565;--.go
+insert into migrations values('20121217143512');--.go
+update parametrosdosistema set appversao = '1.1.96.97';--.go
+-- versao 1.1.97.98
+
+alter table clinicaautorizada add column outro character varying(50);--.go
+insert into migrations values('20121226105433');--.go
+update mensagem set tipo = 'A' where texto ilike '%Período de Experiência%';--.go
+insert into migrations values('20130102161739');--.go
+alter table tabelareajustecolaborador add column tiporeajuste character(1) default 'C' not null;--.go
+insert into migrations values('20130103132012');--.go
+update parametrosdosistema set appversao = '1.1.97.98';--.go

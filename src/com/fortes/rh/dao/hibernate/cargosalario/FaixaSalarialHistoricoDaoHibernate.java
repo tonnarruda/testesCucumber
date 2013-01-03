@@ -253,7 +253,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return query.list();
 	}
 	
-	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data)
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new FaixaSalarialHistorico(hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, i.nome, hi.valor, hi.data, c.id, c.nome, f.id, f.nome) ");
@@ -267,10 +267,14 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		hql.append("                                             from IndiceHistorico hi2 ");
 		hql.append("                                             where hi2.indice.id = i.id ");
 		hql.append("                                              and hi2.data <= hf.data) ");
-		hql.append("where hf.data = (select max(fsh2.data)");
-		hql.append("                  from FaixaSalarialHistorico fsh2 ");
-		hql.append("                  where fsh2.faixaSalarial.id = f.id ");
-		hql.append("                  and fsh2.data <= :data) ");
+		hql.append("where true = true ");
+		
+		if(data != null) {
+			hql.append("and hf.data = (select max(fsh2.data)");
+			hql.append("               from FaixaSalarialHistorico fsh2 ");
+			hql.append("               where fsh2.faixaSalarial.id = f.id ");
+			hql.append("               and fsh2.data <= :data) ");
+		}
 
 		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
 			hql.append("and go.id in (:grupoOcupacionals) ");
@@ -280,12 +284,19 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			hql.append("and a.id in (:areaIds) ");
+		
+		if(empresaId != null)
+			hql.append("and c.empresa.id = :empresaId ");
 
-		hql.append("order by c.nome, f.nome, hf.data desc");
+		hql.append("order by c.nome, f.nome, hf.data ");
+		
+		if(ordemDataDescendente)
+			hql.append("desc ");
 
 		Query query = getSession().createQuery(hql.toString());
 
-		query.setParameter("data", data);
+		if(data != null)
+			query.setParameter("data", data);
 
 		if(grupoOcupacionals != null && !grupoOcupacionals.isEmpty())
 			query.setParameterList("grupoOcupacionals", grupoOcupacionals, Hibernate.LONG);
@@ -295,6 +306,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
 
 		return query.list();
 	}

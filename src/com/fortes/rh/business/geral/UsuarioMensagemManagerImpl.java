@@ -38,22 +38,22 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	private MensagemManager mensagemManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	
+
 	public Map<Character, CaixaMensagem> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
 	{
 		Map<Character, CaixaMensagem> caixasMensagens = new LinkedHashMap<Character, CaixaMensagem>();
 		MensagemVO vo;
 		char tp;
 		TipoMensagem tipoMensagem = new TipoMensagem();
-		
+
 		for (char tipo : tipoMensagem.keySet())
 			caixasMensagens.put(tipo, new CaixaMensagem(tipo, new ArrayList<MensagemVO>(), 0));
-		
+
 		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
 		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
 		{
 			tp = usuarioMensagem.getMensagem().getTipo();
-			
+
 			vo = new MensagemVO();
 			vo.setUsuarioMensagemId(usuarioMensagem.getId());
 			vo.setRemetente(usuarioMensagem.getMensagem().getRemetente());
@@ -62,66 +62,68 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			vo.setTipo(tp);
 			vo.setLink(usuarioMensagem.getMensagem().getLink());
 			vo.setLida(usuarioMensagem.isLida());
-			
+
 			caixasMensagens.get(tp).getMensagens().add(vo); 
 			if (!usuarioMensagem.isLida())
 				caixasMensagens.get(tp).incrementaNaoLidas();
 		}
-		
-		QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
-		Collection<Questionario> questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
-		for (Questionario questionario : questionarios) 
+
+		if(colaboradorId != null)
 		{
-			vo = new MensagemVO();
-			vo.setTexto(questionario.getTitulo());
-			vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=" + questionario.getId() + "&colaborador.id=" + colaboradorId + "&tela=index&validarFormulario=true");
-			vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
-			vo.setLida(true);
-			
-			caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
-			caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
-		}
-		
-		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
-		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
-		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
-		for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
-		{
-			Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
-			if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
+			QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
+			Collection<Questionario> questionarios = questionarioManager.findQuestionarioPorUsuario(usuarioId);
+			for (Questionario questionario : questionarios) 
 			{
-				for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
+				vo = new MensagemVO();
+				vo.setTexto(questionario.getTitulo());
+				vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=" + questionario.getId() + "&colaborador.id=" + colaboradorId + "&tela=index&validarFormulario=true");
+				vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
+				vo.setLida(true);
+
+				caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
+				caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
+			}
+
+			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
+			Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
+			{
+				Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
+				if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
 				{
-					vo = new MensagemVO();
-					vo.setTexto(colabQuestionarioAvaliado.getAvaliacaoDesempenho().getTitulo() + " (" + colabQuestionarioAvaliado.getColaborador().getNome() + ") (" + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getPeriodoFormatado() + ")");
-					vo.setLink("avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=" + colabQuestionarioAvaliado.getId());
-					vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
-					vo.setLida(true);
-					
-					caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
-					caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
+					for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
+					{
+						vo = new MensagemVO();
+						vo.setTexto(colabQuestionarioAvaliado.getAvaliacaoDesempenho().getTitulo() + " (" + colabQuestionarioAvaliado.getColaborador().getNome() + ") (" + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getPeriodoFormatado() + ")");
+						vo.setLink("avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=" + colabQuestionarioAvaliado.getId());
+						vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
+						vo.setLida(true);
+
+						caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
+						caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
+					}
 				}
 			}
+
+			Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionariosTeD) 
+			{
+				vo = new MensagemVO();
+				vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
+				vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
+				vo.setTipo(TipoMensagem.AVALIACOES_TED);
+				vo.setLida(true);
+
+				caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
+				caixasMensagens.get(TipoMensagem.AVALIACOES_TED).incrementaNaoLidas();
+			}
 		}
-		
-		Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
-		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionariosTeD) 
-		{
-			vo = new MensagemVO();
-			vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
-			vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
-			vo.setTipo(TipoMensagem.AVALIACOES_TED);
-			vo.setLida(true);
-			
-			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
-			caixasMensagens.get(TipoMensagem.AVALIACOES_TED).incrementaNaoLidas();
-		}
-		
 
 		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_SOLICITACAO_PESSOAL"}) )
 		{
 			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
-			
+
 			Collection<Solicitacao> solicitacaos = solicitacaoManager.findSolicitacaoList(empresaId, false, StatusAprovacaoSolicitacao.ANALISE, null);
 			if (solicitacaos != null && solicitacaos.size() > 0) 
 			{
@@ -130,13 +132,13 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				vo.setLink("captacao/solicitacao/list.action");
 				vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
 				vo.setLida(true);
-				
+
 				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
 				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();
 			}
-			
+
 			GerenciadorComunicacaoManager gerenciadorComunicacaoManager = (GerenciadorComunicacaoManager) SpringUtil.getBean("gerenciadorComunicacaoManager");
-	
+
 			if (gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresaId))
 			{
 				Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.findByFiltroSolicitacaoTriagem(true);
@@ -147,13 +149,13 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setLink("captacao/candidatoSolicitacao/listTriagem.action?solicitacao.id=" + candidatoSolicitacao.getSolicitacao().getId());
 					vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
 					vo.setLida(true);
-					
+
 					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
 					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();
 				}
 			}
 		}
-		
+
 		return caixasMensagens;
 	}
 
@@ -253,7 +255,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	{
 		return getDao().countMensagens(empresaId, usuarioId, tipo);
 	}
-	
+
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager) 
 	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;

@@ -26,6 +26,7 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 
 	private String[] examesCheck;
 	private Collection<CheckBox> examesCheckList = new ArrayList<CheckBox>();
+	private String tipoOutros = "";
 	
 	private void prepare() throws Exception
 	{
@@ -35,6 +36,7 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 		tipos = new TipoClinica();
 		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
+		tipoOutros = clinicaAutorizadaManager.findTipoOutrosDistinctByEmpresa(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -126,5 +128,9 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 	public Collection<CheckBox> getExamesCheckList()
 	{
 		return examesCheckList;
+	}
+
+	public String getTipoOutros() {
+		return tipoOutros;
 	}
 }
