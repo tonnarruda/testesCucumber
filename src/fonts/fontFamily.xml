@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fontFamilies>
+  <fontFamily name="SansSerif">
+	  <normal>fonts/ARIAL.TTF</normal>
+	  <bold>fonts/ARIALBD.TTF</bold>
+	  <italic>fonts/ARIALI.TTF</italic>
+	  <boldItalic>fonts/ARIALBI.TTF</boldItalic>
+	  <pdfEmbedded>true</pdfEmbedded>
+  </fontFamily>
+</fontFamilies>

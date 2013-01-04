@@ -135,6 +135,8 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 			{
 //				JasperReport jasperReport = (JasperReport) JRLoader.loadObject(systemId);
 				JasperReport jasperReport = compileReport(systemId, (InputStream) stack.findValue("reportInputStream"));
+				jasperReport.setProperty("net.sf.jasperreports.awt.ignore.missing.font", "true");
+				jasperReport.setProperty("net.sf.jasperreports.default.font.name", "SansSerif");
 				jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, stackDataSource);
 			}
 			catch (JRException e)
@@ -202,7 +204,6 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 						// Needed to support chart images:
 						exporter.setParameter(JRExporterParameter.JASPER_PRINT,	jasperPrint);
 						request.getSession().setAttribute("net.sf.jasperreports.j2ee.jasper_print", jasperPrint);
-
 					}
 					else if (format.equals(FORMAT_XLS))
 					{
