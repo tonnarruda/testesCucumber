@@ -123,9 +123,12 @@ public class Mail
 		{
 			message.setFrom(empresa.getEmailRemetente());
 		}
-		else if(params.getEmailRemetente() != null){
+		else if(params.getEmailRemetente() != null && !StringUtil.isBlank(params.getEmailRemetente()))
+		{
 			message.setFrom(params.getEmailRemetente());
-		} else {
+		} 
+		else 
+		{
 			message.setFrom("fortesrh@grupofortes.com.br");
 		}
 
