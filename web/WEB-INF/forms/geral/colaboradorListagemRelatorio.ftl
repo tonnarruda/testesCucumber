@@ -25,6 +25,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.picklists.js"/>'></script>
@@ -259,14 +260,18 @@
 			var values = $('#colunas option').map(function () {
     			return $(this).val();
 			});
-			
 			var campos = $.makeArray(values).join(',');
-			$.get('<@ww.url value="/geral/configuracaoRelatorioDinamico/update.action?campos="/>' + campos + '&titulo=' + $('#titulo').val(), function(data) {
-				if(data == "OK")
-					jAlert("Layout do relatório salvo com sucesso.");
-				else
-					jAlert("Erro ao salvar layout.");
-			});
+			
+			DWRUtil.useLoadingMessage('Carregando...');
+			ColaboradorDWR.updateConfiguracaoRelatorioDinamico(resultadoConfiguracaoRelatorioDinamico, campos, $('#titulo').val(), ${usuarioLogado.id});
+		}
+		
+		function resultadoConfiguracaoRelatorioDinamico(data) 
+		{
+			if(data == "OK")
+				jAlert("Layout do relatório salvo com sucesso.");
+			else
+				jAlert("Erro ao salvar layout.");
 		}
 		
 		function delPeriodo(item)

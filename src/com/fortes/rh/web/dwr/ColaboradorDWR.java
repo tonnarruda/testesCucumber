@@ -10,11 +10,15 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
@@ -26,6 +30,8 @@ public class ColaboradorDWR
 {
     private ColaboradorManager colaboradorManager;
     private EmpresaManager empresaManager;
+    private UsuarioManager usuarioManager;
+    private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
 //    private HistoricoColaboradorManager historicoColaboradorManager;
 
 	public Map getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
@@ -76,6 +82,26 @@ public class ColaboradorDWR
     		colaboradores = colaboradorManager.findByAvaliacoes(avaliacaoIds);
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeComercialDesligado", Colaborador.class);
+    }
+
+    public String updateConfiguracaoRelatorioDinamico(String campos, String titulo, Long usuarioId)
+    {
+    	try {
+    		ConfiguracaoRelatorioDinamico configuracaoRelatorioDinamico = configuracaoRelatorioDinamicoManager.findByUsuario(usuarioId);
+
+    		if(configuracaoRelatorioDinamico == null)
+    		{
+    			Usuario usuario = usuarioManager.findById(usuarioId);
+    			configuracaoRelatorioDinamicoManager.save(new ConfiguracaoRelatorioDinamico(usuario, campos, titulo));
+
+    		}else
+    			configuracaoRelatorioDinamicoManager.update(campos, titulo, usuarioId);
+
+    		return "OK";
+
+    	} catch (Exception e) {
+    		return "ERRO";
+    	}
     }
 
     public Map getColaboradoresAreaEstabelecimento(String[] areaOrganizacionalIds, String[] estabelecimentoIds, Long empresaId)
@@ -256,5 +282,13 @@ public class ColaboradorDWR
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setConfiguracaoRelatorioDinamicoManager(ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager) {
+		this.configuracaoRelatorioDinamicoManager = configuracaoRelatorioDinamicoManager;
+	}
+
+	public void setUsuarioManager(UsuarioManager usuarioManager) {
+		this.usuarioManager = usuarioManager;
 	}
 }
