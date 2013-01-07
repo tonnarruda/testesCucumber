@@ -73,7 +73,7 @@
 									<@ww.textfield label="Inspeção" name="extintor.periodoMaxInspecao" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:35px;text-align:right;" maxLength="5" liClass="liLeft" />
 								</td>
 								<td>
-									<@ww.datepicker label="Data da 1ª inspeção" id="dataInspecao" name="extintorInspecao.data" cssClass="mascaraData" />
+									<@ww.datepicker label="Data da inspeção" id="dataInspecao" name="extintorInspecao.data" cssClass="mascaraData" />
 								</td>
 							</tr>
 							<tr>
@@ -81,7 +81,7 @@
 									<@ww.textfield label="Recarga" name="extintor.periodoMaxRecarga" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:35px;text-align:right;" maxLength="5" liClass="liLeft"/>
 								</td>
 								<td>
-									<@ww.datepicker label="Data de saída da recarga" id="dataRecarga" name="dataRecarga" cssClass="mascaraData"  />
+									<@ww.datepicker label="Data da recarga" id="dataRecarga" name="dataRecarga" cssClass="mascaraData"  />
 								</td>
 							</tr>
 							<tr>
@@ -89,7 +89,7 @@
 									<@ww.textfield label="Teste hidrostático" name="extintor.periodoMaxHidrostatico" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:35px;text-align:right;" maxLength="5" liClass="liLeft"/>
 								</td>
 								<td>
-									<@ww.datepicker label="Data de saída do teste hidrostático" id="dataHidro" name="dataHidro" cssClass="mascaraData"  />
+									<@ww.datepicker label="Data do teste hidrostático" id="dataHidro" name="dataHidro" cssClass="mascaraData"  />
 								</td>
 							</tr>
 						</table>

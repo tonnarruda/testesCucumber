@@ -222,6 +222,10 @@
 				}
 			</#if>
 			
+			<#if historicoColaborador?exists &&  historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.id?exists 
+			&& (!historicoColaborador.funcao?exists || (historicoColaborador.funcao?exists && !historicoColaborador.funcao.id?exists))> 
+				populaFuncao(${historicoColaborador.faixaSalarial.id});
+			</#if>
 			
 			habilitaDtEncerramentoContrato();
 		});
