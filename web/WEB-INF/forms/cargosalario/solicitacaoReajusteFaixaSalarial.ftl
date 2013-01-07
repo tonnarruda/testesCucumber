@@ -40,6 +40,7 @@
 		<#if edicao>
 			<@ww.hidden name="tabelaReajusteColaborador.id" value="${reajusteFaixaSalarial.tabelaReajusteColaborador.id}"/>
 			<@ww.hidden name="reajusteFaixaSalarial.id"/>
+			<@ww.hidden name="reajusteFaixaSalarial.valorAtual"/>
 			
 			Planejamento de Realinhamento:<br />
 			<strong>${reajusteFaixaSalarial.tabelaReajusteColaborador.nome}</strong><br /><br />

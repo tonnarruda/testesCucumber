@@ -33,6 +33,11 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 		}
 	}
 	
+	public void updateValorProposto(Long reajusteFaixaSalarialId, Double valorAtual, char dissidioPor, Double valorDissidio) throws Exception 
+	{
+		getDao().updateValorProposto(reajusteFaixaSalarialId, MathUtil.calculaDissidio(dissidioPor, valorDissidio, valorAtual));
+	}
+	
 	public Collection<ReajusteFaixaSalarial> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId) 
 	{
 		return getDao().findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);

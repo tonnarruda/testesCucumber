@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.cargosalario;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 
@@ -25,5 +26,17 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		criteria.addOrder(Order.asc("fs.nome"));
 
 		return criteria.list();
+	}
+
+	public void updateValorProposto(Long reajusteFaixaSalarialId, Double valorProposto) 
+	{
+		String hql = "update ReajusteFaixaSalarial rfs set rfs.valorProposto = :valorProposto where rfs.id = :reajusteFaixaSalarialId";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("reajusteFaixaSalarialId", reajusteFaixaSalarialId);
+		query.setDouble("valorProposto", valorProposto);
+
+		query.executeUpdate();
 	}
 }

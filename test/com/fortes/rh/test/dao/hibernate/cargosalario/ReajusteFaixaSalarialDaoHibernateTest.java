@@ -8,8 +8,6 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
-import com.fortes.rh.model.dicionario.TipoAplicacaoReajuste;
-import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
@@ -69,6 +67,27 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     	
     	assertEquals(1, reajusteFaixaSalarialDao.findByTabelaReajusteColaboradorId(tabela1.getId()).size());
     	assertEquals(2, reajusteFaixaSalarialDao.findByTabelaReajusteColaboradorId(tabela2.getId()).size());
+    }
+    
+    public void testUpdateValorProposto()
+    {
+    	ReajusteFaixaSalarial reajuste1 = getEntity();
+    	reajuste1.setValorAtual(100.0);
+    	reajuste1.setValorProposto(120.0);
+    	reajusteFaixaSalarialDao.save(reajuste1);
+
+    	ReajusteFaixaSalarial reajuste2 = getEntity();
+    	reajuste2.setValorAtual(190.0);
+    	reajuste2.setValorProposto(230.0);
+    	reajusteFaixaSalarialDao.save(reajuste2);
+    	
+    	reajusteFaixaSalarialDao.updateValorProposto(reajuste1.getId(), 150.0);
+    	
+    	ReajusteFaixaSalarial retorno1 = reajusteFaixaSalarialDao.findEntidadeComAtributosSimplesById(reajuste1.getId());
+    	ReajusteFaixaSalarial retorno2 = reajusteFaixaSalarialDao.findEntidadeComAtributosSimplesById(reajuste2.getId());
+    	
+    	assertEquals(150.0, retorno1.getValorProposto());
+    	assertEquals(230.0, retorno2.getValorProposto());
     }
 
 	public void setReajusteFaixaSalarialDao(ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) 

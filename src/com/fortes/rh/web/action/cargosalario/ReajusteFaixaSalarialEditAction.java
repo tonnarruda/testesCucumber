@@ -58,7 +58,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Ocorreu um erro ao gravar as proposta de reajuste");
+			addActionError("Ocorreu um erro ao gravar a proposta de reajuste");
 		}
 		finally
 		{
@@ -77,8 +77,21 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	
 	public String update() throws Exception
 	{
-		addActionMessage("Atualizou...");
-		
+		try
+		{
+			reajusteFaixaSalarialManager.updateValorProposto(reajusteFaixaSalarial.getId(), reajusteFaixaSalarial.getValorAtual(), dissidioPor, valorDissidio);
+			addActionMessage("Proposta de reajuste alterada com sucesso");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao alterar a proposta de reajuste");
+		}
+		finally
+		{
+			prepareUpdate();
+		}
+
 		return Action.SUCCESS;
 	}
 	
