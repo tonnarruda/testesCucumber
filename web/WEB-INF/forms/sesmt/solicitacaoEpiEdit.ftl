@@ -46,9 +46,18 @@
 			if($('#entregue').val() == 'true')
 			{
 				idsQtdSolicitado.push('dataEntrega');
-				validaDatas.push('dataEntrega');				
+				validaDatas.push('dataEntrega');
+				
+				var data = new Date($('#data').val());
+				var dataEntrega = new Date($('#dataEntrega').val());
+				
+				if(dataEntrega.getTime() < data.getTime())
+				{
+					alert('Data da entrega inferior a data da solicitação.');
+					return false;
+				}				
 			}
-
+			
 			validaForm = validaFormulario('form', idsQtdSolicitado, validaDatas);
 		}
 
