@@ -77,16 +77,18 @@ public class ReportColumn implements Serializable, Cloneable
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getProperty() {
 		return property;
 	}
+
 	public void setProperty(String property) {
 		this.property = property;
 	}
-	
 	
 	public int getSize() {
 		return size;
@@ -105,6 +107,17 @@ public class ReportColumn implements Serializable, Cloneable
 		}
 		
 		return false;
+	}
+	
+	public static String getpropertyByOrderField(Collection<ReportColumn> colunas, String orderField ) 
+	{
+		for (ReportColumn coluna : colunas) 
+		{
+			if(coluna.getOrderField().equals(orderField))
+				return coluna.getProperty();
+		}
+		
+		return "";
 	}
 
 	public boolean isResize() {

@@ -1,494 +1,400 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="ppraltcat"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
-		 topMargin="20"
-		 bottomMargin="20"
-		 whenNoDataType="NoPages"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ppraltcat" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="3f585d67-7291-455c-baa3-6aee8cf8c062">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["D:\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="EXIBIR_COMPOSICAO_SESMT" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="AGRUPADO_POR_AMBIENTE" isForPrompting="false" class="java.lang.Boolean"/>
-
+	<parameter name="EXIBIR_COMPOSICAO_SESMT" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="AGRUPADO_POR_AMBIENTE" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="ppra" class="com.fortes.rh.model.sesmt.relatorio.Ppra"/>
 	<field name="ltcat" class="com.fortes.rh.model.sesmt.relatorio.Ltcat"/>
 	<field name="cabecalho" class="com.fortes.rh.model.sesmt.relatorio.PpraLtcatCabecalho"/>
 	<field name="composicaoSesmts" class="java.lang.Object"/>
-
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
-
-		<group  name="grpLTCAT" isStartNewPage="true" >
-			<groupExpression><![CDATA[$F{ltcat}]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="265"  isSplitAllowed="false" >
+	<group name="grpLTCAT" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{ltcat}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="265" splitType="Prevent">
 				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="211"
-						width="535"
-						height="53"
-						key="ltcat"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="LTCAT">
+				<subreport isUsingCache="false">
+					<reportElement uuid="507cb466-39ac-4288-a56b-aa5a8f31b235" key="ltcat" positionType="Float" isPrintRepeatedValues="false" x="0" y="211" width="535" height="53" isRemoveLineWhenBlank="true">
+						<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="LTCAT">
 						<subreportParameterExpression><![CDATA[$F{ltcat}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_LTCAT.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_LTCAT.jasper"]]></subreportExpression>
 				</subreport>
 				<staticText>
-					<reportElement
-						x="0"
-						y="4"
-						width="54"
-						height="48"
-						key="staticText-14"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="144bb96f-7c2a-4c44-8dfb-cd6e14205b5f" key="staticText-14" x="0" y="4" width="54" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
 				<staticText>
-					<reportElement
-						x="54"
-						y="4"
-						width="427"
-						height="48"
-						key="staticText-15"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<reportElement uuid="e088edda-92d1-4011-ad05-9f6e6607c161" key="staticText-15" x="54" y="4" width="427" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
-				<text><![CDATA[LTCAT - LAUDO TÉCNICO DAS CONDIÇÕES
+					<text><![CDATA[LTCAT - LAUDO TÉCNICO DAS CONDIÇÕES
 DO AMBIENTE DE TRABALHO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement
-						x="481"
-						y="4"
-						width="54"
-						height="48"
-						key="staticText-16"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="35c8dc2d-fd48-4671-9f22-338f10b0b48d" key="staticText-16" x="481" y="4" width="54" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="56"
-						width="535"
-						height="66"
-						key="ltcat-3"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true"/>
-					<subreportParameter  name="CABECALHO">
+				<subreport isUsingCache="false">
+					<reportElement uuid="540ea764-3663-4bea-93c3-302808af38ce" key="ltcat-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="56" width="535" height="66" isRemoveLineWhenBlank="true"/>
+					<subreportParameter name="CABECALHO">
 						<subreportParameterExpression><![CDATA[$F{cabecalho}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
 				</subreport>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="143"
-						width="535"
-						height="15"
-						key="textField-15"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="ab8bbcac-6930-462d-a804-0f5a11f2d0ed" key="textField-15" positionType="Float" mode="Opaque" x="0" y="143" width="535" height="15"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement>
 						<font size="9" isUnderline="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getAmbienteDescricao()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getAmbienteDescricao()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Page" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="127"
-						width="535"
-						height="16"
-						key="textField-16"
-						positionType="Float"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField evaluationTime="Page" isBlankWhenNull="false">
+					<reportElement uuid="e6408c58-5f39-4bbb-8928-f49628607c8f" key="textField-16" positionType="Float" isPrintRepeatedValues="false" x="0" y="127" width="535" height="16"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $F{cabecalho}.getAmbienteNome()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $F{cabecalho}.getAmbienteNome()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="158"
-						width="178"
-						height="13"
-						key="textField-17"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="e7330df3-5994-4f5c-9694-5f7cc1fc4202" key="textField-17" positionType="Float" x="0" y="158" width="178" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Homens: " + $F{cabecalho}.getQtdHomens()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nº. Homens: " + $F{cabecalho}.getQtdHomens()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="356"
-						y="158"
-						width="179"
-						height="13"
-						key="textField-18"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="bd3e8f12-6041-4435-acc1-13e9a76bce9a" key="textField-18" positionType="Float" x="356" y="158" width="179" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $F{cabecalho}.getQtdTotal()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Total: " + $F{cabecalho}.getQtdTotal()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement
-						x="0"
-						y="176"
-						width="535"
-						height="16"
-						key="staticText-17"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<reportElement uuid="4a7bfabc-c1dd-42aa-b37e-af75d08271fa" key="staticText-17" positionType="Float" x="0" y="176" width="535" height="16"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<text><![CDATA[FUNÇÃO E ATIVIDADES DESEMPENHADAS]]></text>
+					<text><![CDATA[FUNÇÃO E ATIVIDADES DESEMPENHADAS]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="192"
-						width="535"
-						height="15"
-						key="textField-19"
-						positionType="Float">
-							<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
-					<textElement isStyledText="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="adf370ce-efef-4821-8ce4-7df9cd67247a" key="textField-19" positionType="Float" x="0" y="192" width="535" height="15">
+						<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="styled">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="178"
-						y="158"
-						width="178"
-						height="13"
-						key="textField-20"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="352b641e-dd20-4415-abd2-fe85074146bf" key="textField-20" positionType="Float" x="178" y="158" width="178" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="192"
-						width="535"
-						height="19"
-						key="textField-21"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="2"/>
-					<textElement isStyledText="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="70db7f5a-073f-4374-b97b-313e679df5a9" key="textField-21" positionType="Float" x="0" y="192" width="535" height="19">
+						<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="styled">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupFooter>
-		</group>
-		<group  name="grpPPRA" >
-			<groupExpression><![CDATA[$F{ppra}]]></groupExpression>
-			<groupHeader>
-			<band height="322"  isSplitAllowed="true" >
+		</groupFooter>
+	</group>
+	<group name="grpPPRA">
+		<groupExpression><![CDATA[$F{ppra}]]></groupExpression>
+		<groupHeader>
+			<band height="322" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="191"
-						width="535"
-						height="19"
-						key="textField-22"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
-					<textElement isStyledText="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="87c80347-9cf1-430d-baf1-271983f52f29" key="textField-22" positionType="Float" x="0" y="191" width="535" height="19">
+						<printWhenExpression><![CDATA[new Boolean (!$P{AGRUPADO_POR_AMBIENTE}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="styled">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="266"
-						width="535"
-						height="53"
-						key="ltcat-1"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[$P{EXIBIR_COMPOSICAO_SESMT}]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="REPORT_DATA_SOURCE">
+				<subreport isUsingCache="false">
+					<reportElement uuid="22cb1d8d-ca16-43ea-96ee-3eeb7242cd92" key="ltcat-1" positionType="Float" isPrintRepeatedValues="false" x="0" y="266" width="535" height="53" isRemoveLineWhenBlank="true">
+						<printWhenExpression><![CDATA[$P{EXIBIR_COMPOSICAO_SESMT}]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{composicaoSesmts}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "composicao_sesmt.jasper"]]></subreportExpression>
 				</subreport>
 				<staticText>
-					<reportElement
-						x="0"
-						y="2"
-						width="54"
-						height="48"
-						key="staticText-2"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="c63a0439-3667-4c8d-ac07-02ad7cc3d497" key="staticText-2" x="0" y="2" width="54" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
 				<staticText>
-					<reportElement
-						x="54"
-						y="2"
-						width="427"
-						height="48"
-						key="staticText-3"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<reportElement uuid="85302698-0f7d-433f-a666-d5b7f12a063b" key="staticText-3" x="54" y="2" width="427" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="14"/>
 					</textElement>
-				<text><![CDATA[PPRA - PROGRAMA DE PREVENÇÃO 
+					<text><![CDATA[PPRA - PROGRAMA DE PREVENÇÃO
 DE RISCOS AMBIENTAIS]]></text>
 				</staticText>
 				<staticText>
-					<reportElement
-						x="481"
-						y="2"
-						width="54"
-						height="48"
-						key="staticText-4"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="5d397545-2ab2-4a1d-9fe6-ed0979bfecec" key="staticText-4" x="481" y="2" width="54" height="48"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="142"
-						width="535"
-						height="15"
-						key="textField-8"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="Thin" bottomBorderColor="#000000" bottomPadding="2"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="d9ccb0a8-b981-4b33-b44d-df2b954fc9f6" key="textField-8" positionType="Float" x="0" y="142" width="535" height="15"/>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement>
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getAmbienteDescricao()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getAmbienteDescricao()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Page" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="126"
-						width="535"
-						height="16"
-						key="textField-9"
-						positionType="Float"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField evaluationTime="Page" isBlankWhenNull="false">
+					<reportElement uuid="a005f53b-c614-4faf-981a-a0504d98a924" key="textField-9" positionType="Float" isPrintRepeatedValues="false" x="0" y="126" width="535" height="16"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $F{cabecalho}.getAmbienteNome()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["DESCRIÇÃO DO AMBIENTE - " + $F{cabecalho}.getAmbienteNome()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="157"
-						width="178"
-						height="13"
-						key="textField-10"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="35f3a268-c1d7-4e39-bf90-376787470436" key="textField-10" positionType="Float" x="0" y="157" width="178" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Homens: " + $F{cabecalho}.getQtdHomens()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nº. Homens: " + $F{cabecalho}.getQtdHomens()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="356"
-						y="157"
-						width="179"
-						height="13"
-						key="textField-12"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement uuid="86dd1115-2f2a-4fa2-b7d3-0528c0e47297" key="textField-12" positionType="Float" x="356" y="157" width="179" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Total: " + $F{cabecalho}.getQtdTotal()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Total: " + $F{cabecalho}.getQtdTotal()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement
-						x="0"
-						y="175"
-						width="535"
-						height="16"
-						key="staticText-13"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+					<reportElement uuid="466a127c-8901-4145-8b4c-48fd1793b7cb" key="staticText-13" positionType="Float" x="0" y="175" width="535" height="16"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
+					<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="191"
-						width="535"
-						height="15"
-						key="textField-13"
-						positionType="Float">
-							<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" topPadding="1" leftBorder="Thin" leftBorderColor="#000000" leftPadding="1" rightBorder="Thin" rightBorderColor="#000000" rightPadding="1" bottomBorder="None" bottomBorderColor="#000000" bottomPadding="2"/>
-					<textElement isStyledText="true">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="2826ac87-7818-4e99-8607-0625b9103165" key="textField-13" positionType="Float" x="0" y="191" width="535" height="15">
+						<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="styled">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="178"
-						y="157"
-						width="178"
-						height="13"
-						key="textField-14"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="eede8157-270a-4c35-80ca-ab3b2f43d1ba" key="textField-14" positionType="Float" x="178" y="157" width="178" height="13"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
 					<textElement textAlignment="Center">
-						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Nº. Mulheres: " + $F{cabecalho}.getQtdMulheres()]]></textFieldExpression>
 				</textField>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="56"
-						width="535"
-						height="66"
-						key="ltcat-2"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true"/>
-					<subreportParameter  name="CABECALHO">
+				<subreport isUsingCache="false">
+					<reportElement uuid="a25b0126-53b8-47c0-b6f6-d3145e31f50e" key="ltcat-2" positionType="Float" isPrintRepeatedValues="false" x="0" y="56" width="535" height="66" isRemoveLineWhenBlank="true"/>
+					<subreportParameter name="CABECALHO">
 						<subreportParameterExpression><![CDATA[$F{cabecalho}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
 				</subreport>
-				<subreport  isUsingCache="false">
-					<reportElement
-						x="0"
-						y="210"
-						width="535"
-						height="53"
-						key="ltcat-4"
-						positionType="Float"
-						isPrintRepeatedValues="false"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="PPRA">
+				<subreport isUsingCache="false">
+					<reportElement uuid="3e89ce10-d6f3-4619-90b3-4304dde6dbcf" key="ltcat-4" positionType="Float" isPrintRepeatedValues="false" x="0" y="210" width="535" height="53" isRemoveLineWhenBlank="true">
+						<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="PPRA">
 						<subreportParameterExpression><![CDATA[$F{ppra}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
 				</subreport>
 			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupFooter>
-		</group>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

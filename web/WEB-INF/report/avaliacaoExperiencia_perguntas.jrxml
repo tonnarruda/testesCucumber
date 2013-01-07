@@ -1,34 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport
-		 name="avaliacaoExperiencia_perguntas"
-		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="535"
-		 pageHeight="802"
-		 columnWidth="535"
-		 columnSpacing="0"
-		 leftMargin="0"
-		 rightMargin="0"
-		 topMargin="0"
-		 bottomMargin="0"
-		 whenNoDataType="AllSectionsNoDetail"
-		 isTitleNewPage="false"
-		 isSummaryNewPage="false">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-
-	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["C:\\Aristenio\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="avaliacaoExperiencia_perguntas" pageWidth="535" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="28fddd68-95b1-46a5-a66b-d4ded2eb5fef">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Aristenio\\workspace\\FortesRH\\web\\WEB-INF\\report\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="APLICAR_POR_ASPECTO" isForPrompting="false" class="java.lang.Boolean"/>
-	<parameter name="FORMA_ECONOMICA" isForPrompting="false" class="java.lang.Boolean"/>
-
+	<parameter name="APLICAR_POR_ASPECTO" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="FORMA_ECONOMICA" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="texto" class="java.lang.String"/>
 	<field name="respostas" class="java.lang.Object"/>
 	<field name="ordem" class="java.lang.Integer"/>
@@ -38,192 +22,157 @@
 	<field name="comentario" class="java.lang.Boolean"/>
 	<field name="textoComentario" class="java.lang.String"/>
 	<field name="respostasFormatada" class="java.lang.String"/>
-
-
-		<group  name="grpSubjetiva" >
-			<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="51"  isSplitAllowed="true" >
+	<group name="grpSubjetiva">
+		<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="51" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($F{tipo}.intValue() == 3)]]></printWhenExpression>
 				<staticText>
-					<reportElement
-						x="23"
-						y="3"
-						width="504"
-						height="45"
-						key="staticText-1"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="576b2a1b-c65c-41b3-91f6-6a1f6a778b9c" key="staticText-1" positionType="Float" x="23" y="3" width="504" height="45"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
 			</band>
-			</groupFooter>
-		</group>
-		<group  name="grpComentario" >
-			<groupExpression><![CDATA[new Boolean($F{comentario}.booleanValue() == true)]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="65"  isSplitAllowed="true" >
+		</groupFooter>
+	</group>
+	<group name="grpComentario">
+		<groupExpression><![CDATA[new Boolean($F{comentario}.booleanValue() == true)]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="65" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($F{comentario}.booleanValue() == true)]]></printWhenExpression>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="23"
-						y="3"
-						width="504"
-						height="15"
-						key="textField"
-						positionType="Float"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{textoComentario}]]></textFieldExpression>
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="9a1ee7ea-ce92-48e3-a53c-c41033fd6195" key="textField" positionType="Float" x="23" y="3" width="504" height="15"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{textoComentario}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement
-						x="23"
-						y="20"
-						width="504"
-						height="45"
-						key="staticText-2"
-						positionType="Float"/>
-					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[]]></text>
+					<reportElement uuid="39ee67be-164b-4fc7-bd8f-5ad4dd50b0e3" key="staticText-2" positionType="Float" x="23" y="20" width="504" height="45"/>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<text><![CDATA[]]></text>
 				</staticText>
 			</band>
-			</groupFooter>
-		</group>
-		<group  name="grpNota" >
-			<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
-			<groupHeader>
-			<band height="1"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="20"  isSplitAllowed="true" >
+		</groupFooter>
+	</group>
+	<group name="grpNota">
+		<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
+		<groupHeader>
+			<band height="1" splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($F{tipo}.intValue() == 4)]]></printWhenExpression>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="23"
-						y="3"
-						width="324"
-						height="15"
-						key="textField-1"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean($F{tipo}.equals(new Integer(4))) /* Tipo PERGUNTA NOTA*/]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Dê uma nota de " + $F{notaMinima} + " a " + $F{notaMaxima} + " : _____"]]></textFieldExpression>
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="34e60db4-1f07-42d7-bffb-fc2c7fdcb94d" key="textField-1" positionType="Float" x="23" y="3" width="324" height="15">
+						<printWhenExpression><![CDATA[new Boolean($F{tipo}.equals(new Integer(4))) /* Tipo PERGUNTA NOTA*/]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<textFieldExpression><![CDATA["Dê uma nota de " + $F{notaMinima} + " a " + $F{notaMaxima} + " : _____"]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupFooter>
-		</group>
-		<group  name="grpObjetiva" >
-			<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
-			<groupHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-			</groupHeader>
-			<groupFooter>
-			<band height="21"  isSplitAllowed="true" >
+		</groupFooter>
+	</group>
+	<group name="grpObjetiva">
+		<groupExpression><![CDATA[$F{ordem}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="21" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($F{tipo}.intValue() == 1 || $F{tipo}.equals(new Integer(5)))]]></printWhenExpression>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="23"
-						y="3"
-						width="504"
-						height="15"
-						key="subreport-1"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean($P{FORMA_ECONOMICA}.equals(new Boolean(false)) && ($F{tipo}.equals(new Integer(1)) || $F{tipo}.equals(new Integer(5)))) /* Tipo PERGUNTA OBJETIVA ou MULTIPLA*/]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="SUBREPORT_DIR">
+				<subreport isUsingCache="true">
+					<reportElement uuid="8a9708a1-3b68-4ff2-be52-a57702c58e4e" key="subreport-1" positionType="Float" x="23" y="3" width="504" height="15">
+						<printWhenExpression><![CDATA[new Boolean($P{FORMA_ECONOMICA}.equals(new Boolean(false)) && ($F{tipo}.equals(new Integer(1)) || $F{tipo}.equals(new Integer(5)))) /* Tipo PERGUNTA OBJETIVA ou MULTIPLA*/]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter  name="REPORT_DATA_SOURCE">
+					<subreportParameter name="REPORT_DATA_SOURCE">
 						<subreportParameterExpression><![CDATA[$F{respostas}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "questionario_perguntas_respostas.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "questionario_perguntas_respostas.jasper"]]></subreportExpression>
 				</subreport>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="23"
-						y="3"
-						width="504"
-						height="15"
-						key="textField-2"
-						positionType="Float">
-							<printWhenExpression><![CDATA[new Boolean($P{FORMA_ECONOMICA}.equals(new Boolean(true)) && ($F{tipo}.equals(new Integer(1)) || $F{tipo}.equals(new Integer(5)))) /* Tipo PERGUNTA OBJETIVA ou MULTIPLA*/]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{respostasFormatada}]]></textFieldExpression>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="b35bf027-b32d-4835-bd92-8108f610a85c" key="textField-2" positionType="Float" x="23" y="3" width="504" height="15">
+						<printWhenExpression><![CDATA[new Boolean($P{FORMA_ECONOMICA}.equals(new Boolean(true)) && ($F{tipo}.equals(new Integer(1)) || $F{tipo}.equals(new Integer(5)))) /* Tipo PERGUNTA OBJETIVA ou MULTIPLA*/]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{respostasFormatada}]]></textFieldExpression>
 				</textField>
 			</band>
-			</groupFooter>
-		</group>
-		<background>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</background>
-		<title>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageHeader>
-		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="16"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="2"
-						y="0"
-						width="526"
-						height="15"
-						key="textField"
-						isPrintWhenDetailOverflows="true"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="10"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ordem} + " ) " + $F{texto}]]></textFieldExpression>
-				</textField>
-			</band>
-		</detail>
-		<columnFooter>
-			<band height="5"  isSplitAllowed="true" >
-			</band>
-		</columnFooter>
-		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</pageFooter>
-		<summary>
-			<band height="0"  isSplitAllowed="true" >
-			</band>
-		</summary>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="d7f22805-c17a-4919-8906-c1d8c3fa14cb" key="textField" x="2" y="0" width="526" height="15" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordem} + " ) " + $F{texto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

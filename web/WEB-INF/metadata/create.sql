@@ -1405,7 +1405,8 @@ CREATE TABLE clinicaautorizada (
     empresa_id bigint,
     endereco character varying(80),
     telefone character varying(10),
-    horarioatendimento character varying(45)
+    horarioatendimento character varying(45),
+    outro character varying(50)
 );
 
 
@@ -5969,7 +5970,8 @@ CREATE TABLE tabelareajustecolaborador (
     observacao text,
     aprovada boolean NOT NULL,
     empresa_id bigint,
-    dissidio boolean DEFAULT false NOT NULL
+    dissidio boolean DEFAULT false NOT NULL,
+    tiporeajuste character(1) DEFAULT 'C'::bpchar NOT NULL
 );
 
 
@@ -27894,6 +27896,9 @@ INSERT INTO migrations (name) VALUES ('20121203111221');
 INSERT INTO migrations (name) VALUES ('20121205141501');
 INSERT INTO migrations (name) VALUES ('20121210093742');
 INSERT INTO migrations (name) VALUES ('20121217143512');
+INSERT INTO migrations (name) VALUES ('20121226105433');
+INSERT INTO migrations (name) VALUES ('20130102161739');
+INSERT INTO migrations (name) VALUES ('20130103132012');
 
 
 --
@@ -28187,7 +28192,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.96.97', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.97.98', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
 
 
 --

@@ -23,6 +23,18 @@ public class ConfiguracaoRelatorioDinamico extends AbstractModel implements Seri
 	@Column(length=100)
 	private String titulo = "";
 	
+	public ConfiguracaoRelatorioDinamico() 
+	{
+	}
+	
+	public ConfiguracaoRelatorioDinamico(Usuario usuario, String campos, String titulo) 
+	{
+		super();
+		this.usuario = usuario;
+		this.campos = campos;
+		this.titulo = titulo;
+	}
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}

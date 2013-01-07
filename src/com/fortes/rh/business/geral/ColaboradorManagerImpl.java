@@ -75,7 +75,7 @@ import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.Contato;
-import com.fortes.rh.model.geral.DynaRecord;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
@@ -1806,38 +1806,27 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return retorno;
 	}
  
-	public Collection<DynaRecord> preparaRelatorioDinamico(Collection<Colaborador> colaboradores, Collection<String> colunasMarcadas, Integer[] tempoServicoIni, Integer[] tempoServicoFim) 
+	public Collection<Colaborador> montaTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String orderAgrupadoPor) 
 	{
-		Collection<DynaRecord> retorno = new ArrayList<DynaRecord>();
-		
-		for (Colaborador colaborador : colaboradores)
-		{				
-			DynaRecord record = new DynaRecord();
-			
-			for (int i=1; i <= colunasMarcadas.size(); i++)
-				BeanUtils.setValue(record, "campo" + i, BeanUtils.getValue(colaborador, (String) colunasMarcadas.toArray()[i - 1]));
-			
-			if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length){
-				for (int i = 0; i < tempoServicoIni.length; i++) 
-				{
-					if (colaborador.getTempoServico() >= tempoServicoIni[i] && colaborador.getTempoServico() <= tempoServicoFim[i])
-					{
-						record.setTempoServico("De " + tempoServicoIni[i] + " até " + tempoServicoFim[i] + " meses");
-						break;
-					}
-				}
-			}
-			record.setColaborador(colaborador);
-			retorno.add(record);
-		}			
-
 		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
 		{
-			retorno = new CollectionUtil<DynaRecord>().sortCollectionStringIgnoreCase(retorno, "campo1");
-			retorno = new CollectionUtil<DynaRecord>().sortCollectionStringIgnoreCase(retorno, "tempoServico");
+			for (Colaborador colaborador : colaboradores)
+			{				
+					for (int i = 0; i < tempoServicoIni.length; i++) 
+					{
+						if (colaborador.getTempoServico() >= tempoServicoIni[i] && colaborador.getTempoServico() <= tempoServicoFim[i])
+						{
+							colaborador.setTempoServicoString("De " + tempoServicoIni[i] + " até " + tempoServicoFim[i] + " meses");
+							
+						}
+					}
+			}
 		}
 		
-		return retorno;
+		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, orderAgrupadoPor);
+		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "tempoServicoString");
+		
+		return colaboradores;
 	}
 	
 	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim)

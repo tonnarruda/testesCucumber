@@ -19403,3 +19403,12 @@ insert into perfil_papel(perfil_id, papeis_id) values (1, 564);--.go
 alter sequence papel_sequence restart with 565;--.go
 insert into migrations values('20121217143512');--.go
 update parametrosdosistema set appversao = '1.1.96.97';--.go
+-- versao 1.1.97.98
+
+alter table clinicaautorizada add column outro character varying(50);--.go
+insert into migrations values('20121226105433');--.go
+update mensagem set tipo = 'A' where texto ilike '%Período de Experiência%';--.go
+insert into migrations values('20130102161739');--.go
+alter table tabelareajustecolaborador add column tiporeajuste character(1) default 'C' not null;--.go
+insert into migrations values('20130103132012');--.go
+update parametrosdosistema set appversao = '1.1.97.98';--.go

@@ -228,6 +228,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Integer tempoServico;
 	@Transient
+	private String tempoServicoString;
+	@Transient
 	private String intervaloTempoServico;
 	
 	@Transient
@@ -2612,12 +2614,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataEncerramentoContrato = dataEncerramentoContrato;
 	}
 
-	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorPeriodoExperienciaAvaliacaos() {
+	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradorPeriodoExperienciaAvaliacaos() 
+	{
 		return colaboradorPeriodoExperienciaAvaliacaos;
 	}
 
-	public void setColaboradorPeriodoExperienciaAvaliacaos(
-			Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos) {
+	public void setColaboradorPeriodoExperienciaAvaliacaos(Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos) 
+	{
 		this.colaboradorPeriodoExperienciaAvaliacaos = colaboradorPeriodoExperienciaAvaliacaos;
 	}
 
@@ -2625,8 +2628,18 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return avaliacaoId;
 	}
 
-	public void setAvaliacaoId(Long avaliacaoId) {
+	public void setAvaliacaoId(Long avaliacaoId) 
+	{
 		this.avaliacaoId = avaliacaoId;
 	}
 
+	public String getTempoServicoString() 
+	{
+		return tempoServicoString;
+	}
+
+	public void setTempoServicoString(String tempoServicoString) 
+	{
+		this.tempoServicoString = tempoServicoString;
+	}
 }
