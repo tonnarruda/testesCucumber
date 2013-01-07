@@ -1058,11 +1058,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			return (Double) valor;
 	}
 
-	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId) 
+	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes) 
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria = criteria.createCriteria("ct.colaborador", "c", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("ct.colaboradorPresencas", "cp", Criteria.INNER_JOIN);
+		
+		if(somentePresentes)
+			criteria = criteria.createCriteria("ct.colaboradorPresencas", "cp", Criteria.INNER_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("ct.id")), "id");
@@ -1074,7 +1076,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		criteria.add(Expression.eq("ct.turma.id", turmaId));
 		criteria.add(Expression.eq("c.desligado", false));
-		criteria.add(Expression.eq("cp.presenca", true));
+		
+		if(somentePresentes)
+			criteria.add(Expression.eq("cp.presenca", true));
+		
 		criteria.add(Expression.not(Expression.eq("c.contato.email", "")));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.97.98" data="03/01/2012">
+	<Versao id="1.1.97.99" data="07/01/2012">
 		<Modulo nome=" "><![CDATA[
   			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Nova funcionalidade de visualizar e/ou imprimir o organograma das Áreas Organizacionais.
             :: SESMT > Cadastros > Clinicas e Médicos Autorizados: Possibilidade de cadastrar outros tipos para a realização do exames.
