@@ -35,6 +35,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -198,6 +199,17 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	{
 		try
 		{
+			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			if(!tabelaReajusteColaborador.getData().after(colaborador.getDataAdmissao()))
+			{
+				prepareSolicitacaoReajuste();
+				throw new Exception("Não Foi possível gravar o realinhamento, pois a data da solicitação de realinhamento ("+ 
+				         DateUtil.formataDiaMesAno(tabelaReajusteColaborador.getData()) +") deve ser maior que a data de admissão" +
+				         "do colaborador ("+ colaborador.getDataAdmissaoFormatada() +"). ");
+			}
+			
 			obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
 			
 			setDadosSolicitacaoReajuste();

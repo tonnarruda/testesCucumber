@@ -2,6 +2,7 @@ package com.fortes.rh.test.web.action.cargosalario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import mockit.Mockit;
@@ -35,9 +36,11 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction;
 import com.opensymphony.xwork.ActionContext;
 
@@ -105,6 +108,13 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarialAtual = FaixaSalarialFactory.getEntity(1L);
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(2L);
 		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 2012));
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaborador.setData(new Date());
+		
+		action.setTabelaReajusteColaborador(tabelaReajusteColaborador);
+		action.setColaborador(colaborador);
 		action.setFaixaSalarialAtual(faixaSalarialAtual);
 		action.setFaixaSalarialProposta(faixaSalarialProposta);
 		action.setFuncaoAtual(new Funcao());
@@ -118,6 +128,8 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		action.setReajusteColaborador(reajusteColaborador);
 		
+		tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		manager.expects(once()).method("validaSolicitacaoReajuste").isVoid();
 		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador)).isVoid();
 		

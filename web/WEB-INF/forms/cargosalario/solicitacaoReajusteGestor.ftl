@@ -345,6 +345,8 @@
 						<@ww.hidden name="reajusteColaborador.quantidadeIndiceAtual" id="quantidadeIndiceAtual" />
 						<@ww.hidden name="reajusteColaborador.salarioAtual" id="salarioAtual" />
 						<@ww.hidden name="reajusteColaborador.estabelecimentoAtual.id" id="estabelecimentoAtualId" />
+						<@ww.hidden name="colaboradorId" id="colaborador.id"/>
+						<@ww.hidden name="tabelaReajusteColaboradorId" id="tabelaReajusteColaborador.id"/>
 		
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 							<@ww.hidden name="reajusteColaborador.funcaoAtual.id" id="funcaoAtual" />
