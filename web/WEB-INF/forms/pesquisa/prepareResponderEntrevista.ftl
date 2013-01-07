@@ -18,7 +18,12 @@
 	<@ww.form name="form" action="../colaboradorResposta/prepareResponderEntrevista.action" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.select label="Modelo de Entrevista" name="questionario.id" id="entrevista" list="entrevistas" listKey="questionario.id" listValue="questionario.titulo" headerKey="" headerValue="Selecione..."/>
 		<@ww.hidden name="colaborador.id" />
-		<@ww.hidden name="voltarPara" value="../../geral/colaborador/list.action"/>
+		
+		<#if voltarPara?exists>
+			<@ww.hidden name="voltarPara"/>
+		<#else>
+			<@ww.hidden name="voltarPara" value="../../geral/colaborador/list.action"/>
+		</#if>
 	</@ww.form>
 
 	<div class="buttonGroup">
