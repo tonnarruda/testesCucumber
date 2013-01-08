@@ -3193,7 +3193,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 
-	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck) 
+	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa) 
 	{		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, fs.nome, ca.nome, ao.id, respArea.nome, ");
@@ -3225,6 +3225,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and co.desligado = false ");
 		hql.append("and co.empresa.id = :empresaId ");
 		
+		if(periodoFim != null && tempoDeEmpresa != null)
+			hql.append("and (:periodoFim - co.dataAdmissao) + 1  <= :tempoDeEmpresa ");
+		
 		if (periodoIni != null)
 			hql.append("and :periodoIni <= co.dataAdmissao  ");
 		if (periodoFim != null)
@@ -3249,7 +3252,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
-
+		if(periodoFim != null && tempoDeEmpresa != null)
+			query.setInteger("tempoDeEmpresa", tempoDeEmpresa);
+		
 		if (areasCheck != null && areasCheck.length > 0)
 			query.setParameterList("areasCheck", StringUtil.stringToLong(areasCheck));
 
