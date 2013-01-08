@@ -70,7 +70,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	
 	public String prepareUpdate() throws Exception
 	{
-		reajusteFaixaSalarial = reajusteFaixaSalarialManager.findById(reajusteFaixaSalarial.getId());
+		reajusteFaixaSalarial = reajusteFaixaSalarialManager.findByIdProjection(reajusteFaixaSalarial.getId());
 		
 		return Action.SUCCESS;
 	}

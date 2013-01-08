@@ -34,7 +34,47 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 			this.tabelaReajusteColaborador = new TabelaReajusteColaborador();
 		
 		this.tabelaReajusteColaborador.setId(tabelaReajusteColaboradorId);
-	}	
+	}
+
+	public void setProjectionTabelaReajusteColaboradorNome(String tabelaReajusteColaboradorNome) 
+	{
+		if (this.tabelaReajusteColaborador == null)
+			this.tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		
+		this.tabelaReajusteColaborador.setNome(tabelaReajusteColaboradorNome);
+	}
+
+	public void setProjectionFaixaSalarialId(Long faixaSalarialId) 
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setId(faixaSalarialId);
+	}
+	
+	public void setProjectionFaixaSalarialNome(String faixaSalarialNome) 
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setNome(faixaSalarialNome);
+	}
+	
+	public void setProjectionCargoId(Long cargoId) 
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setProjectionCargoId(cargoId);
+	}
+	
+	public void setProjectionCargoNome(String cargoNome) 
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setNomeCargo(cargoNome);
+	}
 	
 	public TabelaReajusteColaborador getTabelaReajusteColaborador() 
 	{

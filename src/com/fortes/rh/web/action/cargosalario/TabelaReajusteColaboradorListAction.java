@@ -6,6 +6,7 @@ import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -51,7 +52,12 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	{
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.COLABORADOR))
+				tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			
+			else if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
+				tabelaReajusteColaboradorManager.cancelarPorFaixaSalarial(tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			
 			addActionMessage("Cancelamento efetuado com sucesso.");
 		}
 		catch (IntegraACException e)
@@ -75,22 +81,26 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		return list();
 	}
 
-	public Collection<TabelaReajusteColaborador> getTabelaReajusteColaboradors() {
+	public Collection<TabelaReajusteColaborador> getTabelaReajusteColaboradors() 
+	{
 		return tabelaReajusteColaboradors;
 	}
 
-	public TabelaReajusteColaborador getTabelaReajusteColaborador(){
+	public TabelaReajusteColaborador getTabelaReajusteColaborador()
+	{
 		if(tabelaReajusteColaborador == null){
 			tabelaReajusteColaborador = new TabelaReajusteColaborador();
 		}
 		return tabelaReajusteColaborador;
 	}
 
-	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador){
+	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador)
+	{
 		this.tabelaReajusteColaborador=tabelaReajusteColaborador;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager){
+	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
+	{
 		this.tabelaReajusteColaboradorManager=tabelaReajusteColaboradorManager;
 	}
 

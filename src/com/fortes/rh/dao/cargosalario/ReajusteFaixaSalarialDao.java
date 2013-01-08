@@ -10,4 +10,6 @@ public interface ReajusteFaixaSalarialDao extends GenericDao<ReajusteFaixaSalari
 	Collection<ReajusteFaixaSalarial> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId);
 
 	void updateValorProposto(Long reajusteFaixaSalarialId, Double valorProposto);
+
+	ReajusteFaixaSalarial findByIdProjection(Long id);
 }

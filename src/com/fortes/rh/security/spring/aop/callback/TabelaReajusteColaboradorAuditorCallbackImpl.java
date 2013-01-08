@@ -54,18 +54,6 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
 	}
 
-	public Auditavel aplicarPorFaixaSalarial(MetodoInterceptado metodo) throws Throwable {
-		
-		Long tabelaReajusteColaboradorId = (Long) metodo.getParametros()[0];
-		TabelaReajusteColaborador tabelaReajusteColaborador = (TabelaReajusteColaborador) carregaEntidade(metodo, tabelaReajusteColaboradorId);
-		
-		metodo.processa();
-		
-		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
-		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
-	}
-	
 	public Auditavel cancelar(MetodoInterceptado metodo) throws Throwable {
 		
 		Long tabelaReajusteColaboradorId = (Long) metodo.getParametros()[0];

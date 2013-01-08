@@ -10,6 +10,8 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
+import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -18,6 +20,8 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -30,6 +34,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
+import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarialHistorico>
@@ -41,6 +46,8 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 	private CargoDao cargoDao;
 	private EmpresaDao empresaDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
+	private ReajusteFaixaSalarialDao reajusteFaixaSalarialDao;
 
 	public FaixaSalarialHistorico getEntity()
 	{
@@ -112,6 +119,69 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		}
 		
 		assertNull(exception);
+	}
+
+	public void testFindByTabelaReajusteId() {
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa1);
+
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa2);
+		
+		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa3);
+
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela1);
+
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela2);
+		
+		ReajusteFaixaSalarial reajuste1 = new ReajusteFaixaSalarial();
+		reajuste1.setTabelaReajusteColaborador(tabela1);
+		reajuste1.setFaixaSalarial(faixa1);
+		reajuste1.setTipoAtual(TipoAplicacaoIndice.VALOR);
+		reajuste1.setTipoProposto(TipoAplicacaoIndice.VALOR);
+		reajuste1.setValorAtual(1000.00);
+		reajuste1.setValorProposto(1200.00);
+		reajusteFaixaSalarialDao.save(reajuste1);
+		
+		ReajusteFaixaSalarial reajuste2 = new ReajusteFaixaSalarial();
+		reajuste2.setTabelaReajusteColaborador(tabela1);
+		reajuste2.setFaixaSalarial(faixa2);
+		reajuste2.setTipoAtual(TipoAplicacaoIndice.VALOR);
+		reajuste2.setTipoProposto(TipoAplicacaoIndice.VALOR);
+		reajuste2.setValorAtual(1000.00);
+		reajuste2.setValorProposto(1200.00);
+		reajusteFaixaSalarialDao.save(reajuste2);
+		
+		ReajusteFaixaSalarial reajuste3 = new ReajusteFaixaSalarial();
+		reajuste3.setTabelaReajusteColaborador(tabela2);
+		reajuste3.setFaixaSalarial(faixa3);
+		reajuste3.setTipoAtual(TipoAplicacaoIndice.VALOR);
+		reajuste3.setTipoProposto(TipoAplicacaoIndice.VALOR);
+		reajuste3.setValorAtual(1000.00);
+		reajuste3.setValorProposto(1200.00);
+		reajusteFaixaSalarialDao.save(reajuste3);
+		
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
+		historico1.setFaixaSalarial(faixa1);
+		historico1.setReajusteFaixaSalarial(reajuste1);
+		faixaSalarialHistoricoDao.save(historico1);
+		
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
+		historico2.setFaixaSalarial(faixa2);
+		historico2.setReajusteFaixaSalarial(reajuste2);
+		faixaSalarialHistoricoDao.save(historico2);
+		
+		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity();
+		historico3.setFaixaSalarial(faixa3);
+		historico3.setReajusteFaixaSalarial(reajuste3);
+		faixaSalarialHistoricoDao.save(historico3);
+		
+		assertEquals(2, faixaSalarialHistoricoDao.findByTabelaReajusteId(tabela1.getId()).size());
+		assertEquals(1, faixaSalarialHistoricoDao.findByTabelaReajusteId(tabela2.getId()).size());
 	}
 	
 	
@@ -472,5 +542,15 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setTabelaReajusteColaboradorDao(
+			TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) {
+		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
+	}
+
+	public void setReajusteFaixaSalarialDao(
+			ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) {
+		this.reajusteFaixaSalarialDao = reajusteFaixaSalarialDao;
 	}
 }

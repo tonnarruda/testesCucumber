@@ -246,7 +246,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	{
 		try 
 		{
-			tabelaReajusteColaboradorManager.aplicarPorFaixaSalarial(tabelaReajusteColaborador.getId());
+			tabelaReajusteColaboradorManager.aplicarPorFaixaSalarial(tabelaReajusteColaborador.getId(), getEmpresaSistema());
 			
 			addActionMessage("Reajuste aplicado com sucesso");
 			

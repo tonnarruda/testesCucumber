@@ -147,7 +147,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			acPessoalClientTabelaReajuste.aplicaReajuste(historicosAc, empresa);
 	}
 
-	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId) throws ColecaoVaziaException
+	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws ColecaoVaziaException, Exception
 	{
 		TabelaReajusteColaborador tabelaReajusteColaborador = findByIdProjection(tabelaReajusteColaboradorId);
 		Collection<ReajusteFaixaSalarial> reajustes = reajusteFaixaSalarialManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
@@ -165,10 +165,11 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			faixaSalarialHistorico.setFaixaSalarial(reajuste.getFaixaSalarial());
 			faixaSalarialHistorico.setTipo(reajuste.getTipoProposto());
 			faixaSalarialHistorico.setValor(reajuste.getValorProposto());
-			faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
 			
-			faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
+			faixaSalarialHistoricoManager.save(faixaSalarialHistorico, reajuste.getFaixaSalarial(), empresa, true);
 		}
+		
+		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
 	}
 	
 	public void cancelar(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
@@ -203,6 +204,16 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 				acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacaos);
 			}
 		}
+	}
+	
+	public void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	{
+		Collection<FaixaSalarialHistorico> historicos = faixaSalarialHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
+		
+		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos) 
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+		
+		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}
 
 	public TSituacao[] prepareDeleteSituacao(Collection<TSituacao> situacaosTmp) throws Exception

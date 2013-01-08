@@ -379,7 +379,8 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return (Long) criteria.uniqueResult();
 	}
 
-	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception 
+	{
 		if(faixaIds != null && faixaIds.length > 0)
 		{
 			String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaIds)";
@@ -388,5 +389,24 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
 			query.executeUpdate();		
 		}
+	}
+
+	public Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fsh");
+		criteria.createCriteria("fsh.reajusteFaixaSalarial", "rfs", Criteria.INNER_JOIN);
+		criteria.createCriteria("rfs.tabelaReajusteColaborador", "trs", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fsh.id"), "id");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("trs.id", tabelaReajusteColaboradorId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }

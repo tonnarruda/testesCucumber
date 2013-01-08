@@ -6,6 +6,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
@@ -20,11 +23,29 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		criteria.createCriteria("rfs.faixaSalarial", "fs", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
 
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("rfs.id"), "id");
+		p.add(Projections.property("rfs.tipoAtual"), "tipoAtual");
+		p.add(Projections.property("rfs.tipoProposto"), "tipoProposto");
+		p.add(Projections.property("rfs.qtdIndiceAtual"), "qtdIndiceAtual");
+		p.add(Projections.property("rfs.qtdIndiceProposta"), "qtdIndiceProposta");
+		p.add(Projections.property("rfs.valorAtual"), "valorAtual");
+		p.add(Projections.property("rfs.valorProposto"), "valorProposto");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		
+		criteria.setProjection(p);
+		
 		criteria.add(Expression.eq("rfs.tabelaReajusteColaborador.id", tabelaReajusteColaboradorId));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.asc("fs.nome"));
 
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReajusteFaixaSalarial.class));
+		
 		return criteria.list();
 	}
 
@@ -38,5 +59,37 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		query.setDouble("valorProposto", valorProposto);
 
 		query.executeUpdate();
+	}
+
+	public ReajusteFaixaSalarial findByIdProjection(Long id) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "rfs");
+		criteria.createCriteria("rfs.tabelaReajusteColaborador", "trc");
+		criteria.createCriteria("rfs.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("rfs.id"), "id");
+		p.add(Projections.property("rfs.tipoAtual"), "tipoAtual");
+		p.add(Projections.property("rfs.tipoProposto"), "tipoProposto");
+		p.add(Projections.property("rfs.qtdIndiceAtual"), "qtdIndiceAtual");
+		p.add(Projections.property("rfs.qtdIndiceProposta"), "qtdIndiceProposta");
+		p.add(Projections.property("rfs.valorAtual"), "valorAtual");
+		p.add(Projections.property("rfs.valorProposto"), "valorProposto");
+		p.add(Projections.property("trc.id"), "projectionTabelaReajusteColaboradorId");
+		p.add(Projections.property("trc.nome"), "projectionTabelaReajusteColaboradorNome");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("rfs.id", id));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReajusteFaixaSalarial.class));
+		
+		return (ReajusteFaixaSalarial) criteria.uniqueResult();
 	}
 }
