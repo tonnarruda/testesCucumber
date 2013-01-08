@@ -4,13 +4,20 @@ function populaCargosByArea()
 	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 	var empresaId = $('#empresa').val();
 	
-	if(areasIds.length == 0)
-		CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+	if ($('#cargoSemArea').is(":checked"))
+	{
+		if(areasIds.length == 0)
+			CargoDWR.getByEmpresasMaisSemAreaRelacionada(createListCargosByArea, empresaId, empresaIds);
+		else
+			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+	}
 	else
-		CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
-	
-	if($('#cargoSemArea').is(":checked"))
-		addCheckCargoSemArea();
+	{
+		if(areasIds.length == 0)
+			CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+		else
+			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+	}
 }
 
 function createListCargosByArea(data)
@@ -26,18 +33,6 @@ function verificaCargoSemAreaRelacionada(empresaId)
 function exibeCheckCargoSemArea(data)
 {
 	$('#wwgrp_cargoSemArea').toggle(data);
-}
-
-function addCheckCargoSemArea()	
-{
-	DWRUtil.useLoadingMessage('Carregando...');
-	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-	var empresaId = $('#empresa').val();
-	
-	if(areasIds.length == 0)
-		CargoDWR.getByEmpresasMaisSemAreaRelacionada(createListCargosByArea, empresaId, empresaIds);
-	else
-		CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
 }
 
 function changeEmpresa(value)
