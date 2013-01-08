@@ -25,6 +25,8 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 	private FaixaSalarial faixaSalarial;
 	@ManyToOne
 	private Indice indice;
+	@ManyToOne
+	private ReajusteFaixaSalarial reajusteFaixaSalarial;
 	@Temporal(TemporalType.DATE)
     private Date data;
 	private Integer tipo;
@@ -349,6 +351,14 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 		if (faixa != null)
 			return faixa.getNome();
 		return "";
+	}
+
+	public ReajusteFaixaSalarial getReajusteFaixaSalarial() {
+		return reajusteFaixaSalarial;
+	}
+
+	public void setReajusteFaixaSalarial(ReajusteFaixaSalarial reajusteFaixaSalarial) {
+		this.reajusteFaixaSalarial = reajusteFaixaSalarial;
 	}
 
 }

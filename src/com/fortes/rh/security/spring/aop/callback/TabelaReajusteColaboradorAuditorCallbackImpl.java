@@ -42,10 +42,22 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaboradorAnterior.getNome(), dados);
 	}
 		
-	public Auditavel aplicar(MetodoInterceptado metodo) throws Throwable {
+	public Auditavel aplicarPorColaborador(MetodoInterceptado metodo) throws Throwable {
 		
 		TabelaReajusteColaborador tabelaReajusteColaborador = (TabelaReajusteColaborador) metodo.getParametros()[0];
 		tabelaReajusteColaborador = (TabelaReajusteColaborador) carregaEntidade(metodo, tabelaReajusteColaborador);
+		
+		metodo.processa();
+		
+		String dados = new GeraDadosAuditados(new Object[]{tabelaReajusteColaborador}, null).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), tabelaReajusteColaborador.getNome(), dados);
+	}
+
+	public Auditavel aplicarPorFaixaSalarial(MetodoInterceptado metodo) throws Throwable {
+		
+		Long tabelaReajusteColaboradorId = (Long) metodo.getParametros()[0];
+		TabelaReajusteColaborador tabelaReajusteColaborador = (TabelaReajusteColaborador) carregaEntidade(metodo, tabelaReajusteColaboradorId);
 		
 		metodo.processa();
 		
@@ -71,5 +83,10 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 	private TabelaReajusteColaborador carregaEntidade(MetodoInterceptado metodo, TabelaReajusteColaborador tabelaReajusteColaborador) {
 		TabelaReajusteColaboradorManager manager = (TabelaReajusteColaboradorManager) metodo.getComponente();
 		return manager.findEntidadeComAtributosSimplesById(tabelaReajusteColaborador.getId());
+	}
+
+	private TabelaReajusteColaborador carregaEntidade(MetodoInterceptado metodo, Long tabelaReajusteColaboradorId) {
+		TabelaReajusteColaboradorManager manager = (TabelaReajusteColaboradorManager) metodo.getComponente();
+		return manager.findEntidadeComAtributosSimplesById(tabelaReajusteColaboradorId);
 	}
 }

@@ -11,8 +11,10 @@ import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -27,7 +29,9 @@ import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<TabelaReajusteColaborador, TabelaReajusteColaboradorDao> implements TabelaReajusteColaboradorManager
 {
 	private ReajusteColaboradorManager reajusteColaboradorManager;
+	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
+	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
 	private ColaboradorManager colaboradorManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
@@ -74,7 +78,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	}
 
 	@SuppressWarnings("deprecation")
-	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception
+	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception
 	{
 		if(tabelaReajusteColaborador != null && (reajustes == null || reajustes.size() == 0))
 			throw new ColecaoVaziaException("Nenhum Colaborador no Reajuste");
@@ -143,6 +147,30 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			acPessoalClientTabelaReajuste.aplicaReajuste(historicosAc, empresa);
 	}
 
+	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId) throws ColecaoVaziaException
+	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = findByIdProjection(tabelaReajusteColaboradorId);
+		Collection<ReajusteFaixaSalarial> reajustes = reajusteFaixaSalarialManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
+		
+		if (reajustes == null || reajustes.size() == 0)
+			throw new ColecaoVaziaException("Nenhuma faixa salarial para o reajuste");
+		
+		FaixaSalarialHistorico faixaSalarialHistorico;
+		
+		for (ReajusteFaixaSalarial reajuste : reajustes)
+		{
+			faixaSalarialHistorico = new FaixaSalarialHistorico();
+			faixaSalarialHistorico.setReajusteFaixaSalarial(reajuste);
+			faixaSalarialHistorico.setData(tabelaReajusteColaborador.getData());
+			faixaSalarialHistorico.setFaixaSalarial(reajuste.getFaixaSalarial());
+			faixaSalarialHistorico.setTipo(reajuste.getTipoProposto());
+			faixaSalarialHistorico.setValor(reajuste.getValorProposto());
+			faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
+			
+			faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
+		}
+	}
+	
 	public void cancelar(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
 	{
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
@@ -204,8 +232,9 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
-	public void setReajusteColaboradorManager(
-			ReajusteColaboradorManager reajusteColaboradorManager) {
+	
+	public void setReajusteColaboradorManager(	ReajusteColaboradorManager reajusteColaboradorManager) 
+	{
 		this.reajusteColaboradorManager = reajusteColaboradorManager;
 	}
 
@@ -234,8 +263,18 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) 
+	{
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
+	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) 
+	{
+		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
+	}
+
+	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager) 
+	{
+		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
+	}
 }

@@ -210,3 +210,13 @@
 			</tr>
 	 	</table>
 	</#if>
+	
+	<div class="buttonGroup">
+		<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V"></button>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
+			<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P"></button>
+		</#if>
+	</div>

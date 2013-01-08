@@ -41,12 +41,16 @@
 				return false;
 			}
 			
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){window.location='aplicar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}'});
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorColaborador.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}&tabelaReajusteColaborador.dissidio=${tabelaReajusteColaborador.dissidio?string}' });
+		}
+		
+		function aplicarPorFaixaSalarial()
+		{
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}' });
 		}
 	</script>
 
 	<#include "../ftl/showFilterImports.ftl" />
-
 
  	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
@@ -72,16 +76,6 @@
 		<#else>
 			Tipo de reajuste não identificado.
 		</#if>
-	
-		<div class="buttonGroup">
-			<button onclick="window.location='list.action'" class="btnVoltar" accesskey="V">
-			</button>
-			<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P">
-				</button>
-			</#if>
-		</div>
 	</#if>
 </body>
 </html>

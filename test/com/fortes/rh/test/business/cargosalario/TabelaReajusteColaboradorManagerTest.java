@@ -170,7 +170,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, null, null);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, null, null);
 		}
 		catch (Exception e)
 		{
@@ -188,7 +188,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, null, null);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, null, null);
 		}
 		catch (Exception e)
 		{
@@ -324,7 +324,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, empresa, reajustes);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, empresa, reajustes);
 		}
 		catch (Exception e)
 		{

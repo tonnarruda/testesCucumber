@@ -177,13 +177,15 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
-	public String aplicar() throws Exception
+	public String aplicarPorColaborador() throws Exception
 	{
 		try
 		{
 			reajustes = reajusteColaboradorManager.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), null, null, null, 0);
 			tabelaReajusteColaboradorManager.verificaDataHistoricoColaborador(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, getEmpresaSistema(), reajustes);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, getEmpresaSistema(), reajustes);
+			
+			addActionMessage("Reajuste aplicado com sucesso");
 			
 			return Action.SUCCESS;
 		}
@@ -233,6 +235,36 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 				msg += "<br />" + e.getMessage();
 	
 			addActionError(msg);
+			
+			visualizar();
+
+			return Action.INPUT;
+		}
+	}
+	
+	public String aplicarPorFaixaSalarial() throws Exception
+	{
+		try 
+		{
+			tabelaReajusteColaboradorManager.aplicarPorFaixaSalarial(tabelaReajusteColaborador.getId());
+			
+			addActionMessage("Reajuste aplicado com sucesso");
+			
+			return Action.SUCCESS;
+		} 
+		catch (ColecaoVaziaException e) 
+		{
+			addActionError(e.getMessage());
+			e.printStackTrace();
+			
+			visualizar();
+			
+			return Action.INPUT;
+		}
+		catch (Exception e) 
+		{
+			addActionError("Ocorreu um erro ao aplicar os reajustes");
+			e.printStackTrace();
 			
 			visualizar();
 

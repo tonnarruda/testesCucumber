@@ -21,8 +21,11 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador);
 
 	@Audita(operacao="Aplicar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
+	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
 
+	@Audita(operacao="Reajuste por Faixa", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
+	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId) throws ColecaoVaziaException;
+	
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void cancelar(Long tabelaReajusteId, Empresa empresa) throws Exception;
 
