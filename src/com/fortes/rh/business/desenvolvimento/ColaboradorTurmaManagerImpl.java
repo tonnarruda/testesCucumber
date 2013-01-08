@@ -1037,8 +1037,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradoresComCustoTreinamentos(colaboradorId, dataIni, dataFim, realizada);
 	}
 	
-	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId) {
-		return getDao().findColaboradoresComEmailByTurma(turmaId);
+	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes) {
+		return getDao().findColaboradoresComEmailByTurma(turmaId, somentePresentes);
 	}
 	
 	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds)

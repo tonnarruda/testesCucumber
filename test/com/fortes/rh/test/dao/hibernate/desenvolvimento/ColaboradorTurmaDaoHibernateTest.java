@@ -254,7 +254,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorPresencaDebora.setPresenca(true);
     	colaboradorPresencaDao.save(colaboradorPresencaDebora);
     	
-    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradoresComEmailByTurma(java.getId());
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColaboradoresComEmailByTurma(java.getId(), true);
     	assertEquals(1, retorno.size());
     }
     

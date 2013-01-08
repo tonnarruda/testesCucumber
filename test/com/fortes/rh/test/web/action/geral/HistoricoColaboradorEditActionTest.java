@@ -179,6 +179,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
+		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
@@ -229,6 +231,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
+		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
@@ -257,6 +261,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
+		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
 		
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();

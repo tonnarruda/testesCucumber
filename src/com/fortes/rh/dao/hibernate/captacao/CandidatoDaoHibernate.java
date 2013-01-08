@@ -736,9 +736,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long empresa)
 	{
-		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.createCriteria("c.experiencias", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("e.cargo", "ca", Criteria.LEFT_JOIN);
-		criteria.createCriteria("e.candidato", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
 

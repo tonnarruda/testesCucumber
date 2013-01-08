@@ -46,7 +46,7 @@ import com.opensymphony.xwork.Action;
 public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private IndiceManager indiceManager;
 	private FuncaoManager funcaoManager;
@@ -59,27 +59,27 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private SolicitacaoManager solicitacaoManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private PlatformTransactionManager transactionManager;
-	
+
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 	private Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
 	private Collection<Indice> indices = new ArrayList<Indice>();
-	
+
 	private HistoricoColaborador historicoColaborador;
 	private Map<Object, Object> tiposSalarios = new TipoAplicacaoIndice();
 	private TipoAplicacaoIndice tipoAplicacaoIndice = new TipoAplicacaoIndice();
 	private Colaborador colaborador;
 	private boolean folhaProcessada;
 	private Double salarioProcessado;
-	
+
 	private Map<String, String> codigosGFIP = CodigoGFIP.getInstance();
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 	private Collection<Colaborador> colaboradors;
 	private String colaboradorNome;
-	
+
 	private Long candidatoSolicitacaoId;
 	private Date dataPrimeiroHist;
 	private boolean integraAc;
@@ -87,28 +87,28 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private String encerrarSolicitacao;
 
 	private Solicitacao solicitacao;
-	
+
 	public void prepare() throws Exception
 	{
 		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
 		integraAc = getEmpresaSistema().isAcIntegra();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
-		
+
 		Long faixaInativaId = null;
 		Long areaInativaId = null;
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		
+
 		if(historicoColaborador != null)
 		{
 			if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
 				funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
-			
+
 			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 				ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
-			
+
 			salarioProcessado = historicoColaborador.getSalarioCalculado();
-			
+
 			faixaInativaId = historicoColaborador.getFaixaSalarial().getId();
 			areaInativaId = historicoColaborador.getAreaOrganizacional().getId();
 		}
@@ -120,14 +120,14 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		}
 
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
-		
+
 		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
 	}
-	
+
 	public String prepareInsert() throws Exception
 	{
 		dataPrimeiroHist = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId()).getData();
-		
+
 		historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
 		if(historicoColaborador != null)
 		{
@@ -135,12 +135,12 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador.setId(null);
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		}
-		
+
 		prepare();
-		
+
 		return Action.SUCCESS;
 	}
-	
+
 	public String insert() throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -155,40 +155,47 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				prepareInsert();
 				return Action.INPUT;				
 			}
-			
+
+			colaborador = colaboradorManager.findColaboradorById(historicoColaborador.getColaborador().getId());
+			if(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador))
+			{
+				addActionError("Data do histórico não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ")." );
+				prepareInsert();
+				return Action.INPUT;
+			}
+
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
-			
+
 			if(historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO))
 				historicoColaboradorManager.ajustaMotivoContratado(historicoColaborador.getColaborador().getId());
-			
+
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
-			
+
 			if (candidatoSolicitacaoId != null)
 			{
 				candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.PROMOVIDO);
 				CandidatoSolicitacao candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacaoId);
 				historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
 			}
-			
+
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
-			
+
 			if (StringUtils.equals(encerrarSolicitacao, "S")) 
 				solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
-			
+
 			transactionManager.commit(status);
-			
 			return Action.SUCCESS;
 		}
 		catch (IntegraACException e)
 		{
 			transactionManager.rollback(status);
-			
+
 			String msg = "Não foi possível atualizar esta Situação no AC Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
-			
+
 			addActionError(msg);
-			
+
 			prepareInsert();
 
 			return Action.INPUT;
@@ -196,17 +203,17 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		catch (LimiteColaboradorExceditoException e)
 		{
 			transactionManager.rollback(status);
-			
+
 			e.printStackTrace();
 			addActionError(e.getMessage());
 			prepareInsert();
-			
+
 			return Action.INPUT;
 		}
 		catch (Exception e)
 		{
 			transactionManager.rollback(status);
-			
+
 			addActionError("Não foi possível inserir Situação.");
 			prepareInsert();
 
@@ -217,7 +224,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		historicoColaborador = historicoColaboradorManager.findByIdHQL(historicoColaborador.getId());
-		
+
 		if(getEmpresaSistema().isAcIntegra() && !historicoColaborador.getColaborador().isNaoIntegraAc())
 		{
 			if(historicoColaboradorManager.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), historicoColaborador.getColaborador().getCodigoAC(), getEmpresaSistema()))
@@ -226,9 +233,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				setActionMsg("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Só é permitido editar Função e Ambiente.</div>");
 			}
 		}		
-		
+
 		prepare();
-		
 		return Action.SUCCESS;
 	}
 
@@ -237,10 +243,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
-			
+
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
-			
+
 			return Action.SUCCESS;
 		}
 		catch (IntegraACException e)
@@ -248,7 +254,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			String msg = "Não foi possível atualizar esta Situação no AC Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
-			
+
 			addActionError(msg);
 			prepareUpdate();
 			return Action.INPUT;
@@ -258,7 +264,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			e.printStackTrace();
 			addActionError(e.getMessage());
 			prepareInsert();
-			
+
 			return Action.INPUT;
 		}
 		catch (Exception e)
@@ -266,39 +272,39 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			e.printStackTrace();
 			addActionError("Não foi possível atualizar esta Situação.");
 			prepareUpdate();
-			
+
 			return Action.INPUT;
 		}
 	}
-	
+
 	public String list() throws Exception
 	{
 		return Action.SUCCESS;
 	}
-	
+
 	public String prepareUpdateAmbientesEFuncoes() throws Exception
 	{
 		if(colaborador != null)
 		{
 			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), true);
-			
+
 			if(colaborador.getId() != null)
 			{
 				colaboradorNome = colaboradorManager.getNome(colaborador.getId());
-				
+
 				historicoColaboradors = historicoColaboradorManager.getHistoricosComAmbienteEFuncao(colaborador.getId());
 			}
 		}
-		
+
 		return SUCCESS;
 	}
-	
+
 	public String updateAmbientesEFuncoes() throws Exception
 	{
 		try
 		{
 			historicoColaboradorManager.updateAmbientesEFuncoes(historicoColaboradors);
-			
+
 			prepareUpdateAmbientesEFuncoes();
 			addActionMessage("Ambientes e Funções do Colaborador gravados com sucesso.");
 			return SUCCESS;
@@ -309,7 +315,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			prepareUpdateAmbientesEFuncoes();
 			return INPUT;
 		}
-		
+
 	}
 
 	public HistoricoColaborador getHistoricoColaborador()
@@ -505,13 +511,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		this.solicitacaoManager = solicitacaoManager;
 	}
 
-	
+
 	public Solicitacao getSolicitacao()
 	{
 		return solicitacao;
 	}
 
-	
+
 	public void setSolicitacao(Solicitacao solicitacao)
 	{
 		this.solicitacao = solicitacao;

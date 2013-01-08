@@ -1069,7 +1069,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaboradorTurma.setColaborador(colaborador);
 
 		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
-		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
+		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(Arrays.asList(colaboradorTurma)));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		 
 		 Exception exception = null;
@@ -1118,7 +1118,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_AVALIACAO_TURMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
-		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId())).will(returnValue(Arrays.asList(colaboradorTurma)));
+		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(Arrays.asList(colaboradorTurma)));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		 
 		 Exception exception = null;

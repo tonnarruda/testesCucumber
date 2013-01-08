@@ -19412,3 +19412,6 @@ insert into migrations values('20130102161739');--.go
 alter table tabelareajustecolaborador add column tiporeajuste character(1) default 'C' not null;--.go
 insert into migrations values('20130103132012');--.go
 update parametrosdosistema set appversao = '1.1.97.98';--.go
+-- versao 1.1.97.99
+
+update parametrosdosistema set appversao = '1.1.97.99';--.go
