@@ -14,7 +14,7 @@
 		});
 	</script>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('periodoFim','tempoDeEmpresa'), new Array('periodoFim','periodoIni'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('periodoFim'), new Array('periodoFim','periodoIni'))"/>
 	<#assign dataIni = "" />
 	<#assign dataFim = "${periodoFim?date}" />
 </head>
@@ -38,7 +38,7 @@
 			<br>
 			Considerar colaboradores com até  
 			<@ww.textfield theme="simple" name="tempoDeEmpresa" id="tempoDeEmpresa" cssStyle="width:60px; text-align:right;" maxLength="8" onkeypress = "return(somenteNumeros(event,''));"/> 
-			dias de empresa.*
+			dias de empresa.
 			<#--
 			<br>  
 				Considerar colaboradores com período de acompanhamento de experiência a vencer daqui a  

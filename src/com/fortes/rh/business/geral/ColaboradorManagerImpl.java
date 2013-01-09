@@ -1681,7 +1681,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		menorPeriodo = menorPeriodo - gordura;
 		
-		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck);
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck, tempoDeEmpresa);
 		Collection<Colaborador> colaboradoresComAvaliacoes = getDao().findComAvaliacoesExperiencias(periodoIni, periodoFim, empresa, areasCheck, estabelecimentoCheck);
 		
 		//autorizado essa ruma de forIf, aprovado
@@ -1732,7 +1732,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		List<AcompanhamentoExperienciaColaborador> acompanhamentos = new ArrayList<AcompanhamentoExperienciaColaborador>();
 
-		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck);
+		Collection<Colaborador> colaboradores = getDao().findAdmitidosNoPeriodo(null, null, empresa, areasCheck, estabelecimentoCheck, null);
 		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck);
 		
 		Date data;
