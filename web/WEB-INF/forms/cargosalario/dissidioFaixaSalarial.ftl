@@ -5,7 +5,7 @@
 	<title>Reajuste Coletivo/Dissídio para Faixas Salariais</title>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
@@ -14,7 +14,7 @@
 			var cargosIds = getArrayCheckeds(document.forms[0],'cargosCheck');
 			if (cargosIds.length == 0)
 				cargosIds = [-1];
-			FaixaSalarialDWR.getByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
+			ReajusteDWR.getByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
 		}
 		
 		function createListFaixas(data)

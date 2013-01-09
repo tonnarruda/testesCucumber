@@ -11,4 +11,5 @@ public interface ReajusteFaixaSalarialManager extends GenericManager<ReajusteFai
 	void updateValorProposto(Long reajusteFaixaSalarialId, Double valorAtual, char dissidioPor, Double valorDissidio) throws Exception;
 	Collection<ReajusteFaixaSalarial> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId);
 	ReajusteFaixaSalarial findByIdProjection(Long id);
+	boolean verificaPendenciasPorFaixa(Long faixaSalarialId);
 }

@@ -65,58 +65,6 @@ public class FaixaSalarialDWR
 		return faixaSalarialManager.findByCargo(cargoId);
 	}
 
-	public Collection<CheckBox> getByCargosDesabilitandoPorIndice(String[] cargoIds)
-	{
-		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
-		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
-		CheckBox checkBox = null;
-		
-		for (FaixaSalarial faixaSalarial : faixasSalariais)
-		{
-			checkBox = new CheckBox();
-			checkBox.setId(faixaSalarial.getId());
-			checkBox.setNome(faixaSalarial.getDescricao());
-			checkBox.setDesabilitado(true);
-			
-			if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
-				checkBox.setTitulo("Essa faixa salarial não possui histórico");
-			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
-				checkBox.setTitulo("Essa faixa salarial possui valor por índice");
-			else
-				checkBox.setDesabilitado(false);
-			
-			checkboxes.add(checkBox);
-		}
-		
-		return checkboxes;
-	}
-	
-	public Collection<Option> getByCargoDesabilitandoPorIndice(Long cargoId)
-	{
-		Collection<Option> options = new ArrayList<Option>();
-		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(new Long[] { cargoId });
-		Option option = null;
-		
-		for (FaixaSalarial faixaSalarial : faixasSalariais)
-		{
-			option = new Option();
-			option.setId(faixaSalarial.getId());
-			option.setNome(faixaSalarial.getDescricao());
-			option.setDesabilitado(true);
-			
-			if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
-				option.setTitulo("Essa faixa salarial não possui histórico");
-			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
-				option.setTitulo("Essa faixa salarial possui valor por índice");
-			else
-				option.setDesabilitado(false);
-			
-			options.add(option);
-		}
-		
-		return options;
-	}
-
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;

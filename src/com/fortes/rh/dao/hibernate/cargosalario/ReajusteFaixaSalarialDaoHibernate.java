@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -91,5 +92,20 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReajusteFaixaSalarial.class));
 		
 		return (ReajusteFaixaSalarial) criteria.uniqueResult();
+	}
+
+	public boolean verificaPendenciasPorFaixa(Long faixaSalarialId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "rfs");
+		criteria.createCriteria("rfs.tabelaReajusteColaborador", "trc");
+		criteria.setProjection(Projections.rowCount());
+
+		criteria.add(Expression.eq("rfs.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.eq("trc.aprovada", false));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Integer> result = criteria.list();
+		
+		return (Integer) result.get(0) > 0;
 	}
 }

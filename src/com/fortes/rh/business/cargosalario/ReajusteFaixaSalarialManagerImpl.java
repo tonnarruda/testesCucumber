@@ -47,6 +47,11 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 	{
 		return getDao().findByIdProjection(id);
 	}
+	
+	public boolean verificaPendenciasPorFaixa(Long faixaSalarialId) 
+	{
+		return getDao().verificaPendenciasPorFaixa(faixaSalarialId);
+	}
 
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) 
 	{

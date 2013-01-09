@@ -60,7 +60,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private String filtro = "0";
 	private Double valorTotalFolha;
 	
-	private Map tipoReajustes = new TipoReajuste();
+	private Map<Character, String> tipoReajustes = new TipoReajuste();
 
 	private void prepare() throws Exception
 	{
@@ -119,7 +119,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		reajustes = reajusteColaboradorManager.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), null, areaOrganizacionalIds, grupoOcupacionalIds, Integer.parseInt(filtro));
 		if(reajustes == null || reajustes.isEmpty())
 		{
-			addActionMessage("Não existem Promoções e Reajustes a serem visualizadas!");
+			addActionMessage("Não existem promoções e reajustes a serem visualizados");
 			return Action.SUCCESS;
 		}
 
@@ -139,7 +139,10 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private String visualizarPorFaixaSalarial() throws Exception
 	{
 		reajustesFaixaSalarial = reajusteFaixaSalarialManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaborador.getId());
-				
+		
+		if (reajustesFaixaSalarial == null || reajustesFaixaSalarial.isEmpty())
+			addActionMessage("Não existem promoções e reajustes a serem visualizados");
+		
 		return Action.SUCCESS;
 	}
 	
@@ -426,7 +429,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		return valorTotalFolha;
 	}
 
-	public Map getTipoReajustes() {
+	public Map<Character, String> getTipoReajustes() {
 		return tipoReajustes;
 	}
 

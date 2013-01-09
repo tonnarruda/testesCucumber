@@ -89,6 +89,40 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     	assertEquals(150.0, retorno1.getValorProposto());
     	assertEquals(230.0, retorno2.getValorProposto());
     }
+    
+    public void testVerificaPendenciasPorFaixa()
+    {
+    	FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+    	faixaSalarialDao.save(faixa1);
+    	
+    	FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+    	faixaSalarialDao.save(faixa2);
+
+    	FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity();
+    	faixaSalarialDao.save(faixa3);
+    	
+    	TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+    	tabela1.setAprovada(false);
+    	tabelaReajusteColaboradorDao.save(tabela1);
+    
+    	TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+    	tabela2.setAprovada(true);
+    	tabelaReajusteColaboradorDao.save(tabela2);
+    	
+    	ReajusteFaixaSalarial reajuste1 = getEntity();
+    	reajuste1.setTabelaReajusteColaborador(tabela1);
+    	reajuste1.setFaixaSalarial(faixa1);
+    	reajusteFaixaSalarialDao.save(reajuste1);
+    	
+    	ReajusteFaixaSalarial reajuste2 = getEntity();
+    	reajuste2.setTabelaReajusteColaborador(tabela2);
+    	reajuste2.setFaixaSalarial(faixa2);
+    	reajusteFaixaSalarialDao.save(reajuste2);
+
+    	assertTrue("reajuste pendente", reajusteFaixaSalarialDao.verificaPendenciasPorFaixa(faixa1.getId()));
+    	assertFalse("reajuste já realizado", reajusteFaixaSalarialDao.verificaPendenciasPorFaixa(faixa2.getId()));
+    	assertFalse("sem reajuste", reajusteFaixaSalarialDao.verificaPendenciasPorFaixa(faixa3.getId()));
+    }
 
 	public void setReajusteFaixaSalarialDao(ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) 
 	{

@@ -12,10 +12,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
+import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -26,10 +28,11 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SalarioUtil;
+import com.fortes.web.tags.CheckBox;
+import com.fortes.web.tags.Option;
 
-
-@SuppressWarnings("unchecked")
 public class ReajusteDWR
 {
 	private ColaboradorManager colaboradorManager;
@@ -38,10 +41,11 @@ public class ReajusteDWR
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
+	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager; 
 
-	public Map getColaboradorSolicitacaoReajuste(Long colaboradorId) throws Exception
+	public Map<String, Object> getColaboradorSolicitacaoReajuste(Long colaboradorId) throws Exception
 	{
-		Map retorno = new HashMap();
+		Map<String, Object> retorno = new HashMap<String, Object>();
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
 
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
@@ -88,7 +92,6 @@ public class ReajusteDWR
 		} catch (Exception e) {
 			retorno.put("salarioAtual", "0.00");
 		}
-		
 
 		return retorno;
 	}
@@ -202,6 +205,62 @@ public class ReajusteDWR
 		return formatador.format(salarioCalculado);
 	}
 	
+	public Collection<CheckBox> getByCargosDesabilitandoPorIndice(String[] cargoIds)
+	{
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
+		CheckBox checkBox = null;
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariais)
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(faixaSalarial.getId());
+			checkBox.setNome(faixaSalarial.getDescricao());
+			checkBox.setDesabilitado(true);
+			
+			if (reajusteFaixaSalarialManager.verificaPendenciasPorFaixa(faixaSalarial.getId()))
+				checkBox.setTitulo("Essa faixa salarial possui um realinhamento pendente");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Essa faixa salarial não possui histórico");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
+				checkBox.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
+	}
+	
+	public Collection<Option> getByCargoDesabilitandoPorIndice(Long cargoId)
+	{
+		Collection<Option> options = new ArrayList<Option>();
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(new Long[] { cargoId });
+		Option option = null;
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariais)
+		{
+			option = new Option();
+			option.setId(faixaSalarial.getId());
+			option.setNome(faixaSalarial.getDescricao());
+			option.setDesabilitado(true);
+			
+			if (reajusteFaixaSalarialManager.verificaPendenciasPorFaixa(faixaSalarial.getId()))
+				option.setTitulo("Essa faixa salarial possui um realinhamento pendente");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
+				option.setTitulo("Essa faixa salarial não possui histórico");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
+				option.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				option.setDesabilitado(false);
+			
+			options.add(option);
+		}
+		
+		return options;
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -230,6 +289,11 @@ public class ReajusteDWR
 	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
 	{
 		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
+	}
+
+	public void setReajusteFaixaSalarialManager(
+			ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
+		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
 	}
 
 }

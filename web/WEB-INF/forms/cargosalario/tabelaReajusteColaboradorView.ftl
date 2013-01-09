@@ -29,7 +29,6 @@
 			{
 				document.getElementById('areaOrganizacional').style.display = "none";
 				document.getElementById('grupoOcupacional').style.display = "";
-
 			}
 		}
 		
@@ -62,19 +61,13 @@
 		<p>Promoção/Reajuste<br> <b>${tabelaReajusteColaborador.nome}</b></p>
 		<p>A partir de<br> <b>${tabelaReajusteColaborador.data}</b></p>
 		<p>Tipo de Reajuste:<br> <b>${tabelaReajusteColaborador.tipoReajusteDescricao}</b></p>
+		
 		<br />
 
 		<#if tabelaReajusteColaborador.tipoReajuste == 'C'>
 			<#include "tabelaReajusteColaborador.ftl" />
-		
 		<#elseif tabelaReajusteColaborador.tipoReajuste == 'F'>
 			<#include "tabelaReajusteFaixaSalarial.ftl" />
-		
-		<#elseif tabelaReajusteColaborador.tipoReajuste == 'I'>
-			Tipo ÍNDICE
-		
-		<#else>
-			Tipo de reajuste não identificado.
 		</#if>
 	</#if>
 </body>

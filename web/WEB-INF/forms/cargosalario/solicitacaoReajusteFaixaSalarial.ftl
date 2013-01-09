@@ -4,14 +4,14 @@
 <head>
 	<@ww.head/>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
 		$(function() {
 			$('#cargoId').change(function() {
 				var cargoId = $(this).val();
-				FaixaSalarialDWR.getByCargoDesabilitandoPorIndice(createListFaixas, cargoId);
+				ReajusteDWR.getByCargoDesabilitandoPorIndice(createListFaixas, cargoId);
 			});
 		});
 		

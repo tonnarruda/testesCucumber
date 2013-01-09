@@ -13,6 +13,7 @@
 		<property name="historicoColaboradorManager" ref="historicoColaboradorManager"/>
 		<property name="tabelaReajusteColaboradorManager" ref="tabelaReajusteColaboradorManager"/>
 		<property name="reajusteColaboradorManager" ref="reajusteColaboradorManager"/>
+		<property name="reajusteFaixaSalarialManager" ref="reajusteFaixaSalarialManager"/>
 	</bean>
 	
 	<bean id="enderecoDWR" class="com.fortes.rh.web.dwr.EnderecoDWR">
