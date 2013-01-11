@@ -67,6 +67,8 @@ public class Mail
 	    	{
 				dsArray[i] = new FileDataSource(attachedFiles[i]);
 			}
+
+	    	procSend(empresa, parametros, subject, body, dsArray, to);
     	}
     	else
     	{
