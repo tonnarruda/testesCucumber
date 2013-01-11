@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +68,27 @@ public class DateUtil
 		String dataDiaMesAno = formatar.format(data);
 
 		return dataDiaMesAno;
+	}
+
+	public static String formataDiaMesAnoCalendar(Date data)
+	{
+		if(data == null)
+			return "";
+		
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
+        try {
+            c.setTime(data);
+            int ano =  c.get(Calendar.YEAR);
+            int mes = c.get(Calendar.MONTH) + 1;
+            int dia = c.get(Calendar.DAY_OF_MONTH);
+            
+            return dia + "/" + mes + "/" + ano;
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return "";
 	}
 
 	public static String formataDiaMesAnoTime(Date data)
