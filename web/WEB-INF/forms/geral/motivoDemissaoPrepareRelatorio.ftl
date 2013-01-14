@@ -45,17 +45,15 @@
 			
 			var empresa = $('#empresa').val();
 	
-			populaArea(empresa);
+			populaAreaComCargoVinculado(empresa);
 			populaEstabelecimento(empresa);
-			populaCargosByArea(empresa);
-			verificaCargoSemAreaRelacionada(empresa);
+			populaCargosByAreaVinculados(empresa);
 			
-			$('#cargoSemArea').click(function() {
-				if($(this).is(":checked"))
-					addCheckCargoSemArea();
-				else
-					populaCargosByArea();
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargosByAreaVinculados();
 			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);;
 		});
 	</script>
 
@@ -86,8 +84,8 @@
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		
 		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" />
-		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" onClick="populaCargosByArea();" />
-		<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados()" />
+		<@ww.checkbox label="Exibir somente os cargos vinculados as Áreas Organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 		<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" />
 		
 		<@ww.select label="Exibir lista de Colaboradores" id="listaColaboradores" onchange="getAgruparPorMotivo()" name="listaColaboradores" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 96px;"/>
