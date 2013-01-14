@@ -10,7 +10,7 @@ Funcionalidade: Relatório Acompanhamento de Experiência Previsto
     Quando eu acesso o menu "Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto"
     Então eu devo ver o título "Acompanhamento de Experiência Previsto"
     E eu clico no botão "Relatorio"
-    Então eu devo ver o alert do valida campos e clico no ok
+    Então eu devo ver "Não existem Colaboradores com os filtros selecionados"
 
     E eu preencho "tempoDeEmpresa" com "2"
     E eu marco "geral"

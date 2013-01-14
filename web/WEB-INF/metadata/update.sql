@@ -19415,3 +19415,6 @@ update parametrosdosistema set appversao = '1.1.97.98';--.go
 -- versao 1.1.97.99
 
 update parametrosdosistema set appversao = '1.1.97.99';--.go
+-- versao 1.1.97.100
+
+update parametrosdosistema set appversao = '1.1.97.100';--.go

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.97.100" data="14/01/2012">
+		<Modulo nome=" "><![CDATA[
+            :: Melhorias nas configurações do sistema.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.97.99" data="07/01/2012">
 		<Modulo nome=" "><![CDATA[
   			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Nova funcionalidade de visualizar e/ou imprimir o organograma das Áreas Organizacionais.
