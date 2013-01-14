@@ -14,8 +14,8 @@ Funcionalidade: Relatório de Cronograma de Treinamento
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 
-    Então eu preencho "dataIni" com "01/07/2012"
-    E eu preencho "dataFim" com "31/07/2012"
+    Então eu preencho "dataIni" com "01/01/2013"
+    E eu preencho "dataFim" com "31/01/2013"
     E eu seleciono "Não" de "Realizada"
     E eu clico no botão "CarregarTurmas"
     Então eu devo ver "java / turma1"
