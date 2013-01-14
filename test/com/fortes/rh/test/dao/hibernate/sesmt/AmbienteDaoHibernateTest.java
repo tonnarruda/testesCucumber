@@ -31,6 +31,7 @@ import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 {
@@ -292,7 +293,31 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		historicoColaborador3.setFuncao(funcao3);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(1, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO, funcao2.getId()));
+		Colaborador colaboradorDesligadoDepois = ColaboradorFactory.getEntity();
+		colaboradorDesligadoDepois.getPessoal().setSexo('F');
+		colaboradorDesligadoDepois.setDataDesligamento(DateUtil.incrementaDias(hoje, 1));
+		colaboradorDao.save(colaboradorDesligadoDepois);
+		
+		HistoricoColaborador historicoColaboradorDesligadoDepois = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorDesligadoDepois.setData(doisMesesAntes.getTime());
+		historicoColaboradorDesligadoDepois.setColaborador(colaboradorDesligadoDepois);
+		historicoColaboradorDesligadoDepois.setAmbiente(ambiente);
+		historicoColaboradorDesligadoDepois.setFuncao(funcao2);
+		historicoColaboradorDao.save(historicoColaboradorDesligadoDepois);
+
+		Colaborador colaboradorDesligadoAntes = ColaboradorFactory.getEntity();
+		colaboradorDesligadoAntes.getPessoal().setSexo('F');
+		colaboradorDesligadoAntes.setDataDesligamento(DateUtil.incrementaDias(hoje, -1));
+		colaboradorDao.save(colaboradorDesligadoAntes);
+		
+		HistoricoColaborador historicoColaboradorDesligadoAntes = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorDesligadoAntes.setData(doisMesesAntes.getTime());
+		historicoColaboradorDesligadoAntes.setColaborador(colaboradorDesligadoAntes);
+		historicoColaboradorDesligadoAntes.setAmbiente(ambiente);
+		historicoColaboradorDesligadoAntes.setFuncao(funcao2);
+		historicoColaboradorDao.save(historicoColaboradorDesligadoAntes);
+		
+		assertEquals("colaborador1 e colaboradorDesligadoDepois", 2, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO, funcao2.getId()));
 	}
 	
 	public void testDeleteByEstabelecimento() {

@@ -142,6 +142,7 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		hql.append("where   hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.data <=:data and hc2.status = :status and hc2.colaborador.id = hc.colaborador.id) ");
 		hql.append("	and c.pessoal.sexo = :sexo ");
 		hql.append("	and hc.ambiente.id = :ambienteId ");
+		hql.append("	and (c.dataDesligamento is null or c.dataDesligamento > :data) ");
 
 		if(funcaoId != null)
 			hql.append("	and hc.funcao.id = :funcaoId ");

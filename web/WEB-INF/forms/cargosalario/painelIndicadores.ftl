@@ -37,7 +37,6 @@
 					content: 'São consideradas faltas as Ocorrências cujo o tipo está marcado como Absenteísmo e os Afastamentos cujo o motivo está marcado como Absenteísmo.'
 				});
 			
-				
 				montaGraficoPizza(${grfFaixaEtarias}, "#faixaEtaria", {}, "Faixa Etária");
 				montaGraficoPizza(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02}, "Estado Civil");
 				montaGraficoPizza(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03}, "Deficiência");
@@ -281,11 +280,12 @@
 			<tr>
 				<td class="grid-cell bigger" colspan="2">
 					<div class="cell-title">
-						Motivos de Desligamentos
+						Motivos de Desligamento
 						<img id="desligamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</div>
-					<div class="graphWrapper " style="height: 390px !important;">
+					<div class="graphWrapper" style="height: 390px !important;">
 				    	<div id="desligamento" class="graph2"></div>
+		    			<div id="desligamentoLegenda"></div>
 				    </div>
 				</td>
 			</tr>
