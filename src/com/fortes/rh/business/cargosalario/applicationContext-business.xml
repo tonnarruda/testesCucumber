@@ -139,6 +139,22 @@
       <ref bean="reajusteFaixaSalarialManagerTarget" />
     </property>
   </bean>
+  <bean id="reajusteIndiceManagerTarget" class="com.fortes.rh.business.cargosalario.ReajusteIndiceManagerImpl">
+    <property name="dao">
+      <ref bean="reajusteIndiceDao" />
+    </property>
+    <property name="indiceManager">
+      <ref bean="indiceManager" />
+    </property>
+  </bean>
+  <bean id="reajusteIndiceManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.cargosalario.ReajusteIndiceManager</value>
+    </property>
+    <property name="target">
+      <ref bean="reajusteIndiceManagerTarget" />
+    </property>
+  </bean>
   <bean id="tabelaReajusteColaboradorManagerTarget" class="com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManagerImpl">
     <property name="dao">
       <ref bean="tabelaReajusteColaboradorDao" />

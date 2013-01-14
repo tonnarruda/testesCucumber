@@ -7,11 +7,13 @@ public class TipoReajuste extends LinkedHashMap<Character, String>
 {
 	public static final char COLABORADOR = 'C';
 	public static final char FAIXA_SALARIAL = 'F';
+	public static final char INDICE = 'I';
 
 	public TipoReajuste()
 	{
 		put(COLABORADOR, "Colaborador");
 		put(FAIXA_SALARIAL, "Faixa Salarial");
+		put(INDICE, "Índice");
 	}
 	
 	public static String getReajusteDescricao(Character tipoReajuste)

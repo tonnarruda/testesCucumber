@@ -27,6 +27,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="reajusteIndiceDaoTarget" class="com.fortes.rh.dao.hibernate.cargosalario.ReajusteIndiceDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="tabelaReajusteColaboradorDaoTarget" class="com.fortes.rh.dao.hibernate.cargosalario.TabelaReajusteColaboradorDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
