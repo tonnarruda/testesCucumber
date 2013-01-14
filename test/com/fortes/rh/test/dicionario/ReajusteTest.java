@@ -10,6 +10,6 @@ public class ReajusteTest extends TestCase
 	{
 		TipoReajuste tipoReajuste = new TipoReajuste();
 	
-		assertEquals(2, tipoReajuste.size());
+		assertEquals(3, tipoReajuste.size());
 	}
 }
