@@ -1,5 +1,6 @@
 package com.fortes.rh.business.cargosalario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
 {
@@ -68,6 +70,11 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	{
 		return getDao().findHistoricoAtual(indiceId, new Date());
 	}
+	
+	public Collection<Indice> findComHistoricoAtual(Long[] indicesIds) 
+	{
+		return getDao().findComHistoricoAtual(indicesIds);
+	}
 
 	public Indice findHistorico(Long indiceId, Date dataHistorico)
 	{
@@ -92,12 +99,13 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 			return findAll(new String[] {"nome"});
 	}
 
-	public Collection<Indice> findSemCodigoAC(Empresa empresa) {
+	public Collection<Indice> findSemCodigoAC(Empresa empresa) 
+	{
 		return getDao().findSemCodigoAC(empresa);
 	}
 
-	public void deleteIndice(Long[] indiceIds) throws Exception {
-		
+	public void deleteIndice(Long[] indiceIds) throws Exception 
+	{
 		if (indiceIds != null && indiceIds.length > 0) {
 			indiceHistoricoManager.deleteByIndice(indiceIds);
 			
@@ -106,7 +114,34 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		
 	}
 
-	public String findCodigoACDuplicado(Empresa empresa) {
+	public String findCodigoACDuplicado(Empresa empresa) 
+	{
 		return getDao().findCodigoACDuplicado(empresa);
+	}
+
+	public Collection<CheckBox> findOpcoesDissidio(Empresa empresa) 
+	{
+		Collection<Indice> indices = getDao().findComHistoricoAtual(empresa);
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		CheckBox checkBox;
+		
+		for (Indice indice : indices) 
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(indice.getId());
+			checkBox.setNome(indice.getNome());
+			checkBox.setDesabilitado(true);
+			
+			if (false)
+				checkBox.setTitulo("Esse índice possui um realinhamento pendente");
+			else if (indice.getIndiceHistoricoAtual() == null || indice.getIndiceHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Esse índice não possui histórico");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
 	}
 }

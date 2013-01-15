@@ -20,6 +20,14 @@ public class ReajusteIndice extends AbstractModel implements Serializable
 	private Double valorAtual;
 	private Double valorProposto;
 	
+	public void setProjectionTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId) 
+	{
+		if (this.tabelaReajusteColaborador == null)
+			this.tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		
+		this.tabelaReajusteColaborador.setId(tabelaReajusteColaboradorId);
+	}
+	
 	public Indice getIndice() 
 	{
 		return indice;
