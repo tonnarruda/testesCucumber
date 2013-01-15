@@ -876,71 +876,6 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(null, hRetorno);
 	}
 
-	public void testAtualizarHistoricoAnterior()
-	{
-		Colaborador colaborador = new Colaborador();
-		colaborador.setId(null);
-		colaborador.setNome("nome colaborador");
-		colaborador.setNomeComercial("nome colaborador");
-		colaborador.setDesligado(false);
-		colaborador.setDataDesligamento(new Date());
-		colaborador.setObservacao("observação");
-		colaborador.setDataAdmissao(new Date());
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		colaborador.setEndereco(endereco);
-
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
-
-		Pessoal pessoal	= new Pessoal();
-		pessoal.setDataNascimento(new Date());
-		pessoal.setEstadoCivil("e");
-		pessoal.setEscolaridade("e");
-		pessoal.setSexo('m');
-		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("00000000000");
-		colaborador.setPessoal(pessoal);
-
-		colaborador.setAreaOrganizacional(null);
-		colaborador.setDependentes(null);
-
-		colaborador = colaboradorDao.save(colaborador);
-
-		HistoricoColaborador h0 = new HistoricoColaborador();
-		h0.setId(null);
-		h0.setData(DateUtil.criarAnoMesDia(2008, 03, 1));
-		h0.setMotivo("p");
-		h0.setSalario(1D);
-		h0.setColaborador(colaborador);
-
-		h0 = historicoColaboradorDao.save(h0);
-
-		HistoricoColaborador h1 = new HistoricoColaborador();
-		h1.setId(null);
-		h1.setData(DateUtil.criarAnoMesDia(2008, 04, 1));
-		h1.setMotivo("p");
-		h1.setSalario(1D);
-		h1.setColaborador(colaborador);
-
-		h1 = historicoColaboradorDao.save(h1);
-
-		historicoColaboradorDao.atualizarHistoricoAnterior(h1);
-
-		historicoColaboradorDao.findById(h1.getId());
-
-//		assertEquals(h0,h3.getHistoricoAnterior());
-	}
 
 	public void testSetStatus()
 	{
@@ -1152,58 +1087,6 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador2.setColaborador(colaborador2);
 
 		assertEquals(2, historicoColaboradorDao.findHistoricosByTabelaReajuste(tabelaReajusteColaborador.getId()).size());
-	}
-
-	public void testUpdateHistoricoAnterior()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador = colaboradorDao.save(colaborador);
-
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setColaborador(colaborador);
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 02, 2009));
-		historicoColaborador1 = historicoColaboradorDao.save(historicoColaborador1);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setHistoricoAnterior(historicoColaborador1);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(02, 02, 2009));
-		historicoColaborador2.setColaborador(colaborador);
-		historicoColaborador2 = historicoColaboradorDao.save(historicoColaborador2);
-
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador3.setHistoricoAnterior(historicoColaborador2);
-		historicoColaborador3.setData(DateUtil.criarDataMesAno(03, 02, 2009));
-		historicoColaborador3.setColaborador(colaborador);
-		historicoColaborador3 = historicoColaboradorDao.save(historicoColaborador3);
-
-		historicoColaboradorDao.updateHistoricoAnterior(historicoColaborador2.getId());
-
-		HistoricoColaborador resultado = historicoColaboradorDao.findByIdProjection(historicoColaborador3.getId());
-
-		assertEquals(historicoColaborador1.getId(), resultado.getHistoricoAnterior().getId());
-	}
-
-	public void testUpdateHistoricoAnteriorSemHistoricoAnterior()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador = colaboradorDao.save(colaborador);
-
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(03, 02, 2009));
-		historicoColaborador1.setColaborador(colaborador);
-		historicoColaborador1 = historicoColaboradorDao.save(historicoColaborador1);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setHistoricoAnterior(historicoColaborador1);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(04, 02, 2009));
-		historicoColaborador2.setColaborador(colaborador);
-		historicoColaborador2 = historicoColaboradorDao.save(historicoColaborador2);
-
-		historicoColaboradorDao.updateHistoricoAnterior(historicoColaborador1.getId());
-
-		HistoricoColaborador resultado = historicoColaboradorDao.findByIdProjection(historicoColaborador2.getId());
-
-		assertEquals(null, resultado.getHistoricoAnterior().getId());
 	}
 
 	public void testFindPendenciasByHistoricoColaborador()

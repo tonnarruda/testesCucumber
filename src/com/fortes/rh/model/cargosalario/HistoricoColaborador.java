@@ -61,9 +61,6 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	private String motivo;
 	@ManyToOne
 	private AreaOrganizacional areaOrganizacional;
-	@Deprecated
-	@ManyToOne
-	private HistoricoColaborador historicoAnterior;
 	@ManyToOne
 	private Funcao funcao;
 	@Column(length=2)
@@ -474,26 +471,6 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			this.estabelecimento = new Estabelecimento();
 
 		this.estabelecimento.setId(projectionEstabelecimentoId);
-	}
-
-	public void setProjectionEstabelecimentoAnteriorNome(String projectionEstabelecimentoAnteriorNome)
-	{
-		if (this.historicoAnterior == null)
-			this.historicoAnterior = new HistoricoColaborador();
-		if(this.historicoAnterior.getEstabelecimento() == null)
-			this.historicoAnterior.setEstabelecimento(new Estabelecimento());
-
-		this.historicoAnterior.getEstabelecimento().setNome(projectionEstabelecimentoAnteriorNome);
-	}
-
-	public void setProjectionEstabelecimentoAnteriorId(Long projectionEstabelecimentoAnteriorId)
-	{
-		if (this.historicoAnterior == null)
-			this.historicoAnterior = new HistoricoColaborador();
-		if(this.historicoAnterior.getEstabelecimento() == null)
-			this.historicoAnterior.setEstabelecimento(new Estabelecimento());
-
-		this.historicoAnterior.getEstabelecimento().setId(projectionEstabelecimentoAnteriorId);
 	}
 
 	public void setAreaOrganizacionalNome(String areaOrganizacionalNome)
@@ -908,49 +885,6 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		}
 		
 		return origem;
-	}
-
-	@Deprecated
-	@NaoAudita
-	public HistoricoColaborador getHistoricoAnterior()
-	{
-		return historicoAnterior;
-	}
-
-	@Deprecated
-	public void setHistoricoAnterior(HistoricoColaborador historicoAnterior)
-	{
-		this.historicoAnterior = historicoAnterior;
-	}
-
-	public void setHistoricoAnteriorId(Long historicoAnteriorId)
-	{
-		if (this.historicoAnterior == null)
-			this.historicoAnterior = new HistoricoColaborador();
-
-		this.historicoAnterior.setId(historicoAnteriorId);
-	}
-
-	public void setAreaAnteriorId(Long areaAnteriorId)
-	{
-		if (this.historicoAnterior == null)
-			this.historicoAnterior = new HistoricoColaborador();
-
-		if (this.historicoAnterior.getAreaOrganizacional() == null)
-			this.historicoAnterior.setAreaOrganizacional(new AreaOrganizacional());
-
-		this.historicoAnterior.getAreaOrganizacional().setId(areaAnteriorId);
-	}
-
-	public void setAreaAnteriorNome(String areaAnteriorNome)
-	{
-		if (this.historicoAnterior == null)
-			this.historicoAnterior = new HistoricoColaborador();
-
-		if (this.historicoAnterior.getAreaOrganizacional() == null)
-			this.historicoAnterior.setAreaOrganizacional(new AreaOrganizacional());
-
-		this.historicoAnterior.getAreaOrganizacional().setNome(areaAnteriorNome);
 	}
 
 	public Funcao getFuncao()

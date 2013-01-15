@@ -352,21 +352,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return areaOrganizacionals;
 	}
 
-	private AreaOrganizacional extraiAreaHistoricoAnterior(HistoricoColaborador histColaborador, Collection<HistoricoColaborador> historicoColaboradorsTodos)
-	{
-		for (HistoricoColaborador hc : historicoColaboradorsTodos)
-		{
-			if (hc.getColaborador().getId().equals(histColaborador.getColaborador().getId()))
-			{
-				if (!hc.getId().equals(histColaborador.getId()))
-				{
-					return hc.getAreaOrganizacional();
-				}
-			}
-		}
-		return null;
-	}
-
 	public HistoricoColaborador getHistoricoAnterior(HistoricoColaborador historico)
 	{
 		return getDao().getHistoricoAnterior(historico);
@@ -442,16 +427,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 
 		return historicoColaboradorsRetorno;
-	}
-
-	public void atualizaHistoricosImediatos(HistoricoColaborador hist)
-	{
-		HistoricoColaborador historicoAnterior = getHistoricoAnterior(hist);
-		if (historicoAnterior != null && historicoAnterior.getId() != null)
-			getDao().atualizarHistoricoAnterior(historicoAnterior);
-		HistoricoColaborador historicoProximo = getHistoricoProximo(hist);
-		if (historicoProximo != null && historicoProximo.getId() != null)
-			getDao().atualizarHistoricoAnterior(historicoProximo);
 	}
 
 	private HistoricoColaborador getHistoricoProximo(HistoricoColaborador hist)
@@ -763,9 +738,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (historico.getReajusteColaborador() != null && historico.getReajusteColaborador().getId() == null)
 			historico.setReajusteColaborador(null);
 
-		if (historico.getHistoricoAnterior() != null && historico.getHistoricoAnterior().getId() == null)
-			historico.setHistoricoAnterior(null);
-
 		return historico;
 	}
 
@@ -794,7 +766,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				throw new Exception("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Não é permitido excluir.</div>");
 		}
 
-		getDao().updateHistoricoAnterior(historicoColaboradorId);
 		Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaboradorId);
 		
 		remove(historicoColaboradorId);
@@ -829,8 +800,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 		try
 		{
-			getDao().updateHistoricoAnterior(historicoColaborador.getId());
-
 			Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaborador.getId());
 
 			remove(historicoColaborador.getId());
@@ -1043,8 +1012,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			historicoColaborador.setAmbiente(null);
 		if(historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() == null)
 			historicoColaborador.setFuncao(null);
-		if(historicoColaborador.getHistoricoAnterior() != null && historicoColaborador.getHistoricoAnterior().getId() == null)
-			historicoColaborador.setHistoricoAnterior(null);
 		if(historicoColaborador.getIndice() != null && historicoColaborador.getIndice().getId() == null)
 			historicoColaborador.setIndice(null);
 		if(historicoColaborador.getReajusteColaborador() != null && historicoColaborador.getReajusteColaborador().getId() == null)
@@ -1429,10 +1396,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicos;
 	}
 
-	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds) {
-		getDao().removeDependenciasComHistoricoColaboradors(historicoIds);
-	}
-
 	public void ajustaMotivoContratado(Long colaboradorId) 
 	{
 		getDao().ajustaMotivoContratado(colaboradorId);
@@ -1501,6 +1464,4 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
-
-
 }

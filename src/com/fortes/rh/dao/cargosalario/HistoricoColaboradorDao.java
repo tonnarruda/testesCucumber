@@ -20,7 +20,6 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public HistoricoColaborador getHistoricoAnterior(HistoricoColaborador historico);
 	public Collection<HistoricoColaborador> findByColaboradorData(Long idColaborador, Date data);
 	public HistoricoColaborador getHistoricoProximo(HistoricoColaborador hist);
-	public void atualizarHistoricoAnterior(HistoricoColaborador historicoAnterior);
 	public Collection<HistoricoColaborador> getHistoricosAtuaisByEstabelecimentoAreaGrupo(Long[] estabelecimentoIds, char filtrarPor, Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId, Date dataTabela);
 	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId);
 	public HistoricoColaborador findByIdHQL(Long historicoColaboradorId);
@@ -30,7 +29,6 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public HistoricoColaborador findByIdProjection(Long historicoColaboradorId);
 	public Long findReajusteByHistoricoColaborador(Long historicoColaboradorId);
 	public Collection<HistoricoColaborador> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId);
-	public void updateHistoricoAnterior(Long historicoColaboradorId);
 	Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId);
 	public Collection<HistoricoColaborador> findHistoricoAprovado(Long historicoColaboradorId, Long colaboradorId);
 	public HistoricoColaborador findByIdProjectionHistorico(Long historicoColaboradorId);
@@ -56,6 +54,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataBase, Long empresaId);
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
-	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds);
 	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] grupoOcupacionalIds, String vinculo);
 }

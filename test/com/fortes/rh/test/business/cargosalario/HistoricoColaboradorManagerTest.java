@@ -821,101 +821,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(hc.getDataProximoHistorico(), hc3.getData());
 	}
 
-//TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO
-//	public void testGetPromocoes()
-//	{
-//		AreaOrganizacional area1 = new AreaOrganizacional();
-//		area1.setId(1L);
-//		AreaOrganizacional area2 = new AreaOrganizacional();
-//		area2.setId(2L);
-//
-//		AreaOrganizacional areaAnt1 = new AreaOrganizacional();
-//		areaAnt1.setId(4L);
-//		AreaOrganizacional areaAnt2 = new AreaOrganizacional();
-//		areaAnt2.setId(5L);
-//		AreaOrganizacional areaAnt3 = new AreaOrganizacional();
-//		areaAnt3.setId(6L);
-//
-//		Estabelecimento estabelecimento1 = new Estabelecimento();
-//		estabelecimento1.setId(1L);
-//		Estabelecimento estabelecimento2 = new Estabelecimento();
-//		estabelecimento2.setId(2L);
-//		Estabelecimento estabelecimento3 = new Estabelecimento();
-//		estabelecimento3.setId(3L);
-//
-//		Estabelecimento estabelecimentoAnt1 = new Estabelecimento();
-//		estabelecimentoAnt1.setId(4L);
-//		Estabelecimento estabelecimentoAnt2 = new Estabelecimento();
-//		estabelecimentoAnt2.setId(5L);
-//		Estabelecimento estabelecimentoAnt3 = new Estabelecimento();
-//		estabelecimentoAnt3.setId(6L);
-//
-//		Long[] estabelecimentosIds = new Long[]{estabelecimento1.getId(), estabelecimento2.getId(), estabelecimento3.getId()};
-//		Long[] areasIds = new Long[]{area1.getId(), area2.getId()};
-//
-//		HistoricoColaborador historicoAnt1 = HistoricoColaboradorFactory.getEntity();
-//		historicoAnt1.setId(4L);
-//		historicoAnt1.setEstabelecimento(estabelecimentoAnt1);
-//		historicoAnt1.setAreaOrganizacional(areaAnt1);
-//
-//		HistoricoColaborador historico1 = HistoricoColaboradorFactory.getEntity();
-//		historico1.setId(1L);
-//		historico1.setEstabelecimento(estabelecimento1);
-//		historico1.setAreaOrganizacional(area1);
-//		historico1.setHistoricoAnterior(historicoAnt1);
-//		historico1.setMotivo(MotivoHistoricoColaborador.PROMOCAO_VERTICAL);
-//
-//		HistoricoColaborador historicoAnt2 = HistoricoColaboradorFactory.getEntity();
-//		historicoAnt2.setId(5L);
-//		historicoAnt2.setEstabelecimento(estabelecimentoAnt2);
-//		historicoAnt2.setAreaOrganizacional(areaAnt2);
-//
-//		HistoricoColaborador historico2 = HistoricoColaboradorFactory.getEntity();
-//		historico2.setId(2L);
-//		historico2.setEstabelecimento(estabelecimento1);
-//		historico2.setAreaOrganizacional(area2);
-//		historico2.setHistoricoAnterior(historicoAnt2);
-//		historico2.setMotivo(MotivoHistoricoColaborador.PROMOCAO_VERTICAL);
-//
-//		HistoricoColaborador historicoAnt3 = HistoricoColaboradorFactory.getEntity();
-//		historicoAnt3.setId(6L);
-//		historicoAnt3.setEstabelecimento(estabelecimentoAnt3);
-//		historicoAnt3.setAreaOrganizacional(areaAnt3);
-//
-//		HistoricoColaborador historico3 = HistoricoColaboradorFactory.getEntity();
-//		historico3.setId(3L);
-//		historico3.setEstabelecimento(estabelecimento1);
-//		historico3.setAreaOrganizacional(area2);
-//		historico3.setHistoricoAnterior(historicoAnt3);
-//		historico3.setMotivo(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
-//
-//		HistoricoColaborador historicoAnt4 = HistoricoColaboradorFactory.getEntity();
-//		historicoAnt4.setId(7L);
-//		historicoAnt4.setEstabelecimento(estabelecimentoAnt2);
-//		historicoAnt4.setAreaOrganizacional(areaAnt1);
-//
-//		HistoricoColaborador historico4 = HistoricoColaboradorFactory.getEntity();
-//		historico4.setId(8L);
-//		historico4.setEstabelecimento(estabelecimento1);
-//		historico4.setAreaOrganizacional(area2);
-//		historico4.setHistoricoAnterior(historicoAnt3);
-//		historico4.setMotivo(MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
-//
-//		Collection<HistoricoColaborador> historicos = new ArrayList<HistoricoColaborador>();
-//		historicos.add(historico1);
-//		historicos.add(historico2);
-//		historicos.add(historico3);
-//		historicos.add(historicoAnt1);
-//		historicos.add(historicoAnt2);
-//		historicos.add(historicoAnt3);
-//
-//		historicoColaboradorDao.expects(once()).method("getPromocoes").with(eq(areasIds), eq(estabelecimentosIds), ANYTHING, ANYTHING).will(returnValue(historicos));
-//
-//		Collection<RelatorioPromocoes> relatorioPromocoes = historicoColaboradorManager.getPromocoes(areasIds, estabelecimentosIds, null, null);
-//
-//		assertEquals(3, relatorioPromocoes.size());
-//	}
-
 	public void testFindByColaboradorData()
 	{
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
@@ -984,17 +889,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicos.add(h3);
 
 		assertEquals(2, historicoColaboradorManager.findDistinctAmbienteFuncao(historicos).size());
-	}
-
-	public void testAtualizaHistoricosImediatos()
-	{
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setId(1L);
-
-		historicoColaboradorDao.expects(once()).method("getHistoricoAnterior").with(ANYTHING).will(returnValue(historicoColaborador));
-		historicoColaboradorDao.expects(once()).method("getHistoricoProximo").with(ANYTHING).will(returnValue(historicoColaborador));
-		historicoColaboradorDao.expects(atLeastOnce()).method("atualizarHistoricoAnterior").with(ANYTHING);
-		historicoColaboradorManager.atualizaHistoricosImediatos(historicoColaborador);
 	}
 
 	public void testExisteHistoricoData()
@@ -1322,7 +1216,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("findHistoricoAprovado").with(eq(historicoColaborador.getId()), eq(colaborador.getId())).will(returnValue(historicoColaboradors));
 		acPessoalClientColaborador.expects(once()).method("verificaHistoricoNaFolhaAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(false));
 		historicoColaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
-		historicoColaboradorDao.expects(once()).method("updateHistoricoAnterior").with(eq(historicoColaborador.getId()));
 		historicoColaboradorDao.expects(once()).method("findReajusteByHistoricoColaborador").with(eq(historicoColaborador.getId())).will(returnValue(1L));
 		historicoColaboradorDao.expects(once()).method("remove").with(eq(historicoColaborador.getId()));
 		historicoColaboradorDao.expects(once()).method("setaContratadoNoPrimeiroHistorico").with(eq(colaborador.getId()));
@@ -1502,7 +1395,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaborador.setReajusteColaborador(reajusteColaborador);
-		historicoColaborador.setHistoricoAnterior(historicoAnterior);
 
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaborador);
@@ -1639,7 +1531,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaborador.setReajusteColaborador(reajusteColaborador);
-		historicoColaborador.setHistoricoAnterior(historicoAnterior);
 
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaborador);

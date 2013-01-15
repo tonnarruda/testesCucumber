@@ -429,7 +429,6 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		tabelaReajusteColaboradorDao.expects(once()).method("updateSetAprovada").with(ANYTHING, ANYTHING);
 		historicoColaboradorManager.expects(once()).method("findHistoricosByTabelaReajuste").with(new Constraint[]{eq(tabelaReajusteColaborador.getId()), eq(empresa)}).will(returnValue(situacaoIntegrados));
-		historicoColaboradorManager.expects(once()).method("removeDependenciasComHistoricoColaboradors").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		tabelaReajusteColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING);
@@ -473,7 +472,6 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		tabelaReajusteColaboradorDao.expects(once()).method("updateSetAprovada").with(ANYTHING, ANYTHING);
 		historicoColaboradorManager.expects(once()).method("findHistoricosByTabelaReajuste").with(new Constraint[]{eq(tabelaReajusteColaborador.getId()), eq(empresa)}).will(returnValue(situacaoIntegrados));
-		historicoColaboradorManager.expects(once()).method("removeDependenciasComHistoricoColaboradors").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		tabelaReajusteColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
