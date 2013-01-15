@@ -69,6 +69,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Email", "contato.email", "co.contato.email", 150, false));
 		columns.add(new ReportColumn("Celular", "contato.foneCelularFormatado", "co.contato.foneCelular", 40, false));
 		columns.add(new ReportColumn("Fone Fixo", "contato.foneFixoFormatado", "co.contato.foneFixo", 40, false));
+		columns.add(new ReportColumn("Afastado", "afastadoString", "caf.inicio", 15, false));
 		
 		return columns;
 	}
