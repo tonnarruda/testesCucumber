@@ -749,19 +749,31 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
     public void testFindRelatorioSemIndicacaoDeTreinamento()
     {
+    	Date hoje = new Date();
+    	Calendar dataDoisMesesAntes = Calendar.getInstance();
+    	dataDoisMesesAntes.setTime(hoje);
+    	dataDoisMesesAntes.add(Calendar.MONTH, -2);
+    	
+    	Calendar dataUmMesAntes = Calendar.getInstance();
+    	dataUmMesAntes.setTime(hoje);
+    	dataUmMesAntes.add(Calendar.MONTH, -1);
+    	
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 
     	Colaborador colaboradorInscritoTurmaAtual = ColaboradorFactory.getEntity();
+    	colaboradorInscritoTurmaAtual.setDataAdmissao(dataUmMesAntes.getTime());
     	colaboradorInscritoTurmaAtual.setEmpresa(empresa);
     	colaboradorDao.save(colaboradorInscritoTurmaAtual);
 
     	Colaborador colaboradorInscritoTurmaDoisMesesAtras = ColaboradorFactory.getEntity();
     	colaboradorInscritoTurmaDoisMesesAtras.setNome("Colaborador 2");
+    	colaboradorInscritoTurmaDoisMesesAtras.setDataAdmissao(dataUmMesAntes.getTime());
     	colaboradorInscritoTurmaDoisMesesAtras.setEmpresa(empresa);
     	colaboradorDao.save(colaboradorInscritoTurmaDoisMesesAtras);
 
     	Colaborador colaboradorSemCurso = ColaboradorFactory.getEntity();
+    	colaboradorSemCurso.setDataAdmissao(dataUmMesAntes.getTime());
     	colaboradorSemCurso.setNome("Colaborador Sem Curso");
     	colaboradorSemCurso.setEmpresa(empresa);
     	colaboradorDao.save(colaboradorSemCurso);
@@ -794,14 +806,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	historicoColaboradorSemCurso.setEstabelecimento(estabelecimento);
     	historicoColaboradorDao.save(historicoColaboradorSemCurso);
 
-    	Date hoje = new Date();
-    	Calendar dataDoisMesesAntes = Calendar.getInstance();
-    	dataDoisMesesAntes.setTime(hoje);
-    	dataDoisMesesAntes.add(Calendar.MONTH, -2);
 
-    	Calendar dataUmMesAntes = Calendar.getInstance();
-    	dataUmMesAntes.setTime(hoje);
-    	dataUmMesAntes.add(Calendar.MONTH, -1);
+    	
 
     	Curso curso = CursoFactory.getEntity();
     	cursoDao.save(curso);
@@ -825,7 +831,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurmaAtual.setCurso(curso);
     	colaboradorTurmaAtual.setTurma(turmaAtual);
     	colaboradorTurmaDao.save(colaboradorTurmaAtual);
-
 
     	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
     	Long[] areaIds = new Long[]{areaOrganizacional.getId()};
