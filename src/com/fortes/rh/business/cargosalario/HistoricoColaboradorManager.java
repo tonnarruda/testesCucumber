@@ -54,8 +54,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public HistoricoColaborador getHistoricoAnterior(HistoricoColaborador hist);
 
-	public void atualizaHistoricosImediatos(HistoricoColaborador hist);
-
 	public boolean existeHistoricoData(HistoricoColaborador historicoColaborador);
 
 	public Collection<HistoricoColaborador> getHistoricosAtuaisByEstabelecimentoAreaGrupo(Long[] estabelecimentoIds, char filtrarPor, Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds,
@@ -152,8 +150,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 
-	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds);
-	
 	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, String[] gruposCheck, String vinculo) throws Exception;
 	
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;

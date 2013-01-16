@@ -325,10 +325,8 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	action.setColaborador(colaborador);
 
     	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoAtual));
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAnterior").with(new Constraint[]{ANYTHING}).will(returnValue(null));
     	historicoColaboradorManager.expects(once()).method("existeHistoricoData").with(eq(historicoTmp)).will(returnValue(false));
     	historicoColaboradorManager.expects(once()).method("save").with(new Constraint[]{ANYTHING}).will(returnValue(historicoAtual));
-    	historicoColaboradorManager.expects(once()).method("atualizaHistoricosImediatos").with(new Constraint[]{ANYTHING});
     	assertEquals(action.mudaFuncao(), "success");
     }
 

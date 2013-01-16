@@ -116,7 +116,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			if(reajuste.getFuncaoProposta() != null && reajuste.getFuncaoProposta().getId() != null)
 				historicoColaborador.setFuncao(reajuste.getFuncaoProposta());
 
-			historicoColaborador.setHistoricoAnterior(historicoAtual);
 			if (tabelaReajusteColaborador.isDissidio())
 				historicoColaborador.setMotivo(MotivoHistoricoColaborador.DISSIDIO);
 			else
@@ -192,7 +191,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 					situacaosTmp.add(situacao);
 			}
 			
-			historicoColaboradorManager.removeDependenciasComHistoricoColaboradors(historicoIds);
 			historicoColaboradorManager.remove(historicoIds);
 			
 			// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.

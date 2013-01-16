@@ -1,0 +1,1 @@
+alter table historicocolaborador drop column historicoanterior_id;--.go

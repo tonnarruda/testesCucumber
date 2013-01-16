@@ -188,14 +188,12 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		HistoricoColaborador hist = (HistoricoColaborador) historico.clone();
 		hist.setId(null);
 		hist.setData(historicoColaborador.getData());
-		hist.setHistoricoAnterior(historicoColaboradorManager.getHistoricoAnterior(hist));
 		hist.setFuncao(historicoColaborador.getFuncao());
 		hist.setGfip(historicoColaborador.getGfip());
 		hist.setAmbiente(historicoColaborador.getAmbiente());
 		hist.setMotivo(MotivoHistoricoColaborador.MUDANCA_FUNCAO);
 
 		hist = historicoColaboradorManager.save(hist);
-		historicoColaboradorManager.atualizaHistoricosImediatos(hist);
 
 		return SUCCESS;
 	}

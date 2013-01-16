@@ -397,23 +397,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
-	public void atualizarHistoricoAnterior(HistoricoColaborador historico)
-	{
-		HistoricoColaborador historicoAnterior = getHistoricoAnterior(historico);
-
-		if (historicoAnterior!= null && historicoAnterior.getId()!=null)
-		{
-			String hql = "update HistoricoColaborador set historicoAnterior.id = :historicoAnteriorId where id = :historicoId";
-
-			Query query = getSession().createQuery(hql);
-
-			query.setLong("historicoAnteriorId", historicoAnterior.getId());
-			query.setLong("historicoId", historico.getId());
-
-			query.executeUpdate();
-		}
-	}
-
 	public Collection<HistoricoColaborador> getHistoricosAtuaisByEstabelecimentoAreaGrupo(Long[] estabelecimentoIds, char filtrarPor, Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId, Date dataTabela)
 	{
 		StringBuilder hql = new StringBuilder();
@@ -567,7 +550,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
 		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
 		p.add(Projections.property("ca.nomeMercado"), "cargoNomeMercado");
-		p.add(Projections.property("hc.historicoAnterior.id"), "historicoAnteriorId");
 		p.add(Projections.property("hc.funcao.id"), "funcaoId");
 		p.add(Projections.property("fu.nome"), "funcaoNome");
 		p.add(Projections.property("hc.ambiente.id"), "ambienteId");
@@ -632,17 +614,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
 
 		return criteria.list();
-	}
-
-	public void updateHistoricoAnterior(Long historicoColaboradorId)
-	{
-		String hql = "update HistoricoColaborador hc set hc.historicoAnterior.id = (select hc1.historicoAnterior.id from HistoricoColaborador hc1 where hc1.id=:historicoColaboradorId) where hc.historicoAnterior.id = :historicoColaboradorId";
-
-		Query query = getSession().createQuery(hql);
-
-		query.setLong("historicoColaboradorId", historicoColaboradorId);
-
-		query.executeUpdate();
 	}
 
 	public Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId)
@@ -716,7 +687,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("hc.indice.id"), "projectionIndiceId");
 		p.add(Projections.property("hc.faixaSalarial.id"), "faixaSalarialId");
-		p.add(Projections.property("hc.historicoAnterior.id"), "historicoAnteriorId");
 		p.add(Projections.property("hc.funcao.id"), "funcaoId");
 		p.add(Projections.property("hc.ambiente.id"), "ambienteId");
 		p.add(Projections.property("hc.estabelecimento.id"), "projectionEstabelecimentoId");
@@ -1234,15 +1204,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 	}
 
-	public void removeDependenciasComHistoricoColaboradors(Long[] historicoIds) {
-		
-		String tibiraHQL = "update HistoricoColaborador set  historicoAnterior.id= null where historicoAnterior.id in (:historicoIds)";
-		Query query = getSession().createQuery(tibiraHQL);
-		
-		query.setParameterList("historicoIds", historicoIds, Hibernate.LONG);
-		query.executeUpdate();
-	}
-	
 	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] grupoOcupacionalIds, String vinculo)
 	{
 
