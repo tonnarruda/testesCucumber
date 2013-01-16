@@ -5,10 +5,13 @@ package com.fortes.rh.web.action.captacao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -33,6 +36,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -84,7 +88,6 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(session, new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
 		boolean roleLiberaSolicitacao = SecurityUtil.verifyRole(session, new String[]{"ROLE_LIBERA_SOLICITACAO"});
-
 
 		if(roleMovSolicitacaoSelecao)
 		{
@@ -141,7 +144,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 			empresa = getEmpresaSistema();
 		
 		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_MOV_SOLICITACAO");
+		empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), getUsuarioLogado().getId(),new String[]{"ROLE_MOV_SOLICITACAO","ROLE_COLAB_LIST_SOLICITACAO"});
 		
     	candidato = candidatoManager.findByCandidatoId(candidato.getId());
 
@@ -159,6 +162,12 @@ public class SolicitacaoListAction extends MyActionSupportList
 	    	solicitacao.setId(Long.parseLong(id));
 
     		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
+    	}
+    	
+    	if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"}))
+    	{
+    		setActionMsg("Colaborador inserido na solicitação com sucesso.");
+    		return "successColaboradorList";
     	}
     	
     	if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
