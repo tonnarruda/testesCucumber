@@ -3,7 +3,6 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -20,7 +19,6 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 {
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private ReajusteIndiceManager reajusteIndiceManager;
-	private IndiceManager indiceManager;
 	
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 	private Collection<Indice> indices = new ArrayList<Indice>();
@@ -42,8 +40,53 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 		
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.INDICE);
 		
-		indices = indiceManager.findAll(getEmpresaSistema());
+		return Action.SUCCESS;
+	}
+	
+	public String insert() throws Exception
+	{
+		try
+		{
+			reajusteIndiceManager.insertReajustes(tabelaReajusteColaborador.getId(), new Long[] { indice.getId() }, dissidioPor, valorDissidio);
+			addActionMessage("Proposta de reajuste gravada com sucesso");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao gravar a proposta de reajuste");
+		}
+		finally
+		{
+			prepareInsert();
+		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdate() throws Exception
+	{
+		reajusteIndice = reajusteIndiceManager.findByIdProjection(reajusteIndice.getId());
 		
+		return Action.SUCCESS;
+	}
+	
+	public String update() throws Exception
+	{
+		try
+		{
+			reajusteIndiceManager.updateValorProposto(reajusteIndice.getId(), reajusteIndice.getValorAtual(), dissidioPor, valorDissidio);
+			addActionMessage("Proposta de reajuste alterada com sucesso");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao alterar a proposta de reajuste");
+		}
+		finally
+		{
+			prepareUpdate();
+		}
+
 		return Action.SUCCESS;
 	}
 
@@ -53,7 +96,6 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no AC Pessoal.");
 
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.INDICE);
-		indicesCheckList = indiceManager.findOpcoesDissidio(getEmpresaSistema());
 		
 		return Action.SUCCESS;
 	}
@@ -74,6 +116,13 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 		{
 			prepareDissidio();
 		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String delete() throws Exception 
+	{
+		reajusteIndiceManager.remove(new Long[]{ reajusteIndice.getId() });
 
 		return Action.SUCCESS;
 	}
@@ -116,11 +165,6 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 	public void setIndice(Indice indice) 
 	{
 		this.indice = indice;
-	}
-
-	public void setIndiceManager(IndiceManager indiceManager) 
-	{
-		this.indiceManager = indiceManager;
 	}
 
 	public Collection<Indice> getIndices() 

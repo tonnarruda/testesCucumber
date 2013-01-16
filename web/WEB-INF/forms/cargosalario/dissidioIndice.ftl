@@ -9,17 +9,13 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
-		function populaFaixas()
-		{
-			var cargosIds = getArrayCheckeds(document.forms[0],'cargosCheck');
-			if (cargosIds.length == 0)
-				cargosIds = [-1];
-			ReajusteDWR.getByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
-		}
+		$(function() {
+			ReajusteDWR.getIndicesDesabilitandoPendentes(createListIndices);
+		});
 		
-		function createListFaixas(data)
+		function createListIndices(data)
 		{
-			addChecksByCollection('faixasCheck', data);
+			addChecksByCollection('indicesCheck', data);
 		}
 	</script>
 </head>

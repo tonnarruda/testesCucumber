@@ -6,6 +6,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.ReajusteIndice;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.MathUtil;
 
 public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice, ReajusteIndiceDao> implements ReajusteIndiceManager
@@ -28,7 +29,27 @@ public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice
 			getDao().save(reajuste);
 		}
 	}
-
+	
+	public Collection<Indice> findPendentes(Empresa empresa) 
+	{
+		return getDao().findPendentes(empresa);
+	}
+	
+	public Collection<ReajusteIndice> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId) 
+	{
+		return getDao().findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
+	}
+	
+	public ReajusteIndice findByIdProjection(Long reajusteIndiceId) 
+	{
+		return getDao().findByIdProjection(reajusteIndiceId);
+	}
+	
+	public void updateValorProposto(Long reajusteIndiceId, Double valorAtual, char dissidioPor, Double valorDissidio) throws Exception 
+	{
+		getDao().updateValorProposto(reajusteIndiceId, MathUtil.calculaDissidio(dissidioPor, valorDissidio, valorAtual));
+	}
+	
 	public void setIndiceManager(IndiceManager indiceManager) 
 	{
 		this.indiceManager = indiceManager;

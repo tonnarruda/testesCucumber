@@ -8,8 +8,8 @@ CREATE TABLE reajustefaixasalarial (
     indiceproposto_id bigint,
     qtdindiceatual double precision,
     qtdindiceproposta double precision,
-    valoratual double precision NOT NULL,
-    valorproposto double precision NOT NULL
+    valoratual numeric(8,2) NOT NULL,
+    valorproposto numeric(8,2) NOT NULL
 );--.go
 
 ALTER TABLE ONLY reajustefaixasalarial ADD CONSTRAINT reajustefaixasalarial_pkey PRIMARY KEY (id);--.go

@@ -7,11 +7,25 @@
 			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteIndice.ftl</result>
 		</action>
+		<action name="insert" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="insert">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">../tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteIndice.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="update">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">../tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}</result>
+		</action>
 		<action name="prepareDissidio" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="prepareDissidio">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioIndice.ftl</result>
 		</action>
 		<action name="insertColetivo" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="insertColetivo">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioIndice.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="delete">
+			<result name="success" type="redirect"><![CDATA[/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}]]></result>
 		</action>
 	</package>
 </xwork>

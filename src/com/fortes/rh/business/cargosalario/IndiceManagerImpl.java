@@ -1,6 +1,5 @@
 package com.fortes.rh.business.cargosalario;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -10,7 +9,6 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.web.tags.CheckBox;
 
 public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> implements IndiceManager
 {
@@ -119,29 +117,8 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		return getDao().findCodigoACDuplicado(empresa);
 	}
 
-	public Collection<CheckBox> findOpcoesDissidio(Empresa empresa) 
+	public Collection<Indice> findComHistoricoAtual(Empresa empresa) 
 	{
-		Collection<Indice> indices = getDao().findComHistoricoAtual(empresa);
-		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
-		CheckBox checkBox;
-		
-		for (Indice indice : indices) 
-		{
-			checkBox = new CheckBox();
-			checkBox.setId(indice.getId());
-			checkBox.setNome(indice.getNome());
-			checkBox.setDesabilitado(true);
-			
-			if (false)
-				checkBox.setTitulo("Esse índice possui um realinhamento pendente");
-			else if (indice.getIndiceHistoricoAtual() == null || indice.getIndiceHistoricoAtual().getId() == null)
-				checkBox.setTitulo("Esse índice não possui histórico");
-			else
-				checkBox.setDesabilitado(false);
-			
-			checkboxes.add(checkBox);
-		}
-		
-		return checkboxes;
+		return getDao().findComHistoricoAtual(empresa);
 	}
 }

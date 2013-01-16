@@ -13,11 +13,14 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 
+import uk.ltd.getahead.dwr.WebContextFactory;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -26,6 +29,8 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -36,12 +41,13 @@ import com.fortes.web.tags.Option;
 public class ReajusteDWR
 {
 	private ColaboradorManager colaboradorManager;
+	private HistoricoColaboradorManager historicoColaboradorManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
 	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager; 
+	private ReajusteIndiceManager reajusteIndiceManager; 
 
 	public Map<String, Object> getColaboradorSolicitacaoReajuste(Long colaboradorId) throws Exception
 	{
@@ -205,7 +211,7 @@ public class ReajusteDWR
 		return formatador.format(salarioCalculado);
 	}
 	
-	public Collection<CheckBox> getByCargosDesabilitandoPorIndice(String[] cargoIds)
+	public Collection<CheckBox> getFaixasByCargosDesabilitandoPorIndice(String[] cargoIds)
 	{
 		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
@@ -233,7 +239,7 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
-	public Collection<Option> getByCargoDesabilitandoPorIndice(Long cargoId)
+	public Collection<Option> getFaixasByCargoDesabilitandoPorIndice(Long cargoId)
 	{
 		Collection<Option> options = new ArrayList<Option>();
 		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(new Long[] { cargoId });
@@ -252,6 +258,66 @@ public class ReajusteDWR
 				option.setTitulo("Essa faixa salarial não possui histórico");
 			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
 				option.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				option.setDesabilitado(false);
+			
+			options.add(option);
+		}
+		
+		return options;
+	}
+	
+	public Collection<CheckBox> getIndicesDesabilitandoPendentes()
+	{
+		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
+		Collection<Indice> indices = indiceManager.findComHistoricoAtual(empresa);
+		Collection<Indice> indicesPendentes = reajusteIndiceManager.findPendentes(empresa);
+		Collection<Long> indicesPendentesIds = LongUtil.collectionToCollectionLong(indicesPendentes);
+		
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		CheckBox checkBox;
+		
+		for (Indice indice : indices) 
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(indice.getId());
+			checkBox.setNome(indice.getNome());
+			checkBox.setDesabilitado(true);
+			
+			if (indicesPendentesIds.contains(indice.getId()))
+				checkBox.setTitulo("Esse índice possui um realinhamento pendente");
+			else if (indice.getIndiceHistoricoAtual() == null || indice.getIndiceHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Esse índice não possui histórico");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
+	}
+	
+	public Collection<Option> getOptionsIndicesDesabilitandoPendentes()
+	{
+		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
+		Collection<Indice> indices = indiceManager.findComHistoricoAtual(empresa);
+		Collection<Indice> indicesPendentes = reajusteIndiceManager.findPendentes(empresa);
+		Collection<Long> indicesPendentesIds = LongUtil.collectionToCollectionLong(indicesPendentes);
+		
+		Collection<Option> options = new ArrayList<Option>();
+		Option option;
+		
+		for (Indice indice : indices) 
+		{
+			option = new Option();
+			option.setId(indice.getId());
+			option.setNome(indice.getNome());
+			option.setDesabilitado(true);
+			
+			if (indicesPendentesIds.contains(indice.getId()))
+				option.setTitulo("Esse índice possui um realinhamento pendente");
+			else if (indice.getIndiceHistoricoAtual() == null || indice.getIndiceHistoricoAtual().getId() == null)
+				option.setTitulo("Esse índice não possui histórico");
 			else
 				option.setDesabilitado(false);
 			
@@ -291,9 +357,13 @@ public class ReajusteDWR
 		this.tabelaReajusteColaboradorManager = tabelaReajusteColaboradorManager;
 	}
 
-	public void setReajusteFaixaSalarialManager(
-			ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
+	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) 
+	{
 		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
+	}
+
+	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
+		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 
 }

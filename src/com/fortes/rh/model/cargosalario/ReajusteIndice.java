@@ -28,6 +28,30 @@ public class ReajusteIndice extends AbstractModel implements Serializable
 		this.tabelaReajusteColaborador.setId(tabelaReajusteColaboradorId);
 	}
 	
+	public void setProjectionTabelaReajusteColaboradorNome(String tabelaReajusteColaboradorNome) 
+	{
+		if (this.tabelaReajusteColaborador == null)
+			this.tabelaReajusteColaborador = new TabelaReajusteColaborador();
+		
+		this.tabelaReajusteColaborador.setNome(tabelaReajusteColaboradorNome);
+	}
+
+	public void setProjectionIndiceId(Long indiceId) 
+	{
+		if (this.indice == null)
+			this.indice = new Indice();
+		
+		this.indice.setId(indiceId);
+	}
+	
+	public void setProjectionIndiceNome(String indiceNome) 
+	{
+		if (this.indice == null)
+			this.indice = new Indice();
+		
+		this.indice.setNome(indiceNome);
+	}
+	
 	public Indice getIndice() 
 	{
 		return indice;

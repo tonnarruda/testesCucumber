@@ -37,6 +37,11 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
 		</action>
+		<action name="aplicarPorIndice" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="aplicarPorIndice">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
+		</action>
 		<action name="cancelarReajuste" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorListAction" method="cancelarReajuste">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorList.ftl</result>
 		</action>

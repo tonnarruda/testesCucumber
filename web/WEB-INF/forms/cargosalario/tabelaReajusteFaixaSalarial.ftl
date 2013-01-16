@@ -53,7 +53,9 @@
 </#if>
 
 <div class="buttonGroup">
-	<button onclick="window.location='list.action'" class="btnVoltar" style="margin-right:80px;"></button>
+	<button onclick="window.location='list.action'" class="btnVoltar"></button>
+
+	<button onclick="window.location='../reajusteFaixaSalarial/prepareInsert.action'" class="btnInserir" style="margin-right:80px;"></button>
 	
 	<#if tabelaReajusteColaborador.id?exists && reajustesFaixaSalarial?exists && 0 < reajustesFaixaSalarial?size>
 		<button onclick="aplicarPorFaixaSalarial()" class="btnAplicar"></button>

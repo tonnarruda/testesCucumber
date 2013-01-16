@@ -9,7 +9,6 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.callback.IndiceAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
-import com.fortes.web.tags.CheckBox;
 
 public interface IndiceManager extends GenericManager<Indice>
 {
@@ -29,6 +28,6 @@ public interface IndiceManager extends GenericManager<Indice>
 	Collection<Indice> findSemCodigoAC(Empresa empresa);
 	void deleteIndice(Long[] indiceIds) throws Exception;
 	String findCodigoACDuplicado(Empresa empresa);
-	Collection<CheckBox> findOpcoesDissidio(Empresa empresa);
 	Collection<Indice> findComHistoricoAtual(Long[] indicesIds);
+	Collection<Indice> findComHistoricoAtual(Empresa empresa);
 }

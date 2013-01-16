@@ -47,6 +47,11 @@
 		{
 			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}' });
 		}
+		
+		function aplicarPorIndice()
+		{
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorIndice.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}' });
+		}
 	</script>
 
 	<#include "../ftl/showFilterImports.ftl" />
@@ -68,6 +73,8 @@
 			<#include "tabelaReajusteColaborador.ftl" />
 		<#elseif tabelaReajusteColaborador.tipoReajuste == 'F'>
 			<#include "tabelaReajusteFaixaSalarial.ftl" />
+		<#elseif tabelaReajusteColaborador.tipoReajuste == 'I'>
+			<#include "tabelaReajusteIndice.ftl" />
 		</#if>
 	</#if>
 </body>

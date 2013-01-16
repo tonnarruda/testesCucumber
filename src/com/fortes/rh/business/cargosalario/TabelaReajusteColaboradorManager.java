@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
@@ -47,4 +48,6 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public TabelaReajusteColaborador findByIdProjection(Long tabelaReajusteColaboradorId);
 
 	public void verificaDataHistoricoColaborador(Long tabelaReajusteColaboradorId, Date data) throws Exception;
+
+	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException;
 }

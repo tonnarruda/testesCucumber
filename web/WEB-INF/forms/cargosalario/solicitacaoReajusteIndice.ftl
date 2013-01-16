@@ -7,21 +7,29 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript'>
-		$(function() {
-			
-		});
-	</script>
 	
 	<#if reajusteIndice?exists && reajusteIndice.id?exists>
-		<title>Editar Solicitação de Realinhamento de Cargos & Salários para Índice</title>
+		<title>Editar Solicitação de Realinhamento de Cargos e Salários por Índice</title>
 		<#assign edicao = true/>
 		<#assign formAction = "update.action"/>
 	<#else>
-		<title>Solicitação de Realinhamento de Cargos & Salários para Índice</title>
+		<title>Solicitação de Realinhamento de Cargos e Salários por Índice</title>
 		<#assign edicao = false/>
 		<#assign formAction = "insert.action"/>
 	</#if>
+	
+	<script type='text/javascript'>
+		$(function() {
+			<#if !edicao>
+				ReajusteDWR.getOptionsIndicesDesabilitandoPendentes(createListIndices);
+			</#if>
+		});
+		
+		function createListIndices(data)
+		{
+			addOptionsByCollection('indiceId', data);
+		}
+	</script>
 </head>
 
 <body>
@@ -40,9 +48,15 @@
 				
 				Índice:<br />
 				<strong>${reajusteIndice.indice.nome}</strong><br /><br />
+				
+				Valor Atual:<br />
+				<strong>R$ ${reajusteIndice.valorAtual}</strong><br /><br />
+				
+				Valor Proposto:<br />
+				<strong>R$ ${reajusteIndice.valorProposto}</strong><br /><br />
 		
-				<@ww.select id="dissidioPor" label="Reajuste por" name="dissidioPor" list=r"#{'2':'Quantia adicionada ao valor atual(R$)', '1':'Porcentagem sobre o valor atual(%)'}" liClass="liLeft" required="true"/>
-				<@ww.textfield label="" name="valorDissidio" id="valorDissidio" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" value="${reajusteIndice.valorProposto}"/>
+				<@ww.select id="dissidioPor" label="Reajuste por" name="dissidioPor" list=r"#{'1':'Porcentagem sobre o valor atual(%)', '2':'Quantia adicionada ao valor atual(R$)'}" liClass="liLeft" required="true"/>
+				<@ww.textfield label="" name="valorDissidio" id="valorDissidio" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12"/>
 			<#else>
 				<@ww.select label="Planejamento de Realinhamento" name="tabelaReajusteColaborador.id" id ="tabelaReajuste" required="true" list="tabelaReajusteColaboradors" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1" cssStyle="width:500px;"/>
 				<@ww.select label="Índice" name="indice.id" id="indiceId" required="true" list="indices" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1" cssStyle="width:500px;"/>

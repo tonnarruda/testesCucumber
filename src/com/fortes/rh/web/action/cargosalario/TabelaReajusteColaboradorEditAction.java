@@ -9,6 +9,7 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -18,6 +19,7 @@ import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoReajuste;
@@ -37,6 +39,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
 	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	private ReajusteIndiceManager reajusteIndiceManager;
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
@@ -49,6 +52,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private Collection<ReajusteColaborador> reajustes;
 	private Collection<ReajusteFaixaSalarial> reajustesFaixaSalarial;
+	private Collection<ReajusteIndice> reajustesIndice;
 
 	private String[] areaOrganizacionalsCheck;
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
@@ -86,6 +90,9 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 			
 			else if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
 				return visualizarPorFaixaSalarial();
+			
+			else if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.INDICE))
+				return visualizarPorIndice();
 			
 			else
 				throw new FortesException("Tipo de reajuste não identificado");
@@ -141,6 +148,16 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 		reajustesFaixaSalarial = reajusteFaixaSalarialManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaborador.getId());
 		
 		if (reajustesFaixaSalarial == null || reajustesFaixaSalarial.isEmpty())
+			addActionMessage("Não existem promoções e reajustes a serem visualizados");
+		
+		return Action.SUCCESS;
+	}
+	
+	private String visualizarPorIndice() throws Exception
+	{
+		reajustesIndice = reajusteIndiceManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaborador.getId());
+		
+		if (reajustesIndice == null || reajustesIndice.isEmpty())
 			addActionMessage("Não existem promoções e reajustes a serem visualizados");
 		
 		return Action.SUCCESS;
@@ -271,6 +288,36 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 			
 			visualizar();
 
+			return Action.INPUT;
+		}
+	}
+
+	public String aplicarPorIndice() throws Exception
+	{
+		try 
+		{
+			tabelaReajusteColaboradorManager.aplicarPorIndice(tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			
+			addActionMessage("Reajuste aplicado com sucesso");
+			
+			return Action.SUCCESS;
+		} 
+		catch (FortesException e) 
+		{
+			addActionError(e.getMessage());
+			e.printStackTrace();
+			
+			visualizar();
+			
+			return Action.INPUT;
+		}
+		catch (Exception e) 
+		{
+			addActionError("Ocorreu um erro ao aplicar os reajustes");
+			e.printStackTrace();
+			
+			visualizar();
+			
 			return Action.INPUT;
 		}
 	}
@@ -443,5 +490,17 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 
 	public void setReajusteFaixaSalarialManager(ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
 		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
+	}
+
+	public Collection<ReajusteIndice> getReajustesIndice() {
+		return reajustesIndice;
+	}
+
+	public void setReajustesIndice(Collection<ReajusteIndice> reajustesIndice) {
+		this.reajustesIndice = reajustesIndice;
+	}
+
+	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
+		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 }

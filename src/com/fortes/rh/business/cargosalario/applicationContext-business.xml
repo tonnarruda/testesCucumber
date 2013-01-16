@@ -165,6 +165,9 @@
     <property name="reajusteFaixaSalarialManager">
       <ref bean="reajusteFaixaSalarialManager" />
     </property>
+    <property name="reajusteIndiceManager">
+      <ref bean="reajusteIndiceManager" />
+    </property>
     <property name="historicoColaboradorManager">
       <ref bean="historicoColaboradorManager" />
     </property>

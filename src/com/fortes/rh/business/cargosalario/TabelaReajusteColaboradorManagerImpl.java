@@ -9,12 +9,15 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -30,8 +33,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 {
 	private ReajusteColaboradorManager reajusteColaboradorManager;
 	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
+	private ReajusteIndiceManager reajusteIndiceManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	private IndiceHistoricoManager indiceHistoricoManager;
 	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
 	private ColaboradorManager colaboradorManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
@@ -77,7 +82,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception
 	{
 		if(tabelaReajusteColaborador != null && (reajustes == null || reajustes.size() == 0))
@@ -166,6 +170,35 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			faixaSalarialHistorico.setValor(reajuste.getValorProposto());
 			
 			faixaSalarialHistoricoManager.save(faixaSalarialHistorico, reajuste.getFaixaSalarial(), empresa, true);
+		}
+		
+		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
+	}
+	
+	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException 
+	{
+		if(empresa.isAcIntegra())
+			throw new FortesException("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+		
+		TabelaReajusteColaborador tabelaReajusteColaborador = findByIdProjection(tabelaReajusteColaboradorId);
+		Collection<ReajusteIndice> reajustes = reajusteIndiceManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
+		
+		if (reajustes == null || reajustes.size() == 0)
+			throw new FortesException("Nenhum índice para o reajuste");
+		
+		IndiceHistorico indiceHistorico;
+		
+		for (ReajusteIndice reajuste : reajustes)
+		{
+			if(indiceHistoricoManager.verifyData(null, tabelaReajusteColaborador.getData(), reajuste.getIndice().getId()))
+				throw new FortesException("Já existe um histórico com essa data.");
+
+			indiceHistorico = new IndiceHistorico();
+			indiceHistorico.setIndice(reajuste.getIndice());
+			indiceHistorico.setData(tabelaReajusteColaborador.getData());
+			indiceHistorico.setValor(reajuste.getValorProposto());
+
+			indiceHistoricoManager.save(indiceHistorico);
 		}
 		
 		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
@@ -285,5 +318,14 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	public void setFaixaSalarialHistoricoManager(FaixaSalarialHistoricoManager faixaSalarialHistoricoManager) 
 	{
 		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
+	}
+
+	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
+		this.reajusteIndiceManager = reajusteIndiceManager;
+	}
+
+	public void setIndiceHistoricoManager(
+			IndiceHistoricoManager indiceHistoricoManager) {
+		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 }

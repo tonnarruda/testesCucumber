@@ -14,7 +14,7 @@
 			var cargosIds = getArrayCheckeds(document.forms[0],'cargosCheck');
 			if (cargosIds.length == 0)
 				cargosIds = [-1];
-			ReajusteDWR.getByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
+			ReajusteDWR.getFaixasByCargosDesabilitandoPorIndice(createListFaixas, cargosIds);
 		}
 		
 		function createListFaixas(data)
