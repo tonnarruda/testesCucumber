@@ -56,7 +56,7 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 
 	public Auditavel cancelar(MetodoInterceptado metodo) throws Throwable {
 		
-		Long tabelaReajusteColaboradorId = (Long) metodo.getParametros()[0];
+		Long tabelaReajusteColaboradorId = (Long) metodo.getParametros()[1];
 		TabelaReajusteColaborador tabelaReajusteColaborador = new TabelaReajusteColaborador();
 		tabelaReajusteColaborador.setId(tabelaReajusteColaboradorId);
 		tabelaReajusteColaborador = (TabelaReajusteColaborador) carregaEntidade(metodo, tabelaReajusteColaborador);

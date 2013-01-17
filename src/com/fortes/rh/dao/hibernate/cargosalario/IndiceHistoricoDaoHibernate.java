@@ -177,4 +177,23 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 			query.executeUpdate();		
 		}
 	}
+
+	public Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
+		criteria.createCriteria("ih.reajusteIndice", "ri", Criteria.INNER_JOIN);
+		criteria.createCriteria("ri.tabelaReajusteColaborador", "trs", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ih.id"), "id");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("trs.id", tabelaReajusteColaboradorId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 }

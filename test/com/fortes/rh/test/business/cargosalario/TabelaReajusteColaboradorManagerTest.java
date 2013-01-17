@@ -437,7 +437,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), empresa);
+			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
 		}
 		catch (Exception e)
 		{
@@ -480,7 +480,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), empresa);
+			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
 		}
 		catch (Exception e)
 		{

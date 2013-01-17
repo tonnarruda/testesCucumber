@@ -183,6 +183,9 @@
     <property name="quantidadeLimiteColaboradoresPorCargoManager">
       <ref bean="quantidadeLimiteColaboradoresPorCargoManager" />
     </property>
+    <property name="indiceHistoricoManager">
+      <ref bean="indiceHistoricoManager" />
+    </property>
   </bean>
   <bean id="tabelaReajusteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

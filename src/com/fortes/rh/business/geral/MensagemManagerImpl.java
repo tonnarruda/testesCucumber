@@ -70,7 +70,7 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 		mensagemFinal.append("\r\n\r\n");
 		mensagemFinal.append("<b>Dados da Situação Cancelada:</b> ");
 		mensagemFinal.append("\r\n");
-		mensagemFinal.append("Nome: "+historicoColaborador.getColaborador().getNomeComercial());
+		mensagemFinal.append("Nome: "+historicoColaborador.getColaborador().getNomeComercial() == null ? historicoColaborador.getColaborador().getNome() : historicoColaborador.getColaborador().getNomeComercial());
 		mensagemFinal.append("\r\n");
 		mensagemFinal.append("Data: "+formataData(historicoColaborador.getData()));
 		mensagemFinal.append("\r\n");

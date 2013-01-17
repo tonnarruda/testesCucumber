@@ -52,12 +52,7 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	{
 		try
 		{
-			if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.COLABORADOR))
-				tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), getEmpresaSistema());
-			
-			else if (tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
-				tabelaReajusteColaboradorManager.cancelarPorFaixaSalarial(tabelaReajusteColaborador.getId(), getEmpresaSistema());
-			
+			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getTipoReajuste(), tabelaReajusteColaborador.getId(), getEmpresaSistema());
 			addActionMessage("Cancelamento efetuado com sucesso.");
 		}
 		catch (IntegraACException e)

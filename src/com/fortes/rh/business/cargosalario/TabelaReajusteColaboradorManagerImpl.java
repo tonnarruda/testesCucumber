@@ -23,6 +23,7 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -197,6 +198,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			indiceHistorico.setIndice(reajuste.getIndice());
 			indiceHistorico.setData(tabelaReajusteColaborador.getData());
 			indiceHistorico.setValor(reajuste.getValorProposto());
+			indiceHistorico.setReajusteIndice(reajuste);
 
 			indiceHistoricoManager.save(indiceHistorico);
 		}
@@ -204,7 +206,19 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
 	}
 	
-	public void cancelar(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	{
+		if (tipoReajuste.equals(TipoReajuste.COLABORADOR))
+			cancelarColaborador(tabelaReajusteColaboradorId, empresa);
+		
+		else if (tipoReajuste.equals(TipoReajuste.FAIXA_SALARIAL))
+			cancelarPorFaixaSalarial(tabelaReajusteColaboradorId, empresa);
+
+		else if (tipoReajuste.equals(TipoReajuste.INDICE))
+			cancelarPorIndice(tabelaReajusteColaboradorId, empresa);
+	}
+	
+	private void cancelarColaborador(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
 	{
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 
@@ -237,12 +251,22 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		}
 	}
 	
-	public void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	private void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
 	{
 		Collection<FaixaSalarialHistorico> historicos = faixaSalarialHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
 		
 		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos) 
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+		
+		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
+	}
+
+	private void cancelarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	{
+		Collection<IndiceHistorico> historicos = indiceHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
+		
+		for (IndiceHistorico indiceHistorico : historicos) 
+			indiceHistoricoManager.remove(indiceHistorico.getId());
 		
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}

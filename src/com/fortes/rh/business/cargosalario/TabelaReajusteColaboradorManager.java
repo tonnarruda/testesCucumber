@@ -25,15 +25,13 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
 	
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void cancelar(Long tabelaReajusteId, Empresa empresa) throws Exception;
+	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception;
 
 	@Audita(operacao="Atualização", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
 	
 	//TODO: Auditar
 	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws ColecaoVaziaException, Exception;
-	//TODO: Auditar
-	public void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception;
 
 	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
 
@@ -50,4 +48,5 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void verificaDataHistoricoColaborador(Long tabelaReajusteColaboradorId, Date data) throws Exception;
 
 	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException;
+
 }

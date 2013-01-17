@@ -22,7 +22,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioIndice.ftl</result>
 		</action>
 		<action name="insertColetivo" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="insertColetivo">
-			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/dissidioIndice.ftl</result>
+			<result name="success" type="freemarker"><![CDATA[../tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}]]></result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.ReajusteIndiceEditAction" method="delete">
 			<result name="success" type="redirect"><![CDATA[/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}]]></result>
