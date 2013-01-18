@@ -5,7 +5,7 @@ Funcionalidade: Resultado das Avaliações de Desempenho e Acompanhamento do Per
   Cenário: Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência
     Dado que eu esteja logado
     Dado que exista a área organizacional "geral"
-    Dado que exista uma avaliacao "avaliacao experiencia"
+    Dado que exista um modelo avaliacao desempenho "avaliacao experiencia"
 
     Quando eu acesso o menu "Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência"
     Então eu devo ver o título "Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência"

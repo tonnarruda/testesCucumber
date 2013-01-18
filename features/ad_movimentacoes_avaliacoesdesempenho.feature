@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Avaliações de Desempenho
 
   Cenário: Cadastro de Avaliações de Desempenho
-    Dado que exista uma avaliacao "Avaliacao de Desempenho"
+    Dado que exista um modelo avaliacao desempenho "Avaliacao de Desempenho"
 
     Dado que eu esteja logado
     Quando eu acesso o menu "Aval. Desempenho > Movimentações > Avaliações de Desempenho"
