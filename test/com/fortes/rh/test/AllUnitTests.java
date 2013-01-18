@@ -11,7 +11,6 @@ import com.fortes.rh.config.backup.BackupCleanerJobTest;
 import com.fortes.rh.config.backup.BackupJobTest;
 import com.fortes.rh.config.backup.BackupServiceImplTest;
 import com.fortes.rh.config.backup.RunAntScriptTest;
-import com.fortes.rh.model.dicionario.NivelIdioma;
 import com.fortes.rh.security.spring.aop.AbstractModelJsonValueProcessorTest;
 import com.fortes.rh.security.spring.aop.AtributosDaAuditoriaTest;
 import com.fortes.rh.security.spring.aop.AuditoriaGeralAdviceTest;
@@ -1329,7 +1328,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
-        suite.addTestSuite(ManagerAuditaTest.class);
+//        suite.addTestSuite(ManagerAuditaTest.class);
         suite.addTestSuite(LinkTagTest.class);
         suite.addTestSuite(F2rhFacadeTest.class);
         suite.addTestSuite(ExportacaoActionTest.class);
