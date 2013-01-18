@@ -19418,3 +19418,8 @@ update parametrosdosistema set appversao = '1.1.97.99';--.go
 -- versao 1.1.97.100
 
 update parametrosdosistema set appversao = '1.1.97.100';--.go
+-- versao 1.1.98.101
+
+alter table historicocolaborador drop column historicoanterior_id;--.go
+insert into migrations values('20130115152510');--.go
+update parametrosdosistema set appversao = '1.1.98.101';--.go

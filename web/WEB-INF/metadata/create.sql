@@ -560,6 +560,27 @@ CREATE TABLE avaliacao (
 ALTER TABLE public.avaliacao OWNER TO postgres;
 
 --
+-- Name: avaliacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE avaliacao_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.avaliacao_sequence OWNER TO postgres;
+
+--
+-- Name: avaliacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacao_sequence', 1, false);
+
+
+--
 -- Name: avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -4280,7 +4301,6 @@ CREATE TABLE historicocolaborador (
     gfip character varying(2),
     colaborador_id bigint,
     areaorganizacional_id bigint,
-    historicoanterior_id bigint,
     funcao_id bigint,
     ambiente_id bigint,
     estabelecimento_id bigint,
@@ -27899,6 +27919,7 @@ INSERT INTO migrations (name) VALUES ('20121217143512');
 INSERT INTO migrations (name) VALUES ('20121226105433');
 INSERT INTO migrations (name) VALUES ('20130102161739');
 INSERT INTO migrations (name) VALUES ('20130103132012');
+INSERT INTO migrations (name) VALUES ('20130115152510');
 
 
 --
@@ -28192,7 +28213,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.97.100', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.98.101', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
 
 
 --
@@ -31657,14 +31678,6 @@ ALTER TABLE ONLY historicocolaborador
 
 ALTER TABLE ONLY historicocolaborador
     ADD CONSTRAINT historicocolaborador_funcao_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);
-
-
---
--- Name: historicocolaborador_historicocolaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY historicocolaborador
-    ADD CONSTRAINT historicocolaborador_historicocolaborador_fk FOREIGN KEY (historicoanterior_id) REFERENCES historicocolaborador(id);
 
 
 --
