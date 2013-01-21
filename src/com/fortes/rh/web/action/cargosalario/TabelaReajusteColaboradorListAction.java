@@ -6,7 +6,6 @@ import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
-import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 

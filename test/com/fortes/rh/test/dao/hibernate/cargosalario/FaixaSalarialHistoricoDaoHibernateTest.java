@@ -184,6 +184,53 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(1, faixaSalarialHistoricoDao.findByTabelaReajusteId(tabela2.getId()).size());
 	}
 	
+
+	public void testFindReajusteFaixaSalarial() {
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa1);
+		
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa2);
+		
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela1);
+
+		ReajusteFaixaSalarial reajuste1 = new ReajusteFaixaSalarial();
+		reajuste1.setFaixaSalarial(faixa1);
+		reajuste1.setTipoAtual(TipoAplicacaoIndice.VALOR);
+		reajuste1.setTipoProposto(TipoAplicacaoIndice.VALOR);
+		reajuste1.setValorAtual(1000.00);
+		reajuste1.setValorProposto(1200.00);
+		reajuste1.setTabelaReajusteColaborador(tabela1);
+		reajusteFaixaSalarialDao.save(reajuste1);
+		
+		ReajusteFaixaSalarial reajuste2 = new ReajusteFaixaSalarial();
+		reajuste2.setFaixaSalarial(faixa2);
+		reajuste2.setTipoAtual(TipoAplicacaoIndice.VALOR);
+		reajuste2.setTipoProposto(TipoAplicacaoIndice.VALOR);
+		reajuste2.setValorAtual(1000.00);
+		reajuste2.setValorProposto(1200.00);
+		reajuste2.setTabelaReajusteColaborador(tabela1);
+		reajusteFaixaSalarialDao.save(reajuste2);
+		
+		Date data = DateUtil.criarDataMesAno(01, 01, 2010);
+		
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
+		historico1.setFaixaSalarial(faixa1);
+		historico1.setReajusteFaixaSalarial(reajuste1);
+		historico1.setData(data);
+		faixaSalarialHistoricoDao.save(historico1);
+		
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
+		historico2.setFaixaSalarial(faixa2);
+		historico2.setReajusteFaixaSalarial(reajuste2);
+		historico2.setData(data);
+		faixaSalarialHistoricoDao.save(historico2);
+		
+		assertEquals(reajuste1.getId(), ((ReajusteFaixaSalarial) faixaSalarialHistoricoDao.findReajusteFaixaSalarial(data, faixa1.getId())).getId());
+	}
+	
 	
 	public void testFindByIdProjection()
 	{

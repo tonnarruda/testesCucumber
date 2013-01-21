@@ -69,7 +69,7 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	reajuste2.setIndice(indice2);
     	reajusteIndiceDao.save(reajuste2);
 
-    	assertEquals(indice1.getId(), ((ReajusteIndice)reajusteIndiceDao.findPendentes(empresa).toArray()[0]).getId());
+    	assertEquals(indice2.getId(), ((Indice) reajusteIndiceDao.findPendentes(empresa).toArray()[0]).getId());
     }
     
     public void testFindByTabelaReajusteColaboradorId()

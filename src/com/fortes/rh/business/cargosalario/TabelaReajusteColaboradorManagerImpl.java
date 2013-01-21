@@ -73,12 +73,29 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		CollectionUtil<TabelaReajusteColaborador> cu = new CollectionUtil<TabelaReajusteColaborador>();
 		tabelaReajusteColaboradors = cu.sortCollectionDate(tabelaReajusteColaboradors, "data");
 
+		boolean ultimoColaborador = true;
+		boolean ultimaFaixaSalarial = true;
+		boolean ultimoIndice = true;
+		
 		for(TabelaReajusteColaborador tabelaReajusteColaborador :tabelaReajusteColaboradors)
 		{
 			if(tabelaReajusteColaborador.isAprovada())
 			{
-				tabelaReajusteColaborador.setEhUltimo(true);
-				break;
+				if(ultimoColaborador && tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.COLABORADOR))
+				{
+					tabelaReajusteColaborador.setEhUltimo(true);
+					ultimoColaborador = false;
+				}
+				if(ultimaFaixaSalarial && tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
+				{
+					tabelaReajusteColaborador.setEhUltimo(true);
+					ultimaFaixaSalarial = false;
+				}
+				if(ultimoIndice && tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.INDICE))
+				{
+					tabelaReajusteColaborador.setEhUltimo(true);
+					ultimoIndice = false;
+				}
 			}
 		}
 	}

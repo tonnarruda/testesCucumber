@@ -27,11 +27,11 @@
 		<@ww.textfield label="Título" name="tabelaReajusteColaborador.nome" id="titulo" required="true" cssClass="inputNome" maxLength="100"/>
 		<@ww.datepicker label="Data de Aplicação" name="tabelaReajusteColaborador.data" id="data"  value="${data}" cssClass="mascaraData" required="true"/>
 
-		<#if tabelaReajusteColaborador.id?exists>
-			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.TipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;color:#999;" title="Não é permitida a alteração do tipo de reajuste" disabled=true />
-			<@ww.hidden name="tabelaReajusteColaborador.tipoReajuste" value='C'/>
+		<#if tabelaReajusteColaborador.id?exists && tabelaReajusteColaborador.tipoReajuste?exists>
+			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.tipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;color:#999;" title="Não é permitida a alteração do tipo de reajuste" disabled=true />
+			<@ww.hidden name="tabelaReajusteColaborador.tipoReajuste" value="${tabelaReajusteColaborador.tipoReajuste}"/>
 		<#else>
-			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.TipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;" headerKey="" headerValue="Selecione..." required=true />
+			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.tipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;" headerKey="" headerValue="Selecione..." required=true />
 		</#if>
 		
 		<@ww.textarea label="Observação" name="tabelaReajusteColaborador.observacao"/>
