@@ -1328,7 +1328,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(DateFormatJsonValueProcessorTest.class);
         suite.addTestSuite(AbstractModelJsonValueProcessorTest.class);
         
-//        suite.addTestSuite(ManagerAuditaTest.class);
         suite.addTestSuite(LinkTagTest.class);
         suite.addTestSuite(F2rhFacadeTest.class);
         suite.addTestSuite(ExportacaoActionTest.class);

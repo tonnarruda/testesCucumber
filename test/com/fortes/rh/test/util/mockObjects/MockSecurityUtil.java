@@ -2,6 +2,8 @@ package com.fortes.rh.test.util.mockObjects;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -36,6 +38,11 @@ public class MockSecurityUtil
 	public static boolean verifyRole(Map session, String[] rolesVerify)
 	{
 		return verifyRole;
+	}
+
+	public static String getNomeUsuarioLogedByDWR(HttpSession session) 
+	{
+		return "UsuarioTeste";
 	}
 
 }

@@ -112,7 +112,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.colaborador.id", colaboradorId));
-		criteria.addOrder(Order.asc("c.dataIni"));
+		criteria.addOrder(Order.desc("c.dataIni"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));
 
