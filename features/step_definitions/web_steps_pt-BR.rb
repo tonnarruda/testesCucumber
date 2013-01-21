@@ -378,7 +378,7 @@ Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"
    end
 end
 
-Dado /^que exista uma avaliacao "([^"]*)"$/ do |avaliacao_titulo|
+Dado /^que exista um modelo avaliacao desempenho "([^"]*)"$/ do |avaliacao_titulo|
    insert :avaliacao do
      titulo avaliacao_titulo
      tipomodeloavaliacao 'D'

@@ -311,7 +311,6 @@ public class ColaboradorListAction extends MyActionSupportList
 			camposExtras.setId(1l);
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
-			Collection<Colaborador> colaboradores;
 			montaColunas();
 			
 			if(agruparPorTempoServico)
@@ -472,7 +471,6 @@ public class ColaboradorListAction extends MyActionSupportList
 			montaColunas();
 			dinamicColumns = new ArrayList<String>();
 			dinamicProperts = new ArrayList<String>();
-			Collection<Colaborador> colaboradores;
 			
 			if(agruparPorTempoServico)
 			{
