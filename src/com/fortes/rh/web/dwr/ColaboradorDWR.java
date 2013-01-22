@@ -211,6 +211,23 @@ public class ColaboradorDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
 	}
 	
+	public Collection<Object> findComDataEstabilidade(String nome, Long empresaId)
+	{
+		Collection<Object> retorno = new ArrayList<Object>();
+		Collection<Colaborador> colaboradores = colaboradorManager.findComDataEstabilidadeCIPA(nome, empresaId);
+		Map<String, String> colab;
+		
+		for (Colaborador colaborador : colaboradores) 
+		{
+			colab = new HashMap<String, String>();
+			colab.put("value", colaborador.getId().toString());
+			colab.put("label", colaborador.getNome());
+			retorno.add(colab);
+		}
+		
+		return retorno;
+	}
+	
     public Map<Long, String> getByFuncaoAmbiente(Long funcaoId, Long ambienteId)
     {
         Collection<Colaborador> colaboradores = colaboradorManager.findByFuncaoAmbiente(funcaoId, ambienteId);

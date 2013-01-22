@@ -45,6 +45,9 @@ import com.fortes.rh.dao.geral.ProvidenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
+import com.fortes.rh.dao.sesmt.ComissaoDao;
+import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
+import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
@@ -99,6 +102,9 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.model.sesmt.ComissaoMembro;
+import com.fortes.rh.model.sesmt.ComissaoPeriodo;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -136,6 +142,8 @@ import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.test.factory.sesmt.ComissaoFactory;
+import com.fortes.rh.test.factory.sesmt.ComissaoPeriodoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.util.DateUtil;
@@ -179,6 +187,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private ProvidenciaDao providenciaDao;
 	private PeriodoExperienciaDao periodoExperienciaDao;
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
+	private ComissaoDao comissaoDao;
+	private ComissaoPeriodoDao comissaoPeriodoDao;
+	private ComissaoMembroDao comissaoMembroDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -5620,6 +5631,70 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, 2).size());
 	}
 	
+	public void testFindComDataEstabilidadeCIPA()
+	{
+		Date hoje = new Date();
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador xica = getColaborador();
+		xica.setNome("Xica");
+		xica.setDataDesligamento(null);
+		xica.setEmpresa(empresa);
+		colaboradorDao.save(xica);
+
+		Colaborador joao = getColaborador();
+		joao.setNome("Joao");
+		joao.setDataDesligamento(null);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Comissao comissao1 = ComissaoFactory.getEntity();
+		comissao1.setDataIni(DateUtil.criarDataMesAno(1, 1, 2011));
+		comissao1.setDataFim(DateUtil.criarDataMesAno(1, 1, 2012));
+		comissaoDao.save(comissao1);
+
+		Comissao comissao2 = ComissaoFactory.getEntity();
+		comissao2.setDataIni(DateUtil.criarDataMesAno(1, 1, 2012));
+		comissao2.setDataFim(DateUtil.criarDataMesAno(1, 1, 2013));
+		comissaoDao.save(comissao2);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setaPartirDe(DateUtil.criarDataMesAno(1, 1, 2011));
+		comissaoPeriodo.setComissao(comissao1);
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoPeriodo comissaoPeriodo1 = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo1.setaPartirDe(DateUtil.criarDataMesAno(1, 1, 2012));
+		comissaoPeriodo1.setComissao(comissao2);
+		comissaoPeriodoDao.save(comissaoPeriodo1);
+
+		ComissaoPeriodo comissaoPeriodo2 = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo2.setaPartirDe(DateUtil.criarDataMesAno(1, 3, 2012));
+		comissaoPeriodo2.setComissao(comissao2);
+		comissaoPeriodoDao.save(comissaoPeriodo2);
+		
+//		ComissaoMembro comissaoMembro = new ComissaoMembro();
+//		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
+//		comissaoMembro.setColaborador(joao);
+//		comissaoMembroDao.save(comissaoMembro);
+		
+		ComissaoMembro comissaoMembro1 = new ComissaoMembro();
+		comissaoMembro1.setComissaoPeriodo(comissaoPeriodo1);
+		comissaoMembro1.setColaborador(xica);
+		comissaoMembroDao.save(comissaoMembro1);
+		
+		ComissaoMembro comissaoMembro2 = new ComissaoMembro();
+		comissaoMembro2.setComissaoPeriodo(comissaoPeriodo2);
+		comissaoMembro2.setColaborador(joao);
+		comissaoMembroDao.save(comissaoMembro2);
+		
+		Collection<Colaborador> retorno = colaboradorDao.findComDataEstabilidadeCIPA("JOA", empresa.getId());
+		
+		assertEquals(1, retorno.size());
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
@@ -5819,6 +5894,18 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setColaboradorPeriodoExperienciaAvaliacaoDao(
 			ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
 		this.colaboradorPeriodoExperienciaAvaliacaoDao = colaboradorPeriodoExperienciaAvaliacaoDao;
+	}
+
+	public void setComissaoDao(ComissaoDao comissaoDao) {
+		this.comissaoDao = comissaoDao;
+	}
+
+	public void setComissaoMembroDao(ComissaoMembroDao comissaoMembroDao) {
+		this.comissaoMembroDao = comissaoMembroDao;
+	}
+
+	public void setComissaoPeriodoDao(ComissaoPeriodoDao comissaoPeriodoDao) {
+		this.comissaoPeriodoDao = comissaoPeriodoDao;
 	}
 
 }

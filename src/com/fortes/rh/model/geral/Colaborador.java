@@ -53,6 +53,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.ComissaoMembro;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.DateUtil;
@@ -158,30 +159,24 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<ColaboradorIdioma> colaboradorIdiomas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorOcorrencia> colaboradorOcorrencia;
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<HistoricoColaborador> historicoColaboradors;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorAfastamento> colaboradorAfastamento;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<SolicitacaoExame> solicitacaoExames;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
-
 	@OneToMany(mappedBy="colaborador")
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradors;
-	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<Cat> cats;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
 	private Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos; 
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="colaborador")
+	private Collection<ComissaoMembro> comissaoMembros; 
 
 	@OneToOne(optional=true)
 	private Candidato candidato;
@@ -236,6 +231,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	@Transient
 	private boolean membroComissaoCipa = false;
+	@Transient
+	private Date dataFimComissaoCipa;
 
 	public Colaborador()
 	{
@@ -259,6 +256,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		setId(id);
 		this.nome = nome;
+	}
+
+	public Colaborador(Long id, String nome, Date dataFimComissaoCipa)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.dataFimComissaoCipa = dataFimComissaoCipa;
 	}
 
 	//Construtor usado por findAdmitidosNoPeriodo
@@ -2615,6 +2619,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.membroComissaoCipa = membroComissaoCipa;
 	}
 
+	public Date getDataFimComissaoCipa() {
+		return dataFimComissaoCipa;
+	}
+
+	public void setDataFimComissaoCipa(Date dataFimComissaoCipa) {
+		this.dataFimComissaoCipa = dataFimComissaoCipa;
+	}
+	
 	public Date getDataEncerramentoContrato()
 	{
 		return dataEncerramentoContrato;
@@ -2664,5 +2676,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAfastado(Boolean afastado) {
 		this.afastado = afastado;
+	}
+
+	public Collection<ComissaoMembro> getComissaoMembros() {
+		return comissaoMembros;
+	}
+
+	public void setComissaoMembros(Collection<ComissaoMembro> comissaoMembros) {
+		this.comissaoMembros = comissaoMembros;
 	}
 }

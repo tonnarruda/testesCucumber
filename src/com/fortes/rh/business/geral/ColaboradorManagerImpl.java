@@ -2378,6 +2378,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findParaLembreteTerminoContratoTemporario(diasLembretes, empresaId);
 	}
+	
+	public Collection<Colaborador> findComDataEstabilidadeCIPA(String nome, Long empresaId) 
+	{
+		return getDao().findComDataEstabilidadeCIPA(nome, empresaId);
+	}
 
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
@@ -2395,5 +2400,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
 		this.auditoriaManager = auditoriaManager;
 	}
-
 }
