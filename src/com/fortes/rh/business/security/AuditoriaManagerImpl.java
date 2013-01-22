@@ -19,7 +19,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
 import com.fortes.rh.util.SpringUtil;
