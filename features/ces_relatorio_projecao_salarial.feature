@@ -14,7 +14,7 @@ Funcionalidade: Relatório de Projeção Salarial
     Então eu devo ver o alert do valida campos e clico no ok
 
     E eu preencho o campo (JS) "Data da Projeção" com "01/08/2011"
-    E eu seleciono "reajuste" de "Considerar o Planejamento de Realinhamento"
+    E eu seleciono "reajuste" de "Planejamento de Realinhamento por Colaborador"
     E eu marco "estabelecimento"
     E eu marco "geral"
 

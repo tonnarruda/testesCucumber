@@ -10,7 +10,7 @@
 		<#assign formAction="insert.action"/>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', new Array('titulo','data'), new Array('data'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('titulo','data', 'tipoReajuste'), new Array('data'))"/>
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<#if tabelaReajusteColaborador?exists && tabelaReajusteColaborador.data?exists>
@@ -29,7 +29,7 @@
 
 		<#if tabelaReajusteColaborador.id?exists && tabelaReajusteColaborador.tipoReajuste?exists>
 			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.tipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;color:#999;" title="Não é permitida a alteração do tipo de reajuste" disabled=true />
-			<@ww.hidden name="tabelaReajusteColaborador.tipoReajuste" value="${tabelaReajusteColaborador.tipoReajuste}"/>
+			<@ww.hidden id="tipoReajuste" name="tabelaReajusteColaborador.tipoReajuste" value="${tabelaReajusteColaborador.tipoReajuste}"/>
 		<#else>
 			<@ww.select label="Tipo do Reajuste" name="tabelaReajusteColaborador.tipoReajuste" id="tipoReajuste" list="tipoReajustes" cssStyle="width:150px;" headerKey="" headerValue="Selecione..." required=true />
 		</#if>

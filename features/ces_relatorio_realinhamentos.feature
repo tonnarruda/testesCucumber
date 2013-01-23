@@ -18,4 +18,4 @@ Funcionalidade: Relatório de Planejamento de Realinhamentos
     E eu marco "geral"
 
     E eu clico no botão "Relatorio"
-    E eu devo ver "Não existem dados para o filtro informado."
+    E eu devo ver "Não foi possível gerar o relatório"

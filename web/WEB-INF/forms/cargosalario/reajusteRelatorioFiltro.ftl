@@ -57,21 +57,15 @@
 		}
 	}
 
-	function validarCampos2()
+	function validarCampos()
 	{
-		<#if tabelaReajusteColaborador?exists && tabelaReajusteColaborador.tipoReajuste == 'C'>
-			<#if tabelaReajusteColaborador?exists>
-				return validaFormulario('form', new Array('optFiltro'), null)
-			<#else>
-				return validaFormulario('form', new Array('optReajuste','optFiltro'), null)
-			</#if>
-		<#else>	
-			return validaFormulario('form', null, null)
-		</#if>
+		return validaFormulario('form', new Array('optReajuste','optFiltro'), null);
 	}
 
 	function imprimir()
 	{
+		
+		
 		var qtdSelectE = qtdeChecksSelected(document.forms[0], 'estabelecimentosCheck');
 		if(qtdSelectE == 0)
 		{
@@ -79,7 +73,7 @@
 			return false;
 		}
 		else
-			return validarCampos2();
+			return validarCampos();
 	}
 	
 	function selecionaTipoReajuste(tipoReajuste) 
@@ -123,7 +117,7 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="return imprimir();" validate="true" method="POST">
 		<#if tabelaReajusteColaborador?exists>
 			<@ww.label label="Promoção/Reajuste" name="tabelaReajusteColaborador.nome"/>
-			<@ww.hidden name="tabelaReajusteColaborador.id"/>
+			<@ww.hidden id="optReajuste" name="tabelaReajusteColaborador.id" value="${tabelaReajusteColaborador.id}"/>
 		<#else>
 			<@ww.select id="optReajuste" label="Selecione o Planejamento"  name="tabelaReajusteColaborador.id" onchange="carregaTipoReajuste()" required="true"  list='tabelaReajusteColaboradors' headerKey="" headerValue="Selecione..."   listKey="id" listValue="nome"/>
 		</#if>
@@ -159,7 +153,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="return validarCampos2();document.form.submit();" accesskey="${accessKey}">
+		<button class="btnRelatorio" onclick="return validarCampos();" accesskey="${accessKey}">
 		</button>
 	
 		<#if visualizarBotaoCancelar>
