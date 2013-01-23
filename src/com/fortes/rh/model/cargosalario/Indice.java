@@ -26,6 +26,8 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	private String codigoAC;
 	@OneToMany(mappedBy="indice",fetch=FetchType.LAZY)
 	private Collection<IndiceHistorico> indiceHistoricos;
+	@OneToMany(mappedBy="indice",fetch=FetchType.LAZY)
+	private Collection<ReajusteIndice> reajusteIndices;
 	@Column(length=3)
     private String grupoAC;
 
@@ -133,6 +135,14 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 
 	public void setGrupoAC(String grupoAC) {
 		this.grupoAC = grupoAC;
+	}
+
+	public Collection<ReajusteIndice> getReajusteIndices() {
+		return reajusteIndices;
+	}
+
+	public void setReajusteIndices(Collection<ReajusteIndice> reajusteIndices) {
+		this.reajusteIndices = reajusteIndices;
 	}
 	
 }

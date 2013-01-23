@@ -7,7 +7,7 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 
 public interface TabelaReajusteColaboradorDao extends GenericDao<TabelaReajusteColaborador>
 {
-	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Boolean aprovada);
+	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Character tipoReajuste, Boolean aprovada);
 
 	Integer getCount(Long empresaId);
 

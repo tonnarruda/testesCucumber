@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -143,4 +144,47 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		return  StringUtil.converteCollectionToString(query.list());
 	}
 
+	public Collection<Indice> findComHistoricoAtual(Long[] indicesIds) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Indice(i.id,i.nome, hi.id, hi.data, hi.valor) ");
+		hql.append("from Indice i ");
+		hql.append("left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                            from IndiceHistorico hi2 ");
+		hql.append("                                           where hi2.indice.id = i.id ");
+		hql.append("                                             and hi2.data <= :hoje) ");
+		hql.append("where i.id in (:indicesIds) ");
+		hql.append("order by hi.data ");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setDate("hoje", new Date());
+		query.setParameterList("indicesIds", indicesIds, Hibernate.LONG);
+
+		return query.list();
+	}
+
+	public Collection<Indice> findComHistoricoAtual(Empresa empresa) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Indice(i.id,i.nome, hi.id, hi.data, hi.valor) ");
+		hql.append("from Indice i ");
+		hql.append("left join i.indiceHistoricos hi with hi.data = (select max(hi2.data) ");
+		hql.append("                                            from IndiceHistorico hi2 ");
+		hql.append("                                           where hi2.indice.id = i.id ");
+		hql.append("                                             and hi2.data <= :hoje) ");
+
+		if (empresa.isAcIntegra())
+			hql.append("where i.grupoAC = :grupoAC ");
+		
+		hql.append("order by i.nome ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("hoje", new Date());
+		
+		if (empresa.isAcIntegra())
+			query.setString("grupoAC", empresa.getGrupoAC());
+
+		return query.list();
+	}
 }

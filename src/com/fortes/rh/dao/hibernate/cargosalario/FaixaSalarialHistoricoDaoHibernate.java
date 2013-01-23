@@ -19,6 +19,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 
 @SuppressWarnings("unchecked")
@@ -131,6 +132,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		p.add(Projections.property("fsh.valor"), "valor");
 		p.add(Projections.property("fsh.quantidade"), "quantidade");
 		p.add(Projections.property("fsh.status"), "status");
+		p.add(Projections.property("fsh.reajusteFaixaSalarial"), "reajusteFaixaSalarial");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 		p.add(Projections.property("i.id"), "projectionIndiceId");
@@ -379,7 +381,8 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return (Long) criteria.uniqueResult();
 	}
 
-	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception 
+	{
 		if(faixaIds != null && faixaIds.length > 0)
 		{
 			String hql = "delete FaixaSalarialHistorico where faixaSalarial.id in (:faixaIds)";
@@ -388,5 +391,42 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 			query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
 			query.executeUpdate();		
 		}
+	}
+
+	public Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fsh");
+		criteria.createCriteria("fsh.reajusteFaixaSalarial", "rfs", Criteria.INNER_JOIN);
+		criteria.createCriteria("rfs.tabelaReajusteColaborador", "trs", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fsh.id"), "id");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("trs.id", tabelaReajusteColaboradorId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public ReajusteFaixaSalarial findReajusteFaixaSalarial(Date faixasalarialHistoricoData, Long faixaSalarialId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fsh");
+		criteria.createCriteria("fsh.reajusteFaixaSalarial", "rfs", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fsh.reajusteFaixaSalarial"), "reajusteFaixaSalarial");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fsh.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.eq("fsh.data", faixasalarialHistoricoData));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return (ReajusteFaixaSalarial) criteria.uniqueResult();
 	}
 }

@@ -199,6 +199,8 @@ import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibe
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteColaboradorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteFaixaSalarialDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteIndiceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.RelatorioListaFrequenciaTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.TabelaReajusteColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoCursoDaoHibernateTest;
@@ -714,6 +716,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(ReajusteColaboradorManagerTest.class);
         suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
+
+        suite.addTestSuite(ReajusteFaixaSalarialDaoHibernateTest.class);
+        suite.addTestSuite(ReajusteIndiceDaoHibernateTest.class);
 
         suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);

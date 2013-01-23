@@ -7,7 +7,13 @@ import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoAplicacaoReajuste;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
+import com.fortes.web.tags.CheckBox;
+import com.fortes.web.tags.Option;
 
 
 public class FaixaSalarialDWR
@@ -59,35 +65,8 @@ public class FaixaSalarialDWR
 		return faixaSalarialManager.findByCargo(cargoId);
 	}
 
-//	public Map getCidades(String ufId)
-//	{
-//		if(ufId != null && !ufId.equals("-1"))
-//		{
-//			Collection<Cidade> cidades = cidadeManager.findAllSelect(Long.valueOf(ufId));
-//			Collection<Cidade> cidadesLista = new ArrayList<Cidade>();
-//
-//			if(!cidades.isEmpty())
-//			{
-//				Cidade cidadeVazio = new Cidade();
-//				cidadeVazio.setNome("Selecione...");
-//				cidadeVazio.setId(-1L);
-//
-//				cidadesLista.add(cidadeVazio);
-//
-//				cidadesLista.addAll(cidades);
-//			}
-//
-//			return CollectionUtil.convertCollectionToMap(cidadesLista, "getId", "getNome", Cidade.class);
-//		}
-//
-//		return new HashMap();
-//
-//	}
-
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
-
-
 }

@@ -136,4 +136,13 @@ public class SecurityUtil
 
 		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getUsername();
 	}
+	
+	public static Empresa getEmpresaByDWR(HttpSession session) {
+		SecurityContext sc = (SecurityContext) session.getAttribute("ACEGI_SECURITY_CONTEXT");
+		
+		if(sc == null)
+			return null;
+
+		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getEmpresa();
+	}
 }

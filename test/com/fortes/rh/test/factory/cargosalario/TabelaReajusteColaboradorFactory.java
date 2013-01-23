@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.cargosalario;
 import java.util.Date;
 
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 
 public class TabelaReajusteColaboradorFactory
 {
@@ -16,7 +17,7 @@ public class TabelaReajusteColaboradorFactory
 		tabelaReajusteColaborador.setReajusteColaboradors(null);
 		tabelaReajusteColaborador.setEmpresa(null);
 		tabelaReajusteColaborador.setDissidio(false);
-		tabelaReajusteColaborador.setTipoReajuste('C');
+		tabelaReajusteColaborador.setTipoReajuste(TipoReajuste.COLABORADOR);
 
 		return tabelaReajusteColaborador;
 	}

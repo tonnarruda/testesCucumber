@@ -23,6 +23,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -92,7 +93,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	{
 		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 
-		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
+		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
 
 		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelect(1L);
 
@@ -103,9 +104,9 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	{
 		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
 
-		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
+		tabelaReajusteColaboradorDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(tabelaReajusteColaboradors));
 
-		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L);
+		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L, TipoReajuste.COLABORADOR);
 
 		assertEquals(tabelaReajusteColaboradors.size(), retorno.size());
 	}
@@ -169,7 +170,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, null, null);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, null, null);
 		}
 		catch (Exception e)
 		{
@@ -187,7 +188,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, null, null);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, null, null);
 		}
 		catch (Exception e)
 		{
@@ -323,7 +324,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.aplicar(tabelaReajusteColaborador, empresa, reajustes);
+			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, empresa, reajustes);
 		}
 		catch (Exception e)
 		{
@@ -436,7 +437,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), empresa);
+			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
 		}
 		catch (Exception e)
 		{
@@ -479,7 +480,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), empresa);
+			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
 		}
 		catch (Exception e)
 		{

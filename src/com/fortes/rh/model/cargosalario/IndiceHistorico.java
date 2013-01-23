@@ -22,6 +22,9 @@ public class IndiceHistorico extends AbstractModel implements Serializable, Clon
 
 	@ManyToOne
     private Indice indice;
+	
+	@ManyToOne
+	private ReajusteIndice reajusteIndice;
 
 	private Double valor;
 
@@ -99,4 +102,13 @@ public class IndiceHistorico extends AbstractModel implements Serializable, Clon
 		this.valor = valor;
 	}
 
+	public ReajusteIndice getReajusteIndice() 
+	{
+		return reajusteIndice;
+	}
+
+	public void setReajusteIndice(ReajusteIndice reajusteIndice) 
+	{
+		this.reajusteIndice = reajusteIndice;
+	}
 }

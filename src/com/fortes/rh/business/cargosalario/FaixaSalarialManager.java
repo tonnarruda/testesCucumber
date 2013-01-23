@@ -33,7 +33,6 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	FaixaSalarial findHistorico(Long faixaSalarialId, Date dataHistorico);
 	void transfereFaixasCargo(FaixaSalarial faixa, Cargo cargo, Empresa empresaSistema) throws Exception;
 	Map<Object, Object> findByCargo(String cargoId);
-	Collection<Long> findByCargos(Collection<Long> cargoIds);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) throws Exception;
 	void sincronizar(Map<Long, Long> cargoIds);
@@ -43,4 +42,6 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
 	void deleteFaixaSalarial(Long[] faixaIds) throws Exception;
 	String findCodigoACDuplicado(Long empresaId);
+	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
+	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
 }

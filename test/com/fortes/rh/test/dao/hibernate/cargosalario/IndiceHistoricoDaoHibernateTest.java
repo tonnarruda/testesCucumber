@@ -6,17 +6,28 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
+import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
+import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<IndiceHistorico>
 {
 	private IndiceHistoricoDao indiceHistoricoDao;
 	private IndiceDao indiceDao;
+	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
+	private ReajusteIndiceDao reajusteIndiceDao;
 
 	public IndiceHistorico getEntity()
 	{
@@ -204,6 +215,56 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		assertNull(exception);
 	}
 	
+	public void testFindByTabelaReajusteId()
+	{
+		Indice indice1 = IndiceFactory.getEntity();
+		indiceDao.save(indice1);
+
+		Indice indice2 = IndiceFactory.getEntity();
+		indiceDao.save(indice2);
+		
+		Indice indice3 = IndiceFactory.getEntity();
+		indiceDao.save(indice3);
+		
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela1);
+
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela2);
+		
+		ReajusteIndice reajuste1 = new ReajusteIndice();
+		reajuste1.setTabelaReajusteColaborador(tabela1);
+		reajuste1.setIndice(indice1);
+		reajuste1.setValorAtual(100.00);
+		reajuste1.setValorProposto(110.00);
+		reajusteIndiceDao.save(reajuste1);
+		
+		ReajusteIndice reajuste2 = new ReajusteIndice();
+		reajuste2.setTabelaReajusteColaborador(tabela2);
+		reajuste2.setIndice(indice2);
+		reajuste2.setValorAtual(150.00);
+		reajuste2.setValorProposto(165.00);
+		reajusteIndiceDao.save(reajuste2);
+		
+		IndiceHistorico historico1 = IndiceHistoricoFactory.getEntity();
+		historico1.setIndice(indice1);
+		historico1.setReajusteIndice(reajuste1);
+		indiceHistoricoDao.save(historico1);
+		
+		IndiceHistorico historico2 = IndiceHistoricoFactory.getEntity();
+		historico2.setIndice(indice2);
+		historico2.setReajusteIndice(reajuste2);
+		indiceHistoricoDao.save(historico2);
+	
+		IndiceHistorico historico3 = IndiceHistoricoFactory.getEntity();
+		historico3.setIndice(indice2);
+		historico3.setReajusteIndice(reajuste2);
+		indiceHistoricoDao.save(historico3);
+		
+		assertEquals(1, indiceHistoricoDao.findByTabelaReajusteId(tabela1.getId()).size());
+		assertEquals(2, indiceHistoricoDao.findByTabelaReajusteId(tabela2.getId()).size());
+	}
+	
 	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao)
 	{
 		this.indiceHistoricoDao = indiceHistoricoDao;
@@ -212,5 +273,15 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 	public void setIndiceDao(IndiceDao indiceDao)
 	{
 		this.indiceDao = indiceDao;
+	}
+
+	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) 
+	{
+		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
+	}
+
+	public void setReajusteIndiceDao(ReajusteIndiceDao reajusteIndiceDao) 
+	{
+		this.reajusteIndiceDao = reajusteIndiceDao;
 	}
 }

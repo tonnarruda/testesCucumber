@@ -25,6 +25,7 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -152,7 +153,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		
-		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
+		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId()), eq(TipoReajuste.COLABORADOR)).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
 		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
 	}

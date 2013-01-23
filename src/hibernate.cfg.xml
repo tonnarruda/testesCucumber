@@ -65,6 +65,8 @@
     <mapping class="com.fortes.rh.model.cargosalario.FaixaSalarial" />
     <mapping class="com.fortes.rh.model.cargosalario.GrupoOcupacional" />
     <mapping class="com.fortes.rh.model.cargosalario.ReajusteColaborador" />
+    <mapping class="com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial" />
+    <mapping class="com.fortes.rh.model.cargosalario.ReajusteIndice" />
     <mapping class="com.fortes.rh.model.cargosalario.TabelaReajusteColaborador" />
     <!-- DESENVOLVIMENTO HUMANO -->
     <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorTurma" />

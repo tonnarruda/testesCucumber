@@ -200,9 +200,9 @@
 				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
 				/dwr/exec/CargoDWR.getCargoByArea*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
 				/dwr/exec/CargoDWR.getCargo*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO,ROLE_MOV_QUESTIONARIO,ROLE_OCORRENCIA
-				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_CAD_COLABORADOR
+				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_CAD_COLABORADOR
 				/dwr/exec/ListaPresencaDWR.insereDias*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
-				/dwr/exec/ReajusteDWR.getColaboradorSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
+				/dwr/exec/ReajusteDWR.getColaboradorSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
 
 				/security/auditoria/*/**=ROLE_UTI_AUDITORIA
 
@@ -331,9 +331,11 @@
 				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO	
 
 				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
-				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE
+				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
+				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO
+				/cargosalario/reajusteIndice*/**=ROLE_DISSIDIO
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
 				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO

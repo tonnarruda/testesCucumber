@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Projeção Salarial</title>
+	<title>Relatório de Projeção Salarial do Colaborador</title>
 	<#assign formAction="gerarRelatorioProjecaoSalarial.action"/>
 	<#assign accessKey="I"/>
 
@@ -70,15 +70,15 @@
 
 	<@ww.form name="form" action="${formAction}" onsubmit="validaCamposProjecaoSalarial();" validate="true" method="POST">
 		<@ww.datepicker label="Data da Projeção" id="data" name="data" required="true" cssClass="mascaraData" value="${data}"/>
-		<@ww.select id="optReajuste" label="Considerar o Planejamento de Realinhamento"  name="tabelaReajusteColaborador.id" list='tabelaReajusteColaboradors' headerKey="" headerValue="Nenhum" listKey="id" listValue="nome"/>
+		<@ww.select id="optReajuste" label="Planejamento de Realinhamento por Colaborador"  name="tabelaReajusteColaborador.id" list='tabelaReajusteColaboradors' headerKey="" headerValue="Nenhum" listKey="id" listValue="nome" cssStyle ="width:320px;"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
 		<@ww.select id="optFiltro" label="Filtrar Colaboradores Por" name="filtro" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional/Cargo'}" onchange="filtrarOpt();"/>
 		<div id="divAreas">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" />
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" width="600"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');"/>
-			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');" width="600"/>
+			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" width="600"/>
 		</div>
 	</@ww.form>
 

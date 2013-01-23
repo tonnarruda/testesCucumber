@@ -52,4 +52,9 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 	public void deleteByIndice(Long[] indiceIds) throws Exception {
 		getDao().deleteByIndice(indiceIds);		
 	}
+
+	public Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId) 
+	{
+		return getDao().findByTabelaReajusteId(tabelaReajusteColaboradorId);
+	}
 }
