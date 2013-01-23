@@ -334,6 +334,8 @@
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
+				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO
+				/cargosalario/reajusteIndice*/**=ROLE_DISSIDIO
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
 				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO

@@ -3,7 +3,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Projeção Salarial</title>
+	<title>Relatório de Projeção Salarial do Colaborador</title>
 	<#assign formAction="gerarRelatorioProjecaoSalarial.action"/>
 	<#assign accessKey="I"/>
 

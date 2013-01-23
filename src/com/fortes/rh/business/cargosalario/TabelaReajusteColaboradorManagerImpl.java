@@ -23,7 +23,6 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -184,7 +183,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			faixaSalarialHistorico.setReajusteFaixaSalarial(reajuste);
 			faixaSalarialHistorico.setData(tabelaReajusteColaborador.getData());
 			faixaSalarialHistorico.setFaixaSalarial(reajuste.getFaixaSalarial());
-			faixaSalarialHistorico.setTipo(reajuste.getTipoProposto());
 			faixaSalarialHistorico.setValor(reajuste.getValorProposto());
 			
 			faixaSalarialHistoricoManager.save(faixaSalarialHistorico, reajuste.getFaixaSalarial(), empresa, true);

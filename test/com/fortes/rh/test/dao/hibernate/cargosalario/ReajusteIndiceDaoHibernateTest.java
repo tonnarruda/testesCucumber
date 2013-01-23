@@ -54,9 +54,11 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	empresaDao.save(empresa);
     	
     	Indice indice1 = IndiceFactory.getEntity();
+    	indice1.setNome("indice1");
     	indiceDao.save(indice1);
     	
     	Indice indice2 = IndiceFactory.getEntity();
+    	indice2.setNome("indice2");
     	indiceDao.save(indice2);
     	
     	TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
@@ -77,7 +79,7 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	reajuste2.setIndice(indice2);
     	reajusteIndiceDao.save(reajuste2);
 
-    	assertTrue(reajusteIndiceDao.findPendentes(empresa).size() > 1);
+    	assertTrue(reajusteIndiceDao.findPendentes(empresa).size() >= 1);
     }
     
     public void testFindByTabelaReajusteColaboradorId()

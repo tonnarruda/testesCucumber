@@ -20,14 +20,6 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 	private FaixaSalarial faixaSalarial;
 	@ManyToOne
 	private TabelaReajusteColaborador tabelaReajusteColaborador;
-	private Integer tipoAtual;
-	private Integer tipoProposto;
-	@ManyToOne
-	private Indice indiceAtual;
-	@ManyToOne
-	private Indice indiceProposto;
-	private Double qtdIndiceAtual;
-	private Double qtdIndiceProposta;
 	private Double valorAtual;
 	private Double valorProposto;
 	
@@ -109,66 +101,6 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador) 
 	{
 		this.tabelaReajusteColaborador = tabelaReajusteColaborador;
-	}
-	
-	public Integer getTipoAtual() 
-	{
-		return tipoAtual;
-	}
-	
-	public void setTipoAtual(Integer tipoAtual) 
-	{
-		this.tipoAtual = tipoAtual;
-	}
-	
-	public Integer getTipoProposto() 
-	{
-		return tipoProposto;
-	}
-	
-	public void setTipoProposto(Integer tipoProposto) 
-	{
-		this.tipoProposto = tipoProposto;
-	}
-	
-	public Indice getIndiceAtual() 
-	{
-		return indiceAtual;
-	}
-	
-	public void setIndiceAtual(Indice indiceAtual) 
-	{
-		this.indiceAtual = indiceAtual;
-	}
-	
-	public Indice getIndiceProposto() 
-	{
-		return indiceProposto;
-	}
-	
-	public void setIndiceProposto(Indice indiceProposto) 
-	{
-		this.indiceProposto = indiceProposto;
-	}
-	
-	public Double getQtdIndiceAtual() 
-	{
-		return qtdIndiceAtual;
-	}
-	
-	public void setQtdIndiceAtual(Double qtdIndiceAtual) 
-	{
-		this.qtdIndiceAtual = qtdIndiceAtual;
-	}
-	
-	public Double getQtdIndiceProposta() 
-	{
-		return qtdIndiceProposta;
-	}
-	
-	public void setQtdIndiceProposta(Double qtdIndiceProposta) 
-	{
-		this.qtdIndiceProposta = qtdIndiceProposta;
 	}
 	
 	public Double getValorAtual() 

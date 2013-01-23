@@ -7,7 +7,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
-import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.util.MathUtil;
 
 public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<ReajusteFaixaSalarial, ReajusteFaixaSalarialDao> implements ReajusteFaixaSalarialManager
@@ -24,9 +23,6 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 			reajuste = new ReajusteFaixaSalarial();
 			reajuste.setFaixaSalarial(faixaSalarial);
 			reajuste.setProjectionTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
-			
-			reajuste.setTipoAtual(faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo());
-			reajuste.setTipoProposto(faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo());
 			
 			reajuste.setValorAtual(faixaSalarial.getFaixaSalarialHistoricoAtual().getValor());
 			reajuste.setValorProposto(MathUtil.calculaDissidio(dissidioPor, valorDissidio, faixaSalarial.getFaixaSalarialHistoricoAtual().getValor()));

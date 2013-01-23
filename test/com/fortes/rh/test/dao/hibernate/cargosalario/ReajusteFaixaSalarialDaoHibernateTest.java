@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
@@ -13,7 +12,6 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -39,8 +37,6 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     	reajusteFaixaSalarial.setId(null);
     	reajusteFaixaSalarial.setTabelaReajusteColaborador(tabelaReajusteColaborador);
     	reajusteFaixaSalarial.setFaixaSalarial(faixaSalarial);
-    	reajusteFaixaSalarial.setTipoAtual(TipoAplicacaoIndice.VALOR);
-    	reajusteFaixaSalarial.setTipoProposto(TipoAplicacaoIndice.VALOR);
     	reajusteFaixaSalarial.setValorAtual(1000.00);
     	reajusteFaixaSalarial.setValorProposto(1200.00);
 

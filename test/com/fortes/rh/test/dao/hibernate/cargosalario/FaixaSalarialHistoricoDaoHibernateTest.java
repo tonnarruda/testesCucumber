@@ -141,8 +141,6 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		ReajusteFaixaSalarial reajuste1 = new ReajusteFaixaSalarial();
 		reajuste1.setTabelaReajusteColaborador(tabela1);
 		reajuste1.setFaixaSalarial(faixa1);
-		reajuste1.setTipoAtual(TipoAplicacaoIndice.VALOR);
-		reajuste1.setTipoProposto(TipoAplicacaoIndice.VALOR);
 		reajuste1.setValorAtual(1000.00);
 		reajuste1.setValorProposto(1200.00);
 		reajusteFaixaSalarialDao.save(reajuste1);
@@ -150,8 +148,6 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		ReajusteFaixaSalarial reajuste2 = new ReajusteFaixaSalarial();
 		reajuste2.setTabelaReajusteColaborador(tabela1);
 		reajuste2.setFaixaSalarial(faixa2);
-		reajuste2.setTipoAtual(TipoAplicacaoIndice.VALOR);
-		reajuste2.setTipoProposto(TipoAplicacaoIndice.VALOR);
 		reajuste2.setValorAtual(1000.00);
 		reajuste2.setValorProposto(1200.00);
 		reajusteFaixaSalarialDao.save(reajuste2);
@@ -159,8 +155,6 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		ReajusteFaixaSalarial reajuste3 = new ReajusteFaixaSalarial();
 		reajuste3.setTabelaReajusteColaborador(tabela2);
 		reajuste3.setFaixaSalarial(faixa3);
-		reajuste3.setTipoAtual(TipoAplicacaoIndice.VALOR);
-		reajuste3.setTipoProposto(TipoAplicacaoIndice.VALOR);
 		reajuste3.setValorAtual(1000.00);
 		reajuste3.setValorProposto(1200.00);
 		reajusteFaixaSalarialDao.save(reajuste3);
@@ -198,8 +192,6 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 
 		ReajusteFaixaSalarial reajuste1 = new ReajusteFaixaSalarial();
 		reajuste1.setFaixaSalarial(faixa1);
-		reajuste1.setTipoAtual(TipoAplicacaoIndice.VALOR);
-		reajuste1.setTipoProposto(TipoAplicacaoIndice.VALOR);
 		reajuste1.setValorAtual(1000.00);
 		reajuste1.setValorProposto(1200.00);
 		reajuste1.setTabelaReajusteColaborador(tabela1);
@@ -207,8 +199,6 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		
 		ReajusteFaixaSalarial reajuste2 = new ReajusteFaixaSalarial();
 		reajuste2.setFaixaSalarial(faixa2);
-		reajuste2.setTipoAtual(TipoAplicacaoIndice.VALOR);
-		reajuste2.setTipoProposto(TipoAplicacaoIndice.VALOR);
 		reajuste2.setValorAtual(1000.00);
 		reajuste2.setValorProposto(1200.00);
 		reajuste2.setTabelaReajusteColaborador(tabela1);

@@ -1,1 +1,0 @@
-update papel set nome = 'Solicitação de Realinhamento de C&S para Colaboradores' where id = 49; --.go

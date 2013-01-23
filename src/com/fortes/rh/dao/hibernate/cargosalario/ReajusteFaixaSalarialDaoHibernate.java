@@ -26,10 +26,6 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("rfs.id"), "id");
-		p.add(Projections.property("rfs.tipoAtual"), "tipoAtual");
-		p.add(Projections.property("rfs.tipoProposto"), "tipoProposto");
-		p.add(Projections.property("rfs.qtdIndiceAtual"), "qtdIndiceAtual");
-		p.add(Projections.property("rfs.qtdIndiceProposta"), "qtdIndiceProposta");
 		p.add(Projections.property("rfs.valorAtual"), "valorAtual");
 		p.add(Projections.property("rfs.valorProposto"), "valorProposto");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
