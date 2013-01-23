@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
@@ -26,10 +27,14 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	public Collection<MatrizTreinamento> getByFaixasOrCargos(String[] faixaSalarialsCheck, String[] cargosCheck)
 	{
 		Collection<Long> faixaIds = null;
-		if(faixaSalarialsCheck != null && faixaSalarialsCheck.length > 0)
+		
+		if (faixaSalarialsCheck != null && faixaSalarialsCheck.length > 0)
 			faixaIds = LongUtil.arrayStringToCollectionLong(faixaSalarialsCheck);
 		else
-			faixaIds = faixaSalarialManager.findByCargos(LongUtil.arrayStringToCollectionLong(cargosCheck));
+		{
+			Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargosCheck)); 
+			faixaIds = LongUtil.collectionToCollectionLong(faixas);
+		}
 
 		return getDao().findMatrizTreinamento(faixaIds);
 	}

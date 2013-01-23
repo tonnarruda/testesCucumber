@@ -4,6 +4,7 @@
 <xwork>
 	<package name="tabelaReajusteColaborador" extends="default" namespace="/cargosalario/tabelaReajusteColaborador">
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorListAction" method="list">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorListAction" method="delete">
@@ -16,6 +17,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorEdit.ftl</result>
 		</action>
 		<action name="visualizar" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="visualizar">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="insert">
@@ -25,7 +27,18 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorEdit.ftl</result>
 		</action>
-		<action name="aplicar" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="aplicar">
+		<action name="aplicarPorColaborador" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="aplicarPorColaborador">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
+		</action>
+		<action name="aplicarPorFaixaSalarial" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="aplicarPorFaixaSalarial">
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
+		</action>
+		<action name="aplicarPorIndice" class="com.fortes.rh.web.action.cargosalario.TabelaReajusteColaboradorEditAction" method="aplicarPorIndice">
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/tabelaReajusteColaboradorView.ftl</result>
 		</action>

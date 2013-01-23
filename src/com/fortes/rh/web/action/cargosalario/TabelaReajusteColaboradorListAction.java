@@ -51,7 +51,7 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	{
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getTipoReajuste(), tabelaReajusteColaborador.getId(), getEmpresaSistema());
 			addActionMessage("Cancelamento efetuado com sucesso.");
 		}
 		catch (IntegraACException e)
@@ -75,22 +75,26 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		return list();
 	}
 
-	public Collection<TabelaReajusteColaborador> getTabelaReajusteColaboradors() {
+	public Collection<TabelaReajusteColaborador> getTabelaReajusteColaboradors() 
+	{
 		return tabelaReajusteColaboradors;
 	}
 
-	public TabelaReajusteColaborador getTabelaReajusteColaborador(){
+	public TabelaReajusteColaborador getTabelaReajusteColaborador()
+	{
 		if(tabelaReajusteColaborador == null){
 			tabelaReajusteColaborador = new TabelaReajusteColaborador();
 		}
 		return tabelaReajusteColaborador;
 	}
 
-	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador){
+	public void setTabelaReajusteColaborador(TabelaReajusteColaborador tabelaReajusteColaborador)
+	{
 		this.tabelaReajusteColaborador=tabelaReajusteColaborador;
 	}
 
-	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager){
+	public void setTabelaReajusteColaboradorManager(TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager)
+	{
 		this.tabelaReajusteColaboradorManager=tabelaReajusteColaboradorManager;
 	}
 

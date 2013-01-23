@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Solicitação de Realinhamento de Cargos & Salários</title>
+	<title>Solicitação de Realinhamento de Cargos & Salários para Colaborador</title>
 	<#assign formAction="insertSolicitacaoReajuste.action"/>
 	<#assign accessKey="I"/>
 

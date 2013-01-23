@@ -147,12 +147,22 @@
 		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
+		
+		<!-- UTIL -->
+		<convert converter="bean" match="com.fortes.web.tags.CheckBox"/>
+		<convert converter="bean" match="com.fortes.web.tags.Option"/>
+
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
+		
 		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
+		<convert converter="bean" match="com.fortes.rh.model.cargosalario.FaixaSalarial">
+			<param name="include" value="id, descricao"/>
+		</convert>
+		
 		<!-- CAPTACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
@@ -160,11 +170,14 @@
 		<convert converter="bean" match="com.fortes.rh.model.captacao.Solicitacao">
 			<param name="include" value="id, descricao"/>
 		</convert>
+		
 		<!-- PESQUISA -->
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.AvaliacaoTurma"/>
 		<convert converter="bean" match="com.fortes.rh.model.pesquisa.Questionario"/>
+		
 		<!-- DESENVOLVIMENTO -->
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
+		
 		<!-- AVALIACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>
     </allow>

@@ -25,4 +25,6 @@ public interface IndiceHistoricoDao extends GenericDao<IndiceHistorico>
 	void updateValor(Date data, Long indiceId, Double valor);
 
 	void deleteByIndice(Long[] indiceIds) throws Exception;
+
+	Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 }

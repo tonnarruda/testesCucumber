@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
@@ -40,7 +41,7 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
     @ManyToOne
     private Empresa empresa;
 
-    private char tipoReajuste;
+    private Character tipoReajuste;
     private boolean dissidio;
 
     //TODO CUIDADO ao alterar os atributos desse classe verificar o update na action(foi feito na mão por causa do EAGER)
@@ -111,20 +112,34 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
 	{
 		return empresa;
 	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
 	}
-	public boolean isDissidio() {
+	
+	public boolean isDissidio() 
+	{
 		return dissidio;
 	}
-	public void setDissidio(boolean dissidio) {
+	
+	public void setDissidio(boolean dissidio) 
+	{
 		this.dissidio = dissidio;
 	}
-	public char getTipoReajuste() {
+	
+	public Character getTipoReajuste() 
+	{
 		return tipoReajuste;
 	}
-	public void setTipoReajuste(char tipoReajuste) {
+	
+	public String getTipoReajusteDescricao() 
+	{
+		return TipoReajuste.getReajusteDescricao(tipoReajuste);
+	}
+	
+	public void setTipoReajuste(Character tipoReajuste) 
+	{
 		this.tipoReajuste = tipoReajuste;
 	}
 }

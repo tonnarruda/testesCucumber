@@ -15,7 +15,7 @@
 		<@display.column title="Ações" media="html" style="width:95px;">
 			<a href="../reajusteRelatorio/formFiltro.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}"><img border="0" title="<@ww.text name="list.print.hint"/>" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<#if tabelaReajusteColaborador.ehUltimo>
-				<a href="javascript:newConfirm('Tem certeza que deseja desfazer os Realinhamentos?', function(){window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
+				<a href="javascript:newConfirm('Tem certeza que deseja desfazer os Realinhamentos?', function(){window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.tipoReajuste=${tabelaReajusteColaborador.tipoReajuste}'});"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -33,7 +33,8 @@
 			</#if>
 		</@display.column>
 		<@display.column property="nome" title="Promoção/Reajuste"/>
-		<@display.column property="data" title="Data de Aplicação" format="{0,date,dd/MM/yyyy}"/>
+		<@display.column property="tipoReajusteDescricao" title="Tipo de Reajuste" style="width:120px;"/>
+		<@display.column property="data" title="Data de Aplicação" format="{0,date,dd/MM/yyyy}" style="width:120px;text-align:center;"/>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -43,6 +44,5 @@
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
 		</button>
 	</div>
-
 </body>
 </html>

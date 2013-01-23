@@ -10,16 +10,12 @@ import com.fortes.rh.model.geral.Empresa;
 public interface IndiceDao extends GenericDao<Indice>
 {
 	Indice findByIdProjection(Long indiceId);
-
 	Indice findByCodigo(String codigo, String grupoAC);
-
 	boolean remove(String codigo, String grupoAC);
-
 	Indice findHistoricoAtual(Long indiceId, Date dataHistorico);
-
 	Indice findIndiceByCodigoAc(String indiceCodigoAC, String grupoAC);
-
 	Collection<Indice> findSemCodigoAC(Empresa empresa);
-
 	String findCodigoACDuplicado(Empresa empresa);
+	Collection<Indice> findComHistoricoAtual(Long[] indicesIds);
+	Collection<Indice> findComHistoricoAtual(Empresa empresa);
 }

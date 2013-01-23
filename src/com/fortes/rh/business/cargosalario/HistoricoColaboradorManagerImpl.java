@@ -828,22 +828,25 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 		else
 			historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-
-		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSituacao(situacao, mensagem, historicoColaborador);
-
-		//Cancelamento de um insert (RH_SEP)
-		if(cancelaSituacaoRhSep)
+		
+		if(historicoColaborador != null)
 		{
-			setStatus(historicoColaborador.getId(), false);
+			gerenciadorComunicacaoManager.enviaMensagemCancelamentoSituacao(situacao, mensagem, historicoColaborador);
+	
+			//Cancelamento de um insert (RH_SEP)
+			if(cancelaSituacaoRhSep)
+			{
+				setStatus(historicoColaborador.getId(), false);
+			}
+			else		//Cancelamento de uma edição (SEP)
+			{
+				historicoColaborador = bindSituacao(situacao, historicoColaborador);
+				historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+				update(historicoColaborador);
+			}
+	
+			atualizaStatusDaSolicitacao(historicoColaborador);
 		}
-		else		//Cancelamento de uma edição (SEP)
-		{
-			historicoColaborador = bindSituacao(situacao, historicoColaborador);
-			historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-			update(historicoColaborador);
-		}
-
-		atualizaStatusDaSolicitacao(historicoColaborador);
 		
 		return historicoColaborador;
 	}

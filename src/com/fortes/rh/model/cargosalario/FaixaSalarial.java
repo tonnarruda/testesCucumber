@@ -63,9 +63,9 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public FaixaSalarial()
 	{
 	}
+	
 
-	public FaixaSalarial(Long id, Long historicoFaixaId, Date historicoFaixaData, Integer historicoFaixaTipo, Double historicoFaixaValor,
-		   Double historicoFaixaQuantidade, Long indiceId, Double historicoIndiceValor, Date historicoIndiceData)
+	public FaixaSalarial(Long id, Long historicoFaixaId, Date historicoFaixaData, Integer historicoFaixaTipo, Double historicoFaixaValor, Double historicoFaixaQuantidade, Long indiceId, Double historicoIndiceValor, Date historicoIndiceData)
 	{
 		setId(id);
 		setHistoricoFaixaId(historicoFaixaId);
@@ -78,7 +78,16 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setHistoricoIndiceData(historicoIndiceData);
 	}
 
-	public FaixaSalarial (Long id, String nome, String nomeCargo){
+	public FaixaSalarial(Long id, String nome, Long cargoId, String cargoNome, Long historicoFaixaId, Date historicoFaixaData, Integer historicoFaixaTipo, Double historicoFaixaValor, Double historicoFaixaQuantidade, Long indiceId, Double historicoIndiceValor, Date historicoIndiceData)
+	{
+		this(id, historicoFaixaId, historicoFaixaData, historicoFaixaTipo, historicoFaixaValor, historicoFaixaQuantidade, indiceId, historicoIndiceValor, historicoIndiceData);
+		setNome(nome);
+		setProjectionCargoId(cargoId);
+		setNomeCargo(cargoNome);
+	}
+
+	public FaixaSalarial (Long id, String nome, String nomeCargo)
+	{
 		setId(id);
 		setNome(nome);
 		setNomeCargo(nomeCargo);
@@ -307,6 +316,18 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		if (this.cargo != null && this.cargo.getNome() != null && this.getNome() != null)
 			nomesDeCargoEFaixa = nomeCargo + "/" + nomeFaixa;
 
+		return nomesDeCargoEFaixa;
+	}
+	
+	public String getNomeDeCargoEFaixa()
+	{
+		String nomesDeCargoEFaixa = "";
+		String nomeCargo = getCargo().getNome();
+		String nomeFaixa = getNome();
+		
+		if (this.cargo != null && this.cargo.getNome() != null && this.getNome() != null)
+			nomesDeCargoEFaixa = nomeCargo + " " + nomeFaixa;
+		
 		return nomesDeCargoEFaixa;
 	}
 
