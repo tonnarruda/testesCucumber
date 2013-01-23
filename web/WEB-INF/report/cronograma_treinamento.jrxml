@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cronograma_treinamento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="33524fa4-6771-4610-b737-9b2caf2279f8">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.610510000000001"/>
+	<property name="ireport.x" value="16"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -14,6 +14,8 @@
 	<field name="curso.nome" class="java.lang.String"/>
 	<field name="horario" class="java.lang.String"/>
 	<field name="data" class="java.lang.String"/>
+	<field name="instrutor" class="java.lang.String"/>
+	<field name="instituicao" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -53,7 +55,7 @@
 	<columnHeader>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="619bc51f-6598-40f1-918b-b3d72dc408b9" key="staticText-1" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="2" width="139" height="17"/>
+				<reportElement uuid="619bc51f-6598-40f1-918b-b3d72dc408b9" key="staticText-1" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="2" width="77" height="17"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -66,7 +68,7 @@
 				<text><![CDATA[Data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="492699a7-763c-4a3e-9427-86e9fd082154" key="staticText-2" positionType="Float" stretchType="RelativeToTallestObject" x="139" y="2" width="340" height="17"/>
+				<reportElement uuid="492699a7-763c-4a3e-9427-86e9fd082154" key="staticText-2" positionType="Float" stretchType="RelativeToTallestObject" x="77" y="2" width="263" height="17"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -79,7 +81,7 @@
 				<text><![CDATA[Curso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bdb0bdbb-1db0-4ad0-b85a-995d35713ecf" key="staticText-3" positionType="Float" stretchType="RelativeToTallestObject" x="479" y="2" width="218" height="17"/>
+				<reportElement uuid="bdb0bdbb-1db0-4ad0-b85a-995d35713ecf" key="staticText-3" positionType="Float" stretchType="RelativeToTallestObject" x="340" y="2" width="176" height="17"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -92,7 +94,7 @@
 				<text><![CDATA[Turma]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4f3128d8-804f-493b-b5b4-3e03cb5dd7f3" key="staticText-4" positionType="Float" stretchType="RelativeToTallestObject" x="697" y="2" width="85" height="17"/>
+				<reportElement uuid="4f3128d8-804f-493b-b5b4-3e03cb5dd7f3" key="staticText-4" positionType="Float" stretchType="RelativeToTallestObject" x="725" y="2" width="57" height="17"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -104,12 +106,38 @@
 				</textElement>
 				<text><![CDATA[Horário]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="bdb0bdbb-1db0-4ad0-b85a-995d35713ecf" key="staticText-3" positionType="Float" stretchType="RelativeToTallestObject" x="618" y="2" width="107" height="17"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Instituição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bdb0bdbb-1db0-4ad0-b85a-995d35713ecf" key="staticText-3" positionType="Float" stretchType="RelativeToTallestObject" x="516" y="2" width="102" height="17"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Instrutor]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="16" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="97a88d03-fdad-47b4-b009-616e580c03a7" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="479" y="0" width="218" height="16"/>
+				<reportElement uuid="97a88d03-fdad-47b4-b009-616e580c03a7" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="340" y="0" width="176" height="16"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -122,7 +150,7 @@
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="780442b0-80ae-4b84-8b6a-f283c18c6f1b" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="139" y="0" width="340" height="16"/>
+				<reportElement uuid="780442b0-80ae-4b84-8b6a-f283c18c6f1b" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="77" y="0" width="263" height="16"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -135,7 +163,7 @@
 				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ad020154-fdf0-4fd6-9470-c26b2e44ea24" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="697" y="0" width="85" height="16"/>
+				<reportElement uuid="ad020154-fdf0-4fd6-9470-c26b2e44ea24" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="725" y="0" width="57" height="16"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -148,7 +176,7 @@
 				<textFieldExpression><![CDATA[$F{horario}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="14d05159-2dfa-4030-b438-056d990c9944" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="139" height="16"/>
+				<reportElement uuid="14d05159-2dfa-4030-b438-056d990c9944" key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="77" height="16"/>
 				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -159,6 +187,31 @@
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0437c8da-f5eb-4565-b848-5d27f3273b1f" stretchType="RelativeToTallestObject" x="516" y="0" width="102" height="16"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instrutor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0b673884-033a-494c-b830-5556ee401013" stretchType="RelativeToTallestObject" x="618" y="0" width="107" height="16"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instituicao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
