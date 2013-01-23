@@ -25,7 +25,7 @@ public class ComissaoDWR
 		}
 		
 		dataEstabilidade = DateUtil.incrementaAno(dataEstabilidade, 1);
-		return DateUtil.formataDiaMesAno(dataEstabilidade);
+		return new Date().before(dataEstabilidade) ? DateUtil.formataDiaMesAno(dataEstabilidade) : null;
 	}
 
 	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {

@@ -171,7 +171,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			whereAreas = "and a.id in (:areasIds) ";
 		if(cargosIds != null && cargosIds.length > 0)
-			whereAreas = "and ca.id in (:cargosIds) ";
+			whereCargos = "and ca.id in (:cargosIds) ";
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
 		if(periodoIni != null)
