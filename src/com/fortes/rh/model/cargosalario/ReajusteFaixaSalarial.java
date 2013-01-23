@@ -1,12 +1,15 @@
 package com.fortes.rh.model.cargosalario;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -74,6 +77,28 @@ public class ReajusteFaixaSalarial extends AbstractModel implements Serializable
 			this.faixaSalarial = new FaixaSalarial();
 		
 		this.faixaSalarial.setNomeCargo(cargoNome);
+	}
+	
+	@NaoAudita
+	public String getPorcentagemDiferencaSalarial()
+	{
+		Double valProposto = this.getValorProposto();
+		if (valProposto == null)
+			valProposto =  new Double(0);
+		
+		Double valAtual = this.getValorAtual();
+		if (valAtual == null)
+			valAtual =  new Double(0);
+		
+		Double valor = ((valProposto - valAtual) * 100) / valAtual;
+
+		NumberFormat formata = new DecimalFormat("#0.00");
+
+		if (valor.isInfinite() || valor.isNaN())
+			return "100%";
+
+		return formata.format(valor) + "%";
+
 	}
 	
 	public TabelaReajusteColaborador getTabelaReajusteColaborador() 

@@ -318,6 +318,18 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 		return nomesDeCargoEFaixa;
 	}
+	
+	public String getNomeDeCargoEFaixa()
+	{
+		String nomesDeCargoEFaixa = "";
+		String nomeCargo = getCargo().getNome();
+		String nomeFaixa = getNome();
+		
+		if (this.cargo != null && this.cargo.getNome() != null && this.getNome() != null)
+			nomesDeCargoEFaixa = nomeCargo + " " + nomeFaixa;
+		
+		return nomesDeCargoEFaixa;
+	}
 
 
 	public String getNomeACPessoal()

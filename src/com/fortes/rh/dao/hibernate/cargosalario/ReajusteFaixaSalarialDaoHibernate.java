@@ -108,4 +108,32 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		
 		return (Integer) result.get(0) > 0;
 	}
+
+	public Collection<ReajusteFaixaSalarial> findByTabelaReajusteCargoFaixa(Long tabelaReajusteId, Collection<Long> cargosIds, Collection<Long> faixaSalariaisIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "rfs");
+		criteria.createCriteria("rfs.tabelaReajusteColaborador", "tr");
+		criteria.createCriteria("rfs.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("rfs.id"), "id");
+		p.add(Projections.property("rfs.valorAtual"), "valorAtual");
+		p.add(Projections.property("rfs.valorProposto"), "valorProposto");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("tr.id", tabelaReajusteId));
+		
+		if(faixaSalariaisIds != null && !faixaSalariaisIds.isEmpty())
+			criteria.add(Expression.in("fs.id", faixaSalariaisIds));
+		else if(cargosIds != null && !cargosIds.isEmpty())
+			criteria.add(Expression.in("c.id", cargosIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
 }

@@ -20,7 +20,7 @@
 	
 	<script type='text/javascript'>
 		$(function() {
-			<#if !edicao>
+			<#if !edicao && !empresaSistema.acIntegra>
 				ReajusteDWR.getOptionsIndicesDesabilitandoPendentes(createListIndices);
 			</#if>
 		});

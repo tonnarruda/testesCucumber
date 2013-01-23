@@ -121,4 +121,5 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	{
 		return getDao().findComHistoricoAtual(empresa);
 	}
+
 }

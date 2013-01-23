@@ -1,6 +1,7 @@
 package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
@@ -28,6 +29,11 @@ public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice
 			
 			getDao().save(reajuste);
 		}
+	}
+	
+	public Collection<ReajusteIndice> findByFiltros(HashMap<Object, Object> parametros) 
+	{
+		return getDao().findByTabelaReajusteIndice((Long) parametros.get("tabela"), (Collection<Long>) parametros.get("indices"));
 	}
 	
 	public Collection<Indice> findPendentes(Empresa empresa) 

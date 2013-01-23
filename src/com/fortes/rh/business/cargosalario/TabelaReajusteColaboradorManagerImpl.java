@@ -60,7 +60,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId)
 	{
-		return getDao().findAllSelect(empresaId, TipoReajuste.COLABORADOR, TODAS);
+		return getDao().findAllSelect(empresaId, null, TODAS);
 	}
 
 	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste)

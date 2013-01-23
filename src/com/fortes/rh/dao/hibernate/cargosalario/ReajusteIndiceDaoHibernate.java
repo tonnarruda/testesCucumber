@@ -26,7 +26,6 @@ public class ReajusteIndiceDaoHibernate extends GenericDaoHibernate<ReajusteIndi
 		criteria.createCriteria("ri.tabelaReajusteColaborador", "trc");
 
 		ProjectionList p = Projections.projectionList().create();
-
 		p.add(Projections.property("i.id"), "id");
 		p.add(Projections.property("i.nome"), "nome");
 
@@ -101,5 +100,29 @@ public class ReajusteIndiceDaoHibernate extends GenericDaoHibernate<ReajusteIndi
 		query.setDouble("valorProposto", valorProposto);
 
 		query.executeUpdate();
+	}
+
+	public Collection<ReajusteIndice> findByTabelaReajusteIndice(Long tabelaReajusteId, Collection<Long> indicesIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ri");
+		criteria.createCriteria("ri.indice", "i");
+		criteria.createCriteria("ri.tabelaReajusteColaborador", "trc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ri.id"), "id");
+		p.add(Projections.property("ri.valorAtual"), "valorAtual");
+		p.add(Projections.property("ri.valorProposto"), "valorProposto");
+		p.add(Projections.property("i.nome"), "projectionIndiceNome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("trc.id", tabelaReajusteId));
+		
+		if(indicesIds != null && !indicesIds.isEmpty())
+			criteria.add(Expression.in("i.id", indicesIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
 	}
 }

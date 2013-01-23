@@ -1,5 +1,12 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
+import sun.awt.SunToolkit.InfiniteLoop;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
@@ -43,6 +50,7 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     public void testFindPendentes()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setAcIntegra(false);
     	empresaDao.save(empresa);
     	
     	Indice indice1 = IndiceFactory.getEntity();
@@ -69,7 +77,7 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	reajuste2.setIndice(indice2);
     	reajusteIndiceDao.save(reajuste2);
 
-    	assertEquals(indice2.getId(), ((Indice) reajusteIndiceDao.findPendentes(empresa).toArray()[0]).getId());
+    	assertTrue(reajusteIndiceDao.findPendentes(empresa).size() > 1);
     }
     
     public void testFindByTabelaReajusteColaboradorId()
@@ -146,6 +154,28 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	ReajusteIndice retorno = reajusteIndiceDao.findByIdProjection(reajuste.getId());
     	
     	assertEquals(12.00, retorno.getValorProposto());
+    }
+    
+    public void testFindByIndiceEstabelecimento()
+    {
+    	Indice indice = IndiceFactory.getEntity();
+    	indice.setNome("salario minimo");
+    	indiceDao.save(indice);
+    	
+    	TabelaReajusteColaborador tabela = TabelaReajusteColaboradorFactory.getEntity();
+    	tabelaReajusteColaboradorDao.save(tabela);
+    	
+    	ReajusteIndice reajuste = getEntity();
+    	reajuste.setTabelaReajusteColaborador(tabela);
+    	reajuste.setIndice(indice);
+    	reajuste.setValorAtual(10.0);
+    	reajuste.setValorProposto(11.00);
+    	reajusteIndiceDao.save(reajuste);
+    	
+    	Collection<Long> indiceIds = new ArrayList<Long>();
+    	indiceIds.add(indice.getId());
+    	
+    	assertEquals(1, reajusteIndiceDao.findByTabelaReajusteIndice(tabela.getId(), indiceIds).size());
     }
     
 	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) {

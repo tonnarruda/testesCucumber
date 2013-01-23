@@ -1,14 +1,21 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 
@@ -17,6 +24,7 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     private ReajusteFaixaSalarialDao reajusteFaixaSalarialDao;
     private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
     private FaixaSalarialDao faixaSalarialDao;
+    private CargoDao cargoDao;
 
     public ReajusteFaixaSalarial getEntity()
     {
@@ -124,6 +132,32 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     	assertFalse("sem reajuste", reajusteFaixaSalarialDao.verificaPendenciasPorFaixa(faixa3.getId()));
     }
 
+    public void testFindByIndiceEstabelecimento()
+    {
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargoDao.save(cargo);
+    	
+    	FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+    	faixa.setCargo(cargo);
+    	faixa.setNome("Desv 1");
+    	faixaSalarialDao.save(faixa);
+    	
+    	TabelaReajusteColaborador tabela = TabelaReajusteColaboradorFactory.getEntity();
+    	tabelaReajusteColaboradorDao.save(tabela);
+    	
+    	ReajusteFaixaSalarial reajuste = getEntity();
+    	reajuste.setTabelaReajusteColaborador(tabela);
+    	reajuste.setFaixaSalarial(faixa);
+    	reajuste.setValorAtual(10.0);
+    	reajuste.setValorProposto(11.00);
+    	reajusteFaixaSalarialDao.save(reajuste);
+    	
+    	Collection<Long> indiceIds = new ArrayList<Long>();
+    	indiceIds.add(faixa.getId());
+    	
+    	assertEquals(1, reajusteFaixaSalarialDao.findByTabelaReajusteCargoFaixa(tabela.getId(), null, indiceIds).size());
+    }
+    
 	public void setReajusteFaixaSalarialDao(ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) 
 	{
 		this.reajusteFaixaSalarialDao = reajusteFaixaSalarialDao;
@@ -142,5 +176,9 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
 
 	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
 		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setCargoDao(CargoDao cargoDao) {
+		this.cargoDao = cargoDao;
 	}
 }

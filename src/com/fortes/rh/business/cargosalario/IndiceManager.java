@@ -9,6 +9,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.callback.IndiceAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
+import com.fortes.web.tags.CheckBox;
 
 public interface IndiceManager extends GenericManager<Indice>
 {

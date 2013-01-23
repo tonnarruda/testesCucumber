@@ -13,4 +13,5 @@ public interface ReajusteIndiceDao extends GenericDao<ReajusteIndice>
 	Collection<ReajusteIndice> findByTabelaReajusteColaboradorId(Long tabelaReajusteColaboradorId);
 	ReajusteIndice findByIdProjection(Long reajusteIndiceId);
 	void updateValorProposto(Long reajusteIndiceId, Double valorProposto);
+	Collection<ReajusteIndice> findByTabelaReajusteIndice(Long tabelareajuste, Collection<Long> indicesIds);
 }

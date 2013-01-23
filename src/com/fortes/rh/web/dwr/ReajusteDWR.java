@@ -239,6 +239,32 @@ public class ReajusteDWR
 		return checkboxes;
 	}
 	
+	public Collection<CheckBox> getFaixasByCargosDesabilitandoPorIndiceSemPendencia(String[] cargoIds)
+	{
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findByCargos(LongUtil.arrayStringToArrayLong(cargoIds));
+		CheckBox checkBox = null;
+		
+		for (FaixaSalarial faixaSalarial : faixasSalariais)
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(faixaSalarial.getId());
+			checkBox.setNome(faixaSalarial.getDescricao());
+			checkBox.setDesabilitado(true);
+			
+			if (faixaSalarial.getFaixaSalarialHistoricoAtual() == null || faixaSalarial.getFaixaSalarialHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Essa faixa salarial não possui histórico");
+			else if (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo().equals(TipoAplicacaoIndice.INDICE))
+				checkBox.setTitulo("Essa faixa salarial possui valor por índice");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
+	}
+	
 	public Collection<Option> getFaixasByCargoDesabilitandoPorIndice(Long cargoId)
 	{
 		Collection<Option> options = new ArrayList<Option>();
@@ -325,6 +351,39 @@ public class ReajusteDWR
 		}
 		
 		return options;
+	}
+
+	public Collection<CheckBox> getIndicesDesabilitando()
+	{
+		Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
+		Collection<Indice> indices = indiceManager.findComHistoricoAtual(empresa);
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		CheckBox checkBox;
+		
+		for (Indice indice : indices) 
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(indice.getId());
+			checkBox.setNome(indice.getNome());
+			checkBox.setDesabilitado(true);
+			
+			if (indice.getIndiceHistoricoAtual() == null || indice.getIndiceHistoricoAtual().getId() == null)
+				checkBox.setTitulo("Esse índice não possui histórico");
+			else
+				checkBox.setDesabilitado(false);
+			
+			checkboxes.add(checkBox);
+		}
+		
+		return checkboxes;
+	}
+	
+	
+	public Character getTipoReajuste(Long tabelaReajusteColaboradorId)
+	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaboradorId);
+		
+		return tabelaReajusteColaborador.getTipoReajuste();
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

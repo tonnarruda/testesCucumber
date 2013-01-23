@@ -78,7 +78,7 @@ function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
 	{
 		for(i = 0; i < elements.length; i++)
 		{
-			if(elements[i].name == nameCheck && elements[i].type == 'checkbox')
+			if(elements[i].name == nameCheck && elements[i].type == 'checkbox' && !elements[i].disabled)
 			{
 				elements[i].checked = vMarcar;
  			}
