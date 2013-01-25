@@ -26,7 +26,6 @@ import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
-import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
