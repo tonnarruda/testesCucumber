@@ -29977,6 +29977,14 @@ ALTER TABLE ONLY turmatipodespesa
 
 
 --
+-- Name: unique_codigoac_colaborador; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY colaborador
+    ADD CONSTRAINT unique_codigoac_colaborador UNIQUE (codigoac, empresa_id);
+
+
+--
 -- Name: usuario_login_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
