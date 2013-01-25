@@ -164,7 +164,7 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		indiceHistoricoDao.save(indiceHistorico3);
 		
 		Collection<Indice> retorno = indiceDao.findComHistoricoAtual(empresa);
-		assertTrue(retorno.size() > 2);
+		assertTrue(retorno.size() >= 2);
 		
 		retorno = indiceDao.findComHistoricoAtual(empresa2);
 		assertEquals(1, retorno.size());
