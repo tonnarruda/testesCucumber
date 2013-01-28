@@ -19,6 +19,7 @@
 	<#assign formAction = formAction + "?visualizar=${visualizar}&cargo.id=${cargo.id}"/>
 </#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
@@ -27,6 +28,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<style type="text/css">
@@ -137,23 +139,53 @@
 			</@authz.authorize>
 			
 			<#if exibeColaboradorSubstituido>
+				$('#tooltipHelp').qtip({
+					content: 'Selecione um colaborador na lista exibida ao digitar o nome para validar se o mesmo possui estabilidade'
+				});
+				
 				$('#colaboradorSubstituido').autocomplete({
 					minLength: 3,
 					source: function( request, response ) {
 						DWRUtil.useLoadingMessage('Carregando...');
-						ColaboradorDWR.findComDataEstabilidade(request.term, ${empresaId}, function(dados) {
+						ColaboradorDWR.find(request.term, ${empresaId}, function(dados) {
 							response( dados );
 						});
 					},
 					focus: function( event, ui ) {
-						$('#colaboradorSubstituido').val(ui.item.label);
 						return false;
 					},
 					select: function( event, ui ) {
-						$('#colaboradorSubstituido').val(ui.item.label);
+						DWRUtil.useLoadingMessage('Carregando...');
+						ComissaoDWR.dataEstabilidade(ui.item.value, 
+													function(data) 
+													{
+														if (data)
+														{
+															var msg = 'O Colaborador '+ ui.item.nome +', faz parte <br>da CIPA e possui estabilidade até o dia ' + data + '.' +
+																		'<br /> Deseja realmente substituí-lo?';
+
+															$('<div>'+ msg +'</div>').dialog({	title: 'Alerta!',
+																								modal: true, 
+																								height: 150,
+																								width: 500,
+																									buttons: [ 	{ text: "Sim", click: function() { $('#colaboradorSubstituido').val(ui.item.nome); $(this).dialog("close"); } },
+																								    		{ text: "Não", click: function() { $('#colaboradorSubstituido').val(""); $(this).dialog("close"); } } ] 
+																							});
+															
+														}
+														else
+														{
+															$('#colaboradorSubstituido').val(ui.item.nome);
+														}
+													});
 						return false;
 					}
-				});
+				}).data( "autocomplete" )._renderItem = function( ul, item ) {
+					return $( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex( $('#colaboradorSubstituido').val() ) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>" ) + "</a>" )
+						.appendTo( ul );
+				};
 			</#if>
 		});
 	</script>
@@ -203,7 +235,11 @@
 		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
 		
 		<#if exibeColaboradorSubstituido>
-			<@ww.textfield label="Colaborador Substituído" id="colaboradorSubstituido" name="solicitacao.colaboradorSubstituido"  maxLength="100" cssClass="inputNome"/>
+			<div>
+				<@ww.textfield label="Colaborador Substituído" id="colaboradorSubstituido" name="solicitacao.colaboradorSubstituido"  maxLength="100" cssClass="inputNome" liClass="liLeft" style="margin-top: 5px;"/>
+				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top:20px;" />
+				<br clear="all"/>
+			</div>
 		</#if>
 		
 		<#if !solicitacao.id?exists>

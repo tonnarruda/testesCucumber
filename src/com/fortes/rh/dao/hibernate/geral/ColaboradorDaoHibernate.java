@@ -4376,29 +4376,4 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
-
-	public Collection<Colaborador> findComDataEstabilidadeCIPA(String nome, Long empresaId) 
-	{
-		StringBuilder hql = new StringBuilder("select new Colaborador(c.id, c.nome, comissao.dataFim) ");
-		hql.append("from Colaborador c ");
-		hql.append("left join c.comissaoMembros cm with cm.tipo = :tipo ");
-		hql.append("left join cm.comissaoPeriodo cp ");
-		hql.append("left join cp.comissao comissao ");
-		hql.append("where lower(c.nome) like :nome ");
-		hql.append("and c.dataDesligamento is null ");
-		hql.append("and c.empresa.id = :empresaId ");
-		hql.append("and (cp.aPartirDe = (select max(cp2.aPartirDe) from ComissaoPeriodo cp2 ");
-		hql.append("				where cp2.comissao.id = comissao.id ");
-		hql.append("				and cp2.aPartirDe <= :hoje ) or cp.aPartirDe is null) ");
-		hql.append("order by c.nome ");
-		
-		Query query = getSession().createQuery(hql.toString());
-
-		query.setString("nome", "%" + nome.toLowerCase() + "%");
-		query.setLong("empresaId", empresaId);
-		query.setDate("hoje", new Date());
-		query.setString("tipo", TipoMembroComissao.ELEITO);
-		
-		return query.list();
-	}
 }

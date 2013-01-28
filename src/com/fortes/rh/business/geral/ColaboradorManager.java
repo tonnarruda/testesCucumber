@@ -194,5 +194,4 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim);
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
-	public Collection<Colaborador> findComDataEstabilidadeCIPA(String nome, Long empresaId);
 }
