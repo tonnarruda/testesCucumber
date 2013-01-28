@@ -82,11 +82,11 @@
 		</delete>
 
 		<javac debug="on" encoding="UTF-8" srcdir="${src.dir}" destdir="${class_dir}" failonerror="true"
-			source="1.5" target="1.5">
+			source="1.6" target="1.6">
 			<classpath refid="project.classpath" />
 		</javac>
 		<javac debug="on" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${class_dir}" failonerror="true"
-			source="1.5" target="1.5">
+			source="1.6" target="1.6">
 			<classpath refid="project.classpath" />
 		</javac>
 
