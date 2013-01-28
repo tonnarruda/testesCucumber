@@ -339,6 +339,16 @@ Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
    end
 end
 
+Dado /^que exista um indice "([^"]*)" com historico$/ do |nome_indice|
+   insert :indice do
+     nome nome_indice
+   end
+    insert :indicehistorico do
+      data '01/01/2013'
+      indice :nome => nome_indice
+   end
+end
+
 Dado /^que exista o cargo "([^"]*)" na área organizacional "([^"]*)"$/ do |nome_cargo, nome_area|
    insert :cargo do
      nome nome_cargo
