@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.99.102" data="28/01/2012">
+		<Modulo nome=" "><![CDATA[
+			:: Página Inicial: Novo ícone para acessar o suporte da Fortes Informática via LogMeIn.
+            :: C&S > Movimentações: Nova opção de Solicitação de Realinhamento/Reajuste por "Faixa Salarial" e "Índice".
+            :: T&D > Relatórios > Cronograma de Treinamento: Novos campos "Instrutor" e "Instituição" na impressão no relatório.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.98.101" data="17/01/2012">
 		<Modulo nome=" "><![CDATA[
-            :: Info. Funcionais > Relatórios > listagem de colaboradores: Possibilidade de inserir uma nova coluna de afastado.
+            :: Info. Funcionais > Relatórios > Listagem de Colaboradores: Possibilidade de inserir uma nova coluna de afastado.
     	]]></Modulo>
     </Versao>
 	<Versao id="1.1.97.100" data="14/01/2012">

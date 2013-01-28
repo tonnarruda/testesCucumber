@@ -17,6 +17,7 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     E eu devo ver o título "Inserir Planejamento de Realinhamentos"
     E eu preencho "Título" com "_Aumento Geral"
     E eu preencho o campo (JS) "Data de Aplicação" com "01/01/2011"
+    E eu seleciono "Colaborador" de "Tipo do Reajuste"
     E eu preencho "Observação" com "Testando..."
     E eu clico no botão "Gravar"
 

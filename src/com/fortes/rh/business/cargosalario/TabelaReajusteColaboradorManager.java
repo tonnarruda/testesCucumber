@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
@@ -21,19 +22,22 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador);
 
 	@Audita(operacao="Aplicar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void aplicar(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
-
+	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
+	
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void cancelar(Long tabelaReajusteId, Empresa empresa) throws Exception;
+	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception;
 
 	@Audita(operacao="Atualização", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
+	
+	//TODO: Auditar
+	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws ColecaoVaziaException, Exception;
 
 	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId);
 
-	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId);
+	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste);
 
 	public Integer getCount(Long empresaId);
 
@@ -42,4 +46,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public TabelaReajusteColaborador findByIdProjection(Long tabelaReajusteColaboradorId);
 
 	public void verificaDataHistoricoColaborador(Long tabelaReajusteColaboradorId, Date data) throws Exception;
+
+	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException;
+
 }

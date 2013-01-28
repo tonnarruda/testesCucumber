@@ -278,11 +278,6 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findByCargoComCompetencia(cargoId);
 	}
 
-	public Collection<Long> findByCargos(Collection<Long> cargoIds)
-	{
-		return getDao().findByCargos(cargoIds);
-	}
-
 	public void sincronizar(Map<Long, Long> cargoIds) {
 		
 		Map<Long, Long> faixaSalarialIds = new HashMap<Long, Long>();
@@ -346,23 +341,32 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	{
 		return getDao().getFaixasAC();
 	}
+	
+	public Collection<FaixaSalarial> findSemCodigoAC(Long empresaId) 
+	{
+		return getDao().findSemCodigoAC(empresaId);
+	}
+	
+	public String findCodigoACDuplicado(Long empresaId) 
+	{
+		return getDao().findCodigoACDuplicado(empresaId);
+	}
 
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+	public Collection<FaixaSalarial> findByCargos(Long[] cargosIds) 
+	{
+		return getDao().findByCargos(cargosIds);
+	}
+
+	public Collection<FaixaSalarial> findComHistoricoAtual(	Long[] faixasSalariaisIds) 
+	{
+		return getDao().findComHistoricoAtual(faixasSalariaisIds);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 
-	public Collection<FaixaSalarial> findSemCodigoAC(Long empresaId) {
-		return getDao().findSemCodigoAC(empresaId);
-	}
-
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(
-			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
-	}
-
-	public String findCodigoACDuplicado(Long empresaId) {
-		// TODO Auto-generated method stub
-		return getDao().findCodigoACDuplicado(empresaId);
 	}
 }

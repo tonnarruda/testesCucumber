@@ -1,6 +1,5 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
@@ -11,23 +10,16 @@ import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
-import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.GrupoACFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 {
@@ -99,6 +91,83 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		Indice retorno = indiceDao.findHistoricoAtual(indice.getId(), null);
 
 		assertEquals(indice.getId(), retorno.getId());
+	}
+	
+	public void testFindComHistoricoAtual()
+	{
+		Indice indice1 = IndiceFactory.getEntity();
+		indiceDao.save(indice1);
+
+		Indice indice2 = IndiceFactory.getEntity();
+		indiceDao.save(indice2);
+
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico1.setIndice(indice1);
+		indiceHistorico1.setData(DateUtil.criarDataMesAno(1, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico2.setIndice(indice1);
+		indiceHistorico2.setData(DateUtil.criarDataMesAno(2, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico3.setIndice(indice2);
+		indiceHistorico3.setData(DateUtil.criarDataMesAno(5, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico3);
+
+		Collection<Indice> retorno = indiceDao.findComHistoricoAtual(new Long[] { indice1.getId(), indice2.getId() });
+
+		assertEquals(2, retorno.size());
+	}
+
+	public void testFindComHistoricoAtualByEmpresa()
+	{
+		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
+		grupoAC1.setCodigo("G1");
+		grupoACDao.save(grupoAC1);
+
+		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
+		grupoAC2.setCodigo("G2");
+		grupoACDao.save(grupoAC2);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setAcIntegra(false);
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setAcIntegra(true);
+		empresa2.setGrupoAC(grupoAC2.getCodigo());
+		empresaDao.save(empresa2);
+
+		Indice indice1 = IndiceFactory.getEntity();
+		indice1.setGrupoAC(grupoAC1.getCodigo());
+		indiceDao.save(indice1);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setGrupoAC(grupoAC2.getCodigo());
+		indiceDao.save(indice2);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico1.setIndice(indice1);
+		indiceHistorico1.setData(DateUtil.criarDataMesAno(1, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico2.setIndice(indice1);
+		indiceHistorico2.setData(DateUtil.criarDataMesAno(2, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity();
+		indiceHistorico3.setIndice(indice2);
+		indiceHistorico3.setData(DateUtil.criarDataMesAno(5, 1, 2013));
+		indiceHistoricoDao.save(indiceHistorico3);
+		
+		Collection<Indice> retorno = indiceDao.findComHistoricoAtual(empresa);
+		assertTrue(retorno.size() >= 2);
+		
+		retorno = indiceDao.findComHistoricoAtual(empresa2);
+		assertEquals(1, retorno.size());
 	}
 
 	public void testFindIndiceByCodigoAc()

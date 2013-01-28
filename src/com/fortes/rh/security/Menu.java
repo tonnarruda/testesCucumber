@@ -81,11 +81,14 @@ public abstract class Menu
 				"<a href='videoteca.action' title='Videoteca'>" +
 				"<img src='"+ contexto + "/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
 		
+		menu.append("<li style='float: right; line-height: 0.8em'>" +
+				"<a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'>" +
+				"<img src='"+ contexto + "/imgs/monitor.png' style='vertical-align: middle;'></a></li>\n");
+		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
 				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Suporte'>" 
 				+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
-		
 		
 		menu.append("</ul>\n\n");
 

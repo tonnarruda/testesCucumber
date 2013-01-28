@@ -18,16 +18,17 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId);
 	Collection<FaixaSalarial> findFaixaSalarialByCargo(Long cargoId);
 	FaixaSalarial findHistoricoAtual(Long faixaSalarialId, Date dataHistorico);
+	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
 	Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId);
 	void updateCodigoAC(String codigoAC, Long faixaSalarialId);
 	boolean verifyExistsNomeByCargo(Long cargoId, String faixaNome);
 	FaixaSalarial findFaixaSalarialByCodigoAc(String faixaCodigoAC, String empresaCodigoAC, String grupoAC);
 	public void updateNomeECargo(Long faixaSalarialId, Long cargoId, String faixaNome);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
-	Collection<Long> findByCargos(Collection<Long> cargoIds);
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
 	Collection<FaixaSalarial> findSemCodigoAC(Long empresaId);
 	String findCodigoACDuplicado(Long empresaId);
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId);
+	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 }

@@ -44,7 +44,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Boolean aprovada)
+	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Character tipoReajuste, Boolean aprovada)
 	{
 		Criteria criteria = getSession().createCriteria(TabelaReajusteColaborador.class, "trc");
 
@@ -54,15 +54,19 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 
 		criteria.setProjection(p);
 		
-		if(aprovada != null)
-			criteria.add(Expression.eq("trc.aprovada", aprovada));
-
 		criteria.add(Expression.eq("trc.empresa.id", empresaId));
 
+		if (aprovada != null)
+			criteria.add(Expression.eq("trc.aprovada", aprovada));
+		
+		if (tipoReajuste != null)
+			criteria.add(Expression.eq("trc.tipoReajuste", tipoReajuste));
+			
 		criteria.addOrder(Order.asc("trc.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(TabelaReajusteColaborador.class));
+		
 		return criteria.list();
 	}
 
@@ -93,6 +97,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 		p.add(Projections.property("trc.nome"), "nome");
 		p.add(Projections.property("trc.data"), "data");
 		p.add(Projections.property("trc.aprovada"), "aprovada");
+		p.add(Projections.property("trc.tipoReajuste"), "tipoReajuste");
 
 		criteria.setProjection(p);
 

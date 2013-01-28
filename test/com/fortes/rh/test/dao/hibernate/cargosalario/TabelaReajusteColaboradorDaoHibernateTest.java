@@ -6,6 +6,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -55,12 +56,21 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 		
-		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
-		tabelaReajusteColaborador.setEmpresa(empresa);
-		tabelaReajusteColaborador.setAprovada(true);
-		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabela1.setEmpresa(empresa);
+		tabela1.setAprovada(true);
+		tabela1.setTipoReajuste(TipoReajuste.COLABORADOR);
+		tabelaReajusteColaboradorDao.save(tabela1);
+
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabela2.setEmpresa(empresa);
+		tabela2.setAprovada(true);
+		tabela2.setTipoReajuste(TipoReajuste.FAIXA_SALARIAL);
+		tabelaReajusteColaboradorDao.save(tabela2);
 		
-		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), true).size());
+		assertEquals(2, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), null, true).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.FAIXA_SALARIAL, true).size());
 	}
 	
 	public void testGetCount()
@@ -99,7 +109,7 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
 
 		tabelaReajusteColaboradorDao.updateSetAprovada(tabelaReajusteColaborador.getId(), true);
-		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), true).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true).size());
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

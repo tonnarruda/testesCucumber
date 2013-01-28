@@ -26,7 +26,6 @@ import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
-import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
@@ -199,6 +198,8 @@ import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibe
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteColaboradorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteFaixaSalarialDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.ReajusteIndiceDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.RelatorioListaFrequenciaTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.TabelaReajusteColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoCursoDaoHibernateTest;
@@ -714,6 +715,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(ReajusteColaboradorManagerTest.class);
         suite.addTestSuite(ReajusteColaboradorEditActionTest.class);
+
+        suite.addTestSuite(ReajusteFaixaSalarialDaoHibernateTest.class);
+        suite.addTestSuite(ReajusteIndiceDaoHibernateTest.class);
 
         suite.addTestSuite(TabelaReajusteColaboradorDaoHibernateTest.class);
         suite.addTestSuite(TabelaReajusteColaboradorManagerTest.class);

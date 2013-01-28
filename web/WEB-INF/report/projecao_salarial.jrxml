@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.771561000000001"/>
-	<property name="ireport.x" value="35"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -19,7 +19,7 @@
 	<field name="descricaoEstabelecimentoAreaOrganizacional" class="java.lang.String"/>
 	<field name="estabelecimento.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.grupoOcupacional.nome" class="java.lang.String"/>
-	<field name="historicoColaborador.tipoSalarioDescricao" class="java.lang.Integer"/>
+	<field name="historicoColaborador.tipoSalarioDescricao" class="java.lang.String"/>
 	<field name="historicoColaborador.salarioCalculado" class="java.lang.Double"/>
 	<field name="ehProjecao" class="java.lang.Boolean"/>
 	<field name="historicoColaborador.status" class="java.lang.Integer"/>

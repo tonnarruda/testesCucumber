@@ -8,13 +8,13 @@
 				<param name="location">WEB-INF/report/relatorio_presenca_data.jasper</param>
 				<param name="dataSource">listaDePresencas</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">presenca.pdf</param>
+				<param name="documentName">relatorio_presenca_data.pdf</param>
 			</result>
 			<result name="relatorioPorEstabelecimento" type="jasper">
 				<param name="location">WEB-INF/report/relatorio_presenca_estabelecimento.jasper</param>
 				<param name="dataSource">listaDePresencas</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">presenca.pdf</param>
+				<param name="documentName">relatorio_presenca_estabelecimento.pdf</param>
 			</result>
 			<result name="acessonegado" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioPresenca.ftl</result>
 			<result name="error" type="redirect">prepareRelatorio.action</result>

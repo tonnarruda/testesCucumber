@@ -34,6 +34,22 @@
       <ref bean="reajusteColaboradorDaoTarget" />
     </property>
   </bean>
+  <bean id="reajusteFaixaSalarialDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao</value>
+    </property>
+    <property name="target">
+      <ref bean="reajusteFaixaSalarialDaoTarget" />
+    </property>
+  </bean>
+  <bean id="reajusteIndiceDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.cargosalario.ReajusteIndiceDao</value>
+    </property>
+    <property name="target">
+      <ref bean="reajusteIndiceDaoTarget" />
+    </property>
+  </bean>
   <bean id="tabelaReajusteColaboradorDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao</value>

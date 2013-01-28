@@ -7,16 +7,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
+import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.FiltrosRelatorio;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
@@ -31,13 +37,11 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
+	private ReajusteIndiceManager reajusteIndiceManager;
+	private ReajusteFaixaSalarialManager reajusteFaixaSalarialManager;
 	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
-
-	public void setHistoricoColaboradorManager(
-			HistoricoColaboradorManager historicoColaboradorManager) {
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
+	private CargoManager cargoManager;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private LinkedHashMap filtrarPor;
@@ -48,6 +52,8 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private Boolean exibirObservacao;
 
 	private Collection<ReajusteColaborador> dataSource;
+	private Collection<ReajusteIndice> dataSourceIndice;
+	private Collection<ReajusteFaixaSalarial> dataSourceFaixaSalarial;
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors;
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	private Collection<GrupoOcupacional> grupoOcupacionals;
@@ -57,6 +63,15 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 	private String[] areaOrganizacionalsCheck;
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
+
+	private String[] indicesCheck;
+	private Collection<CheckBox> indicesCheckList = new ArrayList<CheckBox>();
+	
+	private String[] cargosCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
+	
+	private String[] faixaSalarialsCheck;
+	private Collection<CheckBox> faixaSalarialsCheckList = new ArrayList<CheckBox>();
 
 	private String[] grupoOcupacionalsCheck;
 	private Collection<CheckBox> grupoOcupacionalsCheckList = new ArrayList<CheckBox>();
@@ -72,13 +87,11 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		filtrarPor = new FiltrosRelatorio();
 
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelect(getEmpresaSistema().getId());
-
 		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
+		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
 
 		if (tabelaReajusteColaborador != null && tabelaReajusteColaborador.getId() != null)
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
@@ -92,10 +105,12 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		try
 		{
 			TabelaReajusteColaborador tabelaReajusteColaboradorAux = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
-
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areaOrganizacionals = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			Collection<Long> grupoOcupacionals = LongUtil.arrayStringToCollectionLong(grupoOcupacionalsCheck);
+			Collection<Long> indices = LongUtil.arrayStringToCollectionLong(indicesCheck);
+			Collection<Long> faixaSalarials = LongUtil.arrayStringToCollectionLong(faixaSalarialsCheck);
+			Collection<Long> cargos = LongUtil.arrayStringToCollectionLong(cargosCheck);
 
 			HashMap filtros = new HashMap();
 			// parametros dos filtros
@@ -104,19 +119,39 @@ public class ReajusteRelatorioAction extends MyActionSupport
 			filtros.put("filtrarPor", filtro);
 			filtros.put("areas", areaOrganizacionals);
 			filtros.put("grupos", grupoOcupacionals);
+			filtros.put("indices", indices);
+			filtros.put("faixaSalarials", faixaSalarials);
+			filtros.put("cargos", cargos);
 			filtros.put("total", total);
 
-			dataSource = reajusteColaboradorManager.findByGruposAreas(filtros);
-
-			if (dataSource == null || dataSource.isEmpty())
+			String retorno;
+			if(tabelaReajusteColaboradorAux.getTipoReajuste().equals(TipoReajuste.INDICE))
 			{
-				ResourceBundle bundle = ResourceBundle.getBundle("application");
-				msg = bundle.getString("error.relatorio.vazio");
-				throw new Exception(msg);
+				dataSourceIndice = reajusteIndiceManager.findByFiltros(filtros);
+				
+				if (dataSourceIndice == null || dataSourceIndice.isEmpty())
+					msgErro();
+				
+				retorno = "successIndice";
+			} else if(tabelaReajusteColaboradorAux.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
+			{
+				dataSourceFaixaSalarial = reajusteFaixaSalarialManager.findByFiltros(filtros);
+				
+				if (dataSourceFaixaSalarial == null || dataSourceFaixaSalarial.isEmpty())
+					msgErro();
+
+				retorno = "successFaixaSalarial";
+			} else 
+			{
+				dataSource = reajusteColaboradorManager.findByGruposAreas(filtros);
+
+				if (dataSource == null || dataSource.isEmpty())
+					msgErro();
+
+				dataSource = reajusteColaboradorManager.ordenaPorEstabelecimentoAreaOrGrupoOcupacional(getEmpresaSistema().getId(), dataSource, filtro);
+				retorno = Action.SUCCESS;
 			}
 
-			dataSource = reajusteColaboradorManager.ordenaPorEstabelecimentoAreaOrGrupoOcupacional(getEmpresaSistema().getId(), dataSource, filtro);
-			
 			valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaboradorAux.getData());
 
 			parametros = reajusteColaboradorManager.getParametrosRelatorio("Relatório de Simulação de Promoções e Reajustes de Salários", getEmpresaSistema(), tabelaReajusteColaboradorAux.getNome());
@@ -125,8 +160,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 			parametros.put("FILTRAR_POR", filtro);
 			parametros.put("TOTAL_FOLHA", valorTotalFolha);
 
-			return Action.SUCCESS;
-
+			return retorno;
 		}
 		catch (Exception e)
 		{
@@ -140,7 +174,14 @@ public class ReajusteRelatorioAction extends MyActionSupport
 			formFiltro();
 			return Action.INPUT;
 		}
+	}
 
+	private void msgErro() throws Exception 
+	{
+		String msg;
+		ResourceBundle bundle = ResourceBundle.getBundle("application");
+		msg = bundle.getString("error.relatorio.vazio");
+		throw new Exception(msg);
 	}
 
 	public LinkedHashMap getFiltrarPor()
@@ -329,5 +370,54 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 	public void setExibirObservacao(Boolean exibirObservacao) {
 		this.exibirObservacao = exibirObservacao;
+	}
+
+	public Collection<CheckBox> getIndicesCheckList() {
+		return indicesCheckList;
+	}
+
+	public void setHistoricoColaboradorManager(	HistoricoColaboradorManager historicoColaboradorManager) {
+		this.historicoColaboradorManager = historicoColaboradorManager;
+	}
+
+	public Collection<ReajusteFaixaSalarial> getDataSourceFaixaSalarial() {
+		return dataSourceFaixaSalarial;
+	}
+
+	public Collection<ReajusteIndice> getDataSourceIndice() {
+		return dataSourceIndice;
+	}
+
+	public void setReajusteFaixaSalarialManager(
+			ReajusteFaixaSalarialManager reajusteFaixaSalarialManager) {
+		this.reajusteFaixaSalarialManager = reajusteFaixaSalarialManager;
+	}
+
+	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
+		this.reajusteIndiceManager = reajusteIndiceManager;
+	}
+
+	public void setFaixaSalarialsCheck(String[] faixaSalarialsCheck) {
+		this.faixaSalarialsCheck = faixaSalarialsCheck;
+	}
+
+	public Collection<CheckBox> getFaixaSalarialsCheckList() {
+		return faixaSalarialsCheckList;
+	}
+
+	public void setCargosCheck(String[] cargosCheck) {
+		this.cargosCheck = cargosCheck;
+	}
+
+	public Collection<CheckBox> getCargosCheckList() {
+		return cargosCheckList;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
+	}
+
+	public void setIndicesCheck(String[] indicesCheck) {
+		this.indicesCheck = indicesCheck;
 	}
 }

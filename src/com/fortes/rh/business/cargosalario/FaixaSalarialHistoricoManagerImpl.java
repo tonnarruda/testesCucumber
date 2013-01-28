@@ -24,6 +24,7 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
@@ -350,7 +351,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		faixaSalarialHistorico.setData(tSituacaoCargo.getDataFormatada());
 		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
 		faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
-		
+		faixaSalarialHistorico.setReajusteFaixaSalarial(getDao().findReajusteFaixaSalarial(tSituacaoCargo.getDataFormatada(), faixaSalarial.getId()));
+
 		if(tSituacaoCargo.getTipo().equalsIgnoreCase("V"))
 		{
 			faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
@@ -376,9 +378,13 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return getDao().findIdByDataFaixa(faixaSalarialHistorico);
 	}
 
-	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
+	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception 
+	{
 		getDao().deleteByFaixaSalarial(faixaIds);
-		
 	}
 
+	public Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId) 
+	{
+		return getDao().findByTabelaReajusteId(tabelaReajusteColaboradorId);
+	}
 }

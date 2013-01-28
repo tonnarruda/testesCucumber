@@ -68,6 +68,11 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	{
 		return getDao().findHistoricoAtual(indiceId, new Date());
 	}
+	
+	public Collection<Indice> findComHistoricoAtual(Long[] indicesIds) 
+	{
+		return getDao().findComHistoricoAtual(indicesIds);
+	}
 
 	public Indice findHistorico(Long indiceId, Date dataHistorico)
 	{
@@ -92,12 +97,13 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 			return findAll(new String[] {"nome"});
 	}
 
-	public Collection<Indice> findSemCodigoAC(Empresa empresa) {
+	public Collection<Indice> findSemCodigoAC(Empresa empresa) 
+	{
 		return getDao().findSemCodigoAC(empresa);
 	}
 
-	public void deleteIndice(Long[] indiceIds) throws Exception {
-		
+	public void deleteIndice(Long[] indiceIds) throws Exception 
+	{
 		if (indiceIds != null && indiceIds.length > 0) {
 			indiceHistoricoManager.deleteByIndice(indiceIds);
 			
@@ -106,7 +112,14 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		
 	}
 
-	public String findCodigoACDuplicado(Empresa empresa) {
+	public String findCodigoACDuplicado(Empresa empresa) 
+	{
 		return getDao().findCodigoACDuplicado(empresa);
 	}
+
+	public Collection<Indice> findComHistoricoAtual(Empresa empresa) 
+	{
+		return getDao().findComHistoricoAtual(empresa);
+	}
+
 }

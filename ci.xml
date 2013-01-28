@@ -148,7 +148,7 @@
 
             <batchtest todir="." >
                 <fileset dir="${srcTeste.dir}">
-                    <include name="**/test/**/*AllUnitTests.java" />
+                    <include name="**/test/**/AllUnitTests.java" />
                 </fileset>
             </batchtest>
 

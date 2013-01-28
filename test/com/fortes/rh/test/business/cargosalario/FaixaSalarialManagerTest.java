@@ -665,26 +665,6 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(faixaSalarial.getId(), retorno.getId());
 	}
 	
-	public void testFindByCargos()
-	{
-		Cargo cargo = CargoFactory.getEntity(1L);
-		cargo.setNome("nome");
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();		
-		faixaSalarial.setCargo(cargo);
-		faixaSalarial.setNome("I");
-		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
-		faixas.add(faixaSalarial);
-		
-		Collection<Long> cargoIds = new ArrayList<Long>();
-		cargoIds.add(1L);
-		cargoIds.add(2L);
-		
-		faixaSalarialDao.expects(once()).method("findByCargos").with(eq(cargoIds)).will(returnValue(faixas));
-		
-		assertEquals(1, faixaSalarialManager.findByCargos(cargoIds).size());
-	}
-	
 	public void testSincronizar()
 	{
 		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
