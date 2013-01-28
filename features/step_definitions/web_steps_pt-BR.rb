@@ -352,11 +352,12 @@ Dado /^que exista o cargo "([^"]*)" na área organizacional "([^"]*)"$/ do |nome
    end
 end
 
-Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^"]*)"$/ do |nome, data, aprovada|
+Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^"]*)" com o tipo de reajuste "([^"]*)"$/ do |nome, data, aprovada, tiporeajuste|
    insert :tabelareajustecolaborador do
      nome nome
      data data
      aprovada aprovada
+     tiporeajuste tiporeajuste
      empresa :id => 1
    end
 end
