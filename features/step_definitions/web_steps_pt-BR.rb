@@ -346,6 +346,7 @@ Dado /^que exista um indice "([^"]*)" com historico$/ do |nome_indice|
     insert :indicehistorico do
       data '01/01/2013'
       indice :nome => nome_indice
+      valor 5000.00
    end
 end
 

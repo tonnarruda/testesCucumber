@@ -23,7 +23,7 @@
 		<pathelement location="${ant.project.name}/web/WEB-INF/classes" />
 		<fileset dir="${env.JASPER_LIB}">  
 			<include name="*.jar" />
-			<exclude name="jasperreports-chart-themes-4.5.0.jar"/> 
+			<exclude name="jasperreports-chart-themes-5.0.0.jar"/> 
 		</fileset>
 	</path>
 

@@ -6,7 +6,6 @@ Funcionalidade: Reajuste Coletivo/Dissídio Índice
     Dado que eu esteja logado
     Dado que exista a tabela de reajuste "ajustar" na data "01/02/2013" aprovada "false" com o tipo de reajuste "I"
     Dado que exista um indice "indice" com historico
-    Dado que exista o cargo "" 
 
     Quando eu acesso o menu "C&S > Movimentações > Reajuste Coletivo > Índices"
     Então eu devo ver o título "Reajuste Coletivo/Dissídio"

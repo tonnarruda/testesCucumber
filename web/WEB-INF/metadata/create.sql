@@ -4,23 +4,19 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
 
 SET search_path = public, pg_catalog;
 
@@ -3661,7 +3657,8 @@ CREATE TABLE faixasalarialhistorico (
     quantidade double precision,
     faixasalarial_id bigint,
     indice_id bigint,
-    status integer
+    status integer,
+    reajustefaixasalarial_id bigint
 );
 
 
@@ -4536,7 +4533,8 @@ CREATE TABLE indicehistorico (
     id bigint NOT NULL,
     data date,
     valor double precision,
-    indice_id bigint
+    indice_id bigint,
+    reajusteindice_id bigint
 );
 
 
@@ -4902,7 +4900,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 565, false);
+SELECT pg_catalog.setval('papel_sequence', 571, false);
 
 
 --
@@ -5355,6 +5353,78 @@ ALTER TABLE public.reajustecolaborador_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('reajustecolaborador_sequence', 1, false);
+
+
+--
+-- Name: reajustefaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE reajustefaixasalarial (
+    id bigint NOT NULL,
+    faixasalarial_id bigint NOT NULL,
+    tabelareajustecolaborador_id bigint NOT NULL,
+    valoratual numeric(8,2) NOT NULL,
+    valorproposto numeric(8,2) NOT NULL
+);
+
+
+ALTER TABLE public.reajustefaixasalarial OWNER TO postgres;
+
+--
+-- Name: reajustefaixasalarial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE reajustefaixasalarial_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reajustefaixasalarial_sequence OWNER TO postgres;
+
+--
+-- Name: reajustefaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reajustefaixasalarial_sequence', 1, false);
+
+
+--
+-- Name: reajusteindice; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE reajusteindice (
+    id bigint NOT NULL,
+    indice_id bigint NOT NULL,
+    tabelareajustecolaborador_id bigint NOT NULL,
+    valoratual numeric(8,2) NOT NULL,
+    valorproposto numeric(8,2) NOT NULL
+);
+
+
+ALTER TABLE public.reajusteindice OWNER TO postgres;
+
+--
+-- Name: reajusteindice_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE reajusteindice_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reajusteindice_sequence OWNER TO postgres;
+
+--
+-- Name: reajusteindice_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reajusteindice_sequence', 1, false);
 
 
 --
@@ -27899,6 +27969,8 @@ INSERT INTO migrations (name) VALUES ('20121217143512');
 INSERT INTO migrations (name) VALUES ('20121226105433');
 INSERT INTO migrations (name) VALUES ('20130102161739');
 INSERT INTO migrations (name) VALUES ('20130103132012');
+INSERT INTO migrations (name) VALUES ('20130123135543');
+INSERT INTO migrations (name) VALUES ('20130123140331');
 
 
 --
@@ -27976,7 +28048,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, NULL, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (26, 'ROLE_MOV_SIMULACAOREAJUSTE', 'Planejamentos de Realinhamentos', '/cargosalario/tabelaReajusteColaborador/list.action', 1, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (49, 'ROLE_MOV_SOLICITACAOREAJUSTE', 'Solicitação de Realinhamento de C&S', '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 2, true, NULL, 363);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (395, 'ROLE_DISSIDIO', 'Reajuste Coletivo', '/cargosalario/reajusteColaborador/prepareDissidio.action', 3, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (478, 'ROLE_VER_AREAS', 'Visualizar todas as Áreas Organizacionais', '#', 0, false, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Ajuste de Situação (Dissídio)', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (526, 'ROLE_FATURAMENTO', 'Faturamento Mensal', '/cargosalario/faturamentoMensal/list.action', 5, true, NULL, 363);
@@ -28183,16 +28254,23 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (519, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Colaboradores com Nível de Competência inferior ao exigido pelo Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador.action', 12, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (520, 'ROLE_REL_COLAB_NIVEL_COMPETENCIA', 'Matriz comparativa de competências de Colaborador X Cargo/Faixa', '/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador.action', 13, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (35, 'ROLE_REL_SIMULACAOREAJUSTE', 'Realinhamentos', '/cargosalario/reajusteRelatorio/formFiltro.action', 6, true, NULL, 364);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 9, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (511, 'ROLE_REL_COLAB_SEM_REAJUSTE', 'Colaboradores sem Reajuste Salarial', '/cargosalario/historicoColaborador/prepareRelatorioUltimasPromocoes.action', 11, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (564, 'ROLE_RELATORIO_HISTORICO_FAIXA_SALARIAL', 'Históricos das Faixas Salariais', '/cargosalario/faixaSalarialHistorico/prepareRelatorioHistoricoFaixaSalarial.action', 5, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial do Colaborador', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 9, true, NULL, 364);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (395, 'ROLE_DISSIDIO', 'Reajuste Coletivo', '#', 3, true, NULL, 363);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (565, 'ROLE_DISSIDIO', 'Colaboradores', '/cargosalario/reajusteColaborador/prepareDissidio.action', 1, true, NULL, 395);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (566, 'ROLE_DISSIDIO', 'Faixas Salariais', '/cargosalario/reajusteFaixaSalarial/prepareDissidio.action', 2, true, NULL, 395);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (567, 'ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR', 'Colaborador', '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 1, true, NULL, 49);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (568, 'ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL', 'Faixa Salarial', '/cargosalario/reajusteFaixaSalarial/prepareInsert.action', 2, true, NULL, 49);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (569, 'ROLE_MOV_SOLICITACAOREAJUSTE_INDICE', 'Índice', '/cargosalario/reajusteIndice/prepareInsert.action', 3, true, NULL, 49);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (570, 'ROLE_DISSIDIO', 'Índices', '/cargosalario/reajusteIndice/prepareDissidio.action', 3, true, NULL, 395);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.97.100', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.99.102', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL);
 
 
 --
@@ -28407,6 +28485,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 560);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 562);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 564);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 566);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 567);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 568);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 569);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 565);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 570);
 
 
 --
@@ -28459,6 +28543,18 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 564);
 
 --
 -- Data for Name: reajustecolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: reajustefaixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: reajusteindice; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29690,6 +29786,22 @@ ALTER TABLE ONLY questionario
 
 ALTER TABLE ONLY reajustecolaborador
     ADD CONSTRAINT reajustecolaborador_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reajustefaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY reajustefaixasalarial
+    ADD CONSTRAINT reajustefaixasalarial_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reajusteindice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY reajusteindice
+    ADD CONSTRAINT reajusteindice_pkey PRIMARY KEY (id);
 
 
 --
@@ -31380,6 +31492,14 @@ ALTER TABLE ONLY faixasalarialhistorico
 
 
 --
+-- Name: faixasalarialhistorico_reajustefaixasalarial_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY faixasalarialhistorico
+    ADD CONSTRAINT faixasalarialhistorico_reajustefaixasalarial_fk FOREIGN KEY (reajustefaixasalarial_id) REFERENCES reajustefaixasalarial(id);
+
+
+--
 -- Name: faturamentomensal_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -31780,6 +31900,14 @@ ALTER TABLE ONLY indicehistorico
 
 
 --
+-- Name: indicehistorico_reajusteindice_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY indicehistorico
+    ADD CONSTRAINT indicehistorico_reajusteindice_fk FOREIGN KEY (reajusteindice_id) REFERENCES reajusteindice(id);
+
+
+--
 -- Name: medicaorisco_ambiente_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -32073,6 +32201,38 @@ ALTER TABLE ONLY reajustecolaborador
 
 ALTER TABLE ONLY reajustecolaborador
     ADD CONSTRAINT reajustecolaborador_tabelareajustecolaborador_fk FOREIGN KEY (tabelareajustecolaborador_id) REFERENCES tabelareajustecolaborador(id);
+
+
+--
+-- Name: reajustefaixasalarial_faixasalarial_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reajustefaixasalarial
+    ADD CONSTRAINT reajustefaixasalarial_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+
+
+--
+-- Name: reajustefaixasalarial_tabelareajustecolaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reajustefaixasalarial
+    ADD CONSTRAINT reajustefaixasalarial_tabelareajustecolaborador_fk FOREIGN KEY (tabelareajustecolaborador_id) REFERENCES tabelareajustecolaborador(id);
+
+
+--
+-- Name: reajusteindice_indice_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reajusteindice
+    ADD CONSTRAINT reajusteindice_indice_fk FOREIGN KEY (indice_id) REFERENCES indice(id);
+
+
+--
+-- Name: reajusteindice_tabelareajustecolaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reajusteindice
+    ADD CONSTRAINT reajusteindice_tabelareajustecolaborador_fk FOREIGN KEY (tabelareajustecolaborador_id) REFERENCES tabelareajustecolaborador(id);
 
 
 --
