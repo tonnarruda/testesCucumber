@@ -117,12 +117,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Serif" size="18" isBold="true" pdfFontName="Times-Bold"/>
+					<font fontName="Serif" size="16" isBold="true" pdfFontName="Times-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="8f5b1ccd-6403-4878-88e5-5b0b6f712c01" key="textField" positionType="Float" x="69" y="133" width="454" height="118"/>
+				<reportElement uuid="8f5b1ccd-6403-4878-88e5-5b0b6f712c01" key="textField" positionType="Float" x="69" y="129" width="454" height="118"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -135,7 +135,7 @@
 				<textFieldExpression><![CDATA[$F{conteudo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="b52692a6-9d42-4c78-8311-7efd3c9d4993" key="textField" positionType="Float" x="0" y="265" width="595" height="18"/>
+				<reportElement uuid="b52692a6-9d42-4c78-8311-7efd3c9d4993" key="textField" positionType="Float" x="0" y="261" width="595" height="18"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

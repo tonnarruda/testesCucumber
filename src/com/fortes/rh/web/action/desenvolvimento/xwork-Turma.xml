@@ -92,16 +92,19 @@
 				<param name="location">WEB-INF/report/certificado_declaracao.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="successGrande" type="jasper">
 				<param name="location">WEB-INF/report/certificadoGrande.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="successPequeno" type="jasper">
 				<param name="location">WEB-INF/report/certificadoPequeno.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificado.ftl</result>
 		</action>
@@ -110,11 +113,13 @@
 				<param name="location">WEB-INF/report/certificadoGrandeVerso.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="successPequeno" type="jasper">
 				<param name="location">WEB-INF/report/certificadoPequenoVerso.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificado.ftl</result>
 		</action>
@@ -123,11 +128,13 @@
 				<param name="location">WEB-INF/report/certificacaoGrandeVerso.jasper</param>
 				<param name="dataSource">certificacaoTreinamentos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="successPequeno" type="jasper">
 				<param name="location">WEB-INF/report/certificacaoPequenoVerso.jasper</param>
 				<param name="dataSource">certificacaoTreinamentos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificado.ftl</result>
 		</action>

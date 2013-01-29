@@ -53,7 +53,7 @@
 
 		<#if colaboradoresCheckList?exists && colaboradoresCheckList?size!=0 >
 			<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" width="600" height="300"/>
-			<@ww.textarea label="Título do Certificado" name="certificado.titulo" cssStyle="width:600px;height: 30px;"/>
+ 			<@ww.textfield label="Título do Certificado" name="certificado.titulo" maxlength="200" cssStyle="width: 600px;" />
 
 			<span style="position: relative">
 				<img id="help_conteudo" style="position: absolute; top: 12px; _top: 6px; left: 70px;" src='<@ww.url value='/imgs/help.gif'/>'/>
