@@ -37,6 +37,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo, Long areaInativaId);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, String nome, Long empresaId, Boolean ativo);
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId);
+	public Collection<CheckBox> populaCheckByAreasOrderDescricao(Long[] areaIds);
 	public Collection<AreaOrganizacional> populaAreas(String[] areasCheck);
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional);
 	public AreaOrganizacional getAreaMae(Collection<AreaOrganizacional> todasAreas, AreaOrganizacional area);
