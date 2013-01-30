@@ -8,12 +8,21 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		
+		#legenda { width: 360px; }
+		#legenda2 { float: right; width: 215px; color: #666; font-size: 11px; }
+		#legenda2 li { margin-bottom: 5px; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	
+	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.highlighter.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.spider.js"/>'></script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -76,6 +85,50 @@
 		{
 			link = "../../cargosalario/historicoColaborador/list.action?colaborador.id="+colaborador;
 			window.location = link;
+		}
+		
+		function graficoCompetencias(colaboradorId, colaboradorNome)
+		{
+			$("#popup").dialog({ title: colaboradorNome, width: 640, modal: true });
+		
+			var d1 = [ [0,10], [1,20], [2,80], [3,70], [4,60] ];
+			var d2 = [ [0,30], [1,25], [2,50], [3,60], [4,95] ];
+			var options = {
+				series:{
+					spider:{
+						active: true,
+						legs: { 
+							data: [{label: "A"},{label: "B"},{label: "C"},{label: "D"},{label: "E"}],
+							legScaleMax: 1,
+							legScaleMin:0.8,
+							legStartAngle: 270,
+							font: "11px Arial",
+							fillStyle: "Black"
+						},
+						spiderSize: 0.8,
+						connection: { width: 4 }
+					}
+				},
+				grid:{ 
+					hoverable: true, 
+					clickable: false, 
+					tickColor: "rgba(0,0,0,0.2)", 
+					mode: "radar" 
+				},
+				legend : {
+					margin : 2,
+					noColumns: 1,
+					labelBoxBorderColor : '#FFF',
+					container: '#legenda'
+				}
+			};
+			
+			var data = [
+				{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: d1, spider: {show: true, lineWidth: 12} },
+				{ label: "Competências do colaborador", color:"lightblue", data: d2, spider: {show: true} },
+			];
+			
+			var plot = $.plot($("#grafico"), data , options);
 		}
 	</script>
 
@@ -178,6 +231,7 @@
 			<@frt.link verifyRole="ROLE_COLAB_LIST_PERFORMANCE" href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" imgTitle="Performance Profissional" imgName="medalha.gif"/>
 			
 			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}" imgTitle="Competências" imgName="competencias.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="javascript:;" onclick="javascript:graficoCompetencias(${colaborador.id}, '${colaborador.nome}')" imgTitle="Gráfico de Competências" imgName="competencias.gif"/>
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif"/>
 
@@ -218,5 +272,16 @@
 		</@authz.authorize>
 	</div>
 
+	<div id="popup" style="display:none;">
+		<ul id="legenda2">
+			<li>A. Controle de Avarias em Pneus</li>
+			<li>B. Atendimento ao Cliente</li>
+			<li>C. Benefícios</li>
+			<li>D. Proatividade</li>
+			<li>E. Direção Defensiva</li>
+		</ul>
+		<div id="legenda"></div>
+		<div id="grafico" style="width:360px;height:360px;"></div>
+	</div>
 </body>
 </html>
