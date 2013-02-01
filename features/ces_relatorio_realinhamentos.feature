@@ -6,7 +6,7 @@ Funcionalidade: Relatório de Planejamento de Realinhamentos
     Dado que eu esteja logado
     Dado que exista o estabelecimento "estabelecimento"
     Dado que exista a área organizacional "geral"
-     Dado que exista a tabela de reajuste "reajuste" na data "28/07/2011" aprovada "false"
+    Dado que exista a tabela de reajuste "reajuste" na data "28/07/2011" aprovada "false" com o tipo de reajuste "C"
 
     Quando eu acesso o menu "C&S > Relatórios > Realinhamentos"
     Então eu devo ver o título "Relatório de Planejamento de Realinhamentos"
@@ -18,4 +18,4 @@ Funcionalidade: Relatório de Planejamento de Realinhamentos
     E eu marco "geral"
 
     E eu clico no botão "Relatorio"
-    E eu devo ver "Não foi possível gerar o relatório"
+    E eu devo ver "Não existem dados para o filtro informado."
