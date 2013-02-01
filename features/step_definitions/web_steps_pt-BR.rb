@@ -543,6 +543,7 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
   insert :cargo do
     nome cargo_nome
     nomemercado cargo_nome
+    empresa :nome => 'Empresa Padrão'
   end
 
   insert :faixasalarial do
@@ -573,6 +574,20 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     motivo 'C'
     tiposalario 3
     salario 1000
+    status 1
+  end
+end
+
+Dado /^que exista um novo historico para o colaborador "([^"]*)", na area "([^"]*)", na faixa salarial "([^"]*)"$/ do |colaborador_nome, areaorganizacional_nome,faixasalarial_nome|
+  insert :historicocolaborador do
+    data '14/10/2012'
+    colaborador :nome => colaborador_nome
+    faixasalarial :nome => faixasalarial_nome
+    areaorganizacional :nome => areaorganizacional_nome
+    estabelecimento :id => 1
+    motivo 'P'
+    tiposalario 3
+    salario 1040
     status 1
   end
 end
