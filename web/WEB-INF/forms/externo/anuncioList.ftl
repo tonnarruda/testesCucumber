@@ -74,14 +74,6 @@
 							
 							<#if (anuncio.qtdAvaliacoes > 0) && (anuncio.qtdAvaliacoes > anuncio.qtdAvaliacoesRespondidas)>
 								<a href="javascript:;" onclick="menuAvaliacoesSolicitacao(${anuncio.id}, '${anuncio.titulo}', ${anuncio.solicitacao.id});">Responder as avaliações</a><br />
-								
-								<#--  
-								<div id="avaliacoes${anuncio.id}" title="Selecione uma avaliação" style="display:none;">
-									<#list anuncio.solicitacao.solicitacaoAvaliacaos as solicitacaoAvaliacao>
-										<a title="Responder" href="prepareInsertAvaliacaoSolicitacao.action?anuncioId=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}&colaboradorQuestionario.avaliacao.id=${solicitacaoAvaliacao.avaliacao.id}&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true">${solicitacaoAvaliacao.avaliacao.titulo}</a><br />
-									</#list>
-								</div>
-								-->
 							</#if>
 						<#else>
 							<strong>${anuncio.titulo}</strong> <br />
