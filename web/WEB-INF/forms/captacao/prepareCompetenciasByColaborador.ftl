@@ -6,7 +6,13 @@
 			@import url('<@ww.url value="/css/displaytag.css"/>');
 			
 			.dados th:first-child { text-align: left; padding-left: 5px; }
+			#grafico { width: 640px; height: 440px; margin: 0px auto; }
 		</style>
+		
+		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.highlighter.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.spider.js"/>'></script>
 		
 		<script type="text/javascript">
 			$(function() {
@@ -32,6 +38,51 @@
 					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
 					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec');
 				</#list>
+				
+				
+				var d1 = [ [0,3], [1,4], [2,4], [3,3], [4,3], [5,4], [6,4], [7,3], [8,3] ];
+				var d2 = [ [0,4], [1,4], [2,3], [3,5], [4,4], [5,4], [6,5], [7,3], [8,4] ];
+				
+				var options = {
+					series:{
+						spider:{
+							active: true,
+							legs: { 
+								data: [{label: "1"},{label: "2"},{label: "3"},{label: "4"},{label: "5"},{label: "6"},{label: "7"},{label: "8"},{label: "9"}],
+								legScaleMax: 1,
+								legScaleMin:0.8,
+								legStartAngle: 0,
+								font: "11px Arial",
+								fillStyle: "Black"
+							},
+							highlight: { opacity: 0.5, mode: 'area' },
+							spiderSize: 0.8,
+							lineWidth: 0,
+							pointSize: 6,
+							scaleMode : "all",
+							connection: { width: 3 }
+						}
+					},
+					grid: { 
+						hoverable: true, 
+						clickable: false, 
+						tickColor: "rgba(0,0,0,0.2)",
+						ticks: ${nivelCompetencias?size},
+						mode: "radar" 
+					},
+					legend : {
+						margin : 2,
+						noColumns: 1,
+						labelBoxBorderColor : '#FFF',
+					}
+				};
+				
+				var data = [
+					{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: d1, spider: {show: true, lineWidth: 12} },
+					{ label: "Competências do colaborador", color:"lightblue", data: d2, spider: {show: true} },
+				];
+				
+				var plot = $.plot($("#grafico"), data , options);
 			});
 			
 			function enviarForm()
@@ -94,9 +145,16 @@
 			<#assign i = 0/>
 			<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 			
-				<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
+				<@display.column title="<input type='checkbox' id='checkAllCompetencia'/>" style="width: 20px;">
 					<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
 					<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+				</@display.column>
+
+				<@display.column title="#" style="width: 20px; text-align: center;">
+					${i+1}
+				</@display.column>
+
+				<@display.column title="Competência" >
 					<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 				</@display.column>
 				
@@ -112,6 +170,8 @@
 			<@ww.token/>
 		</@ww.form>
 	
+		<div id="grafico"></div>
+		
 		<div class="buttonGroup">
 			<#if niveisCompetenciaFaixaSalariais?exists && 0 < niveisCompetenciaFaixaSalariais?size>
 				<button onclick="enviarForm();" class="btnGravar"></button>

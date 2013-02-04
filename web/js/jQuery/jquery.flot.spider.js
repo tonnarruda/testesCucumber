@@ -40,7 +40,7 @@
 				active : false,
 				show : false,
 				spiderSize : 0.8,
-				lineWidth : 3,
+				lineWidth : 0,
 				lineStyle : "rgba(0,0,0,0.5)",
 				pointSize : 6,
 				scaleMode : "leg",
