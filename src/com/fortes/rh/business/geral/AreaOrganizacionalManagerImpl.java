@@ -257,6 +257,26 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		return checks;
 	}
+	
+	public Collection<CheckBox> populaCheckByAreasOrderDescricao(Long[] areaIds)
+	{
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		try
+		{
+			Collection<AreaOrganizacional> areas = getDao().findAreas(areaIds);
+			areas = montaFamilia(areas);
+			CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+			areas = cu1.sortCollectionStringIgnoreCase(areas, "descricaoStatusAtivo");
+			
+			checks = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return checks;
+	}
 
 	public Collection<CheckBox> populaCheckOrderDescricao(Long[] empresaIds)
 	{

@@ -348,8 +348,9 @@
 				/cargosalario/faixaSalarialHistorico/relatorioAnaliseTabelaSalarial*/**=ROLE_MOV_TABELA
 				/cargosalario/faixaSalarialHistorico/*/**=ROLE_CAD_CARGO
 				/cargosalario/grupoOcupacional/*/**=ROLE_CAD_GRUPO
-				/cargosalario/reajusteRelatorio/formFiltro*/**=ROLE_MOV_SIMULACAOREAJUSTE
-				/cargosalario/reajusteRelatorio/*/**=ROLE_REL_SIMULACAOREAJUSTE, ROLE_MOV_SIMULACAOREAJUSTE
+				/cargosalario/reajusteRelatorio/formFiltro*/**=ROLE_REL_SIMULACAOREAJUSTE
+				/cargosalario/reajusteRelatorio/gerarRelatorio*/**=ROLE_REL_SIMULACAOREAJUSTE
+				/cargosalario/reajusteRelatorio/*/**=ROLE_MOV_SIMULACAOREAJUSTE
 				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes*/** = ROLE_AMBIENTE
 				/cargosalario/historicoColaborador/updateAmbientesEFuncoes*/** = ROLE_AMBIENTE
 				/cargosalario/historicoColaborador/prepareRelatorioPromocoes*/** = ROLE_REL_PROMOCAO 

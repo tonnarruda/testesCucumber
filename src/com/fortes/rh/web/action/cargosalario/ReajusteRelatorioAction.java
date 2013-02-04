@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
@@ -16,6 +15,8 @@ import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
@@ -24,11 +25,13 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.FiltrosRelatorio;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings( { "unchecked", "serial" })
 public class ReajusteRelatorioAction extends MyActionSupport
@@ -77,6 +80,8 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private Collection<CheckBox> grupoOcupacionalsCheckList = new ArrayList<CheckBox>();
 	private Double valorTotalFolha;
 
+	private boolean verTodasAreas;
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -84,14 +89,34 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 	public String formFiltro() throws Exception
 	{
-		filtrarPor = new FiltrosRelatorio();
-
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelect(getEmpresaSistema().getId());
-		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
 		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		Long[] areaIds = null;
+		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+		
+		verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
+		
+		if(verTodasAreas) {
+			areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		} else {
+			areaIds = areaOrganizacionalManager.findIdsAreasResponsaveis(usuarioLogado, getEmpresaSistema().getId());
+			
+			if(areaIds.length == 0)
+				areaIds = new Long[]{-1L};
+			
+			areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckByAreasOrderDescricao(areaIds);
+			if(areaOrganizacionalsCheckList.isEmpty())
+			{
+				addActionMessage("Não é possível gerar o relatório, pois você não é responsável por nenhuma área organizacional.");
+				tabelaReajusteColaboradors = null;
+			}
+		}
+
+		filtrarPor = new FiltrosRelatorio();
 
 		if (tabelaReajusteColaborador != null && tabelaReajusteColaborador.getId() != null)
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
@@ -99,9 +124,9 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("finally")
 	public String gerarRelatorio() throws Exception
 	{
-		String msg = null;
 		try
 		{
 			TabelaReajusteColaborador tabelaReajusteColaboradorAux = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
@@ -130,7 +155,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 				dataSourceIndice = reajusteIndiceManager.findByFiltros(filtros);
 				
 				if (dataSourceIndice == null || dataSourceIndice.isEmpty())
-					msgErro();
+					throw new FortesException(" Não existem dados para o filtro informado.<br>");
 				
 				retorno = "successIndice";
 			} else if(tabelaReajusteColaboradorAux.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
@@ -138,7 +163,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 				dataSourceFaixaSalarial = reajusteFaixaSalarialManager.findByFiltros(filtros);
 				
 				if (dataSourceFaixaSalarial == null || dataSourceFaixaSalarial.isEmpty())
-					msgErro();
+					throw new FortesException(" Não existem dados para o filtro informado.<br>");
 
 				retorno = "successFaixaSalarial";
 			} else 
@@ -146,7 +171,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 				dataSource = reajusteColaboradorManager.findByGruposAreas(filtros);
 
 				if (dataSource == null || dataSource.isEmpty())
-					msgErro();
+					throw new FortesException(" Não existem dados para o filtro informado.<br>");
 
 				dataSource = reajusteColaboradorManager.ordenaPorEstabelecimentoAreaOrGrupoOcupacional(getEmpresaSistema().getId(), dataSource, filtro);
 				retorno = Action.SUCCESS;
@@ -159,29 +184,25 @@ public class ReajusteRelatorioAction extends MyActionSupport
 			parametros.put("EXIBIR_OBS",exibirObservacao);
 			parametros.put("FILTRAR_POR", filtro);
 			parametros.put("TOTAL_FOLHA", valorTotalFolha);
-
+			
 			return retorno;
+		}
+		catch (FortesException e)
+		{
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-
-			if (msg != null)
-				addActionMessage(msg);
-			else
-				addActionMessage("Não foi possível gerar o relatório");
-
+			addActionMessage("Não foi possível gerar o relatório");
+		} 
+		finally 
+		{
+			tabelaReajusteColaborador = null;
 			formFiltro();
 			return Action.INPUT;
 		}
-	}
-
-	private void msgErro() throws Exception 
-	{
-		String msg;
-		ResourceBundle bundle = ResourceBundle.getBundle("application");
-		msg = bundle.getString("error.relatorio.vazio");
-		throw new Exception(msg);
 	}
 
 	public LinkedHashMap getFiltrarPor()
@@ -419,5 +440,11 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 	public void setIndicesCheck(String[] indicesCheck) {
 		this.indicesCheck = indicesCheck;
+	}
+
+	
+	public boolean isVerTodasAreas()
+	{
+		return verTodasAreas;
 	}
 }

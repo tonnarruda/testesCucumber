@@ -41,7 +41,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		hql.append("from Anuncio a ");
 		hql.append("inner join a.solicitacao s "); 
 		hql.append("left join s.candidatoSolicitacaos cs with cs.candidato.id = :candidatoId "); 
-		hql.append("left join s.solicitacaoAvaliacaos sa ");
+		hql.append("left join s.solicitacaoAvaliacaos sa with sa.responderModuloExterno = true ");
 		hql.append("left join s.colaboradorQuestionarios cq with cq.avaliacao.id = sa.avaliacao.id and cq.candidato.id = :candidatoId ");
 		hql.append("where s.encerrada = false ");
 		hql.append("and s.empresa.id = :empresaId ");

@@ -7,6 +7,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CheckListBoxTag extends TagSupport
 {
 	private String name = ""; // nome do componente
@@ -52,8 +54,10 @@ public class CheckListBoxTag extends TagSupport
 				dimension += "'";
 			}
 
+			String labelFormatado = label + (StringUtils.isBlank(label)?"":":"); 
+					
 			checkGroup += "<li id=\"wwgrp_"+ name +"\" class=\"wwgrp\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> " +
-				"<label for=\""+ name +"\" class=\"desc\"> "+ label +": </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n";
+				"<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n";
 
 			checkGroup += "<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>";
 
