@@ -15,6 +15,13 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.spider.js"/>'></script>
 		
 		<script type="text/javascript">
+			var niveis = [];
+			var competencias = [];
+			
+			var labels = [];
+			var compFaixa = [];
+			var compColab = [];
+			
 			$(function() {
 				$('.checkCompetencia').click(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
@@ -36,54 +43,115 @@
 				
 				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
 					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec');
+					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec').addClass('nivelFaixa').attr('ordem', ${nivelSugerido.nivelCompetencia.ordem});
 				</#list>
 				
+				niveis[0] = 'Indefinido';
+				<#list nivelCompetencias as nivel>
+					niveis[${nivel.ordem}] = '${nivel.descricao}';
+				</#list>
+
+				<#assign j = 1/>
+				<#list niveisCompetenciaFaixaSalariais as comp>
+					competencias[${j}] = '${comp.competenciaDescricao}';
+					<#assign j = j + 1/>
+				</#list>
 				
-				var d1 = [ [0,3], [1,4], [2,4], [3,3], [4,3], [5,4], [6,4], [7,3], [8,3] ];
-				var d2 = [ [0,4], [1,4], [2,3], [3,5], [4,4], [5,4], [6,5], [7,3], [8,4] ];
+				$('.checkCompetencia, .checkNivel').click(atualizarGrafico);
 				
-				var options = {
-					series:{
-						spider:{
-							active: true,
-							legs: { 
-								data: [{label: "1"},{label: "2"},{label: "3"},{label: "4"},{label: "5"},{label: "6"},{label: "7"},{label: "8"},{label: "9"}],
-								legScaleMax: 1,
-								legScaleMin:0.8,
-								legStartAngle: 0,
-								font: "11px Arial",
-								fillStyle: "Black"
-							},
-							highlight: { opacity: 0.5, mode: 'area' },
-							spiderSize: 0.8,
-							lineWidth: 0,
-							pointSize: 6,
-							scaleMode : "all",
-							connection: { width: 3 }
-						}
-					},
-					grid: { 
-						hoverable: true, 
-						clickable: false, 
-						tickColor: "rgba(0,0,0,0.2)",
-						ticks: ${nivelCompetencias?size},
-						mode: "radar" 
-					},
-					legend : {
-						margin : 2,
-						noColumns: 1,
-						labelBoxBorderColor : '#FFF',
+				atualizarGrafico();
+			});
+			
+			var options = {
+				series:{
+					spider:{
+						active: true,
+						legs: { 
+							data: labels,
+							legScaleMax: 1,
+							legScaleMin:0.8,
+							legStartAngle: 0,
+							font: "11px Arial",
+							fillStyle: "Black"
+						},
+						highlight: { opacity: 0.5, mode: "area" },
+						spiderSize: 0.8,
+						lineWidth: 0,
+						pointSize: 6,
+						scaleMode : "all",
+						connection: { width: 3 }
 					}
-				};
+				},
+				grid: { hoverable: true, clickable: false, tickColor: "rgba(0,0,0,0.2)", ticks: ${nivelCompetencias?size}, mode: "radar" },
+				legend : { margin : 2, noColumns: 1, labelBoxBorderColor : '#FFF' }
+			};
+			
+			function atualizarGrafico()
+			{
+				labels = [];
+				compFaixa = [];
+				compColab = [];
+			
+				$('.checkCompetencia:checked').each(function() {
+					var seq = $(this).parent().next().text().match(/\d+/g)[0];
+					var nivelFaixa = $(this).parent().parent().find('.nivelFaixa').attr('ordem');
+					var nivelColab = $(this).parent().parent().find('.checkNivel:checked').attr('ordem');
+					
+					if (nivelFaixa || nivelColab)
+					{
+						labels.push({ label: seq });
+						compFaixa.push([ seq, nivelFaixa || 0 ]);
+						compColab.push([ seq, nivelColab || 0 ]);
+					}
+				});
+				
+				options.series.spider.legs.data = labels;
 				
 				var data = [
-					{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: d1, spider: {show: true, lineWidth: 12} },
-					{ label: "Competências do colaborador", color:"lightblue", data: d2, spider: {show: true} },
+					{ label: "Competências exigidas pelo cargo/faixa", color:"lightgray", data: compFaixa, spider: {show: true} },
+					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} },
 				];
 				
 				var plot = $.plot($("#grafico"), data , options);
-			});
+				$("#grafico").bind("plothover", graficohover);
+			}
+			
+			var serie = null;
+			var datapoint = null;
+			function graficohover(event, pos, item) 
+			{
+				if (item) 
+				{
+					if (serie != item.serie || datapoint != item.datapoint) 
+					{
+						serie = item.serie; 
+						datapoint = item.datapoint;
+						$("#tooltip").remove();
+						showTooltip(pos.pageX, pos.pageY, item.value);
+					}
+				} else 
+				{
+					$("#tooltip").remove();
+					serie = null;
+					datapoint = null;            
+				}
+			}
+			
+			function showTooltip(x, y, contents) 
+			{
+				console.log(contents);
+			
+				$("<div id='tooltip'>" + competencias[ contents[0] ] + ': ' + niveis[ contents[1] ] + "</div>").css({
+					position: "absolute",
+					display: "none",
+					top: y + 5,
+					left: x + 5,
+					border: "1px solid #fdd",
+					padding: "2px",
+					"background-color": "#fee",
+					opacity: 0.80
+				}).appendTo("body").fadeIn(200);
+			}
 			
 			function enviarForm()
 			{
@@ -160,7 +228,7 @@
 				
 				<#list nivelCompetencias as nivel>			
 					<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
-						<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
+						<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" ordem="${nivel.ordem}" />
 					</@display.column>
 				</#list>
 				

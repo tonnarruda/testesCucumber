@@ -364,9 +364,7 @@
 				var d = calculateFromCenter(mousex, mousey);
 				v = calculateValue(hl.mouseItem.datapoint, d);
 				pos = calculateXY(cnt, hl.mouseItem.datapoint, d);
-				var dx = Math.abs(pos.x - mousex), dy = Math
-						.abs(pos.y - mousey), dist = Math.sqrt(dx * dx + dy
-						* dy);
+				var dx = Math.abs(pos.x - mousex), dy = Math.abs(pos.y - mousey), dist = Math.sqrt(dx * dx + dy * dy);
 				var serie = data[hl.mouseItem.serie];
 				if (dist <= serie.spider.pointSize) {
 					r.found = true;
@@ -381,18 +379,14 @@
 					serie = data[i];
 					if (serie.spider.show) {
 						for ( var j = 0; j < serie.data.length; j++) {
-							var pos = calculateXY(cnt, j, calculatePosition(
-									serie, data.ranges, j));
-							var dx = Math.abs(pos.x - mousex), dy = Math
-									.abs(pos.y - mousey), dist = Math.sqrt(dx
-									* dx + dy * dy);
+							var pos = calculateXY(cnt, j, calculatePosition(serie, data.ranges, j));
+							var dx = Math.abs(pos.x - mousex), dy = Math.abs(pos.y - mousey), dist = Math.sqrt(dx * dx + dy * dy);
 							if (dist <= serie.spider.pointSize) {
 								r.found = true;
 								r.serie = i;
 								r.datapoint = j;
 								r.value = serie.data[j];
-								r.label = serie.label + ":"
-										+ opt.series.spider.legs.data[j].label;
+								r.label = serie.label + ":" + opt.series.spider.legs.data[j].label;
 							}
 						}
 					}
@@ -428,20 +422,19 @@
 			function drawHighlight(hl) {
 				var c = "rgba(255, 255, 255, " + opt.series.spider.highlight.opacity + ")";
 				var serie = data[hl.item.serie];
-				console.log(serie);
 				switch (opt.series.spider.highlight.mode) {
-				case "point":
-					drawspiderPoints(octx, cnt, serie, c);
-					break;
-				case "line":
-					drawspiderConnections(octx, cnt, serie, c, false);
-					break;
-				case "area":
-					drawspiderConnections(octx, cnt, serie, serie.color, true);
-					break;
-				default:
-					break;
-				}
+					case "point":
+						drawspiderPoints(octx, cnt, serie, c);
+						break;
+					case "line":
+						drawspiderConnections(octx, cnt, serie, c, false);
+						break;
+					case "area":
+						drawspiderConnections(octx, cnt, serie, serie.color, true);
+						break;
+					default:
+						break;
+					}
 			}
 		}
 	}

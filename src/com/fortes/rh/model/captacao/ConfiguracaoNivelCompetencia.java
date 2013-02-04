@@ -208,6 +208,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.nivelCompetencia.setDescricao(descricao);
 	}
 	
+	public void setProjectionNivelCompetenciaOrdem(Integer ordem) 
+	{
+		if (this.nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		
+		this.nivelCompetencia.setOrdem(ordem);
+	}
+	
 	public Long getCompetenciaId() 
 	{
 		return competenciaId;
