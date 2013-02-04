@@ -108,8 +108,9 @@
 	<@ww.textfield label="URL da Aplicação" name="parametrosDoSistema.appUrl" id="appUrl" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Contexto da Aplicação" name="parametrosDoSistema.appContext" id="appContext" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Tempo para expirar a sessão(em segundos)" name="parametrosDoSistema.sessionTimeout" id="sessionTimeout" onkeypress="return(somenteNumeros(event,''));" size="8" maxlength="8" required="true"/>
-	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="40" maxLength="100" required="true"/>
-	<@ww.textfield label="Configuração do Autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="40" maxLength="100" required="true"/>
+	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="80" maxLength="100" required="true"/>
+	<@ww.textfield label="Configuração do Autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="80" maxLength="100" required="true"/>
+	<@ww.textfield label="Réplica do Backup do Banco de Dados" name="parametrosDoSistema.caminhoBackup" id="caminhoBackup" size="80" maxLength="200" />
 	<br/>
 	
 	<@ww.select label="Perfil Padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil"/>
@@ -123,7 +124,7 @@
 	<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -22px" />
 	<br />
 	<@ww.textfield name="parametrosDoSistema.emailRemetente" id="emailRemetente" cssClass="mascaraEmail" size="100" maxLength="99"  theme="simple"/>
-	<br>
+	<br /><br />
 	<div id="suporte">
 		<div id="quadro">
 			<h2>

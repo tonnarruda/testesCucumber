@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column caminhobackup varchar(200); --.go 

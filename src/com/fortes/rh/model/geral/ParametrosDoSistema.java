@@ -50,6 +50,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String servidorRemprot;
     @Column(length=20)
     private String acVersaoWebServiceCompativel;
+    @Column(length=200)
+    private String caminhoBackup;
     @Lob
     private String modulos;
     @Temporal(TemporalType.DATE)
@@ -325,4 +327,15 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setEmailRemetente(String emailRemetente) {
 		this.emailRemetente = emailRemetente;
 	}
+	
+	public String getCaminhoBackup()
+	{
+		return caminhoBackup;
+	}
+	
+	public void setCaminhoBackup(String caminhoBackup)
+	{
+		this.caminhoBackup = caminhoBackup;
+	}
+	
 }

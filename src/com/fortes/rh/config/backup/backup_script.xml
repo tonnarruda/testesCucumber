@@ -4,7 +4,7 @@
 	<!-- Importa antcontrib lib -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="WEB-INF/lib/backup/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${sys.path}\WEB-INF\lib\backup\ant-contrib-1.0b3.jar"/>
 		</classpath>
 	</taskdef>
 	
@@ -84,6 +84,18 @@
 			<arg value="${db_name}" />
 		</exec>
 		
+		<trycatch property="error.message" reference="exception">
+			<try>
+				<antcallback target="pesquisa-caminho-backup" return="caminhobackup" />
+				<copy file="${backup.db.file.path}" todir="${caminhobackup}" />
+				<echo message="Arquivo de backup do banco replicado em: ${caminhobackup}" />
+			</try>
+			<catch>
+				<echo>Erro: ${error.message}</echo>
+			</catch>
+		</trycatch>
+		
+		
 		<echo message="Verificando se o arquivo foi gerado corretamente.." />
 		
 		<available property="backup.file.present" file="${backup.db.file.path}"
@@ -95,6 +107,29 @@
 		<echo message="Arquivo de backup do banco salvo em: ${backup.db.file.path}" />
 		
 		<stopwatch name="backup-banco-time" action="total" />
+	</target>
+	
+	<target name="pesquisa-caminho-backup" depends="carrega-dados-de-configuracao-do-fortesrh">
+		<sql driver="org.postgresql.Driver"
+			url="${postgres.jdbc.url}"
+			userid="${postgres.user}"
+			password="${postgres.password}"
+			classpath="${sys.path}\WEB-INF\lib\postgresql*.jar"
+			autocommit="true"
+			print="true"
+			output="output-versao-tmp.txt">
+			<transaction>
+				select caminhobackup from parametrosdosistema where id = 1
+			</transaction>
+		</sql>
+		<!-- Le versao atual do arquivo -->
+		<loadfile property="caminhobackup" srcfile="output-versao-tmp.txt">
+			<filterchain>
+				<headfilter lines="-1" skip="1" />
+				<tailfilter lines="-1" skip="2"/>
+				<deletecharacters chars="\t\r\n" />
+			</filterchain>
+		</loadfile>
 	</target>
 	
 	<target name="carrega-dados-de-configuracao-do-fortesrh">
