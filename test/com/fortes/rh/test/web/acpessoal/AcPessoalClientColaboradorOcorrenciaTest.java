@@ -47,7 +47,7 @@ public class AcPessoalClientColaboradorOcorrenciaTest extends AcPessoalClientTes
 	{
 		ResultSet result = query("select count(*) as total from oce where emp_codigo = '" + empCodigo + "'");
 		if (result.next())
-			assertEquals(0, result.getInt("total"));
+			assertEquals(1, result.getInt("total"));
 		else
 			fail("Consulta não retornou nada...");
 	}
