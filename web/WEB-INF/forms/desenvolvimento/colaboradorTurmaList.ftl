@@ -95,6 +95,7 @@
 		<#if compartilharColaboradores>
 			<#include "../util/topFiltro.ftl" />
 	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);"/>
+	            <@ww.select label="Aprovado" name="aprovado" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
 	            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
@@ -109,7 +110,7 @@
     </@ww.form>
 	
 	<#if totalSize?exists>
-		<b>${totalSize} Colaboradores Inscritos</b>
+		<b>${totalSize} Colaboradores</b>
 	</#if>
 
 	<#if turma?exists && turma.id?exists>

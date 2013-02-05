@@ -111,7 +111,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Date dataIni;
 	private Date dataFim;
 
-	private char aprovado = 'T'; // T, S, N
+	private char aprovado = 'T'; // T - Todos, S - Sim , N - Não
 	//flag para a tela do relatório de colaboradores com treinamento e sem treinamento
 	private boolean comTreinamento;
 	private boolean exibeFiltro;
@@ -153,8 +153,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		
 		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck)));
 		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), getPage(), getPagingSize());
-
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
+		
+		if(aprovado == 'S' || aprovado == 'N')
+		{
+			colaboradorTurmas = colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmas, aprovado);
+			setTotalSize((colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, null), aprovado)).size());
+		}
 		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
 

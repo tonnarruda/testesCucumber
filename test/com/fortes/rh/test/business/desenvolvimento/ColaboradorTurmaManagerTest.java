@@ -1037,6 +1037,56 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals(colaborador.getId(), ((Colaborador)retorno.toArray()[0]).getId());
 	}
 	
+	public void testFiltraAprovadoReprovado() 
+	{
+		Curso curso = CursoFactory.getEntity();
+		curso.setPercentualMinimoFrequencia(100.0);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Turma turma = TurmaFactory.getEntity(1L);
+		
+		ColaboradorTurma aprovado = ColaboradorTurmaFactory.getEntity();
+		aprovado.setId(1L);
+		aprovado.setColaborador(colaborador);
+		aprovado.setQtdAvaliacoesAprovadasPorNota(1);
+		aprovado.setQtdAvaliacoesCurso(1);
+		aprovado.setTotalDias(2);
+		aprovado.setQtdPresenca(2);
+		aprovado.setTurma(turma);
+		aprovado.setCurso(curso);
+
+		ColaboradorTurma reprovadoNota = ColaboradorTurmaFactory.getEntity();
+		reprovadoNota.setId(2L);
+		reprovadoNota.setColaborador(colaborador);
+		reprovadoNota.setQtdAvaliacoesAprovadasPorNota(0);
+		reprovadoNota.setQtdAvaliacoesCurso(1);
+		reprovadoNota.setTotalDias(2);
+		reprovadoNota.setQtdPresenca(2);
+		reprovadoNota.setTurma(turma);
+		reprovadoNota.setCurso(curso);
+
+		ColaboradorTurma reprovadoFalta = ColaboradorTurmaFactory.getEntity();
+		reprovadoFalta.setId(3L);
+		reprovadoFalta.setColaborador(colaborador);
+		reprovadoFalta.setQtdAvaliacoesAprovadasPorNota(1);
+		reprovadoFalta.setQtdAvaliacoesCurso(1);
+		reprovadoFalta.setTotalDias(2);
+		reprovadoFalta.setQtdPresenca(1);
+		reprovadoFalta.setTurma(turma);
+		reprovadoFalta.setCurso(curso);
+		
+		Collection<ColaboradorTurma> colabTurmas =  new ArrayList<ColaboradorTurma>();
+		colabTurmas.add(aprovado);
+		colabTurmas.add(reprovadoFalta);
+		colabTurmas.add(reprovadoNota);
+		
+		colaboradorTurmaDao.expects(atLeastOnce()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
+		
+		assertEquals("Retorna todos", 3, colaboradorTurmaManager.filtraAprovadoReprovado(colabTurmas, 'T').size() );
+		assertEquals("Aprovados", 1, colaboradorTurmaManager.filtraAprovadoReprovado(colabTurmas, 'S').size() );
+		assertEquals("Reprovados", 2, colaboradorTurmaManager.filtraAprovadoReprovado(colabTurmas, 'N').size() );
+	}
+
 	public void testFindAprovadosByTurma() 
 	{
 		Curso curso = CursoFactory.getEntity();
@@ -1053,7 +1103,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		aprovado.setQtdPresenca(2);
 		aprovado.setTurma(turma);
 		aprovado.setCurso(curso);
-
+		
 		ColaboradorTurma reprovadoNota = ColaboradorTurmaFactory.getEntity();
 		reprovadoNota.setColaborador(colaborador);
 		reprovadoNota.setQtdAvaliacoesAprovadasPorNota(0);
@@ -1062,7 +1112,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		reprovadoNota.setQtdPresenca(2);
 		reprovadoNota.setTurma(turma);
 		reprovadoNota.setCurso(curso);
-
+		
 		ColaboradorTurma reprovadoFalta = ColaboradorTurmaFactory.getEntity();
 		reprovadoFalta.setColaborador(colaborador);
 		reprovadoFalta.setQtdAvaliacoesAprovadasPorNota(1);

@@ -1024,6 +1024,52 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return aprovados;
 	}
 
+	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmas, char aprovado) 
+	{
+		if(aprovado != 'S' && aprovado != 'N')
+			return colaboradorTurmas;
+
+		CollectionUtil<ColaboradorTurma> cu = new CollectionUtil<ColaboradorTurma>();
+		Long[] colaboradorTurmaIds = cu.convertCollectionToArrayIds(colaboradorTurmas);
+		Collection<ColaboradorTurma> colaboradorTurmasTemp = getDao().findAprovadosReprovados(colaboradorTurmaIds);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasAprovados = new ArrayList<ColaboradorTurma>(); 
+		Collection<ColaboradorTurma> colaboradorTurmasReprovados = new ArrayList<ColaboradorTurma>(); 
+		
+		for (ColaboradorTurma ct : colaboradorTurmasTemp)
+		{
+			if(verificaPresenca(ct) && verificaNota(ct))
+			{
+				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+				{
+					if(colaboradorTurma.getId().equals(ct.getId()))
+					{
+						colaboradorTurmasAprovados.add(colaboradorTurma);
+						break;
+					}
+				}
+			}
+			
+			else
+			{
+				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+				{
+					if(colaboradorTurma.getId().equals(ct.getId()))
+					{
+						colaboradorTurmasReprovados.add(colaboradorTurma);
+						break;
+					}
+				}
+				
+			}
+		}
+
+		if(aprovado == 'S')
+			return colaboradorTurmasAprovados;
+		else
+			return colaboradorTurmasReprovados;
+	}
+	
 	private boolean verificaAprovacao(ColaboradorTurma ct)
 	{
 		boolean aprovadoPresenca = verificaPresenca(ct);
