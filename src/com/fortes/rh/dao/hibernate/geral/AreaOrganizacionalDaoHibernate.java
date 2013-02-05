@@ -3,8 +3,11 @@
  * Requisito: RFA004*/
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -20,7 +23,10 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -51,6 +57,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.createCriteria("ao.areaMae", "areaMae", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ao.responsavel", "r", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ao.coResponsavel", "cor", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ao.id"), "id");
@@ -62,6 +69,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("areaMae.nome"), "areaMaeNome");
 		p.add(Projections.property("r.id"), "idResponsavel");
 		p.add(Projections.property("r.nomeComercial"), "nomeResponsavel");
+		p.add(Projections.property("cor.id"), "idCoResponsavel");
+		p.add(Projections.property("cor.nomeComercial"), "nomeCoResponsavel");
 		p.add(Projections.property("r.contato.email"), "emailResponsavel");
 		p.add(Projections.property("ao.empresa.id"), "empresaId");
 		criteria.setProjection(p);
@@ -98,6 +107,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("am.nome"), "nomeAreaMae");
 		p.add(Projections.property("r.id"), "idResponsavel");
 		p.add(Projections.property("r.nomeComercial"), "nomeResponsavel");
+		p.add(Projections.property("cor.id"), "idCoResponsavel");
+		p.add(Projections.property("cor.nomeComercial"), "nomeCoResponsavel");
 		p.add(Projections.property("r.contato.email"), "emailResponsavel");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
@@ -123,6 +134,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	{
 		criteria.createCriteria("areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("responsavel", "r", Criteria.LEFT_JOIN);
+		criteria.createCriteria("coResponsavel", "cor", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ao.empresa", "e");
 
 		if(colaboradorId != null)
@@ -423,22 +435,22 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId) 
+	public Long[] findIdsAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"a");
-		criteria.createCriteria("a.responsavel", "c");
-		criteria.createCriteria("c.usuario", "u");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("a.id"), "id");
-		criteria.setProjection(p);
+		StringBuilder sql = new StringBuilder();
+		sql.append("select a.id from AreaOrganizacional a "); 
+		sql.append("inner join colaborador c on (c.id = a.responsavel_id or c.id = a.coResponsavel_id) ");
+		sql.append("inner join usuario u on u.id = c.usuario_id ");
+		sql.append("where u.id = :usuarioId ");
+		sql.append("and a.empresa_id = :empresaId ");
+		sql.append("order by a.id ");
+	
+		Query query = getSession().createSQLQuery(sql.toString());
 		
-		criteria.add(Expression.eq("u.id", usuarioId));
-		criteria.add(Expression.eq("a.empresa.id", empresaId));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		query.setLong("usuarioId", usuarioId);
+		query.setLong("empresaId", empresaId);
 		
-		CollectionUtil<AreaOrganizacional> cul = new CollectionUtil<AreaOrganizacional>();
-		return cul.convertCollectionToArrayIds(criteria.list());
+		return LongUtil.collectionStringToArrayLong(query.list());
 	}
 
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) 

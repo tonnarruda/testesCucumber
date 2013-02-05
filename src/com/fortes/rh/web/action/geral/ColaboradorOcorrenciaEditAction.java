@@ -174,7 +174,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				areasIds = areaOrganizacionalManager.findIdsAreasResponsaveis(usuarioLogado, getEmpresaSistema().getId());
+				areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, getEmpresaSistema().getId());
 				
 				if(areasIds.length == 0)
 					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador

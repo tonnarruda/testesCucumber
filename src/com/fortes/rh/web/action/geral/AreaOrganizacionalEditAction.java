@@ -32,6 +32,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 	private Collection<AreaOrganizacional> areas;
 	private Collection<Colaborador> responsaveis;
+	private Collection<Colaborador> coResponsaveis;
 	
 	private String[] emailsNotificacoes;
 
@@ -53,6 +54,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaId);
 		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nome");
+		coResponsaveis = responsaveis;
 	}
 
 	public String prepareInsert() throws Exception
@@ -251,6 +253,10 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 	public void setEmailsNotificacoes(String[] emailsNotificacoes) {
 		this.emailsNotificacoes = emailsNotificacoes;
+	}
+
+	public Collection<Colaborador> getCoResponsaveis() {
+		return coResponsaveis;
 	}
 
 }

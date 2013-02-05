@@ -103,7 +103,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		if(verTodasAreas) {
 			areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		} else {
-			areaIds = areaOrganizacionalManager.findIdsAreasResponsaveis(usuarioLogado, getEmpresaSistema().getId());
+			areaIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, getEmpresaSistema().getId());
 			
 			if(areaIds.length == 0)
 				areaIds = new Long[]{-1L};

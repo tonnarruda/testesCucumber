@@ -10,10 +10,12 @@
 	<title>Editar Área Organizacional</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
+	<#assign desabilitado="false"/>
 <#else>
 	<title>Inserir Área Organizacional</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
+	<#assign desabilitado="true"/>
 </#if>
 
 <#if podeEditarAreaMae == false>
@@ -25,6 +27,9 @@
 <#assign validarCampos="validarCampos();"/>
 
 <script type="text/javascript">
+
+	
+	
 	function validarCampos()
 	{
 		if (validaFormulario('form', new Array('nome'), null, true))
@@ -47,6 +52,16 @@
 		campo += "<img title='Remover' src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' onclick='javascript:$(this).parent().remove();' style='cursor:pointer;'/>";
 		campo += "</li>";
 		$('ul#camposEmails').append(campo);
+	}
+	
+	function habilitaCoResponsavel(colab_id)
+	{
+		var slecionado = (colab_id != "") 
+	
+		if(!slecionado)
+			$("#coResponsavel").val('');
+		
+		$("#coResponsavel").attr('disabled', !slecionado);
 	}
 	
 	$(function() 
@@ -81,7 +96,9 @@
 		
 		<@ww.textfield label="Nome" name="areaOrganizacional.nome" id="nome" cssClass="inputNome" maxLength="60" required="true" disabled="${editaAreaMae}"/>
 		<@ww.select label="Área Mãe" name="areaOrganizacional.areaMae.id" disabled="${editaAreaMae}" list="areas" listKey="id" listValue="descricao" headerValue="" headerKey="-1" cssStyle="width:445px;"/>
-		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial"/>
+		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" onchange="habilitaCoResponsavel(this.value);"/>
+		
+		<@ww.select label="Coresponsável" name="areaOrganizacional.coResponsavel.id" id="coResponsavel" list="coResponsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" disabled = "${desabilitado}"/>
 		<@ww.select label="Ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
 		<label>E-mails extras para notificações:</label>

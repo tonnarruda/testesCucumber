@@ -52,6 +52,7 @@
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="responsavel.nomeComercial" title="Responsável"/>
+		<@display.column property="coResponsavel.nomeComercial" title="CoResponsável"/>
 
 		<#if integradoAC?exists && integradoAC>
 			<@display.column property="codigoAC" title="Código AC" />

@@ -59,6 +59,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	@ManyToOne
 	private Colaborador responsavel;
 	@ManyToOne
+	private Colaborador coResponsavel;
+	@ManyToOne
 	private Empresa empresa;
 	private boolean ativo = ATIVA;
 	@Column
@@ -240,6 +242,12 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		responsavel.setNomeComercial(nomeResponsavel);
 	}
 	
+	public void setNomeCoResponsavel(String nomeCoResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setNomeComercial(nomeCoResponsavel);
+	}
+	
 	public void setEmailResponsavel(String emailResponsavel)
 	{
 		preparaResponsavel();
@@ -250,11 +258,22 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		if(responsavel == null)
 			responsavel = new Colaborador();
 	}
+	
+	private void preparaCoResponsavel() {
+		if(coResponsavel == null)
+			coResponsavel = new Colaborador();
+	}
 
 	public void setIdResponsavel(Long idResponsavel)
 	{
 		preparaResponsavel();
 		responsavel.setId(idResponsavel);
+	}
+	
+	public void setIdCoResponsavel(Long idCoResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setId(idCoResponsavel);
 	}
 	
 	public void setResponsavelNome(String nome) {
@@ -447,5 +466,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setQtdContratados(int qtdContratados) {
 		this.qtdContratados = qtdContratados;
+	}
+
+	public Colaborador getCoResponsavel() {
+		return coResponsavel;
+	}
+
+	public void setCoResponsavel(Colaborador coResponsavel) {
+		this.coResponsavel = coResponsavel;
 	}
 }
