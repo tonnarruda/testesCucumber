@@ -6,6 +6,7 @@
 			@import url('<@ww.url value="/css/displaytag.css"/>');
 			
 			.dados th:first-child { text-align: left; padding-left: 5px; }
+			#boxgrafico { width: 966px; border: 1px solid #7E9DB9; margin-top: 15px; padding-top: 10px; }
 			#grafico { width: 640px; height: 440px; margin: 0px auto; }
 		</style>
 		
@@ -108,8 +109,8 @@
 				options.series.spider.legs.data = labels;
 				
 				var data = [
-					{ label: "Competências exigidas pelo cargo/faixa", color:"lightgray", data: compFaixa, spider: {show: true} },
-					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} },
+					{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: compFaixa, spider: {show: true} },
+					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
 				];
 				
 				var plot = $.plot($("#grafico"), data , options);
@@ -238,7 +239,9 @@
 			<@ww.token/>
 		</@ww.form>
 	
-		<div id="grafico"></div>
+		<div id="boxgrafico">
+			<div id="grafico"></div>
+		</div>
 		
 		<div class="buttonGroup">
 			<#if niveisCompetenciaFaixaSalariais?exists && 0 < niveisCompetenciaFaixaSalariais?size>
