@@ -219,10 +219,10 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds)
+	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, TipoMensagem.AVALIACAO_DESEMPENHO);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem);
 	}
 
 	public void setMensagemManager(MensagemManager mensagemManager)

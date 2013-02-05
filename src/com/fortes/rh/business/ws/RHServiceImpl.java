@@ -477,6 +477,9 @@ public class RHServiceImpl implements RHService
 		{
 			HistoricoColaborador historicoColaborador = montaSituacao(empregado, situacao);
 			historicoColaboradorManager.save(historicoColaborador);
+			
+			gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(empregado.getNome(), situacao);
+
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)

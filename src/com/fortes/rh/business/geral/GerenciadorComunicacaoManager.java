@@ -57,4 +57,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarEmailTerminoContratoTemporarioColaborador() throws Exception;
 	void enviaAvisoAtualizacaoInfoPessoais(Colaborador colaboradorOriginal, Colaborador colaboradorAtualizado, Long empresaId);
 	void enviaEmailCartaoAniversariantes();
+	void enviaMensagemCadastroSituacaoAC(String nomeColaborador, TSituacao situacao);
 }

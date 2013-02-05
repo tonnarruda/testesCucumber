@@ -42,6 +42,7 @@ import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
@@ -602,7 +603,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		    			}
 		    			
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
-		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds());
+		    				usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", link, colaborador.getAreaOrganizacional().getDescricaoIds(), TipoMensagem.AVALIACAO_DESEMPENHO);
 		    			
 		    			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))
 		    			{
@@ -1290,6 +1291,61 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
+	public void enviaMensagemCadastroSituacaoAC(String nomeColaborador, TSituacao situacao)
+	{
+		try {
+			Empresa empresa = empresaManager.findByCodigoAC(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_SITUACAO_AC.getId(), empresa.getId());
+
+			String mensagem = "Foi inserido um novo histórico para o colaborador "+nomeColaborador+" na data "+situacao.getData()+".";
+			String subject = "Cadastro de histórico de colaborador no AC Pessoal";
+
+
+			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+			{
+				try {
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+
+						AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+
+						String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(areaOrganizacional.getId(), empresa.getId());
+						mail.send(empresa, subject, null, mensagem, emails);
+
+					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
+
+						String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+						mail.send(empresa, subject, null, mensagem, emails);
+
+					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+
+						UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+						CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+						Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+
+						String[] emails = usuarioManager.findEmailsByUsuario(usuariosIds);
+						mail.send(empresa, subject, mensagem, null, emails);
+
+					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+						
+						AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem, "AC Pessoal", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS);
+
+					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+						
+						Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

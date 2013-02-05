@@ -95,7 +95,9 @@ import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
@@ -1298,5 +1300,89 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		}
 		
 		assertNull(exception);
+	}
+	
+	public void testEnviaMensagemCadastroSituacaoAC()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador", null, null);
+		
+		TSituacao situacao = new TSituacao();
+		situacao.setEmpresaCodigoAC("001");
+		situacao.setGrupoAC("002");
+		situacao.setLotacaoCodigoAC("003");
+		situacao.setData("05/02/2013");
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao1.setEmpresa(empresa);
+		gerenciadorComunicacao1.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao2.setEmpresa(empresa);
+		gerenciadorComunicacao2.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao2.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		Collection<Usuario> usuarios = Arrays.asList(usuario);
+
+		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao3.setUsuarios(usuarios);
+		gerenciadorComunicacao3.setEmpresa(empresa);
+		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao3.setEnviarPara(EnviarPara.USUARIOS.getId());
+		
+		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao4.setEmpresa(empresa);
+		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao4.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao4.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		
+		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao5.setUsuarios(usuarios);
+		gerenciadorComunicacao5.setEmpresa(empresa);
+		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao5.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao5.setEnviarPara(EnviarPara.USUARIOS.getId());
+		
+		String[] emails = new String[] {"email1@teste.com"};
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = new ArrayList<GerenciadorComunicacao>();
+		gerenciadorComunicacaos.add(gerenciadorComunicacao1);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao2);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao3);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao4);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao5);
+
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SITUACAO_AC.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(situacao.getEmpresaCodigoAC()),eq(situacao.getGrupoAC())).will(returnValue(empresa));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
+		areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(areaOrganizacional.getId()), eq(empresa.getId())).will(returnValue(emails));
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+		Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao3.getUsuarios());
+		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds)).will(returnValue(emails));
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();		
+		
+		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").with(eq(LongUtil.collectionToCollectionLong(gerenciadorComunicacao5.getUsuarios())), eq(gerenciadorComunicacao5.getEmpresa().getId()));
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
+		
+		gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(colaborador.getNome(), situacao);
 	}
 }

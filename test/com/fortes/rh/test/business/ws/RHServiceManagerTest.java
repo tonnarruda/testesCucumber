@@ -437,12 +437,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpregadoCodigoAC("54321");
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(colaborador.getNome()), eq(situacao));
 
 		assertEquals(true, rHServiceManager.criarSituacao(null, situacao).isSucesso());
 	}
