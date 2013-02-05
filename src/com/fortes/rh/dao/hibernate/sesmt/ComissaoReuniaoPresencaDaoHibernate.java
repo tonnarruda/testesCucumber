@@ -89,7 +89,8 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.createCriteria("presenca.colaborador", "co");
 
 		criteria.add(Expression.eq("cr.comissao.id", comissaoId));
-		criteria.add(Expression.in("presenca.colaborador.id", colaboradorIds));
+		if (!colaboradorIds.isEmpty()) 
+			criteria.add(Expression.in("presenca.colaborador.id", colaboradorIds));
 
 		return criteria.list().size() > 0;
 	}
