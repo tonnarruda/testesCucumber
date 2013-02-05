@@ -70,27 +70,6 @@ public class DateUtil
 		return dataDiaMesAno;
 	}
 
-	public static String formataDiaMesAnoCalendar(Date data)
-	{
-		if(data == null)
-			return "";
-		
-		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
-        try {
-            c.setTime(data);
-            int ano =  c.get(Calendar.YEAR);
-            int mes = c.get(Calendar.MONTH) + 1;
-            int dia = c.get(Calendar.DAY_OF_MONTH);
-            
-            return dia + "/" + mes + "/" + ano;
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return "";
-	}
-
 	public static String formataDiaMesAnoTime(Date data)
 	{
 		if(data == null)
