@@ -191,6 +191,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
 			areaOrganizacional.setResponsavel(null);
 
+		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
+			areaOrganizacional.setCoResponsavel(null);
+
 		update(areaOrganizacional);
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
@@ -639,9 +642,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findByEmpresa(empresaId);
 	}
 
-	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId) 
+	public Long[] findIdsAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId) 
 	{
-		return getDao().findIdsAreasDoResponsavel(usuarioId, empresaId);
+		return getDao().findIdsAreasDoResponsavelCoResponsavel(usuarioId, empresaId);
 	}
 
 	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas) 
@@ -693,9 +696,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findCodigoACDuplicado(empresaId);
 	}
 
-	public Long[] findIdsAreasResponsaveis(Usuario usuarioLogado, Long empresaId) 
+	public Long[] findIdsAreasDoResponsavelCoResponsavel(Usuario usuarioLogado, Long empresaId) 
 	{
-		Long[] areasIds = findIdsAreasDoResponsavel(usuarioLogado.getId(), empresaId);
+		Long[] areasIds = findIdsAreasDoResponsavelCoResponsavel(usuarioLogado.getId(), empresaId);
 		if(areasIds.length > 0)
 		{
 			CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
@@ -722,7 +725,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	
 	public Collection<AreaOrganizacional> findAreasByUsuarioResponsavel(Usuario usuario, Long empresaId) throws Exception
 	{
-		Long[] areaIds = findIdsAreasResponsaveis(usuario, empresaId);
+		Long[] areaIds = findIdsAreasDoResponsavelCoResponsavel(usuario, empresaId);
 		if(areaIds == null || areaIds.length == 0)
 			return new ArrayList<AreaOrganizacional>();
 		
@@ -735,7 +738,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areas;
 	}
 	
-	public String[] getEmailsResponsaveis(Long areaId, Long empresaId) throws Exception
+	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel) throws Exception
 	{
 		Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, true, null); 
 		areas = getAncestrais(areas, areaId);
@@ -743,8 +746,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<String> emailsNotificacoes = new ArrayList<String>();
 		for (AreaOrganizacional area : areas) 
 		{
-			if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
-				emailsNotificacoes.add(area.getResponsavelEmail());
+			if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL){
+				if(area.getCoResponsavel() != null && area.getCoResponsavel().getContato() != null && area.getCoResponsavel().getContato().getEmail() != null && !area.getCoResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getCoResponsavelEmail());
+			} else if(tipoResponsavel == AreaOrganizacional.RESPONSAVEL){
+				if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getResponsavelEmail());
+			}
 			
 			if(area.getEmailsNotificacoes() != null)
 				for (String email : area.getEmailsNotificacoes().split(";"))

@@ -65,14 +65,14 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public String nomeAreas(Long[] areaIds);
 	public AreaOrganizacional getMatriarca(Collection<AreaOrganizacional> areas, AreaOrganizacional area, Long filhaDeId);
 	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId);
-	public Long[] findIdsAreasDoResponsavel(Long usuarioId, Long empresaId);
+	public Long[] findIdsAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId);
 	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas);
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception;
 	public String findCodigoACDuplicado(Long empresaId);
-	public Long[] findIdsAreasResponsaveis(Usuario usuarioLogado, Long empresaId);
+	public Long[] findIdsAreasDoResponsavelCoResponsavel(Usuario usuarioLogado, Long empresaId);
 	public Collection<AreaOrganizacional> findAreasByUsuarioResponsavel(Usuario usuario, Long empresaId) throws Exception;
 	public Collection<AreaOrganizacional> getDescendentes(Collection<AreaOrganizacional> areas, Long id, Collection<AreaOrganizacional> descendentes);
-	public String[] getEmailsResponsaveis(Long areaId, Long empresaId) throws Exception;
+	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel) throws Exception;
 	public void desvinculaResponsavel(Long colaboradorId);
 }

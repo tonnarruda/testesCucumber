@@ -99,12 +99,14 @@ public enum Operacao
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COLABORADOR_AVALIADO);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR_AVALIADO);
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 			
 			return this.getListMeioComunicacao();
 		}
@@ -151,10 +153,12 @@ public enum Operacao
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
 			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();

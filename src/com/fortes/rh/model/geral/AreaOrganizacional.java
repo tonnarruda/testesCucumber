@@ -38,6 +38,11 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	@Transient
 	public static Boolean INATIVA = false;
 
+	@Transient
+	public static int RESPONSAVEL = 1;
+	@Transient
+	public static int CORRESPONSAVEL = 2;
+	
 	@Column(length=60)
 	@ChaveDaAuditoria
 	private String nome;
@@ -58,6 +63,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private String codigoAC;
 	@ManyToOne
 	private Colaborador responsavel;
+	@ManyToOne
+	private Colaborador coResponsavel;
 	@ManyToOne
 	private Empresa empresa;
 	private boolean ativo = ATIVA;
@@ -240,6 +247,12 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		responsavel.setNomeComercial(nomeResponsavel);
 	}
 	
+	public void setNomeCoResponsavel(String nomeCoResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setNomeComercial(nomeCoResponsavel);
+	}
+	
 	public void setEmailResponsavel(String emailResponsavel)
 	{
 		preparaResponsavel();
@@ -250,11 +263,28 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		if(responsavel == null)
 			responsavel = new Colaborador();
 	}
+	
+	public void setEmailCoResponsavel(String emailResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setEmailColaborador(emailResponsavel);
+	}
+	
+	private void preparaCoResponsavel() {
+		if(coResponsavel == null)
+			coResponsavel = new Colaborador();
+	}
 
 	public void setIdResponsavel(Long idResponsavel)
 	{
 		preparaResponsavel();
 		responsavel.setId(idResponsavel);
+	}
+	
+	public void setIdCoResponsavel(Long idCoResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setId(idCoResponsavel);
 	}
 	
 	public void setResponsavelNome(String nome) {
@@ -298,6 +328,20 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		}
 	}
 
+	@NaoAudita
+	public String getCoResponsavelEmail() {
+		try {
+			String email = "";
+			
+			if(coResponsavel.getContato().getEmail() != null)
+				email = coResponsavel.getContato().getEmail();
+			
+			return email;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
 	public void setAreaMaeId(Long areaMaeId)
 	{
 		if(areaMae == null)
@@ -447,5 +491,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setQtdContratados(int qtdContratados) {
 		this.qtdContratados = qtdContratados;
+	}
+
+	public Colaborador getCoResponsavel() {
+		return coResponsavel;
+	}
+
+	public void setCoResponsavel(Colaborador coResponsavel) {
+		this.coResponsavel = coResponsavel;
 	}
 }

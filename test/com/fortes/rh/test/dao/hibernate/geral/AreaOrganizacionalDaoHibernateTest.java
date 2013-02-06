@@ -393,12 +393,16 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacional.setResponsavel(colaborador);
+		areaOrganizacional.setCoResponsavel(colaborador);
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
-		Long[] areasIds = areaOrganizacionalDao.findIdsAreasDoResponsavel(usuario.getId(), empresa.getId());
-		assertEquals(1, areasIds.length);
-
-		assertEquals(0, areaOrganizacionalDao.findIdsAreasDoResponsavel(45454L, 151545452L).length);
+		Exception e = null;
+		try {
+			areaOrganizacionalDao.findIdsAreasDoResponsavelCoResponsavel(usuario.getId(), empresa.getId());
+		} catch (Exception e2) {
+			e = e2;
+		}
+		assertNull(e);
 	}
 	
 	public void testFindIdsAreasFilhas()

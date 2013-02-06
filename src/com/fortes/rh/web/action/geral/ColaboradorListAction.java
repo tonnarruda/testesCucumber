@@ -193,7 +193,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		if(getUsuarioLogado().getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}))
 		{
-			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasResponsaveis(getUsuarioLogado(), getEmpresaSistema().getId());
+			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
 			
 			if(areasIdsPorResponsavel.length == 0)
 				areasIdsPorResponsavel = new Long[]{-1L};//não vai achar nenhum colaborador

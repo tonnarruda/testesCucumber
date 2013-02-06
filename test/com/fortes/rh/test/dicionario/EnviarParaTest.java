@@ -9,7 +9,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(15, EnviarPara.values().length);
+		assertEquals(16, EnviarPara.values().length);
 		
 		assertEquals(new Integer(0), EnviarPara.SELECIONAR_ENVIAR_PARA.getId());
 		assertEquals(new Integer(1), EnviarPara.USUARIOS.getId());
@@ -25,6 +25,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals(new Integer(14), EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getId());
 		assertEquals(new Integer(15), EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId());
 		assertEquals(new Integer(17), EnviarPara.COLABORADOR_AVALIADO.getId());
+		assertEquals(new Integer(18), EnviarPara.COGESTOR_AREA.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 
@@ -33,6 +34,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Selecione...", EnviarPara.SELECIONAR_ENVIAR_PARA.getDescricao());
 		assertEquals("Usuários", EnviarPara.USUARIOS.getDescricao());
 		assertEquals("Gestor da área organizacional", EnviarPara.GESTOR_AREA.getDescricao());
+		assertEquals("Cogestor da área organizacional", EnviarPara.COGESTOR_AREA.getDescricao());
 		assertEquals("Candidatos não aptos", EnviarPara.CANDIDATO_NAO_APTO.getDescricao());
 		assertEquals("Solicitante", EnviarPara.SOLICITANTE_SOLICITACAO.getDescricao());
 		assertEquals("Avaliador", EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getDescricao());
@@ -52,6 +54,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Selecione...", EnviarPara.getDescricaoById(0));
 		assertEquals("Usuários", EnviarPara.getDescricaoById(1));
 		assertEquals("Gestor da área organizacional", EnviarPara.getDescricaoById(2));
+		assertEquals("Cogestor da área organizacional", EnviarPara.getDescricaoById(18));
 		assertEquals("Candidatos não aptos", EnviarPara.getDescricaoById(3));
 		assertEquals("Solicitante", EnviarPara.getDescricaoById(4));
 		assertEquals("Avaliador", EnviarPara.getDescricaoById(5));

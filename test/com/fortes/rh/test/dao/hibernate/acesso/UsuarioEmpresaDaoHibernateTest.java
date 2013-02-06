@@ -122,6 +122,56 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		
 		assertEquals(2, usuarioEmpresas.size());
 	}
+	
+	public void testFindUsuarioCoResponsavelAreaOrganizacional()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario);
+		
+		Colaborador coResponsavelArea = ColaboradorFactory.getEntity();
+		coResponsavelArea.setUsuario(usuario);
+		coResponsavelArea.setEmpresa(empresa);
+		colaboradorDao.save(coResponsavelArea);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setCoResponsavel(coResponsavelArea);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario2);
+		
+		Colaborador coResponsavelArea2 = ColaboradorFactory.getEntity();
+		coResponsavelArea2.setUsuario(usuario2);
+		coResponsavelArea2.setEmpresa(empresa);
+		colaboradorDao.save(coResponsavelArea2);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setCoResponsavel(coResponsavelArea2);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		Usuario usuarioFora = UsuarioFactory.getEntity();
+		usuarioDao.save(usuarioFora);
+		
+		Colaborador coResponsavelAreaFora = ColaboradorFactory.getEntity();
+		coResponsavelAreaFora.setUsuario(usuarioFora);
+		coResponsavelAreaFora.setEmpresa(empresa);
+		colaboradorDao.save(coResponsavelAreaFora);
+		
+		AreaOrganizacional areaOrganizacionalFora = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalFora.setCoResponsavel(coResponsavelAreaFora);
+		areaOrganizacionalDao.save(areaOrganizacionalFora);
+		
+		Collection<Long> areasIds = new ArrayList<Long>();
+		areasIds.add(areaOrganizacional.getId());
+		areasIds.add(areaOrganizacional2.getId());
+		
+		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaDao.findUsuarioCoResponsavelAreaOrganizacional(areasIds);
+		
+		assertEquals(2, usuarioEmpresas.size());
+	}
 
 	public void testFindAllBySelectUsuarioEmpresaNull()
 	{

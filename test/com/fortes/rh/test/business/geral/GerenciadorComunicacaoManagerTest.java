@@ -653,15 +653,24 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 gerenciadorComunicacao2.setQtdDiasLembrete("1");
 		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2);
+		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
+		 gerenciadorComunicacao3.setEmpresa(empresa);
+		 gerenciadorComunicacao3.setUsuarios(usuarios);
+		 gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		 gerenciadorComunicacao3.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		 gerenciadorComunicacao3.setQtdDiasLembrete("1");
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
 		 
 		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional").withAnyArguments().isVoid();
 		 
 		 Exception exception = null;
 		 try {
@@ -1354,6 +1363,18 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacao5.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
 		gerenciadorComunicacao5.setEnviarPara(EnviarPara.USUARIOS.getId());
 		
+		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao6.setEmpresa(empresa);
+		gerenciadorComunicacao6.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao6.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao6.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		
+		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao7.setEmpresa(empresa);
+		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
+		gerenciadorComunicacao7.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao7.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		
 		String[] emails = new String[] {"email1@teste.com"};
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = new ArrayList<GerenciadorComunicacao>();
@@ -1362,12 +1383,15 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaos.add(gerenciadorComunicacao3);
 		gerenciadorComunicacaos.add(gerenciadorComunicacao4);
 		gerenciadorComunicacaos.add(gerenciadorComunicacao5);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao6);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao7);
 
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SITUACAO_AC.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(situacao.getEmpresaCodigoAC()),eq(situacao.getGrupoAC())).will(returnValue(empresa));
+		
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
-		areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(areaOrganizacional.getId()), eq(empresa.getId())).will(returnValue(emails));
+		areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(areaOrganizacional.getId()), eq(empresa.getId()), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		
 		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
@@ -1382,6 +1406,13 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").with(eq(LongUtil.collectionToCollectionLong(gerenciadorComunicacao5.getUsuarios())), eq(gerenciadorComunicacao5.getEmpresa().getId()));
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
+		
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
+		areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(areaOrganizacional.getId()), eq(empresa.getId()), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(situacao.getLotacaoCodigoAC()), eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(areaOrganizacional));
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional").withAnyArguments().isVoid();		
 		
 		gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(colaborador.getNome(), situacao);
 	}
