@@ -7,6 +7,7 @@ public enum EnviarPara
 	SELECIONAR_ENVIAR_PARA(0, "Selecione..."),
 	USUARIOS (1, "Usuários"),
 	GESTOR_AREA (2, "Gestor da área organizacional"),
+	COGESTOR_AREA (18, "Cogestor da área organizacional"),
 	CANDIDATO_NAO_APTO (3, "Candidatos não aptos"),
 	SOLICITANTE_SOLICITACAO (4, "Solicitante"),
 	AVALIADOR_AVALIACAO_DESEMPENHO (5, "Avaliador"),

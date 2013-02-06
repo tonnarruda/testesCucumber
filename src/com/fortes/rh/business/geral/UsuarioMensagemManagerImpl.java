@@ -225,6 +225,12 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem);
 	}
 
+	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem)
+	{
+		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioCoResponsavelAreaOrganizacional(areasIds);
+		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem);
+	}
+
 	public void setMensagemManager(MensagemManager mensagemManager)
 	{
 		this.mensagemManager = mensagemManager;

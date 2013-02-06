@@ -38,6 +38,11 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	@Transient
 	public static Boolean INATIVA = false;
 
+	@Transient
+	public static int RESPONSAVEL = 1;
+	@Transient
+	public static int CORRESPONSAVEL = 2;
+	
 	@Column(length=60)
 	@ChaveDaAuditoria
 	private String nome;
@@ -259,6 +264,12 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 			responsavel = new Colaborador();
 	}
 	
+	public void setEmailCoResponsavel(String emailResponsavel)
+	{
+		preparaCoResponsavel();
+		coResponsavel.setEmailColaborador(emailResponsavel);
+	}
+	
 	private void preparaCoResponsavel() {
 		if(coResponsavel == null)
 			coResponsavel = new Colaborador();
@@ -317,6 +328,20 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		}
 	}
 
+	@NaoAudita
+	public String getCoResponsavelEmail() {
+		try {
+			String email = "";
+			
+			if(coResponsavel.getContato().getEmail() != null)
+				email = coResponsavel.getContato().getEmail();
+			
+			return email;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
 	public void setAreaMaeId(Long areaMaeId)
 	{
 		if(areaMae == null)

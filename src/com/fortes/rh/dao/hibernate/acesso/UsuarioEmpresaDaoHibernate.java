@@ -142,6 +142,24 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.createCriteria("ao.responsavel", "r", Criteria.LEFT_JOIN);
+		
+		montaCriteriaFindUsuarioResponsavel(areasIds, criteria);
+		
+		return criteria.list();
+	}
+
+	public Collection<UsuarioEmpresa> findUsuarioCoResponsavelAreaOrganizacional(Collection<Long> areasIds)
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
+		criteria.createCriteria("ao.coResponsavel", "r", Criteria.LEFT_JOIN);
+		
+		montaCriteriaFindUsuarioResponsavel(areasIds, criteria);
+		
+		return criteria.list();
+	}
+
+	private void montaCriteriaFindUsuarioResponsavel(Collection<Long> areasIds, Criteria criteria)
+	{
 		criteria.createCriteria("r.usuario", "u", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
@@ -153,8 +171,6 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));
-		
-		return criteria.list();
 	}
 
 	public Collection<UsuarioEmpresa> findPerfisEmpresas() 

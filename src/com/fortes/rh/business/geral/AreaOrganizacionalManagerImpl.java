@@ -738,7 +738,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areas;
 	}
 	
-	public String[] getEmailsResponsaveis(Long areaId, Long empresaId) throws Exception
+	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel) throws Exception
 	{
 		Collection<AreaOrganizacional> areas = findAllListAndInativas(empresaId, true, null); 
 		areas = getAncestrais(areas, areaId);
@@ -746,8 +746,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<String> emailsNotificacoes = new ArrayList<String>();
 		for (AreaOrganizacional area : areas) 
 		{
-			if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
-				emailsNotificacoes.add(area.getResponsavelEmail());
+			if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL){
+				if(area.getCoResponsavel() != null && area.getCoResponsavel().getContato() != null && area.getCoResponsavel().getContato().getEmail() != null && !area.getCoResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getCoResponsavelEmail());
+			} else if(tipoResponsavel == AreaOrganizacional.RESPONSAVEL){
+				if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getResponsavelEmail());
+			}
 			
 			if(area.getEmailsNotificacoes() != null)
 				for (String email : area.getEmailsNotificacoes().split(";"))

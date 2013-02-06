@@ -213,7 +213,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
-		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 	}
 	
 	public void testExamesPrevistos()
@@ -434,8 +435,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
-		assertEquals(3,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
-		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testQtdDeOperacoesTestadas() 

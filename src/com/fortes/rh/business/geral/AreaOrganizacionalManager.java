@@ -73,6 +73,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Long[] findIdsAreasDoResponsavelCoResponsavel(Usuario usuarioLogado, Long empresaId);
 	public Collection<AreaOrganizacional> findAreasByUsuarioResponsavel(Usuario usuario, Long empresaId) throws Exception;
 	public Collection<AreaOrganizacional> getDescendentes(Collection<AreaOrganizacional> areas, Long id, Collection<AreaOrganizacional> descendentes);
-	public String[] getEmailsResponsaveis(Long areaId, Long empresaId) throws Exception;
+	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel) throws Exception;
 	public void desvinculaResponsavel(Long colaboradorId);
 }
