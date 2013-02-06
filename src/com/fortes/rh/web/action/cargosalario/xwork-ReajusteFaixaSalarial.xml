@@ -4,12 +4,10 @@
 <xwork>
 	<package name="reajusteFaixaSalarial" extends="default" namespace="/cargosalario/reajusteFaixaSalarial">
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="prepareInsert">
-			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteFaixaSalarial.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="insert">
-			<interceptor-ref name="defaultUpdateStack" />
-			<result name="success" type="redirect">../tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteFaixaSalarial.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.ReajusteFaixaSalarialEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/solicitacaoReajusteFaixaSalarial.ftl</result>

@@ -191,18 +191,20 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		{
 			e.printStackTrace();
 			addActionMessage(e.getMessage());
+			
+			tabelaReajusteColaborador = null;
+			formFiltro();
+			return Action.INPUT;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			addActionMessage("Não foi possível gerar o relatório");
-		} 
-		finally 
-		{
+			
 			tabelaReajusteColaborador = null;
 			formFiltro();
 			return Action.INPUT;
-		}
+		} 
 	}
 
 	public LinkedHashMap getFiltrarPor()

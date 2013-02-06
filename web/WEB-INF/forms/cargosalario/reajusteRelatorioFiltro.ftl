@@ -62,7 +62,7 @@
 
 	function validarCampos()
 	{
-		return validaFormulario('form', new Array('optReajuste','optFiltro'), null);
+		return validaFormulario('form', new Array('optReajuste','optFiltro'), new Array());
 	}
 
 	function imprimir()

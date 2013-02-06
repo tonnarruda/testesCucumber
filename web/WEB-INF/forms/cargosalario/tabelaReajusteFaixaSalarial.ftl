@@ -26,7 +26,7 @@
 					<td align="right" width="120">${reajusteFaixa.valorProposto?string(",##0.00")}</td>
 					<td align="right" width="60">${(reajusteFaixa.valorProposto - reajusteFaixa.valorAtual)?string(",##0.00")}</td>
 					<td align="right" width="60">
-						<#if (reajusteFaixa.valorAtual > 0) >
+						<#if (reajusteFaixa.valorAtual > 0)>
 							${((((reajusteFaixa.valorProposto - reajusteFaixa.valorAtual) / reajusteFaixa.valorAtual)) * 100)?string(",##0.00")}%
 						<#else>
 							0,00%
@@ -46,7 +46,11 @@
 				<td align="right">${totalAtual?string(",##0.00")}</td>
 				<td align="right">${totalProposto?string(",##0.00")}</td>
 				<td align="right">${(totalProposto - totalAtual)?string(",##0.00")}</td>
-				<td align="right">${((((totalProposto - totalAtual) / totalAtual)) * 100)?string(",##0.00")}%</td>
+				<#if (totalAtual > 0)>
+					<td align="right">${((((totalProposto - totalAtual) / totalAtual)) * 100)?string(",##0.00")}%</td>
+				<#else>
+					<td align="right">0,00%</td>
+				</#if>
 			</tr>
 		</tfoot>
 	</table>
