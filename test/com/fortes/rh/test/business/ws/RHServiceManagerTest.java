@@ -37,6 +37,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -435,6 +436,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TSituacao situacao = new TSituacao();
 		situacao.setEmpresaCodigoAC("12345");
 		situacao.setEmpregadoCodigoAC("54321");
+		
+		TEmpregado empregado = new TEmpregado();
+		empregado.setNome("chaves");
+		empregado.setTipoAdmissao("00");
+		empregado.setVinculo(55);
+		empregado.setCategoria(07);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNome("Colaborador");
@@ -442,11 +449,12 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
+		colaboradorManager.expects(once()).method("getVinculo").with(eq(empregado.getTipoAdmissao()), eq(empregado.getVinculo()), eq(empregado.getCategoria()));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
-		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(colaborador.getNome()), eq(situacao));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(empregado.getNome()), eq(situacao));
 
-		assertEquals(true, rHServiceManager.criarSituacao(null, situacao).isSucesso());
+		assertEquals(true, rHServiceManager.criarSituacao(empregado, situacao).isSucesso());
 	}
 
 	public void testCriarSituacaoException() throws Exception
