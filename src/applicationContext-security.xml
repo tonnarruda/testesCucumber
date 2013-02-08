@@ -333,8 +333,10 @@
 
 				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
 				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
-				/cargosalario/reajusteFaixaSalarial/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
-				/cargosalario/reajusteIndice/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
+				/cargosalario/reajusteFaixaSalarial/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL
+				/cargosalario/reajusteFaixaSalarial/insert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL
+				/cargosalario/reajusteIndice/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_INDICE
+				/cargosalario/reajusteIndice/insert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_INDICE
 				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
 				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO
