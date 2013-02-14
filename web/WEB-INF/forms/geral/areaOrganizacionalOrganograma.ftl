@@ -109,7 +109,7 @@
 			var chartArea = document.getElementById('organogramaAreas');
 			var svg = chartArea.innerHTML;
 			var canvas = document.createElement('canvas');
-			alert(gfxASurface::CheckSurfaceSize(gfxIntSize(mWidth, mHeight), 0xffff));
+			
 			canvas.setAttribute('width', chartArea.offsetWidth);
 			canvas.setAttribute('height', chartArea.offsetHeight);
 			

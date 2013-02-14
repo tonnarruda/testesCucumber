@@ -2584,6 +2584,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	
+	public void setColaboradorCPF(String colaboradorCPF){
+		if (pessoal == null) {
+			setPessoal(new Pessoal());
+		}
+		pessoal.setCpf(colaboradorCPF);
+	}
+	
 	public void setMediaPerformance(Double mediaPerformance)
 	{
 		this.mediaPerformance = mediaPerformance;

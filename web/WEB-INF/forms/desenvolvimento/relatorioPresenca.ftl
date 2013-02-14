@@ -60,7 +60,9 @@
 			var qtdChecked = 0;
 	
 			if(!onclick || check.checked)
-			{
+			{	
+				if(document.getElementById('exibirCPF').checked)
+					qtdChecked++;
 				if(document.getElementById('exibirCargo').checked)
 					qtdChecked++;
 				if(document.getElementById('exibirArea').checked)
@@ -130,7 +132,7 @@
 	<@ww.form name="form" action="imprimirRelatorio.action" validate="true" onsubmit="${validarCampos}" method="POST">
 		<@ww.select label="Curso" cssStyle="width:180px" name="colaboradorTurma.curso.id" id="cursos" list="cursos" listKey="id" listValue="nome" headerValue="" headerKey="" liClass="liLeft" onchange="listaTurma();"  required="true"/>
 	  	<@ww.select label="Turma" cssStyle="width:200px" name="colaboradorTurma.turma.id" id="turma"  list="turmas" listKey="id" listValue="descricao" headerValue="" headerKey="" liClass="liLeft"  onchange="populaDias(document.forms[0]);"  required="true"/>
-		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
+		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos*" list="diasCheckList" readonly=false valueString=true/>
 		<@ww.checkbox label="Quebrar página por estabelecimento" id="quebraPaginaEstabelecimento" name="quebraPaginaEstabelecimento" labelPosition="left"/>
 
 		<@ww.label value="Configuração" />
@@ -162,6 +164,7 @@
 			<@ww.div cssClass="divInfo" cssStyle="width:490px;">
 				<ul>
 					<li style="font-weight:bold;">Exibir colunas extras (selecione duas colunas):*</li>	<br />
+					<@ww.checkbox label="CPF" name="exibirCPF" id="exibirCPF" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Cargo" name="exibirCargo" id="exibirCargo" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Área Organizacional" name="exibirArea" id="exibirArea" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
