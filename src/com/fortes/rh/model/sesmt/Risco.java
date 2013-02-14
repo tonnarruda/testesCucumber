@@ -91,4 +91,12 @@ public class Risco extends AbstractModel implements Serializable
 	{
 		return (getId() == null)? "null": getId().toString();
 	}
+	
+	public void setEmpresaId(Long empresaId)
+	{
+		if (empresa == null)
+			empresa = new Empresa();
+		
+		empresa.setId(empresaId);
+	}
 }

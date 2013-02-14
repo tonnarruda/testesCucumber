@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoDao;
@@ -80,5 +81,39 @@ public class RiscoManagerImpl extends GenericManagerImpl<Risco, RiscoDao> implem
 	public Collection<Risco> findAllSelect(Long empresaId) 
 	{
 		return getDao().findAllSelect(empresaId);
+	}
+	
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long,Long> epiIds) 
+	{
+		Collection<Risco> riscoOrigens = getDao().findAllSelect(empresaOrigemId);
+		for (Risco riscoOrigem : riscoOrigens)
+		{
+			Risco riscoDestino = new Risco();
+			riscoDestino.setEmpresaId(empresaDestinoId);
+			riscoDestino.setDescricao(riscoOrigem.getDescricao());
+			riscoDestino.setGrupoRisco(riscoOrigem.getGrupoRisco());
+			riscoDestino.setEpis(popularEpisComIds(epiIds, riscoOrigem));
+			getDao().save(riscoDestino);
+		}
+	}
+	
+	private Collection<Epi> popularEpisComIds(Map<Long, Long> epiIds, Risco riscoOrigem) 
+	{
+		Collection<Epi> epis = new ArrayList<Epi>();
+		Epi epi;
+		
+		for (Epi epiOrigem : riscoOrigem.getEpis())
+		{
+			Long idEpiDestino = epiIds.get(epiOrigem.getId());
+			
+			if (idEpiDestino == null)
+				continue;
+			
+			epi = new Epi();
+			epi.setId(idEpiDestino);
+			epis.add(epi);
+		}
+		
+		return epis;
 	}
 }
