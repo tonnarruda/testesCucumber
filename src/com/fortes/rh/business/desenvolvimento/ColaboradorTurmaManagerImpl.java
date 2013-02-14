@@ -556,7 +556,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		super.remove(colaboradorTurma);
 	}
 
-	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea)
+	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea, boolean exibirCPF)
 	{
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
 		{
@@ -573,6 +573,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
 				else
 					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
+			
+			if(exibirCPF)
+				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
+					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getPessoal().getCpfFormatado());
+				else
+					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getPessoal().getCpfFormatado());
 			
 			if(exibirArea)
 			{

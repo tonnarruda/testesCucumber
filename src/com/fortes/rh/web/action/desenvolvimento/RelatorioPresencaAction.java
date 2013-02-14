@@ -45,6 +45,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private boolean exibirEndereco;
 	private boolean exibirNomeComercial;
 	private boolean exibirCargo;
+	private boolean exibirCPF;
 	private boolean exibirEstabelecimento;
 	private boolean exibirArea;
 	private boolean exibirAssinatura;
@@ -67,7 +68,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		try
 		{
 			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null, null, null);
-			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea);
+			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea, exibirCPF);
 
 			if(quebraPaginaEstabelecimento)
 				montaListaDePresencaPorEstabelecimento();
@@ -187,6 +188,14 @@ public class RelatorioPresencaAction extends MyActionSupport
 				parametros.put("coluna02", "Assinatura");
 			else
 				parametros.put("coluna03", "Assinatura");
+		}
+		
+		if(exibirCPF)
+		{
+			if(parametros.get("coluna02") == null)
+				parametros.put("coluna02", "CPF");
+			else
+				parametros.put("coluna03", "CPF");
 		}
 		
 		return parametros;
@@ -416,6 +425,14 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public boolean isExibirEndereco() {
 		return exibirEndereco;
+	}
+	
+	public boolean isExibirCPF() {
+		return exibirCPF;
+	}
+
+	public void setExibirCPF(boolean exibirCPF) {
+		this.exibirCPF = exibirCPF;
 	}
 
 	public void setExibirEndereco(boolean exibirEndereco) {

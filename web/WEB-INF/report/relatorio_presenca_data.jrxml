@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_presenca_data" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="86cc02a4-8d31-4125-a4aa-4317c8e11272">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -61,7 +61,7 @@
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
 						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[Curso:]]></text>
+					<text><![CDATA[CursoT:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="5e242533-e118-49e2-83d8-73a808863501" key="staticText-19" x="206" y="68" width="141" height="12"/>

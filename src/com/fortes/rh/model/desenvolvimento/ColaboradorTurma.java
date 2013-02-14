@@ -24,6 +24,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Pessoal;
 
 @SuppressWarnings("serial")
 @Entity
@@ -163,7 +164,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	// findByTurma
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj)
+	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj)
 	{
 		this.setId(id);
 
@@ -177,6 +178,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.colaborador.setNome(colaboradorNome);
 		this.colaborador.setNomeComercial(colaboradorNomeComercial);
 		this.colaborador.setMatricula(colaboradorMatricula);
+		this.colaborador.setColaboradorCPF(colaboradorCPF);
 		//não sei quem usa, ta pegando do historico tb
 		this.colaborador.setAreaOrganizacional(new AreaOrganizacional());
 		this.colaborador.getAreaOrganizacional().setId(areaOrganizacionalId);
