@@ -19489,3 +19489,16 @@ update parametrosdosistema set appversao = '1.1.99.102';--.go
 -- versao 1.1.99.103
 
 update parametrosdosistema set appversao = '1.1.99.103';--.go
+-- versao 1.1.100.104
+
+alter table parametrosdosistema add column caminhobackup varchar(200); --.go 
+insert into migrations values('20130204155211');--.go
+ALTER TABLE areaorganizacional ADD COLUMN coResponsavel_id bigint;--go
+
+ALTER TABLE ONLY areaorganizacional ADD CONSTRAINT areaorganizacional_coResponsavel_fk FOREIGN KEY (coResponsavel_id) REFERENCES colaborador(id);--go
+insert into migrations values('20130205151017');--.go
+update papel set url = '#' where id = 49;--.go
+insert into migrations values('20130206135421');--.go
+update papel set nome = 'Solicitação de Realinhamento' where id = 49;--.go
+insert into migrations values('20130208084557');--.go
+update parametrosdosistema set appversao = '1.1.100.104';--.go

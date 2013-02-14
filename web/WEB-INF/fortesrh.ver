@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.100.104" data="14/02/2013">
+		<Modulo nome=" "><![CDATA[
+			:: C&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Novo campo "Corresponsável" da área organizacional.
+			:: T&D > Movimentações > Plano de Treinamento > Colaboradores Inscritos na Turma: Novo filtro para listar colaboradores aprovados ou reprovados.
+			:: Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir/Editar: Novo gráfico radial de competências.
+			:: Utilitários > Configurações > Sistema: Novo campo para armazenar o caminho da "Réplica do Backup do Banco de Dados".
+			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar situação no AC Pessoal".
+			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de enviar emails e mensagens para "Cogestor da área organizacional".(somente para configurações que permitem enviar emails e mensagens para gestor da área organizacional)
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.99.103" data="04/02/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Auto completar no campo "Colaborador Substituído" para selecionar o colaborador da empresa a ser substituído.

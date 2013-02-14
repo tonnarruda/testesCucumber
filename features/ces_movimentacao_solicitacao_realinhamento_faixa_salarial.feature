@@ -9,7 +9,7 @@ Funcionalidade: Reajuste Coletivo/Dissídio Faixa Salarial
     Dado que exista a faixa salarial "faixa 1" no cargo "Desenvolvedor"
     Dado que exista um historico para a faixa salarial "faixa 1" na data "20/01/2013"
 
-    Quando eu acesso o menu "C&S > Movimentações > Solicitação de Realinhamento de C&S > Faixa Salarial"
+    Quando eu acesso o menu "C&S > Movimentações > Solicitação de Realinhamento > Faixa Salarial"
 
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
@@ -19,7 +19,7 @@ Funcionalidade: Reajuste Coletivo/Dissídio Faixa Salarial
     E eu preencho "valorDissidio" com "2"
     E eu clico no botão "Gravar"
 
-    Então eu devo ver o título "Planejamento de Realinhamento por Faixa Salarial"
+    Então eu devo ver o título "Solicitação de Realinhamento"
     Então eu devo ver "Desenvolvedor faixa 1"
     Então eu devo ver "510,00"
     E eu devo ver "ajustar"
