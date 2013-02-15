@@ -2,6 +2,7 @@ package com.fortes.webwork.views.xls;
 
 import java.util.Collection;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -108,9 +109,14 @@ public class XlsResult extends WebWorkResultSupport {
 			response.addHeader("Pragma", "no-cache");
 			response.addHeader("Content-type", "application/vnd.ms-excel");
 			response.addHeader("Content-Transfer-Encoding", "binary");
-			response.addHeader("Content-Disposition:", "attachment; filename=\"" + documentName + "\"");
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + documentName + "\"");
 			
-		    wb.write(response.getOutputStream());
+			ServletOutputStream outputStream = response.getOutputStream();
+
+			wb.write(outputStream);
+		    
+		    outputStream.flush();
+			outputStream.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();

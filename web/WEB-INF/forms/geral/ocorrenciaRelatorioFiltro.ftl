@@ -104,6 +104,13 @@
 			populaOcorrencia(empresaId);
 		}
 		
+		function validarCampos(tipo)
+		{
+			$('#tipo').val(tipo);
+		
+			return validaFormularioEPeriodo('form', new Array('dataPrevIni','dataPrevFim'), new Array('dataPrevIni','dataPrevFim'));
+		}
+		
 		$(function()
 		{
 			$('#situacao').change(function(){
@@ -135,10 +142,11 @@
 	</script>
 </head>
 <body>
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataPrevIni','dataPrevFim'), new Array('dataPrevIni','dataPrevFim'))"/>
 	<@ww.actionerror />
 	<@ww.actionmessage />
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="form" action="${formAction}" validate="true" method="POST">
+		<@ww.hidden id="tipo" name="tipo"/>
+		
 		<#if compartilharColaboradores>
 			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaChecks();"/>
 		<#else>
@@ -158,23 +166,22 @@
 		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
 		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
 		
-		<fieldset class="fieldsetPadrao" style="padding: 5px 0px 5px 5px">
-			<legend>Colaboradores:</legend>
-					
+		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
+			<legend>Colaboradores</legend>
 			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores($('#empresa').val());"/>
 			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180"/>
 		</fieldset>
 		<br />
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
 		
-		<@ww.select label="Agrupar Por:" name="agruparPorColaborador" list=r"#{true:'Colaborador',false:'Providência'}" id="agruparPorColaborador"/>
+		<@ww.select label="Agrupar Por" name="agruparPorColaborador" list=r"#{true:'Colaborador',false:'Providência'}" id="agruparPorColaborador"/>
 		<@ww.checkbox label="Exibir Providências"  id="providencia" labelPosition="left" name="exibirProvidencia"/>
-		
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnRelatorio"></button>
-		<button onclick="window.location='list.action'" class="btnVoltar" ></button>
+		<button type="button" onclick="validarCampos('P')" class="btnRelatorio"></button>
+		<button type="button" onclick="validarCampos('X')" class="btnRelatorioExportar"></button>
+		<button type="button" onclick="window.location='list.action'" class="btnVoltar" ></button>
 	</div>
 <br><br>
 

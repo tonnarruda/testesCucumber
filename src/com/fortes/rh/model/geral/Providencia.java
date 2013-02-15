@@ -25,6 +25,10 @@ public class Providencia extends AbstractModel implements Serializable
 		return descricao;
 	}
 
+	public String getDescricaoSemProvidencia() {
+		return descricao == null ? "Sem Providência" : descricao;
+	}
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}

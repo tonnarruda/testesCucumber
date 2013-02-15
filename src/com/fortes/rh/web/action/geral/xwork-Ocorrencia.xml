@@ -31,13 +31,14 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
 		</action>
 		<action name="buscaOcorrencia" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="buscaOcorrencia">
+			<!-- JASPER -->
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrenciasDetalhadas.pdf</param>
 			</result>
-			<result name="relatorio_sem_detalhe" type="jasper">
+			<result name="relatorioSemDetalhe" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia_sem_detalhe.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="parametersMap">parametros</param>
@@ -55,6 +56,27 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias_com_providencia.pdf</param>
 			</result>
+			
+			<!-- EXCEL -->
+			<result name="providenciaAgrupadaXLS" type="xls">
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="documentName">ocorrencias.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Providência,Colaborador,Matrícula,Ocorrência,Início,Término,Observação,Pontos</param>
+				<param name="properties">providencia.descricaoSemProvidencia,colaborador.nome,colaborador.matricula,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="planilhaSemDetalhe" type="xls">
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="documentName">ocorrencias.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Matrícula,Total de Pontos</param>
+				<param name="properties">colaborador.nome,colaborador.matricula,ocorrencia.pontuacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
