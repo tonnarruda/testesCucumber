@@ -285,7 +285,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		try 
 		{
 			empresaManager.sincronizaEntidades(empresaOrigem.getId(), empresaDestino.getId(), cadastrosCheck);
-			
 			addActionMessage("Cadastros importados com sucesso.");
 			
 			empresaOrigem = null;

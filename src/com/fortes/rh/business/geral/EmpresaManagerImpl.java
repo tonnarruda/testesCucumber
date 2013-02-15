@@ -24,6 +24,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -61,6 +62,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
+	private RiscoManager riscoManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -208,6 +210,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		Map<Long, Long> habilidadeIds = new  HashMap<Long, Long>();
 		Map<Long, Long> atitudeIds = new  HashMap<Long, Long>();
 		Map<Long, Long> areaInteresseIds = new  HashMap<Long, Long>();
+		Map<Long, Long> epiIds = new  HashMap<Long, Long>();
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS))
 		{
@@ -248,7 +251,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS))
 		{
 			epiManager = (EpiManager) SpringUtil.getBean("epiManager");
-			epiManager.sincronizar(empresaOrigemId, empresaDestinoId);
+			epiManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CURSOSETURMAS))
@@ -260,6 +263,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.MOTIVOS_DESLIGAMENTO))
 		{
 			motivoDemissaoManager.sincronizar(empresaOrigemId, empresaDestinoId);
+		}
+		
+		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.RISCOS))
+		{
+			riscoManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
 		}
 	}
 	
@@ -540,6 +548,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
 		return getDao().isControlaRiscoPorAmbiente(empresaId);
+	}
+
+	public void setRiscoManager(RiscoManager riscoManager) {
+		this.riscoManager = riscoManager;
 	}
 
 }

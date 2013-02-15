@@ -2,6 +2,7 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -26,7 +27,7 @@ public interface EpiManager extends GenericManager<Epi>
 	Collection<Epi> findByRisco(Long riscoId);
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	void removeEpi(Epi epi) throws Exception;
-	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
+	void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> epiIds);
 	String findFabricantesDistinctByEmpresa(Long empresaId);
 	Collection<Epi> findAllSelect(Long empresaId);
 	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos);

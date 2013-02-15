@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.sesmt.Epi;
@@ -14,4 +15,5 @@ public interface RiscoManager extends GenericManager<Risco>
 	Collection<Epi> findEpisByRisco(Long riscoId);
 	Collection<RiscoFuncao> findRiscosFuncoesByEmpresa(Long empresaId);
 	Collection<RiscoAmbiente> findRiscosAmbientesByEmpresa(Long empresaId);
+	void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long,Long> epiIds);
 }
