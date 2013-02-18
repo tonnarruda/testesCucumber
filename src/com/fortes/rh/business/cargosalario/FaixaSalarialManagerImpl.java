@@ -313,6 +313,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		FaixaSalarial faixaSalarial = new FaixaSalarial();
 		faixaSalarial.setNome(tCargo.getDescricao());
 		faixaSalarial.setNomeACPessoal(tCargo.getDescricaoACPessoal());
+		//TODO: codigoac vazio
 		faixaSalarial.setCodigoAC(tCargo.getCodigo());
 		
 		return faixaSalarial;

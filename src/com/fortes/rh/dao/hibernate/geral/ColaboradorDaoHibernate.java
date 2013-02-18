@@ -779,6 +779,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public boolean setCodigoColaboradorAC(String codigo, Long id)
 	{
+		// TODO: codigoac vazio
 		String hql = "update Colaborador set codigoac = :codigo where id = :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);

@@ -1224,6 +1224,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado)
 	{
+		// TODO: codigoac vazio
 		colaborador.setCodigoAC(empregado.getCodigoAC());
 		colaborador.setNome(empregado.getNome());
 		if(empregado.getNomeComercial() != null && !empregado.getNomeComercial().equals(""))

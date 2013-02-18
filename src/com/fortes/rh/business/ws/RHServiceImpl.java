@@ -352,6 +352,7 @@ public class RHServiceImpl implements RHService
 	{
 		String parametros = "empregado: " + empregado.getCodigoAC() + " \nsituacao: " + situacao.getData();
 		
+		//TODO: falta transacao
 		try
 		{
 			try
@@ -805,6 +806,7 @@ public class RHServiceImpl implements RHService
 	public void bindIndice(TIndice tindice, Indice indice)
 	{
 		indice.setNome(tindice.getNome());
+		//TODO: codigoac vazio
 		indice.setCodigoAC(tindice.getCodigo());
 		indice.setGrupoAC(tindice.getGrupoAC());
 	}
@@ -819,6 +821,7 @@ public class RHServiceImpl implements RHService
 	{
 		estabelecimento.setNome(testabelecimento.getNome());
 		estabelecimento.setComplementoCnpj(testabelecimento.getComplementoCnpj());
+		//TODO: codigoac vazio
 		estabelecimento.setCodigoAC(testabelecimento.getCodigo());
 
 		Endereco endereco = new Endereco();
@@ -972,6 +975,7 @@ public class RHServiceImpl implements RHService
 
 	private void bindOcorrencia(TOcorrencia tocorrencia, Ocorrencia ocorrencia)
 	{
+		//TODO: codigoac vazio
 		ocorrencia.setCodigoAC(tocorrencia.getCodigo());
 		ocorrencia.setDescricao(tocorrencia.getDescricao());
 	}

@@ -553,6 +553,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void bind(AreaOrganizacional areaOrganizacional, TAreaOrganizacional lotacao) throws Exception
 	{
+		//TODO: codigoac vazio
 		areaOrganizacional.setCodigoAC(lotacao.getCodigo());
 		areaOrganizacional.setNome(lotacao.getNome());
 
