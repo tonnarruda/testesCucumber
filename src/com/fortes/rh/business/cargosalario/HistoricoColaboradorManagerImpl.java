@@ -1452,6 +1452,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return true;
 	}
 
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId)
+	{
+		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+	}
+
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}

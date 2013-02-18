@@ -838,11 +838,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
         candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
         areaOrganizacinoalManager.expects(once()).method("desvinculaResponsavel").with(eq(colaborador.getId()));
+        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(colaborador.getId()));
         candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
-        colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), false);
+        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), true);
     }
     
     public void testDesligaColaborador() throws Exception
