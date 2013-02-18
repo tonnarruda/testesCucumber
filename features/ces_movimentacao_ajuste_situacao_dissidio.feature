@@ -7,7 +7,7 @@ Funcionalidade: Promoção para Dissídio
     Dado que exista um novo historico para o colaborador "Davi", na area "Desenvolvimento", na faixa salarial "I"
     Dado que eu esteja logado
     
-    Quando eu acesso o menu "C&S > Movimentações > Ajuste de Situação (Dissídio)"
+    Quando eu acesso o menu "C&S > Movimentações > Alteração de Promoção para Dissídio"
 
     Então eu devo ver o título "Alteração de Promoção para Dissídio"
     E eu preencho "Situações a partir de" com "14/08/2012"
