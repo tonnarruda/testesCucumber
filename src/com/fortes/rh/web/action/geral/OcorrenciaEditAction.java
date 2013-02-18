@@ -176,49 +176,40 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
 				throw new ColecaoVaziaException("Não existem dados para o relatório");
 
+			String acao, extensao;
+			
 			if (tipo.equals(TipoRelatorio.XLS))
 			{
+				extensao = "XLS";
 				reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 				reportTitle = "Ranking de Ocorrências";
-				
-				if(detalhamento)
-				{
-					if (agruparPorColaborador)
-					{
-						if(exibirProvidencia)
-							return "providenciaXLS";
-						else
-							return Action.SUCCESS;
-					}
-					else
-						return "providenciaAgrupadaXLS";
-				}
-				else
-					return "planilhaSemDetalhe";
 			}
 			else
 			{
+				extensao = "PDF";
 				parametros.put("dataIni", dataIni);
 				parametros.put("dataFim", dataFim);
 				
 				String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 				parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), filtro);
-				
-				if(detalhamento)
+			}
+			
+			if(detalhamento)
+			{
+				if (agruparPorColaborador)
 				{
-					if (agruparPorColaborador)
-					{
-						if(exibirProvidencia)
-							return "providencia";
-						else
-							return Action.SUCCESS;
-					}
+					if(exibirProvidencia)
+						acao = "comProvidencia";
 					else
-						return "providenciaAgrupada";
+						acao = "semProvidencia";
 				}
 				else
-					return "relatorioSemDetalhe";
+					acao = "providenciaAgrupada";
 			}
+			else
+				acao = "relatorioSemDetalhe";
+			
+			return acao + extensao;
 		}
 		catch (ColecaoVaziaException cE)
 		{

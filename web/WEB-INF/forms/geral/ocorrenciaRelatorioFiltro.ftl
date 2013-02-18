@@ -98,6 +98,8 @@
 			
 			var empresaId = $('#empresa').val() == 0 ? null : $('#empresa').val() ;
 			
+			DWREngine.setAsync(false);
+			
 			populaArea(empresaId);
 			populaEstabelecimento(empresaId);
 			populaColaboradores(empresaId);

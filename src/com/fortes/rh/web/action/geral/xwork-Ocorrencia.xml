@@ -31,43 +31,59 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
 		</action>
 		<action name="buscaOcorrencia" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="buscaOcorrencia">
-			<!-- JASPER -->
-			<result name="success" type="jasper">
+			<result name="semProvidenciaPDF" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">ocorrenciasDetalhadas.pdf</param>
+				<param name="documentName">ocorrencias_detalhadas.pdf</param>
 			</result>
-			<result name="relatorioSemDetalhe" type="jasper">
+			<result name="comProvidenciaPDF" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia_com_providencia.jasper</param>
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrencias_providencias.pdf</param>
+			</result>
+			<result name="providenciaAgrupadaPDF" type="jasper">
+				<param name="location">WEB-INF/report/ocorrencia_agrupado_por_providencia.jasper</param>
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ocorrencias_providencias.pdf</param>
+			</result>
+			<result name="relatorioSemDetalhePDF" type="jasper">
 				<param name="location">WEB-INF/report/ocorrencia_sem_detalhe.jasper</param>
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias.pdf</param>
 			</result>
-			<result name="providencia" type="jasper">
-				<param name="location">WEB-INF/report/ocorrencia_com_providencia.jasper</param>
-				<param name="dataSource">colaboradoresOcorrencias</param>
-				<param name="parametersMap">parametros</param>
-				<param name="documentName">ocorrencias_com_providencia.pdf</param>
-			</result>
-			<result name="providenciaAgrupada" type="jasper">
-				<param name="location">WEB-INF/report/ocorrencia_agrupado_por_providencia.jasper</param>
-				<param name="dataSource">colaboradoresOcorrencias</param>
-				<param name="parametersMap">parametros</param>
-				<param name="documentName">ocorrencias_com_providencia.pdf</param>
-			</result>
 			
-			<!-- EXCEL -->
+			<result name="semProvidenciaXLS" type="xls">
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="documentName">ocorrencias_detalhadas.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Pontos</param>
+				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="comProvidenciaXLS" type="xls">
+				<param name="dataSource">colaboradoresOcorrencias</param>
+				<param name="documentName">ocorrencias_providencias.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Providência,Pontos</param>
+				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,providencia.descricao,ocorrencia.pontuacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="providenciaAgrupadaXLS" type="xls">
 				<param name="dataSource">colaboradoresOcorrencias</param>
-				<param name="documentName">ocorrencias.xls</param>
+				<param name="documentName">ocorrencias_providencias.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Providência,Colaborador,Matrícula,Ocorrência,Início,Término,Observação,Pontos</param>
 				<param name="properties">providencia.descricaoSemProvidencia,colaborador.nome,colaborador.matricula,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
-			<result name="planilhaSemDetalhe" type="xls">
+			<result name="relatorioSemDetalheXLS" type="xls">
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="documentName">ocorrencias.xls</param>
 				<param name="sheetName">Planilha1</param>
