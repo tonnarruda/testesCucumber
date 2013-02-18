@@ -13,9 +13,6 @@
 			<#assign formAction="insert.action"/>
 		</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('titulo','ativo', 'periodoExperiencia'))"/>
-	
-		
 	<script type='text/javascript'>
 
 		$(function() {
@@ -48,7 +45,7 @@
 			else 		
 			{
 				$('#periodoExperiencia').val('');
-				return validaFormulario('form', new Array('titulo','ativo'));
+				return validaFormulario('form', new Array('titulo','ativo'), new Array('percentualAprovacao'));
 			}
 		}
 	</script>	
@@ -63,7 +60,11 @@
 
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				<@ww.checkbox label="Exibir resultado ao colaborador após autoavaliação" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
-			</#if>			
+			</#if>
+			
+			<#if avaliacao.tipoModeloAvaliacao == 'S'>
+				<@ww.textfield label="Percentual mínimo para aprovação" name="avaliacao.percentualAprovacao" id="percentualAprovacao" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress="return somenteNumeros(event,',');"/>
+			</#if>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 

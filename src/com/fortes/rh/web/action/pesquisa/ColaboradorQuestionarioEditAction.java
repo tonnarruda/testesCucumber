@@ -171,8 +171,15 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		{
 			colaboradores = colaboradorQuestionarioManager.findRespondidasBySolicitacao(solicitacao.getId(), colaboradorQuestionario.getAvaliacao().getId());
 			Avaliacao modelo = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Avaliação da Solicitação", getEmpresaSistema(), "Modelo de Avaliação: " + modelo.getTitulo());
-			return Action.SUCCESS;		
+			
+			String filtro = "Modelo de Avaliação: " + modelo.getTitulo();
+			if (modelo.getPercentualAprovacao() != null)
+				filtro += "\nPercentual para Aprovação: " + modelo.getPercentualAprovacaoFormatado();
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ranking de Avaliação da Solicitação", getEmpresaSistema(), filtro);
+			parametros.put("PERCENTUAL_APROVACAO", modelo.getPercentualAprovacao());
+			
+			return Action.SUCCESS;
 		}
 		catch (Exception e)
 		{

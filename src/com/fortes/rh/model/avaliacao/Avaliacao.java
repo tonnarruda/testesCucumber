@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.MathUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @Entity
@@ -26,6 +27,8 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	
 	@Lob
 	private String cabecalho;
+	
+	private Double percentualAprovacao;
 	
 	private boolean ativo;
 
@@ -135,5 +138,21 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 
 	public void setAvaliarCompetenciasCargo(boolean avaliarCompetenciasCargo) {
 		this.avaliarCompetenciasCargo = avaliarCompetenciasCargo;
+	}
+
+	public Double getPercentualAprovacao() {
+		return percentualAprovacao;
+	}
+	
+	public String getPercentualAprovacaoFormatado() {
+		String percentualFmt = "";
+		if (percentualAprovacao != null)
+			percentualFmt = MathUtil.formataValor(percentualAprovacao) + "%";
+
+		return percentualFmt;
+	}
+
+	public void setPercentualAprovacao(Double percentualAprovacao) {
+		this.percentualAprovacao = percentualAprovacao;
 	}
 }

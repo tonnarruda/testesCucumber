@@ -1,0 +1,1 @@
+alter table avaliacao add column percentualaprovacao double precision;--.go
