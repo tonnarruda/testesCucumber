@@ -954,7 +954,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
 			areaOrganizacionalManager.desvinculaResponsavel(colaboradorId);
 
-			if(!desligaByAC)
+			if(desligaByAC)
+				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+			else
 				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
 
 			transactionManager.commit(status);
