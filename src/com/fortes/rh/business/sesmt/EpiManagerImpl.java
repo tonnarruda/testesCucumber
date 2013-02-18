@@ -163,18 +163,14 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return fichaEpiRelatorio;
 	}
 	
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId)
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> epiIds)
 	{
 		Map<Long, Long> tipoEPIIds = clonarTipoEPI(empresaOrigemId, empresaDestinoId);
-		
-		Map<Long, Long> epiIds = new HashMap<Long, Long>();
-		
 		Collection<Epi> epis = getDao().findSincronizarEpiInteresse(empresaOrigemId);
 		
 		for (Epi epi : epis) {
 			
 			Long epiOrigemId = epi.getId();
-			
 			clonar(epi, empresaDestinoId);
 			epiIds.put(epiOrigemId, epi.getId());
 			

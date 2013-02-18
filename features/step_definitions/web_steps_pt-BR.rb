@@ -130,6 +130,11 @@ Quando /^eu preencho o seguinte:$/ do |fields|
   When %{I fill in the following:}, fields
 end
 
+Quando /^eu seleciono \(JS\) "([^"]*)" de "([^"]*)"$/ do |value, field|
+  field = get_field(field)
+  page.execute_script("$('##{field}').val('#{value}')")
+end
+
 Quando /^eu seleciono "([^"]*)" de "([^"]*)"$/ do |value, field|
   field = get_field(field)
   When %{I select "#{value}" from "#{field}"}

@@ -257,7 +257,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     
     public void testPopulaCadastrosCheckBox()
     {
-    	assertEquals(10, empresaManager.populaCadastrosCheckBox().size());
+    	assertEquals(11, empresaManager.populaCadastrosCheckBox().size());
     }
 
     public void testVerificaInconcistenciaIntegracaoACComColecoes()

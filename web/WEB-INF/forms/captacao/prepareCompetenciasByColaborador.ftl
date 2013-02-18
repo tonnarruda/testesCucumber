@@ -70,7 +70,7 @@
 						legs: { 
 							data: labels,
 							legScaleMax: 1,
-							legScaleMin:0.8,
+							legScaleMin: 0,
 							legStartAngle: 0,
 							font: "11px Arial",
 							fillStyle: "Black"
