@@ -1,0 +1,1 @@
+alter table empresa rename column obrigarAmbienteFuncaoColaborador to obrigarAmbienteFuncao;--.go

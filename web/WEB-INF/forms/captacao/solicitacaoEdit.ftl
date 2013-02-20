@@ -24,6 +24,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -123,6 +125,11 @@
 		{
 			var camposObg = new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId');
 		
+			<#if obrigarAmbienteFuncao>
+				camposObg.push('ambiente','funcao');
+			</#if>
+		
+		
 			if(validaFormulario('form', camposObg, new Array ('dataSol')))
 			{
 				$('#gravar').attr('disabled', true);
@@ -130,6 +137,36 @@
 			} 
 
 			return false;
+		}
+		
+		function populaFuncao(faixaId)
+		{
+			if(faixaId != "null" && faixaId != "")
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
+			}
+		}
+
+		function createListFuncao(data)
+		{
+			DWRUtil.removeAllOptions("funcao");
+			DWRUtil.addOptions("funcao", data);
+		}
+		
+		function populaAmbiente(estabelecimentoId)
+		{
+			if(estabelecimentoId != "null")
+			{
+				DWRUtil.useLoadingMessage('Carregando...');
+				AmbienteDWR.getAmbienteByEstabelecimento(createListAmbiente, estabelecimentoId);
+			}
+		}
+
+		function createListAmbiente(data)
+		{
+			DWRUtil.removeAllOptions("ambiente");
+			DWRUtil.addOptions("ambiente", data);
 		}
 		
 		$(function() {
@@ -205,24 +242,49 @@
 		<@ww.textfield label="Horário comercial" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="20" required="true"/>
 
 		<#if !clone && somenteLeitura && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists>
-			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" required="true" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.estabelecimento.id"/>
 		<#else>
-			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;"/>
+			<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
+			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+					<#assign funcaoEstabelecimento=""/>
+			</@authz.authorize>
+			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${funcaoEstabelecimento}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;"/>
 		</#if>
 
 		<#if !clone && somenteLeitura && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists>
-			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" required="true" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.areaOrganizacional.id"/>
 		<#else>
-			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;" onchange="javascript:populaEmails(this.value);" />
+			<#if solicitacao.id?exists>
+				<#assign funcaoPopulaEmails=""/>
+			<#else>
+				<#assign funcaoPopulaEmails="javascript:populaEmails(this.value);"/>
+			</#if>
+			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;" onchange="${funcaoPopulaEmails}" />
 		</#if>
 
 		<#if !clone && somenteLeitura && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists>
-			<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" required="true" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<@ww.textfield readonly="true" label="Ambiente" name="solicitacao.ambiente.nome" id="ambiente" cssStyle="width: 347px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Função" name="solicitacao.funcao.nome" id="funcao" cssStyle="width: 347px;background: #EBEBEB;"/>
+			</@authz.authorize>
+			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
+			</@authz.authorize>
 			<@ww.hidden name="solicitacao.faixaSalarial.id"/>
+			<@ww.hidden name="solicitacao.ambiente.id"/>
+			<@ww.hidden name="solicitacao.funcao.id"/>
 		<#else>
-			<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 347px;"/>
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
+				<@ww.select label="Função" name="solicitacao.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcoes" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="" cssStyle="width: 347px;"/>
+			</@authz.authorize>
+			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
+			</@authz.authorize>
 		</#if>
 		
 		<#if !clone && somenteLeitura && (qtdAvaliacoesRespondidas > 0)>

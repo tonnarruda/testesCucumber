@@ -105,7 +105,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	private Double valorDissidio;
 
 	private boolean exibeSalario;
-	private boolean obrigarAmbienteFuncaoColaborador;
+	private boolean obrigarAmbienteFuncao;
 	private Map<Object, Object> tiposSalarios = new TipoAplicacaoIndice();
 	private TipoAplicacaoIndice tipoSalario = new TipoAplicacaoIndice();
 	private Collection<Indice> indices = new ArrayList<Indice>();
@@ -119,7 +119,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	private void prepare() throws Exception
 	{
-		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		
 		if(reajusteColaborador != null && reajusteColaborador.getId() != null)
 		{
@@ -211,7 +211,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 				         "do colaborador ("+ colaborador.getDataAdmissaoFormatada() +"). ");
 			}
 			
-			obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+			obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 			
 			setDadosSolicitacaoReajuste();
 			reajusteColaboradorManager.validaSolicitacaoReajuste(reajusteColaborador);
@@ -291,7 +291,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	public String prepareSolicitacaoReajuste() throws Exception
 	{
 		exibeSalario = getEmpresaSistema().isExibirSalario();
-		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		
 		indices = indiceManager.findAll(getEmpresaSistema());
 
@@ -822,7 +822,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.tipoAplicacaoIndice = tipoAplicacaoIndice;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador() {
-		return obrigarAmbienteFuncaoColaborador;
+	public boolean isObrigarAmbienteFuncao() {
+		return obrigarAmbienteFuncao;
 	}
 }

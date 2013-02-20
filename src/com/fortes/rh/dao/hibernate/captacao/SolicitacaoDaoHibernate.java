@@ -206,6 +206,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.cidade", "ci", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.ambiente", "amb", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.funcao", "fu", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ci.uf", "est", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
@@ -221,6 +223,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("a.id"), "projectionAreaId");
 		p.add(Projections.property("ci.id"), "projectionCidadeId");
 		p.add(Projections.property("est.id"), "projectionCidadeUf");
+		p.add(Projections.property("fu.id"), "projectionFuncaoId");
+		p.add(Projections.property("amb.id"), "projectionAmbienteId");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("s.id", solicitacaoId));
@@ -241,6 +245,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("s.estabelecimento", "es", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.liberador", "l", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.ambiente", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.funcao", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ci.uf", "est", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
@@ -286,6 +292,10 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("est.sigla"), "projectionCidadeUfSigla");
 		p.add(Projections.property("l.nome"), "liberadorNome");
 		p.add(Projections.property("l.id"), "liberadorId");
+		p.add(Projections.property("a.id"), "projectionAmbienteId");
+		p.add(Projections.property("a.nome"), "projectionAmbienteNome");
+		p.add(Projections.property("f.id"), "projectionFuncaoId");
+		p.add(Projections.property("f.nome"), "projectionFuncaoNome");
 
 		criteria.setProjection(p);
 

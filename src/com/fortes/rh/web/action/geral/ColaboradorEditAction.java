@@ -209,7 +209,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private HashMap<String, String> codigosGFIP; 
 
 	private boolean integraAc;
-	private boolean obrigarAmbienteFuncaoColaborador;
+	private boolean obrigarAmbienteFuncao;
 	private boolean habilitaCampoExtra;
 	private CamposExtras camposExtras;
 	
@@ -263,7 +263,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			addActionError(e.getMessage());
 		}
 
-		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
@@ -508,11 +508,20 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		Estabelecimento estabelecimento = solicitacao.getEstabelecimento();
 		AreaOrganizacional areaOrganizacional = solicitacao.getAreaOrganizacional();;
 		FaixaSalarial faixaSalarial = solicitacao.getFaixaSalarial();
+		Ambiente ambiente = solicitacao.getAmbiente();
+		Funcao funcao = solicitacao.getFuncao();
 		
 		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAmbiente(ambiente);
+		historicoColaborador.setFuncao(funcao);
+		
+		if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
+			funcoes = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
+		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
+			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 		
 		return historicoColaborador;
 	}
@@ -1742,9 +1751,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return avaliacoes;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador()
+	public boolean isObrigarAmbienteFuncao()
 	{
-		return obrigarAmbienteFuncaoColaborador;
+		return obrigarAmbienteFuncao;
 	}
 
 	public int getPontuacao()

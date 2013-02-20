@@ -18,6 +18,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -142,21 +143,40 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 
 	public Collection<SolicitacaoExameRelatorio> findImprimirSolicitacaoExames(Long solicitacaoExameId)
 	{
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio(medico.nome, medico.crm, medico.assinaturaDigital, clinica.nome, clinica.tipo, clinica.outro, clinica.telefone, clinica.horarioAtendimento, clinica.endereco,exame.nome,co.nome,ca.nome,co.pessoal.dataNascimento,ca.pessoal.dataNascimento,se.motivo) ");
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio(medico.nome, medico.crm, medico.assinaturaDigital, clinica.nome, clinica.tipo, clinica.outro, clinica.telefone, clinica.horarioAtendimento, clinica.endereco,exame.nome,co.nome,ca.nome,co.pessoal.dataNascimento,ca.pessoal.dataNascimento,se.motivo, co.matricula, f.nome, fsol.nome) ");
 		hql.append("from ExameSolicitacaoExame exameSol ");
 		hql.append("join exameSol.solicitacaoExame se ");
 		hql.append("join se.medicoCoordenador medico ");
 		hql.append("join exameSol.exame exame ");
 		hql.append("left join se.colaborador co ");
+		hql.append("left join co.historicoColaboradors hc ");
+		hql.append("left join hc.funcao f ");
 		hql.append("left join se.candidato ca ");
+		hql.append("left join ca.candidatoSolicitacaos cas  ");
+		hql.append("left join cas.solicitacao s  ");
+		hql.append("left join s.funcao fsol  ");
 		hql.append("left join exameSol.clinicaAutorizada clinica ");
 		hql.append("where se.id = :solicitacaoExameId ");
+		
+		hql.append("and (hc.data = (select max(hc2.data) ");
+		hql.append("				from HistoricoColaborador as hc2 ");
+		hql.append("				where hc2.colaborador.id = co.id ");
+		hql.append("				and hc2.data <= :hoje and hc2.status = :status ) ");
+		hql.append("	or hc.data is null) ");
+		
+		hql.append("and (s.data = (select max(s2.data) ");
+		hql.append("			    from CandidatoSolicitacao cas2 ");
+		hql.append("			    left join cas2.solicitacao s2 ");
+		hql.append("			    where cas2.candidato.id = ca.id) ");
+		hql.append("	or s.data is null) ");
+		
 		hql.append("and clinica.id != null ");
 		hql.append("order by clinica.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
-
 		query.setLong("solicitacaoExameId", solicitacaoExameId);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
 	}

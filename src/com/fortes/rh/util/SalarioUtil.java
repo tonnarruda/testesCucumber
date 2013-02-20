@@ -19,7 +19,12 @@ public class SalarioUtil
 						case TipoAplicacaoIndice.VALOR:
 							return faixaSalarial.getFaixaSalarialHistoricoAtual().getValor();
 						case TipoAplicacaoIndice.INDICE:
+						{
+							if(faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor() == null)
+								faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().setValor(0.0);
+							
 							return faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor() * faixaSalarial.getFaixaSalarialHistoricoAtual().getQuantidade();
+						}
 					}					
 				}
 				break;

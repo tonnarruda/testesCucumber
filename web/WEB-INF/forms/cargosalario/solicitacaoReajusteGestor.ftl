@@ -269,7 +269,7 @@
 				}
 			</#if>
 			
-			<#if obrigarAmbienteFuncaoColaborador>
+			<#if obrigarAmbienteFuncao>
 				camposObrigatorios.push('ambienteProposto','funcaoProposta');
 			</#if>
 			
@@ -330,9 +330,9 @@
 						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaOrganizacionalProposta" required="true"  headerValue="Selecione..." headerKey="" onchange="verificaMaternidade(this.value, 'areaOrganizacionalProposta');" cssStyle="width:445px;"/>
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>
+							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();populaFuncao(this.value);"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncaoColaborador?string}" headerValue="Selecione..." headerKey="-1" list="funcoes" listKey="id" listValue="nome"/>
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" headerValue="Selecione..." headerKey="-1" list="funcoes" listKey="id" listValue="nome"/>
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();"/>

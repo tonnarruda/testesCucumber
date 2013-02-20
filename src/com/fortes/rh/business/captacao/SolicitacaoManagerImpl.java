@@ -172,7 +172,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
         	solicitacao.setLiberador(solicitacaoAux.getLiberador());
         }
 
-        if (solicitacao.getAreaOrganizacional() == null || solicitacao.getAreaOrganizacional().getId() == null)
+       	if (solicitacao.getAreaOrganizacional() == null || solicitacao.getAreaOrganizacional().getId() == null)
         	solicitacao.setAreaOrganizacional(solicitacaoAux.getAreaOrganizacional());
         if (solicitacao.getEstabelecimento() == null || solicitacao.getEstabelecimento().getId() == null)
         	solicitacao.setEstabelecimento(solicitacaoAux.getEstabelecimento());
@@ -184,6 +184,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
         	solicitacao.setCidade(null);
       	if(solicitacao.getLiberador() == null || solicitacao.getLiberador().getId() == null)
     		solicitacao.setLiberador(null);
+      	if (solicitacao.getFuncao() == null || solicitacao.getFuncao().getId() == null || solicitacao.getFuncao().getId() == -1L)
+      		solicitacao.setFuncao(null);
+      	if (solicitacao.getAmbiente() == null || solicitacao.getAmbiente().getId() == null || solicitacao.getAmbiente().getId() == -1L)
+      		solicitacao.setAmbiente(null);
         
         update(solicitacao);
         

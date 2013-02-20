@@ -83,14 +83,14 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Long candidatoSolicitacaoId;
 	private Date dataPrimeiroHist;
 	private boolean integraAc;
-	private boolean obrigarAmbienteFuncaoColaborador;	
+	private boolean obrigarAmbienteFuncao;	
 	private String encerrarSolicitacao;
 
 	private Solicitacao solicitacao;
 
 	public void prepare() throws Exception
 	{
-		obrigarAmbienteFuncaoColaborador = getEmpresaSistema().isObrigarAmbienteFuncaoColaborador();
+		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		integraAc = getEmpresaSistema().isAcIntegra();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
@@ -491,9 +491,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador()
+	public boolean isObrigarAmbienteFuncao()
 	{
-		return obrigarAmbienteFuncaoColaborador;
+		return obrigarAmbienteFuncao;
 	}
 
 	public void setEncerrarSolicitacao(String encerrarSolicitacao)

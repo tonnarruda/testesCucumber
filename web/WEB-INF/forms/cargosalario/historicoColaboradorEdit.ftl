@@ -127,7 +127,7 @@
 				camposValidos.push('data');
 			</#if>
 			
-			<#if obrigarAmbienteFuncaoColaborador>
+			<#if obrigarAmbienteFuncao>
 				camposObrigatorios.push('ambiente','funcao');
 			</#if>
 
@@ -208,9 +208,9 @@
 		<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');" disabled="${somenteLeitura}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncaoColaborador?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;"/>
+			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;"/>
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
-			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncaoColaborador?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
+			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
 		</@authz.authorize>
 		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>

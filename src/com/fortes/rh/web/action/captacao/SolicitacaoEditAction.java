@@ -151,10 +151,12 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private char visualizar;
 
 	private int qtdAvaliacoesRespondidas;
+	private boolean obrigarAmbienteFuncao;
 
     private void prepare() throws Exception
     {
     	Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
+    	obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 
     	exibeSalario = empresa.isExibirSalario();
     	exibeColaboradorSubstituido = empresa.isExibirColaboradorSubstituido();
@@ -185,6 +187,12 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             // Campos somente leitura se já houver candidatos na solicitação
             if (candidatoSolicitacaoManager.getCount(new String[] {"solicitacao.id"}, new Object[]{solicitacao.getId()}) > 0)
             	somenteLeitura = true;
+            
+			if(solicitacao.getFaixaSalarial() != null && solicitacao.getFaixaSalarial().getCargo() != null && solicitacao.getFaixaSalarial().getCargo().getId() != null)
+				funcoes = funcaoManager.findByCargo(solicitacao.getFaixaSalarial().getCargo().getId());
+
+			if(solicitacao.getEstabelecimento() != null && solicitacao.getEstabelecimento().getId() != null)
+				ambientes = ambienteManager.findByEstabelecimento(solicitacao.getEstabelecimento().getId());
             
             Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId());
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
@@ -843,5 +851,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() {
 		return solicitacaoAvaliacaos;
+	}
+
+	public boolean isObrigarAmbienteFuncao() {
+		return obrigarAmbienteFuncao;
 	}
 }

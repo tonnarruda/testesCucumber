@@ -279,12 +279,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public String imprimirSolicitacaoExames() throws Exception
 	{
-//		String retorno = insertOrUpdate();
-//		if (retorno.equals(INPUT))
-//		{
-//			return INPUT;
-//		}
-
 		try
 		{
 			dataSource = new ArrayList<SolicitacaoExameRelatorio>();

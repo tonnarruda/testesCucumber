@@ -21,6 +21,9 @@ public class SolicitacaoExameRelatorio
 	private String clinicaTipoDescricao;
 	private String exameNome;
 	private String colaboradorNome;
+	private String colaboradorMatricula;
+	private String colaboradorFuncao;
+	private String candidatoFuncao;
 	private String candidatoNome;
 	private Date colaboradorDataNascimento;
 	private Date candidatoDataNascimento;
@@ -57,13 +60,18 @@ public class SolicitacaoExameRelatorio
 	{
 	}
 
-	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo)
+	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String candidatoFuncao)
 	{
 		this.medicoNome = medicoNome;
 		this.medicoCrm = medicoCrm;
 		this.clinicaNome = clinicaNome != null ? clinicaNome : "";
 		this.clinicaTipo = clinicaTipo;
-		this.clinicaTipoDescricao = clinicaTipo.equals("03") ? clinicaOutro : TipoClinica.getDescricao(clinicaTipo);  
+
+		if(clinicaTipo!= null)
+			this.clinicaTipoDescricao = clinicaTipo.equals("03") ? clinicaOutro : TipoClinica.getDescricao(clinicaTipo);
+		else
+			this.clinicaTipoDescricao = "";
+		
 		this.clinicaEndereco = clinicaEndereco != null ? clinicaEndereco : "";
 		this.clinicaTelefone = clinicaTelefone != null ? clinicaTelefone : "";
 		this.clinicaHorario = clinicaHorario != null ? clinicaHorario : "";
@@ -73,8 +81,10 @@ public class SolicitacaoExameRelatorio
 		this.colaboradorDataNascimento = colaboradorDataNascimento;
 		this.candidatoDataNascimento = candidatoDataNascimento;
 		this.exameMotivo = exameMotivo;
-
 		this.medicoAssinatura = medicoAssinatura;
+		this.colaboradorMatricula = colaboradorMatricula;
+		this.colaboradorFuncao = colaboradorFuncao;
+		this.candidatoFuncao = candidatoFuncao;
 	}
 
 	public String getPessoaNome()
@@ -196,5 +206,26 @@ public class SolicitacaoExameRelatorio
 
 	public void setClinicaTipoDescricao(String clinicaTipoDescricao) {
 		this.clinicaTipoDescricao = clinicaTipoDescricao;
+	}
+
+	public String getColaboradorMatricula() {
+		return colaboradorMatricula;
+	}
+
+	public String getColaboradorFuncao() {
+		return colaboradorFuncao;
+	}
+
+	public String getCandidatoFuncao() {
+		return candidatoFuncao;
+	}
+
+	public String getFuncao() {
+		if (StringUtils.isNotBlank(candidatoFuncao))
+			return candidatoFuncao;
+		else if (StringUtils.isNotBlank(colaboradorFuncao))
+			return colaboradorFuncao;
+
+		return "";
 	}
 }

@@ -59,7 +59,7 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirColaboradorSubstituido;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
-    private boolean obrigarAmbienteFuncaoColaborador;
+    private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
     private char verificaParentesco = 'N';
     @Column(length=400)
@@ -440,12 +440,12 @@ public class Empresa extends AbstractModel implements Serializable
 		this.turnoverPorSolicitacao = turnoverPorSolicitacao;
 	}
 
-	public boolean isObrigarAmbienteFuncaoColaborador() {
-		return obrigarAmbienteFuncaoColaborador;
+	public boolean isObrigarAmbienteFuncao() {
+		return obrigarAmbienteFuncao;
 	}
 
-	public void setObrigarAmbienteFuncaoColaborador(boolean obrigarAmbienteFuncaoColaborador) {
-		this.obrigarAmbienteFuncaoColaborador = obrigarAmbienteFuncaoColaborador;
+	public void setObrigarAmbienteFuncao(boolean obrigarAmbienteFuncao) {
+		this.obrigarAmbienteFuncao= obrigarAmbienteFuncao;
 	}
 
 	public char getVerificaParentesco() {

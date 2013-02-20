@@ -217,15 +217,19 @@
 					verificaParentes(this.value);
 				});
 				
-				if ($('#estabelecimento').val()) {
-					populaAmbiente($('#estabelecimento').val(), null);
-				}
+				<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+					if ($('#estabelecimento').val() && !$('#ambiente').val()) {
+						populaAmbiente($('#estabelecimento').val(), null);
+					}
+				</@authz.authorize>
 			</#if>
 			
-			<#if historicoColaborador?exists &&  historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.id?exists 
-			&& (!historicoColaborador.funcao?exists || (historicoColaborador.funcao?exists && !historicoColaborador.funcao.id?exists))> 
-				populaFuncao(${historicoColaborador.faixaSalarial.id});
-			</#if>
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<#if historicoColaborador?exists &&  historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.id?exists 
+				&& (!historicoColaborador.funcao?exists || (historicoColaborador.funcao?exists && !historicoColaborador.funcao.id?exists))> 
+					populaFuncao(${historicoColaborador.faixaSalarial.id});
+				</#if>
+			</@authz.authorize>
 			
 			habilitaDtEncerramentoContrato();
 		});
@@ -342,7 +346,7 @@
 		exibeLabelDosCamposNaoPreenchidos = true;
 		function validaFormularioDinamico()
 		{
-			<#if obrigarAmbienteFuncaoColaborador && somenteLeitura == "false">
+			<#if obrigarAmbienteFuncao && somenteLeitura == "false">
 				arrayValidacao.push('ambiente','funcao');
 			</#if>
 			
@@ -515,12 +519,12 @@
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 						
-							<label for="ambiente">Ambiente:</label><#if obrigarAmbienteFuncaoColaborador>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+							<label for="ambiente">Ambiente:</label><#if obrigarAmbienteFuncao>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.ambiente.id" theme="simple" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 							
 							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
 							
-							<label for="funcao">Função:</label><#if obrigarAmbienteFuncaoColaborador>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+							<label for="funcao">Função:</label><#if obrigarAmbienteFuncao>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.funcao.id" id="funcao" theme="simple" list="funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhuma" disabled= "${somenteLeitura}" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 						
 						</@authz.authorize>

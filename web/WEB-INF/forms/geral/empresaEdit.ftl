@@ -193,7 +193,7 @@
 				<ul>
 					<@ww.select label="Controlar risco por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 442px;"/>
 					<br><@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
-					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o colaborador" name="empresa.obrigarAmbienteFuncaoColaborador" id="obrigarAmbienteFuncaoColaborador" labelPosition="right" /><br>
+					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o histórico do colaborador e solicitação de pessoal" name="empresa.obrigarAmbienteFuncao" id="obrigarAmbienteFuncao" labelPosition="right" /><br>
 				</ul>
 			</@ww.div>
 		</li>

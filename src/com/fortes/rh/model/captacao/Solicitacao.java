@@ -35,6 +35,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -76,6 +78,10 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private Estabelecimento estabelecimento;
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
+	@ManyToOne
+	private Funcao funcao;
+	@ManyToOne
+	private Ambiente ambiente;
 	@ManyToOne
 	private Usuario solicitante;
 	@ManyToOne
@@ -227,6 +233,43 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 		motivoSolicitacao.setDescricao(projectionMotivoSolicitacaoDescricao);
 	}
+	
+	private void iniciaAmbiente() 
+	{
+		if(this.ambiente == null)
+			ambiente = new Ambiente();
+	}
+	
+	public void setProjectionAmbienteId(Long projectionAmbienteId)
+	{
+		iniciaAmbiente();
+		ambiente.setId(projectionAmbienteId);
+	}
+
+	public void setProjectionAmbienteNome(String projectionAmbienteNome)
+	{
+		iniciaAmbiente();
+		ambiente.setNome(projectionAmbienteNome);
+	}
+
+	private void iniciaFuncao() 
+	{
+		if(this.funcao == null)
+			funcao = new Funcao();
+	}
+	
+	public void setProjectionFuncaoId(Long projectionFuncaoId)
+	{
+		iniciaFuncao();
+		funcao.setId(projectionFuncaoId);
+	}
+	
+	public void setProjectionFuncaoNome(String projectionFuncaoNome)
+	{
+		iniciaFuncao();
+		funcao.setNome(projectionFuncaoNome);
+	}
+
 
 	public void setProjectionEmpresaId(Long projectionEmpresaId)
 	{
@@ -732,4 +775,21 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
 		this.colaboradorQuestionarios = colaboradorQuestionarios;
 	}
+
+	public Funcao getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(Funcao funcao) {
+		this.funcao = funcao;
+	}
+
+	public Ambiente getAmbiente() {
+		return ambiente;
+	}
+
+	public void setAmbiente(Ambiente ambiente) {
+		this.ambiente = ambiente;
+	}
+	
 }
