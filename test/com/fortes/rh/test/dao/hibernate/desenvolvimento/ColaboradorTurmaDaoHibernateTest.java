@@ -559,12 +559,19 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	turma.setCurso(curso);
     	turmaDao.save(turma);
     	
+    	Turma turma2 = TurmaFactory.getEntity();
+    	turma2.setCurso(curso);
+    	turmaDao.save(turma2);
+    	
     	Colaborador colaborador = ColaboradorFactory.getEntity();
     	colaborador.setCodigoAC("123445");
-    	colaborador = colaboradorDao.save(colaborador);
+    	colaboradorDao.save(colaborador);
     	
     	Colaborador colaborador2 = ColaboradorFactory.getEntity();
-    	colaborador2 = colaboradorDao.save(colaborador2);
+    	colaboradorDao.save(colaborador2);
+    	
+    	Colaborador colaborador3 = ColaboradorFactory.getEntity();
+    	colaboradorDao.save(colaborador3);
     	
     	ColaboradorTurma colaboradorTurma = getEntity();
     	colaboradorTurma.setColaborador(colaborador);
@@ -577,10 +584,15 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setTurma(turma);
     	colaboradorTurma2.setCurso(curso);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
+
+    	ColaboradorTurma colaboradorTurma3 = getEntity();
+    	colaboradorTurma3.setColaborador(colaborador3);
+    	colaboradorTurma3.setTurma(turma2);
+    	colaboradorTurma3.setCurso(curso);
+    	colaboradorTurma3 = colaboradorTurmaDao.save(colaboradorTurma3);
     	
-    	Collection<Colaborador> colaboradors = colaboradorTurmaDao.findColaboradorByCursos(new Long[]{curso.getId()});
-    	
-    	assertEquals(1, colaboradors.size());
+    	assertEquals(2, colaboradorTurmaDao.findColaboradorByCursos(new Long[]{curso.getId()}, null).size());
+    	assertEquals(1, colaboradorTurmaDao.findColaboradorByCursos(new Long[]{curso.getId()}, new Long[]{turma.getId()}).size());
     }
 
     public void testFindByTurmaSemPresenca()

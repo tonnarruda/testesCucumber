@@ -1185,6 +1185,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			hql.append("and t.id in (:turmasIds) ");
 
 		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and co.naoIntegraAc = false ");
 		hql.append("and co.codigoAC is not null ");
 		hql.append("and co.codigoAC <> '' ");
 
@@ -1220,18 +1221,24 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds) 
+	public Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds, Long[] turmasIds) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.nome, co.nomeComercial) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("where ct.curso.id in (:cursoIds) ");
-		hql.append("and (co.codigoAC is null ");
-		hql.append("or co.codigoAC = '') ");
-
+		hql.append("and co.naoIntegraAc = false ");
+		hql.append("and (co.codigoAC is null or co.codigoAC = '') ");
+		
+		if (turmasIds != null && turmasIds.length > 0)
+			hql.append("and ct.turma.id in (:turmasIds) ");
+		
 		Query query = getSession().createQuery(hql.toString());
 		query.setParameterList("cursoIds", cursosIds, Hibernate.LONG);
+
+		if (turmasIds != null && turmasIds.length > 0)
+			query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
 
 		return query.list();	
 	}

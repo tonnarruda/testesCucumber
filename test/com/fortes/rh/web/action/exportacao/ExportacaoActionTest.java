@@ -58,7 +58,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	colaborador.setNome("colaborador");
     	
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
-    	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING).will(returnValue(Arrays.asList(colaborador)));
+    	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador)));
     	assertEquals("input",action.gerarArquivoExportacao());
     	assertEquals("Impossível exportar.<br>Existem Colaboradores sem código AC (Matrícula):<br> -colaborador (nome comercial colaborador)<br>",action.getActionMessages().toArray()[0]);
     }
@@ -78,7 +78,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	action.setAreasCheck(new String[]{"1"});
     	
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
-    	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING).will(returnValue(Arrays.asList(colaborador)));
+    	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador)));
     	colaboradorTurmaManager.expects(once()).method("findColabTreinamentos").will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("success",action.gerarArquivoExportacao());
