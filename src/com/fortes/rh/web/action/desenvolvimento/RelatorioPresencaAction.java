@@ -142,7 +142,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		parametros.put("exibirConteudoProgramatico", exibirConteudoProgramatico);
 		parametros.put("quebraPaginaEstabelecimento", quebraPaginaEstabelecimento);
 		
-		
+		//TODO A ordem dos ifs abaixo tem de ser a mesma ordem dos ifs que contem em colaboradorturmamanager.montaColunas()
 		if(exibirConteudoProgramatico)
 		{
 			parametros.put("labelLinha01", "Conteúdo Programático:");			
@@ -163,8 +163,14 @@ public class RelatorioPresencaAction extends MyActionSupport
 			}
 		}
 
+		if(exibirCPF)
+			parametros.put("coluna02", "CPF");
+		
 		if(exibirCargo)
-			parametros.put("coluna02", "Cargo");
+			if(parametros.get("coluna02") == null)
+				parametros.put("coluna02", "Cargo");
+			else
+				parametros.put("coluna03", "Cargo");
 		
 		if(exibirEstabelecimento)
 		{
@@ -188,14 +194,6 @@ public class RelatorioPresencaAction extends MyActionSupport
 				parametros.put("coluna02", "Assinatura");
 			else
 				parametros.put("coluna03", "Assinatura");
-		}
-		
-		if(exibirCPF)
-		{
-			if(parametros.get("coluna02") == null)
-				parametros.put("coluna02", "CPF");
-			else
-				parametros.put("coluna03", "CPF");
 		}
 		
 		return parametros;

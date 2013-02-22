@@ -560,25 +560,26 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
 		{
+			//TODO A ordem dos ifs abaixo tem de ser a mesma ordem dos ifs que contem em relatoriopresencaaction.montaParametros()
 			if(exibirNomeComercial)
 				colaboradorTurma.setColuna01RelatorioPresenca(colaboradorTurma.getColaboradorNomeComercial());
 			else
 				colaboradorTurma.setColuna01RelatorioPresenca(colaboradorTurma.getColaboradorNome());
 
+			if(exibirCPF)
+				colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getPessoal().getCpfFormatado());
+			
 			if(exibirCargo)
-				colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getFaixaSalarial().getDescricao());
+				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
+					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getFaixaSalarial().getDescricao());
+				else
+					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getFaixaSalarial().getDescricao());
 
 			if(exibirEstabelecimento)
 				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
 					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
 				else
 					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getHistoricoColaborador().getEstabelecimento().getNome());
-			
-			if(exibirCPF)
-				if(colaboradorTurma.getColuna02RelatorioPresenca() == null)
-					colaboradorTurma.setColuna02RelatorioPresenca(colaboradorTurma.getColaborador().getPessoal().getCpfFormatado());
-				else
-					colaboradorTurma.setColuna03RelatorioPresenca(colaboradorTurma.getColaborador().getPessoal().getCpfFormatado());
 			
 			if(exibirArea)
 			{
@@ -598,6 +599,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				else
 					colaboradorTurma.setColuna03RelatorioPresenca("");
 		}
+		
 
 		return colaboradorTurmas;
 	}

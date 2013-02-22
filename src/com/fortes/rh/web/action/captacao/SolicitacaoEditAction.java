@@ -283,6 +283,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
            	solicitacao.setLiberador(usuarioLogado);
         else
            	solicitacao.setLiberador(null);
+        
+      	if (solicitacao.getFuncao() == null || solicitacao.getFuncao().getId() == null || solicitacao.getFuncao().getId() == -1L)
+      		solicitacao.setFuncao(null);
+      	if (solicitacao.getAmbiente() == null || solicitacao.getAmbiente().getId() == null || solicitacao.getAmbiente().getId() == -1L)
+      		solicitacao.setAmbiente(null);
 
         solicitacaoManager.save(solicitacao, emailsCheck, LongUtil.arrayStringToArrayLong(avaliacoesCheck));
         
