@@ -157,8 +157,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmaIds, Date dataIni, Date dataFim, Boolean realizada)
 	{
-		StringBuilder hql = new StringBuilder("select new Turma(c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, count(*), td.descricao, ttd.despesa) from ColaboradorTurma ct ");
-									hql.append("join ct.turma as t ");
+		StringBuilder hql = new StringBuilder("select new Turma(c.id, c.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.custo, count(ct.id), td.descricao, ttd.despesa) from Turma t ");
+									hql.append("left join t.colaboradorTurmas as ct ");
 									hql.append("join t.curso as c ");
 									hql.append("left join t.turmaTipoDespesas as ttd ");
 									hql.append("left join ttd.tipoDespesa as td ");
