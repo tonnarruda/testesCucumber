@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.101.105" data="25/02/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Modelos de Avaliação do Candidato: Novo campo percentual mínimo de aprovação.
+			:: R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Nova possibilidade de selecionar ambiente e função.
+			:: T&D > Relatórios > Lista de Presença > Nova opção de filtrar por CPF em campos extras.
+			:: SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Exibir matrícula e função do colaborador/candidato.
+			:: Info. Funcionais > Relatórios > Ocorrências: Novo botão para exportar relatório para o formato XLS.
+			:: Utilitários > Importar Cadastros: Nova opção de importar cadastros de riscos entre empresas.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.100.104" data="14/02/2013">
 		<Modulo nome=" "><![CDATA[
 			:: C&S > Cadastros > Áreas Organizacionais > Inserir/Editar: Novo campo "Corresponsável" da área organizacional.

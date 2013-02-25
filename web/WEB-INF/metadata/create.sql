@@ -4,19 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -550,7 +554,8 @@ CREATE TABLE avaliacao (
     tipomodeloavaliacao character(1) NOT NULL,
     periodoexperiencia_id bigint,
     exiberesultadoautoavaliacao boolean DEFAULT false NOT NULL,
-    avaliarcompetenciascargo boolean DEFAULT false NOT NULL
+    avaliarcompetenciascargo boolean DEFAULT false NOT NULL,
+    percentualaprovacao double precision
 );
 
 
@@ -2842,7 +2847,7 @@ CREATE TABLE empresa (
     imganiversarianteurl character varying(200),
     mensagemcartaoaniversariante character varying(300),
     turnoverporsolicitacao boolean DEFAULT false NOT NULL,
-    obrigarambientefuncaocolaborador boolean DEFAULT false,
+    obrigarambientefuncao boolean DEFAULT false,
     verificaparentesco character(1) DEFAULT 'N'::bpchar,
     controlariscopor character(1) DEFAULT 'A'::bpchar,
     exibircolaboradorsubstituido boolean DEFAULT false NOT NULL,
@@ -5800,7 +5805,9 @@ CREATE TABLE solicitacao (
     horariocomercial character varying(20),
     status character varying(1),
     observacaoliberador text,
-    colaboradorsubstituido character varying(100)
+    colaboradorsubstituido character varying(100),
+    ambiente_id bigint,
+    funcao_id bigint
 );
 
 
@@ -27345,7 +27352,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, exame_id, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncaocolaborador, verificaparentesco, controlariscopor, exibircolaboradorsubstituido, codigotrucurso) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, 1, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, exame_id, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, exibircolaboradorsubstituido, codigotrucurso) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, 1, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false);
 
 
 --
@@ -27977,6 +27984,11 @@ INSERT INTO migrations (name) VALUES ('20130204155211');
 INSERT INTO migrations (name) VALUES ('20130205151017');
 INSERT INTO migrations (name) VALUES ('20130206135421');
 INSERT INTO migrations (name) VALUES ('20130208084557');
+INSERT INTO migrations (name) VALUES ('20130215135008');
+INSERT INTO migrations (name) VALUES ('20130218141223');
+INSERT INTO migrations (name) VALUES ('20130218154602');
+INSERT INTO migrations (name) VALUES ('20130219162450');
+INSERT INTO migrations (name) VALUES ('20130220102108');
 
 
 --
@@ -28054,7 +28066,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, NULL, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (26, 'ROLE_MOV_SIMULACAOREAJUSTE', 'Planejamentos de Realinhamentos', '/cargosalario/tabelaReajusteColaborador/list.action', 1, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (478, 'ROLE_VER_AREAS', 'Visualizar todas as Áreas Organizacionais', '#', 0, false, NULL, 363);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Ajuste de Situação (Dissídio)', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (526, 'ROLE_FATURAMENTO', 'Faturamento Mensal', '/cargosalario/faturamentoMensal/list.action', 5, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (364, 'ROLE_C&S_REL', 'Relatórios', '#', 3, true, NULL, 361);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (54, 'ROLE_REL_CARGO', 'Descrição de Cargos', '/cargosalario/cargo/prepareRelatorioCargo.action', 1, true, NULL, 364);
@@ -28270,13 +28281,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (569, 'ROLE_MOV_SOLICITACAOREAJUSTE_INDICE', 'Índice', '/cargosalario/reajusteIndice/prepareInsert.action', 3, true, NULL, 49);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (570, 'ROLE_DISSIDIO', 'Índices', '/cargosalario/reajusteIndice/prepareDissidio.action', 3, true, NULL, 395);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (49, 'ROLE_MOV_SOLICITACAOREAJUSTE', 'Solicitação de Realinhamento', '#', 2, true, NULL, 363);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Alteração de Promoção para Dissídio', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, NULL, 363);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.100.104', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.51.2', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.101.105', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
 
 
 --
@@ -31554,6 +31566,14 @@ ALTER TABLE ONLY formacao
 
 
 --
+-- Name: funcao_ambiente_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacao
+    ADD CONSTRAINT funcao_ambiente_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);
+
+
+--
 -- Name: funcao_cargo_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -32327,6 +32347,14 @@ ALTER TABLE ONLY riscomedicaorisco
 
 ALTER TABLE ONLY riscomedicaorisco
     ADD CONSTRAINT riscomedicaorisco_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);
+
+
+--
+-- Name: solicitacao_ambiente_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacao
+    ADD CONSTRAINT solicitacao_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);
 
 
 --

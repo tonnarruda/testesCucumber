@@ -19502,3 +19502,20 @@ insert into migrations values('20130206135421');--.go
 update papel set nome = 'Solicitação de Realinhamento' where id = 49;--.go
 insert into migrations values('20130208084557');--.go
 update parametrosdosistema set appversao = '1.1.100.104';--.go
+-- versao 1.1.101.105
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.52.1';--.go
+insert into migrations values('20130215135008');--.go
+alter table avaliacao add column percentualaprovacao double precision;--.go
+insert into migrations values('20130218141223');--.go
+update papel set nome = 'Alteração de Promoção para Dissídio' where id = 512;--.go
+insert into migrations values('20130218154602');--.go
+alter table solicitacao add column ambiente_id bigint;--.go
+ALTER TABLE solicitacao ADD CONSTRAINT solicitacao_ambiente_fk FOREIGN KEY (ambiente_id) REFERENCES ambiente(id);--.go
+
+alter table solicitacao add column funcao_id bigint;--.go
+ALTER TABLE solicitacao ADD CONSTRAINT funcao_ambiente_fk FOREIGN KEY (funcao_id) REFERENCES funcao(id);--.go
+insert into migrations values('20130219162450');--.go
+alter table empresa rename column obrigarAmbienteFuncaoColaborador to obrigarAmbienteFuncao;--.go
+insert into migrations values('20130220102108');--.go
+update parametrosdosistema set appversao = '1.1.101.105';--.go
