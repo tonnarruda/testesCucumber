@@ -109,6 +109,11 @@
 			// Calcula tempo de expiracao da sessao
 			var expiracao;
 			var horaExpiracao = new Date().getTime() + ${session.maxInactiveInterval * 1000};
+			var msg = 'Sua sessão expirou.<br /><br />Clique em OK para efetuar o login novamente ou <br />'
+			msg += 'clique em CANCELAR* para permanecer visualizando<br />';
+			msg += 'esta tela.<br /><br />';
+			msg += '(*) optando por permanecer nesta tela, ao tentar realizar<br />alguma operação o login será solicitado.';
+			
 			var sessionTimer = setInterval(function() {
 				expiracao = new Date(horaExpiracao - new Date());
 
@@ -119,7 +124,7 @@
 				{
 					clearInterval(sessionTimer);
 					
-					jConfirm('Sua sessão expirou. Deseja efetuar o login novamente?', 'Fortes RH', function(r) {
+					jConfirm(msg, 'Sessão Expirada!', function(r) {
 					    if(r)
 					    {
 						    location.href = '<@ww.url includeParams="none" value="/logout.action"/>';
