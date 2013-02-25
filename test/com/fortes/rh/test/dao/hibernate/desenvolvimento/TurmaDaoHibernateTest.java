@@ -197,10 +197,11 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		Turma turma2 = criaTurmaAndColaboradorTurma(curso, "02/01/2010", true);
 		Turma turma3 = criaTurmaAndColaboradorTurma(curso, "02/01/2011", true);
 		Turma turma4 = criaTurmaAndColaboradorTurma(curso, "02/01/2010", false);
+		Turma turma5 = criaTurma(curso, "02/01/2010", true);
 		
-		Long[] turmaIds = new Long[]{turma1.getId(), turma2.getId(), turma3.getId(), turma4.getId()};
+		Long[] turmaIds = new Long[]{turma1.getId(), turma2.getId(), turma3.getId(), turma4.getId(), turma5.getId()};
 		
-		assertEquals(1, turmaDao.findByTurmasPeriodo(turmaIds, DateUtil.montaDataByString("01/01/2010"), DateUtil.montaDataByString("05/05/2010"), true).size());
+		assertEquals(2, turmaDao.findByTurmasPeriodo(turmaIds, DateUtil.montaDataByString("01/01/2010"), DateUtil.montaDataByString("05/05/2010"), true).size());
 	}
 	
 	public void testFindByTurmasPeriodoComDespesa() 
@@ -246,11 +247,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 
 	private Turma criaTurmaAndColaboradorTurma(Curso curso, String ini, boolean realizada) 
 	{
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turma.setDataPrevIni(DateUtil.montaDataByString(ini));
-		turma.setRealizada(realizada);
-		turmaDao.save(turma);
+		Turma turma = criaTurma(curso, ini, realizada);
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setTurma(turma);
@@ -258,6 +255,17 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 
 		return turma;
 	}
+	
+	private Turma criaTurma(Curso curso, String ini, boolean realizada) 
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDataPrevIni(DateUtil.montaDataByString(ini));
+		turma.setRealizada(realizada);
+		turmaDao.save(turma);
+		return turma;
+	}
+	
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

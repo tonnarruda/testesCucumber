@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="investimentos_cursos" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="93e4492d-c417-4c10-b4c9-c6004239e14c">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.610510000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -126,7 +126,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new Double($F{custo}.doubleValue() / $F{qtdPessoas}.doubleValue())]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($F{qtdPessoas} > 0 ? new Double($F{custo}.doubleValue() / $F{qtdPessoas}.doubleValue()) : 0.0)]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement uuid="6a07fbe5-f627-4afd-8eda-bf7abb601247" key="textField-6" x="407" y="2" width="46" height="11"/>
@@ -307,7 +307,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new Double($F{despesaPorTipo}.doubleValue() / $F{qtdPessoas}.doubleValue())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{qtdPessoas} > 0 ? new Double($F{despesaPorTipo}.doubleValue() / $F{qtdPessoas}.doubleValue()) : 0.0)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -379,7 +379,7 @@
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new Double($V{totalInvestimento}.doubleValue() / $V{totalParticipante}.doubleValue())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{totalParticipante} > 0 ? new Double($V{totalInvestimento}.doubleValue() / $V{totalParticipante}.doubleValue()) : 0.0)]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="28001435-48d1-434d-a7a9-d15170286e7d" key="staticText-20" x="229" y="11" width="112" height="12"/>
