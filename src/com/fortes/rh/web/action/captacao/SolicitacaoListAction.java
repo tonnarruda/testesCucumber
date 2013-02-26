@@ -5,13 +5,10 @@ package com.fortes.rh.web.action.captacao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -71,6 +68,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
     private String descricaoBusca;
+    private char statusBusca = 'T';
     
     private String json;
     private char statusSolicitacaoAnterior;
@@ -91,14 +89,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
-			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -453,5 +451,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setDescricaoBusca(String descricaoBusca) {
 		this.descricaoBusca = descricaoBusca;
+	}
+
+	public char getStatusBusca() {
+		return statusBusca;
+	}
+
+	public void setStatusBusca(char statusBusca) {
+		this.statusBusca = statusBusca;
 	}
 }

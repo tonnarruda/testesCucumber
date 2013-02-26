@@ -129,7 +129,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			{
 				vo = new MensagemVO();
 				vo.setTexto("Existem solicitações de pessoal aguardando liberação");
-				vo.setLink("captacao/solicitacao/list.action");
+				vo.setLink("captacao/solicitacao/list.action?statusBusca=" + StatusAprovacaoSolicitacao.ANALISE);
 				vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
 				vo.setLida(true);
 

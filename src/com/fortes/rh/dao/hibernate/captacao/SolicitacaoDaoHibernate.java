@@ -38,17 +38,17 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
-	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
+	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca);
+		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca, statusBusca);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.anuncio", "an", Criteria.LEFT_JOIN);
@@ -62,6 +62,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("a.nome"), "nomeArea");
 		p.add(Projections.property("us.nome"), "solicitanteNome");
 		p.add(Projections.property("s.encerrada"), "encerrada");
+		p.add(Projections.property("s.dataEncerramento"), "dataEncerramento");
 		p.add(Projections.property("s.suspensa"), "suspensa");
 		p.add(Projections.property("s.obsSuspensao"), "obsSuspensao");
 		p.add(Projections.property("s.status"), "status");
@@ -69,7 +70,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("an.exibirModuloExterno"), "projectionAnuncioExibirModuloExterno");
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca);
+		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca, statusBusca);
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
@@ -82,7 +83,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca)
+	private void montaConsulta(Criteria criteria, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
 	{
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.solicitante", "us", Criteria.LEFT_JOIN);
@@ -109,6 +110,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		if(descricaoBusca != null && !descricaoBusca.equals(""))
 			criteria.add(Expression.sqlRestriction("normalizar({alias}.descricao) ilike normalizar(?)", "%"+descricaoBusca+"%", Hibernate.STRING)); 
+
+		if(statusBusca != 'T')
+			criteria.add(Expression.eq("s.status", statusBusca)); 
 
 		if(usuario != null && usuario.getId() != null && !liberaSolicitacao)
 			criteria.add(Expression.eq("s.solicitante.id", usuario.getId()));

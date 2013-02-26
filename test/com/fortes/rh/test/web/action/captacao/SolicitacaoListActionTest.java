@@ -116,8 +116,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	
     	action.setSolicitacao(ms);
 
-    	manager.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(1));
-    	manager.expects(once()).method("findAllByVisualizacao").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Solicitacao>()));
+    	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
+    	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(true));
 
@@ -137,8 +137,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	action.setSolicitacao(ms);
 
-    	manager.expects(once()).method("getCount").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(1));
-    	manager.expects(once()).method("findAllByVisualizacao").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Solicitacao>()));
+    	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
+    	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(false));
 

@@ -87,6 +87,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="list.action" validate="true" onsubmit="setPage();" method="POST" id="formBusca">
 			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" />
+			<@ww.select id="status" label="Status" name="statusBusca" list="status" headerValue="Todos" headerKey="T" />
 			<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca"  cssStyle="width: 229px;"/>
 			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" /><br>
 			<@ww.hidden id="pagina" name="page"/>
@@ -122,7 +123,7 @@
 		<#if solicitacao.encerrada>
 			<#assign classe=""/>
 			<#assign fraseConfirma="Deseja reabrir esta solicitação?"/>
-			<#assign titleEncerra="Reabrir Solicitação. Observação: ${observacaoLiberador}\n "/>
+			<#assign titleEncerra="Reabrir Solicitação.\nData Encerramento: ${solicitacao.dataEncerramentoFormatada}\nObservação: ${observacaoLiberador}\n"/>
 			<#assign imgEncerra="flag_green.gif"/>
 			<#assign actionEncerra="reabrirSolicitacao.action"/>
 		<#else>
