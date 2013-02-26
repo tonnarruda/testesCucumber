@@ -581,6 +581,11 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	{
 		return dataEncerramento;
 	}
+	
+	public String getDataEncerramentoFormatada()
+	{
+		return DateUtil.formataDiaMesAno(this.dataEncerramento);
+	}
 
 	public void setDataEncerramento(Date dataEncerramento)
 	{
