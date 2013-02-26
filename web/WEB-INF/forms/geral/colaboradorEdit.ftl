@@ -76,6 +76,7 @@
     </#if>
 
 	<@ww.head />
+
 	<#if colaborador.id?exists>
 		<title>Editar Colaborador</title>
 		<#assign formAction="update.action"/>
@@ -83,7 +84,11 @@
 		<#assign edicao="true"/>
 		<#assign somenteLeitura="true"/>
 		<#assign funcaoNome=""/>
-		<#assign funcaoDataAdmissao=""/>
+		<#if editarHistorico>
+			<#assign funcaoDataAdmissao="sugerirDataHistorico();"/>
+		<#else>
+			<#assign funcaoDataAdmissao=""/>
+		</#if>	
 	<#else>
 		<title>Inserir Colaborador</title>
 		<#assign formAction="insert.action"/>
@@ -94,11 +99,11 @@
 		<#assign funcaoDataAdmissao="sugerirDataHistorico();"/>
 	</#if>
 
-	<#assign edit="colaborador"/>
-	
 	<#if editarHistorico>
 		<#assign somenteLeitura="false"/>
 	</#if>
+	<#assign edit="colaborador"/>
+	
 
 	<#if historicoColaborador?exists && historicoColaborador.data?exists>
 		<#assign dataHist = historicoColaborador.data?date/>
@@ -310,8 +315,7 @@
 		
 		function sugerirDataHistorico()
 		{
-			if(document.getElementById('dt_hist').value == "  /  /    ")
-				document.getElementById('dt_hist').value = document.getElementById('dt_admissao').value;
+			$('#dt_hist, #dt_hist_hidden').val($('#dt_admissao').val());
 		}
 
 		function verificaCpf(data)
@@ -483,7 +487,16 @@
 				<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
 				<@ww.hidden  name="colaborador.vinculo" />
 			<#else>
-				<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
+			
+				<#if editarHistorico>
+					<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
+				<#else>
+					<label for="dt_admissao">Admissão:</label><br />
+					<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="width: 71px;background:#F6F6F6;"/>
+					<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
+					<br clear="all"/>
+				</#if>
+			
 				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato();" liClass="liLeft" />
 				<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
 			</#if>
@@ -501,12 +514,8 @@
 						</#if>
 
 						<h2>Dados da ${msgHistorico} Situação</h2>
-						<#if somenteLeitura == "true">
-							<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssStyle="width:71px;" required="true" disabled="${somenteLeitura}"/>
-						<#else>
-							<@ww.datepicker label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssClass="mascaraData" required="true" disabled="${somenteLeitura}"/>
-						</#if>
-
+						<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssStyle="width:71px;background:#F6F6F6;" disabled="true"/>
+						<@ww.hidden  id="dt_hist_hidden" name="historicoColaborador.data" value="${dataHist}" />
 
 						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
