@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitacaoPessoal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" uuid="b4082f41-f438-4ebe-a882-75b97a874174">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.542173157718137"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="15"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -36,6 +36,7 @@
 	<field name="solicitacao.descricao" class="java.lang.String"/>
 	<field name="solicitacao.id" class="java.lang.Long"/>
 	<field name="solicitacao.colaboradorSubstituido" class="java.lang.String"/>
+	<field name="solicitacao.dataEncerramento" class="java.util.Date"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
 	<variable name="Numero_de_paginas" class="java.lang.Integer"/>
 	<background>
@@ -59,497 +60,14 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="388" splitType="Stretch">
+		<band height="28">
 			<staticText>
-				<reportElement uuid="7dfc0aaa-8963-4c0a-b65c-7905a9582340" key="staticText-24" x="4" y="3" width="528" height="182"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				<reportElement uuid="65af1bda-50f4-431a-a1a7-5de245ddaab9" key="staticText-19" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="537" height="28" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="e7777915-05ce-45f8-ad1e-804630f888ea" key="staticText-1" positionType="Float" mode="Transparent" x="9" y="66" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Área: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="42010ecd-993f-4ffc-a808-98d4439d8b05" key="staticText-3" positionType="Float" mode="Transparent" x="4" y="217" width="528" height="33" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box topPadding="1" leftPadding="5">
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Experiência:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="be0b9a73-c6e6-4210-a5e0-48078dd52826" key="staticText-4" positionType="Float" mode="Transparent" x="256" y="126" width="99" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Remuneração (R$):]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="63b28701-d9a7-45da-a8c8-8fb4b467946f" key="staticText-6" positionType="Float" mode="Transparent" x="256" y="156" width="140" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Idade Preferencial:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="21e8da2e-c45a-41cd-8641-1662ba4205d3" key="staticText-7" positionType="Float" mode="Transparent" x="74" y="126" width="52" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Vínculo:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="5609e289-5a3f-485d-a8d7-aa9f0d93241f" key="staticText-8" positionType="Float" mode="Transparent" x="362" y="126" width="88" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Escolaridade:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="664be529-032d-415a-beee-5390d61e92e6" key="staticText-9" positionType="Float" mode="Transparent" x="144" y="156" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Sexo:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="e07a32c5-4ef9-4606-97d6-becf40c2dfc6" key="staticText-10" positionType="Float" mode="Transparent" x="9" y="126" width="56" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Nº 	Vagas:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="f0990811-c3b0-4ead-bbfa-0ee59b0d0619" key="staticText-11" positionType="Float" mode="Transparent" x="144" y="126" width="107" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Horário de Trabalho:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="b601dc24-0d71-4d77-8b68-f704672d50b7" key="staticText-12" positionType="Float" mode="Transparent" x="258" y="96" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Ambiente:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="bcf9e1a9-ad8b-4d68-a222-cc83e20d313c" key="staticText-13" positionType="Float" mode="Transparent" x="9" y="96" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Função:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="72ae327f-c050-4a1b-af8b-d4bdd0e04429" key="staticText-14" positionType="Float" mode="Transparent" x="9" y="156" width="128" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Motivo da Solicitação:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="dfa7105e-bae3-4717-9e55-c8e08c38bd5b" key="staticText-15" positionType="Float" mode="Transparent" x="258" y="66" width="97" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Cargo/Faixa:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="81e2ed82-4f0a-4313-9eab-df3ca2cdf4c9" key="staticText-16" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="4" y="249" width="528" height="33" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box topPadding="1" leftPadding="5">
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Informações Complementares: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="f62218cc-6825-4b2c-876a-21bd727af6a2" key="staticText-17" positionType="Float" mode="Transparent" x="4" y="281" width="528" height="33" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box topPadding="1" leftPadding="5">
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Liberada:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="eb60d8c0-d062-4191-9df4-3911bcfe4e02" key="textField-1" positionType="Float" mode="Transparent" x="9" y="79" width="242" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.areaOrganizacional.nome}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="9e9fb00c-1208-4fa1-8487-fdd3acb62bf0" key="textField-2" positionType="Float" mode="Transparent" x="9" y="169" width="109" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{motivoSolicitacao}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="de79f889-cd7f-422a-88e8-5fae61261f36" key="textField-3" positionType="Float" mode="Transparent" x="362" y="139" width="162" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{escolaridade}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="934fa89b-6ff6-4871-8789-959d0bf4fc21" key="textField-4" positionType="Float" mode="Transparent" x="256" y="139" width="99" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.remuneracao}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="896c37a4-9a9a-492b-836d-4cda6386baff" key="textField-5" positionType="Float" mode="Transparent" x="144" y="139" width="107" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.horario}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="99d5d611-6870-45ef-8f6e-5cf346c936e7" key="textField-6" positionType="Float" mode="Transparent" x="74" y="139" width="63" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{vinculo}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="61a5e967-246c-4170-a0b6-b4d82612bee7" key="textField-7" positionType="Float" mode="Transparent" x="9" y="139" width="43" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.quantidade}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="983cad2e-ba17-4584-ad14-ff32aa169dc3" key="textField-8" positionType="Float" mode="Transparent" x="9" y="109" width="241" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.funcao.nome}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="d9fb7558-9a11-4353-a4db-5701211787df" key="textField-10" positionType="Float" mode="Transparent" x="258" y="109" width="265" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.ambiente.nome}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="777eb9ff-8745-4f2a-b25b-a08e95bb9dbf" key="textField-11" positionType="Float" mode="Transparent" x="258" y="79" width="271" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.faixaSalarial.descricao}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="62ae600a-25fa-48a1-ac3f-607575aedccc" key="textField-14" positionType="Float" mode="Transparent" x="9" y="263" width="516" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.infoComplementares}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="a9057737-29d3-420e-ac94-de6d9bdbcb23" key="textField-15" positionType="Float" mode="Transparent" x="9" y="231" width="516" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.experiencia}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="1be4cb4b-9a90-4e6f-afbf-24ec299233c1" key="textField-16" positionType="Float" mode="Transparent" x="282" y="169" width="15" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.idadeMaxima}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="bddd21d1-5e7f-4bc0-9016-0dc3a93a976e" key="textField-17" positionType="Float" mode="Transparent" x="256" y="169" width="15" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.idadeMinima}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="f19cdc1e-b1eb-4877-977a-ac1e18ab5d5e" key="textField-18" positionType="Float" mode="Transparent" x="144" y="169" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="12df7544-3a35-40ce-bcfd-7ec15e366579" key="staticText-18" positionType="Float" mode="Transparent" x="272" y="169" width="7" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[a]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="5bca3de0-87d1-4626-a517-9b854c80c1cc" key="textField" positionType="Float" mode="Transparent" x="9" y="295" width="205" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{solicitacao.statusFormatado}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement uuid="18f22bb9-5430-4e38-a03e-2b6c79e503cf" key="line-1" positionType="Float" mode="Transparent" x="5" y="63" width="527" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="20a77296-2856-41ae-ab5a-18352be70925" key="line-2" positionType="Float" mode="Transparent" x="5" y="94" width="527" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="a5f1f0ea-023d-4b31-8f82-4d81980e5ffe" key="line-3" positionType="Float" mode="Transparent" x="5" y="124" width="527" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="00938065-16ab-4f23-a442-e4eeb9326616" key="line-6" positionType="Float" mode="Transparent" x="5" y="154" width="527" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="ce10494c-299b-4007-8c5f-874a0d964969" key="line-12" positionType="Float" mode="Transparent" x="253" y="64" width="1" height="62" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="ed3d066d-8762-4288-9902-4c0f2c2b5781" key="line-13" positionType="Float" mode="Transparent" x="253" y="125" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="59bdf63d-8de2-489f-a0b0-9a2b59a9b947" key="line-14" positionType="Float" mode="Transparent" x="140" y="125" width="1" height="60" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="9f298c67-3260-4301-b617-e5696283a215" key="line-15" positionType="Float" mode="Transparent" x="70" y="125" width="1" height="29" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="9142d917-035e-4872-8db8-ef3490ae2389" key="line-16" positionType="Float" mode="Transparent" x="358" y="125" width="1" height="29" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<staticText>
-				<reportElement uuid="65af1bda-50f4-431a-a1a7-5de245ddaab9" key="staticText-19" positionType="Float" mode="Transparent" x="9" y="5" width="100" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -558,7 +76,7 @@
 				<text><![CDATA[Estabelecimento: ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6fa41e17-85f9-4815-b792-4c0c71141e40" key="textField-19" positionType="Float" mode="Transparent" x="9" y="18" width="514" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="6fa41e17-85f9-4815-b792-4c0c71141e40" key="textField-19" positionType="Float" mode="Transparent" x="7" y="13" width="524" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -571,27 +89,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicitacao.estabelecimento.nome}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="31">
 			<staticText>
-				<reportElement uuid="34c001cb-0957-4627-8f39-2cc3ec1fd654" key="staticText-20" positionType="Float" mode="Transparent" x="67" y="35" width="64" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				<reportElement uuid="62fa07c1-9e74-45c5-b00b-7020d1eeb6cb" key="staticText-21" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="249" y="0" width="288" height="31" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Data: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="62fa07c1-9e74-45c5-b00b-7020d1eeb6cb" key="staticText-21" positionType="Float" mode="Transparent" x="134" y="35" width="89" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -599,22 +105,22 @@
 				</textElement>
 				<text><![CDATA[Descrição:]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="5e67732e-0b31-4c42-adea-d399ed42f4b5" key="textField-20" positionType="Float" mode="Transparent" x="67" y="48" width="64" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+			<staticText>
+				<reportElement uuid="34c001cb-0957-4627-8f39-2cc3ec1fd654" key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="61" y="0" width="75" height="31" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
-					<font size="10"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.data}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Data: ]]></text>
+			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="c2fb9b0d-b968-4b07-ae1a-a91b2563b454" key="textField-21" positionType="Float" mode="Transparent" x="134" y="48" width="395" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="c2fb9b0d-b968-4b07-ae1a-a91b2563b454" key="textField-21" positionType="Float" mode="Transparent" x="252" y="16" width="279" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -627,17 +133,36 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicitacao.descricao}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="3b5c4e5f-76b0-4188-880a-b9cd833630cb" key="line-19" positionType="Float" mode="Transparent" x="4" y="32" width="527" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="766f618f-cf5c-40db-904a-6851d89e5abc" key="line-21" positionType="Float" mode="Transparent" x="131" y="33" width="1" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
-			<line>
-				<reportElement uuid="47219dce-0cc6-4cb7-ba3e-b2887dcfbbb7" key="line-22" positionType="Float" mode="Transparent" x="63" y="33" width="1" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
-			</line>
+			<staticText>
+				<reportElement uuid="7e37cf81-5bf5-4655-9e50-185034e0b6d2" key="staticText-22" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="61" height="31" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Código: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="5e67732e-0b31-4c42-adea-d399ed42f4b5" key="textField-20" positionType="Float" mode="Transparent" x="64" y="16" width="64" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.data}]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="05c4d37e-b92d-4872-8392-d4a46626c83e" key="textField-22" positionType="Float" mode="Transparent" x="9" y="48" width="52" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="05c4d37e-b92d-4872-8392-d4a46626c83e" key="textField-22" positionType="Float" mode="Transparent" x="5" y="16" width="52" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -651,7 +176,351 @@
 				<textFieldExpression><![CDATA[$F{solicitacao.id}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7e37cf81-5bf5-4655-9e50-185034e0b6d2" key="staticText-22" positionType="Float" mode="Transparent" x="9" y="35" width="52" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="34c001cb-0957-4627-8f39-2cc3ec1fd654" key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="136" y="0" width="113" height="31" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Data Encerramento: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="5e67732e-0b31-4c42-adea-d399ed42f4b5" key="textField-20" positionType="Float" mode="Transparent" x="140" y="16" width="106" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.dataEncerramento}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="dfa7105e-bae3-4717-9e55-c8e08c38bd5b" key="staticText-15" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="250" y="0" width="287" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Cargo/Faixa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e7777915-05ce-45f8-ad1e-804630f888ea" key="staticText-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="249" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Área: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="777eb9ff-8745-4f2a-b25b-a08e95bb9dbf" key="textField-11" positionType="Float" mode="Transparent" x="253" y="16" width="278" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.faixaSalarial.descricao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="eb60d8c0-d062-4191-9df4-3911bcfe4e02" key="textField-1" positionType="Float" mode="Transparent" x="6" y="16" width="242" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.areaOrganizacional.nome}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="bcf9e1a9-ad8b-4d68-a222-cc83e20d313c" key="staticText-13" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="249" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Função:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b601dc24-0d71-4d77-8b68-f704672d50b7" key="staticText-12" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="249" y="0" width="288" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Ambiente:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="983cad2e-ba17-4584-ad14-ff32aa169dc3" key="textField-8" positionType="Float" mode="Transparent" x="5" y="14" width="241" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.funcao.nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="d9fb7558-9a11-4353-a4db-5701211787df" key="textField-10" positionType="Float" mode="Transparent" x="252" y="14" width="279" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.ambiente.nome}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="be0b9a73-c6e6-4210-a5e0-48078dd52826" key="staticText-4" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="249" y="0" width="105" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Remuneração (R$):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="21e8da2e-c45a-41cd-8641-1662ba4205d3" key="staticText-7" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="61" y="0" width="75" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Vínculo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0990811-c3b0-4ead-bbfa-0ee59b0d0619" key="staticText-11" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="136" y="0" width="113" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Horário de Trabalho:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="99d5d611-6870-45ef-8f6e-5cf346c936e7" key="textField-6" positionType="Float" mode="Transparent" x="64" y="15" width="63" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vinculo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e07a32c5-4ef9-4606-97d6-becf40c2dfc6" key="staticText-10" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="61" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Nº Vagas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="896c37a4-9a9a-492b-836d-4cda6386baff" key="textField-5" positionType="Float" mode="Transparent" x="140" y="15" width="107" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.horario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="61a5e967-246c-4170-a0b6-b4d82612bee7" key="textField-7" positionType="Float" mode="Transparent" x="5" y="15" width="43" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.quantidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="934fa89b-6ff6-4871-8789-959d0bf4fc21" key="textField-4" positionType="Float" mode="Transparent" x="252" y="15" width="99" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.remuneracao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5609e289-5a3f-485d-a8d7-aa9f0d93241f" key="staticText-8" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="354" y="0" width="183" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Escolaridade:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="de79f889-cd7f-422a-88e8-5fae61261f36" key="textField-3" positionType="Float" mode="Transparent" x="358" y="15" width="173" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{escolaridade}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="63b28701-d9a7-45da-a8c8-8fb4b467946f" key="staticText-6" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="249" y="0" width="288" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Idade Preferencial:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1be4cb4b-9a90-4e6f-afbf-24ec299233c1" key="textField-16" positionType="Float" mode="Transparent" x="278" y="14" width="15" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.idadeMaxima}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f19cdc1e-b1eb-4877-977a-ac1e18ab5d5e" key="textField-18" positionType="Float" mode="Transparent" x="140" y="14" width="70" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="664be529-032d-415a-beee-5390d61e92e6" key="staticText-9" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="137" y="0" width="112" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Sexo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="12df7544-3a35-40ce-bcfd-7ec15e366579" key="staticText-18" positionType="Float" mode="Transparent" x="268" y="14" width="7" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -662,17 +531,61 @@
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Código: ]]></text>
+				<text><![CDATA[a]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bddd21d1-5e7f-4bc0-9016-0dc3a93a976e" key="textField-17" positionType="Float" mode="Transparent" x="252" y="14" width="15" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.idadeMinima}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9e9fb00c-1208-4fa1-8487-fdd3acb62bf0" key="textField-2" positionType="Float" mode="Transparent" x="5" y="14" width="109" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motivoSolicitacao}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement uuid="1b2a5a9e-6a99-4b9d-ab43-75da041e7a69" key="staticText-23" positionType="Float" mode="Transparent" x="4" y="185" width="528" height="32" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+				<reportElement uuid="72ae327f-c050-4a1b-af8b-d4bdd0e04429" key="staticText-14" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="136" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Motivo da Solicitação:]]></text>
+			</staticText>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="1b2a5a9e-6a99-4b9d-ab43-75da041e7a69" key="staticText-23" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="537" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
 					<printWhenExpression><![CDATA[$P{EXIBIR_COLABORADOR_SUBSTITUIDO}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="1" leftPadding="5">
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -681,7 +594,7 @@
 				<text><![CDATA[Colaborador Substituído:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement uuid="af6f46c8-01a5-4a25-90dd-3725a5ed71ca" key="textField-23" positionType="Float" mode="Transparent" x="9" y="199" width="516" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+				<reportElement uuid="af6f46c8-01a5-4a25-90dd-3725a5ed71ca" key="textField-23" positionType="Float" mode="Transparent" x="5" y="14" width="526" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
 					<printWhenExpression><![CDATA[$P{EXIBIR_COLABORADOR_SUBSTITUIDO}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -695,6 +608,93 @@
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicitacao.colaboradorSubstituido}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="42010ecd-993f-4ffc-a808-98d4439d8b05" key="staticText-3" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="537" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Experiência:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a9057737-29d3-420e-ac94-de6d9bdbcb23" key="textField-15" positionType="Float" mode="Transparent" x="5" y="14" width="526" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.experiencia}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="81e2ed82-4f0a-4313-9eab-df3ca2cdf4c9" key="staticText-16" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="537" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Informações Complementares: ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="62ae600a-25fa-48a1-ac3f-607575aedccc" key="textField-14" positionType="Float" mode="Transparent" x="5" y="15" width="526" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitacao.infoComplementares}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<staticText>
+				<reportElement uuid="f62218cc-6825-4b2c-876a-21bd727af6a2" key="staticText-17" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="537" height="30" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5bca3de0-87d1-4626-a517-9b854c80c1cc" key="textField" positionType="Float" mode="Transparent" x="5" y="14" width="205" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{solicitacao.statusFormatado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
