@@ -202,6 +202,7 @@
 				/dwr/exec/CargoDWR.getCargo*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO,ROLE_MOV_QUESTIONARIO,ROLE_OCORRENCIA
 				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_CAD_COLABORADOR
 				/dwr/exec/ListaPresencaDWR.insereDias*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
+				/dwr/exec/ReajusteDWR.calculaSalarioHistorico*/**=ROLE_CAD_HISTORICOCOLABORADOR
 				/dwr/exec/ReajusteDWR*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
 				
 
@@ -260,8 +261,8 @@
 				/geral/colaborador/preparePerformanceFuncional.action*=ROLE_COLAB_LIST_PERFORMANCE				
 				/captacao/nivelCompetencia/listCompetenciasColaborador.action*=ROLE_COLAB_LIST_NIVELCOMPETENCIA				
 				/geral/colaborador/prepareColaboradorSolicitacao*/**=ROLE_COLAB_LIST_SOLICITACAO
-				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO
-				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO
+				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
+				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
 				/geral/documentoAnexo/*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO				
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 								
@@ -534,7 +535,7 @@
 				
 				/avaliacao/modelo/imprimir*/** = ROLE_MOV_AVALIACAO
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
-				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO
+				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
 				
 				/geral/cliente/*/**=ROLE_CAD_CLIENTE
 				

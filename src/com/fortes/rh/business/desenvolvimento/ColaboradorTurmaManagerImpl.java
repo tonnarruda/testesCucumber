@@ -1100,9 +1100,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, cursoIds, turmaIds);
 	}
 	
-	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds) 
+	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds, Long[] turmasIds) 
 	{
-		return getDao().findColaboradorByCursos(cursosIds);
+		return getDao().findColaboradorByCursos(cursosIds, turmasIds);
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)

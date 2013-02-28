@@ -130,7 +130,7 @@ public class ExportacaoAction extends MyActionSupport
 
 	private void checaColaboradoresSemCodigoAC() throws Exception 
 	{
-		Collection<Colaborador> colaboradors = colaboradorTurmaManager.findColaboradorByCurso(StringUtil.stringToLong(cursosCheck));
+		Collection<Colaborador> colaboradors = colaboradorTurmaManager.findColaboradorByCurso(StringUtil.stringToLong(cursosCheck), StringUtil.stringToLong(turmasCheck));
 		
 		StringBuffer erro = new StringBuffer();
 		for (Colaborador colaborador : colaboradors)

@@ -951,13 +951,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//Construtor usado por findAdmitidosHaDias
-	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, String estabelecimentoNome, Long avaliacaoId)
+	public Colaborador(Long id, String nome, String nomeComercial, String cargoNome, String faixaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, Long empresaId, String estabelecimentoNome, Long avaliacaoId, String empresaNome)
 	{
 		this.setId(id);
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 		this.empresa = new Empresa();
 		this.empresa.setId(empresaId);
+		this.empresa.setNome(empresaNome);
 		this.faixaSalarial = new FaixaSalarial();
 		this.faixaSalarial.setNome(faixaNome);
 		this.faixaSalarial.setNomeCargo(cargoNome);

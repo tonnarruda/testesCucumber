@@ -68,6 +68,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<Long> findIdEstabelecimentosByTurma(Long turmaid, Long empresaId);
 	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes);
 	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds,	Long[] areaIds, Long[] cursoIds, Long[] turmaIds);
-	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds);
+	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds, Long[] turmasIds);
 	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmaIds, char aprovado);
 }
