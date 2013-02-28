@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -1312,11 +1314,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				try {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && (gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))) {
 
-						enviaEmailParaGestorOuCoGestor(situacao, empresa, mensagem, subject, AreaOrganizacional.RESPONSAVEL);
+						enviaEmailParaGestorOuCoGestorAC(situacao, empresa, mensagem, subject, AreaOrganizacional.RESPONSAVEL);
 
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
 						
-						enviaEmailParaGestorOuCoGestor(situacao, empresa, mensagem, subject, AreaOrganizacional.CORRESPONSAVEL);
+						enviaEmailParaGestorOuCoGestorAC(situacao, empresa, mensagem, subject, AreaOrganizacional.CORRESPONSAVEL);
 						
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
 
@@ -1358,7 +1360,149 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 
-	private void enviaEmailParaGestorOuCoGestor(TSituacao situacao, Empresa empresa, String mensagem, String subject, int tipoResponsavel) throws Exception
+	public void enviaMensagemHabilitacaoAVencer()
+	{
+		try {
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.HABILITACAO_A_VENCER.getId(), null);
+			
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+			Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+
+			String mensagemBase = "As carteiras de habilitação dos colaboradores relacionados abaixo estão próximas do vencimento:\n";
+			String subject = "Aviso de vencimento de habilitação";
+				
+			
+				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+				{
+					Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(gerenciadorComunicacao.getEmpresa().getId(), true, null);
+					
+					try {
+						
+						Collection<Integer> diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+						colaboradors = colaboradorManager.findHabilitacaAVencer(diasLembrete, gerenciadorComunicacao.getEmpresa().getId());
+
+						HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador = new HashMap<AreaOrganizacional, Collection<String>>();
+						
+						for (Colaborador colaborador : colaboradors) 
+						{
+							if(!mapAreaColaborador.containsKey(colaborador.getAreaOrganizacional()))
+								mapAreaColaborador.put(colaborador.getAreaOrganizacional(), new ArrayList<String>());
+
+							mapAreaColaborador.get(colaborador.getAreaOrganizacional()).add("\nColaborador: "+colaborador.getNomeMaisNomeComercial()+"   --   Vencimento da habilitação: "+colaborador.getHabilitacao().getVencimentoFormatada()+".");
+						}
+								
+						if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && (gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))) { // ok
+							
+							enviaEmailParaGestorECogestor(mensagemBase, subject, gerenciadorComunicacao, todasAreas, mapAreaColaborador, AreaOrganizacional.RESPONSAVEL);
+							
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) { // ok
+
+							enviaEmailParaGestorECogestor(mensagemBase, subject, gerenciadorComunicacao, todasAreas, mapAreaColaborador, AreaOrganizacional.CORRESPONSAVEL);
+							
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {// ok
+							
+							String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
+							
+							enviaEmailParaResponsavelRhEUsuarios(mensagemBase, subject, gerenciadorComunicacao, mapAreaColaborador, emails);
+							
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {// ok
+							
+							UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+							CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+							Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios());
+							
+							String[] emails = usuarioManager.findEmailsByUsuario(usuariosIds);
+							
+							enviaEmailParaResponsavelRhEUsuarios(mensagemBase, subject, gerenciadorComunicacao, mapAreaColaborador, emails);
+							
+testar a partir daqui						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+							
+							for (AreaOrganizacional area : mapAreaColaborador.keySet())
+							{
+								AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.getMatriarca(todasAreas, area, null);
+								
+								StringBuilder mensagem = formaMensagem(mensagemBase, mapAreaColaborador, area);
+								
+								usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS);
+							}
+							
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+							
+							for (AreaOrganizacional area : mapAreaColaborador.keySet())
+							{
+								AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.getMatriarca(todasAreas, area, null);
+								
+								StringBuilder mensagem = formaMensagem(mensagemBase, mapAreaColaborador, area);
+								
+								usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem.toString(), "RH", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS);							
+							}
+
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+							
+							StringBuilder mensagem = formaMensagem(mensagemBase, mapAreaColaborador);
+											
+							Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
+							
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void enviaEmailParaResponsavelRhEUsuarios(String mensagemBase, String subject, GerenciadorComunicacao gerenciadorComunicacao, HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador, String[] emails) throws AddressException, MessagingException
+	{
+		StringBuilder mensagem = formaMensagem(mensagemBase, mapAreaColaborador);
+
+		mail.send(gerenciadorComunicacao.getEmpresa(), subject, null, mensagem.toString().replaceAll("\n", "<br>"), emails);
+	}
+
+	private StringBuilder formaMensagem(String mensagemBase, HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador)
+	{
+		SortedSet<String> msgs = new TreeSet<String>();
+		for (AreaOrganizacional area : mapAreaColaborador.keySet())
+			msgs.addAll(mapAreaColaborador.get(area));
+				
+		StringBuilder mensagem = new StringBuilder(mensagemBase);
+		
+		for (String msg : msgs)
+			mensagem.append(msg);
+				
+		return mensagem;
+	}
+
+	private void enviaEmailParaGestorECogestor(String mensagemBase, String subject, GerenciadorComunicacao gerenciadorComunicacao, Collection<AreaOrganizacional> todasAreas, HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador, int tipoEnvio) throws Exception, AddressException, MessagingException
+	{
+		for (AreaOrganizacional area : mapAreaColaborador.keySet())
+		{
+			String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(area.getId(), todasAreas, tipoEnvio); 
+			
+			StringBuilder mensagem = formaMensagem(mensagemBase, mapAreaColaborador, area);
+
+			try {
+				mail.send(gerenciadorComunicacao.getEmpresa(), subject, null, mensagem.toString().replaceAll("\n", "<br>"), emails);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private StringBuilder formaMensagem(String mensagemBase, HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador, AreaOrganizacional area)
+	{
+		StringBuilder mensagem = new StringBuilder(mensagemBase);
+		
+		for (String msg : mapAreaColaborador.get(area))
+			mensagem.append(msg);
+				
+		return mensagem;
+	}
+	
+	private void enviaEmailParaGestorOuCoGestorAC(TSituacao situacao, Empresa empresa, String mensagem, String subject, int tipoResponsavel) throws Exception
 	{
 		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 

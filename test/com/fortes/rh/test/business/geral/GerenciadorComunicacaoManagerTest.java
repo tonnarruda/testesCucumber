@@ -35,6 +35,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -1416,4 +1417,148 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(colaborador.getNome(), situacao);
 	}
+
+	public void testEnviaMensagemHabilitacaoAVencer()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(2L);
+		AreaOrganizacional areaOrganizacional3 = AreaOrganizacionalFactory.getEntity(3L);
+		
+		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacional1, areaOrganizacional2, areaOrganizacional3);
+		Collection<AreaOrganizacional> ColecaoComArea1 = Arrays.asList(areaOrganizacional1);
+		
+		Habilitacao habilitacaoComVencimento1DiaDepois = new Habilitacao();
+		habilitacaoComVencimento1DiaDepois.setVencimento(DateUtil.incrementaDias(new Date(), 1));
+		
+		Habilitacao habilitacaoComVencimento2DiasDepois = new Habilitacao();
+		habilitacaoComVencimento2DiasDepois.setVencimento(DateUtil.incrementaDias(new Date(), 2));
+		
+		Habilitacao habilitacaoComVencimento3DiasDepois = new Habilitacao();
+		habilitacaoComVencimento3DiasDepois.setVencimento(DateUtil.incrementaDias(new Date(), 3));
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L, "Colaborador 1", "Nome Comercial 1", null);
+		colaborador1.setHabilitacao(habilitacaoComVencimento1DiaDepois);
+		colaborador1.setAreaOrganizacional(areaOrganizacional1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L, "Colaborador 2", "Nome Comercial 2", null);
+		colaborador2.setHabilitacao(habilitacaoComVencimento1DiaDepois);
+		colaborador2.setAreaOrganizacional(areaOrganizacional1);
+		
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L, "Colaborador 3", "Nome Comercial 3", null);
+		colaborador3.setHabilitacao(habilitacaoComVencimento2DiasDepois);
+		colaborador3.setAreaOrganizacional(areaOrganizacional2);
+		
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(4L, "Colaborador 4", "Nome Comercial 4", null);
+		colaborador4.setHabilitacao(habilitacaoComVencimento3DiasDepois);
+		colaborador4.setAreaOrganizacional(areaOrganizacional3);
+		
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao1.setEmpresa(empresa);
+		gerenciadorComunicacao1.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		gerenciadorComunicacao1.setQtdDiasLembrete("1&2");
+		
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao2.setEmpresa(empresa);
+		gerenciadorComunicacao2.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao2.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		gerenciadorComunicacao2.setQtdDiasLembrete("1&2");
+		
+		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao3.setEmpresa(empresa);
+		gerenciadorComunicacao3.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao3.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		gerenciadorComunicacao3.setQtdDiasLembrete("1&2");
+		
+		Collection<Integer> diasLembrete = Arrays.asList(1, 2);
+		String[] emails = new String[] {"email1@teste.com", "email2@teste.com"};
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		Collection<Usuario> usuarios = Arrays.asList(usuario);
+		
+		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao4.setUsuarios(usuarios);
+		gerenciadorComunicacao4.setEmpresa(empresa);
+		gerenciadorComunicacao4.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao4.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao4.setEnviarPara(EnviarPara.USUARIOS.getId());
+		gerenciadorComunicacao4.setQtdDiasLembrete("1&2");
+		
+		CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+		Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao4.getUsuarios());
+		
+		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao5.setEmpresa(empresa);
+		gerenciadorComunicacao5.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao5.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao5.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		gerenciadorComunicacao5.setQtdDiasLembrete("1&2");
+		
+		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao6.setEmpresa(empresa);
+		gerenciadorComunicacao6.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao6.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao6.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		gerenciadorComunicacao6.setQtdDiasLembrete("1&2");
+		
+		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao7.setUsuarios(usuarios);
+		gerenciadorComunicacao7.setEmpresa(empresa);
+		gerenciadorComunicacao7.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
+		gerenciadorComunicacao7.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
+		gerenciadorComunicacao7.setEnviarPara(EnviarPara.USUARIOS.getId());
+		gerenciadorComunicacao7.setQtdDiasLembrete("1&2");
+
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = new ArrayList<GerenciadorComunicacao>();
+		gerenciadorComunicacaos.add(gerenciadorComunicacao1);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao2);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao3);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao4);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao5);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao6);
+		gerenciadorComunicacaos.add(gerenciadorComunicacao7);
+		
+		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.HABILITACAO_A_VENCER.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(gerenciadorComunicacao1.getEmpresa().getId()), eq(true), eq(null)).will(returnValue(areas));
+		colaboradorManager.expects(atLeastOnce()).method("findHabilitacaAVencer").with(eq(diasLembrete), eq(gerenciadorComunicacao1.getEmpresa().getId())).will(returnValue(Arrays.asList(colaborador1, colaborador2, colaborador3)));
+		
+		// Email para gestor
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getEmailsResponsaveis").with((ANYTHING), eq(areas), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
+		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		// Email para cogestor
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getEmailsResponsaveis").with((ANYTHING), eq(areas), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		// Email para responsavel do rh
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		// Email para usuarios
+		usuarioManager.expects(once()).method("findEmailsByUsuario").with(eq(usuariosIds)).will(returnValue(emails));
+		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		
+		// Caixa de mensagem para gestor
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getMatriarca").withAnyArguments().will(returnValue(areaOrganizacional1));
+		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();
+				
+		// Caixa de mensagem para cogestor
+		areaOrganizacionalManager.expects(once()).method("getMatriarca").withAnyArguments().will(returnValue(areaOrganizacional1));
+		usuarioMensagemManager.expects(atLeastOnce()).method("saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional").withAnyArguments().isVoid();
+		
+		// Caixa de mensagem para usuarios
+		usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").with(eq(LongUtil.collectionToCollectionLong(gerenciadorComunicacao7.getUsuarios())), eq(gerenciadorComunicacao7.getEmpresa().getId()));
+		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
+		
+		gerenciadorComunicacaoManager.enviaMensagemHabilitacaoAVencer();
+	}
+	
 }

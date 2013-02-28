@@ -69,9 +69,10 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("areaMae.nome"), "areaMaeNome");
 		p.add(Projections.property("r.id"), "idResponsavel");
 		p.add(Projections.property("r.nomeComercial"), "nomeResponsavel");
+		p.add(Projections.property("r.contato.email"), "emailResponsavel");
 		p.add(Projections.property("cor.id"), "idCoResponsavel");
 		p.add(Projections.property("cor.nomeComercial"), "nomeCoResponsavel");
-		p.add(Projections.property("r.contato.email"), "emailResponsavel");
+		p.add(Projections.property("cor.contato.email"), "emailCoResponsavel");
 		p.add(Projections.property("ao.empresa.id"), "empresaId");
 		criteria.setProjection(p);
 

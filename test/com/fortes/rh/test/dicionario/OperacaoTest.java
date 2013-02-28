@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(28, Operacao.values().length);
+		assertEquals(29, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -52,6 +52,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Atualizar dados pessoais", Operacao.getDescricaoById(++i));
 		assertEquals("Houver aniversariantes no dia para envio automático de cartão de aniversário", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar situação no AC Pessoal", Operacao.getDescricaoById(++i));
+		assertEquals("Houver carteira de habilitação a vencer (Notificação periódica)", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -96,6 +97,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 26 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 27 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 28 
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 29 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -132,6 +134,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.ATUALIZAR_INFO_PESSOAIS.getId()); 						// 26
 		assertEquals(++i, Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());					// 27
 		assertEquals(++i, Operacao.CADASTRAR_SITUACAO_AC.getId());							// 28
+		assertEquals(++i, Operacao.HABILITACAO_A_VENCER.getId());							// 29
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -431,6 +434,19 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.CADASTRAR_SITUACAO_AC;
+		
+		assertEquals(3, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
+		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testHabilitacaoAVencer()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.HABILITACAO_A_VENCER;
 		
 		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);

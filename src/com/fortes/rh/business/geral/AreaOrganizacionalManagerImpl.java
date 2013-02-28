@@ -761,6 +761,31 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
+	
+	public String[] getEmailsResponsaveis(Long areaId, Collection<AreaOrganizacional> todasAreas, int tipoResponsavel) throws Exception
+	{
+		
+		Collection<AreaOrganizacional> areasRetornadas = null;
+		areasRetornadas = getAncestrais(todasAreas, areaId);
+		
+		Collection<String> emailsNotificacoes = new ArrayList<String>();
+		for (AreaOrganizacional area : areasRetornadas) 
+		{
+			if(tipoResponsavel == AreaOrganizacional.CORRESPONSAVEL){
+				if(area.getCoResponsavel() != null && area.getCoResponsavel().getContato() != null && area.getCoResponsavel().getContato().getEmail() != null && !area.getCoResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getCoResponsavelEmail());
+			} else if(tipoResponsavel == AreaOrganizacional.RESPONSAVEL){
+				if(area.getResponsavel() != null && area.getResponsavel().getContato() != null && area.getResponsavel().getContato().getEmail() != null && !area.getResponsavel().getContato().getEmail().equals(""))
+					emailsNotificacoes.add(area.getResponsavelEmail());
+			}
+			
+			if(area.getEmailsNotificacoes() != null)
+				for (String email : area.getEmailsNotificacoes().split(";"))
+					emailsNotificacoes.add(email);
+		}
+		
+		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
+	}
 
 	public void desvinculaResponsavel(Long colaboradorId)
 	{

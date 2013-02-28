@@ -1051,4 +1051,56 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL).length);
 	}
+	
+	public void testGetEmailsResponsaveisPassandoCollection() throws Exception 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Contato contato = new Contato();
+		contato.setEmail("responsavel@gmail.com");
+		
+		Colaborador responsavel = ColaboradorFactory.getEntity();
+		responsavel.setContato(contato);
+		
+		Contato contato2 = new Contato();
+		contato2.setEmail("responsavel2@gmail.com");
+		
+		Colaborador responsavel2 = ColaboradorFactory.getEntity();
+		responsavel2.setContato(contato2);
+		
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
+		areaAvo.setEmpresa(empresa);
+		areaAvo.setNome("areaAvo");
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(2L);
+		areaMae1.setEmpresa(empresa);
+		areaMae1.setNome("areaMae1");
+		areaMae1.setEmailsNotificacoes("ru@gmail.com; sam@gmail.com");
+		areaMae1.setResponsavel(responsavel);
+		areaMae1.setCoResponsavel(responsavel2);
+		areaMae1.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaMae2 = AreaOrganizacionalFactory.getEntity(3L);
+		areaMae2.setEmpresa(empresa);
+		areaMae2.setNome("areaMae2");
+		areaMae2.setResponsavel(responsavel);
+		areaMae2.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity(4L);
+		areaFilha1.setEmpresa(empresa);
+		areaFilha1.setNome("areaFilha1");
+		areaFilha1.setResponsavel(responsavel2);
+		areaFilha1.setAreaMae(areaMae1);
+		
+		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity(5L);
+		areaFilha2.setEmpresa(empresa);
+		areaFilha2.setNome("areaFilha2");
+		areaFilha2.setResponsavel(responsavel2);
+		areaFilha2.setAreaMae(areaMae2);
+		
+		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
+		
+		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.RESPONSAVEL).length);
+		assertEquals(3, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.CORRESPONSAVEL).length);
+	}
 }
