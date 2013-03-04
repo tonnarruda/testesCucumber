@@ -3,7 +3,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-	<title>Plano de Treinamento Individual (PDI) - Criação de Turmas para Treinamentos</title>
+	<title>Plano de Desenvolvimento Individual (PDI) - Criação de Turmas para Treinamentos</title>
 	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
