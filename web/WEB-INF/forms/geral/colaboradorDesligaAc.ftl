@@ -15,8 +15,16 @@
 				return false;
 			}
 		
+			
 			if(validaFormulario('form', new Array('data','motivoId'), new Array('data'), true))
-				newConfirm('Confirma Solicitação de Desligamento?', function(){document.form.submit();});
+			{
+				if(acao.id == 'imprimir')
+				{
+					document.form.action = 'imprimiSolicitacaoDesligamento.action';
+					document.form.submit();
+				}else
+					newConfirm('Confirma Solicitação de Desligamento?', function(){document.form.submit();});
+			}
 		}
 	</script>
 
@@ -27,6 +35,7 @@
 	
 		<@ww.hidden label="Id" name="colaborador.id" />
 		<@ww.hidden name="colaborador.dataAdmissao" />
+		<@ww.hidden name="colaborador.nome" />
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/><br>
 	
 		<@ww.datepicker label="Data da Solicitação de Desligamento" name="dataDesligamento" id="data" cssClass="mascaraData" required="true"/>
@@ -38,6 +47,7 @@
 	<div class="buttonGroup">
 		<input type="button" value=" " onclick="enviarForm(this);" class="btnSolicitarDesligamento" />
 		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
+		<input type="button" value=" " id="imprimir" onclick="enviarForm(this);" class="btnImprimirPdf" />
 	</div>
 </body>
 </html>

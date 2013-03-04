@@ -3,19 +3,22 @@
  * Requisito: RFA0012 */
 package com.fortes.rh.web.action.geral;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
-import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
-import com.fortes.security.auditoria.Audita;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
@@ -24,9 +27,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	private static final long serialVersionUID = 1L;
 	private ColaboradorManager colaboradorManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
-	private ComissaoMembroManager comissaoMembroManager;
 	private Colaborador colaborador;
 	private Collection<MotivoDemissao> motivoDemissaos;
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private boolean desligado;
 	private Date dataDesligamento;
@@ -86,7 +89,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (dataDesligamento.before(colaborador.getDataAdmissao()))
 				throw new Exception("Data de desligamento anterior à data de admissão");
 			
-			
 			observacaoDemissao = "Solicitado por: " + getUsuarioLogado().getNome() + ".  " +  observacaoDemissao;
 			
 			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), getEmpresaSistema());
@@ -110,6 +112,31 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
+	public String imprimiSolicitacaoDesligamento() throws Exception
+	{
+		try {
+			String titulo = "Solicitação de Desligamento de Colaborador no AC Pessoal";
+			parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
+			MotivoDemissao motivo = motivoDemissaoManager.findById(motDemissao.getId());
+			
+			//migué para funcionar reports	
+			motivoDemissaos = new ArrayList<MotivoDemissao>();
+			motivoDemissaos.add(motivo);
+
+			parametros.put("EMPRESANOME", getEmpresaSistema().getNome());
+			parametros.put("COLABORADORNOME", colaborador.getNome());
+			parametros.put("DATADESLIGAMENTO", DateUtil.formataDiaMesAno(dataDesligamento));
+			parametros.put("MOTIVODEMISSAO", motivo.getMotivo());
+			parametros.put("OBSDEMISSAO", observacaoDemissao);
+
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			addActionError("Erro ao gerar relatório");
+			e.printStackTrace();
+			
+			return Action.INPUT;
+		}
+	}
 
 	public Colaborador getColaborador()
 	{
@@ -220,7 +247,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		this.comissao = comissao;
 	}
 
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
-		this.comissaoMembroManager = comissaoMembroManager;
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
