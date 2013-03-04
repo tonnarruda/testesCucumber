@@ -197,13 +197,6 @@
 				/geral/cartao/**=ROLE_USER
 				/*=ROLE_USER
 
-				/dwr/exec/CargoDWR.getCargoByGrupo*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
-				/dwr/exec/CargoDWR.getCargoByArea*/**=ROLE_CAD_CARGO, ROLE_REL_CARGO
-				/dwr/exec/CargoDWR.getCargo*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO,ROLE_MOV_QUESTIONARIO,ROLE_OCORRENCIA
-				/dwr/exec/ColaboradorDWR.getSalarioFaixa*/**=ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_CAD_COLABORADOR
-				/dwr/exec/ListaPresencaDWR.insereDias*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICADO
-				/dwr/exec/ReajusteDWR.calculaSalarioHistorico*/**=ROLE_CAD_HISTORICOCOLABORADOR
-
 				/security/auditoria/*/**=ROLE_UTI_AUDITORIA
 
 				/indicador/duracaoPreenchimentoVaga/prepare*/**=ROLE_IND
@@ -211,7 +204,6 @@
 				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER
 
 				/logging/*/**=ROLE_LOGGING
-
 				/externo/**=ROLE_ANONYMOUS,ROLE_USER
 
 				/acesso/usuario/prepareUpdateSenhaUsuario.action*/**=ROLE_USER
