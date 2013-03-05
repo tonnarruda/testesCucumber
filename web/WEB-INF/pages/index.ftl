@@ -37,7 +37,7 @@
 		.right .portlet { margin: 0 0 1em 0.5em; }
 		.portlet-header { margin: 0.3em; padding: 3px; }
 		.portlet-header .ui-icon { float: right; cursor: pointer; }
-		.portlet-content { padding: 0.4em; height: 180px; overflow: auto; }
+		.portlet-content { padding: 0.4em; height: 180px; overflow: auto;}
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }
 		.ui-sortable-placeholder * { visibility: hidden; }
 	</style>
@@ -143,7 +143,7 @@
 			$(".portlet").has(".ui-icon-plusthick").find("[name='caixa']").each(function() {
 				minimizadas.push( $(this).val() );
 			});
-		
+
 			UsuarioDWR.gravarLayoutCaixasMensagens(<@authz.authentication operation="id"/>, esquerda, direita, minimizadas, function() {  });
 		}
 	</script>
@@ -200,17 +200,19 @@
 		
 		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
 			<#if integradoAC && pendenciaACs?exists>
-				<div class="waDivTituloX">Pendências com o AC Pessoal</div>
-				<div class="waDivFormularioX">
-				<#if pendenciaACs?size < 1>
-					<span>Nenhuma pendência</span>
-				<#else>
-					<@display.table name="pendenciaACs" id="pendenciaAC" class="dados" defaultsort=2 sort="list">
-						<@display.column property="pendencia" title="Pendência" />
-						<@display.column property="detalhes" title="Detalhes" />
-						<@display.column property="status" title="Status" />
-					</@display.table>
-				</#if>
+				<div class="portlet">
+					<div class="portlet-header">Pendências com o AC Pessoal</div>
+					<div class="portlet-content">
+						<#if pendenciaACs?size < 1>
+							<span>Nenhuma pendência</span>
+						<#else>
+							<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
+								<@display.column property="pendencia" title="Pendência" style="width: 200px; text-align: center;"/>
+								<@display.column property="detalhes" title="Detalhes" style="width: 550px; text-align: center;"/>
+								<@display.column property="status" title="Status" style="width: 200px; text-align: center;"/>
+							</@display.table>
+						</#if>
+					</div>
 				</div>
 			</#if>
 		</@authz.authorize>
