@@ -51,6 +51,15 @@
 		<action name="prepareDesligaAC" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorDesligaAc.ftl</result>
 		</action>
+		<action name="imprimiSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="imprimiSolicitacaoDesligamento">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/solicitacaoDesligamento.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="dataSource">motivoDemissaos</param>
+				<param name="documentName">SolicitacaoDesligamento.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorDesligaAc.ftl</result>
+		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="insert">
 			<interceptor-ref name="defaultDeleteStack"/>
 		    <interceptor-ref name="tokenWebStack" />

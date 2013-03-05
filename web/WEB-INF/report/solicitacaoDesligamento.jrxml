@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extintores" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="12edfd2b-7e17-483c-81fc-73a0f911dc66">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.7715610000000144"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="EMPRESANOME" class="java.lang.String"/>
+	<parameter name="COLABORADORNOME" class="java.lang.String"/>
+	<parameter name="DATADESLIGAMENTO" class="java.lang.String"/>
+	<parameter name="MOTIVODEMISSAO" class="java.lang.String"/>
+	<parameter name="OBSDEMISSAO" class="java.lang.String"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="51" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement uuid="2cf468ae-3b09-4ecc-acc1-d700240a4459" key="subreport-1" x="7" y="1" width="528" height="50"/>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="40506045-3e04-4089-8dd8-21ee7cf426c9" key="staticText-13" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="27"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph leftIndent="5" spacingBefore="1"/>
+				</textElement>
+				<text><![CDATA[Nome do Colaborador: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="11" width="532" height="16"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COLABORADORNOME}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="29">
+			<staticText>
+				<reportElement uuid="397b33fe-a0ec-4776-a973-97f2e21a93c3" key="staticText-5" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph leftIndent="5" spacingBefore="1"/>
+				</textElement>
+				<text><![CDATA[Data da Solicitação de Desligamento:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="13" width="532" height="16"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATADESLIGAMENTO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="914eb428-1086-4d60-a29a-0911bd19a255" x="0" y="0" width="535" height="1" isPrintWhenDetailOverflows="true"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+		<band height="28">
+			<staticText>
+				<reportElement uuid="b6e4c6b2-a31b-4699-b2e1-df41113cd766" key="staticText-12" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="28"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph leftIndent="5" spacingBefore="1"/>
+				</textElement>
+				<text><![CDATA[Motivo do Desligamento:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="12" width="532" height="16"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MOTIVODEMISSAO}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="32">
+			<staticText>
+				<reportElement uuid="61fec666-043d-49b5-b5eb-8eb07b32eaa7" key="staticText-11" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="535" height="32" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph leftIndent="5" spacingBefore="1"/>
+				</textElement>
+				<text><![CDATA[Observação: ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ce06d4ad-8dcd-4184-b77e-35f7f5e12fd5" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="14" width="535" height="18"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{OBSDEMISSAO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

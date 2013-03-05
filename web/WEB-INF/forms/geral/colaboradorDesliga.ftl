@@ -40,7 +40,14 @@
 			else
 			{
 				if(validaFormulario('form', new Array('data','motivoId'), new Array('data'), true))
-					newConfirm('Confirma desligamento?', function(){document.form.submit();});
+				{
+					if(acao.id == 'imprimir')
+					{
+						document.form.action = 'imprimiSolicitacaoDesligamento.action';
+						document.form.submit();
+					}else
+						newConfirm('Confirma desligamento?', function(){document.form.submit();});
+				}
 			}
 		}
 	</script>
@@ -51,6 +58,7 @@
 	<@ww.form name="form" action="${formAction}" method="POST">
 	
 		<@ww.hidden label="Id" name="colaborador.id" />
+		<@ww.hidden name="colaborador.nome" />
 	
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/>
 		<br>
@@ -83,7 +91,8 @@
 		<#if colaborador.desligado && !integraAc>
 			<input type="button" value=" " onclick="enviarForm(this);" id="religa" class="btnCancelarDesligamento" />
 		</#if>
-		
+
+		<input type="button" value=" " id="imprimir" onclick="enviarForm(this);" class="btnImprimirPdf" />
 	</div>
 </body>
 </html>
