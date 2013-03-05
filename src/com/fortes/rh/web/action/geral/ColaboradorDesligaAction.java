@@ -11,7 +11,6 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
-import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -115,11 +114,15 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public String imprimiSolicitacaoDesligamento() throws Exception
 	{
 		try {
-			String titulo = "Solicitação de Desligamento de Colaborador no AC Pessoal";
+			String titulo = "Desligar Colaborador";
+			
+			if(getEmpresaSistema().isAcIntegra())
+				titulo = "Solicitação de Desligamento de Colaborador no AC Pessoal";
+			
 			parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
 			MotivoDemissao motivo = motivoDemissaoManager.findById(motDemissao.getId());
 			
-			//migué para funcionar reports	
+			//migue para funcionar reports	
 			motivoDemissaos = new ArrayList<MotivoDemissao>();
 			motivoDemissaos.add(motivo);
 
