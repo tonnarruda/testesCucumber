@@ -38,14 +38,12 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoMembroComissao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -695,29 +693,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
-		return (Colaborador) criteria.uniqueResult();
-	}
-
-	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId)
-	{
-		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-		
-		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
-		
-		if (colaboradorId != null)
-			criteria.add(Expression.not((Expression.eq("c.id", colaboradorId))));
-		
-		if (empresaId != null)
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
-		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
-		
 		return (Colaborador) criteria.uniqueResult();
 	}
 
@@ -2366,7 +2341,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByCpf(String cpf, Long empresaId)
+	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
@@ -2383,11 +2358,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.setProjection(p);
 		
+		if (StringUtils.isNotBlank(cpf))
+			criteria.add(Expression.eq("c.pessoal.cpf", cpf));
+		
 		if (empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
-		if (StringUtils.isNotBlank(cpf))
-			criteria.add(Expression.eq("c.pessoal.cpf", cpf));
+		if (colaboradorId != null)
+			criteria.add(Expression.ne("c.id", colaboradorId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

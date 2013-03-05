@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.validator.AssertTrueValidator;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
@@ -4196,7 +4194,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setNome("Xica ");
 		colaborador1.setPessoalCpf("26745534304");
 		colaborador1.setEmpresa(empresa);
-
 		colaboradorDao.save(colaborador1);
 
 		Colaborador colaborador2 = getColaborador();
@@ -4205,7 +4202,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
 
-		assertEquals(2, colaboradorDao.findByCpf("26745534304", empresa.getId()).size());
+		assertEquals("Todos", 2, colaboradorDao.findByCpf("26745534304", empresa.getId(), null).size());
+		assertEquals("Excluindo a si mesmo", 1, colaboradorDao.findByCpf("26745534304", empresa.getId(), colaborador2.getId()).size());
 	}
 
 	public void testUpdateInfoPessoaisByCpf() {

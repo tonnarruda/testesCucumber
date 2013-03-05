@@ -445,7 +445,7 @@
 
 			<@ww.select label="Sexo"   name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft" />
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" required="true" cssClass="mascaraCpf"  onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);" />
-			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
+			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
 			<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
 			<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" required="true" cssStyle="width: 300px;" liClass="liLeft" maxLength="40"/>
 			<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" required="true" cssStyle="width:40px;" liClass="liLeft" maxLength="10"/>

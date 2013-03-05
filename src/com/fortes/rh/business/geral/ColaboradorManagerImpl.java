@@ -667,15 +667,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorUsuarioByCpf(cpf, empresaId);
 	}
 
-	public Colaborador findTodosColaboradorCpf(String cpf, Long empresaId, Long colaboradorId)
-	{
-		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
-		if(cpfSemMascara.equals(""))
-			return null;
-		else
-			return getDao().findTodosColaboradorCpf(cpfSemMascara, empresaId, colaboradorId);
-	}
-	
 	public boolean existeCpfColaboradorAtivoByEmpresa(String cpf, Long empresaId, Long colaboradorId) {
 		return getDao().existeCpfColaboradorAtivoByEmpresa(cpf, empresaId, colaboradorId);
 	}
@@ -1608,8 +1599,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradorLogadoId;	
 	}
 
-	public Collection<Colaborador> findByCpf(String cpf, Long empresaId) {
-		return getDao().findByCpf(cpf, empresaId);
+	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId) 
+	{
+		return getDao().findByCpf(cpf, empresaId, colaboradorId);
 	}
 
 	public Collection<Colaborador> findParticipantesDistinctByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliado, Boolean respondida) 

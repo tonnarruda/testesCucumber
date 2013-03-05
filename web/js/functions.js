@@ -963,48 +963,58 @@ function validaPercentual()
  
 function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, id, isCandidato)
 {
+	$("#msgCPFDuplicado").dialog('close');
+	
 	if(valorCpf.length == 14)
 	{
 		DWRUtil.useLoadingMessage('Carregando...');
-		CandidatoDWR.verificaCpfDuplicado(function(data){processaValidacao(data, valorCpf, isModuloExterno, empresaId, isCandidato);
-														}, valorCpf, empresaId, id, isCandidato);
+		ColaboradorDWR.verificaCpfDuplicado(valorCpf, empresaId, id, function(colaboradores) {
+			var msg = "";
+
+			$.each(colaboradores, function(i, colaborador) {
+				console.log(colaborador);
+				msg += "<a href='#'>" + colaborador.nome + "</a><br />"
+			});
+
+			if (msg != "")
+				$("#msgCPFDuplicado").html(msg).dialog({ modal: true, title: "CPF já cadastrado" });
+		});
 	}
-	else
-		document.getElementById("msgCPFDuplicado").style.display = "none";
 }
 
 function processaValidacao(data, valorCpf, isModuloExterno, empresaId, isCandidato)
 {
-	if (data == "")
-		document.getElementById("msgCPFDuplicado").style.display = "none";
-	
-	if(data == "candidato")
+	if (data == '')
 	{
-		if (isCandidato)
-			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
-		else
-			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"listCandidato.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
-		
-		if(isModuloExterno)
-			msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"prepareRecuperaSenha.action?empresaId=" + empresaId + "&cpf=" + valorCpf+ "\">" + "Já existe um currículo com esse CPF. Clique aqui para solicitar o envio de senha para seu e-mail." + "</a><br>";
-			
-		document.getElementById("msgCPFDuplicado").style.display = "";
-		document.getElementById("msgCPFDuplicado").innerHTML = msg;	
+		$("#msgCPFDuplicado").dialog('close');
+		return false;
 	}
 	
-	if(data == "colaborador")
+	var msg = "";
+	
+	if (data == "candidato")
 	{
 		if (isCandidato)
-			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"listColaborador.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
 		else
-			var msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"listCandidato.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Candidato(s) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
 		
-		if(isModuloExterno)
-			msg = "<a title=\"Ver Informação\" style=\"color:red;text-decoration: none\" >" + "Entre em contato com a empresa, pois o CPF informado é de um Colaborador." + "</a><br>";
-			
-		document.getElementById("msgCPFDuplicado").style.display = "";
-		document.getElementById("msgCPFDuplicado").innerHTML = msg;	
+		if (isModuloExterno)
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"prepareRecuperaSenha.action?empresaId=" + empresaId + "&cpf=" + valorCpf+ "\">" + "Já existe um currículo com esse CPF. Clique aqui para solicitar o envio de senha para seu e-mail." + "</a><br>";
 	}
+	
+	if (data == "colaborador")
+	{
+		if (isCandidato)
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"listColaborador.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		else
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"list.action?cpfBusca=" + valorCpf+ "\">" + "Existe(m) Colaborador(es) cadastrado(s) com esse CPF (clique aqui para visualizar)" + "</a><br>";
+		
+		if (isModuloExterno)
+			msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" >" + "Entre em contato com a empresa, pois o CPF informado é de um colaborador." + "</a><br>";
+	}
+	
+	$("#msgCPFDuplicado").html(msg).dialog({ modal: true, title: "CPF já cadastrado" });
 }
 
 function exibeEscondeConteudo(){

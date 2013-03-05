@@ -44,7 +44,7 @@ public class ImportacaoColaboradorManagerImpl implements ImportacaoColaboradorMa
 				continue;
 			}
 
-			Collection<Colaborador> colaboradoresByCpf = colaboradorManager.findByCpf(colaborador.getPessoal().getCpf(), empresa.getId());
+			Collection<Colaborador> colaboradoresByCpf = colaboradorManager.findByCpf(colaborador.getPessoal().getCpf(), empresa.getId(), null);
 
 			if (colaboradoresByCpf != null && !colaboradoresByCpf.isEmpty()) {
 				boolean b = colaboradorManager.updateInfoPessoaisByCpf(colaborador, empresa.getId());
