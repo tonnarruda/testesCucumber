@@ -38,7 +38,7 @@ Funcionalidade: Campos Extras para Colaborador
     E eu seleciono "Sem escolaridade" de "Escolaridade"
     E eu clico na aba "DADOS FUNCIONAIS"
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
-    E eu preencho o campo (JS) "Data" com "21/12/2010"
+    E eu saio do campo "Admissão"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Financeiro" de "Área Organizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"

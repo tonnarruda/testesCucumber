@@ -19519,3 +19519,11 @@ insert into migrations values('20130219162450');--.go
 alter table empresa rename column obrigarAmbienteFuncaoColaborador to obrigarAmbienteFuncao;--.go
 insert into migrations values('20130220102108');--.go
 update parametrosdosistema set appversao = '1.1.101.105';--.go
+-- versao 1.1.102.106
+
+update papel set codigo = 'ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO' where id=492;--.go
+insert into migrations values('20130225152820');--.go
+update papel set codigo = 'ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO' where id=492;--.go
+
+insert into migrations values('20130228083955');--.go
+update parametrosdosistema set appversao = '1.1.102.106';--.go

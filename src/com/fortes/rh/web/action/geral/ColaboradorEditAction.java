@@ -548,7 +548,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		try
 		{
-			if(historicoColaborador.getData().before(colaborador.getDataAdmissao()))
+			if(colaborador.getDataAdmissao().after(historicoColaborador.getData()))
 				throw new Exception("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
@@ -714,8 +714,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				prepareUpdate();
 				return Action.INPUT;
 			}
-			
-			
 
 			if (manterFoto)
 			{

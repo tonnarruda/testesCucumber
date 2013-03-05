@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.102.106" data="04/03/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitação de Pessoal: Novo filtro por status.
+			:: R&S > Movimentações > Solicitação de Pessoal > Imprimir:  Adição do campo data de encerramento.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.101.105" data="25/02/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Cadastros > Modelos de Avaliação do Candidato: Novo campo percentual mínimo de aprovação.

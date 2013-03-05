@@ -49,7 +49,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu seleciono "Sem escolaridade" de "Escolaridade"
     E eu clico "Dados Funcionais"
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
-    E eu preencho o campo (JS) "Data" com "20/12/2010"
+    E eu saio do campo "Admissão"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu seleciono "Financeiro" de "Área Organizacional"
     Então eu devo ver o alert "Não é possível alocar colaboradores em áreas que possuem sub-áreas." e clico no ok
@@ -58,11 +58,6 @@ Funcionalidade: Cadastrar Colaborador
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"
-    E eu clico no botão "Gravar"
-    Então eu devo ver "Data do primeiro histórico não pode ser anterior à data de admissão."
-
-    Então eu clico "Dados Funcionais"
-    E eu preencho o campo (JS) "Data" com "21/12/2010"
     E eu clico no botão "Gravar"
     E eu devo ver "cadastrado com sucesso"
     E eu devo ver "Colaboradores"
