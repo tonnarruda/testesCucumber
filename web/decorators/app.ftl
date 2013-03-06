@@ -68,7 +68,14 @@
 		<br>
 		<#if !pgInicial?exists || !pgInicial>
 			<#if title != "">
-				<div id="waDivTitulo">${title}</div>
+				<div id="waDivTitulo">
+					${title}
+					<#if videoAjuda?exists>
+						<span>
+							<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;"/>
+						</span>
+					</#if>
+				</div>
 			</#if>
 			<div class="waDivFormulario">
 		</#if>

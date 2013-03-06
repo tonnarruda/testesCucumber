@@ -82,6 +82,8 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public String list() throws Exception
     {
+		setVideoAjuda(678L);
+		
         Map session = ActionContext.getContext().getSession();
 
 		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(session, new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
@@ -115,7 +117,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 	
 	public String agenda() throws Exception
 	{
-		pgInicial = true;//decorator
+		setVideoAjuda(771L);
 		
 		return Action.SUCCESS;
 	}

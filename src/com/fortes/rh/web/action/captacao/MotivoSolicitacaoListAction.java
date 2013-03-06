@@ -20,6 +20,8 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(634L);
+		
 		motivoSolicitacaos = motivoSolicitacaoManager.findAll();
 
 		return Action.SUCCESS;

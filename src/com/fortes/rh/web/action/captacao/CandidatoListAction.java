@@ -824,6 +824,8 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String prepareRelatorioAvaliacaoCandidatos() throws Exception
 	{
+		setVideoAjuda(784L);
+		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 

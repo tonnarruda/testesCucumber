@@ -472,3 +472,13 @@ function loader(exibir)
 		document.getElementById('iframeZone').style.visibility = 'hidden';
     }
 }
+
+function popupVideo(videoId, hash) 
+{
+	window.open('http://www.fortesinformatica.com.br/videos/portal_videoteca_ver_new.php?id=' + videoId + '&hash=' + hash,'Janela1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=auto,resizable=no,menubar=no,width=720,height=660')
+}
+
+function popupDetalhes(videoId) 
+{
+	window.open('http://www.fortesinformatica.com.br/portal_videoteca_detalhes.php?id=' + videoId, 'Janela1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=auto,resizable=no,menubar=no,width=385,height=580')
+}

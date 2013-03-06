@@ -520,6 +520,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String prepareInsertCurriculoPlus() throws Exception
 	{
+		setVideoAjuda(341L);
+		
 		if(candidato != null && candidato.getId() != null)
 		{
 			candidato = candidatoManager.findByIdProjection(candidato.getId());
@@ -543,6 +545,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String prepareInsertCurriculoTexto() throws Exception
 	{
+		setVideoAjuda(762L);
+		
 		bairros = bairroManager.getArrayBairros();
 		
 		Empresa empresa = (Empresa) empresaManager.findToList(new String[]{"maxCandidataCargo"}, new String[]{"maxCandidataCargo"}, new String[]{"id"}, new Object[]{getEmpresaSistema().getId()}).toArray()[0];

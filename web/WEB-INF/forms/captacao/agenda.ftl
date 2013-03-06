@@ -16,6 +16,8 @@
 		@import url('<@ww.url includeParams="none" value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.weekcalendar.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/weekcalendar.css"/>');
+		
+		.waDivFormulario { padding: 0; }
 	</style>
 	<script type='text/javascript'>
 	
@@ -40,7 +42,6 @@
 	</script>
 	
 	<title>Agenda</title>
-	
 </head>
 <body>
 	<div id='calendar'></div>
@@ -63,7 +64,7 @@
 			</ul>
 		</form>
 	</div>
-	<div class="buttonGroup">
+	<div class="buttonGroup" style="margin-left:10px;">
 		<button onclick="imprimir();" class="btnImprimirPdf grayBGE"></button>
 	</div>
 </body>

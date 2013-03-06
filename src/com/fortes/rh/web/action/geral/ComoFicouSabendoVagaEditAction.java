@@ -70,6 +70,7 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(674L);
 		comoFicouSabendoVagas = comoFicouSabendoVagaManager.findAllSemOutros();
 		return Action.SUCCESS;
 	}
@@ -92,6 +93,8 @@ public class ComoFicouSabendoVagaEditAction extends MyActionSupportList
 
 	public String prepareRelatorioComoFicouSabendoVaga() throws Exception
 	{
+		setVideoAjuda(791L);
+		
 		return Action.SUCCESS;
 	}
 	

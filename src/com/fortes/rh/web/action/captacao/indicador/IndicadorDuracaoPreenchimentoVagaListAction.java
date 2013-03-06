@@ -78,6 +78,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public String painel() throws Exception
 	{
+		setVideoAjuda(734L);
+		
 		Date hoje = new Date();
 		if (dataAte == null)
 			dataAte = hoje;
@@ -127,11 +129,15 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	public String prepareMotivo() throws Exception
 	{
 		prepare();
+		setVideoAjuda(787L);
+		
 		return Action.SUCCESS;
 	}
 	
 	public String prepare() throws Exception
 	{
+		setVideoAjuda(786L);
+		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 

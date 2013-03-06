@@ -62,6 +62,8 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(841L);
+		
 		etapas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
 		solicitacao = solicitacaoManager.getValor(solicitacao.getId());
 		

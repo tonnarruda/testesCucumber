@@ -407,6 +407,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String prepareInsertAvaliacaoSolicitacao()
 	{
+		setVideoAjuda(779L);
+		
 		candidato = candidatoManager.findByCandidatoId(candidato.getId());
 		colaboradorQuestionario.setAvaliacao(avaliacaoManager.findEntidadeComAtributosSimplesById(colaboradorQuestionario.getAvaliacao().getId()));
 		colaboradorQuestionario.setRespondidaEm(new Date());

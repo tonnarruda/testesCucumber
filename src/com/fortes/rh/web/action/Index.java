@@ -53,11 +53,10 @@ import com.fortes.rh.util.StringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
-import com.opensymphony.xwork.ActionSupport;
 
 
 @SuppressWarnings("unchecked")
-public class Index extends ActionSupport
+public class Index extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 	private ColaboradorManager colaboradorManager = null;
@@ -242,15 +241,6 @@ public class Index extends ActionSupport
 	{
 		pgInicial = false;
 		return Action.SUCCESS;
-	}
-	
-	public String getCalculoHash()
-	{
-		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
-		
-		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
-		
-		return StringUtil.encodeString(calculoHash.toString());
 	}
 	
 	private static String readAll(Reader rd) throws IOException 

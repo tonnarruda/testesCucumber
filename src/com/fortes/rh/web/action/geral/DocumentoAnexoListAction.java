@@ -27,6 +27,8 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(764L);
+		
 		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
 		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(),documentoAnexo.getOrigemId());
 		return Action.SUCCESS;

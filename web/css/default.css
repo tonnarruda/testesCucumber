@@ -129,6 +129,10 @@ input,select,textarea,option {
 	font-weight: bold;
 }
 
+#waDivTitulo span {
+	float: right;
+}
+
 .waDivTituloX {
 	background-color: #5B86B3;
 	padding: 8px 15px;

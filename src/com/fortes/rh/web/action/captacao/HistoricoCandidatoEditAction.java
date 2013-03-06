@@ -59,6 +59,8 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 
 	private void prepare() throws Exception
 	{
+		setVideoAjuda(763L);
+		
 		if(historicoCandidato != null && historicoCandidato.getId() != null)
 			historicoCandidato = historicoCandidatoManager.findByIdProjection(historicoCandidato.getId());
 

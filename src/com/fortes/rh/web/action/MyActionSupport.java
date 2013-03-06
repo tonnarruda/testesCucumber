@@ -1,8 +1,12 @@
 package com.fortes.rh.web.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionSupport;
@@ -11,6 +15,7 @@ public abstract class MyActionSupport extends ActionSupport
 {
 	private Empresa empresaSistema = null;
 	private Usuario usuarioSistema = null;
+	private Long videoAjuda = null;
 	private String actionErr = null;
 	private String actionMsg = null;
 	public static final String MESSAGE = "message";
@@ -69,5 +74,24 @@ public abstract class MyActionSupport extends ActionSupport
 	public String updateFilter()
 	{
 		return Action.NONE;
+	}
+	
+	public String getCalculoHash()
+	{
+		String data = new SimpleDateFormat("ddMMyyyy").format(new Date());
+		
+		Integer calculoHash  = (Integer.parseInt(data) * 2) / 64;
+		
+		return StringUtil.encodeString(calculoHash.toString());
+	}
+
+	public Long getVideoAjuda() 
+	{
+		return videoAjuda;
+	}
+
+	public void setVideoAjuda(Long videoAjuda) 
+	{
+		this.videoAjuda = videoAjuda;
 	}
 }
