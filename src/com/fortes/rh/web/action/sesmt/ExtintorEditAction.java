@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -178,14 +179,7 @@ public class ExtintorEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		try
-		{
-			extintorManager.remove(extintor.getId());
-		}
-		catch (Exception e)
-		{
-			addActionError("Não foi possível remover este extintor");
-		}
+		extintorManager.remove(extintor.getId());
 
 		list();
 		return SUCCESS;

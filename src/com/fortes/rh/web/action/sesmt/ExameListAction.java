@@ -116,24 +116,16 @@ public class ExameListAction extends MyActionSupportList
 		if(exame.getId() == null)
 			return list();
 
-		try
-		{
-			Exame exameTmp = exameManager.findByIdProjection(exame.getId());
+		Exame exameTmp = exameManager.findByIdProjection(exame.getId());
 
-			if(exameTmp == null || !getEmpresaSistema().equals(exameTmp.getEmpresa()))
-			{
-				addActionError("O Exame solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
-			}
-			else
-			{
-				exameManager.remove(new Long[]{exame.getId()});
-				addActionMessage("Exame excluído com sucesso.");
-			}
-		}
-		catch (Exception e)
+		if(exameTmp == null || !getEmpresaSistema().equals(exameTmp.getEmpresa()))
 		{
-			addActionError("Não foi possível excluir este Exame.");
-			e.printStackTrace();
+			addActionError("O Exame solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+		}
+		else
+		{
+			exameManager.remove(new Long[]{exame.getId()});
+			addActionMessage("Exame excluído com sucesso.");
 		}
 
 		return list();
