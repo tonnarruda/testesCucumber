@@ -1391,21 +1391,21 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 							mapAreaColaborador.get(colaborador.getAreaOrganizacional()).add("\nColaborador: "+colaborador.getNomeMaisNomeComercial()+"   --   Vencimento da habilitação: "+colaborador.getHabilitacao().getVencimentoFormatada()+".");
 						}
 								
-						if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && (gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))) { // ok
+						if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && (gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId()))) {
 							
 							enviaEmailParaGestorECogestor(mensagemBase, subject, gerenciadorComunicacao, todasAreas, mapAreaColaborador, AreaOrganizacional.RESPONSAVEL);
 							
-						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) { // ok
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
 
 							enviaEmailParaGestorECogestor(mensagemBase, subject, gerenciadorComunicacao, todasAreas, mapAreaColaborador, AreaOrganizacional.CORRESPONSAVEL);
 							
-						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {// ok
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
 							
 							String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
 							
 							enviaEmailParaResponsavelRhEUsuarios(mensagemBase, subject, gerenciadorComunicacao, mapAreaColaborador, emails);
 							
-						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {// ok
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
 							
 							UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 							CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
@@ -1415,7 +1415,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 							
 							enviaEmailParaResponsavelRhEUsuarios(mensagemBase, subject, gerenciadorComunicacao, mapAreaColaborador, emails);
 							
-testar a partir daqui						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+						} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
 							
 							for (AreaOrganizacional area : mapAreaColaborador.keySet())
 							{
