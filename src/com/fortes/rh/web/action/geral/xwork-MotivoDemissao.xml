@@ -30,6 +30,90 @@
 		<action name="prepareRelatorioMotivoDemissao" class="com.fortes.rh.web.action.geral.MotivoDemissaoListAction" method="prepareRelatorioMotivoDemissao">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/motivoDemissaoPrepareRelatorio.ftl</result>
 		</action>
+		<action name="relatorioMotivoDemissaoXLS" class="com.fortes.rh.web.action.geral.MotivoDemissaoListAction" method="relatorioMotivoDemissao">
+			<result name="successBasico" type="xls">
+				<param name="dataSource">motivoDemissaoQuantidades</param>
+				<param name="documentName">motivosDemissaoBasico.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Motivo,Quantidade</param>
+				<param name="properties">motivo,quantidade</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successSemAgrupar" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successSemAgruparComObservacao" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successPorArea" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successComObservacaoPorArea" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successPorEstabelecimento" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successComObservacaoPorEstabelecimento" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período</param>
+				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successComObservacaoPorMotivo" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">motivosDemissao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período,Observação</param>
+				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/motivoDemissaoPrepareRelatorio.ftl</result>	
+		</action>
 		<action name="relatorioMotivoDemissao" class="com.fortes.rh.web.action.geral.MotivoDemissaoListAction" method="relatorioMotivoDemissao">
 			<result name="success" type="jasper">
 				<param name="location">/WEB-INF/report/motivos_demissao.jasper</param>

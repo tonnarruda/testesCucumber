@@ -25,6 +25,10 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 	{
 		return motivo;
 	}
+	public String getMotivoFormatado()
+	{
+		return motivo == null ? "[não informado]" : motivo;
+	}
 	public void setMotivo(String motivo)
 	{
 		this.motivo = motivo;
