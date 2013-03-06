@@ -52,15 +52,6 @@
 			}
 		}
 	</script>
-	<style type="text/css">
-		.divAviso 
-		{
-			background-color:#FFFFFF;
-			border:1px solid #7E9DB9;
-			color:#5C5C5A;
-			padding:5px;
-		}
-	</style>
 </head>
 
 <body>
@@ -79,17 +70,6 @@
 
 		<@ww.select id="optFiltro" label="Reajuste por" name="dissidioPor" list=r"#{'1':'Porcentagem sobre o salario atual(%)', '2':'Valor adicionado ao salário(R$)'}" liClass="liLeft" required="true"/>
 		<@ww.textfield label="" name="valorDissidio" id="valorDissidio" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12"/>
-		
-		<div class="divAviso">
-			<span style="color: blue;">
-				Atenção:<br> 
-				Este reajuste será aplicado apenas aos colaboradores com salário definido por valor. Para reajustar salários definidos por cargo e por índice, crie novos históricos diretamente no 
-				<a href="../cargo/list.action" class="ativaSimples" style="color: #CD661D;">CARGO</a> 
-				ou
-				<a href="../indice/list.action" class="ativaSimples" style="color: #CD661D;">INDICE</a> 
-				que receberá o reajuste.
-			</span>
-		</div>
 	</@ww.form>
 	
 	<div class="buttonGroup">

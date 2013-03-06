@@ -14,6 +14,7 @@
 				<param name="scope.session">exame.nome</param>
 			</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameList.ftl</result>
+			<result name="error" type="redirect">list.action</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.ExameEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>

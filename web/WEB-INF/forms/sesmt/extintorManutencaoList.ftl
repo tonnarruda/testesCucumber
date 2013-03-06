@@ -54,6 +54,8 @@
 		    	document.form.action = "imprimirListaManutencaoDeExtintores.action";
 		    	validaFormularioEPeriodo('form', null, new Array('inicio','fim'), false);
 			});
+			
+			populaExtintores();
 	    });
     </script>
 
