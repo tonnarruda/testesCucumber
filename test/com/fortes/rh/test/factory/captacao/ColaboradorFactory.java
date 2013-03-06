@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Endereco;
@@ -46,6 +47,9 @@ public class ColaboradorFactory
 		pessoal.setCpf("00000000000");
 		colaborador.setPessoal(pessoal);
 
+		Habilitacao habilitacao = new Habilitacao();
+		colaborador.setHabilitacao(habilitacao);
+		
 		colaborador.setDependentes(null);
 		return colaborador;
 	}

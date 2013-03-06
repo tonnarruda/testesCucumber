@@ -1695,6 +1695,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			areaOrganizacional = new AreaOrganizacional();
 		areaOrganizacional.setDescricao(nome);
 	}
+	
+	public void setAreaOrganizacionalAreaMaeId(Long areaMaeId)
+	{
+		if (areaOrganizacional == null)
+			areaOrganizacional = new AreaOrganizacional();
+		areaOrganizacional.setAreaMaeId(areaMaeId);
+	}
 
 	public void setEmpresaId(Long empresaId)
 	{

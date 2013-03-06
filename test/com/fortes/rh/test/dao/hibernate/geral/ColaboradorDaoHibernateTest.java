@@ -5609,6 +5609,68 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, 2).size());
 	}
 	
+	
+	public void testHabilitacaoAVencer()
+	{
+		Calendar umDiasDepois = Calendar.getInstance();
+		umDiasDepois.add(Calendar.DAY_OF_YEAR, 1);
+		
+		Calendar doisDiasDepois = Calendar.getInstance();
+		doisDiasDepois.add(Calendar.DAY_OF_YEAR, 2);
+		
+		Calendar tresDiasDepois = Calendar.getInstance();
+		tresDiasDepois.add(Calendar.DAY_OF_YEAR, 3);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaMae);
+		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		area.setAreaMaeId(areaMae.getId());
+		areaOrganizacionalDao.save(area);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.getHabilitacao().setVencimento(umDiasDepois.getTime());
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setAreaOrganizacional(area);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.getHabilitacao().setVencimento(doisDiasDepois.getTime());
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setAreaOrganizacional(area);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaboradorDao.save(historicoColaborador2);
+
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setEmpresa(empresa);
+		colaborador3.getHabilitacao().setVencimento(tresDiasDepois.getTime());
+		colaboradorDao.save(colaborador3);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3.setAreaOrganizacional(area);
+		historicoColaborador3.setData(DateUtil.criarDataMesAno(1, 1, 2010));
+		historicoColaborador3.setColaborador(colaborador3);
+		historicoColaboradorDao.save(historicoColaborador3);
+		
+		Collection<Colaborador> colaboradors = colaboradorDao.findHabilitacaAVencer(Arrays.asList(1, 2), empresa.getId());
+		assertEquals(2, colaboradors.size());
+		
+		colaboradors = colaboradorDao.findHabilitacaAVencer(Arrays.asList(3), empresa.getId());
+		assertEquals(colaborador3.getId(), ((Colaborador)colaboradors.toArray()[0]).getId());
+
+	}
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

@@ -156,6 +156,11 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return Operacao.TERMINO_CONTRATO_COLABORADOR.getId();
 	}
 	
+	public int getHabilitacaoAVencerId()
+	{
+		return Operacao.HABILITACAO_A_VENCER.getId();
+	}
+	
 	public GerenciadorComunicacao getGerenciadorComunicacao()
 	{
 		if(gerenciadorComunicacao == null)

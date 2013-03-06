@@ -164,6 +164,23 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	HABILITACAO_A_VENCER(29, "Houver carteira de habilitação a vencer (Notificação periódica)", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	CANCELAR_SITUACAO_AC(13, "Cancelar situação no AC Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
