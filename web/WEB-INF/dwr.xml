@@ -52,6 +52,9 @@
 		<create creator="spring" javascript="ColaboradorDWR">
 			<param name="beanName" value="colaboradorDWR"/>
 		</create>
+		<create creator="spring" javascript="PessoaDWR">
+			<param name="beanName" value="pessoaDWR"/>
+		</create>
 		<create creator="spring" javascript="CandidatoDWR">
 			<param name="beanName" value="candidatoDWR"/>
 		</create>
@@ -152,6 +155,9 @@
 		<convert converter="bean" match="com.fortes.web.tags.CheckBox"/>
 		<convert converter="bean" match="com.fortes.web.tags.Option"/>
 
+		<!-- DICIONARIO -->
+		<convert converter="bean" match="com.fortes.rh.model.dicionario.TipoPessoa"/>
+		
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>

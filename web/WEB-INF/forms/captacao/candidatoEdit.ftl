@@ -5,13 +5,7 @@
 <head>
   <#include "../ftl/mascarasImports.ftl" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
-	
- <style type="text/css">
+	 <style type="text/css">
 		<#if moduloExterno>
 			@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
 		<#else>
@@ -57,6 +51,7 @@
   <![endif]-->
 
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
@@ -67,6 +62,7 @@
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
 
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
 
 	<#if moduloExterno?exists && moduloExterno>

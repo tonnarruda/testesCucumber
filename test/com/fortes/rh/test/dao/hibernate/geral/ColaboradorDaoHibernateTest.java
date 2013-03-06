@@ -983,24 +983,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId()).size());
 	}
 
-	public void testFindTodosColaboradorCpf() {
-		Empresa empresa = new Empresa();
-		empresa.setNome("empresa1");
-		empresaDao.save(empresa);
-
-		Colaborador joao = getColaborador();
-		joao.setEmpresa(empresa);
-		joao.getPessoal().setCpf("1122554448");
-		colaboradorDao.save(joao);
-
-		Colaborador maria = getColaborador();
-		maria.setEmpresa(empresa);
-		maria.getPessoal().setCpf("1122554448");
-		colaboradorDao.save(maria);
-
-		assertEquals(joao, colaboradorDao.findTodosColaboradorCpf("1122554448", empresa.getId(), maria.getId()));
-	}
-
 	private Candidato getCandidato() {
 		Candidato candidato = new Candidato();
 		candidato.setId(null);

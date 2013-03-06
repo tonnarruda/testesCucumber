@@ -77,4 +77,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public int findQtdCadastrados(Long empresaId, Date dataDe, Date dataAte);
 	public Collection<DataGrafico> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
 	public int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	public Collection<Candidato> findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado);
 }

@@ -1,10 +1,7 @@
 package com.fortes.rh.web.dwr;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-
-import org.hibernate.NonUniqueResultException;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
@@ -13,9 +10,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Pessoa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
@@ -76,21 +71,6 @@ public class CandidatoDWR
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeECpf");
 	}
 
-	protected Collection<Pessoa> verificaCpfDuplicado(String cpf, Long empresaId, Long id) throws Exception
-	{
-		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
-		Collection<Pessoa> pessoas = new ArrayList<Pessoa>();
-		
-		if (!cpfSemMascara.equals("") && cpfSemMascara.length() == 11)
-		{
-			Collection<Candidato> candidatos = null; 
-			for (Candidato candidato : candidatos)
-				pessoas.add(new Pessoa(candidato.getId(), candidato.getNome(), TipoPessoa.CANDIDATO));
-		}
-
-		return pessoas;
-	}
-	
 	public String montaMensagemExclusao(Long candidatoId, Long empresaId)
 	{
 		StringBuilder retorno = new StringBuilder();

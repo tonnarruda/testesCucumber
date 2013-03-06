@@ -137,6 +137,48 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidato = candidatoDao.findByCPF("0000000000", null, null, null, true);
 		assertNull("Verifica se existe colaborador vinculado ao candidato", candidato);
 	}
+
+	public void testFindByCPFCollection()
+	{
+		Empresa e1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(e1);
+
+		Empresa e2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(e2);
+		
+		Candidato c = getCandidato();
+		c.setNome("bobinho");
+		c.setEmpresa(e1);
+		c.getPessoal().setCpf("000000000");
+		candidatoDao.save(c);
+
+		Candidato c2 = getCandidato();
+		c2.setNome("bobinho2");
+		c2.setEmpresa(e1);
+		c2.getPessoal().setCpf("0000000000");
+		candidatoDao.save(c2);
+
+		Candidato c3 = getCandidato();
+		c3.setNome("bobinho3");
+		c3.setEmpresa(e2);
+		c3.getPessoal().setCpf("0000000000");
+		candidatoDao.save(c3);
+		
+		Candidato c4 = getCandidato();
+		c4.setNome("bobinho4");
+		c4.setEmpresa(e1);
+		c4.setContratado(true);
+		c4.getPessoal().setCpf("0000000000");
+		candidatoDao.save(c4);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(c3);
+		colaboradorDao.save(colaborador);
+		
+		assertEquals("Verifica contratados", 2, candidatoDao.findByCPF("0000000000", null, null, false).size());
+		assertEquals("Verifica exclusao de si", 1, candidatoDao.findByCPF("0000000000", null, c2.getId(), false).size());
+		assertEquals("Verifica empresa", 1, candidatoDao.findByCPF("0000000000", e1.getId(), null, false).size());
+	}
 	
 	public void testFindQtdCadastradosByOrigem()
 	{

@@ -968,12 +968,38 @@ function verificaCpfDuplicado(valorCpf, empresaId, isModuloExterno, id, isCandid
 	if(valorCpf.length == 14)
 	{
 		DWRUtil.useLoadingMessage('Carregando...');
-		ColaboradorDWR.verificaCpfDuplicado(valorCpf, empresaId, id, function(colaboradores) {
+		PessoaDWR.verificaCpfDuplicado(valorCpf, empresaId, id, function(pessoas) {
 			var msg = "";
+			var link = "";
 
-			$.each(colaboradores, function(i, colaborador) {
-				console.log(colaborador);
-				msg += "<a href='#'>" + colaborador.nome + "</a><br />"
+			$.each(pessoas, function(i, pessoa) {
+				
+				if (pessoa.tipoPessoa.chave == 'A')
+				{
+					if (isModuloExterno)
+					{
+						msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" href=\"prepareRecuperaSenha.action?empresaId=" + empresaId + "&cpf=" + valorCpf+ "\">" + "Já existe um currículo com esse CPF. Clique aqui para solicitar o envio de senha para seu e-mail." + "</a><br>";
+						return false;
+					}
+					else
+					{
+						link = (isCandidato ? "list.action?cpfBusca=" : "listCandidato.action?cpfBusca=") + valorCpf;
+						msg += "Candidato: <br /><a href='" + link + "'>" + pessoa.nome + "</a><br /><br />";
+					}
+				}
+				else if (pessoa.tipoPessoa.chave == 'C')
+				{
+					if (isModuloExterno)
+					{
+						msg = "<a title=\"Ver Informação\" style=\"text-decoration: none\" >" + "Entre em contato com a empresa, pois o CPF informado é de um colaborador." + "</a><br>";
+						return false;
+					}
+					else
+					{
+						link = (isCandidato ? "listColaborador.action?cpfBusca=" : "list.action?cpfBusca=") + valorCpf;
+						msg += "Colaborador: <br /><a href='" + link + "'>" + pessoa.nome + "</a><br /><br />";
+					}
+				}
 			});
 
 			if (msg != "")

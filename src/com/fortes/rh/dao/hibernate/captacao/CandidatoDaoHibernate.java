@@ -97,6 +97,33 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		return (Candidato) criteria.uniqueResult();
     }
+    
+    public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
+	{
+    	Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+        
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("c.id"), "id");
+        p.add(Projections.property("c.nome"), "nome");
+        p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
+        
+        criteria.setProjection(p);
+		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
+
+		if (candidatoId != null)
+			criteria.add(Expression.ne("c.id", candidatoId));
+		
+		if (empresaId != null )
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if (contratado != null )
+			criteria.add(Expression.eq("c.contratado", contratado));
+		
+		criteria.addOrder(Order.desc("c.id"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+		
+		return criteria.list();
+	}
 
 	public Candidato findByCandidatoId(Long id)
 	{

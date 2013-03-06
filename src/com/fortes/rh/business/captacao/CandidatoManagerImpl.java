@@ -1103,8 +1103,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	
 	public Candidato findByCPF(String cpf, Long empresaId, boolean verificaColaborador)
     {
-			return getDao().findByCPF(cpf, empresaId, null, null, false);
+		return getDao().findByCPF(cpf, empresaId, null, null, false);
     }
+	
+	public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
+	{
+		return getDao().findByCPF(cpf, empresaId, candidatoId, contratado);
+	}
 
 	public void ajustaSenha(Candidato candidato) 
 	{
@@ -1369,5 +1374,4 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-
 }

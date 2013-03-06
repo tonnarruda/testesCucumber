@@ -16,12 +16,10 @@ import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
-import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Pessoa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
@@ -294,21 +292,6 @@ public class ColaboradorDWR
     	
     	return dados;
     }
-
-	public Collection<Pessoa> verificaCpfDuplicado(String cpf, Long empresaId, Long id) throws Exception
-	{
-		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
-		Collection<Pessoa> pessoas = new ArrayList<Pessoa>();
-		
-		if (!cpfSemMascara.equals("") && cpfSemMascara.length() == 11)
-		{
-			Collection<Colaborador> colaboradores = colaboradorManager.findByCpf(cpfSemMascara, empresaId, id); 
-			for (Colaborador colaborador : colaboradores)
-				pessoas.add(new Pessoa(colaborador.getId(), colaborador.getNome(), TipoPessoa.COLABORADOR));
-		}
-
-		return pessoas;
-	}
     
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
