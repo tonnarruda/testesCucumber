@@ -675,10 +675,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		else
 			return getDao().findTodosColaboradorCpf(cpfSemMascara, empresaId, colaboradorId);
 	}
-	
-	public boolean existeCpfColaboradorAtivoByEmpresa(String cpf, Long empresaId, Long colaboradorId) {
-		return getDao().existeCpfColaboradorAtivoByEmpresa(cpf, empresaId, colaboradorId);
-	}
 
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa)
 	{

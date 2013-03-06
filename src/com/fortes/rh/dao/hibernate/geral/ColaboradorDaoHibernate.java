@@ -38,14 +38,12 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
-import com.fortes.rh.model.dicionario.TipoMembroComissao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -4378,27 +4376,4 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
-	
-	public boolean existeCpfColaboradorAtivoByEmpresa(String cpf, Long empresaId, Long colaboradorId) {
-		 
-		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("c.desligado", false));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
-		
-		if (colaboradorId != null)
-			criteria.add(Expression.not(Expression.eq("c.id", colaboradorId)));	
-		
-		List<Object> retorno = criteria.list();
-		
-		return retorno == null  ? false : retorno.size() > 0;
-	}
-	
-
-	
 }

@@ -5466,47 +5466,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(1, colaboradorDao.findParaLembreteTerminoContratoTemporario(Arrays.asList(1, 3), empresa.getId()).size());
 	}
-	
-	public void testeExisteCpfColaboradorAtivoByEmpresa()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setDesligado(false);
-		colaborador.setPessoalCpf("12345");
-		colaboradorDao.save(colaborador);
-		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.setEmpresa(empresa);
-		colaborador2.setDesligado(true);
-		colaborador2.setPessoalCpf("123456");
-		colaboradorDao.save(colaborador2);
-		
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaborador3.setEmpresa(empresa);
-		colaborador3.setDesligado(true);
-		colaborador3.setPessoalCpf("1234567");
-		colaboradorDao.save(colaborador3);
 
-		Colaborador colaborador4 = ColaboradorFactory.getEntity();
-		colaborador4.setEmpresa(empresa);
-		colaborador4.setDesligado(false);
-		colaborador4.setPessoalCpf("12345678");
-		colaboradorDao.save(colaborador4);
-		
-		// Inserindo um colaborador novo.
-		assertTrue(colaboradorDao.existeCpfColaboradorAtivoByEmpresa("12345", empresa.getId(), null));
-		// Inserido um calaborador novo , mesmo CPF mas desligado
-		assertFalse(colaboradorDao.existeCpfColaboradorAtivoByEmpresa("1234567", empresa.getId(), null));	
-		// Editando o proprio colaborador sem mudar o CPF
-		assertFalse(colaboradorDao.existeCpfColaboradorAtivoByEmpresa("12345", empresa.getId(), colaborador.getId()));
-		// Editando o proprio colaborador mudando CPF.
-		assertTrue(colaboradorDao.existeCpfColaboradorAtivoByEmpresa("12345678", empresa.getId(), colaborador.getId()));	
-		
-	}
-	
 	public void testTriar() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();

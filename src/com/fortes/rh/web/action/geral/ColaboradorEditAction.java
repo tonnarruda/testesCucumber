@@ -50,7 +50,6 @@ import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -553,9 +552,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
 				throw new Exception("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
-			
-			if(colaboradorManager.existeCpfColaboradorAtivoByEmpresa(colaborador.getPessoal().getCpf(), getEmpresaSistema().getId(), null))
-				throw new Exception("Já existe um colaborador ativo cadastrado com esse mesmo CPF.");
 
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
 
@@ -700,14 +696,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if(editarHistorico)
 				quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), colaborador.getId());
-			
-			if(colaboradorManager.existeCpfColaboradorAtivoByEmpresa(colaborador.getPessoal().getCpf(), getEmpresaSistema().getId(), colaborador.getId()))
-			{
-				addActionError("Já existe um colaborador ativo cadastrado com esse mesmo CPF.");
-				prepareUpdate();
-				return Action.INPUT;
-			}	
-			
+
 			if(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(editarHistorico, historicoColaborador, colaborador))
 			{
 				addActionError("Data do primeiro histórico não pode ser anterior à data de admissão.");
