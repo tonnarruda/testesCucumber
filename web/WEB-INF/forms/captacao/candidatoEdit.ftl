@@ -555,7 +555,7 @@
 				</#if>
 			</@ww.div>
 			
-			<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>			
+			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>			
 			
 			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="candidatosHomonimos();${capitalizar}"/>
 			

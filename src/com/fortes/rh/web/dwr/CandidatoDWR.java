@@ -1,5 +1,6 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -12,7 +13,9 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Pessoa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
@@ -73,30 +76,19 @@ public class CandidatoDWR
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeECpf");
 	}
 
-	public String verificaCpfDuplicado(String cpf, Long empresaId, Long id, String edit) throws Exception
+	protected Collection<Pessoa> verificaCpfDuplicado(String cpf, Long empresaId, Long id) throws Exception
 	{
-		//acho que não ta sendo utilizado, pode ser em algum ftl. Acho que tem um bug se tiver 3 cpf iguais
 		String cpfSemMascara = cpf.replaceAll("\\.", "").replaceAll("-", "").trim();
+		Collection<Pessoa> pessoas = new ArrayList<Pessoa>();
 		
 		if (!cpfSemMascara.equals("") && cpfSemMascara.length() == 11)
 		{
-			try {
-				Colaborador colaborador = colaboradorManager.findTodosColaboradorCpf(cpfSemMascara, empresaId, id); 
-				if (colaborador != null)
-					return "colaborador"; //link para colaborador existente
-			} catch (NonUniqueResultException notUniqueResultException) {
-				return "colaborador";//link para colaborador existente	
-			}
-			try	{
-				Candidato candidato = candidatoManager.verifyCPF(cpfSemMascara, empresaId, id, false);
-				if (candidato != null)
-					return "candidato"; //link para candidato existente
-			} catch (NonUniqueResultException notUniqueResultException) {
-				return "candidato";//link para candidato existente
-			}
+			Collection<Candidato> candidatos = null; 
+			for (Candidato candidato : candidatos)
+				pessoas.add(new Pessoa(candidato.getId(), candidato.getNome(), TipoPessoa.CANDIDATO));
 		}
 
-		return "";//sem resultados
+		return pessoas;
 	}
 	
 	public String montaMensagemExclusao(Long candidatoId, Long empresaId)

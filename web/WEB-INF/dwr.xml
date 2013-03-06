@@ -153,6 +153,7 @@
 		<convert converter="bean" match="com.fortes.web.tags.Option"/>
 
 		<!-- GERAL -->
+		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>

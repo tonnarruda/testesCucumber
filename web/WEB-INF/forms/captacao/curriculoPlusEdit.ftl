@@ -127,8 +127,8 @@
 				<ul>
 					<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento"  liClass="liLeft" cssClass="mascaraData" value="${data}"/>
 					<@ww.textfield label="CPF"  name="candidato.pessoal.cpf" id="cpf" liClass="liLeft" cssClass="mascaraCpf" onchange="verificaCpfDuplicado(this.value,${empresaId},false);" onblur="verificaCpfDuplicado(this.value,${empresaId},false);"/>
+					<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
 					<@ww.select label="Colocação" name="candidato.colocacao" list="colocacaoList"/>
-					<@ww.div id="msgCPFDuplicado" cssStyle="color:blue;display:none; "></@ww.div>
 					<br>
 					<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 					<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""  liClass="liLeft"/>

@@ -913,7 +913,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			configPerformanceBoxes = StringUtil.toJSON(configuracaoPerformanceManager.findByUsuario(SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession())), new String[]{"usuario"}); 
 			
-			colaboradoresMesmoCpf = colaboradorManager.findByCpf(colaborador.getPessoal().getCpf(), null);
+			colaboradoresMesmoCpf = colaboradorManager.findByCpf(colaborador.getPessoal().getCpf(), null, null);
 			
 			return Action.SUCCESS;
 
