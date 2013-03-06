@@ -36,6 +36,12 @@
 			
 			elementAgrupar.style.display = display;
 		}
+		
+		function submeterAction(action)
+		{
+			$('form[name=form]').attr('action', action);
+			return validaFormularioEPeriodo('form', new Array('dataIni', 'dataFim', '@estabelecimentosCheck'), new Array('dataIni', 'dataFim'));
+		}
 
 		$(document).ready(function($)
 		{
@@ -68,15 +74,13 @@
 	<#else>
 		<#assign valueDataFim = ""/>
 	</#if>
-
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni', 'dataFim', '@estabelecimentosCheck'), new Array('dataIni', 'dataFim'))"/>	
 </head>
 
 <body>
 
 	<@ww.actionmessage />
 
-	<@ww.form name="form" action="relatorioMotivoDemissao.action" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="form" action="relatorioMotivoDemissao.action" validate="true" method="POST">
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="0" onchange="changeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
@@ -97,7 +101,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnRelatorio"></button>
+		<button onclick="return submeterAction('relatorioMotivoDemissao.action');" class="btnRelatorio"></button>
+		<button onclick="return submeterAction('relatorioMotivoDemissaoXLS.action');" class="btnRelatorioExportar"></button>
 	</div>
 	
 </body>
