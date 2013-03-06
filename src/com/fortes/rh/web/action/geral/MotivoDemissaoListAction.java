@@ -16,8 +16,10 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
+import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -62,6 +64,9 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Boolean compartilharColaboradores;
+	
+	private String reportFilter;
+	private String reportTitle;
 	
 	
 	public String list() throws Exception
@@ -170,6 +175,9 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	{
 		parametros = motivoDemissaoManager.getParametrosRelatorio(getEmpresaSistema(), dataIni, dataFim, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), parametros);
 		parametros.put("EXIBIR_OBS", exibirObservacao);
+
+		reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
+		reportTitle = ((Cabecalho) parametros.get("CABECALHO")).getTitulo();
 
 		if(listaColaboradores)
 			return imprimeRelatorioMotivoDemissao();
@@ -360,6 +368,14 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 
 }
