@@ -566,6 +566,12 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
 			maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
 
+		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
+			areaOrganizacional.setResponsavel(null);
+
+		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
+			areaOrganizacional.setCoResponsavel(null);
+		
 		if(!maeSemColaboradores)
 			throw new Exception("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
 	}
