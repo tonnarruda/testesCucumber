@@ -2342,7 +2342,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId)
+	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId, Boolean desligado)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
@@ -2367,6 +2367,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if (colaboradorId != null)
 			criteria.add(Expression.ne("c.id", colaboradorId));
+
+		if (desligado != null)
+			criteria.add(Expression.eq("c.desligado", desligado));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));

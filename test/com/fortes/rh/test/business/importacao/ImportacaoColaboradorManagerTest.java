@@ -48,8 +48,8 @@ public class ImportacaoColaboradorManagerTest extends MockObjectTestCase {
     	Collection<Colaborador> colaboradoresDoCSV = Arrays.asList(colaborador,colaborador2NaoExisteNoRH);
     	MockImportacaoCSVUtil.colaboradores = colaboradoresDoCSV; //para uso do Mock
     	
-    	colaboradorManager.expects(once()).method("findByCpf").with(eq("26745534304"), eq(1L), eq(null)).will(returnValue(Arrays.asList(colaborador)));
-    	colaboradorManager.expects(once()).method("findByCpf").with(eq("52986063420"), eq(1L), eq(null)).will(returnValue(null));
+    	colaboradorManager.expects(once()).method("findByCpf").with(eq("26745534304"), eq(1L), eq(null), eq(null)).will(returnValue(Arrays.asList(colaborador)));
+    	colaboradorManager.expects(once()).method("findByCpf").with(eq("52986063420"), eq(1L), eq(null), eq(null)).will(returnValue(null));
     	colaboradorManager.expects(once()).method("updateInfoPessoaisByCpf").with(eq(colaborador), eq(1L)).will(returnValue(true));
     	
     	importacaoColaboradorManager.importarDadosPessoaisByCpf(new File("arquivo.csv"), empresa);

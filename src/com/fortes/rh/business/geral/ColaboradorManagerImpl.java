@@ -1596,9 +1596,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradorLogadoId;	
 	}
 
-	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId) 
+	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId, Boolean desligado) 
 	{
-		return getDao().findByCpf(cpf, empresaId, colaboradorId);
+		return getDao().findByCpf(cpf, empresaId, colaboradorId, desligado);
 	}
 
 	public Collection<Colaborador> findParticipantesDistinctByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliado, Boolean respondida) 

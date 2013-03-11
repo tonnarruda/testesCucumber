@@ -4183,9 +4183,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setPessoalCpf("26745534304");
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador3 = getColaborador();
+		colaborador3.setNome("Xica");
+		colaborador3.setPessoalCpf("26745534304");
+		colaborador3.setEmpresa(empresa);
+		colaborador3.setDesligado(true);
+		colaboradorDao.save(colaborador3);
 
-		assertEquals("Todos", 2, colaboradorDao.findByCpf("26745534304", empresa.getId(), null).size());
-		assertEquals("Excluindo a si mesmo", 1, colaboradorDao.findByCpf("26745534304", empresa.getId(), colaborador2.getId()).size());
+		assertEquals("Todos", 3, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, null).size());
+		assertEquals("Excluindo desligados", 2, colaboradorDao.findByCpf("26745534304", empresa.getId(), null, false).size());
+		assertEquals("Excluindo a si mesmo", 1, colaboradorDao.findByCpf("26745534304", empresa.getId(), colaborador2.getId(), false).size());
 	}
 
 	public void testUpdateInfoPessoaisByCpf() {

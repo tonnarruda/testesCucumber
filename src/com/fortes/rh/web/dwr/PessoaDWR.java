@@ -26,9 +26,9 @@ public class PessoaDWR
 			for (Candidato candidato : candidatos)
 				pessoas.add(new Pessoa(candidato.getId(), candidato.getNome(), TipoPessoa.CANDIDATO));
 			
-			Collection<Colaborador> colaboradores = colaboradorManager.findByCpf(cpfSemMascara, empresaId, id); 
+			Collection<Colaborador> colaboradores = colaboradorManager.findByCpf(cpfSemMascara, empresaId, id, false); 
 			for (Colaborador colaborador : colaboradores)
-				pessoas.add(new Pessoa(colaborador.getId(), colaborador.getNome(), TipoPessoa.COLABORADOR));
+				pessoas.add(new Pessoa(colaborador.getId(), colaborador.getNomeMatricula(), TipoPessoa.COLABORADOR));
 		}
 
 		return pessoas;
