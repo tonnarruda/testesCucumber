@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ppp" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="4f52595a-9564-46ff-b86d-6e0646439479">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="191"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -1201,7 +1201,9 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{colaborador.pessoal.ctps.ctpsNumero} + " " + $F{colaborador.pessoal.ctps.serieMaisDv} + " " + $F{colaborador.pessoal.ctps.ctpsUf.sigla}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[( $F{colaborador.pessoal.ctps.ctpsNumero} == null ? "" : $F{colaborador.pessoal.ctps.ctpsNumero} ) + " " +
+( $F{colaborador.pessoal.ctps.serieMaisDv} == null ? "" : $F{colaborador.pessoal.ctps.serieMaisDv} ) + " " +
+( $F{colaborador.pessoal.ctps.ctpsUf.sigla} == null ? "" : $F{colaborador.pessoal.ctps.ctpsUf.sigla} )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="6643e82a-4c19-4112-a657-22a1f84d09c4" key="textField-9" x="424" y="182" width="32" height="15">
