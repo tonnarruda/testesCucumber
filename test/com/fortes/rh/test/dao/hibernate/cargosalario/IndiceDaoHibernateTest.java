@@ -201,7 +201,7 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		empresaDao.save(ente);
 		
 		Indice indice = IndiceFactory.getEntity();
-		indice.setCodigoAC("");
+		indice.setCodigoAC(null);
 		indice.setGrupoAC(grupoAC1.getCodigo());
 		indiceDao.save(indice);
 
@@ -221,7 +221,7 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		indiceDao.save(indice4);
 		
 		Indice indice5 = IndiceFactory.getEntity();
-		indice5.setCodigoAC("");
+		indice5.setCodigoAC(null);
 		indice5.setGrupoAC(grupoAC2.getCodigo());
 		indiceDao.save(indice5);
 		
@@ -248,11 +248,6 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		indice.setGrupoAC(grupoAC1.getCodigo());
 		indiceDao.save(indice);
 		
-		Indice indice2Repetido = IndiceFactory.getEntity();
-		indice2Repetido.setCodigoAC("0001");
-		indice2Repetido.setGrupoAC(grupoAC1.getCodigo());
-		indiceDao.save(indice2Repetido);
-		
 		Indice indice3 = IndiceFactory.getEntity();
 		indice3.setCodigoAC("0002");
 		indice3.setGrupoAC(grupoAC1.getCodigo());
@@ -264,56 +259,13 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		indiceDao.save(indice4);
 		
 		Indice indice5 = IndiceFactory.getEntity();
-		indice5.setCodigoAC("0001");
+		indice5.setCodigoAC("0002");
 		indice5.setGrupoAC(grupoAC2.getCodigo());
 		indiceDao.save(indice5);
 		
 		assertEquals(0, indiceDao.findSemCodigoAC(ente).size());
 	}
 
-	public void testFindCodigoACDuplicado()
-	{
-		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
-		grupoAC1.setCodigo("998");
-		grupoACDao.save(grupoAC1);
-		
-		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
-		grupoAC2.setCodigo("999");
-		grupoACDao.save(grupoAC2);
-		
-		Empresa ente = EmpresaFactory.getEmpresa();
-		ente.setCodigoAC("000225");
-		ente.setGrupoAC(grupoAC1.getCodigo());
-		empresaDao.save(ente);
-		
-		Indice indice = IndiceFactory.getEntity();
-		indice.setCodigoAC("0001");
-		indice.setGrupoAC(grupoAC1.getCodigo());
-		indiceDao.save(indice);
-		
-		Indice indice2Repetido = IndiceFactory.getEntity();
-		indice2Repetido.setCodigoAC("0001");
-		indice2Repetido.setGrupoAC(grupoAC1.getCodigo());
-		indiceDao.save(indice2Repetido);
-		
-		Indice indice3 = IndiceFactory.getEntity();
-		indice3.setCodigoAC("0002");
-		indice3.setGrupoAC(grupoAC1.getCodigo());
-		indiceDao.save(indice3);
-		
-		Indice indice4 = IndiceFactory.getEntity();
-		indice4.setCodigoAC("0005");
-		indice4.setGrupoAC(grupoAC2.getCodigo());
-		indiceDao.save(indice4);
-		
-		Indice indice5 = IndiceFactory.getEntity();
-		indice5.setCodigoAC("0005");
-		indice5.setGrupoAC(grupoAC2.getCodigo());
-		indiceDao.save(indice5);
-		
-		assertEquals("0001", indiceDao.findCodigoACDuplicado(ente));
-	}
-	
 	public void setIndiceDao(IndiceDao indiceDao)
 	{
 		this.indiceDao = indiceDao;
