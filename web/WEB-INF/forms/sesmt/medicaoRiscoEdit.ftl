@@ -45,6 +45,7 @@
 	</#if>
 	</head>
 	<body>
+		<@ww.actionmessage />
 		<@ww.actionerror />
 		
 		<@ww.form name="form" action="${formAction}" method="POST">
@@ -70,6 +71,7 @@
 			</#if>
 			
 			<button type="button" onclick="populaRiscos();" class="btnCarregarRiscos"></button>
+			<button type="button" onclick="populaRiscosComMedicao();" class="btnCarregarRiscos"></button>
 			<br /><br />
 			
 			<@display.table name="riscoMedicaoRiscos" id="riscoMedicaoRisco" class="dados">
@@ -173,6 +175,11 @@
 	    function populaRiscos()
 	    {
 	    	submeter("carregarRiscos.action");
+	    }
+	    
+	    function populaRiscosComMedicao()
+	    {
+	    	submeter("carregarRiscosComMedicao.action");
 	    }
 	    
 	    function validarCampos()

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
@@ -30,6 +31,9 @@ public class Risco extends AbstractModel implements Serializable
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Empresa empresa;
+	
+	@OneToMany(mappedBy="risco")
+	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos;
 	
 	public Risco() {	}
 	
@@ -98,5 +102,14 @@ public class Risco extends AbstractModel implements Serializable
 			empresa = new Empresa();
 		
 		empresa.setId(empresaId);
+	}
+
+	public Collection<RiscoMedicaoRisco> getRiscoMedicaoRiscos() {
+		return riscoMedicaoRiscos;
+	}
+
+	public void setRiscoMedicaoRiscos(
+			Collection<RiscoMedicaoRisco> riscoMedicaoRiscos) {
+		this.riscoMedicaoRiscos = riscoMedicaoRiscos;
 	}
 }

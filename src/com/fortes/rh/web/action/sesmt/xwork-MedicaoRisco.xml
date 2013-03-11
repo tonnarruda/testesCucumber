@@ -26,6 +26,9 @@
 		<action name="carregarRiscos" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="carregarRiscos">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoEdit.ftl</result>
 		</action>
+		<action name="carregarRiscosComMedicao" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="carregarRiscosComMedicao">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoEdit.ftl</result>
+		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medicaoRiscoEdit.ftl</result>
 		</action>

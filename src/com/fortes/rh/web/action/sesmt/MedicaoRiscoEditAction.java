@@ -12,6 +12,7 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -32,6 +33,7 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private CargoManager cargoManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
+	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 	
 	private Ambiente ambiente = new Ambiente();
 	private Funcao funcao = new Funcao();
@@ -109,6 +111,36 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		}
 			
 		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
+		return SUCCESS;
+	}
+
+	public String carregarRiscosComMedicao() throws Exception
+	{
+		prepare();
+		
+		desabilitarGravar = false;
+		
+		String contexto = "";
+		
+		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
+		{
+			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
+			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
+			contexto = "este Ambiente";
+		}
+		else if (getEmpresaSistema().getControlaRiscoPor() == 'F')
+		{
+			funcoes = funcaoManager.findByCargo(cargo.getId());
+			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(funcao.getId(), data);
+			contexto = "esta Função";
+		}
+		
+		if (riscoMedicaoRiscos.isEmpty())
+		{
+			carregarRiscos();
+			addActionMessage("Não há medição anterior para " + contexto);
+		}
+		
 		return SUCCESS;
 	}
 
@@ -384,5 +416,10 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 
 	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
 		this.riscoFuncaoManager = riscoFuncaoManager;
+	}
+
+	public void setRiscoMedicaoRiscoManager(
+			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
+		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
 	}
 }
