@@ -130,11 +130,6 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		
 	}
 
-	public String findCodigoACDuplicado(Empresa empresa) 
-	{
-		return getDao().findCodigoACDuplicado(empresa);
-	}
-
 	public Collection<Indice> findComHistoricoAtual(Empresa empresa) 
 	{
 		return getDao().findComHistoricoAtual(empresa);

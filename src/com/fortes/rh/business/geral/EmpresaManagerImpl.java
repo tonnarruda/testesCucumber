@@ -445,12 +445,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
 			String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
 			String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
-			String indiceCodAcDuplicado = indiceManager.findCodigoACDuplicado(empresa);
 			String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
 			String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 				
 			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) || StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) ||  StringUtils.isNotEmpty(areaCodAcDuplicado)
-					|| StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(indiceCodAcDuplicado) || StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado)
+					|| StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado)
 					|| StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
 				return true;
 		}	
@@ -467,7 +466,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
 		String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
 		String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
-		String indiceCodAcDuplicado = indiceManager.findCodigoACDuplicado(empresa);
 		String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
 		String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 		
@@ -485,9 +483,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
 			msgs.add("- Existe faixa salarial duplicada, código AC: " + faixaSalarialCodAcDuplicado);
 
-		if( StringUtils.isNotEmpty(indiceCodAcDuplicado) )
-			msgs.add("- Existe índice duplicado, código AC: " + indiceCodAcDuplicado);
-		
 		if( StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado) )
 			msgs.add("- Existe ocorrência duplicada, código AC: " + ocorrenciaCodAcDuplicado);
 

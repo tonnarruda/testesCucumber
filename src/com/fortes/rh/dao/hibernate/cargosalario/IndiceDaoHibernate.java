@@ -118,7 +118,7 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.or(Expression.isNull("i.codigoAC"), Expression.eq("i.codigoAC","")));
+		criteria.add(Expression.isNull("i.codigoAC"));
 		
 		if(empresa.getGrupoAC() != null && !empresa.getGrupoAC().equals(""))
 			criteria.add(Expression.eq("i.grupoAC", empresa.getGrupoAC()));
@@ -127,21 +127,6 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	
-	}
-
-	public String findCodigoACDuplicado(Empresa empresa) {
-		StringBuilder hql = new StringBuilder();
-		hql.append("select codigoAC from Indice "); 
-		hql.append("where grupoAC = :grupoAC and codigoAC is not null and codigoAC != '' ");
-		hql.append("group by codigoAC, grupoac ");
-		hql.append("having count(*) > 1 ");	
-		hql.append("order by codigoAC, grupoAC ");
-	
-		Query query = getSession().createQuery(hql.toString());
-		
-		query.setString("grupoAC", empresa.getGrupoAC());
-
-		return  StringUtil.converteCollectionToString(query.list());
 	}
 
 	public Collection<Indice> findComHistoricoAtual(Long[] indicesIds) 
