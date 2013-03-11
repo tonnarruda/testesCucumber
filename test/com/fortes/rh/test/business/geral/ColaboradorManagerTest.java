@@ -1387,11 +1387,6 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals(605.05, (Double) result2[1]);
     }
     
-    public void testVerificaColaboradorLogadoVerAreas() 
-    {
-    	assertEquals(new Long(1L), colaboradorManager.verificaColaboradorLogadoVerAreas());
-    }
-    
     public void testFindParticipantesByAvaliacaoDesempenho()
     {
     	colaboradorDao.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(1L), eq(true), eq(null)).will(returnValue(new ArrayList<Colaborador>()));

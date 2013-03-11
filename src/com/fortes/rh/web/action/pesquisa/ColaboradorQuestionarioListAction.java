@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -19,6 +20,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -47,6 +49,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private QuestionarioManager questionarioManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
@@ -139,12 +142,23 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public String periodoExperienciaQuestionarioList() throws Exception
 	{
-		Long colaboradorLogadoId = colaboradorManager.verificaColaboradorLogadoVerAreas();
 		Long empresaId = getEmpresaSistema().getId();
+		Collection<AreaOrganizacional> areas = null;
+		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
 		
 		if(colaborador != null)
 		{
-			colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, colaboradorLogadoId);
+			Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
+			{
+				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, null);
+			}
+			else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
+			{
+				areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), empresaId);
+				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, cUtil.convertCollectionToArrayIds(areas));
+			}
 			
 			if(colaborador.getId() != null)
 			{
@@ -480,6 +494,11 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public void setEstabelecimentoManager(
 			EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 	
 }

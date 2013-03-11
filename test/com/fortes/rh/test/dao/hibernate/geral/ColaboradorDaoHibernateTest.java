@@ -1520,7 +1520,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setAreaOrganizacional(areaOrganizacional2);
 		historicoColaboradorDao.save(historicoColaborador2);
 
-		assertEquals(1, colaboradorDao.findByNomeCpfMatriculaAndResponsavelArea(colaborador1, empresa.getId(), colaborador1.getId()).size());
+		assertEquals(2, colaboradorDao.findByNomeCpfMatriculaAndResponsavelArea(colaborador1, empresa.getId(), null).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatriculaAndResponsavelArea(colaborador1, empresa.getId(), new Long[]{areaOrganizacional1.getId()}).size());
 	}
 
 	public void testSetCodigoColaboradorAC() {

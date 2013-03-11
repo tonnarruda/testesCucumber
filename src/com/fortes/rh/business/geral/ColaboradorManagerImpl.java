@@ -1579,21 +1579,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return admitidos;
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long empresaId, Long colaboradorLogadoId)
+	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long empresaId, Long[] areasIds)
 	{
-		return getDao().findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, colaboradorLogadoId);
-	}
-
-	public Long verificaColaboradorLogadoVerAreas()
-	{
-		Long colaboradorLogadoId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
-			return null;//pega todas as áreas
-		else
-			if(colaboradorLogadoId == null)
-				return 0L;//não traz nada, não existe área com responsável 0
-
-		return colaboradorLogadoId;	
+		return getDao().findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, areasIds);
 	}
 
 	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId, Boolean desligado) 

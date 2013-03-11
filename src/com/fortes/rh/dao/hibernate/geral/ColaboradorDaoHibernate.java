@@ -2703,7 +2703,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long empresaId, Long colaboradorLogadoId)
+	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long empresaId, Long[] areasIds)
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
 		ProjectionList pSub = Projections.projectionList().create();
@@ -2737,8 +2737,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
 
-		if(colaboradorLogadoId != null)
-			criteria.add(Expression.eq("ao.responsavel.id", colaboradorLogadoId));
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("ao.id", areasIds));
 
 		if(colaborador != null)
 		{
