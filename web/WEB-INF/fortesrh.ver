@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.103.107" data="11/03/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S: Vídeos explicativos de algumas funcionalidades.
+			:: Info. Funcionais > Cadastros > Colaboradores > Desligar colaborador/Solicitação de desligamento: Nova opção de imprimir conteúdo da tela.
+			:: Info. Funcionais > Relatórios > Desligamentos: Novo botão "Exportar" para gerar relatório para o formato XLS.
+			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Houver carteira de habilitação a vencer".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.102.106" data="04/03/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Movimentações > Solicitação de Pessoal: Novo filtro por status.

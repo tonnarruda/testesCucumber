@@ -19527,3 +19527,17 @@ update papel set codigo = 'ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO' where id=492;-
 
 insert into migrations values('20130228083955');--.go
 update parametrosdosistema set appversao = '1.1.102.106';--.go
+
+-- versao 1.1.103.107
+
+update papel set nome = 'Resultado da Avaliação Agrupado por Faixa' where id = 528;--.go
+insert into migrations values('20130306103813');--.go
+update indice set codigoac = null where codigoac = ''; --.go
+update indice set grupoac = null where grupoac = ''; --.go
+
+ALTER TABLE indice ADD CONSTRAINT no_blank_codigoac_indice CHECK(codigoac <> ''); --.go
+ALTER TABLE indice ADD CONSTRAINT no_blank_grupoac_indice CHECK(grupoac <> ''); --.go
+ALTER TABLE indice ADD CONSTRAINT unique_codigoac_grupoac_indice UNIQUE(codigoac,grupoac); --.go
+
+insert into migrations values('20130308131939');--.go
+update parametrosdosistema set appversao = '1.1.103.107';--.go
