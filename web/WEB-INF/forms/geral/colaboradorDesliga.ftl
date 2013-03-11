@@ -45,8 +45,10 @@
 					{
 						document.form.action = 'imprimiSolicitacaoDesligamento.action';
 						document.form.submit();
-					}else
+					}else{
+						document.form.action = 'desliga.action';
 						newConfirm('Confirma desligamento?', function(){document.form.submit();});
+					}
 				}
 			}
 		}
