@@ -3,6 +3,8 @@ package com.fortes.rh.business.cargosalario;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -29,6 +31,22 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 		}
 	}
 
+	public Indice save(Indice indice)
+	{
+		if(StringUtils.isBlank(indice.getCodigoAC()))
+			indice.setCodigoAC(null);
+		
+		return super.save(indice);
+	}
+	
+	public void update(Indice indice)
+	{
+		if(StringUtils.isBlank(indice.getCodigoAC()))
+			indice.setCodigoAC(null);
+		
+		super.update(indice);
+	}
+	
 	public void removeIndice(Long indiceId) throws Exception
 	{
 		indiceHistoricoManager.remove(getIdsIndiceHistorico(indiceId));
