@@ -373,6 +373,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 			if (proxHistorico != null && proxHistorico.getData() != null)
 				historico.setDataProximoHistorico(DateUtil.retornaDataDiaAnterior(proxHistorico.getData()));
+			else if (historico.getColaborador() != null && historico.getColaborador().getDataDesligamento() != null)
+				historico.setDataProximoHistorico(historico.getColaborador().getDataDesligamento());
 
 			proxHistorico = null;
 		}
