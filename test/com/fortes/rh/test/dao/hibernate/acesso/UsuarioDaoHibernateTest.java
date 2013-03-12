@@ -265,6 +265,38 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals("babauuu_1", usuarioRetorno.getNome());
 	}
 	
+	public void testFindEmpresas()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNome("Empresa 1");
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setNome("Empresa 2");
+		empresaDao.save(empresa2);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("usuario");
+		usuarioDao.save(usuario);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		UsuarioEmpresa usuarioEmpresa2 = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa2.setEmpresa(empresa2);
+		usuarioEmpresa2.setUsuario(usuario);
+		usuarioEmpresaDao.save(usuarioEmpresa2);
+		
+		Collection<Empresa> empresas = usuarioDao.findEmpresas(usuario.getLogin());
+		assertEquals(2, empresas.size());
+		
+		Empresa EmpresaRetorno1 = ((Empresa) empresas.toArray()[0]); 
+		assertEquals("Empresa 1", EmpresaRetorno1.getNome());
+	}
+	
 	public void testSetUltimoLogin()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();

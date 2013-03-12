@@ -9,21 +9,33 @@
 	<style type="text/css">
 		@import url('<ww:url includeParams="none" value="/css/login.css"/>');
 	</style>
-	<!--[if IE]>
-	<style type="text/css" media="screen">
-		.wwlbl
-		{
-			margin-left: -15px;
-		}
-	</style>
 	<![endif]-->
 	<script src='<ww:url includeParams="none" value="/js/functions.js"/>'></script>
+	<script src='<ww:url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
+	<script src='<ww:url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script src='<ww:url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript'>
 		function validaCampos()
 		{
-			return validaFormulario('form', new Array('username','password','empresa'), null, true);
+			return validaFormulario('form', null, null, true);
 		}
 		function customOnsubmit(){}
+		
+		function empresasUsuario()
+		{
+			UsuarioDWR.getEmpresaUsuario(createListEmpresa, $('#username').val());
+		}
+		
+		function createListEmpresa(data)
+		{
+			DWRUtil.removeAllOptions("empresa");
+			DWRUtil.addOptions("empresa", data);
+		}
+		
+		$(function() {
+			if ($('#username').val() != null)
+				empresasUsuario();
+		});
 
 	</script>
 </head>
@@ -53,7 +65,7 @@
 			<td class="corpo">
 				<%=request.getAttribute("msgRemprot")%><br>
 				Usuário:<br>
-				<input accesskey="u" type='text' id="username" name='j_username' <% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>>
+				<input accesskey="u" type='text' id="username" onBlur="empresasUsuario();" name='j_username'<% if("1".equals(request.getParameter("login_error"))) { %>value='<%= session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY) %>'<% } %>>
 				Senha:<br>
 				<input accesskey="s" type='password' id="password" name='j_password'>
   				<ww:select label="Empresa" name="j_empresa" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa"/>

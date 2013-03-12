@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -21,7 +22,7 @@ public class LoginAction extends MyActionSupport
 {
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private Collection<Empresa> empresas;
+	private Collection<Empresa> empresas = new ArrayList<Empresa>();
 	private String msgRemprot = "";
 	private String senhaBD;
 	private String versao;
@@ -64,7 +65,7 @@ public class LoginAction extends MyActionSupport
 			
 			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);
 			
-			empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
+			//empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
 			return Action.SUCCESS;
 
 		} catch (Exception e)

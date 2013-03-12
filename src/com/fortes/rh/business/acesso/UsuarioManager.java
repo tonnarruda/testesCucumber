@@ -57,4 +57,6 @@ public interface UsuarioManager extends GenericManager<Usuario>
 
 	public void updateConfiguracoesMensagens(Long usuarioId, String caixasMensagens);
 
+	public Collection<Empresa> findEmpresas(String usuarioNome);
+
 }

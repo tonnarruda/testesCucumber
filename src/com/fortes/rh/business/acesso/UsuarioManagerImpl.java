@@ -233,6 +233,12 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		}
 	}
 	
+
+	public Collection<Empresa> findEmpresas(String usuarioNome) 
+	{
+		return getDao().findEmpresas(usuarioNome);
+	}
+	
 	public String[] findEmailsByUsuario(Long[] usuariosIds)
 	{
 		return getDao().findEmailsByUsuario(usuariosIds);
@@ -262,4 +268,5 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
+
 }

@@ -1,7 +1,12 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.Collection;
+import java.util.Map;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class UsuarioDWR
@@ -26,6 +31,12 @@ public class UsuarioDWR
 		}
 	}
 
+	public Map getEmpresaUsuario(String usuarioNome)
+	{
+		Collection<Empresa> empresas = usuarioManager.findEmpresas(usuarioNome);
+		return new CollectionUtil<Empresa>().convertCollectionToMap(empresas,"getId","getNome");
+	}
+	
 	public void setUsuarioManager(UsuarioManager usuarioManager) 
 	{
 		this.usuarioManager = usuarioManager;

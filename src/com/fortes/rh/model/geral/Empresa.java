@@ -4,11 +4,13 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -16,6 +18,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
@@ -78,6 +81,8 @@ public class Empresa extends AbstractModel implements Serializable
     @Column(length=3)
     private String grupoAC;
    
+    @OneToMany(mappedBy="empresa")
+	private Collection<UsuarioEmpresa> usuarioEmpresas;
     @ManyToOne
 	private Estado uf;
 	@ManyToOne
@@ -478,6 +483,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCodigoTruCurso(boolean codigoTruCurso) {
 		this.codigoTruCurso = codigoTruCurso;
+	}
+
+	public Collection<UsuarioEmpresa> getUsuarioEmpresas() {
+		return usuarioEmpresas;
+	}
+
+	public void setUsuarioEmpresas(Collection<UsuarioEmpresa> usuarioEmpresas) {
+		this.usuarioEmpresas = usuarioEmpresas;
 	}
 
 }
