@@ -51,7 +51,7 @@ public class UtilDWR
 	public String enviaEmail(String email, boolean autenticacao, boolean tls) throws Exception
 	{
 		try {
-			mail.testEnvio("Teste do envio de email do Fortes RH", "Este email foi enviado de forma automática, não responda.", email, autenticacao, tls);
+			mail.testEnvio("Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, autenticacao, tls);
 		} catch (AuthenticationFailedException e) {
 			e.printStackTrace();
 			if(e.getMessage() == null)

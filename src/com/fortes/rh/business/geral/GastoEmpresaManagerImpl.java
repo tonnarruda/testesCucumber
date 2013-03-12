@@ -476,7 +476,7 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		corpo.append("Houve erro na sincronização com o sistema Ac Pessoal.<br><br>");
 		corpo.append(log);
 
-		mail.send(empresa, "[Fortes RH] Erro na sincronização", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
+		mail.send(empresa, "[RH] Erro na sincronização", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
 	}
 
 

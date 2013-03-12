@@ -210,7 +210,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	FeedbackWebService feedback = rHServiceManager.removerEmpregado(tEmpregado);
     	
     	assertEquals(true, feedback.isSucesso());
-//    	assertEquals("Empregado não localizado no Fortes RH.", feedback.getMensagem());
+//    	assertEquals("Empregado não localizado no RH.", feedback.getMensagem());
 //    	assertEquals("Empregado codigo AC: 01  Empresa Codigo AC: 12  Grupo codigo AC: 004", feedback.getException());
     }
     

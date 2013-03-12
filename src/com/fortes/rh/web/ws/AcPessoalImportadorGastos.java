@@ -62,7 +62,7 @@ public class AcPessoalImportadorGastos
 		Mail mail = (Mail) SpringUtil.getBean("mail");
 		try
 		{
-			mail.send(empresa, "[Fortes RH] Erro na sincronização de Gastos", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
+			mail.send(empresa, "[RH] Erro na sincronização de Gastos", corpo.toString(), null, empresa.getEmailRespSetorPessoal());
 		}
 		catch (Exception e)
 		{

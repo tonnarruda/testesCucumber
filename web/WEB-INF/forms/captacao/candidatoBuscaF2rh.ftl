@@ -54,7 +54,7 @@
 			
 			if (candidatosSelecionados.size() > 0)
 			{
-				jConfirm('Deseja incluir os candidatos selecionados?', 'Fortes RH', function(r) {
+				jConfirm('Deseja incluir os candidatos selecionados?', 'RH', function(r) {
 				    if(r)
 				    {
 					    candidatosSelecionados.each(function(){        

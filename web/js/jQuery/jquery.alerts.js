@@ -43,21 +43,21 @@
 		// Public methods
 		
 		alert: function(message, title, callback) {
-			if( title == null ) title = 'Fortes RH';
+			if( title == null ) title = 'RH';
 			$.alerts._show(title, message, null, 'alert', function(result) {
 				if( callback ) callback(result);
 			});
 		},
 		
 		confirm: function(message, title, callback, retiraFocus) {
-			if( title == null ) title = 'Fortes RH';
+			if( title == null ) title = 'RH';
 			$.alerts._show(title, message, null, 'confirm', function(result) {
 				if( callback ) callback(result);
 			}, retiraFocus);
 		},
 			
 		prompt: function(message, value, title, callback) {
-			if( title == null ) title = 'Fortes RH';
+			if( title == null ) title = 'RH';
 			$.alerts._show(title, message, value, 'prompt', function(result) {
 				if( callback ) callback(result);
 			});
@@ -240,7 +240,7 @@
 
 function newConfirm(msg, fn)
 {
-	jConfirm(msg, 'Fortes RH', function(r) {
+	jConfirm(msg, 'RH', function(r) {
 	    if(r)
 	    	fn();
 	});

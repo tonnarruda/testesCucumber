@@ -258,15 +258,15 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     		corpo.append("Existe uma nova " + label + " para ser respondida por você.<br><br>");
     		corpo.append("Titulo: " + questionario.getTitulo() + "<br>");
     		corpo.append("Período: "+ DateUtil.formataDiaMesAno(questionario.getDataInicio()) + " a " + DateUtil.formataDiaMesAno(questionario.getDataFim()) + "<br><br>");
-    		corpo.append("Acesse o Fortes RH em: <br>");
-    		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">Fortes RH</a><br><br>");
+    		corpo.append("Acesse o RH em: <br>");
+    		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
     		corpo.append("Copyright© by Fortes Informática LTDA<br>");
     		corpo.append("http://www.fortesinformatica.com.br");
 
             for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
             {
                 try {
-                	mail.send(empresa, parametros, "[Fortes RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
+                	mail.send(empresa, parametros, "[RH] Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -317,7 +317,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 						if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
 		    				String[] emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
-							mail.send(questionario.getEmpresa(), "[Fortes RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, emails);
+							mail.send(questionario.getEmpresa(), "[RH] Lembrete de " + label + " não Liberada", corpo.toString(), null, emails);
 						}
 							
 					}
@@ -416,7 +416,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	{
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		String appUrl = parametrosDoSistema.getAppUrl();
-		String subject = "[Fortes RH] Avaliação do Período de Experiência";
+		String subject = "[RH] Avaliação do Período de Experiência";
 		StringBuilder mensagem;
 		StringBuilder body;
 		String link = "";
@@ -731,7 +731,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		StringBuilder body;
 		Collection<Integer> diasLembretes;
 		Collection<Colaborador> colaboradors;
-		String subject = "[Fortes RH] Término de Contrato Temporário";
+		String subject = "[RH] Término de Contrato Temporário";
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.TERMINO_CONTRATO_COLABORADOR.getId(), null);
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
@@ -938,7 +938,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId(), false); 
 
-		String subject = "[Fortes RH] Lembrete: Curso " + turma.getCurso().getNome();
+		String subject = "[RH] Lembrete: Curso " + turma.getCurso().getNome();
 		String  body =  "#COLABORADOR#, você está matriculado no seguinte curso.<br>";
 				body += "Curso: " + turma.getCurso().getNome() + "<br>";
 				body += "Turma: " + turma.getDescricao() + "<br>";
@@ -963,7 +963,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId(), true); 
 		
-		String subject = "[Fortes RH] Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
+		String subject = "[RH] Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
 		String  body =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida.";
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
@@ -1055,7 +1055,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	private void enviaAvisoDeAfastamentoPorEmail(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa) 
 	{
-		String subject = "[Fortes RH] Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial();
+		String subject = "[RH] Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial();
 		StringBuilder  body = new StringBuilder();
 		body.append("Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());
 		body.append("<br><br>");
@@ -1131,7 +1131,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	private void enviaAvisoContratacaoEmail(HistoricoColaborador historicoColaborador, String mensagem)
 	{
 		mensagem = mensagem.replace("\n", "<br />");
-		String subject = "[Fortes RH] Contração do colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial();
+		String subject = "[RH] Contração do colaborador " + historicoColaborador.getColaborador().getNomeMaisNomeComercial();
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR.getId(), historicoColaborador.getColaborador().getEmpresa().getId());
 		enviaEmailsUsuarios(gerenciadorComunicacaos, historicoColaborador.getColaborador().getEmpresa(), subject, mensagem);

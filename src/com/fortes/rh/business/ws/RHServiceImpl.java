@@ -290,7 +290,7 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(true);
 			}
 			else
-				return new FeedbackWebService(false, "Erro: Empregado não encontrado no Fortes RH", formataException(parametros, null));
+				return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
 		}
 		catch (Exception e)
 		{
@@ -625,7 +625,7 @@ public class RHServiceImpl implements RHService
 			if(estabelecimentoManager.remove(codigo, empresa.getId()))
 				return new FeedbackWebService(true);
 			else
-				return new FeedbackWebService(false, "Erro: Estabelecimento não encontrado no Fortes RH.", formataException(parametros, null));
+				return new FeedbackWebService(false, "Erro: Estabelecimento não encontrado no RH.", formataException(parametros, null));
 		}
 		catch (ConstraintViolationException e)
 		{
@@ -688,7 +688,7 @@ public class RHServiceImpl implements RHService
 			if(indiceManager.remove(codigo, grupoAC))
 				return new FeedbackWebService(true);
 			else
-				return new FeedbackWebService(false, "Erro: Índice não encontrado no Fortes RH.", formataException(parametros, null));
+				return new FeedbackWebService(false, "Erro: Índice não encontrado no RH.", formataException(parametros, null));
 		}
 		catch (ConstraintViolationException e)
 		{

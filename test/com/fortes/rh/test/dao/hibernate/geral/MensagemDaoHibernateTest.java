@@ -22,7 +22,7 @@ public class MensagemDaoHibernateTest extends GenericDaoHibernateTest
 	{
 		Mensagem mensagem =  new Mensagem();
 
-		mensagem.setRemetente("Fortes RH");
+		mensagem.setRemetente("RH");
 		mensagem.setData(DateUtil.criarAnoMesDia(2009, 01, 05));
 		mensagem.setTexto("Teste do sistema de caixa de mensagem.");
 

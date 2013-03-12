@@ -50,7 +50,7 @@ public class SetupListener implements ServletContextListener
 		ArquivoUtil.setRhHome(pastaSystemConf);
 		systemConfigPath = ArquivoUtil.getRhHome() + File.separatorChar + "system.conf";
 
-		logger.info("---------- FORTES RH ----------");
+		logger.info("------------- RH -------------");
 		logger.info("Define Idioma Padrão para 'pt_BR'.");
 		logger.info("Arquivo de configuração local: " + systemConfigPath);
 

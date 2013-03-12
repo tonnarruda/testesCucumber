@@ -11,7 +11,7 @@ public class MensagemFactory
 	{
 		Mensagem mensagem =  new Mensagem();
 
-		mensagem.setRemetente("Fortes RH");
+		mensagem.setRemetente("RH");
 		mensagem.setData(DateUtil.criarDataMesAno(05, 01, 2009));
 		mensagem.setTexto("Teste do sistema de caixa de mensagem.");
 		mensagem.setTipo(TipoMensagem.AVALIACAO_DESEMPENHO);

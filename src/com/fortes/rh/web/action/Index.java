@@ -267,7 +267,7 @@ public class Index extends MyActionSupport
 				try
 				{
 					if(! parametrosDoSistemaManager.isACIntegrado(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession())))
-						addActionError("Atenção: A integração está ativa no Fortes RH mas não no AC Pessoal. Por favor, comunique ao administrador do sistema.");
+						addActionError("Atenção: A integração está ativa no RH mas não no AC Pessoal. Por favor, comunique ao administrador do sistema.");
 					versaoWebServiceAC = parametrosDoSistemaManager.getVersaoWebServiceAC(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()));
 				}
 				catch (Exception e)

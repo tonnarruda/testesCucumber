@@ -69,7 +69,7 @@ public class LoginAction extends MyActionSupport
 
 		} catch (Exception e)
 		{
-			addActionError("Erro ao iniciar o Fortes RH (Entre em contato com o suporte)<br>" + e.getMessage());
+			addActionError("Erro ao iniciar o RH (Entre em contato com o suporte)<br>" + e.getMessage());
 			e.printStackTrace();
 			return Action.INPUT;
 		}
@@ -97,10 +97,10 @@ public class LoginAction extends MyActionSupport
 			SetupListener setupListener = new SetupListener();
 			versao = setupListener.updateConf(senhaBD);
 			
-			addActionMessage("Senha salva com sucesso, reinicie a aplicação Fortes RH.");
+			addActionMessage("Senha salva com sucesso, reinicie a aplicação RH.");
 		} catch (Exception e)
 		{
-			addActionError("Erro ao iniciar o Fortes RH (Entre em contato com o suporte<br>" + e.getMessage());
+			addActionError("Erro ao iniciar o RH (Entre em contato com o suporte<br>" + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -118,7 +118,7 @@ public class LoginAction extends MyActionSupport
 			RunAntScript runAntScript = new RunAntScript(null, "create-bd");
 			runAntScript.addProperty("db_name", dbName);
 			runAntScript.launch();
-			addActionMessage("Banco gerado com sucesso, reinicie a aplicação Fortes RH.");
+			addActionMessage("Banco gerado com sucesso, reinicie a aplicação RH.");
 		} catch (Exception e)
 		{
 			addActionError(e.getMessage());
