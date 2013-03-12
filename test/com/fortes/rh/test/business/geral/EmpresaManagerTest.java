@@ -294,7 +294,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
-    	indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
+    	//indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
@@ -311,7 +311,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
-    	indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
+    	//indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
