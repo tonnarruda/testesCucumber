@@ -22,8 +22,12 @@
 				{
 					document.form.action = 'imprimiSolicitacaoDesligamento.action';
 					document.form.submit();
-				}else
+				}else{
+					document.form.action = 'solicitacaoDesligamento.action';
 					newConfirm('Confirma Solicitação de Desligamento?', function(){document.form.submit();});
+				}
+
+				}else
 			}
 		}
 	</script>
