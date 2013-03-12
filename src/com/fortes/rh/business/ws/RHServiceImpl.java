@@ -833,7 +833,7 @@ public class RHServiceImpl implements RHService
 
 		Cidade cidade = cidadeManager.findByCodigoAC(testabelecimento.getCodigoCidade(), testabelecimento.getUf());
 		if (cidade == null)
-			throw new Exception("Cidade não encontrada no FortesRH");
+			throw new Exception("Cidade não encontrada no RH");
 
 		endereco.setCidade(cidade);
 		endereco.setUf(cidade.getUf());
