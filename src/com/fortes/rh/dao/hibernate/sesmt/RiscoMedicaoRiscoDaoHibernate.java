@@ -39,6 +39,7 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 		hql.append("where m.ambiente.id = :ambienteId ");
 		hql.append("	and m.data = ( select max(m2.data) from MedicaoRisco m2 where m2.data <= :data and m2.ambiente.id = m.ambiente.id) ");
 		hql.append("	and ha.data = ( select max(ha2.data) from HistoricoAmbiente ha2 where ha2.data <= :data and ha2.ambiente.id = m.ambiente.id) ");
+		hql.append("order by r.descricao ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);

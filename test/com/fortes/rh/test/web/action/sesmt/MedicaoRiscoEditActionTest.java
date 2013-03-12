@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.ObjectNotFoundException;
@@ -15,16 +16,19 @@ import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
+import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
+import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 import com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction;
 
 public class MedicaoRiscoEditActionTest extends MockObjectTestCase
@@ -37,6 +41,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	private Mock riscoFuncaoManager;
 	private Mock estabelecimentoManager;
 	private Mock cargoManager;
+	private Mock riscoMedicaoRiscoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -62,6 +67,9 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
         
 		riscoFuncaoManager = mock(RiscoFuncaoManager.class);
 		action.setRiscoFuncaoManager((RiscoFuncaoManager) riscoFuncaoManager.proxy());
+
+		riscoMedicaoRiscoManager = mock(RiscoMedicaoRiscoManager.class);
+		action.setRiscoMedicaoRiscoManager((RiscoMedicaoRiscoManager) riscoMedicaoRiscoManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));		
         action.setMedicaoRisco(new MedicaoRisco());
@@ -222,7 +230,121 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.carregarRiscos());
 	}
 	
+	public void testCarregarRiscosMedicaoByAmbiente() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('A');
+		action.setEmpresaSistema(empresa);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity(15L);
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setAmbiente(ambiente);
+		
+		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
+		action.setAmbiente(ambiente);
+		
+		RiscoMedicaoRisco riscoMedicaoRisco = RiscoMedicaoRiscoFactory.getEntity();
+		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
+		riscoMedicaoRiscos.add(riscoMedicaoRisco);
+		
+		manager.expects(once()).method("getTecnicasUtilizadas");
+		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDoAmbiente").with(eq(ambiente.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
+		estabelecimentoManager.expects(once()).method("findAllSelect");
+		
+		ambienteManager.expects(once()).method("findByEstabelecimento");
+		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData");
+		manager.expects(once()).method("preparaRiscosDaMedicao");
+		
+		assertEquals("success", action.carregarRiscosComMedicao());
+		assertTrue(action.getActionMessages().size() == 0);
+	}
+	
+	public void testCarregarRiscosMedicaoByFuncao() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('F');
+		action.setEmpresaSistema(empresa);
+		
+		action.setCargo(CargoFactory.getEntity(1L));
+		
+		Funcao funcao = FuncaoFactory.getEntity(15L);
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setFuncao(funcao);
+		
+		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
+		action.setFuncao(funcao);
+		
+		RiscoMedicaoRisco riscoMedicaoRisco = RiscoMedicaoRiscoFactory.getEntity();
+		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
+		riscoMedicaoRiscos.add(riscoMedicaoRisco);
+		
+		manager.expects(once()).method("getTecnicasUtilizadas");
+		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDaFuncao").with(eq(funcao.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
+		cargoManager.expects(once()).method("findCargos");
+		
+		funcaoManager.expects(once()).method("findByCargo");
+		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
+		manager.expects(once()).method("preparaRiscosDaMedicao");
+		
+		assertEquals("success", action.carregarRiscosComMedicao());
+		assertTrue(action.getActionMessages().size() == 0);
+	}
+
+	public void testCarregarRiscosMedicaosemRicosASerCarregado() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('F');
+		action.setEmpresaSistema(empresa);
+		
+		action.setCargo(CargoFactory.getEntity(1L));
+		
+		Funcao funcao = FuncaoFactory.getEntity(15L);
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setFuncao(funcao);
+		
+		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
+		action.setFuncao(funcao);
+		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
+		
+		manager.expects(once()).method("getTecnicasUtilizadas");
+		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDaFuncao").with(eq(funcao.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
+		cargoManager.expects(once()).method("findCargos");
+		
+		funcaoManager.expects(once()).method("findByCargo");
+		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
+		manager.expects(once()).method("preparaRiscosDaMedicao");
+		
+		assertEquals("success", action.carregarRiscosComMedicao());
+		assertEquals("Não há medição anterior para esta Função",action.getActionMessages().toArray()[0]);
+	}
+	
+	
 	public void testCarregarRiscosByFuncao() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('F');
+		action.setEmpresaSistema(empresa);
+		
+		action.setCargo(CargoFactory.getEntity(1L));
+		
+		Ambiente ambiente = AmbienteFactory.getEntity(15L);
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setAmbiente(ambiente);
+		
+		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
+		action.setAmbiente(ambiente);
+		
+		manager.expects(once()).method("getTecnicasUtilizadas");
+		cargoManager.expects(once()).method("findCargos");
+		
+		funcaoManager.expects(once()).method("findByCargo");
+		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
+		manager.expects(once()).method("preparaRiscosDaMedicao");
+		
+		assertEquals("success", action.carregarRiscos());
+	}
+	
+	public void testCarregarRiscosBy() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('F');

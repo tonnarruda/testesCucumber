@@ -95,10 +95,15 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	
 	public String carregarRiscos() throws Exception
 	{
+		populaRiscos();
+		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
+		return SUCCESS;
+	}
+
+	private void populaRiscos() throws Exception 
+	{
 		prepare();
-		
 		desabilitarGravar = false;
-		
 		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
 		{
 			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
@@ -109,37 +114,29 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 			funcoes = funcaoManager.findByCargo(cargo.getId());
 			riscos = riscoFuncaoManager.findRiscosByFuncaoData(funcao.getId(), data);
 		}
-			
-		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
-		return SUCCESS;
 	}
 
 	public String carregarRiscosComMedicao() throws Exception
 	{
-		prepare();
-		
-		desabilitarGravar = false;
-		
+		populaRiscos();
 		String contexto = "";
-		
+
 		if (getEmpresaSistema().getControlaRiscoPor() == 'A')
 		{
-			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
 			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), data);
 			contexto = "este Ambiente";
 		}
 		else if (getEmpresaSistema().getControlaRiscoPor() == 'F')
 		{
-			funcoes = funcaoManager.findByCargo(cargo.getId());
-			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(funcao.getId(), data);
+			riscoMedicaoRiscos = riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(funcao.getId(), data);
 			contexto = "esta Função";
 		}
 		
 		if (riscoMedicaoRiscos.isEmpty())
-		{
-			carregarRiscos();
 			addActionMessage("Não há medição anterior para " + contexto);
-		}
+
+		medicaoRisco.setRiscoMedicaoRiscos(riscoMedicaoRiscos);
+		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
 		
 		return SUCCESS;
 	}
@@ -162,9 +159,7 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		}
 		
 		data = medicaoRisco.getData();
-		
 		desabilitarGravar = false;
-		
 		riscoMedicaoRiscos = medicaoRiscoManager.preparaRiscosDaMedicao(medicaoRisco, riscos);
 		
 		return SUCCESS;

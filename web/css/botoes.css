@@ -540,6 +540,10 @@
 	background-image:url(../imgs/btnCarregarRiscos.gif);
 	width: 139px !important;
 }
+.btnCarregarRiscosMedicao{
+	background-image:url(../imgs/btnCarregarRiscosMedicao.gif);
+	width: 300px !important;
+}
 .btnQueroMeCandidatar{
 	background-image:url(../imgs/btnQueroMeCandidatar.gif);
 	width: 180px !important;
@@ -694,6 +698,7 @@
 .btnImprimirRelatorioFrequencia,
 .btnFrequencia,
 .btnCarregarRiscos,
+.btnCarregarRiscosMedicao,
 .btnIncluirColaboradoresNota,
 .btnSugerirEtapas,
 .btnGerarEtapasModelo,

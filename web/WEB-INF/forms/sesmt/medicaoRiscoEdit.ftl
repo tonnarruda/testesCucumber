@@ -40,7 +40,6 @@
 	<#else>
 		<title>Inserir Medição dos Riscos</title>
 		<#assign formAction="insert.action"/>
-		
 		<#assign atualizacao = false/>
 	</#if>
 	</head>
@@ -71,7 +70,9 @@
 			</#if>
 			
 			<button type="button" onclick="populaRiscos();" class="btnCarregarRiscos"></button>
-			<button type="button" onclick="populaRiscosComMedicao();" class="btnCarregarRiscos"></button>
+			<#if !atualizacao>
+				<button type="button" onclick="populaRiscosComMedicao();" class="btnCarregarRiscosMedicao"></button>
+			</#if>
 			<br /><br />
 			
 			<@display.table name="riscoMedicaoRiscos" id="riscoMedicaoRisco" class="dados">
