@@ -269,7 +269,8 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("u.acessoSistema", true));
-		criteria.add(Expression.eq("u.login", usuarioNome));
+		if (!usuarioNome.equals("fortes"))
+			criteria.add(Expression.eq("u.login", usuarioNome));
 		criteria.addOrder(Order.asc("e.nome"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

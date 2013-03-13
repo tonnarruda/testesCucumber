@@ -19,6 +19,7 @@
 		{
 			return validaFormulario('form', null, null, true);
 		}
+		
 		function customOnsubmit(){}
 		
 		function empresasUsuario()
@@ -33,7 +34,7 @@
 		}
 		
 		$(function() {
-			if ($('#username').val() != null)
+			if ($('#username').val() != "")
 				empresasUsuario();
 		});
 
