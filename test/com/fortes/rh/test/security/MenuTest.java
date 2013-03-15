@@ -39,7 +39,7 @@ public class MenuTest extends TestCase
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter'><img src='localhost/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://sistemaderh.blogspot.com' target='_blank' title='Blog'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='videoteca.action' title='Videoteca'><img src='localhost/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
-		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/monitor.png' style='vertical-align: middle;'></a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Suporte'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");
@@ -99,7 +99,7 @@ public class MenuTest extends TestCase
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter'><img src='localhost/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://sistemaderh.blogspot.com' target='_blank' title='Blog'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='videoteca.action' title='Videoteca'><img src='localhost/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
-		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/monitor.png' style='vertical-align: middle;'></a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Suporte'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");

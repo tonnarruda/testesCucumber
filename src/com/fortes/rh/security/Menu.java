@@ -83,7 +83,7 @@ public abstract class Menu
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
 				"<a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'>" +
-				"<img src='"+ contexto + "/imgs/monitor.png' style='vertical-align: middle;'></a></li>\n");
+				"<img src='"+ contexto + "/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
 		
 		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
