@@ -3,7 +3,9 @@ package com.fortes.rh.util;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
+import com.fortes.model.AbstractModel;
 import com.fortes.web.tags.CheckBox;
 
 /**
@@ -11,7 +13,6 @@ import com.fortes.web.tags.CheckBox;
  * @author Francisco / Gustavo
  * @since 27/03/2007
  */
-@SuppressWarnings("unchecked")
 public final class CheckListBoxUtil
 {
 	/**
@@ -54,7 +55,7 @@ public final class CheckListBoxUtil
 			for (String marcadoTmp : ar)
 			{
 				if (marcadoTmp != null && !marcadoTmp.trim().equals(""))
-					if(boxTmp.getId().equals(Long.valueOf(marcadoTmp.trim())) )
+					if(boxTmp.getId().equals(marcadoTmp.trim()))
 					{
 						boxTmp.setSelecionado(true);
 						break;
@@ -80,7 +81,7 @@ public final class CheckListBoxUtil
 			for (Object ob : list)
 			{
 				mKey = ob.getClass().getMethod(methodKey);
-				Long id = (Long) mKey.invoke(ob, new Object[]{});
+				String id = String.valueOf(mKey.invoke(ob, new Object[]{}));
 				if (cb.getId().equals(id))
 					cb.setSelecionado(true);
 			}
@@ -142,6 +143,24 @@ public final class CheckListBoxUtil
 
 			checkBox.setId((Long) mKey.invoke(itemTmp, new Object[]{}));
 			checkBox.setNome((String) mValue.invoke(itemTmp, new Object[]{}));
+			checkBox.setSelecionado(false);
+
+			listBox.add(checkBox);
+		}
+		return listBox;
+	}
+
+	public static Collection<CheckBox> populaCheckListBox(Map<String, String> dicionario) 
+	{
+		Collection<CheckBox> listBox = new ArrayList<CheckBox>();
+		CheckBox checkBox = null;
+
+		for (String key : dicionario.keySet())
+		{
+			checkBox = new CheckBox();
+			checkBox.setId(key);
+			checkBox.setNome(dicionario.get(key));
+			checkBox.setTitulo(dicionario.get(key));
 			checkBox.setSelecionado(false);
 
 			listBox.add(checkBox);

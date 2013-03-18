@@ -82,7 +82,7 @@ public class CheckListBoxTag extends TagSupport
 				}
 
 				//Caso o value do checkbox precise ser o nome. (Gustavo / Francisco) 07/01/2008
-				String value = cb.getId().toString();
+				String value = cb.getId();
 				if(valueString)
 					value = cb.getNome();
 

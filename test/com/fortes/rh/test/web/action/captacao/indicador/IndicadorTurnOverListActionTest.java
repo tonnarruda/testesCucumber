@@ -143,7 +143,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.getAreasCheckList();
     	action.setAreasCheckList(new ArrayList<CheckBox>());
     	action.getParametros();
-    	action.setParametros(new HashMap<Object, Object>());
+    	action.setParametros(new HashMap<String, Object>());
     	action.getEstabelecimentosCheck();
     	action.getEstabelecimentosCheckList();
     	action.setEstabelecimentosCheck(new String[]{});

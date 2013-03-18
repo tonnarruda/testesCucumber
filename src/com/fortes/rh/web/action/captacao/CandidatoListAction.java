@@ -341,7 +341,7 @@ public class CandidatoListAction extends MyActionSupportList
 			for (CheckBox cb : areasCheckList)
 			{
 				AreaInteresse areaAux = new AreaInteresse();
-				areaAux.setId(cb.getId());
+				areaAux.setId(Long.valueOf(cb.getId()));
 				areaAux.setNome(cb.getNome());
 
 				if(!areasInteresse.isEmpty() && areasInteresse.contains(areaAux))

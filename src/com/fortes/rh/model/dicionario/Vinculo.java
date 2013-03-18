@@ -2,14 +2,14 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class Vinculo extends LinkedHashMap
+@SuppressWarnings("serial")
+public class Vinculo extends LinkedHashMap<String,String>
 {
 	public static final String EMPREGO = "E";
 	public static final String ESTAGIO = "S";
 	public static final String APRENDIZ = "A";
 	public static final String TEMPORARIO = "T";
 
-	@SuppressWarnings("unchecked")
 	public Vinculo()
 	{
 		put(EMPREGO, "Emprego");

@@ -171,13 +171,13 @@ public class CheckListBoxUtilTest extends TestCase
 
 		Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(list, "getId", "getNome");
 		assertEquals("Test 1", 4, checks.size());
-		assertEquals("Test 2", u1.getId(), checks.toArray(new CheckBox[]{})[0].getId());
+		assertEquals("Test 2", u1.getId().toString(), checks.toArray(new CheckBox[]{})[0].getId());
 		assertEquals("Test 3", u1.getNome(), checks.toArray(new CheckBox[]{})[0].getNome());
-		assertEquals("Test 4", u2.getId(), checks.toArray(new CheckBox[]{})[1].getId());
+		assertEquals("Test 4", u2.getId().toString(), checks.toArray(new CheckBox[]{})[1].getId());
 		assertEquals("Test 5", u2.getNome(), checks.toArray(new CheckBox[]{})[1].getNome());
-		assertEquals("Test 6", u3.getId(), checks.toArray(new CheckBox[]{})[2].getId());
+		assertEquals("Test 6", u3.getId().toString(), checks.toArray(new CheckBox[]{})[2].getId());
 		assertEquals("Test 7", u3.getNome(), checks.toArray(new CheckBox[]{})[2].getNome());
-		assertEquals("Test 8", u4.getId(), checks.toArray(new CheckBox[]{})[3].getId());
+		assertEquals("Test 8", u4.getId().toString(), checks.toArray(new CheckBox[]{})[3].getId());
 		assertEquals("Test 9", u4.getNome(), checks.toArray(new CheckBox[]{})[3].getNome());
 
 

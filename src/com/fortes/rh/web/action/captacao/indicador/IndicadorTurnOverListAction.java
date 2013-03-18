@@ -14,9 +14,11 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -35,9 +37,11 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private String[] areasCheck;
 	private String[] estabelecimentosCheck;
 	private String[] cargosCheck;
+	private String[] vinculosCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> vinculosCheckList = new ArrayList<CheckBox>();
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
@@ -59,6 +63,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		
 		empresas = empresaManager.findEmpresasPermitidas(parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores(), empresa.getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_TURNOVER");
 
+		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
+		
 		return Action.SUCCESS;
 	}
 
@@ -169,8 +175,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		return parametros;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setParametros(HashMap parametros)
+	public void setParametros(HashMap<String, Object> parametros)
 	{
 		this.parametros = parametros;
 	}
@@ -266,5 +271,21 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public String[] getVinculosCheck() {
+		return vinculosCheck;
+	}
+
+	public void setVinculosCheck(String[] vinculosCheck) {
+		this.vinculosCheck = vinculosCheck;
+	}
+
+	public Collection<CheckBox> getVinculosCheckList() {
+		return vinculosCheckList;
+	}
+
+	public void setVinculosCheckList(Collection<CheckBox> vinculosCheckList) {
+		this.vinculosCheckList = vinculosCheckList;
 	}
 }
