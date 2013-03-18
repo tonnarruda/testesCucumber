@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.103.108" data="18/03/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Tela de Login: Exibir somente as em empresas que pertence ao usuário digitado.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de exibir Faixa Salarial Atual.
+			:: SESMT > Movimentações > Medição de Riscos > inserir: Novo botão para carregar a medição de riscos anterior.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.103.107" data="11/03/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S: Vídeos explicativos de algumas funcionalidades.

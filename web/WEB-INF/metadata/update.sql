@@ -19541,3 +19541,6 @@ ALTER TABLE indice ADD CONSTRAINT unique_codigoac_grupoac_indice UNIQUE(codigoac
 
 insert into migrations values('20130308131939');--.go
 update parametrosdosistema set appversao = '1.1.103.107';--.go
+-- versao 1.1.103.108
+
+update parametrosdosistema set appversao = '1.1.103.108';--.go
