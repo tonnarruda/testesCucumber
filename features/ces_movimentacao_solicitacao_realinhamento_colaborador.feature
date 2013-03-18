@@ -19,10 +19,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu seleciono "ajustar" de "Planejamento de Realinhamento"
     E eu seleciono "geral" de "Áreas Organizacionais"
     E eu seleciono "joao (joao)" de "Colaborador"
-    E eu clico no botão "Gravar"
-    
     Então eu devo ver o alert "A data da solicitação de realinhamento deve ser maior que a data de admissão do colaborador." e clico no ok
-
 
     E eu seleciono "alinhar" de "Planejamento de Realinhamento"
     E eu seleciono "desenvolvimento" de "Áreas Organizacionais"

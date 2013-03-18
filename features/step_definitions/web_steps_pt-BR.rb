@@ -13,6 +13,7 @@ Dado /^que eu esteja logado$/ do
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
     Dado %{que eu esteja na pagina de login}
     E %{eu preencho "username" com "fortes"}
+    E %{eu saio do campo "username"}
     E %{eu preencho "password" com "1234"}
     E %{eu clico em "Entrar"}
     Então %{eu devo ver "Bem-vindo(a)"}

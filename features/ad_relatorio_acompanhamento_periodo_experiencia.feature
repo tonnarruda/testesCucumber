@@ -14,6 +14,7 @@ Funcionalidade: Relatório Acompanhamento de Experiência Previsto
 
     E eu marco "geral"
     E eu marco "centro"
+    E eu saio do campo ""
 
     E eu clico no botão "Relatorio"
     Então eu devo ver o alert do valida campos e clico no ok
