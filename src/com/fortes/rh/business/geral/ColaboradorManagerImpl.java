@@ -1938,7 +1938,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return totalPorEmpresas;
 	}
 
-	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, int filtrarPor) throws Exception 
+	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception 
 	{
 		if(filtrarPor == 1)
 			cargosIds = null;
@@ -1967,18 +1967,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				{
 					Empresa empresa = empresaManager.findByIdProjection(empresaId);
 
-					admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, true);
+					admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
 					if(admitidos != null && admitidos.size() > 0)
 						qtdAdmitidos += ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
 
-					demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, false);
+					demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
 					if(demitidos != null && demitidos.size() > 0)
 						qtdDemitidos += ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
 
 					if (empresa.isTurnoverPorSolicitacao())
-						qtdAtivos += getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, true);
+						qtdAtivos += getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, vinculos, true);
 					else
-						qtdAtivos += getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, null, false, null, false);
+						qtdAtivos += getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 				}
 
 				TurnOver turnOverTmp = new TurnOver();
@@ -2071,7 +2071,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo) {
-		return getDao().countAtivosPeriodo(dataIni, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasId, considerarDataAdmissao, colaboradorId, isAbsenteismo);
+		return getDao().countAtivosPeriodo(dataIni, empresaIds, estabelecimentosIds, areasIds, cargosIds, null, ocorrenciasId, considerarDataAdmissao, colaboradorId, isAbsenteismo);
 	}
 
 	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers) 

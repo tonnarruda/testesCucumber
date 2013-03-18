@@ -1394,7 +1394,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 	
-	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean isAdmitidos)
+	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos)
 	{
 		StringBuilder sql = new StringBuilder();
 		String coluna = isAdmitidos ? "c.dataAdmissao" : "c.dataDesligamento";
@@ -1420,6 +1420,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		if(cargosIds != null && cargosIds.size() > 0)
 			sql.append("and fs.cargo_id in (:cargosIds) ");
+		if(vinculos != null && vinculos.size() > 0)
+			sql.append("and c.vinculo in (:vinculos) ");
 		
 		sql.append("and hc.data = (select max(hc2.data) from historicoColaborador as hc2 ");
 		sql.append("where hc2.data <= :dataFim ");
@@ -1445,6 +1447,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		if(vinculos != null && vinculos.size() > 0)
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
 		
 		List resultado = query.list();
 		
@@ -1467,7 +1471,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return turnOvers;
 	}
 	
-	public Integer countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo) 
+	public Integer countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
 		hql.append("left join co.historicoColaboradors as hc ");
@@ -1491,6 +1495,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
 		if(cargosIds != null && cargosIds.size() > 0)
 			hql.append("	and fs.cargo.id in (:cargosIds) ");
+		if(vinculos != null && vinculos.size() > 0)
+			hql.append("	and co.vinculo in (:vinculos) ");
 		
 		hql.append("	and hc.status = :status ");
 		hql.append("	and hc.data = (");
@@ -1517,11 +1523,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		if(vinculos != null && vinculos.size() > 0)
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
 
 		return (Integer) query.uniqueResult();
 	}
 	
-	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean consideraDataAdmissao) 
+	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean consideraDataAdmissao) 
 	{
 		StringBuilder hql = new StringBuilder("select count(distinct co.id) from Colaborador co ");
 		hql.append("left join co.historicoColaboradors as hc ");
@@ -1545,6 +1553,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
 		if(cargosIds != null && cargosIds.size() > 0)
 			hql.append("	and fs.cargo.id in (:cargosIds) ");
+		if(vinculos != null && vinculos.size() > 0)
+			hql.append("	and co.vinculo in (:vinculos) ");
 		
 		hql.append("	and hc.status = :status ");
 		hql.append("	and hc.data = (");
@@ -1567,6 +1577,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		if(cargosIds != null && cargosIds.size() > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		if(vinculos != null && vinculos.size() > 0)
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
 		
 		return (Integer) query.uniqueResult();
 	}

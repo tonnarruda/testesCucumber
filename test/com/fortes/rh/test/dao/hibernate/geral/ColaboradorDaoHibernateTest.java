@@ -3887,7 +3887,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 		
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, null, false,null, false));
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, Arrays.asList(Vinculo.EMPREGO), null, false, null, false));
 	}
 	
 	public void testCountAtivosPeriodoComAbsenteismo() 
@@ -3920,7 +3920,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 		criaColaboradorOcorrenciaComAbseteismo(maria);
 		
-		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, null, true, null, true));
+		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, null, null, true, null, true));
 	}
 
 	private void criaColaboradorOcorrenciaComAbseteismo(Colaborador joao) 
@@ -3988,7 +3988,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		maria.setCandidato(candidatoSemTurnover);
 		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
 		
-		assertEquals(new Integer(1), colaboradorDao.countAtivosTurnover(data_21_07_2011, vega.getId(), null, null, null, true));
+		assertEquals(new Integer(1), colaboradorDao.countAtivosTurnover(data_21_07_2011, vega.getId(), null, null, null, Arrays.asList(Vinculo.EMPREGO), true));
 	}
 
 	private void montaHistoricoDoTestCountAtivo(Date dataContratacaoJoao, FaixaSalarial dentista01, Colaborador joao) {
@@ -4004,6 +4004,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setEmpresa(vega);
 		joao.setDataAdmissao(dataContratacaoJoao);
+		joao.setVinculo(Vinculo.EMPREGO);
 		colaboradorDao.save(joao);
 		return joao;
 	}
@@ -4015,7 +4016,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
 
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, false);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, null, false);
 		assertEquals(0, colaboradores.size());
 	}
 
@@ -4025,7 +4026,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, true);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
 		assertEquals(0, colaboradores.size());
 	}
 
@@ -4036,7 +4037,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, true);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
 		assertEquals(0, colaboradores.size());
 	}
 

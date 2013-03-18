@@ -305,6 +305,8 @@ public final class CollectionUtil<T>
 
 	public Collection<T> convertArrayToCollection(T[] ts)
 	{
+		if (ts == null) return null;
+		
 		Collection<T> col = new ArrayList<T>();
 
 		for (int i = 0; i < ts.length; i++)

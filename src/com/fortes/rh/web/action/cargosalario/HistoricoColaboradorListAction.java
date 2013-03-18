@@ -191,7 +191,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, 1);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, null, 1);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
 		

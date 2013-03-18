@@ -717,7 +717,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, 1);
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, 1);
   
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	
@@ -772,7 +772,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
     	
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa1.getId(), empresa2.getId()), null, null, null, 1);
+    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa1.getId(), empresa2.getId()), null, null, null, null, 1);
     	assertEquals(12, turnOvers.size());
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	
