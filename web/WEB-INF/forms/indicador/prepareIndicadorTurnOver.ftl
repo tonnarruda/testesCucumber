@@ -96,7 +96,7 @@ Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Col
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList"/>
 	</div>
 	
-	<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList"/>
+	<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105"/>
 </@ww.form>
 
 <div class="buttonGroup">

@@ -32,6 +32,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -78,9 +79,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] cargosCheck;
+	private Collection<CheckBox> vinculosCheckList = new ArrayList<CheckBox>();
+	private String[] vinculosCheck;
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
+	private Date dataIniTurn;
+	private Date dataFimTurn;
 	private String dataMesAnoIni;
 	private String dataMesAnoFim;
 	
@@ -143,17 +148,18 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		
 		Date hoje = new Date();
-		if (dataBase == null)
-			dataBase = hoje;
-		if (dataFim == null)
-			dataFim = hoje;
-		if (dataIni == null)
-			dataIni = DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true);
+		dataBase = (dataBase == null) ? hoje : dataBase;
+		dataFim = (dataFim == null) ? hoje : dataFim;
+		dataIni = (dataIni == null) ? DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true) : dataIni;
+		dataFimTurn = (dataFimTurn == null) ? hoje : dataFimTurn;
+		dataIniTurn = (dataIniTurn == null) ? DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true) : dataIniTurn;
 		if (dataMesAnoIni == null || dataMesAnoIni.equals("  /    ") || dataMesAnoIni.equals(""))
 			dataMesAnoIni = DateUtil.formataMesAno(DateUtil.retornaDataAnteriorQtdMeses(hoje, 9, true));
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 
+		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
+		
 		Collection<Long> empresaIds = LongUtil.arrayStringToCollectionLong(empresasCheck);
 		if(empresaIds.isEmpty())
 		{
@@ -190,10 +196,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfOcorrencia = StringUtil.toJSON(graficoOcorrencia, null);
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		
+		CollectionUtil<String> cUtil = new CollectionUtil<String>();
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, null, 1);
+		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), null, cUtil.convertArrayToCollection(vinculosCheck), 1);
 		turnOverCollection.setTurnOvers(turnOvers);
 		turnover = turnOverCollection.getMedia();
+		
+		vinculosCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosCheckList, vinculosCheck);
 		
 		Collection<Object[]> graficoEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOvers);
 		grfEvolucaoTurnover = StringUtil.toJSON(graficoEvolucaoTurnover, null);
@@ -894,4 +903,35 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		return grfProvidencia;
 	}
 
+	public Collection<CheckBox> getVinculosCheckList() {
+		return vinculosCheckList;
+	}
+
+	public void setVinculosCheckList(Collection<CheckBox> vinculosCheckList) {
+		this.vinculosCheckList = vinculosCheckList;
+	}
+
+	public String[] getVinculosCheck() {
+		return vinculosCheck;
+	}
+
+	public void setVinculosCheck(String[] vinculosCheck) {
+		this.vinculosCheck = vinculosCheck;
+	}
+
+	public Date getDataIniTurn() {
+		return dataIniTurn;
+	}
+
+	public void setDataIniTurn(Date dataIniTurn) {
+		this.dataIniTurn = dataIniTurn;
+	}
+
+	public Date getDataFimTurn() {
+		return dataFimTurn;
+	}
+
+	public void setDataFimTurn(Date dataFimTurn) {
+		this.dataFimTurn = dataFimTurn;
+	}
 }

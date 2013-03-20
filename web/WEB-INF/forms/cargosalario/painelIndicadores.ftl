@@ -158,6 +158,16 @@
 		<#else>
 		  <#assign dateFim = ""/>
 		</#if>
+		<#if dataIniTurn?exists>
+		  <#assign dateIniTurn = dataIniTurn?date/>
+		<#else>
+		  <#assign dateIniTurn = ""/>
+		</#if>
+		<#if dataFimTurn?exists>
+		  <#assign dateFimTurn = dataFimTurn?date/>
+		<#else>
+		  <#assign dateFimTurn = ""/>
+		</#if>
 	
 	</head>
 	<body>
@@ -172,7 +182,7 @@
 				<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
 				
 				<li>&nbsp;</li>
-				<li><strong>Indicadores de Motivos de Desligamento, Turnover, Ocorrências e Providêcias</strong></li>
+				<li><strong>Indicadores de Motivos de Desligamento, Ocorrências e Providêcias</strong></li>
 				<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
@@ -180,6 +190,14 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exibir os
 				<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
 				itens de maior percentual.
+				
+				<li>&nbsp;</li>
+				<li><strong>Indicador de Turnover</strong></li>
+				<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+				<li><br clear="all"/></li>
+				<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105"/>
 				
 				<li>&nbsp;</li>
 				<li><strong>Indicador de Absenteísmo</strong></li>
@@ -205,7 +223,7 @@
 			    	<div style="clear:both"></div>
 	    			<div id="faixaEtariaLegenda"></div>
 				</td>
-				<td class="grid-cell">
+				<td class="grid-cell" colspan="2">
 					<div class="cell-title">
 						Estado Civil 
 						<img id="estadoCivilImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -225,7 +243,7 @@
 			    	<div style="clear:both"></div>
 	    			<div id="deficienciaLegenda"></div>
 				</td>
-				<td class="grid-cell">
+				<td class="grid-cell" colspan="2">
 					<div class="cell-title">
 						Colocação 
 						<img id="colocacaoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -245,7 +263,7 @@
 			    	<div style="clear:both"></div>
 	    			<div id="ocorrenciaLegenda"></div>
 				</td>
-				<td class="grid-cell">
+				<td class="grid-cell" colspan="2">
 					<div class="cell-title">
 						Providências 
 						<img id="providenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -255,10 +273,8 @@
 	    			<div id="providenciaLegenda"></div>
 				</td>
 			</tr>
-		</table>
-		<table class="grid" cellspacing="5">
 			<tr>
-				<td class="grid-cell medium">
+				<td class="grid-cell medium" colspan="2">
 					<div class="cell-title">
 						Formação Escolar 
 						<img id="formacaoEscolarImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -278,7 +294,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="grid-cell bigger" colspan="2">
+				<td class="grid-cell bigger" colspan="3">
 					<div class="cell-title">
 						Motivos de Desligamento
 						<img id="desligamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -290,7 +306,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="grid-cell bigger" colspan="2">
+				<td class="grid-cell bigger" colspan="3">
 					<div class="cell-title">
 						Turnover
 						<img id="evolucaoTurnoverImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
@@ -312,7 +328,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="grid-cell bigger" colspan="2">
+				<td class="grid-cell bigger" colspan="3">
 					<div class="cell-title">
 						Absenteísmo
 						<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
