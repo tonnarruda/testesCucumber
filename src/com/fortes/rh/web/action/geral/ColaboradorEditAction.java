@@ -327,7 +327,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
 		
-		avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, 'A', null);
+		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, 'A', null);
 	}
 
 	public String prepareInsert() throws Exception

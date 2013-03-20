@@ -21,7 +21,6 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
-	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<script type='text/javascript'>
@@ -38,17 +37,18 @@
 	<@ww.actionerror />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
 			<@ww.textfield label="Avaliação" name="titulo" id="titulo" cssStyle="width: 550px;"/>
 			<@ww.select label="Ativos" name="ativos" id="ativos" list=r"#{'S':'Sim', 'N':'Não'}" cssStyle="width: 65px;" headerKey="T" headerValue="Todos"/>
-			
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<@ww.hidden id="pagina" name="page"/>
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="$('#pagina').val(1);">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 	
 	<div align="right">&nbsp;<span class="encerradaBkg">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Inativa(s)</div>
 	<br />
+	
 	<@display.table name="avaliacaos" id="avaliacao" class="dados">
 
 		<#assign classe=""/>
@@ -69,6 +69,8 @@
 		
 		<@display.column title="Avaliação" property="titulo" class="${classe}"/>
 	</@display.table>
+	
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action?modeloAvaliacao=${modeloAvaliacao}'"></button>

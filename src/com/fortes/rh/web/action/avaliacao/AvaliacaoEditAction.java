@@ -116,7 +116,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		setVideoAjuda(778L);
 		
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo);
+		setTotalSize(avaliacaoManager.getCount(getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo));
+		avaliacaos = avaliacaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");

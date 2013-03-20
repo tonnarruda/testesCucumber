@@ -71,8 +71,8 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		
 		Collection<Avaliacao> avaliacaos = AvaliacaoFactory.getCollection(1L);
 
-		avaliacaoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(null), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING).will(returnValue(avaliacaos));
-		assertEquals(avaliacaos, avaliacaoManager.findAllSelect(empresaId, null, TipoModeloAvaliacao.DESEMPENHO, null));
+		avaliacaoDao.expects(once()).method("findAllSelect").with(new Constraint[]{ eq(null), eq(null), eq(empresaId), eq(null), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING }).will(returnValue(avaliacaos));
+		assertEquals(avaliacaos, avaliacaoManager.findAllSelect(null, null, empresaId, null, TipoModeloAvaliacao.DESEMPENHO, null));
 	}
 	
 	public void testFindPeriodoExperienciaIsNull()

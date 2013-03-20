@@ -75,8 +75,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
 
-		avaliacaoExperienciasAtivas = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
-		avaliacaoExperienciasInativas = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), false, TipoModeloAvaliacao.DESEMPENHO, null);
+		avaliacaoExperienciasAtivas = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
+		avaliacaoExperienciasInativas = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), false, TipoModeloAvaliacao.DESEMPENHO, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
     	
