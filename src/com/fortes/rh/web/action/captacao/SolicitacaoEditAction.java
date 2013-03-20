@@ -165,7 +165,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		Long faixaInativaId = null;
 		Long areaInativaId = null;
 		
-		avaliacoes = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
+		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
         avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
 		
     	if (solicitacao != null && solicitacao.getId() != null)

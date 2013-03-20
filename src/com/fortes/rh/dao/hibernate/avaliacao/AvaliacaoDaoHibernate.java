@@ -20,7 +20,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 @SuppressWarnings("unchecked")
 public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implements AvaliacaoDao
 {
-	public Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo)
+	private Criteria montaCriteriaFindAllSelect(Long empresaId, Boolean ativo, 	char modeloAvaliacao, String titulo) 
 	{
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
@@ -40,11 +40,31 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 			criteria.add(Expression.eq("a.ativo", ativo));
 		if(titulo != null)
 			criteria.add(Expression.like("a.titulo", "%"+ titulo +"%").ignoreCase() );
+		return criteria;
+	}
+	
+	public Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo)
+	{
+		Criteria criteria = montaCriteriaFindAllSelect(empresaId, ativo, modeloAvaliacao, titulo);
 		
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
+		if(pagingSize != null && pagingSize > 0)
+		{
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
+		
 		return criteria.list();
+	}
+
+	public Integer getCount(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo)
+	{
+		Criteria criteria = montaCriteriaFindAllSelect(empresaId, ativo, modeloAvaliacao, titulo);
+		criteria.setProjection(Projections.rowCount());
+		
+		return (Integer) criteria.uniqueResult();
 	}
 	
 	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId)

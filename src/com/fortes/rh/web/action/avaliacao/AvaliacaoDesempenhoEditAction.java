@@ -100,7 +100,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho != null && avaliacaoDesempenho.getId() != null)
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null); 
+		avaliacaos = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null); 
 	}
 	
 	public String enviarLembrete() throws Exception
@@ -324,7 +324,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		avaliacaos = avaliacaoManager.findAllSelect(getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
+		avaliacaos = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
 		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");

@@ -7,7 +7,8 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 
 public interface AvaliacaoDao extends GenericDao<Avaliacao> 
 {
-	Collection<Avaliacao> findAllSelect(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
+	Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
+	Integer getCount(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId);
 	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 	Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa);
