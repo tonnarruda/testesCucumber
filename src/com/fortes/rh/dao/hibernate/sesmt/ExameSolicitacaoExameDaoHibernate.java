@@ -56,7 +56,8 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 
 		criteria.add(Expression.eq("se.id", solicitacaoExameId));
 
-		criteria.addOrder( Order.asc("e.nome") );
+		criteria.addOrder(Order.desc("e.aso") );
+		criteria.addOrder(Order.asc("e.nome") );
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
@@ -80,6 +81,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 
 		criteria.add(Expression.in("se.id", solicitacaoExameIds));
 
+		criteria.addOrder( Order.desc("e.aso") );
 		criteria.addOrder( Order.asc("e.nome") );
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

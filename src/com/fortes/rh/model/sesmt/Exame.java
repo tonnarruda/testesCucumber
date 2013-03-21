@@ -23,6 +23,7 @@ public class Exame extends AbstractModel implements Serializable
     private Empresa empresa;
 
     private boolean periodico = true;
+    private boolean aso;
 
     private int periodicidade;
     
@@ -117,5 +118,13 @@ public class Exame extends AbstractModel implements Serializable
 
 	public void setRelacionadoAoColaborador(boolean relacionadoAoColaborador) {
 		this.relacionadoAoColaborador = relacionadoAoColaborador;
+	}
+
+	public boolean isAso() {
+		return aso;
+	}
+
+	public void setAso(boolean aso) {
+		this.aso = aso;
 	}
 }

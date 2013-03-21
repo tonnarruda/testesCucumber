@@ -1,14 +1,11 @@
 package com.fortes.rh.web.action.sesmt;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
@@ -29,6 +26,7 @@ import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -59,8 +57,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private Collection<ExameSolicitacaoExame> exameSolicitacaoExames;
 	private Map<String, String> motivos;
 	
-	private Exame exameAso;
-
 	private char examesPara;
 	private String nomeBusca;
 	private String vinculo = "TODOS";
@@ -103,10 +99,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private Date dataAnterior;
 	
-	public Exame getExameAso() {
-		return exameAso;
-	}
-	
 	//p/ não deixar repetido (hardcoded) no ftl
 	public String getMotivoDEMISSIONAL()
 	{
@@ -127,16 +119,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private void prepare() throws Exception
 	{
-		this.exameAso = getEmpresaSistema().getExame();
-		
-		if (exameAso == null)
-		{
-			addActionMessage("Não é possível cadastrar novas Solicitações/Atendimentos. " +
-					"\n Você precisa configurar um exame associado ao ASO.");
-			
-			return;
-		}
-		
 		Date hoje = new Date();
 		motivos = MotivoSolicitacaoExame.getInstance();
 
@@ -151,13 +133,12 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		}
 
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
-
 		clinicaAutorizadas = clinicaAutorizadaManager.findClinicasAtivasByDataEmpresa(getEmpresaSistema().getId(), hoje);
 
 		if (colaborador != null && colaborador.getId() != null)
 			exames = exameManager.findPriorizandoExameRelacionado(getEmpresaSistema().getId(), colaborador.getId());
 		else if (candidato != null && candidato.getId() != null)
-			exames = exameManager.findAllSelect(getEmpresaSistema().getId());
+			exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 
 		if (exames != null)
 		{
@@ -176,7 +157,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 				listaExames[i][0] = exame;
 				listaExames[i][1] = clinicas;
 				listaExames[i][2] = exame.getPeriodicidade();
-				listaExames[i][3] = exame.equals(exameAso); // indica qual é o exame ASO
+				listaExames[i][3] = true;
 				i++;
 			}
 		}
@@ -243,6 +224,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 				solicitacaoExame.setCandidato(candidato);
 			}
 			
+			addAsoPadrao();
 			solicitacaoExame.setEmpresa(getEmpresaSistema());
 			solicitacaoExameManager.ajustaOrdem(null, solicitacaoExame.getData(), null, solicitacaoExame.getOrdem());
 			solicitacaoExameManager.save(solicitacaoExame, examesId, selectClinicas, periodicidades);
@@ -257,13 +239,23 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		addActionMessage("Solicitação/Atendimento gravado com sucesso.");
 		return SUCCESS;
 	}
+	
+	public void addAsoPadrao() throws Exception
+	{
+		if(solicitacaoExame.getMotivo() != getMotivoATESTADO() && solicitacaoExame.getMotivo() != getMotivoCONSULTA() && solicitacaoExame.getMotivo() != getMotivoSOLICITACAOEXAME())
+		{
+			CollectionUtil<Exame> cuExames = new CollectionUtil<Exame>();
+			String[] examespadraoIds = cuExames.convertCollectionToArrayIdsString(exameManager.findByAsoPadrao());
+			examesId = StringUtil.appendAllDistinct(examespadraoIds, examesId);		
+		}
+	}
 
 	public String update() throws Exception
 	{
 		try
 		{
+			addAsoPadrao();
 			solicitacaoExameManager.ajustaOrdem(dataAnterior, solicitacaoExame.getData(), ordemAnterior, solicitacaoExame.getOrdem());
-			
 			solicitacaoExameManager.update(solicitacaoExame, examesId, selectClinicas, periodicidades);
 		}
 		catch (Exception e)
@@ -335,18 +327,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			return INPUT;
 		}
 	}
-
-//	private String insertOrUpdate() throws Exception
-//	{
-//		if (gravarEImprimir)
-//		{
-//			if (solicitacaoExame.getId() == null)
-//				return insert();
-//			else
-//				return update();
-//		}
-//		return "";
-//	}
 
 	// Realização de Exames
 	public String prepareResultados()
@@ -718,5 +698,9 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	public void setDataAnterior(Date dataAnterior)
 	{
 		this.dataAnterior = dataAnterior;
+	}
+
+	public String getExameAsosJson() {
+		return StringUtil.toJSON(exameManager.findByAsoPadrao(), null);
 	}
 }

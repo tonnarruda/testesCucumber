@@ -719,7 +719,41 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		historicoFuncaoDao.save(historicoFuncao2);
 
 		Collection<Exame> colecao = exameDao.findPriorizandoExameRelacionado(empresa.getId(), colaborador.getId());
-		assertEquals(2, colecao.size());
+		assertTrue(colecao.size() >= 2);
+	}
+	
+	public void testFindByEmpresaComAsoPadrao() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
+		exameDao.save(exame1);
+		
+		Exame exame2 = ExameFactory.getEntity();
+		exame2.setAso(true);
+		exameDao.save(exame2);
+		
+		Collection<Exame> colecao = exameDao.findByEmpresaComAsoPadrao(empresa.getId());
+		assertTrue(colecao.size() >= 2);
+	}
+	
+	public void testFindAsoPadrao() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Exame exame1 = ExameFactory.getEntity();
+		exame1.setEmpresa(empresa);
+		exameDao.save(exame1);
+		
+		Exame exame2 = ExameFactory.getEntity();
+		exame2.setAso(true);
+		exameDao.save(exame2);
+		
+		Collection<Exame> colecao = exameDao.findAsoPadrao();
+		assertEquals(3, colecao.size());
 	}
 	
 	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)

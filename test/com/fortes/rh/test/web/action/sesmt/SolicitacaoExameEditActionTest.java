@@ -85,7 +85,6 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 	public void testPrepareInsertColaborador() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setExame(ExameFactory.getEntity(1L));
 		action.setEmpresaSistema(empresa);
 		action.setColaborador(ColaboradorFactory.getEntity(1L));
 		
@@ -99,13 +98,12 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 	public void testPrepareInsertCandidato() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setExame(ExameFactory.getEntity(1L));
 		action.setEmpresaSistema(empresa);
 		action.setCandidato(CandidatoFactory.getCandidato(1L));
 		
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
 		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
-		exameManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Exame>()));
+		exameManager.expects(once()).method("findByEmpresaComAsoPadrao").will(returnValue(new ArrayList<Exame>()));
 		
 		assertEquals("success",action.prepareInsert());
 	}
@@ -182,7 +180,6 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		action.getColaborador();
 		action.setExamesPara('C');
 		action.getExamesPara();
-		action.getExameAso();
 		action.setMatriculaBusca("2131");
 		action.getMatriculaBusca();
 		action.getMedicoCoordenadors();

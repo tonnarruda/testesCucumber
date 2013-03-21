@@ -22,4 +22,6 @@ public interface ExameDao extends GenericDao<Exame>
 	Integer getCount(Long empresaId, Exame exame);
 	Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame);
 	Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId);
+	Collection<Exame> findByEmpresaComAsoPadrao(Long empresaId);
+	Collection<Exame> findAsoPadrao();
 }

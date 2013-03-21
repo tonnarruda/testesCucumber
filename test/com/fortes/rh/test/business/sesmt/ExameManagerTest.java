@@ -12,11 +12,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameManagerImpl;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -29,15 +25,12 @@ import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.SpringUtil;
 
 public class ExameManagerTest extends MockObjectTestCase
 {
 	private ExameManagerImpl exameManager = new ExameManagerImpl();
 	private Mock exameDao = null;
-	private Mock parametrosDoSistemaManager;
 	private Mock areaOrganizacionalManager;
-	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
 
 	protected void setUp() throws Exception
@@ -46,14 +39,8 @@ public class ExameManagerTest extends MockObjectTestCase
         exameDao = new Mock(ExameDao.class);
         exameManager.setDao((ExameDao) exameDao.proxy());
         
-        parametrosDoSistemaManager= mock(ParametrosDoSistemaManager.class);
-        exameManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-        
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         exameManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
-
-        colaboradorManager = mock(ColaboradorManager.class);
-        exameManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         
         gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
         exameManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());

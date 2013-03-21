@@ -57,7 +57,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 			epiAtivo = null;
 		}
 
-		Collection<Exame> exames = exameManager.findAllSelect(getEmpresaSistema().getId());
+		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
 		

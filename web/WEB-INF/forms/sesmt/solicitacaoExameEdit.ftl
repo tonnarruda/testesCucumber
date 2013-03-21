@@ -29,8 +29,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
-<#if exameAso?exists>
 	<script>
+		var examesAsoPadrao = ${action.getExameAsosJson()};
 		$(function() {
 			<#if primeiraExecucao && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
 				$('#examesPara').val('C');
@@ -125,52 +125,32 @@
 		function validaform(){
 			return validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
 		}
-		
-		function desabilitaPeriodicidade(elementoCheck)
+
+		function desabilitaPeriodicidade(value,checked)
 		{
-			elemMotivo = document.getElementById("motivoExame");
-			
-			var desabilitado = !elementoCheck.checked;
-			
-			if (elemMotivo.value == '${motivoDEMISSIONAL}') // quando eh demissional, nao temos periodicidade
-			{
+			var desabilitado = !checked;
+			if ($('#motivoExame').val() == '${motivoDEMISSIONAL}') // quando eh demissional, nao temos periodicidade
 				desabilitado = true;
-			}
 			
-			elemPeriodicidade = document.getElementById("periodicidadeId" + elementoCheck.value);
-			elemPeriodicidade.disabled = desabilitado;
+			$("#periodicidadeId" + value).attr('disabled', desabilitado);
 		}
+	
 	
 		function marcarDesmarcar(frm)
 		{
-			var motivo = document.getElementById("motivoExame");
-			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}' && motivo.value != '');
-			 
-			var vMarcar;
-	
-			if (document.getElementById('md').checked)
+			$('.checks').each(function(){
+	        	$("#exameId" + this.value).attr('checked', $('#md').attr('checked'));
+	        	$("#selectClinica_" + this.value).attr('disabled', !$('#md').attr('checked'));
+				desabilitaPeriodicidade(this.value, this.checked);
+			});
+			
+			if (getMotivoExameEhAso())
 			{
-				vMarcar = true;
-			}
-			else
-			{
-				vMarcar = false;
-			}
-	
-			with(frm)
-			{
-				for(i = 0; i < elements.length; i++)
-				{
-					if (elements[i].name == 'examesId' && elements[i].type == 'checkbox')
-					{
-						if (!motivoExameEhAso || (motivoExameEhAso && elements[i].value != ${exameAso.id}) || (motivoExameEhAso && elements[i].value == ${exameAso.id} && alterouMotivo(motivo.value)))
-						{
-							elements[i].checked = vMarcar;
-							document.getElementById("selectClinica_" + elements[i].value).disabled = !vMarcar;
-							desabilitaPeriodicidade(elements[i]);
-						}
-					}
-				}
+			    $.each(examesAsoPadrao, function(i, item) {
+			        $("#exameId" + examesAsoPadrao[i].id).attr('checked', true);
+		        	$("#selectClinica_" + examesAsoPadrao[i].id).removeAttr('disabled');
+					desabilitaPeriodicidade(examesAsoPadrao[i].id, true);
+				});
 			}
 		}
 		
@@ -194,20 +174,9 @@
 		
 		function acaoCheckExame(elementCheck)
 		{
-			var motivo = document.getElementById("motivoExame");
-			var motivoExameEhAso = (motivo.value != '${motivoCONSULTA}' && motivo.value != '${motivoATESTADO}' && motivo.value != '${motivoSOLICITACAOEXAME}'&& motivo.value != '');
-		 	
-		 	// quando motivo nao for um dos ASOs, o exame ASO nao eh obrigatorio 
-			if (elementCheck.value == ${exameAso.id} && motivoExameEhAso && !alterouMotivo(motivo.value))
-			{
-				elementCheck.checked = true;
-				jAlert('O exame ASO é obrigatório.');
-			}
-			else
-			{
-				mudarClinica(elementCheck);
-				desabilitaPeriodicidade(elementCheck);
-			}
+			var motivoExameEhAso = getMotivoExameEhAso();
+			mudarClinica(elementCheck);
+			desabilitaPeriodicidade(elementCheck.value, elementCheck.checked);
 			
 			if (elementCheck.checked == true)
 				SolicitacaoExameDWR.verificaColaboradorExameDentroDoPrazo(alertaExameDentroDoPrazo, $("#colaborador").val(), $("#Candidato").val(), $("#solicitacaoId").val(), elementCheck.value);		
@@ -231,15 +200,22 @@
 			if (document.forms.length == 1)
 				return false;
 			
-			var id = "";
-			
-			var motivoExameEhAso = getMotivoExameEhAso();
-			
-			if (motivoExameEhAso)
+			if (getMotivoExameEhAso())
 			{
-				var elementCheckExameAso = document.getElementById("exameId" + ${exameAso.id});
-				elementCheckExameAso.checked = true;
+			    $.each(examesAsoPadrao, function(i, item) {
+					$('.aso').each(function(){
+					    if (this.htmlFor == "check" + examesAsoPadrao[i].id)
+					        $("#exameId" + examesAsoPadrao[i].id).attr('checked', true).attr('disabled','disabled');
+	   				});
+				});
 			}
+			else
+			{
+				$('.checks').each(function(){
+			        $("#exameId" + this.value).removeAttr('disabled');
+				});
+			}
+			
 			
 			for (var i = 0; i < document.forms[1].elements.length; i++)
 			{
@@ -252,8 +228,8 @@
 					{
 						var elementSelect = document.getElementById(elementClinicaId);
 						elementSelect.disabled = false;
-						
-						desabilitaPeriodicidade(elementForm);
+
+						desabilitaPeriodicidade(elementForm.value, elementForm.checked);
 					}
 				}
 			}
@@ -275,7 +251,6 @@
 			validaFormulario('formFiltro', null, null);
 		}
 	</script>
-</#if>
 	
 	<style type="text/css">
 	.dados td
@@ -292,17 +267,6 @@
 
 <@ww.actionerror />
 <@ww.actionmessage />
-
-<#if !exameAso?exists>
-	<#assign idDaEmpresa><@authz.authentication operation="empresaId"/></#assign>
-	<a style="font-size:13px; text-decoration: underline;" href="<@ww.url includeParams="none" value="/geral/empresa/prepareUpdate.action?empresa.id=${idDaEmpresa}"/>">
-	Clique aqui para acessar o Cadastro da empresa e configurar o campo [Exame ASO].
-	</a>
-	
-	<div class="buttonGroup">
-		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar"> </button>
-	</div>
-<#else>
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="formFiltro" action="filtroSolicitacaoExames.action" method="POST" >
@@ -392,11 +356,11 @@
 								</#if>
 							</#list>
 						</#if>
-						<input type="checkbox" value="${lista[0].id}" id="exameId${lista[0].id}" name="examesId" onclick="acaoCheckExame(this);" ${checked}/>
+						<input type="checkbox" value="${lista[0].id}" id="exameId${lista[0].id}" name="examesId" class="checks" onclick="acaoCheckExame(this);" ${checked}/>
 					</@display.column>
 		
 					<@display.column title="Exame">
-						<label for="check${lista[0].id}" class="${class}">${lista[0].nome}</label>
+						<label for="check${lista[0].id}" class="${class} aso">${lista[0].nome}</label>
 					</@display.column>
 		
 					<#assign selected=""/>
@@ -468,7 +432,6 @@
 			</div>
 		</#if>
 	</#if>
-</#if>
 
 </body>
 </html>

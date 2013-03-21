@@ -1,21 +1,14 @@
 package com.fortes.rh.business.sesmt;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.TipoPessoa;
@@ -27,18 +20,12 @@ import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.web.tags.CheckBox;
-import com.opensymphony.webwork.ServletActionContext;
 
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
-	private static final ServletActionContext String = null;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private ColaboradorManager colaboradorManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private Mail mail;
 	Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	public Exame findByIdProjection(Long exameId)
@@ -49,6 +36,16 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public Collection<Exame> findAllSelect(Long empresaId)
 	{
 		return findToList(new String[]{"id", "nome","periodicidade"}, new String[]{"id", "nome","periodicidade"}, new String[]{"empresa.id"}, new Object[]{empresaId}, new String[]{"nome"});
+	}
+
+	public Collection<Exame> findByEmpresaComAsoPadrao(Long empresaId)
+	{
+		return getDao().findByEmpresaComAsoPadrao(empresaId);
+	}
+
+	public Collection<Exame> findByAsoPadrao()
+	{
+		return getDao().findAsoPadrao();
 	}
 
 	public Collection<Exame> findByHistoricoFuncao(Long historicoFuncaoId)
@@ -248,34 +245,12 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		gerenciadorComunicacaoManager.enviaLembreteExamesPrevistos(empresas);
 	}
 	
-	private JasperReport compileReport(String reportPath, InputStream reportInputStream) throws JRException {
-		JasperReport jasperReport;// = JasperCompileManager.compileReport(systemId.replaceAll("jasper", "jrxml"));
-		if (reportInputStream == null)
-			jasperReport = JasperCompileManager.compileReport(reportPath.replaceAll("jasper", "jrxml"));
-		else
-			jasperReport = JasperCompileManager.compileReport(reportInputStream);
-		return jasperReport;
-	}
-	
 	public Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId) {
 		return getDao().findPriorizandoExameRelacionado(empresaId, colaboradorId);
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setMail(Mail mail)
-	{
-		this.mail = mail;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
-		this.colaboradorManager = colaboradorManager;
 	}
 	
 	public void setParametros(Map<String, Object> parametros) {

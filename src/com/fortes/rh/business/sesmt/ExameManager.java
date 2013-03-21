@@ -27,4 +27,6 @@ public interface ExameManager extends GenericManager<Exame>
 	Integer count(Long empresaId, Exame exame);
 	Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame);
 	Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId);
+	public Collection<Exame> findByEmpresaComAsoPadrao(Long empresaId);
+	public Collection<Exame> findByAsoPadrao();
 }

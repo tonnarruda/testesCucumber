@@ -1,5 +1,7 @@
 package com.fortes.rh.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -294,6 +296,45 @@ public final class StringUtil
 			return retorno.substring(0, (retorno.length() - 1));
 		
 		return retorno.toString();
+	}
+	
+	public static String[] append(String[] arr, String element) 
+	{
+	    int N = arr.length;
+	    arr = Arrays.copyOf(arr, N + 1);
+	    arr[N] = element;
+	    return arr;
+	}
+	
+	public static String[] appendAll(String[] arr, String[] elements) 
+	{
+		int i = arr.length;
+		int N = arr.length + elements.length;
+		arr = Arrays.copyOf(arr, N);
+
+		for (String element : elements) 
+			arr[i++] = element;
+		
+		return arr;
+	}
+	
+	public static String[] appendAllDistinct(String[] arrs, String[] elements) 
+	{
+		Collection<String> repeat = new ArrayList<String>();
+		for (String arr : arrs) 
+			for (String element : elements) 
+				if(arr.equals(element))
+					repeat.add(arr);
+		
+		int i = arrs.length;
+		int N = arrs.length + elements.length - repeat.size();
+		arrs = Arrays.copyOf(arrs, N);
+		
+		for (String element : elements) 
+			if(!repeat.contains(element))
+				arrs[i++] = element;
+		
+		return arrs;
 	}
 	
 	public static String converteCollectionToString(Collection<String> colecao)
