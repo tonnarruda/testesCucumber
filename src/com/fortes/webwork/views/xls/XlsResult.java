@@ -19,9 +19,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.constants.Border;
-
 import com.opensymphony.util.BeanUtils;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.webwork.dispatcher.WebWorkResultSupport;
@@ -40,7 +37,8 @@ public class XlsResult extends WebWorkResultSupport {
     protected String sheetName;
     protected String dinamicColumns;
     protected String dinamicProperties;
-    int rowNumIni = 4, rowNumFim = 4;
+    protected int[] rowNumIni, rowNumFim;
+    protected String[] nomeAgruoadorAnterior;
     
 	@Override
 	protected void doExecute(String finalLocation, ActionInvocation invocation) throws Exception 
@@ -103,7 +101,15 @@ public class XlsResult extends WebWorkResultSupport {
 			}
 	
 		    int rowIndex = 4;
+		    String propName="";
 		    Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
+		    
+		    rowNumIni = new int[propertiesGroupArray.length]; 
+		    rowNumFim = new int[propertiesGroupArray.length]; 
+		    nomeAgruoadorAnterior = new String[propertiesGroupArray.length]; 
+		    
+	    	for (int i = 0; i < propertiesGroupArray.length; i++)
+	    	    rowNumIni[i] = rowNumFim[i]= 3;
 		    
 		    for (Object obj : dataSourceRef) 
 		    {
@@ -112,12 +118,14 @@ public class XlsResult extends WebWorkResultSupport {
 			    for (int i = 0; i < propertiesArray.length; i++)
 			    {
 			    	prop = BeanUtils.getValue(obj, propertiesArray[i]);
+			    	propName = prop!=null?prop.toString():"";
 			    	
 			    	cell = row.createCell(i);
-					cell.setCellValue((prop != null)?prop.toString():"");
+					cell.setCellValue(propName);
 					cell.setCellStyle(columnStyle);
-
-					mesclaCelulas(propertiesGroupArray, propertiesArray, celMescladas, propertiesArray[i], prop.toString());
+					
+					if(propertiesGroupArray.length > 0)
+						mesclaCelulas(propertiesGroupArray, propertiesArray, celMescladas, propertiesArray[i], propName, i);
 			    }
 			}
 		    
@@ -148,23 +156,27 @@ public class XlsResult extends WebWorkResultSupport {
 		}	    
 	}
 
-
-	private void mesclaCelulas(String[] propertiesGroupArray, String[] propertiesArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName, String valorCelula) 
+	private void mesclaCelulas(String[] propertiesGroupArray, String[] propertiesArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName, String valorCelula, int colNum) 
 	{
-		for (String group : propertiesGroupArray) 
+		if(colNum == 0)
+			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, valorCelula);
+		else if(colNum != 0 && colNum < propertiesGroupArray.length)
+			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, nomeAgruoadorAnterior[colNum-1] + valorCelula);
+	}
+
+	private void populaCellMescladas(String[] propertiesGroupArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName,int colNum, String celMescle) 
+	{
+		if(propertiesName.equals(propertiesGroupArray[colNum]))
 		{
-			if(propertiesName.equals(group))
-			{
-				if(celMescladas.get(valorCelula) != null)
-					rowNumFim = celMescladas.get(valorCelula).getLastRow() + 1;
-				else if(celMescladas.size() != 0)
-					rowNumIni = ++rowNumFim;
-				
-				celMescladas.put(valorCelula, new CellRangeAddress(rowNumIni, rowNumFim, 0, 0));
-			}
+			if(celMescladas.get(celMescle) != null)
+				rowNumFim[colNum] = celMescladas.get(celMescle).getLastRow() + 1;
+			else 
+				rowNumIni[colNum] = ++rowNumFim[colNum];
+
+			celMescladas.put(celMescle, new CellRangeAddress(rowNumIni[colNum], rowNumFim[colNum], colNum, colNum));
+			nomeAgruoadorAnterior[colNum] = celMescle;
 		}
 	}
-	
 
     public void setReportFilter(String reportFilter) {
 		this.reportFilter = reportFilter;
@@ -208,5 +220,4 @@ public class XlsResult extends WebWorkResultSupport {
 	public void setPropertiesGroup(String propertiesGroup) {
 		this.propertiesGroup = propertiesGroup;
 	}
-
 }
