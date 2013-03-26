@@ -47,7 +47,6 @@
 		}
 	</script>
 	
-	<#assign validarCampos="return validaFormulario('formBusca', null, null)"/>
 	<#assign validarFormModalLiberar="return validaFormulario('formModalLiberar', new Array('@avaliacoesCheck'), null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
@@ -56,10 +55,11 @@
 	<@ww.actionerror />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST" id="formBusca">
+		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
 			<@ww.textfield label="Título" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
 			<@ww.select label="Modelo." name="avaliacaoId" list="avaliacaos" listKey="id" listValue="titulo" headerValue="selecione..." headerKey="" cssStyle="width: 500px;"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<@ww.hidden id="pagina" name="page"/>
+			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="$('#pagina').val(1);">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
@@ -88,6 +88,8 @@
 		<@display.column title="Período" property="periodoFormatado" />
 		<@display.column title="Modelo" property="avaliacao.titulo" />
 	</@display.table>
+	
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>

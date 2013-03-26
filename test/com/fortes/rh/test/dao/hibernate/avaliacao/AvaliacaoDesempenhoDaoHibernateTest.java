@@ -147,9 +147,13 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		avaliacaoDesempenho3.setLiberada(false);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho3);
 		
-		assertEquals(3, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(empresa.getId(), "ação", avaliacao.getId(), null).size());
-		assertEquals(2, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(empresa.getId(), "ação", avaliacao.getId(), false).size());
-		assertEquals(1, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(empresa.getId(), "ação", avaliacao.getId(), true).size());
+		assertEquals(3, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(1, 15, empresa.getId(), "ação", avaliacao.getId(), null).size());
+		assertEquals(2, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(1, 15, empresa.getId(), "ação", avaliacao.getId(), false).size());
+		assertEquals(1, avaliacaoDesempenhoDao.findTituloModeloAvaliacao(1, 15, empresa.getId(), "ação", avaliacao.getId(), true).size());
+		
+		assertEquals(new Integer(3), avaliacaoDesempenhoDao.findCountTituloModeloAvaliacao(null, null, empresa.getId(), "ação", avaliacao.getId(), null));
+		assertEquals(new Integer(2), avaliacaoDesempenhoDao.findCountTituloModeloAvaliacao(null, null, empresa.getId(), "ação", avaliacao.getId(), false));
+		assertEquals(new Integer(1), avaliacaoDesempenhoDao.findCountTituloModeloAvaliacao(null, null, empresa.getId(), "ação", avaliacao.getId(), true));
 	}
 	
 	public void testFindIdsAvaliacaoDesempenha()
