@@ -187,9 +187,14 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		return getDao().findIdsAvaliacaoDesempenho(avaliacaoId);
 	}
-	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
+	
+	public Integer findCountTituloModeloAvaliacao(Integer page,Integer pagingSize, Long empresaId, String nomeBusca,Long avaliacaoId, Boolean liberada) {
+		return getDao().findCountTituloModeloAvaliacao(page, pagingSize, empresaId, nomeBusca, avaliacaoId, liberada);
+	}
+
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
 	{
-		return getDao().findTituloModeloAvaliacao(empresaId, nomeBusca, avaliacaoId, liberada);
+		return getDao().findTituloModeloAvaliacao(page, pagingSize, empresaId, nomeBusca, avaliacaoId, liberada);
 	}
 
 	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao) {
@@ -230,6 +235,4 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-
-
 }

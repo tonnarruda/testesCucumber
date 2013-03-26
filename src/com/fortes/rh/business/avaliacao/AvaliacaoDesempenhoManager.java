@@ -20,7 +20,8 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId);
 	Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException;
 	void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa);
-	Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada);
+	Integer findCountTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada);
+	Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada);
 	void gerarAutoAvaliacoes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> participantes);
 	Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId);
 	Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao);
