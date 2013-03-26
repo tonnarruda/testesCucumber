@@ -89,9 +89,6 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		criteria.setFirstResult(((page - 1) * pagingSize));
 		criteria.setMaxResults(pagingSize);
 
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
-
 		criteria.addOrder(Order.asc("usu.nome"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Usuario.class));
