@@ -531,6 +531,12 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 			getDao().removerPerguntasDoQuestionario(questionarioId);
 		}
 	}
+	
+	public void removerPerguntasAspectosDaAvaliacao(Long avaliacaoId) 
+	{
+		getDao().removerPerguntasDaAvaliacao(avaliacaoId);
+		aspectoManager.removerAspectosDaAvaliacao(avaliacaoId);
+	}
 
 	public Collection<Long> findPerguntasDoQuestionario(Long questionarioId)
 	{
@@ -667,4 +673,6 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 	public Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds) {
 		return getDao().getPontuacoesMaximas(perguntasIds);
 	}
+
+
 }

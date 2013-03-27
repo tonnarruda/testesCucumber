@@ -19,6 +19,7 @@ public interface AspectoManager extends GenericManager<Aspecto>
 	Collection<Pergunta> desagruparPerguntasByAspecto(Collection<Aspecto> aspectos);
 	Collection<CheckBox> populaCheckOrderNome(Long questionarioId);
 	void removerAspectosDoQuestionario(Long questionarioId);
+	void removerAspectosDaAvaliacao(Long avaliacaoId);
 	HashMap<Long, Aspecto> clonarAspectos(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada);
 	String getAspectosByAvaliacao(Long avaliacaoId);
 	Aspecto saveByAvaliacao(Aspecto aspecto, Avaliacao avaliacao);

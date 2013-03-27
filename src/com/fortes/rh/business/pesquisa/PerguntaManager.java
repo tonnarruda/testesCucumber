@@ -43,4 +43,5 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	void setAvaliadoNaPerguntaDeAvaliacaoDesempenho(Pergunta pergunta, String avaliadoNome);
 	Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
 	Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds);
+	void removerPerguntasAspectosDaAvaliacao(Long avaliacaoId);
 }

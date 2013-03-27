@@ -35,6 +35,9 @@
     <property name="colaboradorRespostaManager">
       <ref bean="colaboradorRespostaManager" />
     </property>
+    <property name="colaboradorPeriodoExperienciaAvaliacaoManager">
+      <ref bean="colaboradorPeriodoExperienciaAvaliacaoManager" />
+    </property>
   </bean>
   <bean id="avaliacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

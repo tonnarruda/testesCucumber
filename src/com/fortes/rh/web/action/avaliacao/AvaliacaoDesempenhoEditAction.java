@@ -325,7 +325,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		avaliacaos = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
-		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
+		
+		setTotalSize(avaliacaoDesempenhoManager.findCountTituloModeloAvaliacao(null, null, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null));
+		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");

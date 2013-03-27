@@ -87,6 +87,13 @@ public class AspectoDaoHibernate extends GenericDaoHibernate<Aspecto> implements
 		getSession().createQuery(queryHQL).setLong("questionarioId",questionarioId).executeUpdate();
 	}
 	
+	public void removerAspectosDaAvaliacao(Long avaliacaoId) 
+	{
+		String queryHQL = "delete from Aspecto a where a.avaliacao.id = :avaliacaoId";
+
+		getSession().createQuery(queryHQL).setLong("avaliacaoId",avaliacaoId).executeUpdate();
+	}
+	
 	@Override
 	public boolean verificaEmpresa(Long aspectoId, Long empresaId)
 	{
@@ -140,4 +147,6 @@ public class AspectoDaoHibernate extends GenericDaoHibernate<Aspecto> implements
 
 		return (Aspecto) criteria.uniqueResult();
 	}
+
+
 }

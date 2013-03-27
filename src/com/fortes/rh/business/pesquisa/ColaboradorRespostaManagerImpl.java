@@ -599,6 +599,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return getDao().findByAvaliadoAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 	}
 
+	public Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId) 
+	{
+		return getDao().countColaboradorAvaliacaoRespondida(avaliacaoId);
+	}
+
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
 	}

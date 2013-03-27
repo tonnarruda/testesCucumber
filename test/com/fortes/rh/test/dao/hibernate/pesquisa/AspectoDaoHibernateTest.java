@@ -71,6 +71,21 @@ public class AspectoDaoHibernateTest extends GenericDaoHibernateTest<Aspecto>
 		
 		assertEquals(0, aspectoDao.findByQuestionario(questionario.getId()).size());
 	}
+	
+	public void testRemoverAspectosDaAvaliacao()
+	{
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		Aspecto aspecto = getEntity();
+		aspecto.setNome("wwwwwwwww");
+		aspecto.setAvaliacao(avaliacao);
+		aspecto = aspectoDao.save(aspecto);
+		
+		aspectoDao.removerAspectosDaAvaliacao(avaliacao.getId());
+		
+		assertNull(aspectoDao.findByNomeAvaliacao(aspecto.getNome(), avaliacao.getId()));
+	}
 
 	public void testFindByQuestionario()
 	{
