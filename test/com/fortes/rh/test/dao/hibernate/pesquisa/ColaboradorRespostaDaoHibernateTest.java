@@ -23,6 +23,7 @@ import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -44,6 +45,7 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -777,6 +779,34 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("Sem auto avaliação", 2, respostas2.size());
 	}
 
+	public void testCountColaboradorAvaliacaoRespondida() 
+	{
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao1);
+		
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao2);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario1.setAvaliacao(avaliacao1);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setAvaliacao(avaliacao1);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setAvaliacao(avaliacao2);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+
+		ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario1);
+		colaboradorResposta1 = colaboradorRespostaDao.save(colaboradorResposta1);
+
+		assertEquals(new Integer(1), colaboradorRespostaDao.countColaboradorAvaliacaoRespondida(avaliacao1.getId()));
+		assertEquals(new Integer(0), colaboradorRespostaDao.countColaboradorAvaliacaoRespondida(avaliacao2.getId()));
+	}
+	
 	public GenericDao<ColaboradorResposta> getGenericDao()
 	{
 		return colaboradorRespostaDao;

@@ -44,6 +44,11 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 	{
 		getDao().removeByColaborador(colaborador.getId());
 	}
+	
+	public void removeByAvaliacao(Long avaliacaoId) 
+	{
+		getDao().removeByAvaliacao(avaliacaoId);
+	}
 
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId) 
 	{

@@ -20,6 +20,7 @@ public interface PerguntaDao extends GenericDao<Pergunta>
 	void updateOrdem(Long perguntaId, int novaOrdem) throws Exception;
 	Collection<Pergunta> findByQuestionarioAspectoPergunta(Long questionarioId, Long[] aspectosIds, Long[] perguntasIds, boolean agruparPorAspectos);
 	void removerPerguntasDoQuestionario(Long questionarioId);
+	void removerPerguntasDaAvaliacao(Long avaliacaoId);
 	Collection<Long> findPerguntasDoQuestionario(Long questionarioId);
 	int getTotalPerguntas(Long questionarioId);
 	boolean existsOrdem(Long questionarioOrAvaliacaoId, Integer ordem);

@@ -15,4 +15,6 @@ public interface ColaboradorPeriodoExperienciaAvaliacaoManager extends GenericMa
 	Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId);
 
 	void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo();
+
+	void removeByAvaliacao(Long avaliacaoId);
 }

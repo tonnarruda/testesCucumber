@@ -314,6 +314,16 @@ public class PerguntaDaoHibernate extends GenericDaoHibernate<Pergunta> implemen
 
 		query.executeUpdate();
 	}
+	
+	public void removerPerguntasDaAvaliacao(Long avaliacaoId)
+	{
+		String queryHQL = "delete from Pergunta p where p.avaliacao.id = :avaliacaoId";
+		
+		Query query = getSession().createQuery(queryHQL);
+		query.setLong("avaliacaoId", avaliacaoId);
+		
+		query.executeUpdate();
+	}
 
 	public Collection<Long> findPerguntasDoQuestionario(Long questionarioId)
 	{
