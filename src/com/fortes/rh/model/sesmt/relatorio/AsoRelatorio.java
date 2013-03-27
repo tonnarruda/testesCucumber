@@ -23,6 +23,7 @@ public class AsoRelatorio
 	private Colaborador colaborador;
 	private Candidato candidato;
 	private Collection<ExameSolicitacaoExame> exames;
+	private Collection<ExameSolicitacaoExame> examesPadrao;
 	
 	private String grpRiscoFisico = "";
 	private String grpRiscoQuimico = "";
@@ -36,15 +37,6 @@ public class AsoRelatorio
 		this.colaborador = solicitacaoExame.getColaborador();
 		this.candidato = solicitacaoExame.getCandidato();
 		this.medico = solicitacaoExame.getMedicoCoordenador();
-		this.exames = solicitacaoExame.getExameSolicitacaoExames();
-		
-		if(exames != null && exames.size() < 14)
-		{
-			int count = exames.size();
-			for(int i=0 ; i < (14 - count); i++)
-				exames.add(new ExameSolicitacaoExame());
-		}
-		
 		if (empresa.getCidade() != null) 
 			this.cidadeNome = empresa.getCidade().getNome();
 		
@@ -193,5 +185,13 @@ public class AsoRelatorio
 
 	public Collection<ExameSolicitacaoExame> getExames() {
 		return exames;
+	}
+
+	public Collection<ExameSolicitacaoExame> getExamesPadrao() {
+		return examesPadrao;
+	}
+
+	public void setExamesPadrao(Collection<ExameSolicitacaoExame> examesPadrao) {
+		this.examesPadrao = examesPadrao;
 	}
 }

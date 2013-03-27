@@ -28,7 +28,7 @@ public class SolicitacaoExameDWR
 	public String[] marcarNaoInformadosComoNormal(Long solicitacaoExameId)
 	{
 		Collection<String> ids = new ArrayList<String>();
-		Collection<ExameSolicitacaoExame> exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExameId);
+		Collection<ExameSolicitacaoExame> exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExameId, null);
 		Collection<Long> realizacaoExameIds = new ArrayList<Long>();
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

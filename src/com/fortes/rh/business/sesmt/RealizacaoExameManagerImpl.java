@@ -102,7 +102,7 @@ public class RealizacaoExameManagerImpl extends GenericManagerImpl<RealizacaoExa
 
 	public void save(SolicitacaoExame solicitacaoExame, String[] selectResultados, String[] observacoes, Date[] datasRealizacaoExames)
 	{
-		Collection<ExameSolicitacaoExame> exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId());
+		Collection<ExameSolicitacaoExame> exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), null);
 
 		int i=0;
 		for (ExameSolicitacaoExame exameSolicitacaoExame : exameSolicitacaoExames)
