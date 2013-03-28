@@ -184,7 +184,7 @@
 					minLength: 3,
 					source: function( request, response ) {
 						DWRUtil.useLoadingMessage('Carregando...');
-						ColaboradorDWR.find(request.term, ${empresaId}, function(dados) {
+						ColaboradorDWR.findByNome(request.term, ${empresaId}, function(dados) {
 							response( dados );
 						});
 					},

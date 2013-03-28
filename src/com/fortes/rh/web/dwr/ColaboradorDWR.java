@@ -211,7 +211,7 @@ public class ColaboradorDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
 	}
 	
-	public Collection<Object> find(String nome, Long empresaId)
+	public Collection<Object> findByNome(String nome, Long empresaId)
 	{
 		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, true);
 		
