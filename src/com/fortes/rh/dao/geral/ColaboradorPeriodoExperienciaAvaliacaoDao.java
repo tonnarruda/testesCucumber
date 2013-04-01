@@ -8,7 +8,7 @@ import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 public interface ColaboradorPeriodoExperienciaAvaliacaoDao extends GenericDao<ColaboradorPeriodoExperienciaAvaliacao>
 {
 	void removeByColaborador(Long colaboradorId);
-
 	Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId);
-	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje();
+	Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje();
+	void removeByAvaliacao(Long avaliacaoId);
 }

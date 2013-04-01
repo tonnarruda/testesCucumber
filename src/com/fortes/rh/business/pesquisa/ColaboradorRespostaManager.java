@@ -39,4 +39,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	void removeFichas(Long[] colaboradorQuestionarioIds);
 	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Usuario findUsuarioParaAuditoria(Long usuarioId);
+	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 }

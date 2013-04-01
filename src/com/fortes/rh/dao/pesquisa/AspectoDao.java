@@ -13,4 +13,5 @@ public interface AspectoDao extends GenericDao<Aspecto>
 	void removerAspectosDoQuestionario(Long questionarioId);
 	Collection<String> getNomesByAvaliacao(Long avaliacaoId);
 	Aspecto findByNomeAvaliacao(String nome, Long avaliacaoId);
+	void removerAspectosDaAvaliacao(Long avaliacaoId);
 }

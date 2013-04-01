@@ -19,6 +19,8 @@ import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -158,6 +160,9 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		
 		solicitacaoExame = getDao().findById(solicitacaoExame.getId());
 		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
+
+		asoRelatorio.setExames(exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), false));
+		asoRelatorio.setExamesPadrao(exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), true));
 		
 		if(solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
 		{

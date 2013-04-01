@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
@@ -28,6 +29,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	private QuestionarioManager questionarioManager;
 	private RespostaManager respostaManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
+	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	public Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo) 
 	{	
@@ -144,5 +146,23 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+	
+	@Override
+	public void remove(Long avaliacaoId) 
+	{
+		Integer qtdColaboradorAvalizacaoRespondida = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacaoId);
+		
+		if(qtdColaboradorAvalizacaoRespondida == 0)
+			colaboradorPeriodoExperienciaAvaliacaoManager.removeByAvaliacao(avaliacaoId);
+
+		perguntaManager.removerPerguntasAspectosDaAvaliacao(avaliacaoId);
+		
+		super.remove(avaliacaoId);
+	}
+
+	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
+	{
+		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 }

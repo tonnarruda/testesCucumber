@@ -200,7 +200,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		examesId = exameManager.findBySolicitacaoExame(solicitacaoExame.getId());
-		exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId());
+		exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), null);
 		boolean temResultado = exameSolicitacaoExameManager.verificaExisteResultado(exameSolicitacaoExames);
 
 		if (temResultado)
@@ -333,7 +333,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		if (solicitacaoExame != null && solicitacaoExame.getId() != null)
 		{
-			exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId());
+			exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), null);
 
 			prepareDataSolicitacaoExame();
 

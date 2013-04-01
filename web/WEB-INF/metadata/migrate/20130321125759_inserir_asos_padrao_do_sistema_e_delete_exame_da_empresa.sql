@@ -20,13 +20,15 @@ BEGIN
 	LOOP
 		update examesolicitacaoexame set exame_id = exameId1 where exame_id = mviews1.exame_id;
 		FOR mviews2 IN
-			select id, exame_id, solicitacaoexame_id, clinicaautorizada_id, realizacaoexame_id, periodicidade from examesolicitacaoexame where exame_id = exameId1 
+			select id, exame_id, solicitacaoexame_id, clinicaautorizada_id, realizacaoexame_id, periodicidade from examesolicitacaoexame where exame_id = exameId1
 		LOOP
 			IF  mviews2.realizacaoexame_id is not null THEN
 				RealizacaoExameId := nextval('realizacaoexame_sequence');
 				insert into RealizacaoExame (id, data, observacao, resultado) select RealizacaoExameId, data, observacao, resultado from RealizacaoExame where id = mviews2.realizacaoexame_id;   
+				insert into examesolicitacaoexame (id, exame_id, solicitacaoexame_id, clinicaautorizada_id, realizacaoexame_id, periodicidade) values (nextval('examesolicitacaoexame_sequence'), exameId2, mviews2.solicitacaoexame_id, mviews2.clinicaautorizada_id, RealizacaoExameId, mviews2.periodicidade);
+			ELSE
+				insert into examesolicitacaoexame (id, exame_id, solicitacaoexame_id, clinicaautorizada_id, realizacaoexame_id, periodicidade) values (nextval('examesolicitacaoexame_sequence'), exameId2, mviews2.solicitacaoexame_id, mviews2.clinicaautorizada_id, null, mviews2.periodicidade);
 			END IF;
-			insert into examesolicitacaoexame (id, exame_id, solicitacaoexame_id, clinicaautorizada_id, realizacaoexame_id, periodicidade) values (nextval('examesolicitacaoexame_sequence'), exameId2, mviews2.solicitacaoexame_id, mviews2.clinicaautorizada_id, RealizacaoExameId, mviews2.periodicidade);
 		END LOOP;
 		
 		update historicofuncao_exame set exames_id = exameId1 where exames_id = mviews1.exame_id;

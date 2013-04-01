@@ -103,6 +103,11 @@ public class AspectoManagerImpl extends GenericManagerImpl<Aspecto, AspectoDao> 
 		getDao().removerAspectosDoQuestionario(questionarioId);
 	}
 
+	public void removerAspectosDaAvaliacao(Long avaliacaoId)
+	{
+		getDao().removerAspectosDaAvaliacao(avaliacaoId);
+	}
+
 	public HashMap<Long, Aspecto> clonarAspectos(Long questionarioId, Questionario questionarioClonado, Avaliacao avaliacaoClonada)
 	{
 		Collection<Aspecto> aspectos = getDao().findByQuestionario(questionarioId);

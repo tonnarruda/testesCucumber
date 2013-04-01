@@ -50,4 +50,10 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 
 		return query.list();
 	}
+
+	public void removeByAvaliacao(Long avaliacaoId) 
+	{
+		String queryHQL = "delete from ColaboradorPeriodoExperienciaAvaliacao c where c.avaliacao.id = :avaliacaoId";
+		getSession().createQuery(queryHQL).setLong("avaliacaoId", avaliacaoId).executeUpdate();	
+	}
 }

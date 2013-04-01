@@ -160,6 +160,26 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		assertTrue(configs.size() >= 1);
 	}
 
+	public void testRemoveByAvaliacao()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		colaboradorDao.save(joao);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colaboradorPeriodoExperienciaAvaliacao = new ColaboradorPeriodoExperienciaAvaliacao();
+		colaboradorPeriodoExperienciaAvaliacao.setAvaliacao(avaliacao);
+		colaboradorPeriodoExperienciaAvaliacao.setColaborador(joao);
+		colaboradorPeriodoExperienciaAvaliacao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colaboradorPeriodoExperienciaAvaliacao);
+		
+		colaboradorPeriodoExperienciaAvaliacaoDao.removeByAvaliacao(avaliacao.getId());
+		Collection<ColaboradorPeriodoExperienciaAvaliacao> retorno = colaboradorPeriodoExperienciaAvaliacaoDao.find(new String[]{"avaliacao.id"}, new Object[]{avaliacao.getId()});
+		
+		assertEquals(0, retorno.size());
+	}
+	
 	public GenericDao<ColaboradorPeriodoExperienciaAvaliacao> getGenericDao()
 	{
 		return colaboradorPeriodoExperienciaAvaliacaoDao;

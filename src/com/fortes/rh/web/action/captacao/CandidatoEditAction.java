@@ -327,7 +327,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			if(candidatoTmp != null)
 			{
 				if (moduloExterno)
-					addActionError("Já existe um currículo com esse CPF.");
+					addActionError("Já existe um currículo com esse CPF e/ou em duplicidade.");
 				else
 					addActionError("CPF já cadastrado!");
 				

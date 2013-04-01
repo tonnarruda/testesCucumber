@@ -20,4 +20,5 @@ public interface AvaliacaoManager extends GenericManager<Avaliacao>
 	void clonar(Long id, Long... empresasIds);
 	Collection<Avaliacao> findPeriodoExperienciaIsNull(char acompanhamentoExperiencia, Long empresaId);
 	Collection<Avaliacao> findAllSelectComAvaliacaoDesempenho(Long empresaId, boolean ativa);
+	void remove(Long avaliacaoId);
 }
