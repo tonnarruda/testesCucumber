@@ -11,11 +11,11 @@
 	<script type="text/javascript">
 		function filtrarOpcao()
 		{
-			value = document.getElementById('vinculo').value;
-			if (value == 'A')
-				document.getElementById("matriculaBusca").disabled = true;
-			else if (value == 'C')
-				document.getElementById("matriculaBusca").disabled = false;
+			vinculo = $('#vinculo').val();
+			if (vinculo == 'A')
+				$('#matriculaBusca').css('background', '#F8F8F8').attr('disabled', 'true').val('');
+			else if (vinculo == 'C')
+				$('#matriculaBusca').css('background', '#FFFFFF').removeAttr('disabled');
 		}
 	</script>
 
