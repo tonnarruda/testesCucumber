@@ -49,6 +49,33 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		for (char tipo : tipoMensagem.keySet())
 			caixasMensagens.put(tipo, new CaixaMensagem(tipo, new ArrayList<MensagemVO>(), 0));
 
+		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+		if(colaboradorId != null)
+		{
+			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
+			Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
+			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
+			{
+				Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
+				if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
+				{
+					for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
+					{
+						
+						vo = new MensagemVO();
+						vo.setTexto("Aval. Desempenho: " + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getTitulo() + " (" + colabQuestionarioAvaliado.getColaborador().getNome() + ") (" + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getPeriodoFormatado() + ")");
+						vo.setLink("avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=" + colabQuestionarioAvaliado.getId());
+						vo.setData(colabQuestionarioAvaliado.getAvaliacaoDesempenho().getInicio());
+						vo.setTipo(TipoMensagem.AVALIACAO_DESEMPENHO);
+						vo.setRemetente("RH");
+
+						caixasMensagens.get(TipoMensagem.AVALIACAO_DESEMPENHO).getMensagens().add(vo);
+						caixasMensagens.get(TipoMensagem.AVALIACAO_DESEMPENHO).incrementaNaoLidas();
+					}
+				}
+			}
+		}
+		
 		Collection<UsuarioMensagem> usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId);
 		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
 		{
@@ -78,34 +105,11 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				vo.setTexto(questionario.getTitulo());
 				vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=" + questionario.getId() + "&colaborador.id=" + colaboradorId + "&tela=index&validarFormulario=true");
 				vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
-				vo.setLida(true);
-
+				
 				caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
 				caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
 			}
-
-			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
-			Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
-			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
-			{
-				Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
-				if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
-				{
-					for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)
-					{
-						vo = new MensagemVO();
-						vo.setTexto(colabQuestionarioAvaliado.getAvaliacaoDesempenho().getTitulo() + " (" + colabQuestionarioAvaliado.getColaborador().getNome() + ") (" + colabQuestionarioAvaliado.getAvaliacaoDesempenho().getPeriodoFormatado() + ")");
-						vo.setLink("avaliacao/desempenho/prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=" + colabQuestionarioAvaliado.getId());
-						vo.setTipo(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS);
-						vo.setLida(true);
-
-						caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).getMensagens().add(vo);
-						caixasMensagens.get(TipoMensagem.PESQUISAS_AVAL_DISPONIVEIS).incrementaNaoLidas();
-					}
-				}
-			}
-
+			
 			Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
 			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionariosTeD) 
 			{
@@ -113,7 +117,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
 				vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
 				vo.setTipo(TipoMensagem.AVALIACOES_TED);
-				vo.setLida(true);
 
 				caixasMensagens.get(TipoMensagem.AVALIACOES_TED).getMensagens().add(vo);
 				caixasMensagens.get(TipoMensagem.AVALIACOES_TED).incrementaNaoLidas();
@@ -131,7 +134,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				vo.setTexto("Existem solicitações de pessoal aguardando liberação");
 				vo.setLink("captacao/solicitacao/list.action?statusBusca=" + StatusAprovacaoSolicitacao.ANALISE);
 				vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
-				vo.setLida(true);
 
 				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
 				caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();
@@ -148,7 +150,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setTexto("Currículo aguardando aprovação para " + candidatoSolicitacao.getSolicitacao().getDescricao());
 					vo.setLink("captacao/candidatoSolicitacao/listTriagem.action?solicitacao.id=" + candidatoSolicitacao.getSolicitacao().getId());
 					vo.setTipo(TipoMensagem.RECRUTAMENTO_SELECAO);
-					vo.setLida(true);
 
 					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).getMensagens().add(vo);
 					caixasMensagens.get(TipoMensagem.RECRUTAMENTO_SELECAO).incrementaNaoLidas();

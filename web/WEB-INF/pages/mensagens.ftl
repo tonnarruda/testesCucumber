@@ -77,6 +77,19 @@
 						</@display.column>
 						
 						<#assign exibirBotaoExcluir = true/>
+					<#else>
+						<#if msg.tipo == 'A'>
+							<@display.column title="<input type='checkbox'/>" style="width: 30px; text-align: center;" />
+							<@display.column title="Ações" media="html" style="text-align:center; width:50px;" />
+							
+							<@display.column title="De" style="${style} text-align:center; width:70px;">
+								${msg.remetente}
+							</@display.column>
+							
+							<@display.column title="Data" style="${style} text-align:center; width:100px;" >
+								${msg.data?string("dd/MM/yyyy")}
+							</@display.column>
+						</#if>
 					</#if>
 					
 					<@display.column title="Mensagem" style="${style}">
@@ -91,9 +104,11 @@
 						</div>
 					</@display.column>
 					
-					<@display.column title="Lida" style="${style} text-align:center; width:40px;">
-						${status}
-					</@display.column>
+					<#if msg.usuarioMensagemId?exists || msg.tipo == 'A'>
+						<@display.column title="Lida" style="${style} text-align:center; width:40px;">
+							${status}
+						</@display.column>
+					</#if>
 				</@display.table>
 			</@ww.form>
 			
