@@ -4,23 +4,19 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
 
 SET search_path = public, pg_catalog;
 
@@ -602,7 +598,7 @@ SELECT pg_catalog.setval('avaliacaocurso_sequence', 1, false);
 
 CREATE TABLE avaliacaodesempenho (
     id bigint NOT NULL,
-    titulo character varying(100),
+    titulo character varying(200),
     inicio date,
     fim date,
     anonima boolean,
@@ -2851,7 +2847,9 @@ CREATE TABLE empresa (
     verificaparentesco character(1) DEFAULT 'N'::bpchar,
     controlariscopor character(1) DEFAULT 'A'::bpchar,
     exibircolaboradorsubstituido boolean DEFAULT false NOT NULL,
-    codigotrucurso boolean DEFAULT false
+    codigotrucurso boolean DEFAULT false,
+    CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
+    CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
 
 
@@ -3115,7 +3113,8 @@ CREATE TABLE estabelecimento (
     codigoac character varying(12),
     uf_id bigint,
     cidade_id bigint,
-    empresa_id bigint
+    empresa_id bigint,
+    CONSTRAINT no_blank_codigoac_estabelecimento CHECK (((codigoac)::text <> ''::text))
 );
 
 
@@ -4845,7 +4844,8 @@ CREATE TABLE ocorrencia (
     codigoac character varying(3),
     integraac boolean,
     empresa_id bigint,
-    absenteismo boolean DEFAULT false NOT NULL
+    absenteismo boolean DEFAULT false NOT NULL,
+    CONSTRAINT no_blank_codigoac_ocorrencia CHECK (((codigoac)::text <> ''::text))
 );
 
 
@@ -27995,6 +27995,10 @@ INSERT INTO migrations (name) VALUES ('20130225152820');
 INSERT INTO migrations (name) VALUES ('20130228083955');
 INSERT INTO migrations (name) VALUES ('20130306103813');
 INSERT INTO migrations (name) VALUES ('20130308131939');
+INSERT INTO migrations (name) VALUES ('20130320152201');
+INSERT INTO migrations (name) VALUES ('20130328104211');
+INSERT INTO migrations (name) VALUES ('20130328112208');
+INSERT INTO migrations (name) VALUES ('20130328113927');
 
 
 --
@@ -28294,7 +28298,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.103.108', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.104.109', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
 
 
 --
@@ -29978,6 +29982,30 @@ ALTER TABLE ONLY turma
 
 ALTER TABLE ONLY turmatipodespesa
     ADD CONSTRAINT turmatipodespesa_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: unique_codigoac_empresa_estabelecimento; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY estabelecimento
+    ADD CONSTRAINT unique_codigoac_empresa_estabelecimento UNIQUE (codigoac, empresa_id);
+
+
+--
+-- Name: unique_codigoac_empresa_ocorrencia; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ocorrencia
+    ADD CONSTRAINT unique_codigoac_empresa_ocorrencia UNIQUE (codigoac, empresa_id);
+
+
+--
+-- Name: unique_codigoac_grupoac_empresa; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY empresa
+    ADD CONSTRAINT unique_codigoac_grupoac_empresa UNIQUE (codigoac, grupoac);
 
 
 --

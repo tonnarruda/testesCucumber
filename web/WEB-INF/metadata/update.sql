@@ -19544,3 +19544,25 @@ update parametrosdosistema set appversao = '1.1.103.107';--.go
 -- versao 1.1.103.108
 
 update parametrosdosistema set appversao = '1.1.103.108';--.go
+-- versao 1.1.104.109
+
+alter table avaliacaodesempenho alter column titulo type character varying(200);--.go
+insert into migrations values('20130320152201');--.go
+update empresa set codigoac = null where codigoac = ''; --.go
+update empresa set grupoac = null where grupoac = ''; --.go
+
+ALTER TABLE empresa ADD CONSTRAINT no_blank_codigoac_empresa CHECK(codigoac <> ''); --.go
+ALTER TABLE empresa ADD CONSTRAINT no_blank_grupoac_empresa CHECK(grupoac <> ''); --.go
+ALTER TABLE empresa ADD CONSTRAINT unique_codigoac_grupoac_empresa UNIQUE(codigoac,grupoac); --.go
+insert into migrations values('20130328104211');--.go
+update estabelecimento set codigoac = null where codigoac = ''; --.go
+
+ALTER TABLE estabelecimento ADD CONSTRAINT no_blank_codigoac_estabelecimento CHECK(codigoac <> ''); --.go
+ALTER TABLE estabelecimento ADD CONSTRAINT unique_codigoac_empresa_estabelecimento UNIQUE(codigoac,empresa_id); --.go
+insert into migrations values('20130328112208');--.go
+update ocorrencia set codigoac = null where codigoac = ''; --.go
+
+ALTER TABLE ocorrencia ADD CONSTRAINT no_blank_codigoac_ocorrencia CHECK(codigoac <> ''); --.go
+ALTER TABLE ocorrencia ADD CONSTRAINT unique_codigoac_empresa_ocorrencia UNIQUE(codigoac,empresa_id); --.go
+insert into migrations values('20130328113927');--.go
+update parametrosdosistema set appversao = '1.1.104.109';--.go

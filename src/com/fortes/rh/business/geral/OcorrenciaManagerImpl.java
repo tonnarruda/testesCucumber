@@ -33,8 +33,10 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 			{
 				throw new IntegraACException(e.getMessage());
 			}
+		} else if(isBlank(ocorrencia.getCodigoAC())) {
+			ocorrencia.setCodigoAC(null);
 		}
-
+		
 		if (ocorrencia.getId() == null)
 			getDao().save(ocorrencia);
 		else
