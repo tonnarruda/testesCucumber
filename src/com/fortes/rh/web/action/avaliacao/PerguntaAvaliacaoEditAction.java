@@ -114,7 +114,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 			pergunta = null;
 			prepareInsert();
 			
-			addActionMessage("Critério gravado com sucesso.");
+			addActionMessage("Pergunta gravada com sucesso.");
 			
 		} catch (Exception e)
 		{
@@ -143,7 +143,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 			
 			pergunta.setAvaliacao(avaliacao);
 			perguntaManager.atualizarPergunta(pergunta, respostaObjetiva, IntegerUtil.arrayStringToArrayInteger(pesoRespostaObjetiva));
-			addActionMessage("Critério atualizado com sucesso!");
+			addActionMessage("Pergunta atualizada com sucesso!");
 		} 
 		catch (Exception e)
 		{
@@ -166,7 +166,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 		}
 		
 		if (temCriterioRespondido)
-			addActionMessage("Esta Avaliação já possui critérios respondidos. Só é possível visualizá-los.");
+			addActionMessage("Esta Avaliação já possui perguntas respondidas. Só é possível visualizá-las.");
 	}
 
 	public String list() throws Exception
@@ -180,7 +180,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		perguntaManager.removerPergunta(pergunta);
-		addActionMessage("Critério excluído com sucesso.");
+		addActionMessage("Pergunta excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}

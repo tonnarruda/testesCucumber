@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Critérios de Avaliação</title>
+	<title>Perguntas da Avaliação</title>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -28,7 +28,7 @@
 			
 		</@display.column>
 		<@display.column title="Ordem" property="ordem" style="width:50px;" />
-		<@display.column title="Critério" property="texto" style="width:900px;" />
+		<@display.column title="Pergunta" property="texto" style="width:900px;" />
 		<@display.column title="Tipo" property="tipoTexto" style="width:90px;" />
 	</@display.table>
 	

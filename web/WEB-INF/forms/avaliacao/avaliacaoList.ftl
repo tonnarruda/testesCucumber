@@ -58,7 +58,7 @@
 
 		<@display.column title="Ações" style = "width:160px;">
 			<a href="visualizar.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Visualizar" src="<@ww.url includeParams="none" value="/imgs/olho.jpg"/>"></a>
-			<a href="../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Critérios" src="<@ww.url includeParams="none" value="/imgs/question.gif"/>"></a>
+			<a href="../perguntaAvaliacao/list.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Perguntas" src="<@ww.url includeParams="none" value="/imgs/question.gif"/>"></a>
 			<a href="../../pesquisa/aspecto/listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Aspectos" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
 			<a href="prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacao.id},'${modeloAvaliacao}','${avaliacao.titulo}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
