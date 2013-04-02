@@ -44,7 +44,9 @@ BEGIN
 		LOOP
 			insert into clinicaautorizada_exame (clinicaautorizada_id, exames_id ) values (mviews4.clinicaautorizada_id, exameId2);
 		END LOOP;
-
+		
+		update empresa set exame_id = null where exame_id = mviews1.exame_id;
+		delete from exame where id = mviews1.exame_id;
 	END LOOP;
 END$$ LANGUAGE plpgsql;--.go
 
