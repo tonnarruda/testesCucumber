@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -75,6 +77,10 @@ public class EstabelecimentoEditAction extends MyActionSupportEdit implements Mo
 	public String insert() throws Exception
 	{
 		estabelecimento.setEmpresa(getEmpresaSistema());
+		
+		if(StringUtils.isBlank(estabelecimento.getCodigoAC()))
+			estabelecimento.setCodigoAC(null);
+		
 		estabelecimentoManager.save(estabelecimento);
 
 		return Action.SUCCESS;
@@ -87,6 +93,9 @@ public class EstabelecimentoEditAction extends MyActionSupportEdit implements Mo
 
 		if(estabelecimentoManager.verifyExists(key, values))
 		{
+			if(StringUtils.isBlank(estabelecimento.getCodigoAC()))
+				estabelecimento.setCodigoAC(null);
+
 			estabelecimentoManager.update(estabelecimento);
 			return Action.SUCCESS;
 		}

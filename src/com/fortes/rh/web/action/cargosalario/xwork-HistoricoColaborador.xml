@@ -44,6 +44,7 @@
 				<param name="location">WEB-INF/report/ultimaspromocoes.jasper</param>
 				<param name="dataSource">dataSourceSituacoesColaborador</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresSemReajusteSalarial.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioUltimasPromocoes.ftl</result>
 		</action>

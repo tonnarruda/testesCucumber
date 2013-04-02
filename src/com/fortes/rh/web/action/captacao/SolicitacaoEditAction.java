@@ -203,16 +203,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
         }
 
-		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
-		{
-			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
-		} 
-		else 
-		{    	
-			areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-	    	if (areas == null || areas.size() == 0)
-	    		addActionError("Você não é responsável por nenhuma área organizacional.");
-		}
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
     	
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 

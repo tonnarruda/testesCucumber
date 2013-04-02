@@ -19,9 +19,9 @@ public class TipoMensagem extends LinkedHashMap<Character, String>
 	{
 		put(RECRUTAMENTO_SELECAO, "Recrutamento & Seleção");
 		put(CARGO_SALARIO, "Cargos & Salários");
-		put(PESQUISAS_AVAL_DISPONIVEIS, "Pesquisas/Avaliações Disponíveis");
-		put(AVALIACAO_DESEMPENHO, "Avaliações de Desempenho");
-		put(AVALIACOES_TED, "Avaliações de T&D");
+		put(PESQUISAS_AVAL_DISPONIVEIS, "Pesquisas");
+		put(AVALIACAO_DESEMPENHO, "Aval. Desempenho");
+		put(AVALIACOES_TED, "Treinamento e Desenvolvimento");
 		put(INFO_FUNCIONAIS, "Informações Funcionais");
 		put(SESMT, "SESMT");
 		put(UTILITARIOS, "Utilitários");

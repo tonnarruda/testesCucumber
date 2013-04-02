@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.104.109" data="01/04/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho: Nova paginação da listagem de avaliações.
+			:: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Nova paginação da listagem de avaliações.
+			:: Info. Funcionais > Painel de Indicadores: Novo filtro por colocação para o indicador de turnover.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.103.108" data="18/03/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Tela de Login: Exibir somente as em empresas que pertence ao usuário digitado.
