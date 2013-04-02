@@ -56,7 +56,7 @@ public class ConfiguracaoCampoExtraDaoHibernateTest extends GenericDaoHibernateT
 	
 	public void testFindDistinct() 
 	{
-		assertTrue(configuracaoCampoExtraDao.findDistinct().size() > 16);
+		assertTrue(configuracaoCampoExtraDao.findDistinct().size() >= 16);
 	}
 	
 	public void testFindAllNomes()
