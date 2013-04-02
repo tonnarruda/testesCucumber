@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -31,6 +32,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	private AspectoManager aspectoManager;
 	private RespostaManager respostaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacao;
 	
@@ -160,9 +162,17 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	{
 		if (avaliacao != null && avaliacao.getId() != null)
 		{
-			Collection<ColaboradorQuestionario> colabQuestionarios = colaboradorQuestionarioManager.findByQuestionario(avaliacao.getId());
-			if (colabQuestionarios != null && !colabQuestionarios.isEmpty())
-				temCriterioRespondido = true;
+			if(modeloAvaliacao == 'S')
+			{
+				Integer qtdCandidatosResponderam = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacao.getId());
+				if (qtdCandidatosResponderam > 0)
+					temCriterioRespondido = true;
+			}else
+			{
+				Collection<ColaboradorQuestionario> colabQuestionarios = colaboradorQuestionarioManager.findByQuestionario(avaliacao.getId());
+				if (colabQuestionarios != null && !colabQuestionarios.isEmpty())
+					temCriterioRespondido = true;
+			}
 		}
 		
 		if (temCriterioRespondido)
@@ -313,5 +323,10 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
 		return tipoModeloAvaliacao;
+	}
+
+	public void setColaboradorRespostaManager(
+			ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}	
 }

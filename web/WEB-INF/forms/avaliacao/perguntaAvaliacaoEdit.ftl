@@ -10,6 +10,12 @@
 	<#assign formAction="insert.action"/>
 </#if>
 
+<#if modeloAvaliacao?exists && modeloAvaliacao == 'S'>
+	<#assign tipoAvaliado="candidato"/>
+<#else>
+	<#assign tipoAvaliado="colaborador"/>
+</#if>
+
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 
@@ -23,7 +29,7 @@
 			$("#aspecto").autocomplete(aspectos);
 			
 			$('#criterioTooltipHelp').qtip({
-				content: 'Utilize a expressão #AVALIADO# onde desejar<br> exibir o nome do colaborador avaliado.'
+				content: 'Utilize a expressão #AVALIADO# onde desejar<br> exibir o nome do ${tipoAvaliado} avaliado.'
 				,
 				style: {
 		        	 width: '280px'
