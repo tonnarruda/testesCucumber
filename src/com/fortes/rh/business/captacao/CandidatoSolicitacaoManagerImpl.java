@@ -2,6 +2,7 @@ package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -94,9 +95,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         getDao().updateSolicitacaoCandidatos(solicitacao, lista);
     }
 
-    public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato)
+    public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim)
     {
-        return getDao().getCandidatosBySolicitacao(LongUtil.arrayStringToArrayLong(etapaCheck), empresaId, statusSolicitacao, situacaoCandidato);
+        return getDao().getCandidatosBySolicitacao(LongUtil.arrayStringToArrayLong(etapaCheck), empresaId, statusSolicitacao, situacaoCandidato, dataIni, dataFim);
     }
 
     public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos)

@@ -2,6 +2,7 @@ package com.fortes.rh.dao.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -25,7 +26,7 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Collection<Long> getCandidatosBySolicitacao(Long solicitacaoId);
 	Collection<CandidatoSolicitacao> getCandidatoSolicitacaoList(Integer page, Integer pagingSize, Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, boolean semHistorico, String observacaoRH, String nomeBusca, Character status);
 	Integer getCount(Long solicitacaoId, Long etapaSeletivaId, String indicadoPor, Boolean visualizar, boolean contratado, String observacaoRH, String nomeBusca);
-	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato);
+	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim);
 	Collection<Integer> getIdF2RhCandidato(Long solicitacaoId);
 	void setStatusByColaborador(Long colaboradorId, char status);
 	void removeByCandidato(Long candidatoId);
