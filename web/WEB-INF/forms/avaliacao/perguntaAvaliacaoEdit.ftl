@@ -3,11 +3,17 @@
 <head>
 <@ww.head/>
 <#if pergunta.id?exists>
-	<title>Editar Critério de Avaliação</title>
+	<title>Editar Pergunta da Avaliação</title>
 	<#assign formAction="update.action"/>
 <#else>
-	<title>Inserir Critério de Avaliação</title>
+	<title>Inserir Pergunta da Avaliação</title>
 	<#assign formAction="insert.action"/>
+</#if>
+
+<#if modeloAvaliacao?exists && modeloAvaliacao == 'S'>
+	<#assign tipoAvaliado="candidato"/>
+<#else>
+	<#assign tipoAvaliado="colaborador"/>
 </#if>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
@@ -23,7 +29,7 @@
 			$("#aspecto").autocomplete(aspectos);
 			
 			$('#criterioTooltipHelp').qtip({
-				content: 'Utilize a expressão #AVALIADO# onde desejar<br> exibir o nome do colaborador avaliado.'
+				content: 'Utilize a expressão #AVALIADO# onde desejar<br> exibir o nome do ${tipoAvaliado} avaliado.'
 				,
 				style: {
 		        	 width: '280px'
@@ -236,7 +242,7 @@
 		<br>
 		<@ww.select label="Ordem" name="pergunta.ordem" id="ordem" list="ordens" required="true" cssStyle="width:40px;text-align:right;" liClass="liLeft"/>
 		<@ww.textfield id="peso" label="Peso" name="pergunta.peso" maxLength="4" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;text-align:right;"/>
-		Critério:* <br> <@ww.textfield theme="simple" id="criterio" label="Critério" name="pergunta.texto" required="true" cssStyle="width: 350px;"/>
+		Pergunta:* <br> <@ww.textfield theme="simple" id="criterio" label="Pergunta" name="pergunta.texto" required="true" cssStyle="width: 350px;"/>
 		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 		<@ww.select label="Tipos de Respostas" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
 		

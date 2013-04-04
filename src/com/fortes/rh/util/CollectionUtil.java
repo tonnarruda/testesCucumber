@@ -191,7 +191,7 @@ public final class CollectionUtil<T>
 
 	public List convertCollectionToList(Collection coll)
 	{
-		List listTmp = new ArrayList();
+		List listTmp = new ArrayList(coll.size());
 		for (Object obj : coll)
 		{
 			listTmp.add(obj);

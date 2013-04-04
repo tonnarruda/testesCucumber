@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -31,6 +32,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	private AspectoManager aspectoManager;
 	private RespostaManager respostaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacao;
 	
@@ -114,7 +116,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 			pergunta = null;
 			prepareInsert();
 			
-			addActionMessage("Critério gravado com sucesso.");
+			addActionMessage("Pergunta gravada com sucesso.");
 			
 		} catch (Exception e)
 		{
@@ -143,7 +145,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 			
 			pergunta.setAvaliacao(avaliacao);
 			perguntaManager.atualizarPergunta(pergunta, respostaObjetiva, IntegerUtil.arrayStringToArrayInteger(pesoRespostaObjetiva));
-			addActionMessage("Critério atualizado com sucesso!");
+			addActionMessage("Pergunta atualizada com sucesso!");
 		} 
 		catch (Exception e)
 		{
@@ -160,13 +162,21 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	{
 		if (avaliacao != null && avaliacao.getId() != null)
 		{
-			Collection<ColaboradorQuestionario> colabQuestionarios = colaboradorQuestionarioManager.findByQuestionario(avaliacao.getId());
-			if (colabQuestionarios != null && !colabQuestionarios.isEmpty())
-				temCriterioRespondido = true;
+			if(modeloAvaliacao == 'S')
+			{
+				Integer qtdCandidatosResponderam = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacao.getId());
+				if (qtdCandidatosResponderam > 0)
+					temCriterioRespondido = true;
+			}else
+			{
+				Collection<ColaboradorQuestionario> colabQuestionarios = colaboradorQuestionarioManager.findByQuestionario(avaliacao.getId());
+				if (colabQuestionarios != null && !colabQuestionarios.isEmpty())
+					temCriterioRespondido = true;
+			}
 		}
 		
 		if (temCriterioRespondido)
-			addActionMessage("Esta Avaliação já possui critérios respondidos. Só é possível visualizá-los.");
+			addActionMessage("Esta Avaliação já possui perguntas respondidas. Só é possível visualizá-las.");
 	}
 
 	public String list() throws Exception
@@ -180,7 +190,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		perguntaManager.removerPergunta(pergunta);
-		addActionMessage("Critério excluído com sucesso.");
+		addActionMessage("Pergunta excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -313,5 +323,10 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 
 	public TipoModeloAvaliacao getTipoModeloAvaliacao() {
 		return tipoModeloAvaliacao;
+	}
+
+	public void setColaboradorRespostaManager(
+			ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}	
 }

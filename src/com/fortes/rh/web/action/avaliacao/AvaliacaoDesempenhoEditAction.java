@@ -233,7 +233,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			
 			
 			resultados = avaliacaoDesempenhoManager.montaResultado(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho, agruparPorAspectos, desconsiderarAutoAvaliacao);
-			parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Resultado por Critérios\nPeríodo: " + avaliacaoDesempenho.getPeriodoFormatado());
+			parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Resultado por Perguntas\nPeríodo: " + avaliacaoDesempenho.getPeriodoFormatado());
 			
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
 			parametros.put("QUESTIONARIO_ANONIMO", avaliacaoDesempenho.isAnonima());

@@ -30,7 +30,7 @@
 		<@frt.checkListBox name="colaboradorsCheck" label="Avaliados *" list="colaboradorsCheckList" width="600" height="300"/>
 		
 		
-		<@ww.select label="Resultado" required="true" name="opcaoResultado" id="opcaoResultado" list=r"#{'avaliador':'Resultado por Avaliador', 'criterio':'Resultado por Critérios'}" onchange="filtrarOpt(this.value);"/>
+		<@ww.select label="Resultado" required="true" name="opcaoResultado" id="opcaoResultado" list=r"#{'avaliador':'Resultado por Avaliador', 'criterio':'Resultado por Perguntas'}" onchange="filtrarOpt(this.value);"/>
 		
 		<div id="opcoesDoRelatorio">
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>

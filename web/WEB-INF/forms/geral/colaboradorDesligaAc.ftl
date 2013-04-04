@@ -26,8 +26,6 @@
 					document.form.action = 'solicitacaoDesligamento.action';
 					newConfirm('Confirma Solicitação de Desligamento?', function(){document.form.submit();});
 				}
-
-				}else
 			}
 		}
 	</script>

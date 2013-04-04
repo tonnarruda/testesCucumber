@@ -2,6 +2,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -428,7 +429,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return (Integer) criteria.uniqueResult();
     }
 
-	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato) 
+	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim) 
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoCandidato.class, "hc2");
         ProjectionList pSub = Projections.projectionList().create();
@@ -436,6 +437,9 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         pSub.add(Projections.max("hc2.data"));
         subQuery.setProjection(pSub);
         subQuery.add(Restrictions.sqlRestriction("this0__.candidatoSolicitacao_id=cs1_.id"));
+        
+        if (dataIni != null && dataFim != null) 
+        	subQuery.add(Expression.between("hc2.data", dataIni, dataFim));
         
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs");

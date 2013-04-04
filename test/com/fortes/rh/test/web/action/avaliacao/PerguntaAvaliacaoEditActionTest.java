@@ -54,7 +54,7 @@ public class PerguntaAvaliacaoEditActionTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(1L)).will(returnValue(colaboradorQuestionarios));
 		
 		assertEquals("success", action.list());
-		assertEquals("Esta Avaliação já possui critérios respondidos. Só é possível visualizá-los.", action.getActionMessages().toArray()[0]);
+		assertEquals("Esta Avaliação já possui perguntas respondidas. Só é possível visualizá-las.", action.getActionMessages().toArray()[0]);
 	}
 
 	public void testDelete() throws Exception
