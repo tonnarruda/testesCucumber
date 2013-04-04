@@ -163,9 +163,9 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacaos.add(cs1);
 		candidatoSolicitacaos.add(cs2);
 
-		candidatoSolicitacaoDao.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING, eq(empresaId), ANYTHING, ANYTHING).will(returnValue(candidatoSolicitacaos));
+		candidatoSolicitacaoDao.expects(once()).method("getCandidatosBySolicitacao").with(new Constraint[]{ANYTHING, eq(empresaId), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(candidatoSolicitacaos));
 
-		candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, empresaId, StatusSolicitacao.TODAS, Apto.SIM);
+		candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, empresaId, StatusSolicitacao.TODAS, Apto.SIM, null, null);
     }
 
     public void testPromover()

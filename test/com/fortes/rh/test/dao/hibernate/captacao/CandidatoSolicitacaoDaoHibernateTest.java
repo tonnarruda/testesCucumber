@@ -3,8 +3,6 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.tools.ant.taskdefs.Apt;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
@@ -109,13 +107,16 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao.setCandidato(candidato);
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
-
+		
 		EtapaSeletiva entrevista = EtapaSeletivaFactory.getEntity();
 		etapaSeletivaDao.save(entrevista);
 
 		EtapaSeletiva redacao = EtapaSeletivaFactory.getEntity();
 		etapaSeletivaDao.save(redacao);
 
+		EtapaSeletiva entrevistaComGerente = EtapaSeletivaFactory.getEntity();
+		etapaSeletivaDao.save(entrevistaComGerente);
+		
 		HistoricoCandidato historicoCandidatoEntrevista = new HistoricoCandidato();
 		historicoCandidatoEntrevista.setData(DateUtil.criarDataMesAno(01, 01, 2000));
 		historicoCandidatoEntrevista.setCandidatoSolicitacao(candidatoSolicitacao);
@@ -130,10 +131,24 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		historicoCandidatoRedacao.setEtapaSeletiva(redacao);
 		historicoCandidatoDao.save(historicoCandidatoRedacao);
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM);
+		HistoricoCandidato historicoCandidatoEntrevistaInicial = new HistoricoCandidato();
+		historicoCandidatoEntrevistaInicial.setData(DateUtil.criarDataMesAno(31, 12, 2002));
+		historicoCandidatoEntrevistaInicial.setCandidatoSolicitacao(candidatoSolicitacao);
+		historicoCandidatoEntrevistaInicial.setApto(Apto.SIM);
+		historicoCandidatoEntrevistaInicial.setEtapaSeletiva(entrevistaComGerente);
+		historicoCandidatoDao.save(historicoCandidatoEntrevistaInicial);
+		
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevistaComGerente.getId(), entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM, DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(02, 02, 2002));
+		Collection<CandidatoSolicitacao> candidatoSolicitacaosSemData = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevistaComGerente.getId(), entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM, null, null);
+		Collection<CandidatoSolicitacao> candidatoSolicitacaosVazio = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevistaComGerente.getId(), entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM, DateUtil.criarDataMesAno(01, 01, 2003), DateUtil.criarDataMesAno(02, 02, 2003));
 
-		assertEquals(1, candidatoSolicitacaos.size());
+		assertEquals("Datas dentro do período",1, candidatoSolicitacaos.size());
 		assertEquals(redacao, ((CandidatoSolicitacao)candidatoSolicitacaos.toArray()[0]).getEtapaSeletiva());
+		
+		assertEquals("Sem datas para o período", 1, candidatoSolicitacaosSemData.size());
+		assertEquals(entrevistaComGerente, ((CandidatoSolicitacao)candidatoSolicitacaosSemData.toArray()[0]).getEtapaSeletiva());
+		
+		assertEquals("Datas fora do período", 0, candidatoSolicitacaosVazio.size());
 	}
 
 	

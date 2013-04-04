@@ -152,6 +152,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	private int qtdAvaliacoesRespondidas;
 	private boolean obrigarAmbienteFuncao;
+	private Date dataIni;
+	private Date dataFim;
 
     private void prepare() throws Exception
     {
@@ -340,7 +342,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         String titulo = "Lista de Candidatos da Seleção.";
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), StatusSolicitacao.getDescricao(statusSolicitacao));
 
-        candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, getEmpresaSistema().getId(), statusSolicitacao, situacaoCandidato);
+        candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, getEmpresaSistema().getId(), statusSolicitacao, situacaoCandidato, dataIni, dataFim);
 
         if(candidatoSolicitacaos.size() > 0)
         {
@@ -852,5 +854,15 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public boolean isObrigarAmbienteFuncao() {
 		return obrigarAmbienteFuncao;
+	}
+	
+	public void setDataIni(Date dataIni)
+	{
+		this.dataIni = dataIni;
+	}
+	
+	public void setDataFim(Date dataFim)
+	{
+		this.dataFim = dataFim;
 	}
 }

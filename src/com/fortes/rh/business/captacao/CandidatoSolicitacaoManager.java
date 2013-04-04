@@ -2,6 +2,7 @@ package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -15,7 +16,7 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
 	void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status);
 	void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
-	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato);
+	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
 	String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception;
 	Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos,Long empresaId);
