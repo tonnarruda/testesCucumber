@@ -81,7 +81,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 		if(funcao != null && funcao.getId() != null)
 			funcao = funcaoManager.findByIdProjection(funcao.getId());
 
-		Collection<Exame> exames = exameManager.findAllSelect(getEmpresaSistema().getId());
+		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), true);
 	}

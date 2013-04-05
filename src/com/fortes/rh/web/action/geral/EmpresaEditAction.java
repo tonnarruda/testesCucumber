@@ -65,7 +65,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private File imgCartaoAniversariante;
 	private Collection<Empresa> empresas;
 	private Collection<GrupoAC> grupoACs;
-	private Collection<Exame> exames;
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<Colaborador> colaboradores;
@@ -121,7 +120,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		exames = exameManager.findAllSelect(empresa.getId());
 
 		if (empresa != null && empresa.getUf() != null && empresa.getUf().getId() != null)
 			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{empresa.getUf().getId()}, new String[]{"nome"});
@@ -144,10 +142,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		
 		if(StringUtils.isEmpty(empresa.getImgAniversarianteUrl()))
 			empresa.setImgAniversarianteUrl("aniversariantes.jpg");
-		
-		//evitando problema de vir instância sem o id (TransientObjectException) 
-		if (empresa.getExame() != null && empresa.getExame().getId() == null)
-			empresa.setExame(null);
 		
 		empresaManager.save(empresa);
 		
@@ -189,10 +183,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (empresaManager.checkEmpresaCodACGrupoAC(empresa)){
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
 		}
-		
-		//evitando problema de vir instância sem o id (TransientObjectException) 
-		if (empresa.getExame() != null && empresa.getExame().getId() == null)
-			empresa.setExame(null);
 		
 		if (empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
 		{
@@ -418,10 +408,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
-	}
-
-	public Collection<Exame> getExames() {
-		return exames;
 	}
 
 	public void setExameManager(ExameManager exameManager) {

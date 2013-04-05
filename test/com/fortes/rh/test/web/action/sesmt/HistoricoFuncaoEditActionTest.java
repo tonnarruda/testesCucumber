@@ -71,7 +71,7 @@ public class HistoricoFuncaoEditActionTest extends MockObjectTestCase
     	historicoFuncao.setId(1L);
     	action.setHistoricoFuncao(historicoFuncao);
 
-    	exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
+    	exameManager.expects(once()).method("findByEmpresaComAsoPadrao").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	manager.expects(once()).method("findById").with(eq(historicoFuncao.getId())).will(returnValue(historicoFuncao));
     	riscoManager.expects(once()).method("findRiscosFuncoesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoFuncao>()));
@@ -90,7 +90,7 @@ public class HistoricoFuncaoEditActionTest extends MockObjectTestCase
 
     	action.setHistoricoFuncao(historicoFuncao);
 
-    	exameManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
+    	exameManager.expects(once()).method("findByEmpresaComAsoPadrao").with(ANYTHING).will(returnValue(new ArrayList<Exame>()));
     	epiManager.expects(once()).method("populaCheckToEpi").with(eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Epi>()));
     	manager.expects(once()).method("findById").with(eq(historicoFuncao.getId())).will(returnValue(historicoFuncao));
     	riscoManager.expects(once()).method("findRiscosFuncoesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoFuncao>()));

@@ -13,6 +13,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -392,33 +393,48 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	{
 		getSession().flush();
 		
+		StringBuilder sqlBody = new StringBuilder();
 		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct e.id, e.nome, e.periodicidade, true as relacionadoAoColaborador ");
-		sql.append("from exame e ");
-		sql.append("left join historicofuncao_exame hfe on e.id = hfe.exames_id ");
-		sql.append("left join historicofuncao hf on hfe.historicofuncao_id = hf.id ");
-		sql.append("left join historicocolaborador hc on (hc.funcao_id = hf.funcao_id and hc.colaborador_id = :colaboradorId) ");
-		sql.append("where e.empresa_id = :empresaId  ");
-		sql.append("and hf.data=( select max(hf2.data) from historicofuncao hf2 where hf2.funcao_id=hf.funcao_id ) ");
-		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id=hc.colaborador_id )  ");
+
+		sqlBody.append("from exame e ");
+		sqlBody.append("left join historicofuncao_exame hfe on e.id = hfe.exames_id ");
+		sqlBody.append("left join historicofuncao hf on hfe.historicofuncao_id = hf.id ");
+		sqlBody.append("left join historicocolaborador hc on (hc.funcao_id = hf.funcao_id and hc.colaborador_id = :colaboradorId) ");
+		sqlBody.append("where (e.empresa_id = :empresaId or e.empresa_id is null) ");
+		sqlBody.append("and hf.data=( select max(hf2.data) from historicofuncao hf2 where hf2.funcao_id=hf.funcao_id ) ");
+		sqlBody.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id=hc.colaborador_id )  ");
+
+		sql.append("select distinct e.id, e.nome, e.periodicidade, e.aso, true as relacionadoAoColaborador ");
+		sql.append(sqlBody);
 		
 		sql.append("union ");
 		
-		sql.append("select e.id, e.nome, e.periodicidade, false as relacionadoAoColaborador ");
+		sql.append("select distinct e.id, e.nome, e.periodicidade, e.aso, false as relacionadoAoColaborador ");
+		sql.append("from exame e ");
+		sql.append("where e.aso = true ");
+		sql.append("and e.id not in  ");
+		sql.append("( ");
+		sql.append("	select distinct e.id ");
+		sql.append(sqlBody);
+		sql.append(")  ");
+		
+		sql.append("union ");
+		
+		sql.append("select e.id, e.nome, e.periodicidade, e.aso, false as relacionadoAoColaborador ");
 		sql.append("from exame e  ");
 		sql.append("where e.empresa_id = :empresaId  ");
 		sql.append("and e.id not in  ");
 		sql.append("( ");
 		sql.append("	select distinct e.id ");
-		sql.append("	from exame e ");
-		sql.append("	left join historicofuncao_exame hfe on e.id = hfe.exames_id ");
-		sql.append("	left join historicofuncao hf on hfe.historicofuncao_id = hf.id ");
-		sql.append("	left join historicocolaborador hc on (hc.funcao_id = hf.funcao_id and hc.colaborador_id = :colaboradorId) ");
-		sql.append("	where e.empresa_id = :empresaId  ");
-		sql.append("	and hf.data=( select max(hf2.data) from historicofuncao hf2 where hf2.funcao_id=hf.funcao_id ) ");
-		sql.append("	and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id=hc.colaborador_id )  ");
+		sql.append(sqlBody);
 		sql.append(")  ");
-		sql.append("order by 4 desc,2 ");
+		sql.append("and e.id not in  ");
+		sql.append("( ");
+		sql.append("	select distinct e.id ");
+		sql.append("from exame e ");
+		sql.append("where e.aso = true ");
+		sql.append(")  ");
+		sql.append("order by 4 desc, 5 desc, 2 ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		query.setLong("empresaId", empresaId);
@@ -436,10 +452,48 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			exame.setId(new BigInteger(obj[i].toString()).longValue());
 			exame.setNome(obj[++i].toString());
 			exame.setPeriodicidade(new Integer(obj[++i].toString()));
+			exame.setAso(new Boolean(obj[++i].toString()));
 			exame.setRelacionadoAoColaborador(new Boolean(obj[++i].toString()));
 			exames.add(exame);
 		}
 		
 		return exames;
+	}
+
+	public Collection<Exame> findByEmpresaComAsoPadrao(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Exame.class, "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.periodicidade"), "periodicidade");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.or(Expression.eq("e.empresa.id", empresaId), Expression.isNull("e.empresa.id")));
+
+		criteria.addOrder(Order.desc("e.aso"));
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Exame.class));
+
+		return criteria.list();
+	}
+	
+	public Collection<Exame> findAsoPadrao() 
+	{
+		Criteria criteria = getSession().createCriteria(Exame.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.periodicidade"), "periodicidade");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("e.aso", true));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Exame.class));
+		
+		return criteria.list();
 	}
 }

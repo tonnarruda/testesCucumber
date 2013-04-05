@@ -214,18 +214,9 @@
     <property name="dao">
       <ref bean="exameDao" />
     </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
-    </property>
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
-    <property name="mail">
-      <ref bean="mail" />
-    </property>
-    <property name="colaboradorManager">
-      <ref bean="colaboradorManager" />
-    </property>    
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>    

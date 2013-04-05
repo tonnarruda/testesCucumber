@@ -31,7 +31,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		query.executeUpdate();
 	}
 
-	public Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId)
+	public Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId, Boolean asoPadrao)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ese");
 		criteria.createCriteria("ese.solicitacaoExame", "se");
@@ -53,10 +53,13 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 		p.add(Projections.property("cli.id"), "projectionClinicaId");
 
 		criteria.setProjection(p);
-
 		criteria.add(Expression.eq("se.id", solicitacaoExameId));
 
-		criteria.addOrder( Order.asc("e.nome") );
+		if(asoPadrao!= null)
+			criteria.add(Expression.eq("e.aso", asoPadrao));
+		
+		criteria.addOrder(Order.desc("e.aso") );
+		criteria.addOrder(Order.asc("e.nome") );
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
@@ -80,6 +83,7 @@ public class ExameSolicitacaoExameDaoHibernate extends GenericDaoHibernate<Exame
 
 		criteria.add(Expression.in("se.id", solicitacaoExameIds));
 
+		criteria.addOrder( Order.desc("e.aso") );
 		criteria.addOrder( Order.asc("e.nome") );
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

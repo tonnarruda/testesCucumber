@@ -34,7 +34,7 @@ public class ClinicaAutorizadaEditAction extends MyActionSupportEdit
 			clinicaAutorizada = (ClinicaAutorizada) clinicaAutorizadaManager.findById(clinicaAutorizada.getId());
 
 		tipos = new TipoClinica();
-		exames = exameManager.findAllSelect(getEmpresaSistema().getId());
+		exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome");
 		tipoOutros = clinicaAutorizadaManager.findTipoOutrosDistinctByEmpresa(getEmpresaSistema().getId());
 	}

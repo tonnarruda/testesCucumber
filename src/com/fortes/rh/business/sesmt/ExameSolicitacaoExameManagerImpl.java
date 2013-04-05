@@ -59,9 +59,9 @@ public class ExameSolicitacaoExameManagerImpl extends GenericManagerImpl<ExameSo
 		return getDao().findBySolicitacaoExame(solicitacaoExameIds);
 	}
 
-	public Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId)
+	public Collection<ExameSolicitacaoExame> findBySolicitacaoExame(Long solicitacaoExameId, Boolean asoPadrao)
 	{
-		return getDao().findBySolicitacaoExame(solicitacaoExameId);
+		return getDao().findBySolicitacaoExame(solicitacaoExameId, asoPadrao);
 	}
 
 	public boolean verificaExisteResultado(Collection<ExameSolicitacaoExame> exameSolicitacaoExames)

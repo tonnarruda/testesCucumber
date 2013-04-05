@@ -160,9 +160,6 @@
 		<@ww.textfield label="Representante Legal" name="empresa.representanteLegal" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>
-		
-		<@ww.select label="Exame ASO" name="empresa.exame.id" id="exame" list="exames" disabled="${somenteLeitura}"  cssStyle="width: 447px;" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
-		
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
 		<@ww.checkbox label="Exibir o campo Colaborador Substituído na Solicitação de Pessoal" name="empresa.exibirColaboradorSubstituido" id="exibirColaboradorSubstituido" labelPosition="right" /><br>

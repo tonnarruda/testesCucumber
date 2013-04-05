@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ASOExames" pageWidth="594" pageHeight="612" whenNoDataType="AllSectionsNoDetail" columnWidth="594" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4a64ade6-4150-4533-b8ae-85317b91005f">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.x" value="535"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -14,6 +14,7 @@
 	<parameter name="VERSAO_SISTEMA" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="USUARIO_NOME" class="java.lang.String" isForPrompting="false"/>
 	<field name="exame.nome" class="java.lang.String"/>
+	<field name="realizacaoExame.dataFormatadaRelatorio" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -31,10 +32,10 @@
 			<staticText>
 				<reportElement uuid="f52e40cf-e431-4f08-bab6-76325df7f11f" key="staticText-2" x="0" y="0" width="473" height="16"/>
 				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
@@ -50,19 +51,17 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{exame.nome}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="d0a091f2-9fe5-4de8-a68d-01f1fbc31a27" key="staticText-1" x="473" y="0" width="94" height="16"/>
-				<box rightPadding="10">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8c8ef0dc-c44a-47d3-86cd-25bdbde9c831" key="textField" x="473" y="0" width="94" height="16"/>
+				<box>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[____/____/____]]></text>
-			</staticText>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{realizacaoExame.dataFormatadaRelatorio}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

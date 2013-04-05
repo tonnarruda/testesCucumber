@@ -91,8 +91,6 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean campoExtraCandidato;
 	@Lob
     private String mailNaoAptos;
-    @OneToOne
-    private Exame exame; // Exame ASO
     
     private boolean turnoverPorSolicitacao;
     
@@ -403,14 +401,6 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setMailNaoAptos(String mailNaoAptos) {
 		this.mailNaoAptos = mailNaoAptos;
-	}
-
-	public Exame getExame() {
-		return exame;
-	}
-
-	public void setExame(Exame exame) {
-		this.exame = exame;
 	}
 
 	public String getEmailRespLimiteContrato() {

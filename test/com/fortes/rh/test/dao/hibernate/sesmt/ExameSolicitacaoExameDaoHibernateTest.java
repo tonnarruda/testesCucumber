@@ -77,7 +77,7 @@ public class ExameSolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTe
 		exameSolicitacaoExame.setRealizacaoExame(realizacaoExame);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame);
 
-		Collection<ExameSolicitacaoExame> resultado = exameSolicitacaoExameDao.findBySolicitacaoExame(solicitacaoExame.getId());
+		Collection<ExameSolicitacaoExame> resultado = exameSolicitacaoExameDao.findBySolicitacaoExame(solicitacaoExame.getId(), null);
 
 		assertEquals(1, resultado.size());
 		assertEquals(solicitacaoExame.getId(), ((ExameSolicitacaoExame)resultado.toArray()[0]).getSolicitacaoExame().getId());
