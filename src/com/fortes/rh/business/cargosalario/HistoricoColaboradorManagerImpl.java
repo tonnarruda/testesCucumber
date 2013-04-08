@@ -1423,7 +1423,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception 
 	{
-		if (todosHistoricos == null)
+		if (todosHistoricos == null || todosHistoricos.isEmpty())
 			return null;
 		
 		HistoricoColaborador ultimoHistoricoValido = (HistoricoColaborador) todosHistoricos.toArray()[0];

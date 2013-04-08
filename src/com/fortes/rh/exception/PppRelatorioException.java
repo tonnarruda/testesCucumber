@@ -17,10 +17,14 @@ public class PppRelatorioException extends Exception
 	
 	private boolean ativo=false;
 	
-	
 	public PppRelatorioException()
 	{
-		super("Erro ao gerar relatório. Solucione os problemas antes de prosseguir: <br>");
+		super("Não foi possível gerar o relatório. Verifique as informações abaixo antes de prosseguir: <br>");
+	}
+	
+	public PppRelatorioException(String mensagem)
+	{
+		super(mensagem);
 	}
 	
 	private void ativar()
@@ -63,7 +67,7 @@ public class PppRelatorioException extends Exception
 	}
 	
 	// mensagens que barram a geração do PPP. (errors)
-	public final String getMensagemDeErro()
+	public final String getMensagemDeInformacao()
 	{
 		StringBuilder messageFmt = new StringBuilder();
 		messageFmt.append(getMessage());

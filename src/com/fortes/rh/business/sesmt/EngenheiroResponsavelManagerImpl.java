@@ -22,29 +22,17 @@ public class EngenheiroResponsavelManagerImpl extends GenericManagerImpl<Engenhe
 		Collection<EngenheiroResponsavel> resultado = new ArrayList<EngenheiroResponsavel>();
 
 		for (EngenheiroResponsavel engenheiroResponsavel : engenheiroResponsavels) {
-			//			if (engenheiroResponsavel.getInicio().compareTo(data) <= 0 && (colaborador.getDataDesligamento() != null && (engenheiroResponsavel.getInicio().compareTo(colaborador.getDataDesligamento()) <= 0))) {
-			//				if (engenheiroResponsavel.getInicio().compareTo(colaborador.getDataAdmissao()) < 0) {
-			//					engenheiroResponsavel.setInicio(colaborador.getDataAdmissao());
-			//				}
-			//
-			//				if (engenheiroResponsavel.getFim() != null && colaborador.getDataDesligamento() != null && (engenheiroResponsavel.getFim().compareTo(colaborador.getDataDesligamento()) > 0)) {
-			//					engenheiroResponsavel.setFim(colaborador.getDataDesligamento());
-			//				} else if (engenheiroResponsavel.getFim() != null && colaborador.getDataDesligamento() != null) {
-			//					engenheiroResponsavel.setFim(colaborador.getDataDesligamento());
-			//				} else if (engenheiroResponsavel.getFim() == null && colaborador.getDataDesligamento() != null) {
-			//					engenheiroResponsavel.setFim(colaborador.getDataDesligamento());
-			//				}
 
-			if (engenheiroResponsavel.getInicio().compareTo(data) <= 0 && colaborador.getDataAdmissao().compareTo(data) <= 0 
-					&& (colaborador.getDataDesligamento() == null || engenheiroResponsavel.getInicio().compareTo(colaborador.getDataDesligamento()) <= 0) 
-					&& (engenheiroResponsavel.getFim() == null || colaborador.getDataAdmissao().compareTo(engenheiroResponsavel.getFim()) <= 0)) 
-			{
-				resultado.add(engenheiroResponsavel);
-			} 
-			else
-			{
-				break;
+			if (engenheiroResponsavel.getInicio().compareTo(data) <= 0) { 
+				if (colaborador.getDataAdmissao().compareTo(data) <= 0 
+						&& (colaborador.getDataDesligamento() == null || engenheiroResponsavel.getInicio().compareTo(colaborador.getDataDesligamento()) <= 0) 
+						&& (engenheiroResponsavel.getFim() == null || colaborador.getDataAdmissao().compareTo(engenheiroResponsavel.getFim()) <= 0)) 
+				{
+					resultado.add(engenheiroResponsavel);
+				} 
 			}
+			else
+				break;
 		}
 
 		return resultado;

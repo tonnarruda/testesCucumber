@@ -57,6 +57,7 @@ public class EngenheiroResponsavelDaoHibernate extends GenericDaoHibernate<Engen
 
 		criteria.add(Expression.eq("emp.id", empresaId));
 		
+		// Esta ordem é importante para a montagem do relatório
 		criteria.addOrder(Order.asc("e.inicio"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EngenheiroResponsavel.class));
