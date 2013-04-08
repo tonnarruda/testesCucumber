@@ -100,24 +100,12 @@
 				<param name="documentName">rankingPerformaceExperiencia.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Avaliado,Avaliador,Avaliação,Respondido em,Performance,Média</param>
-				<param name="propertiesGroup">nome</param>
-				<param name="properties">nome,nomeAvaliador,avaliacaoDesempenhoTitulo,respondidaEmFormatada,performance,mediaPerformanceFormatada</param>
+				<param name="propertiesGroup">nome,avaliacaoDesempenhoTitulo,nomeAvaliador</param>
+				<param name="properties">nome,avaliacaoDesempenhoTitulo,nomeAvaliador,respondidaEmFormatada,performance,mediaPerformanceFormatada</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
-		
-		<!-- 
-		<action name="impRankPerformAvDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="impRankPerformAvDesempenho">
-		  	<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenho.jasper</param>
-				<param name="dataSource">colaboradores</param>
-				<param name="parametersMap">parametros</param>
-				<param name="documentName">rankingPerformanceAvDesempenho.pdf</param>
-			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
-		</action>
- 		-->
 	</package>
 </xwork>
