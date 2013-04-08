@@ -243,6 +243,8 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		solicitacaoExame.setMedicoCoordenador(medicoCoordenador);
 		
 		solicitacaoExameDao.expects(once()).method("findById").will(returnValue(solicitacaoExame));
+		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(false)).will(returnValue(solicitacaoExame));
+		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(true)).will(returnValue(solicitacaoExame));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(null));
 		
 		SolicitacaoExame solicitacaoExameParametro = SolicitacaoExameFactory.getEntity(2L);
