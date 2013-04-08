@@ -16,6 +16,5 @@ public interface EstabelecimentoDao extends GenericDao<Estabelecimento>
 	Collection<Estabelecimento> findAllSelect(Long[] empresaIds);
 	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds);
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
-	String findCodigoACDuplicado(Long empresaId);
 	Estabelecimento findComEnderecoById(Long estabelecimentoId);
 }

@@ -60,6 +60,9 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoColaborador> historicosDoColaboradors = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
+		if(historicosDoColaboradors == null || historicosDoColaboradors.isEmpty())
+			throw new PppRelatorioException("Não existe dados para gerar o relatório.");
+		
 		historicosDoColaboradors = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaboradors); 
 				
 		this.validarPpp(historicosDoColaboradors);
