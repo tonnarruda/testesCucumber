@@ -16,6 +16,7 @@ public class PppFatorRisco implements Serializable, Cloneable
 	
 	private Date dataInicio;
 	private Date dataFim;
+	private Date dataDesligamento;
 	private Risco risco;
 	private String intensidade;
 	private String tecnicaUtilizada;
@@ -138,7 +139,11 @@ public class PppFatorRisco implements Serializable, Cloneable
 	
 	public String getPeriodo()
 	{
-		return (this.dataInicio != null ? DateUtil.formataDiaMesAno(this.dataInicio) : "__/__/___") + " a " + (this.dataFim != null ? DateUtil.formataDiaMesAno(this.dataFim) : "__/__/___");
+		String dataFim = "__/__/___";
+		if(dataDesligamento != null)
+			dataFim = DateUtil.formataDiaMesAno(dataDesligamento);
+		
+		return (this.dataInicio != null ? DateUtil.formataDiaMesAno(this.dataInicio) : "__/__/___") + " a " + (this.dataFim != null ? DateUtil.formataDiaMesAno(this.dataFim) : dataFim);
 	}
 
 	public String getIntensidade() {
@@ -205,5 +210,10 @@ public class PppFatorRisco implements Serializable, Cloneable
 
 	public void setDataFinalJaSetada(boolean dataFinalJaSetada) {
 		this.dataFinalJaSetada = dataFinalJaSetada;
+	}
+
+
+	public void setDataDesligamento(Date dataDesligamento) {
+		this.dataDesligamento = dataDesligamento;
 	}
 }

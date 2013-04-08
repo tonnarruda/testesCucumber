@@ -134,7 +134,7 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		
 		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L),ANYTHING).will(returnValue(medicoCoordenadors));
 		
-		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(1L, hoje.getTime());
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(1L, hoje.getTime(), dataDesligamento);
 		
 		assertEquals(2, resultado.size());
 		

@@ -39,7 +39,7 @@ public class EngenheiroResponsavelDaoHibernate extends GenericDaoHibernate<Engen
 		return (EngenheiroResponsavel) criteria.uniqueResult();
 	}
 	
-	public Collection<EngenheiroResponsavel> findAllSelect(Long empresaId)
+	public Collection<EngenheiroResponsavel> findAllByEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(EngenheiroResponsavel.class, "e");
 		criteria.createCriteria("e.empresa", "emp");

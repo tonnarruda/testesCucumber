@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -45,6 +46,10 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Empresa empresa;
+	
+	//Utilizado no relatório de PPP
+	@Transient
+	private Date dataDesligamento;
 
     public void setProjectionEmpresaId(Long projectionEmpresaId)
 	{
@@ -66,7 +71,11 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
     
     public String getPeriodoRelatorio()
 	{
-		return DateUtil.formataDiaMesAno(this.inicio) + " a " + (this.fim != null ? DateUtil.formataDiaMesAno(this.fim) : "__/__/___");
+    	String dataFim = "__/__/___";
+    	if(dataDesligamento != null)
+    		dataFim = DateUtil.formataDiaMesAno(dataDesligamento);
+    	
+		return DateUtil.formataDiaMesAno(this.inicio) + " a " + (this.fim != null ? DateUtil.formataDiaMesAno(this.fim) : dataFim);
 	}
 
     public String getCrmRegistro()
@@ -161,5 +170,9 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 
 	public void setNit(String nit) {
 		this.nit = nit;
+	}
+
+	public void setDataDesligamento(Date dataDesligamento) {
+		this.dataDesligamento = dataDesligamento;
 	}
 }

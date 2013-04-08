@@ -31,7 +31,7 @@ public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoord
 		return getDao().getFile("assinaturaDigital", id);
 	}
 	
-	public Collection<MedicoCoordenador> getMedicosAteData(Long empresaId, Date data)
+	public Collection<MedicoCoordenador> getMedicosAteData(Long empresaId, Date data, Date dataDesligamento)
 	{
 		Collection<MedicoCoordenador> medicoCoordenadors = getDao().findByEmpresa(empresaId, "asc");
 		Collection<MedicoCoordenador> resultado = new ArrayList<MedicoCoordenador>();
@@ -43,6 +43,7 @@ public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoord
 				if (medicoCoordenador.getFim() != null && medicoCoordenador.getFim().compareTo(data) > 0)
 					medicoCoordenador.setFim(null);
 				
+				medicoCoordenador.setDataDesligamento(dataDesligamento);
 				resultado.add(medicoCoordenador);
 			}
 			else

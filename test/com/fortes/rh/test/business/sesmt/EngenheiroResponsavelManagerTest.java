@@ -1,20 +1,28 @@
 package com.fortes.rh.test.business.sesmt;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.sesmt.EngenheiroResponsavelManagerImpl;
 import com.fortes.rh.dao.sesmt.EngenheiroResponsavelDao;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 {
 	private EngenheiroResponsavelManagerImpl engenheiroResponsavelManager = new EngenheiroResponsavelManagerImpl();
 	private Mock engenheiroResponsavelDao = null;
+	
+	// Utilizado em testGetEngenheirosAteData
+	private int contador = 0;
 
 	protected void setUp() throws Exception
     {
@@ -35,43 +43,107 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 	
 	public void testGetEngenheirosAteData()
 	{
-		Calendar hoje = Calendar.getInstance();
-		Calendar antes = Calendar.getInstance();
-		antes.add(Calendar.MONTH, -2);
-		Calendar depois = Calendar.getInstance();
-		depois.add(Calendar.MONTH, +2);
+		Date data_1 = DateUtil.criarDataMesAno(01, 01, 2013);
+		Date data_2 = DateUtil.criarDataMesAno(01, 02, 2013);
+		Date data_3 = DateUtil.criarDataMesAno(01, 03, 2013);
+		Date data_4 = DateUtil.criarDataMesAno(01, 04, 2013);
+		Date data_5 = DateUtil.criarDataMesAno(01, 04, 2013);
+
+		boolean estaNaRelacao = true;
+		boolean naoEstaNaRelacao = false;
+		
+		// Teste com desligamento e fim não nulos
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_1, data_1, data_1, data_1, estaNaRelacao);
+		
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, data_5, data_2, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, data_4, data_2, data_5, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, data_3, data_2, data_5, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_1, data_3, data_2, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, data_5, data_2, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_1, data_4, data_2, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, data_5, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, data_4, data_3, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, data_3, data_4, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_1, data_2, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, data_2, data_3, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_1, data_2, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_2, data_4, data_1, data_5, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_2, data_5, data_1, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_2, data_3, data_1, data_5, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_2, data_3, data_1, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_2, data_5, data_1, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_2, data_4, data_1, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_3, data_4, data_1, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_3, data_5, data_1, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_4, data_5, data_1, data_3, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_5, data_3, data_4, data_1, data_2, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_3, data_5, data_1, data_2, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_4, data_5, data_1, data_2, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, data_5, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, data_4, data_3, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, data_3, data_4, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, data_5, data_2, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, data_5, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_4, data_5, data_2, data_3, naoEstaNaRelacao);
+
+		// Teste com desligamento e fim nulos
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_1, null, data_1, null, estaNaRelacao);
+		
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, null, data_2, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, null, data_3, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_2, null, data_1, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_3, null, data_1, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, null, data_3, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, null, data_2, null, naoEstaNaRelacao);
+		
+		// Teste com desligamento nulo
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_1, null, data_1, data_1, estaNaRelacao);
+		
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, null, data_2, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, null, data_2, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, null, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_2, null, data_1, data_4, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_2, null, data_1, data_3, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_3, null, data_1, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_4, null, data_1, data_3, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, null, data_3, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, null, data_2, data_4, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_4, null, data_2, data_3, naoEstaNaRelacao);
+		
+		// Teste com fim nulo
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_1, data_1, data_1, null, estaNaRelacao);
+		
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, data_4, data_2, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, data_3, data_2, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, data_4, data_3, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_1, data_3, data_4, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_1, data_2, data_4, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_1, data_2, data_3, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_3, data_2, data_4, data_1, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_4, data_2, data_3, data_1, null, estaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_2, data_3, data_4, data_1, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, data_4, data_3, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_2, data_3, data_4, null, naoEstaNaRelacao);
+		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, null, naoEstaNaRelacao);
+	}
+
+	private void testaSeEngenheiroFazParteDoRelatorioPPP(Date ppp, Date admissao, Date desligamento, Date inicio, Date fim, boolean estaNaRelacao)
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
+		colaboradorDoPPP.setEmpresa(empresa);
 		
 		EngenheiroResponsavel engenheiroResponsavel1 = new EngenheiroResponsavel();
-		engenheiroResponsavel1.setCrea("123");
-		engenheiroResponsavel1.setNome("João Adalberto Jr.");
-		engenheiroResponsavel1.setInicio(antes.getTime());
-		engenheiroResponsavel1.setFim(depois.getTime());
+		engenheiroResponsavel1.setInicio(inicio);
+		engenheiroResponsavel1.setFim(fim);
 		
-		EngenheiroResponsavel engenheiroResponsavel2 = new EngenheiroResponsavel();
-		engenheiroResponsavel2.setCrea("555");
-		engenheiroResponsavel2.setNome("Maria Joaquina Silva");
-		engenheiroResponsavel2.setInicio(hoje.getTime());
-		engenheiroResponsavel2.setFim(null);
+		engenheiroResponsavelDao.expects(once()).method("findAllByEmpresa").with(eq(1L)).will(returnValue(Arrays.asList(new EngenheiroResponsavel[]{engenheiroResponsavel1})));
 		
-		EngenheiroResponsavel engenheiroResponsavelFora = new EngenheiroResponsavel();
-		engenheiroResponsavelFora.setCrea("555");
-		engenheiroResponsavelFora.setNome("Amaral Gomes");
-		engenheiroResponsavelFora.setInicio(depois.getTime());
-		engenheiroResponsavelFora.setFim(depois.getTime());
+		colaboradorDoPPP.setDataAdmissao(admissao);
+		colaboradorDoPPP.setDataDesligamento(desligamento);
+		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.getEngenheirosAteData(colaboradorDoPPP, ppp);
 		
-		Collection<EngenheiroResponsavel> engenheiroResponsavels = new ArrayList<EngenheiroResponsavel>();
-		engenheiroResponsavels.add(engenheiroResponsavel1);
-		engenheiroResponsavels.add(engenheiroResponsavel2);
-		engenheiroResponsavels.add(engenheiroResponsavelFora);
-		
-		engenheiroResponsavelDao.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(engenheiroResponsavels));
-		
-		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.getEngenheirosAteData(1L, hoje.getTime());
-		
-		assertEquals(2, resultado.size());
-		
-		EngenheiroResponsavel eng2 = ((EngenheiroResponsavel) resultado.toArray()[1]);
-		assertEquals("Deve ter anulado a data FIM, pois ela é futura à data desejada, então fica em aberto", 
-				null, eng2.getFim());
+		assertEquals(++contador+"o teste.",estaNaRelacao, resultado.size() == 1);
 	}
 }
