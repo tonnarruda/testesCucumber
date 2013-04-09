@@ -321,18 +321,18 @@
 				/captacao/nivelCompetencia/prepareRelatorioMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
 				/captacao/nivelCompetencia/imprimirMatrizCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
 				/captacao/nivelCompetencia/*/**=ROLE_CAD_NIVEL_COMPETENCIA,ROLE_MOV_SOLICITACAO_CANDIDATO	
-
-				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
-				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR
-				/cargosalario/reajusteFaixaSalarial/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL
-				/cargosalario/reajusteFaixaSalarial/insert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL
-				/cargosalario/reajusteIndice/prepareInsert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_INDICE
-				/cargosalario/reajusteIndice/insert*/**=ROLE_MOV_SOLICITACAOREAJUSTE,ROLE_MOV_SOLICITACAOREAJUSTE_INDICE
-				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO
-				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO
-				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO
-				/cargosalario/reajusteIndice*/**=ROLE_DISSIDIO
+				
+				/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste*/**=ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR,ROLE_DISSIDIO_COLABORADOR
+				/cargosalario/reajusteColaborador/prepareDissidio*/**=ROLE_DISSIDIO_COLABORADOR
+				/cargosalario/reajusteColaborador/aplicarDissidio*/**=ROLE_DISSIDIO_COLABORADOR
+				/cargosalario/reajusteColaborador/prepareUpdate*/**=ROLE_DISSIDIO_COLABORADOR
+				/cargosalario/reajusteColaborador/delete*/**=ROLE_DISSIDIO_COLABORADOR
+				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO_FAIXASALARIAL
+				/cargosalario/reajusteIndice*/**=ROLE_DISSIDIO_INDICE
+				
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
+				
+				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
 				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
