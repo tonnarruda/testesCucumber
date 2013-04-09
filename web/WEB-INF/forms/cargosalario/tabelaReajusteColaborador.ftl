@@ -136,8 +136,14 @@
 
 				<tr class=${class}>
 				  	<td>
-						<a href="../reajusteColaborador/prepareUpdate.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteColaborador/delete.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
+				  		<@authz.authorize ifAllGranted="ROLE_DISSIDIO_COLABORADOR">
+							<a href="../reajusteColaborador/prepareUpdate.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" ><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>"></a>
+							<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../reajusteColaborador/delete.action?reajusteColaborador.id=${reajusteColaborador.id}&tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>"></a>
+						</@authz.authorize>
+				  		<@authz.authorize ifNotGranted="ROLE_DISSIDIO_COLABORADOR">
+							<a><img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif" border="0"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
+							<a><img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif" border="0"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
+						</@authz.authorize>
 					</td>
 				  	<td style="color: ${color}">${nomeColaborador}</td>
 				  	<td style="color: ${color}"> ${reajusteColaborador.faixaSalarialAtual.descricao}</td>
