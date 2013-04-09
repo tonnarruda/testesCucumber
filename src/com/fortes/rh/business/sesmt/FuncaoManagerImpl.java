@@ -291,9 +291,9 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		for (HistoricoColaborador historicoColaborador : historicosDoColaborador)
 		{
 			if (historicoColaborador.getAmbiente() == null)
-				pppRelatorioException.addHistoricoSemAmbiente(historicoColaborador.getData());
+				pppRelatorioException.addHistoricoSemAmbiente(historicoColaborador.getData(), historicoColaborador.getColaborador().getId());
 			if (historicoColaborador.getFuncao() == null)
-				pppRelatorioException.addHistoricoSemFuncao(historicoColaborador.getData());
+				pppRelatorioException.addHistoricoSemFuncao(historicoColaborador.getData(), historicoColaborador.getColaborador().getId());
 		}
 	}
 
@@ -306,7 +306,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				HistoricoAmbiente historicoAmbiente = historicoAmbienteManager.findUltimoHistoricoAteData(historicoColaborador.getAmbiente().getId(), historicoColaborador.getData());
 				
 				if (historicoAmbiente == null)
-					pppRelatorioException.addHistoricoSemHistoricoAmbiente(historicoColaborador.getData());
+					pppRelatorioException.addHistoricoSemHistoricoAmbiente(historicoColaborador.getData(), historicoColaborador.getAmbiente().getId());
 				else if (historicoAmbiente.getRiscoAmbientes() != null && historicoAmbiente.getRiscoAmbientes().size() > 0)
 					validaMedicaoNoHistoricoAmbiente(pppRelatorioException, historicoColaborador.getAmbiente(), historicoColaborador.getData());
 			}
@@ -322,7 +322,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				HistoricoFuncao historicoFuncao = historicoFuncaoManager.findUltimoHistoricoAteData(historicoColaborador.getFuncao().getId(), historicoColaborador.getData());
 				
 				if (historicoFuncao == null)
-					pppRelatorioException.addHistoricoSemHistoricoFuncao(historicoColaborador.getData());
+					pppRelatorioException.addHistoricoSemHistoricoFuncao(historicoColaborador.getData(), historicoColaborador.getFuncao().getId(), historicoColaborador.getFaixaSalarial().getCargo().getId());
 			}
 		}
 	}

@@ -75,7 +75,7 @@ public class PppEditAction extends MyActionSupportList
 		boolean historicoAposAdmissao = historicoColaboradorManager.verifyDataHistoricoAdmissao(colaborador.getId());
 		
 		if (historicoAposAdmissao)
-			addActionMessage("Atenção: Data da primeira situação do colaborador após a data de admissão.");
+			addActionWarning("Data da primeira situação do colaborador após a data de admissão.");
 		
 		return Action.SUCCESS;
 	}

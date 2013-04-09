@@ -3,7 +3,9 @@ package com.fortes.rh.exception;
 import java.util.Date;
 
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
+import com.opensymphony.xwork.ActionContext;
 
 public class PppRelatorioException extends Exception
 {
@@ -32,38 +34,56 @@ public class PppRelatorioException extends Exception
 		ativo = true;
 	}
 	
-	public void addHistoricoSemAmbiente(Date dataHistorico)
+	public void addHistoricoSemAmbiente(Date dataHistorico, Long colaboradorId)
 	{
 		ativar();
 		
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
+		String msg = dataFmt.concat(" - Situação do colaborador não possui Ambiente definido.");
 		
-		historicoSemAmbiente.append(dataFmt.concat(" - Situação do colaborador não possui Ambiente definido.<br>"));
+		selecionaLink(historicoSemAmbiente, colaboradorId, msg);
 	}
 	
-	public void addHistoricoSemFuncao(Date dataHistorico)
+	public void addHistoricoSemFuncao(Date dataHistorico, Long colaboradorId)
 	{
 		ativar();
 		
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
+		String msg = dataFmt.concat(" - Situação do colaborador não possui Função definida.");
 		
-		historicoSemFuncao.append(dataFmt.concat(" - Situação do colaborador não possui Função definida.<br>"));
+		selecionaLink(historicoSemFuncao, colaboradorId, msg);
+	}
+
+	private void selecionaLink(StringBuilder msgHistorico, Long colaboradorId, String msg) {
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AMBIENTE"}))
+			msgHistorico.append("<a href='../../cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action?colaborador.id=" + colaboradorId + "'>" + msg + "</a><br />");
+		else if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_HISTORICOCOLABORADOR"}))
+			msgHistorico.append("<a href='../../cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=" + colaboradorId + "'>" + msg + "</a><br />");
+		else
+			msgHistorico.append(msg + "<br />");
 	}
 	
-	public void addHistoricoSemHistoricoAmbiente(Date dataHistorico) 
+	public void addHistoricoSemHistoricoAmbiente(Date dataHistorico, Long ambienteId) 
 	{
 		ativar();
 		
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
 		
-		historicoSemHistoricoAmbiente.append(dataFmt.concat(" - Ambiente do colaborador não possui histórico nesta data.<br>"));
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_AMBIENTE"}))
+			historicoSemHistoricoAmbiente.append("<a href='../ambiente/prepareUpdate.action?ambiente.id=" + ambienteId + "'>" + dataFmt.concat(" - Ambiente do colaborador não possui histórico nesta data.</a><br />"));
+		else
+			historicoSemHistoricoAmbiente.append(dataFmt.concat(" - Ambiente do colaborador não possui histórico nesta data.<br />"));
 	}
 	
-	public void addHistoricoSemHistoricoFuncao(Date dataHistorico) 
+	public void addHistoricoSemHistoricoFuncao(Date dataHistorico, Long funcaoId, Long cargoId) 
 	{
 		ativar();
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
-		historicoSemHistoricoFuncao.append(dataFmt.concat(" - Função do colaborador não possui histórico nesta data.<br>"));
+		
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_FUNCAO"}))
+			historicoSemHistoricoFuncao.append("<a href='../funcao/prepareUpdate.action?funcao.id=" + funcaoId + "&cargoTmp.id=" + cargoId + "&veioDoSESMT=false'>" + dataFmt.concat(" - Função do colaborador não possui histórico nesta data.</a><br />"));
+		else
+			historicoSemHistoricoFuncao.append(dataFmt.concat(" - Função do colaborador não possui histórico nesta data.<br />"));
 	}
 	
 	// mensagens que barram a geração do PPP. (errors)
