@@ -242,7 +242,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	
 	public void addAsoPadrao() throws Exception
 	{
-		if(solicitacaoExame.getMotivo() != getMotivoATESTADO() && solicitacaoExame.getMotivo() != getMotivoCONSULTA() && solicitacaoExame.getMotivo() != getMotivoSOLICITACAOEXAME())
+		if(!solicitacaoExame.getMotivo().equals(getMotivoATESTADO()) && !solicitacaoExame.getMotivo().equals(getMotivoCONSULTA()) && !solicitacaoExame.getMotivo().equals(getMotivoSOLICITACAOEXAME()))
 		{
 			CollectionUtil<Exame> cuExames = new CollectionUtil<Exame>();
 			String[] examespadraoIds = cuExames.convertCollectionToArrayIdsString(exameManager.findByAsoPadrao());

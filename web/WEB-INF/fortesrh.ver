@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.105.110" data="08/04/2013">
+	<Versao id="1.1.105.110" data="09/04/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Relatórios > Lista de Candidatos da Seleção: Novo filtro por data da realização da etapa seletiva.
-			:: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Nova paginação da listagem de avaliações.
-			:: Info. Funcionais > Painel de Indicadores: Novo filtro por colocação para o indicador de turnover.
+			:: SESMT > Movimentações > Solicitações/Atendimentos Médicos: Definição dos exames "Avaliação Clínica e Anaminese Ocupacional" e "Exame de Aptidões Física e Mental na Movimentação" como padrão para o ASO e remoção da configuração do ASO padrão no cadastro de empresas.  
     	]]></Modulo>
     </Versao>
 	<Versao id="1.1.104.109" data="01/04/2013">

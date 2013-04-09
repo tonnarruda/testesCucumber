@@ -33,11 +33,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return getDao().findByIdProjection(exameId);
 	}
 
-	public Collection<Exame> findAllSelect(Long empresaId)
-	{
-		return findToList(new String[]{"id", "nome","periodicidade"}, new String[]{"id", "nome","periodicidade"}, new String[]{"empresa.id"}, new Object[]{empresaId}, new String[]{"nome"});
-	}
-
 	public Collection<Exame> findByEmpresaComAsoPadrao(Long empresaId)
 	{
 		return getDao().findByEmpresaComAsoPadrao(empresaId);
@@ -91,7 +86,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	{
 		try
 		{
-			Collection<Exame> examesTmp = findAllSelect(empresaId);
+			Collection<Exame> examesTmp = findByEmpresaComAsoPadrao(empresaId);
 			return CheckListBoxUtil.populaCheckListBox(examesTmp, "getId", "getNome");
 		}
 		catch (Exception e)

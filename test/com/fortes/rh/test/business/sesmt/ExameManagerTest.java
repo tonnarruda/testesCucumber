@@ -190,23 +190,16 @@ public class ExameManagerTest extends MockObjectTestCase
     	assertEquals(0, exameManager.findByHistoricoFuncao(1L).size());
 	}
 
-    public void testFindAllSelect()
-	{
-    	Long empresaId=3L;
-    	exameDao.expects(once()).method("findToList").will(returnValue(new ArrayList<Exame>()));
-		assertEquals(0, exameManager.findAllSelect(empresaId).size());
-	}
-
     public void testPopulaCheckBox()
     {
     	Long empresaId=3L;
-    	exameDao.expects(once()).method("findToList").will(returnValue(new ArrayList<Exame>()));
+    	exameDao.expects(once()).method("findByEmpresaComAsoPadrao").will(returnValue(new ArrayList<Exame>()));
     	assertNotNull(exameManager.populaCheckBox(empresaId));
     }
     public void testPopulaCheckBoxException()
     {
     	Long empresaId=3L;
-    	exameDao.expects(once()).method("findToList").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    	exameDao.expects(once()).method("findByEmpresaComAsoPadrao").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     	assertNotNull(exameManager.populaCheckBox(empresaId));
     }
     

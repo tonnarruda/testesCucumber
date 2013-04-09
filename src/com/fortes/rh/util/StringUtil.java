@@ -320,21 +320,29 @@ public final class StringUtil
 	
 	public static String[] appendAllDistinct(String[] arrs, String[] elements) 
 	{
-		Collection<String> repeat = new ArrayList<String>();
-		for (String arr : arrs) 
+		if (arrs == null && elements == null)
+			return new String[]{};
+		else if(arrs != null && elements == null)
+			return arrs;
+		else if (arrs == null && elements != null)
+			return elements;
+		else {
+			Collection<String> repeat = new ArrayList<String>();
+			for (String arr : arrs) 
+				for (String element : elements) 
+					if(arr.equals(element))
+						repeat.add(arr);
+			
+			int i = arrs.length;
+			int N = arrs.length + elements.length - repeat.size();
+			arrs = Arrays.copyOf(arrs, N);
+			
 			for (String element : elements) 
-				if(arr.equals(element))
-					repeat.add(arr);
-		
-		int i = arrs.length;
-		int N = arrs.length + elements.length - repeat.size();
-		arrs = Arrays.copyOf(arrs, N);
-		
-		for (String element : elements) 
-			if(!repeat.contains(element))
-				arrs[i++] = element;
-		
-		return arrs;
+				if(!repeat.contains(element))
+					arrs[i++] = element;
+			
+			return arrs;
+		}
 	}
 	
 	public static String converteCollectionToString(Collection<String> colecao)
