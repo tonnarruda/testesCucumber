@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -365,7 +364,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 
 			CollectionUtil<Funcao> funcaoUtil = new CollectionUtil<Funcao>();
 			Long[] funcaoIds = funcaoUtil.convertCollectionToArrayIds(funcaos);
-
 			historicoFuncaoManager.removeByFuncoes(funcaoIds);
 			remove(funcaoIds);
 		}

@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -62,6 +63,8 @@ public class CargoListAction extends MyActionSupportList
 		try {
 			cargoManager.remove(cargo.getId(), getEmpresaSistema());
 			addActionMessage("Cargo excluído com sucesso.");
+		}catch (InvocationTargetException ive){
+			addActionMessage("O Cargo não pode ser excluído, pois possui dependência com o Historico do Colaborador e/ou Função.<br/>");
 		} catch (Exception e) {
 			String message = "Erro ao excluir Cargo.<br/>";
 			
@@ -72,7 +75,7 @@ public class CargoListAction extends MyActionSupportList
 			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
 				message += e.getCause().getLocalizedMessage();
 			
-			addActionError(message);
+			addActionMessage(message);
 			
 			list();
 		}
