@@ -32,6 +32,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -73,6 +74,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Colaborador colaborador;
 	private boolean folhaProcessada;
 	private Double salarioProcessado;
+	private Map situacaos = new SituacaoColaborador();
+	private String situacao;
 
 	private Map<String, String> codigosGFIP = CodigoGFIP.getInstance();
 
@@ -84,6 +87,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private Date dataPrimeiroHist;
 	private boolean integraAc;
 	private boolean obrigarAmbienteFuncao;	
+	private Boolean somenteAtivos = null;	
 	private String encerrarSolicitacao;
 
 	private Solicitacao solicitacao;
@@ -286,17 +290,25 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	{
 		if(colaborador != null)
 		{
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), true);
+			situacaoColaborador();
+			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), somenteAtivos);
 
 			if(colaborador.getId() != null)
 			{
 				colaboradorNome = colaboradorManager.getNome(colaborador.getId());
-
 				historicoColaboradors = historicoColaboradorManager.getHistoricosComAmbienteEFuncao(colaborador.getId());
 			}
 		}
 
 		return SUCCESS;
+	}
+
+	private void situacaoColaborador() 
+	{
+		if(situacao.equals(SituacaoColaborador.ATIVO))
+			somenteAtivos = true;
+		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
+			somenteAtivos = false;
 	}
 
 	public String updateAmbientesEFuncoes() throws Exception
@@ -526,5 +538,25 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
+	}
+
+	public Boolean getSomenteAtivos() {
+		return somenteAtivos;
+	}
+
+	public void setSomenteAtivos(Boolean somenteAtivos) {
+		this.somenteAtivos = somenteAtivos;
+	}
+
+	public Map getSituacaos() {
+		return situacaos;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 }

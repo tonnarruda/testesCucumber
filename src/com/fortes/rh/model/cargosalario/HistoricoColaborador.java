@@ -967,6 +967,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		
 		this.estabelecimento.setCodigoAC(estabelecimentoCodigoAC);
 	}
+	
+	public void setEstabelecimentoNome(String estabelecimentoNome)
+	{
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
+	}
 
 	public FaixaSalarial getFaixaSalarial()
 	{
