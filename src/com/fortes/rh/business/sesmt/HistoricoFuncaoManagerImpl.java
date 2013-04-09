@@ -316,7 +316,21 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 
 	public void removeByFuncoes(Long[] funcaoIds)
 	{
+		removeEpisDaFuncao(funcaoIds);
 		getDao().removeByFuncoes(funcaoIds);
+	}
+
+	private void removeEpisDaFuncao(Long[] funcaoIds) 
+	{
+		for (Long funcaoId : funcaoIds) 
+		{
+			Collection<HistoricoFuncao> histFuncaos = getDao().findByFuncao(funcaoId);
+			for (HistoricoFuncao historicoFuncao : histFuncaos) 
+			{
+				historicoFuncao.setEpis(null);
+				update(historicoFuncao);
+			}
+		}
 	}
 
 	public HistoricoFuncao findByIdProjection(Long historicoFuncaoId)
