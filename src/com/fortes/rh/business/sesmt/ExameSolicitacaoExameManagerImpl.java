@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,8 +23,11 @@ public class ExameSolicitacaoExameManagerImpl extends GenericManagerImpl<ExameSo
 
 	public void save(SolicitacaoExame solicitacaoExame, String[] exameIds, String[] selectClinicas, Integer[] periodicidades)
 	{
-		if (exameIds != null && selectClinicas != null)
+		if (exameIds != null && exameIds.length > 0 && selectClinicas != null && selectClinicas.length > 0)
 		{
+			if(exameIds.length != selectClinicas.length)
+				selectClinicas = Arrays.copyOf(selectClinicas, exameIds.length);
+
 			for (int i=0; i<exameIds.length; i++)
 			{
 				ExameSolicitacaoExame exameSolicitacaoExame = new ExameSolicitacaoExame();

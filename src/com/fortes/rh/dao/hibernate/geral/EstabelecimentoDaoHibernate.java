@@ -200,7 +200,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.or(Expression.isNull("es.codigoAC"), Expression.eq("es.codigoAC","")));
+		criteria.add(Expression.isNull("es.codigoAC"));
 		
 		if(empresaId != null)
 			criteria.add(Expression.eq("em.id", empresaId));
@@ -212,17 +212,4 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		return criteria.list();	
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
-		StringBuilder hql = new StringBuilder();
-		hql.append("select codigoAC from Estabelecimento "); 
-		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
-		hql.append("group by codigoAC ");
-		hql.append("having count(*) > 1 ");	
-		hql.append("order by codigoAC ");
-	
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
-
-		return  StringUtil.converteCollectionToString(query.list());
-	}
 }

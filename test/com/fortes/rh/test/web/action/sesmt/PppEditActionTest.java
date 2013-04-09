@@ -128,11 +128,12 @@ public class PppEditActionTest extends MockObjectTestCase
 		// Exception comum.
 		funcaoManager.expects(once()).method("populaRelatorioPpp").will(throwException(new Exception()));
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
-		historicoColaboradorManager.expects(once()).method("verifyDataHistoricoAdmissao").will(returnValue(true));
+		historicoColaboradorManager.expects(once()).method("verifyDataHistoricoAdmissao").will(returnValue(false));
 		
 		action.gerarRelatorio();
 		
-		assertEquals(2, action.getActionErrors().size());
+		assertEquals(2, action.getActionMessages().size());
+		assertEquals(1, action.getActionErrors().size());
 	}
 
 	public void testGetSet()

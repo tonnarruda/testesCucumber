@@ -263,7 +263,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimentoDao.save(estabelecimento1);
 		
 		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimento2.setCodigoAC("");
+		estabelecimento2.setCodigoAC(null);
 		estabelecimento2.setEmpresa(empresa1);
 		estabelecimentoDao.save(estabelecimento2);
 		
@@ -282,54 +282,10 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento5.setEmpresa(empresa2);
 		estabelecimentoDao.save(estabelecimento5);
 		
-//		assertEquals(2, estabelecimentoDao.findSemCodigoAC(empresa1.getId()).size());
-//		assertEquals(1, estabelecimentoDao.findSemCodigoAC(empresa2.getId()).size());
+		assertEquals(2, estabelecimentoDao.findSemCodigoAC(empresa1.getId()).size());
+		assertEquals(1, estabelecimentoDao.findSemCodigoAC(empresa2.getId()).size());
 		
 	}
-
-	public void testFindCodigoACDuplicadoVazio()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setCodigoAC("24342333");
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setCodigoAC("123456");
-		estabelecimento.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento);
-
-		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimento2.setCodigoAC("123456");
-		estabelecimento2.setEmpresa(null);
-		estabelecimentoDao.save(estabelecimento2);
-		
-		assertEquals("", estabelecimentoDao.findCodigoACDuplicado(empresa.getId()));
-	}
-	
-	public void testFindCodigoACDuplicado()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setCodigoAC("24342333");
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setCodigoAC("123456");
-		estabelecimento.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento);
-		
-		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
-		estabelecimento2.setCodigoAC("123456");
-		estabelecimento2.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento2);
-		
-		Estabelecimento estabelecimento3 = EstabelecimentoFactory.getEntity();
-		estabelecimento3.setCodigoAC("1234567");
-		estabelecimento3.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento3);
-		
-//		assertEquals("123456", estabelecimentoDao.findCodigoACDuplicado(empresa.getId()));
-	}
-
 
 	public void testFindComEnderecoById()
 	{

@@ -316,9 +316,9 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		assertNull(exception);
 		assertNotNull(pppRelatorioException);
 		
-		String mensagemFormatada = pppRelatorioException.getMensagemDeErro();
+		String mensagemFormatada = pppRelatorioException.getMensagemDeInformacao();
 		
-		assertEquals("Erro ao gerar relatório. Solucione os problemas antes de prosseguir: <br>" +
+		assertEquals("Não foi possível gerar o relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
 				"01/09/2005 - Situação do colaborador não possui Ambiente definido.<br>" +
 				"27/09/2005 - Situação do colaborador não possui Ambiente definido.<br>" +
 				"27/09/2005 - Situação do colaborador não possui Função definida.<br>" +

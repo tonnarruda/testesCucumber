@@ -39,7 +39,7 @@ public class EngenheiroResponsavelDaoHibernate extends GenericDaoHibernate<Engen
 		return (EngenheiroResponsavel) criteria.uniqueResult();
 	}
 	
-	public Collection<EngenheiroResponsavel> findAllSelect(Long empresaId)
+	public Collection<EngenheiroResponsavel> findAllByEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(EngenheiroResponsavel.class, "e");
 		criteria.createCriteria("e.empresa", "emp");
@@ -57,6 +57,7 @@ public class EngenheiroResponsavelDaoHibernate extends GenericDaoHibernate<Engen
 
 		criteria.add(Expression.eq("emp.id", empresaId));
 		
+		// Esta ordem é importante para a montagem do relatório
 		criteria.addOrder(Order.asc("e.inicio"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EngenheiroResponsavel.class));

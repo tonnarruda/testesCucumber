@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -20,11 +21,14 @@ import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
@@ -42,8 +46,10 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
     {
         exameSolicitacaoExameManager = new Mock(ExameSolicitacaoExameManager.class);
         solicitacaoExameManager.setExameSolicitacaoExameManager((ExameSolicitacaoExameManager)exameSolicitacaoExameManager.proxy());
+        
         realizacaoExameManager = new Mock(RealizacaoExameManager.class);
         solicitacaoExameManager.setRealizacaoExameManager((RealizacaoExameManager)realizacaoExameManager.proxy());
+        
         solicitacaoExameDao = new Mock(SolicitacaoExameDao.class);
         solicitacaoExameManager.setDao((SolicitacaoExameDao) solicitacaoExameDao.proxy());
         
@@ -242,7 +248,26 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		solicitacaoExame.setColaborador(colaborador);
 		solicitacaoExame.setMedicoCoordenador(medicoCoordenador);
 		
+		Exame asoComum = ExameFactory.getEntity();
+		Exame asoPadra = ExameFactory.getEntity();
+		
+		ExameSolicitacaoExame ExSolExameComum = new ExameSolicitacaoExame();
+		ExSolExameComum.setExame(asoComum);
+		ExSolExameComum.setSolicitacaoExame(solicitacaoExame);
+		
+		ExameSolicitacaoExame ExSolExamePadrao = new ExameSolicitacaoExame();
+		ExSolExamePadrao.setExame(asoPadra);
+		ExSolExamePadrao.setSolicitacaoExame(solicitacaoExame);
+		
+		Collection<ExameSolicitacaoExame> asosPadraos = new ArrayList<ExameSolicitacaoExame>();
+		asosPadraos.add(ExSolExamePadrao);
+
+		Collection<ExameSolicitacaoExame> asosComums = new ArrayList<ExameSolicitacaoExame>();
+		asosComums.add(ExSolExameComum);
+		
 		solicitacaoExameDao.expects(once()).method("findById").will(returnValue(solicitacaoExame));
+		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(true)).will(returnValue(asosPadraos));
+		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(false)).will(returnValue(asosComums));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(null));
 		
 		SolicitacaoExame solicitacaoExameParametro = SolicitacaoExameFactory.getEntity(2L);

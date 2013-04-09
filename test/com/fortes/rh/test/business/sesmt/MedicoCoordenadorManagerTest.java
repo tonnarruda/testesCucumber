@@ -13,8 +13,10 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.model.type.File;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManagerImpl;
 import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 
 public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 {
@@ -104,10 +106,18 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 	public void testGetMedicosAteData()
 	{
 		Calendar hoje = Calendar.getInstance();
+		
 		Calendar antes = Calendar.getInstance();
 		antes.add(Calendar.MONTH, -2);
+		
 		Calendar depois = Calendar.getInstance();
 		depois.add(Calendar.MONTH, +2);
+		
+		Calendar dataDesligamento = Calendar.getInstance();
+		dataDesligamento.add(Calendar.MONTH, +1);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setDataDesligamento(dataDesligamento.getTime());
 		
 		MedicoCoordenador medicoCoordenador1 = new MedicoCoordenador();
 		medicoCoordenador1.setCrm("123");
@@ -134,13 +144,12 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		
 		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L),ANYTHING).will(returnValue(medicoCoordenadors));
 		
-		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(1L, hoje.getTime());
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(1L, hoje.getTime(), colaborador.getDataDesligamento());
 		
 		assertEquals(2, resultado.size());
 		
 		MedicoCoordenador medico2 = ((MedicoCoordenador) resultado.toArray()[1]);
-		assertEquals("Deve ter anulado a data FIM, pois ela é futura à data desejada, então fica em aberto", 
-				null, medico2.getFim());
+		assertEquals("Deve ter anulado a data FIM, pois ela é futura à data desejada, então fica em aberto",null, medico2.getFim());
 	}
 
 }

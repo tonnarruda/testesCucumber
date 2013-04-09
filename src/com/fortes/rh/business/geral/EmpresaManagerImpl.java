@@ -442,15 +442,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 				return true;
 			
 			String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
-			String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
 			String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
 			String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
-			String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
 			String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 				
-			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) || StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) ||  StringUtils.isNotEmpty(areaCodAcDuplicado)
-					|| StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado)
-					|| StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
+			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) || StringUtils.isNotEmpty(areaCodAcDuplicado)
+					|| StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
 				return true;
 		}	
 		
@@ -463,10 +460,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		
 		String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
-		String estabelecimentoCodAcDuplicado = estabelecimentoManager.findCodigoACDuplicado(empresa.getId());
 		String areaCodAcDuplicado = areaOrganizacionalManager.findCodigoACDuplicado(empresa.getId());
 		String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
-		String ocorrenciaCodAcDuplicado = ocorrenciaManager.findCodigoACDuplicado(empresa.getId());
 		String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 		
 		msgs.add("Verifique os seguintes itens:");
@@ -474,17 +469,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
 			msgs.add("- Existe colaborador duplicado, código AC: " + colaboradorCodAcDuplicado);
 
-		if( StringUtils.isNotEmpty(estabelecimentoCodAcDuplicado) )
-			msgs.add("- Existe estabelecimento duplicado, código AC: " + estabelecimentoCodAcDuplicado);
-
 		if( StringUtils.isNotEmpty(areaCodAcDuplicado) )
 			msgs.add("- Existe área organizacional duplicada, código AC: " + areaCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
 			msgs.add("- Existe faixa salarial duplicada, código AC: " + faixaSalarialCodAcDuplicado);
-
-		if( StringUtils.isNotEmpty(ocorrenciaCodAcDuplicado) )
-			msgs.add("- Existe ocorrência duplicada, código AC: " + ocorrenciaCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(cidadeCodAcDuplicado) )
 			msgs.add("- Existe cidade duplicada, código AC: " + cidadeCodAcDuplicado);

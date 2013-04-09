@@ -61,7 +61,7 @@ public class EngenheiroResponsavelDaoHibernateTest extends GenericDaoHibernateTe
 		engenheiroResponsavel2.setEmpresa(empresa);
 		engenheiroResponsavel2 = engenheiroResponsavelDao.save(engenheiroResponsavel2);
 		
-		Collection<EngenheiroResponsavel> result = engenheiroResponsavelDao.findAllSelect(empresa.getId());
+		Collection<EngenheiroResponsavel> result = engenheiroResponsavelDao.findAllByEmpresa(empresa.getId());
 		
 		assertEquals(2, result.size());
 	}

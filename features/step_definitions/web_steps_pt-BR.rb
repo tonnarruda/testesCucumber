@@ -572,7 +572,7 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
   end
 
   insert :historicocolaborador do
-    data '14/09/2012'
+    data '01/07/2011'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
     areaorganizacional :nome => areaorganizacional_nome

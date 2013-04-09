@@ -17,7 +17,8 @@ Funcionalidade: Relatório de Exames Realizados
     E eu preencho "Colaborador" com "agnaldo"
     E eu seleciono "Todos" de "Motivo do Atendimento"
     E eu seleciono "Todas" de "Clínica"
-    E eu marco "ASO"
+    E eu marco "Avaliação Clínica e Anaminese Ocupacional"
+    E eu marco "Exame de Aptidões Física e Mental na Movimentação"
     E eu seleciono "Normal" de "Resultado do Exame"
 
     Então eu clico no botão "Relatorio"

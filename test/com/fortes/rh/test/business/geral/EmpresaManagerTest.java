@@ -291,11 +291,8 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
     	
     	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
-    	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
-    	//indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
-    	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
     	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));
@@ -308,22 +305,18 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
     	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
-    	estabelecimentoManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
-    	//indiceManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
-    	OcorrenciaManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("3"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
     	Collection<String> collectionMsgs = (Collection<String>) empresaManager.verificaIntegracaoAC(empresa);
     	
-    	assertEquals(4, collectionMsgs.size());
+    	assertEquals(3, collectionMsgs.size());
     	
     	String msgs = StringUtil.converteCollectionToString(collectionMsgs);
     	
     	assertEquals("Verifique os seguintes itens:," +
     			"- Existe colaborador duplicado, código AC: 1," +
-    			"- Existe faixa salarial duplicada, código AC: 2," +
-    			"- Existe ocorrência duplicada, código AC: 3", msgs);
+    			"- Existe faixa salarial duplicada, código AC: 2", msgs);
     }
 }

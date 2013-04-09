@@ -69,8 +69,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 
    		if (ArrayUtils.isEmpty(empresasCheck)) {
-   			CollectionUtil<CheckBox> cUtil = new CollectionUtil<CheckBox>();
-			empresasCheck = cUtil.convertCollectionToArrayIds(empresasCheckList);
+   			CollectionUtil<Empresa> cUtil = new CollectionUtil<Empresa>();
+			empresasCheck = cUtil.convertCollectionToArrayIds(empresas);
 		}
    		
 		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck);

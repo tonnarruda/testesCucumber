@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -60,6 +59,9 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoColaborador> historicosDoColaboradors = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
+		if(historicosDoColaboradors == null || historicosDoColaboradors.isEmpty())
+			throw new PppRelatorioException("Não existe dados para gerar o relatório.");
+		
 		historicosDoColaboradors = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaboradors); 
 				
 		this.validarPpp(historicosDoColaboradors);
@@ -73,14 +75,10 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		historicosDoColaboradors = historicoColaboradorManager.inserirPeriodos(historicosDoColaboradors);
 
 		Collection<PppFatorRisco> pppFatorRiscos = this.populaFatoresDeRiscos(data, historicosDoColaboradors);
-		
 		Collection<HistoricoColaborador> historicosColaboradorFuncao = historicoColaboradorManager.findDistinctFuncao(historicosDoColaboradors);
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findHistoricoFuncaoColaborador(historicosColaboradorFuncao,data);
-		
-//		Collection<HistoricoColaborador> historicosColaboradorAmbienteFuncao = historicoColaboradorManager.findDistinctAmbienteFuncao(historicosDoColaborador);
-		
-		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.getEngenheirosAteData(colaborador.getEmpresa().getId(), data);
-		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.getMedicosAteData(colaborador.getEmpresa().getId(), data);
+		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.getEngenheirosAteData(colaborador, data);
+		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.getMedicosAteData(colaborador.getEmpresa().getId(), data, colaborador.getDataDesligamento());
 		
 		PppRelatorio pppRelatorio = new PppRelatorio(colaborador, estabelecimento, data);
 		pppRelatorio.setRespostas(respostas);
@@ -114,6 +112,8 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 			
 			if (i+1 < hist.size())
 				dataFim = hist.get(i+1).getData();
+			
+			
 			
 			List<DadosAmbienteRisco> dadosAmbientesRiscos = historicoAmbienteManager.findDadosNoPeriodo(hist.get(i).getAmbiente().getId(), dataHistColaboradorIni, dataFim);
 			
@@ -173,8 +173,10 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 					{
 						PppFatorRisco tmp = new PppFatorRisco(pppFatorRiscoIni, pppFatorRiscoFim, dadosAmbienteRisco.getRiscoId(), dadosAmbienteRisco.getRiscoTipo(), dadosAmbienteRisco.getRiscoDescricao(), riscoMedicaoRiscoTemp.getMedicaoRisco().getId(), riscoMedicaoRiscoTemp.getIntensidadeMedida(), riscoMedicaoRiscoTemp.getTecnicaUtilizada(), dadosAmbienteRisco.isEpcEficaz(), epis);
 						tmp.setDataHistoricoAmbiente(dadosAmbienteRisco.getHistoricoAmbienteData());
+						tmp.setDataDesligamento(hist.get(i).getColaborador().getDataDesligamento());
 						pppFatorRiscos.add(tmp);
 					}
+					
 					
 				}
 			}
@@ -362,7 +364,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 
 			CollectionUtil<Funcao> funcaoUtil = new CollectionUtil<Funcao>();
 			Long[] funcaoIds = funcaoUtil.convertCollectionToArrayIds(funcaos);
-
 			historicoFuncaoManager.removeByFuncoes(funcaoIds);
 			remove(funcaoIds);
 		}

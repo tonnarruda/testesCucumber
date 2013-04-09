@@ -1,0 +1,1 @@
+alter table avaliacaodesempenho alter column titulo type character varying(200);--.go
