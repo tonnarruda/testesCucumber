@@ -103,7 +103,7 @@ public class PppEditAction extends MyActionSupportList
 		}
 		catch (PppRelatorioException pppRelatorioException)
 		{
-			addActionMessage(pppRelatorioException);
+			addActionWarning(pppRelatorioException.getMensagemDeInformacao());
 			prepareRelatorio();
 			return INPUT;
 		}
@@ -114,11 +114,6 @@ public class PppEditAction extends MyActionSupportList
 			prepareRelatorio();
 			return INPUT;
 		}
-	}
-
-	private void addActionMessage(PppRelatorioException pppRelatorioException) 
-	{
-		addActionMessage(pppRelatorioException.getMensagemDeInformacao());
 	}
 
 	public Map<String, Object> getParametros()

@@ -110,9 +110,9 @@ public abstract class MyActionSupport extends ActionSupport
 		this.actionWarnings = actionWarnings;
 	}
 	
-	public void addActionWarning(String actionWarnings) 
+	public void addActionWarning(String actionWarning) 
 	{
-		this.actionWarnings.add(actionWarnings);
+		this.actionWarnings.add(actionWarning);
 	}
 	
 	public List<String> getActionSuccess() 

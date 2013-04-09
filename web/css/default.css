@@ -72,9 +72,10 @@ input,select,textarea,option {
 	border-radius:.5em;
 }
 .info ul li, .success ul li, .warning ul li, .error ul li { margin: 20px 20px 20px 0px; }
+.info ul li a, .success ul li a, .warning ul li a, .error ul li a { font: inherit !important; color: inherit; text-decoration: underline; }
 .info {
     color: #00529B;
-    background-color: #BDE5F8;
+    background-color: #DCEBFC;
     background-image: url('../imgs/msg_info.png');
 }
 .success {
