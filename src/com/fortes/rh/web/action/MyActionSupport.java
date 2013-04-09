@@ -1,7 +1,9 @@
 package com.fortes.rh.web.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
@@ -19,6 +21,9 @@ public abstract class MyActionSupport extends ActionSupport
 	private String actionErr = null;
 	private String actionMsg = null;
 	public static final String MESSAGE = "message";
+	
+	private List<String> actionWarnings = new ArrayList<String>();
+	private List<String> actionSuccess = new ArrayList<String>();
 
 	public Empresa getEmpresaSistema()
 	{
@@ -93,5 +98,35 @@ public abstract class MyActionSupport extends ActionSupport
 	public void setVideoAjuda(Long videoAjuda) 
 	{
 		this.videoAjuda = videoAjuda;
+	}
+
+	public List<String> getActionWarnings() 
+	{
+		return actionWarnings;
+	}
+
+	public void setActionWarnings(List<String> actionWarnings) 
+	{
+		this.actionWarnings = actionWarnings;
+	}
+	
+	public void addActionWarning(String actionWarnings) 
+	{
+		this.actionWarnings.add(actionWarnings);
+	}
+	
+	public List<String> getActionSuccess() 
+	{
+		return actionSuccess;
+	}
+
+	public void setActionSuccess(List<String> actionSuccess) 
+	{
+		this.actionSuccess = actionSuccess;
+	}
+	
+	public void addActionSuccess(String actionSuccess) 
+	{
+		this.actionSuccess.add(actionSuccess);
 	}
 }

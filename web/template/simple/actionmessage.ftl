@@ -1,18 +1,32 @@
 <#if (actionMessages?exists && actionMessages?size > 0)>
+	<div class="info">
+		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
+		<ul>
+			<#list actionMessages as msg>
+				<li>${msg}</li>
+			</#list>
+		</ul>
+	</div>
+</#if>
 
-<div class="actionMessage">
-	<table>
-		<tr>
-			<td align="center">
-				<img valign="absmiddle" src="<@ww.url includeParams="none" value="/imgs/message_info.gif"/>" alt="Imagem de Aviso" width="32" height="32"/>
-			</td>
-			<td>
-				<#list actionMessages as msg>
-					<p>${msg}</p>
-				</#list>
-			</td>
-		</tr>
-	</table>
-</div>
+<#if (actionWarnings?exists && actionWarnings?size > 0)>
+	<div class="warning">
+		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
+		<ul>
+			<#list actionWarnings as msg>
+				<li>${msg}</li>
+			</#list>
+		</ul>
+	</div>
+</#if>
 
+<#if (actionSuccess?exists && actionSuccess?size > 0)>
+	<div class="success">
+		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
+		<ul>
+			<#list actionSuccess as msg>
+				<li>${msg}</li>
+			</#list>
+		</ul>
+	</div>
 </#if>
