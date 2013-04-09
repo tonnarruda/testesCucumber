@@ -41,7 +41,11 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 		assertEquals(engenheiroResponsavel, engenheiroResponsavelManager.findByIdProjection(engenheiroResponsavel.getId()));
 	}
 	
-	public void testGetEngenheirosAteData()
+	/*
+	 * Este teste contempla apenas as regras individuais, sempre heverá 1(Um) ou 0(Zero) engenheiro
+	 * que fará parte dp PPP.
+	 */
+	public void testGetEngenheirosAteDataComUmOuZeroEngenheiro()
 	{
 		Date data_1 = DateUtil.criarDataMesAno(01, 01, 2013);
 		Date data_2 = DateUtil.criarDataMesAno(01, 02, 2013);
@@ -127,6 +131,61 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 		testaSeEngenheiroFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, null, naoEstaNaRelacao);
 	}
 
+	public void testGetEngenheirosAteDataComVariosEngenheiros()
+	{
+		Date admissao = DateUtil.criarDataMesAno(01, 01, 2013);
+		Date desligamento = DateUtil.criarDataMesAno(01, 04, 2013);
+
+		Date inicio_1 = DateUtil.criarDataMesAno(01, 02, 2013);
+		Date inicio_2 = DateUtil.criarDataMesAno(10, 02, 2013);
+		Date fim = DateUtil.criarDataMesAno(01, 03, 2013);
+		
+		Date dataPPP = DateUtil.criarDataMesAno(05, 02, 2013);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
+		colaboradorDoPPP.setEmpresa(empresa);
+		colaboradorDoPPP.setDataAdmissao(admissao);
+		colaboradorDoPPP.setDataDesligamento(desligamento);
+		
+		EngenheiroResponsavel engenheiroResponsavel1 = new EngenheiroResponsavel();
+		engenheiroResponsavel1.setId(1L);
+		engenheiroResponsavel1.setInicio(inicio_1);
+		engenheiroResponsavel1.setFim(fim);
+		
+		EngenheiroResponsavel engenheiroResponsavel2 = new EngenheiroResponsavel();
+		engenheiroResponsavel2.setId(2L);
+		engenheiroResponsavel2.setInicio(inicio_1);
+		engenheiroResponsavel2.setFim(fim);
+		
+		EngenheiroResponsavel engenheiroResponsavel3 = new EngenheiroResponsavel();
+		engenheiroResponsavel3.setId(3L);
+		engenheiroResponsavel3.setInicio(inicio_1);
+		engenheiroResponsavel3.setFim(null);
+		
+		EngenheiroResponsavel engenheiroResponsavel4 = new EngenheiroResponsavel();
+		engenheiroResponsavel4.setId(4L);
+		engenheiroResponsavel4.setInicio(inicio_2);
+		engenheiroResponsavel4.setFim(fim);
+		
+		EngenheiroResponsavel engenheiroResponsavel5 = new EngenheiroResponsavel();
+		engenheiroResponsavel5.setId(5L);
+		engenheiroResponsavel5.setInicio(inicio_2);
+		engenheiroResponsavel5.setFim(fim);
+		
+		
+		EngenheiroResponsavel[] engenheirosResponsaveis = new EngenheiroResponsavel[]{engenheiroResponsavel1, engenheiroResponsavel2, engenheiroResponsavel3, engenheiroResponsavel4, engenheiroResponsavel5};
+		engenheiroResponsavelDao.expects(once()).method("findAllByEmpresa").with(eq(1L)).will(returnValue(Arrays.asList(engenheirosResponsaveis)));
+		
+		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.getEngenheirosAteData(colaboradorDoPPP, dataPPP);
+		
+		assertEquals(3, resultado.size());
+		assertEquals(engenheiroResponsavel1.getId(), ((EngenheiroResponsavel)resultado.toArray()[0]).getId());
+		assertEquals(engenheiroResponsavel2.getId(), ((EngenheiroResponsavel)resultado.toArray()[1]).getId());
+		assertEquals(engenheiroResponsavel3.getId(), ((EngenheiroResponsavel)resultado.toArray()[2]).getId());
+	}
+	
 	private void testaSeEngenheiroFazParteDoRelatorioPPP(Date ppp, Date admissao, Date desligamento, Date inicio, Date fim, boolean estaNaRelacao)
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
