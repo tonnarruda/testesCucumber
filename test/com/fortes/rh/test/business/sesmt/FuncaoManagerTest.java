@@ -34,6 +34,7 @@ import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -42,6 +43,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -73,6 +75,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
         riscoFuncaoManager = mock(RiscoFuncaoManager.class);
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         MockSpringUtil.mocks.put("historicoFuncaoManager", historicoFuncaoManager);
         MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
         MockSpringUtil.mocks.put("riscoFuncaoManager", riscoFuncaoManager);
@@ -252,18 +255,29 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(10L);
 		Ambiente ambiente2 = AmbienteFactory.getEntity(12L);
 		Funcao funcao = FuncaoFactory.getEntity(3L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
+		
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
 		
 		HistoricoColaborador historicoColaboradorSemAmbiente = HistoricoColaboradorFactory.getEntity(3L);
 		historicoColaboradorSemAmbiente.setData(DateUtil.criarAnoMesDia(2005, 9, 1));
 		historicoColaboradorSemAmbiente.setFuncao(funcao);
+		historicoColaboradorSemAmbiente.setColaborador(colaborador);
+		historicoColaboradorSemAmbiente.setFaixaSalarial(faixaSalarial);
 		
 		HistoricoColaborador historicoColaboradorSemAmbienteEFuncao = new HistoricoColaborador();
 		historicoColaboradorSemAmbienteEFuncao.setData(DateUtil.criarAnoMesDia(2005, 9, 27));
+		historicoColaboradorSemAmbienteEFuncao.setColaborador(colaborador);
+		historicoColaboradorSemAmbienteEFuncao.setFaixaSalarial(faixaSalarial);
 		
 		HistoricoColaborador historicoColaboradorComAmbienteSemHistorico = HistoricoColaboradorFactory.getEntity(10L);
 		historicoColaboradorComAmbienteSemHistorico.setData(DateUtil.criarAnoMesDia(2006, 1, 30));
 		historicoColaboradorComAmbienteSemHistorico.setFuncao(funcao);
 		historicoColaboradorComAmbienteSemHistorico.setAmbiente(ambiente);
+		historicoColaboradorComAmbienteSemHistorico.setColaborador(colaborador);
+		historicoColaboradorComAmbienteSemHistorico.setFaixaSalarial(faixaSalarial);
 		
 		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
 		historicoAmbiente.setData(DateUtil.criarAnoMesDia(2009, 4, 19));
@@ -277,6 +291,8 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		historicoColaboradorComHistoricoAmbienteSemMedicao.setData(DateUtil.criarAnoMesDia(2009, 4, 20));
 		historicoColaboradorComHistoricoAmbienteSemMedicao.setAmbiente(ambiente2);
 		historicoColaboradorComHistoricoAmbienteSemMedicao.setFuncao(funcao);
+		historicoColaboradorComHistoricoAmbienteSemMedicao.setColaborador(colaborador);
+		historicoColaboradorComHistoricoAmbienteSemMedicao.setFaixaSalarial(faixaSalarial);
 		
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaboradorSemAmbiente);
@@ -284,13 +300,9 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		historicoColaboradors.add(historicoColaboradorComAmbienteSemHistorico);
 		historicoColaboradors.add(historicoColaboradorComHistoricoAmbienteSemMedicao);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		
 		historicoColaboradorManager.expects(once()).method("findByColaboradorData").will(returnValue(historicoColaboradors));
 		historicoAmbienteManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(historicoColaboradorComAmbienteSemHistorico.getAmbiente().getId()), eq(historicoColaboradorComAmbienteSemHistorico.getData())).will(returnValue(null));
 		historicoAmbienteManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(historicoColaboradorComHistoricoAmbienteSemMedicao.getAmbiente().getId()), eq(historicoColaboradorComHistoricoAmbienteSemMedicao.getData())).will(returnValue(historicoAmbiente));
-		
-		//riscoMedicaoRiscoManager.expects(atLeastOnce()).method("findUltimaAteData").will(returnValue(new MedicaoRisco()));
 		
 		historicoColaboradorManager.expects(once()).method("filtraHistoricoColaboradorParaPPP").withAnyArguments().will(returnValue(historicoColaboradors));
 		historicoFuncaoManager.expects(once()).method("findUltimoHistoricoAteData").with(eq(funcao.getId()), eq(historicoColaboradorSemAmbiente.getData())).will(returnValue(null));
@@ -319,11 +331,11 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		String mensagemFormatada = pppRelatorioException.getMensagemDeInformacao();
 		
 		assertEquals("Não foi possível gerar o relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
-				"01/09/2005 - Situação do colaborador não possui Ambiente definido.<br>" +
-				"27/09/2005 - Situação do colaborador não possui Ambiente definido.<br>" +
-				"27/09/2005 - Situação do colaborador não possui Função definida.<br>" +
-				"30/01/2006 - Ambiente do colaborador não possui histórico nesta data.<br>" +
-				"01/09/2005 - Função do colaborador não possui histórico nesta data.<br>", mensagemFormatada);
+				"01/09/2005 - Situação do colaborador não possui Ambiente definido.<br />" +
+				"27/09/2005 - Situação do colaborador não possui Ambiente definido.<br />" +
+				"27/09/2005 - Situação do colaborador não possui Função definida.<br />" +
+				"30/01/2006 - Ambiente do colaborador não possui histórico nesta data.<br />" +
+				"01/09/2005 - Função do colaborador não possui histórico nesta data.<br />", mensagemFormatada);
 	}
 	
 	public void testRemoveFuncao() throws Exception

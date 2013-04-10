@@ -132,7 +132,7 @@ public class PppEditActionTest extends MockObjectTestCase
 		
 		action.gerarRelatorio();
 		
-		assertEquals(2, action.getActionMessages().size());
+		assertEquals(2, action.getActionWarnings().size());
 		assertEquals(1, action.getActionErrors().size());
 	}
 
