@@ -283,4 +283,17 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			return false;
 		}
 	}
+	
+	public String findContraCheque(Empresa empresa) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetPDF");
+		
+		call.setReturnType(org.apache.axis.encoding.XMLType.XSD_STRING);
+		
+		Object[] param = new Object[]{};
+		
+		return (String) call.invoke(param);
+	}
 }

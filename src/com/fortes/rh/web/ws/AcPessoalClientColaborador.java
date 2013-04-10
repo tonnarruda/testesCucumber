@@ -23,4 +23,6 @@ public interface AcPessoalClientColaborador
 	public TRemuneracaoVariavel[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception;
 
 	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa);
+
+	public String findContraCheque(Empresa empresa) throws Exception;
 }

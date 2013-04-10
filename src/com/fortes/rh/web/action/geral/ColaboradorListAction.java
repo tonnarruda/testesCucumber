@@ -1,7 +1,9 @@
 package com.fortes.rh.web.action.geral;
 
 import java.awt.Color;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -19,6 +22,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.StringUtils;
+
+import sun.misc.BASE64Decoder;
 
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
@@ -223,6 +228,27 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		integraAc = getEmpresaSistema().isAcIntegra();
 		
+		return Action.SUCCESS;
+	}
+	
+	public String findContraCheque() throws Exception
+	{
+		String contraCheque = colaboradorManager.findContraCheque(getEmpresaSistema());
+		
+		BASE64Decoder decoder = new BASE64Decoder();  
+        byte[] contraChequeBytes = decoder.decodeBuffer(contraCheque); 
+		
+        HttpServletResponse response = ServletActionContext.getResponse();
+
+		response.addHeader("Expires", "0");
+		response.addHeader("Pragma", "no-cache");
+		response.setContentType("application/pdf");
+		response.setContentLength((int)contraChequeBytes.length);
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Disposition","attachment; filename=\"contracheque.pdf\"");
+
+		response.getOutputStream().write(contraChequeBytes);
+        
 		return Action.SUCCESS;
 	}
 
