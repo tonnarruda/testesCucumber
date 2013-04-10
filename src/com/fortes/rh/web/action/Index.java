@@ -98,11 +98,6 @@ public class Index extends MyActionSupport
 	
 	public String index()
 	{
-		addActionError("Teste de mensagem");
-		addActionMessage("Teste de mensagem");
-		addActionWarning("Teste de mensagem");
-		addActionSuccess("Teste de mensagem");
-		
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Cache-Control", "no-cache");
