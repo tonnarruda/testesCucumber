@@ -156,7 +156,6 @@
 		{
 			<#if moduloExterno?exists && moduloExterno>
 				var msg = "Os seguintes campos são obrigatórios: <br />";
-				
 				var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
 				var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
 				var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
@@ -214,12 +213,12 @@
 				});
 				
 				
-				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
+				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
-		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
+		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
 		   		else
-			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'data1', 'data2', 'data3'));
+			   		return validaFormularioEPeriodo('form', new Array('cpf' , 'nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('cpf' , 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
 			 </#if>
 		}
 		
@@ -746,6 +745,16 @@
 			    	<@ww.textfield label="DV" name="candidato.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 9px;" maxLength="1" liClass="liLeft"/>
 			       	<@ww.select label="Estado" name="candidato.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			      	<@ww.datepicker label="Data de Expedição" name="candidato.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" cssClass="mascaraData" value="${ctpsDataExpedicao}"/>
+			        <li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
+	      		</ul>
+			</@ww.div>
+		</li>	
+		
+	  	<li id="wwgrp_pis" class="campo">
+			<@ww.div >
+				<ul>
+					<b><@ww.label label="PIS - Programa de Integração Social" /></b>
+					<@ww.textfield label="Número" name="candidato.pessoal.pis" id="pis" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" />
 	      		</ul>
 			</@ww.div>
 		</li>	

@@ -209,7 +209,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			transactionManager.rollback(status);
 
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert();
 
 			return Action.INPUT;
@@ -266,7 +266,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		catch (LimiteColaboradorExceditoException e)
 		{
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert();
 
 			return Action.INPUT;
