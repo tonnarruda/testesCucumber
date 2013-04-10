@@ -2365,6 +2365,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findHabilitacaAVencer(diasLembrete, empresaId);
 	}
 	
+	public String findContraCheque(Empresa empresa) throws Exception 
+	{
+		return acPessoalClientColaborador.findContraCheque(empresa);
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -2380,5 +2385,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
 		this.auditoriaManager = auditoriaManager;
+	}
+
+	@Override
+	public String g(Collection<Integer> diasLembrete, Long empresaId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
