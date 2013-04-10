@@ -114,6 +114,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Map statusRetornoACs = new StatusRetornoAC();
 	private boolean integraAc;
 	private boolean agruparPorTempoServico;
+	private Character enviadoParaAC; // 1 - Todos ; 2 - Não Enviados ; 3 - Enviados
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private String[] areasCheck;
@@ -457,7 +458,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC);
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
@@ -1075,5 +1076,15 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setDeficiencia(String deficiencia) {
 		this.deficiencia = deficiencia;
+	}
+	
+	public void setEnviadoParaAC(Character enviadoParaAC)
+	{
+		this.enviadoParaAC = enviadoParaAC;
+	}
+	
+	public Character getEnviadoParaAC()
+	{
+		return enviadoParaAC;
 	}
 }
