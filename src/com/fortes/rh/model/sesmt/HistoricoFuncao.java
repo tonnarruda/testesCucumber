@@ -44,6 +44,10 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
     @Transient
     private Epi epi;
+    
+	//Utilizado no relatório de PPP
+	@Transient
+	private Date dataDesligamento;
 
 	public HistoricoFuncao()
     {
@@ -130,7 +134,11 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
 	public String getPeriodo()
 	{
-		return DateUtil.formataDiaMesAno(this.data) + " a " + (this.dataProximoHistorico != null ? DateUtil.formataDiaMesAno(this.dataProximoHistorico) : "__/__/___");
+		String dataFim = "__/__/___";
+    	if(dataDesligamento != null)
+    		dataFim = DateUtil.formataDiaMesAno(dataDesligamento);
+		
+		return DateUtil.formataDiaMesAno(this.data) + " a " + (this.dataProximoHistorico != null ? DateUtil.formataDiaMesAno(this.dataProximoHistorico) : dataFim);
 	}
 	
 	public Collection<Exame> getExames()
@@ -183,5 +191,9 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
 	public void setRiscoFuncaos(Collection<RiscoFuncao> riscoFuncaos) {
 		this.riscoFuncaos = riscoFuncaos;
+	}
+
+	public void setDataDesligamento(Date dataDesligamento) {
+		this.dataDesligamento = dataDesligamento;
 	}
 }

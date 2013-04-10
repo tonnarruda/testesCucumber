@@ -124,7 +124,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return exames;
 	}
 
-	public Collection<HistoricoFuncao> findHistoricoFuncaoColaborador(Collection<HistoricoColaborador> historicosColaborador, Date dataLimite)
+	public Collection<HistoricoFuncao> findHistoricoFuncaoColaborador(Collection<HistoricoColaborador> historicosColaborador, Date dataLimite, Date dataDesligamento)
 	{
 		Collection<HistoricoFuncao> historicosFuncaoRetorno = new LinkedList<HistoricoFuncao>();
 		Date dataInicio;
@@ -151,6 +151,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 				if (historicoFuncaoAnterior!=null)
 					historicoFuncaoAnterior.setDataProximoHistorico(DateUtil.retornaDataDiaAnterior(historicoFuncao.getData()));
 
+				historicoFuncao.setDataDesligamento(dataDesligamento);
 				historicoFuncaoAnterior = historicoFuncao;
 			}
 
