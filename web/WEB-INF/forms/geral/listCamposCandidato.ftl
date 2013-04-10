@@ -377,6 +377,11 @@
 				<td><input type="checkbox" value="ctps" name="camposCandidatoVisivels" /></td>
 				<td><input type="checkbox" value="ctps" name="camposCandidatoObrigatorios" /></td>
 			</tr>
+			<tr>
+				<td>PIS - Programa de Integração Social</td>
+				<td><input type="checkbox" value="pis" name="camposCandidatoVisivels" /></td>
+				<td><input type="checkbox" value="pis" name="camposCandidatoObrigatorios" /></td>
+			</tr>
 		</table>
 		
 		<table id="abaCurriculo" cellspacing="0" class="configCampos">

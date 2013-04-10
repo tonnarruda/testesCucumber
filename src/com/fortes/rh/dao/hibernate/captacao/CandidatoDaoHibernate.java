@@ -593,6 +593,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.pessoal.ctps.ctpsDv"),"pessoalCtpsDv");
 		p.add(Projections.property("c.pessoal.ctps.ctpsUf.id"),"pessoalCtpsUfId");
 		p.add(Projections.property("c.pessoal.ctps.ctpsDataExpedicao"),"pessoalCtpsDataExpedicao");
+		p.add(Projections.property("c.pessoal.pis"),"pessoalPis");
 
 		p.add(Projections.property("c.contato.ddd"),"contatoDdd");
 		p.add(Projections.property("c.contato.foneFixo"),"contatoFoneFixo");

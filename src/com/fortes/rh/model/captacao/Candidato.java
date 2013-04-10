@@ -537,6 +537,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 		pessoal.getCtps().setCtpsDataExpedicao(pessoalCtpsDataExpedicao);
 	}
+	public void setPessoalPis(String pis)
+	{
+		if (pessoal == null)
+			pessoal = new Pessoal();
+		
+		pessoal.setPis(pis);
+	}
 
 	//Endereço
 	public void setEnderecoLogradouro(String enderecoLogradouro)
