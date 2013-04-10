@@ -479,9 +479,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setRegimeRevezamento(solicitacao.getHorarioComercial());
 				
 				historicoColaborador = populaHistoricoColaborador();
-				colaborador.setHistoricoColaborador(historicoColaborador);
+			} else {
+				historicoColaborador = new HistoricoColaborador();
 			}
 			
+			colaborador.setHistoricoColaborador(historicoColaborador);
 			colaborador.setNome(candidato.getNome());
 			// OBS: não sugerimos mais o nome Comercial, porque pode quebrar o insert (limitação do AC)
 			colaborador.setContato(candidato.getContato());
@@ -491,6 +493,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaborador.setEndereco(candidato.getEndereco());
 			colaborador.setPessoal(candidato.getPessoal());
 			colaborador.setObservacao(candidato.getObservacao());
+			
+			historicoColaborador.setData(colaborador.getDataAdmissao());
 
 			session.put("SESSION_FORMACAO", formacaoManager.findByCandidato(candidato.getId()));
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.findByCandidato(candidato.getId()));
@@ -759,7 +763,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		catch (LimiteColaboradorExceditoException e)
 		{
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareUpdate();
 			
 			return Action.INPUT;
