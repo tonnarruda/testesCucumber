@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.106.111" data="11/04/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Candidatos > Inserir/Editar > Documentos: Novo campo para registrar a informação do numero do PIS.
+			:: R&S > Movimentações > Solicitação de Realinhamento: Renomeação deste menu para Solicitação de Realinhamento para Colaborador e remoção das opções de realinhamento individual para Faixa Salarial e índice. Esses podem ser realizados via Reajuste Coletivo.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Novo filtro por colaboradores enviados para AC Pessoal(Esta opção aparece somente quando a empresa estiver integrada com o AC Pessoal).
+			:: SESMT > Movimentações > Ambiente e Função do Colaborador: Novo filtro por situação do colaborador e novas colunas por estabelecimento e Área Organizacional na listagem.
+			:: SESMT > Relatórios > PPP: Links que facilitam a solução de pendências para geração do PPP.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.105.110" data="09/04/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Relatórios > Lista de Candidatos da Seleção: Novo filtro por data da realização da etapa seletiva.

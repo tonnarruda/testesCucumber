@@ -23476,6 +23476,7 @@ INSERT INTO migrations (name) VALUES ('20130328112208');
 INSERT INTO migrations (name) VALUES ('20130328113927');
 INSERT INTO migrations (name) VALUES ('20130402081343');
 INSERT INTO migrations (name) VALUES ('20130405155933');
+INSERT INTO migrations (name) VALUES ('20130409102059');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23733,16 +23734,13 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (564, 'ROLE_RELATORIO_HISTORICO_FAIXA_SALARIAL', 'Históricos das Faixas Salariais', '/cargosalario/faixaSalarialHistorico/prepareRelatorioHistoricoFaixaSalarial.action', 5, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (407, 'ROLE_REL_PROJECAO_SALARIAL', 'Projeção Salarial do Colaborador', '/geral/colaborador/prepareProjecaoSalarialFiltro.action', 9, true, NULL, 364);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (395, 'ROLE_DISSIDIO', 'Reajuste Coletivo', '#', 3, true, NULL, 363);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (565, 'ROLE_DISSIDIO', 'Colaboradores', '/cargosalario/reajusteColaborador/prepareDissidio.action', 1, true, NULL, 395);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (566, 'ROLE_DISSIDIO', 'Faixas Salariais', '/cargosalario/reajusteFaixaSalarial/prepareDissidio.action', 2, true, NULL, 395);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (567, 'ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR', 'Colaborador', '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 1, true, NULL, 49);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (568, 'ROLE_MOV_SOLICITACAOREAJUSTE_FAIXASALARIAL', 'Faixa Salarial', '/cargosalario/reajusteFaixaSalarial/prepareInsert.action', 2, true, NULL, 49);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (569, 'ROLE_MOV_SOLICITACAOREAJUSTE_INDICE', 'Índice', '/cargosalario/reajusteIndice/prepareInsert.action', 3, true, NULL, 49);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (570, 'ROLE_DISSIDIO', 'Índices', '/cargosalario/reajusteIndice/prepareDissidio.action', 3, true, NULL, 395);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (49, 'ROLE_MOV_SOLICITACAOREAJUSTE', 'Solicitação de Realinhamento', '#', 2, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (512, 'ROLE_MOV_DISSIDIO', 'Alteração de Promoção para Dissídio', '/cargosalario/historicoColaborador/prepareAjusteDissidio.action', 4, true, NULL, 363);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (492, 'ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO', 'Modelos de Avaliação do Candidato', '/avaliacao/modeloCandidato/list.action?modeloAvaliacao=S', 7, true, NULL, 358);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (528, 'ROLE_REL_ACOMP_PERFORMANCE', 'Resultado da Avaliação Agrupado por Faixa', '/avaliacao/periodoExperiencia/prepareRelatorioPerformanceAvaliacaoDesempenho.action', 6, true, NULL, 486);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (49, 'ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR', 'Solicitação de Realinhamento para Colaborador', '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 2, true, NULL, 363);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (565, 'ROLE_DISSIDIO_COLABORADOR', 'Colaboradores', '/cargosalario/reajusteColaborador/prepareDissidio.action', 1, true, NULL, 395);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (566, 'ROLE_DISSIDIO_FAIXASALARIAL', 'Faixas Salariais', '/cargosalario/reajusteFaixaSalarial/prepareDissidio.action', 2, true, NULL, 395);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (570, 'ROLE_DISSIDIO_INDICE', 'Índices', '/cargosalario/reajusteIndice/prepareDissidio.action', 3, true, NULL, 395);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23765,7 +23763,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.105.110', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.106.111', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, NULL, NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -23977,9 +23975,6 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 562);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 563);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 564);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 566);
-INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 567);
-INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 568);
-INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 569);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 565);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 570);
 

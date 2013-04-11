@@ -305,9 +305,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	private void situacaoColaborador() 
 	{
-		if(situacao.equals(SituacaoColaborador.ATIVO))
+		if(SituacaoColaborador.ATIVO.equals(situacao))
 			somenteAtivos = true;
-		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
+		else if(SituacaoColaborador.DESLIGADO.equals(situacao))
 			somenteAtivos = false;
 	}
 
