@@ -330,7 +330,7 @@
 		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos" cssStyle="width: 160px;" />
 		<@ww.select label="Deficiência" id="deficiencia" name="deficiencia" list=r"#{'1':'Todas', '2':'Somente Deficientes', '3':'Sem Deficiência'}" cssStyle="width: 160px;"/>
 		
-		<#if !empresaSistema.acIntegra>
+		<#if empresaSistema.acIntegra>
 			Considerar colaboradores:<br />
 			<@ww.select id="enviadoParaAC" name="enviadoParaAC" list=r"#{'1':'Enviados e Não Enviados para o AC Pessoal', '2':'Não Enviados para o AC Pessoal', '3':'Enviados para o AC Pessoal'}"  theme="simple"/>
 			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /><br />
