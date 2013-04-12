@@ -6,7 +6,7 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 </style>
-<title>Cadastro de Estabelecimentos</title>
+<title>Estabelecimentos</title>
 </head>
 <body>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
