@@ -41,6 +41,7 @@
 			<@ww.textfield label="Avaliação" name="titulo" id="titulo" cssStyle="width: 550px;"/>
 			<@ww.select label="Ativos" name="ativos" id="ativos" list=r"#{'S':'Sim', 'N':'Não'}" cssStyle="width: 65px;" headerKey="T" headerValue="Todos"/>
 			<@ww.hidden id="pagina" name="page"/>
+			<@ww.hidden id="modeloAvaliacao" name="modeloAvaliacao"/>
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="$('#pagina').val(1);">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

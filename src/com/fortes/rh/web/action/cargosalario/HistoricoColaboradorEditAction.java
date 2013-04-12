@@ -209,7 +209,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			transactionManager.rollback(status);
 
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert();
 
 			return Action.INPUT;
@@ -266,7 +266,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		catch (LimiteColaboradorExceditoException e)
 		{
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert();
 
 			return Action.INPUT;
@@ -305,9 +305,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	private void situacaoColaborador() 
 	{
-		if(situacao.equals(SituacaoColaborador.ATIVO))
+		if(SituacaoColaborador.ATIVO.equals(situacao))
 			somenteAtivos = true;
-		else if(situacao.equals(SituacaoColaborador.DESLIGADO))
+		else if(SituacaoColaborador.DESLIGADO.equals(situacao))
 			somenteAtivos = false;
 	}
 

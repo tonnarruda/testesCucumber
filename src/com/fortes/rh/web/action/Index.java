@@ -20,12 +20,10 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
-import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -87,13 +85,11 @@ public class Index extends MyActionSupport
 	private boolean idiomaIncorreto;
 	
 	private boolean integradoAC;
-	private SolicitacaoManager solicitacaoManager;
 	private Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager; 
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 	private MyDaoAuthenticationProvider authenticationProvider;
 	private Collection<Video> listaVideos = new ArrayList<Video>();
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private ConfiguracaoCaixasMensagens configuracaoCaixasMensagens;
 	private Character tipo;
@@ -431,10 +427,6 @@ public class Index extends MyActionSupport
 		return parametrosDoSistema;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
-		this.solicitacaoManager = solicitacaoManager;
-	}
-
 	public Collection<Solicitacao> getSolicitacaos() {
 		return solicitacaos;
 	}
@@ -477,10 +469,6 @@ public class Index extends MyActionSupport
 
 	public Collection<Video> getListaVideos() {
 		return listaVideos;
-	}
-
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
-		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public Usuario getUsuario() {

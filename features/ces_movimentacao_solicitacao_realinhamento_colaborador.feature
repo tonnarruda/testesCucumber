@@ -11,7 +11,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     Dado que exista um colaborador "maria", da area "desenvolvimento", com o cargo "programador" e a faixa salarial "nivel I"
     Dado que exista um colaborador "bento", da area "suporte", com o cargo "tecnico" e a faixa salarial "bento I"
 
-    Quando eu acesso o menu "C&S > Movimentações > Solicitação de Realinhamento > Colaborador"
+    Quando eu acesso o menu "C&S > Movimentações > Solicitação de Realinhamento para Colaborador"
     Então eu devo ver o título "Solicitação de Realinhamento de Cargos & Salários para Colaborador"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok

@@ -219,7 +219,7 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		colhfAll.addAll(colhf2);
 		colhfAll.addAll(col2hf1);
 
-		Collection<HistoricoFuncao>	colhfRetorno = historicoFuncaoManager.findHistoricoFuncaoColaborador(colhc, dataLimite);
+		Collection<HistoricoFuncao>	colhfRetorno = historicoFuncaoManager.findHistoricoFuncaoColaborador(colhc, dataLimite, null);
 
 		assertEquals(colhfRetorno.size(), colhfAll.size());
 

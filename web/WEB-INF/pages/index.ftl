@@ -29,8 +29,7 @@
 			 text-decoration: none; 
 		}
 		
-		#atualizacao { display: none; padding: 10px; margin-bottom: 15px; background-color: #FFB; border: 1px solid #FC6; }
-		#atualizacao img { margin-right: 5px; }
+		#atualizacao { display: none; }
 		
 		.column { width: 50%; float: left; min-height: 50px; }
 		.left .portlet { margin: 0 0.5em 1em 0; }
@@ -155,11 +154,14 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />	
 	
-	<div id="atualizacao">
-		<a title="Acessar o Portal do Cliente" href="http://www.grupofortes.com.br/portaldocliente" target="_blank">
-			<img border="0" src="<@ww.url value="/imgs/softwareUpdate.png"/>" align="absMiddle"/>
-			Versão <span id="versaoPortal"></span> disponível. Clique aqui para acessar o Portal do Cliente e realizar o download.
-		</a>
+	<div id="atualizacao" class="warning">
+		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
+		<ul>
+			<li>
+				Versão <strong><span id="versaoPortal"></span></strong> disponível. 
+				<a title="Acessar o Portal do Cliente" href="http://www.grupofortes.com.br/portaldocliente" target="_blank">Clique aqui</a> para acessar o Portal do Cliente e realizar o download.
+			</li>
+		</ul>
 	</div>
 	
 	<#if avaliacaos?exists && 0 < avaliacaos?size>

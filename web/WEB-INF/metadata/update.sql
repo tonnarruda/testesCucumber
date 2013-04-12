@@ -19625,3 +19625,19 @@ insert into migrations values('20130402081343');--.go
 alter table avaliacaodesempenho alter column titulo type character varying(200);--.go
 insert into migrations values('20130405155933');--.go
 update parametrosdosistema set appversao = '1.1.105.110';--.go
+-- versao 1.1.106.111
+
+update papel set 
+codigo = 'ROLE_MOV_SOLICITACAOREAJUSTE_COLABORADOR', 
+url = '/cargosalario/reajusteColaborador/prepareSolicitacaoReajuste.action', 
+nome = 'Solicitação de Realinhamento para Colaborador' 
+where id = 49;--.go
+
+delete from perfil_papel where papeis_id in (567,568,569);--.go
+delete from papel where id in (567,568,569);--.go
+
+update papel set codigo = 'ROLE_DISSIDIO_COLABORADOR' where id = 565;--.go
+update papel set codigo = 'ROLE_DISSIDIO_FAIXASALARIAL' where id = 566;--.go
+update papel set codigo = 'ROLE_DISSIDIO_INDICE' where id = 570;--.go
+insert into migrations values('20130409102059');--.go
+update parametrosdosistema set appversao = '1.1.106.111';--.go
