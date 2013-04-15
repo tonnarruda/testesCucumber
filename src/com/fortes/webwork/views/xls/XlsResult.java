@@ -160,13 +160,13 @@ public class XlsResult extends WebWorkResultSupport {
 	{
 		if(colNum == 0)
 			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, valorCelula);
-		else if(colNum != 0 && colNum < propertiesGroupArray.length)
+		else if(colNum < propertiesGroupArray.length)
 			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, nomeAgruoadorAnterior[colNum-1] + valorCelula);
 	}
 
 	private void populaCellMescladas(String[] propertiesGroupArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName,int colNum, String celMescle) 
 	{
-		if(propertiesName.equals(propertiesGroupArray[colNum]))
+		if(campoKey(propertiesName).equals(propertiesGroupArray[colNum]))
 		{
 			if(celMescladas.get(celMescle) != null)
 				rowNumFim[colNum] = celMescladas.get(celMescle).getLastRow() + 1;
@@ -176,6 +176,20 @@ public class XlsResult extends WebWorkResultSupport {
 			celMescladas.put(celMescle, new CellRangeAddress(rowNumIni[colNum], rowNumFim[colNum], colNum, colNum));
 			nomeAgruoadorAnterior[colNum] = celMescle;
 		}
+	}
+
+	private String campoKey(String propertiesName) 
+	{
+		String[] campos = propertiesName.split(".");
+		String campoKey = "";
+		
+		for (int c = 0; c < campos.length - 1; c++)
+			campoKey += campos[c];
+		
+		if(campos.length != 0)
+			campoKey += ".";
+		
+		return campoKey + "id";
 	}
 
     public void setReportFilter(String reportFilter) {

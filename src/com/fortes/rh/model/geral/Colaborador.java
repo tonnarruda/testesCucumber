@@ -30,6 +30,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Ctps;
@@ -212,6 +213,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String statusAvaliacao = "";
 	@Transient
 	private Long avaliacaoDesempenhoId;
+	@Transient
+	private AvaliacaoDesempenho avaliacaoDesempenho; 
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
 	@Transient
@@ -904,7 +907,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.titulo = titulo;
 	}
 
-	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
+	//findColabPeriodoExperiencia
+	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, boolean anonima, Long avaliacaoDesempenhoId, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -917,10 +921,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.respondidaEm = respondidaEm;
 		this.performance = performance;
 		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
+		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;
 		
-		if (empresa == null)
-			empresa = new Empresa();
+		this.avaliacaoDesempenho = new AvaliacaoDesempenho();
+		this.avaliacaoDesempenho.setTitulo(avaliacaoDesempenhoTitulo);
+		this.avaliacaoDesempenho.setId(avaliacaoDesempenhoId);
 		
+		empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
 	}
 	
@@ -2699,5 +2706,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setComissaoMembros(Collection<ComissaoMembro> comissaoMembros) {
 		this.comissaoMembros = comissaoMembros;
+	}
+
+	public AvaliacaoDesempenho getAvaliacaoDesempenho() {
+		return avaliacaoDesempenho;
+	}
+
+	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
+		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
 }

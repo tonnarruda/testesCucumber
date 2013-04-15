@@ -3130,7 +3130,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.titulo, emp.nome) ");
+		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.id, ad.titulo, emp.nome) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
@@ -3166,7 +3166,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  if(!considerarAutoAvaliacao) 
 			  hql.append("and co.id <> aval.id ");
 
-		  hql.append("order by  co.nome, ad.titulo, aval.nome ");//importante para relatorio
+		  hql.append("order by  co.nome, co.id, ad.titulo, ad.id, aval.nome ");//importante para relatorio
 		  
 		  Query query = getSession().createQuery(hql.toString());
 		  

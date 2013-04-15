@@ -63,6 +63,7 @@
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="propertiesGroup">areaOrganizacional.descricao</param>
 				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -72,6 +73,7 @@
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="propertiesGroup">areaOrganizacional.descricao</param>
 				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -91,6 +93,7 @@
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="propertiesGroup">estabelecimento.nome</param>
 				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -100,6 +103,7 @@
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período</param>
+				<param name="propertiesGroup">motivoDemissao.motivoFormatado</param>
 				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -109,6 +113,7 @@
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período,Observação</param>
+				<param name="propertiesGroup">motivoDemissao.motivoFormatado</param>
 				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
