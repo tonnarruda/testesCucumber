@@ -2127,7 +2127,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor)
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.min("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
@@ -2137,6 +2143,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 
 		criteria.addOrder(Order.asc(ordenarPor));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

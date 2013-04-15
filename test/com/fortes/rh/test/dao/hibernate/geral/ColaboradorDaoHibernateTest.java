@@ -3196,23 +3196,75 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	}
 
 	public void testFindAllSelect() {
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
-
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaborador1.setEmpresa(empresa);
+		colaborador1.setNome("B Colab 1");
+		colaborador1.setEmpresa(empresa1);
 		colaborador1 = colaboradorDao.save(colaborador1);
 
+		HistoricoColaborador historicoColaborador1_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1_1.setColaborador(colaborador1);
+		historicoColaborador1_1.setData(DateUtil.criarDataMesAno(01, 01, 2000));
+		historicoColaborador1_1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1_1);
+
+		HistoricoColaborador historicoColaborador1_2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1_2.setColaborador(colaborador1);
+		historicoColaborador1_2.setData(DateUtil.criarDataMesAno(01, 01, 2013));
+		historicoColaborador1_2.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historicoColaborador1_2);
+		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.setEmpresa(empresa);
+		colaborador2.setNome("A Colab 2");
+		colaborador2.setEmpresa(empresa1);
 		colaborador2 = colaboradorDao.save(colaborador2);
 
+		HistoricoColaborador historicoColaborador2_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2_1.setColaborador(colaborador2);
+		historicoColaborador2_1.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColaborador2_1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2_1);
+		
+		HistoricoColaborador historicoColaborador2_2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2_2.setColaborador(colaborador2);
+		historicoColaborador2_2.setData(DateUtil.criarDataMesAno(01, 01, 2013));
+		historicoColaborador2_2.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historicoColaborador2_2);
+		
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaborador3.setEmpresa(empresa);
+		colaborador3.setNome("Colab 3");
+		colaborador3.setEmpresa(empresa1);
 		colaborador3.setDesligado(true);
 		colaborador3 = colaboradorDao.save(colaborador3);
 
-		assertEquals(2, colaboradorDao.findAllSelect(empresa.getId(), "nomeComercial").size());
+		HistoricoColaborador historicoColaborador3_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3_1.setColaborador(colaborador3);
+		historicoColaborador3_1.setData(DateUtil.criarDataMesAno(01, 01, 2013));
+		historicoColaborador3_1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador3_1);
+		
+		Colaborador colaborador4 = ColaboradorFactory.getEntity();
+		colaborador4.setNome("Colab 4");
+		colaborador4.setEmpresa(empresa1);
+		colaborador4.setEmpresa(empresa2);
+		colaborador4 = colaboradorDao.save(colaborador4);
+		
+		HistoricoColaborador historicoColaborador4_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador4_1.setColaborador(colaborador4);
+		historicoColaborador4_1.setData(DateUtil.criarDataMesAno(01, 01, 2013));
+		historicoColaborador4_1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador4_1);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.findAllSelect(empresa1.getId(), "nome");
+		
+		assertEquals(2, colaboradores.size());
+		assertEquals(colaborador2.getNome(), ((Colaborador)colaboradores.toArray()[0]).getNome());
+		assertEquals(colaborador1.getNome(), ((Colaborador)colaboradores.toArray()[1]).getNome());
 	}
 	
 	public void testFindAllSelectByIds() {
