@@ -794,9 +794,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
 
-	public void desvinculaResponsavel(Long colaboradorId)
+	public void desvinculaResponsaveis(Long colaboradorId)
 	{
 		getDao().desvinculaResponsavel(colaboradorId);		
+		getDao().desvinculaCoResponsavel(colaboradorId);		
 	}
 	
 }

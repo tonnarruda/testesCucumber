@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ppraltcat" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="3f585d67-7291-455c-baa3-6aee8cf8c062">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -322,7 +322,7 @@ DE RISCOS AMBIENTAIS]]></text>
 					<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="2826ac87-7818-4e99-8607-0625b9103165" key="textField-13" positionType="Float" x="0" y="191" width="535" height="15">
+					<reportElement uuid="2826ac87-7818-4e99-8607-0625b9103165" key="textField-13" positionType="Float" x="0" y="191" width="535" height="19">
 						<printWhenExpression><![CDATA[$P{AGRUPADO_POR_AMBIENTE}]]></printWhenExpression>
 					</reportElement>
 					<box topPadding="1" leftPadding="1" bottomPadding="2" rightPadding="1">
@@ -357,7 +357,7 @@ DE RISCOS AMBIENTAIS]]></text>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_cabecalho.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport isUsingCache="false">
-					<reportElement uuid="3e89ce10-d6f3-4619-90b3-4304dde6dbcf" key="ltcat-4" positionType="Float" isPrintRepeatedValues="false" x="0" y="210" width="535" height="53" isRemoveLineWhenBlank="true">
+					<reportElement uuid="3e89ce10-d6f3-4619-90b3-4304dde6dbcf" key="ltcat-4" positionType="Float" isPrintRepeatedValues="false" x="0" y="212" width="535" height="53" isRemoveLineWhenBlank="true">
 						<printWhenExpression><![CDATA[new Boolean($F{ppra} != null)]]></printWhenExpression>
 					</reportElement>
 					<subreportParameter name="PPRA">

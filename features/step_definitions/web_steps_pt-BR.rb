@@ -64,6 +64,11 @@ Quando /^eu clico na imagem com o título "([^"]*)"$/ do |titulo|
   find(:xpath, "//img[@title='#{titulo}']").click
 end
 
+Quando /^eu preencho campo pelo id "([^"]*)" com "([^"]*)"$/ do |desc, value|
+  field = find(:xpath, "//input[contains(@id, '#{desc}')]")
+  field.set(value)
+end
+
 Quando /^eu preencho o campo do item "([^"]*)" com "([^"]*)"$/ do |desc, value|
   field = find(:xpath, "//td[contains(text(), '#{desc}')]/../td/input[@type='text']")
   field.set(value)
