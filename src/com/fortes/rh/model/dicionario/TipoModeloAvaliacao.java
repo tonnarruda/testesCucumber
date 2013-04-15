@@ -15,7 +15,7 @@ public class TipoModeloAvaliacao extends LinkedHashMap<Character, String>
 	{
 		put(SOLICITACAO, "Solicitação");
 		put(DESEMPENHO, "Avaliação de Desempenho");
-		put(ACOMPANHAMENTO_EXPERIENCIA, "Acompanhamento de Experiência");
+		put(ACOMPANHAMENTO_EXPERIENCIA, "Acompanhamento do Período de Experiência");
 		put(AVALIACAO_DESEMPENHO, "Avaliação de Desempenho");
 	}
 
