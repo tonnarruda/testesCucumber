@@ -943,7 +943,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			usuarioManager.desativaAcessoSistema(colaboradorId);
 			candidatoManager.habilitaByColaborador(colaboradorId);
 			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
-			areaOrganizacionalManager.desvinculaResponsavel(colaboradorId);
+			areaOrganizacionalManager.desvinculaResponsaveis(colaboradorId);
 
 			if(desligaByAC)
 				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);

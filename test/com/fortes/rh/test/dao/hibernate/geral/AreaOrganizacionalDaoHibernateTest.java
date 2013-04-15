@@ -446,24 +446,29 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 	public void testDesvinculaResponsavel()
 	{
-		Usuario usuario = UsuarioFactory.getEntity();
-		usuarioDao.save(usuario);
+		Colaborador colaboradorResponsavel = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorResponsavel);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setUsuario(usuario);
-		colaboradorDao.save(colaborador);
+		Colaborador colaboradorCoResponsavel = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorCoResponsavel);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setEmpresa(empresa);
-		areaOrganizacional.setResponsavel(colaborador);
-		areaOrganizacionalDao.save(areaOrganizacional);
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacional1.setResponsavel(colaboradorResponsavel);
+		areaOrganizacional1.setCoResponsavel(colaboradorCoResponsavel);
+		areaOrganizacionalDao.save(areaOrganizacional1);
 		
-		areaOrganizacionalDao.desvinculaResponsavel(colaborador.getId());
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getResponsavel().getId());
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getCoResponsavel().getId());
 		
-		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional.getId()).getResponsavel().getId());
+		areaOrganizacionalDao.desvinculaResponsavel(colaboradorResponsavel.getId());
+		areaOrganizacionalDao.desvinculaCoResponsavel(colaboradorCoResponsavel.getId());
+		
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getResponsavel().getId());
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getCoResponsavel().getId());
 		
 	}
 	
