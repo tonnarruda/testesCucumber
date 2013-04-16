@@ -40,6 +40,7 @@ import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
@@ -181,7 +182,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 				abaExtra = ",abaExtra";
 
 			empresaId = getEmpresaSistema().getId();
-			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado"), "getId", "getNomeMercado");
+			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
 			
 			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,comoFicouSabendoVaga");
 			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,escolaridade,ende,num,cidade,ddd,fone");
@@ -195,7 +196,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			empresaId = this.empresaId;
 			habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraCandidato();
 			
-			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelectModuloExterno(empresaId, "nomeMercado"), "getId", "getNomeMercado");
+			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado", true, Cargo.ATIVO), "getId", "getNomeMercado");
 		}
 
 		if(habilitaCampoExtra)
@@ -535,7 +536,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getUf() != null && candidato.getEndereco().getUf().getId() != null)
 			cidades = cidadeManager.find(new String[]{"uf"}, new Object[]{candidato.getEndereco().getUf()}, new String[]{"nome"});
 		
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS), "getId", "getNomeMercado");
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, candidato.getCargos(), "getId");
 		
 		sexos = new SexoCadastro();
@@ -553,7 +554,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		maxCandidataCargo = empresa.getMaxCandidataCargo();
 
 		ufs = estadoManager.findAll(new String[]{"sigla"});
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado"), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS), "getId", "getNomeMercado");
 		sexos = new SexoCadastro();
 		
 		return Action.SUCCESS;

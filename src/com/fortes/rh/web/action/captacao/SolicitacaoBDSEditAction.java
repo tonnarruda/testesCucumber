@@ -84,7 +84,7 @@ public class SolicitacaoBDSEditAction extends MyActionSupportEdit implements Mod
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areas = cu1.sortCollectionStringIgnoreCase(areas, "descricao");
 
-		cargos = cargoManager.findAllSelect(empresaId, "nome");
+		cargos = cargoManager.findAllSelect(empresaId, "nome", null, Cargo.TODOS);
 
 		// pega td do banco do tipo EmpresaBDS a joga num HashMap
 		empresasBDS = empresaBdsManager.findAll();

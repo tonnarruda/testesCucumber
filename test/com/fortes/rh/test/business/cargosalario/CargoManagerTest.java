@@ -186,7 +186,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(true), eq(isModuloExterno)).will(returnValue(Collections.EMPTY_LIST));
 		
-		cargoManager.findAllSelectModuloExterno(empresaId, ordenarPor);
+		cargoManager.findAllSelect(empresaId, ordenarPor, true, Cargo.ATIVO);
 		
 		cargoDao.verify();
 	}
@@ -456,11 +456,10 @@ public class CargoManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		String ordenarPor = "a";
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		boolean isModuloExterno = false;
 
-		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(null), eq(isModuloExterno)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(null), eq(Cargo.TODOS)).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findAllSelect(empresaId, ordenarPor));
+		assertEquals(cargos, cargoManager.findAllSelect(empresaId, ordenarPor, null, Cargo.TODOS));
 	}
 
 	public void testFindByIdProjection()
