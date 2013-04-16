@@ -2677,9 +2677,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql
-				.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome, hc1.tipoSalario, hc1.salario, "
-						+ "hc1.quantidadeIndice, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fshih.valor) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome) ");
 
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("left join hc1.areaOrganizacional as ao ");
@@ -2689,21 +2687,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc1.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as cg ");
 
-		hql.append("left join hc1.indice as hci ");
-		hql.append("left join hci.indiceHistoricos as hcih with hcih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = hci.id and ih2.data <= :data) ");
-		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data) ");
-		hql.append("left join fsh.indice as fshi ");
-		hql.append("left join fshi.indiceHistoricos as fshih with fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = fshi.id and ih4.data <= :data) ");
-
 		hql.append("where ");
 		hql.append("		hc1.status = :status ");
 		hql.append("		and (hc1.data = (");
-		hql.append("			select max(hc2.data) ");
+		hql.append("			select min(hc2.data) ");
 		hql.append("			from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :data and hc2.status = :status ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("		) ");
-		hql.append("	 	or hc1.data is null ");
 		hql.append("	) ");
 		hql.append("and	co.dataAdmissao between :dataIni and :dataFim ");
 		hql.append("and	es.id in (:estabelecimentosIds) ");
@@ -2715,7 +2706,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("order by es.nome,ao.nome,co.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setDate("data", new Date());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);

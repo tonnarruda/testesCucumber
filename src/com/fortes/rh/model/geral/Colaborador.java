@@ -373,7 +373,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//usado no Relatório de Admitidos
-	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, int tipoSalario, Double salario, Double historicoQuantidadeIndice, Double indiceHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoValor, Double faixaHistoricoQuantidade, Double historicoIndiceValor)
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -408,19 +408,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setId(estabelecimentoId);
 		this.estabelecimento.setNome(estabelecimentoNome);
-		
-		this.historicoColaborador = new HistoricoColaborador();
-		this.historicoColaborador.setSalario(salario);
-		this.historicoColaborador.setTipoSalario(tipoSalario);
-		
-		this.historicoColaborador.setQuantidadeIndice(historicoQuantidadeIndice);
-		
-		this.historicoColaborador.setProjectionIndiceHistoricoValor(indiceHistoricoValor);
-		this.historicoColaborador.setProjectionFaixaHistoricoTipo(faixaHistoricoTipo);
-		this.historicoColaborador.setProjectionFaixaHistoricoValor(faixaHistoricoValor);
-		this.historicoColaborador.setProjectionFaixaHistoricoQuantidade(faixaHistoricoQuantidade);
-		this.historicoColaborador.getFaixaSalarial().setHistoricoIndiceValor(historicoIndiceValor);
-		
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)
