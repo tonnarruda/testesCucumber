@@ -125,10 +125,11 @@
 		{
 			var camposObg = new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId');
 		
-			<#if obrigarAmbienteFuncao>
-				camposObg.push('ambiente','funcao');
-			</#if>
-		
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<#if obrigarAmbienteFuncao>
+					camposObg.push('ambiente','funcao');
+				</#if>
+			</@authz.authorize>
 		
 			if(validaFormulario('form', camposObg, new Array ('dataSol')))
 			{
@@ -272,10 +273,9 @@
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
+				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
+				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>
-			<@ww.hidden name="solicitacao.faixaSalarial.id"/>
-			<@ww.hidden name="solicitacao.ambiente.id"/>
-			<@ww.hidden name="solicitacao.funcao.id"/>
 		<#else>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 347px;"/>
@@ -284,6 +284,8 @@
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
+				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
+				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>
 		</#if>
 		
