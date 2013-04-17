@@ -6,9 +6,17 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		    <param name="contentType">application/json</param>
 		</action>
-		<action name="findContraCheque" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="findContraCheque">
-			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
-		    <param name="contentType">application/pdf</param>
+		<action name="prepareContraCheque" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareContraCheque">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorContraCheque.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorContraCheque.ftl</result>
+		</action>
+		<action name="contraCheque" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="contraCheque">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=contraCheque.pdf</param>
+			    <param name="contentType">application/pdf;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">

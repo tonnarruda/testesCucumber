@@ -2,6 +2,7 @@ package com.fortes.rh.web.ws;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -24,5 +25,5 @@ public interface AcPessoalClientColaborador
 
 	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa);
 
-	public String findContraCheque(Empresa empresa) throws Exception;
+	public String findContraCheque(String codEmpresa, String codEmpregado, Date mesAno) throws Exception;
 }
