@@ -1,11 +1,14 @@
 package com.fortes.rh.web.ws;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.apache.axis.client.Service;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -284,15 +287,26 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		}
 	}
 	
-	public String findContraCheque(Empresa empresa) throws Exception
+	public String findContraCheque(String codEmpresa, String codEmpregado, Date mesAno) throws Exception
 	{
-		StringBuilder token = new StringBuilder();
-		GrupoAC grupoAC = new GrupoAC();
-		Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetPDF");
+		Call call = (Call) new Service().createCall();
+		call.setTargetEndpointAddress("http://10.1.2.80:1024/soap/IAcPessoal");
+		call.setOperationName(new QName("GetPDF"));
+		
+		QName xmlstring = new QName("xs:string");
+		QName xmlint = new QName("xs:int");
+		
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("Ano", xmlint, ParameterMode.IN);
+		call.addParameter("Mes", xmlint, ParameterMode.IN);
 		
 		call.setReturnType(org.apache.axis.encoding.XMLType.XSD_STRING);
 		
-		Object[] param = new Object[]{};
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mesAno);		
+		
+		Object[] param = new Object[]{ codEmpresa, codEmpregado, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1 };
 		
 		return (String) call.invoke(param);
 	}

@@ -2365,9 +2365,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findHabilitacaAVencer(diasLembrete, empresaId);
 	}
 	
-	public String findContraCheque(Empresa empresa) throws Exception 
+	public String findContraCheque(String codEmpresa, String codEmpregado, Date mesAno) throws Exception 
 	{
-		return acPessoalClientColaborador.findContraCheque(empresa);
+		return acPessoalClientColaborador.findContraCheque(codEmpresa, codEmpregado, mesAno);
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
