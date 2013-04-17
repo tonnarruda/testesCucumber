@@ -267,7 +267,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		{
 			e.printStackTrace();
 			addActionWarning(e.getMessage());
-			prepareInsert();
+			prepareUpdate();
 
 			return Action.INPUT;
 		}

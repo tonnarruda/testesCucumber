@@ -120,14 +120,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return cargos;
 	}
 	
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor)
+	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo)
 	{
-		return getDao().findAllSelect(empresaId, ordenarPor, null, false);
-	}
-
-	public Collection<Cargo> findAllSelectModuloExterno(Long empresaId, String ordenarPor)
-	{
-		return getDao().findAllSelect(empresaId, ordenarPor, true, true);
+		return getDao().findAllSelect(empresaId, ordenarPor, exibirModuloExterno, ativo);
 	}
 
 	public Cargo findByIdProjection(Long cargoId)
@@ -186,7 +181,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		try
 		{
-			Collection<Cargo> cargos = getDao().findAllSelect(empresaId, "nomeMercado", null, false);
+			Collection<Cargo> cargos = getDao().findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 			return CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 		}
 		catch (Exception e)

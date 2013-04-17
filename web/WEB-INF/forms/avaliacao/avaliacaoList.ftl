@@ -69,6 +69,7 @@
 		</@display.column>
 		
 		<@display.column title="Avaliação" property="titulo" class="${classe}"/>
+		<@display.column title="Tipo de Avaliação" property="tipoModeloAvaliacaoDescricao" class="${classe}" style="width:250px"/>
 	</@display.table>
 	
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>

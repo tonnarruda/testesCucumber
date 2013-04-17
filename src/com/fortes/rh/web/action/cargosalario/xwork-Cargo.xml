@@ -61,6 +61,7 @@
 				<param name="location">WEB-INF/report/cargo.jasper</param>
 				<param name="dataSource">cargos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">cargos.pdf</param>
 			</result>
 		</action>
 		
@@ -69,6 +70,7 @@
 				<param name="location">WEB-INF/report/cargo.jasper</param>
 				<param name="dataSource">cargos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">cargos.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioCargo.ftl</result>
 		</action>

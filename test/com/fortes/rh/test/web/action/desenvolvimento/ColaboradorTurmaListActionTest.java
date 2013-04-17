@@ -181,7 +181,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     public void testPrepareFiltroHistoricoTreinamentos() throws Exception
     {
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
     	
     	assertEquals("success", action.prepareFiltroHistoricoTreinamentos());
@@ -199,7 +199,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colabCollection));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
     	
     	assertEquals("success", action.filtroHistoricoTreinamentos());
@@ -216,7 +216,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	colaboradorManager.expects(once()).method("findColaboradoresByArea").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colabCollectionVazia));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<GrupoOcupacional>()));
     	
     	assertEquals("input", action.filtroHistoricoTreinamentos());

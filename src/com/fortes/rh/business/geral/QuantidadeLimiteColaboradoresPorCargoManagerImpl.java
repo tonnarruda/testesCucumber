@@ -84,7 +84,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 			Integer colaboradoresAtivos = colaboradorManager.countAtivosPeriodo(hoje, Arrays.asList(empresaId), null, LongUtil.collectionToCollectionLong(descendentes), cargosIdsTmp, null, false, colaboradorId, false);
 			
 			if(colaboradoresAtivos >= configuracaoLimite.getLimite())
-				throw new LimiteColaboradorExceditoException("Limite de colaboradores cadastrados para o cargo \""+ faixa.getCargo().getNome() +"\" foi excedido!");
+				throw new LimiteColaboradorExceditoException("Não foi possível gravar a situação.<br />Limite de colaboradores cadastrados para o cargo <strong>"+ faixa.getCargo().getNome() +"</strong> foi excedido!");
 		}
 	}
 

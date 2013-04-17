@@ -291,7 +291,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 
-		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
 		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(empresaId);

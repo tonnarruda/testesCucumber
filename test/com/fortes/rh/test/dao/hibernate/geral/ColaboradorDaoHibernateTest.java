@@ -4208,38 +4208,70 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento);
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimento1.setNome("Estabelecimento A");
+		estabelecimento1.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento1);
 
-		Estabelecimento estabelecimentoFora = EstabelecimentoFactory.getEntity();
-		estabelecimentoFora.setEmpresa(empresa);
-		estabelecimentoFora.setNome("B");
-		estabelecimentoFora = estabelecimentoDao.save(estabelecimentoFora);
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setNome("Estabelecimento B");
+		estabelecimento2.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento2);
 
-		Colaborador colaborador = montaColaboradorDoTestCountAtivo(empresa, dataAdmissao);
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		Colaborador colaborador1 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissao);
 
-		Colaborador colaboradorFora = montaColaboradorDoTestCountAtivo(empresa, dataAdmissaoFora);
+		Colaborador colaborador2 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissaoFora);
 
-		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaboradorAtual.setColaborador(colaborador);
-		historicoColaboradorAtual.setEstabelecimento(estabelecimento);
-		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+		HistoricoColaborador historicoColaborador1_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1_1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaborador1_1.setColaborador(colaborador1);
+		historicoColaborador1_1.setEstabelecimento(estabelecimento1);
+		historicoColaborador1_1.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaborador1_1 = historicoColaboradorDao.save(historicoColaborador1_1);
+		
+		HistoricoColaborador historicoColaborador1_2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1_2.setData(DateUtil.criarDataMesAno(1, 1, 2010));
+		historicoColaborador1_2.setColaborador(colaborador1);
+		historicoColaborador1_2.setEstabelecimento(estabelecimento2);
+		historicoColaborador1_2.setAreaOrganizacional(areaOrganizacional1);
+		historicoColaborador1_2 = historicoColaboradorDao.save(historicoColaborador1_2);
 
-		HistoricoColaborador historicoColaboradorFora = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorFora.setData(DateUtil.criarDataMesAno(1, 1, 2009));
-		historicoColaboradorFora.setColaborador(colaboradorFora);
-		historicoColaboradorFora.setEstabelecimento(estabelecimentoFora);
-		historicoColaboradorFora = historicoColaboradorDao.save(historicoColaboradorFora);
+		HistoricoColaborador historicoColaborador2_1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2_1.setData(DateUtil.criarDataMesAno(1, 2, 2009));
+		historicoColaborador2_1.setColaborador(colaborador2);
+		historicoColaborador2_1.setEstabelecimento(estabelecimento2);
+		historicoColaborador2_1.setAreaOrganizacional(areaOrganizacional1);
+		historicoColaborador2_1 = historicoColaboradorDao.save(historicoColaborador2_1);
 
+		HistoricoColaborador historicoColaborador2_2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2_2.setData(DateUtil.criarDataMesAno(1, 2, 2011));
+		historicoColaborador2_2.setColaborador(colaborador2);
+		historicoColaborador2_2.setEstabelecimento(estabelecimento1);
+		historicoColaborador2_2.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaborador2_2 = historicoColaboradorDao.save(historicoColaborador2_2);
+		
 		Date dataIni = DateUtil.montaDataByString("19/05/2009");
-		Date dataFim = DateUtil.montaDataByString("20/01/2010");
-		;
+		Date dataFim = DateUtil.montaDataByString("20/02/2011");
+		
 		Long[] areasIds = null;
-		Long[] estabelecimentosIds = new Long[] { estabelecimento.getId() };
+		Long[] estabelecimentosIds = new Long[] { estabelecimento1.getId() };
 
-		assertEquals(1, colaboradorDao.findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, false).size());
+		Collection<Colaborador> colaboradorRetornado = colaboradorDao.findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(1, colaboradorRetornado.size());
+		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
+		
+		estabelecimentosIds = new Long[] { estabelecimento1.getId(), estabelecimento2.getId() };
+		
+		colaboradorRetornado = colaboradorDao.findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(2, colaboradorRetornado.size());
+		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
+		assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[1]).getAreaOrganizacional().getId());
 	}
 
 	public void testFindHistoricoByColaboradors() {

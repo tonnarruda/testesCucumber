@@ -118,7 +118,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(cargos));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(true));
 
     	assertEquals("success", action.delete());
@@ -139,7 +139,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(cargos));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(false));
 
     	assertEquals("success", action.delete());

@@ -92,7 +92,7 @@ public class CargoDWR
 			getParametro = "getNomeMercado";
 		}
 		else
-			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercado");
 	}
@@ -103,7 +103,7 @@ public class CargoDWR
 		if(empresaId == 0)
 			cargos = cargoManager.findAllSelect(empresaIds);
 		else
-			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 		return cargos;
 	}
 	
