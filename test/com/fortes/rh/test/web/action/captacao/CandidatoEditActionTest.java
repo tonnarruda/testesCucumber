@@ -173,7 +173,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	bairroManager.expects(once()).method("getArrayBairros").will(returnValue(new String()));
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	
     	return candidato;
 	}
@@ -206,7 +206,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	assertEquals("success", action.prepareInsertCurriculoPlus());
     }
 
@@ -244,7 +244,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
 
     	assertEquals("input",action.insertCurriculo());
     }
@@ -265,7 +265,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
-    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	
     	assertEquals("input", action.insertCurriculo());
@@ -334,7 +334,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	empresaManager.expects(once()).method("findToList").will(returnValue(empresas));
     	empresaManager.expects(once()).method("findById").will(returnValue(EmpresaFactory.getEmpresa(1L)));
-    	cargoManager.expects(once()).method("findAllSelectModuloExterno").will(returnValue(new ArrayList<Cargo>()));
+    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Cargo>()));
     	areaInteresseManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaInteresse>()));
     	conhecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Conhecimento>()));
     	comoFicouSabendoVagaManager.expects(once()).method("findAllSemOutros").will(returnValue(new ArrayList<ComoFicouSabendoVagaManager>()));

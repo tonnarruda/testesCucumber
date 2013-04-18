@@ -43,7 +43,7 @@ public class ExperienciaEditAction extends MyActionSupportEdit
         else
         	empresaId = getEmpresaSistema().getId();
 
-        nomeCargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+        nomeCargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 	}
 
 	public String prepareInsert() throws Exception

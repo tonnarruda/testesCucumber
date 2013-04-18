@@ -80,7 +80,7 @@ public class CargoDWRTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 		
-		cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
 		
 		Map retorno = cargoDWR.getByEmpresa(empresaId);		
 		assertEquals(1, retorno.size());

@@ -1,11 +1,9 @@
 package com.fortes.rh.dao.hibernate.avaliacao;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -128,6 +126,10 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	public Integer findCountTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = geraCriteria(page, pagingSize, empresaId, tituloBusca, avaliacaoId, liberada);
 		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.rowCount());
+		criteria.setProjection(p);
+		
 		return (Integer) criteria.uniqueResult();
 	}
 	
@@ -135,6 +137,17 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = geraCriteria(page, pagingSize, empresaId, tituloBusca, avaliacaoId, liberada);
 
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.property("a.inicio"), "inicio");
+		p.add(Projections.property("a.fim"), "fim");
+		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.liberada"), "liberada");
+		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
+		criteria.setProjection(p);
+		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();
@@ -144,23 +157,6 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
 		criteria.createCriteria("avaliacao.empresa", "emp");
-
-		ProjectionList p = Projections.projectionList().create();
-		
-		if (pagingSize == null) {
-			p.add(Projections.rowCount());
-		} else {
-			p.add(Projections.property("a.id"), "id");
-			p.add(Projections.property("a.inicio"), "inicio");
-			p.add(Projections.property("a.fim"), "fim");
-			p.add(Projections.property("a.titulo"), "titulo");
-			p.add(Projections.property("a.liberada"), "liberada");
-			p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
-			p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
-			p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
-			
-		}
-		criteria.setProjection(p);
 
 		if(empresaId != null)
 			criteria.add(Expression.eq("emp.id", empresaId));
@@ -189,6 +185,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "ad");
@@ -204,5 +201,4 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		return criteria.list();
 	}
-	
 }
