@@ -16,7 +16,7 @@
 			<@ww.textfield label="Mês/Ano" id="mesAno" name="mesAno" maxLength="7" size="7" cssClass="mascaraMesAnoData"/>
 			
 			<div class="buttonGroup">
-				<button onclick="${validarCampos};" class="btnGravar"></button>
+				<button onclick="${validarCampos};" class="btnDownload"></button>
 			</div>
 		</@ww.form>
 	</body>
