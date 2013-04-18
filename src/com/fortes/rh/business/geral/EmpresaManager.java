@@ -4,6 +4,7 @@
 package com.fortes.rh.business.geral;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
@@ -28,7 +29,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String findCidade(Long id);
 	Collection<Empresa> findDistinctEmpresasByQuestionario(Long questionarioId);
 	Collection<CheckBox> populaCadastrosCheckBox();
-	void sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception;
+	List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception;
 	Empresa findByIdProjection(Long id);
 	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles);
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);

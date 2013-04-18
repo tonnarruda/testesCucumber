@@ -1,13 +1,9 @@
-/* Autor: Bruno Bachiega
- * Data: 6/06/2006
- * Requisito: RFA0026
- */
-
 package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -203,18 +199,20 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return entidades;
 	}
 
-	public void sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception
+	public List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception
 	{
+		Empresa empresaDestino = findByIdProjection(empresaDestinoId);
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
 		Map<Long, Long> conhecimentoIds = new  HashMap<Long, Long>();
 		Map<Long, Long> habilidadeIds = new  HashMap<Long, Long>();
 		Map<Long, Long> atitudeIds = new  HashMap<Long, Long>();
 		Map<Long, Long> areaInteresseIds = new  HashMap<Long, Long>();
 		Map<Long, Long> epiIds = new  HashMap<Long, Long>();
+		List<String> mensagens = new ArrayList<String>();
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.AREAS))
 		{
-			areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds);
+			areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, mensagens);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CONHECIMENTOS))
@@ -240,7 +238,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS))
 		{
 			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
-			cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
+			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA))
@@ -269,6 +267,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		{
 			riscoManager.sincronizar(empresaOrigemId, empresaDestinoId, epiIds);
 		}
+		
+		return mensagens;
 	}
 	
 	public Collection<Empresa> findEmailsEmpresa()

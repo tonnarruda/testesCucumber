@@ -847,9 +847,7 @@ public class RHServiceImpl implements RHService
 		if (!aprovado)
 		{
 			FaixaSalarialHistorico faixaSalarialHistorico = faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistoricoId);
-
 			String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
-
 			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
 			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.CARGO_SALARIO);
 		}

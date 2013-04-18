@@ -35,7 +35,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void remove(Long faixaSalarialHistoricoId, Empresa empresa) throws Exception;
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<PendenciaAC> findPendenciasByFaixaSalarialHistorico(Long empresaId);
-	void sincronizar(Map<Long, Long> faixaSalarialIds);
+	Collection<FaixaSalarialHistorico> sincronizar(Map<Long, Long> faixaSalarialIds, Empresa empresaDestino);
 	FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);

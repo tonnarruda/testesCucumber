@@ -3,9 +3,14 @@ package com.fortes.rh.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.AtitudeManager;
@@ -17,6 +22,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
@@ -47,6 +53,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private AtitudeManager atitudeManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private PlatformTransactionManager transactionManager;
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
@@ -197,45 +204,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return new ArrayList<CheckBox>();
 	}
 
-//	@Override
-//	public void removed(Long[] ids)
-//	{
-//		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//		TransactionStatus status = transactionManager.getTransaction(def);
-//
-//		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
-//		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
-//
-//		try
-//		{
-//			for (Long id : ids)
-//			{
-//				Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findFaixaSalarialByCargo(id);
-//				Cargo cargo = findByIdAllProjection(id);
-//				Empresa empresa = cargo.getEmpresa();
-//
-//				//trabalhar com o remove cascade, passando um Long[]. Teria que remodelar alguns modelos para trabalharem melhor com a empresa.
-//				//padronizar nomenclatura. (remove, delete, removeFulano, deleteFulano... remove!)
-//				//refatorar: fazer igual a funcao
-//				for (FaixaSalarial faixaSalarial : faixasSalariais){
-//					faixaSalarialManager.deleteFaixaSalarial(faixaSalarial.getId(), empresa);
-//				}
-//
-//				funcaoManager.removeBy(cargo);
-//				super.remove(cargo.getId());
-//			}
-//		}
-//		catch (Exception e)
-//		{
-//			transactionManager.rollback(status);
-//		}
-//
-//		transactionManager.commit(status);
-//	}
-//
-
-
 	public Collection<CheckBox> populaCheckBox(String[] gruposCheck, String[] cargosCheck, Long empresaId) throws Exception
 	{
 		if(gruposCheck == null || gruposCheck.length == 0)
@@ -339,52 +307,65 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findAllSelectDistinctNomeMercado();
 	}
 
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds)
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens)
 	{
 		faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
-		
 		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
-		
+
 		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
 		Map<Long, GrupoOcupacional> novosGruposOcupacionais = new HashMap<Long, GrupoOcupacional>();
 		
-		// Clona cargo, Grupo ocupacional; Popula o cargo com as áreas e conhecimentos clonados
-		for (Cargo cargo : cargos) {
-			
-			Long cargoOrigemId = cargo.getId();
-			
-			GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
-			
-			clonar(cargo, empresaDestinoId);
-			cargoIds.put(cargoOrigemId, cargo.getId());
-			
-			Collection<AreaOrganizacional> areasOrganizacionais = popularAreasOrganizacionaisComIds(areaIds, cargoOrigemId);
-			cargo.setAreasOrganizacionais(areasOrganizacionais);
-			
-			Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
-			cargo.setConhecimentos(conhecimentos);
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		TransactionStatus status = null;
 
-			Collection<Habilidade> habilidades = popularHabilidadesComIds(habilidadeIds, cargoOrigemId);
-			cargo.setHabilidades(habilidades);
-			
-			Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
-			cargo.setAtitudes(atitudes);
-			
-			Collection<AreaFormacao> areaFormacaos = clonarAreasFormacao(cargoOrigemId);
-			cargo.setAreaFormacaos(areaFormacaos);
-			
-			if (grupoOcupacionalOrigem != null)
-			{
-				if (!novosGruposOcupacionais.containsKey(grupoOcupacionalOrigem.getId()))
-					novosGruposOcupacionais.put(grupoOcupacionalOrigem.getId(), clonarGrupoOcupacional(grupoOcupacionalOrigem, empresaDestinoId));
+		// Clona cargo, Grupo ocupacional; Popula o cargo com as áreas e conhecimentos clonados
+		for (Cargo cargo : cargos) 
+		{
+			try{
+				status = transactionManager.getTransaction(def);
 				
-				cargo.setGrupoOcupacional(novosGruposOcupacionais.get(grupoOcupacionalOrigem.getId()));
+				Long cargoOrigemId = cargo.getId();
+				GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
+				clonar(cargo, empresaDestino.getId());
+
+				Collection<AreaOrganizacional> areasOrganizacionais = popularAreasOrganizacionaisComIds(areaIds, cargoOrigemId);
+				cargo.setAreasOrganizacionais(areasOrganizacionais);
+
+				Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
+				cargo.setConhecimentos(conhecimentos);
+
+				Collection<Habilidade> habilidades = popularHabilidadesComIds(habilidadeIds, cargoOrigemId);
+				cargo.setHabilidades(habilidades);
+
+				Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
+				cargo.setAtitudes(atitudes);
+
+				Collection<AreaFormacao> areaFormacaos = clonarAreasFormacao(cargoOrigemId);
+				cargo.setAreaFormacaos(areaFormacaos);
+
+				if (grupoOcupacionalOrigem != null)
+				{
+					if (!novosGruposOcupacionais.containsKey(grupoOcupacionalOrigem.getId()))
+						novosGruposOcupacionais.put(grupoOcupacionalOrigem.getId(), clonarGrupoOcupacional(grupoOcupacionalOrigem, empresaDestino.getId()));
+
+					cargo.setGrupoOcupacional(novosGruposOcupacionais.get(grupoOcupacionalOrigem.getId()));
+				}
+
+				faixaSalarialManager.sincronizar(cargoOrigemId, cargo, empresaDestino);
+				getDao().update(cargo);
+				transactionManager.commit(status);
+			}catch (IntegraACException e)
+			{
+				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por pendências no AC Pessoal.");
+				transactionManager.rollback(status);
+			}catch (Exception e)
+			{
+				mensagens.add("Ocorreu um erro ao importar o cargo <strong>" + cargo.getNome() + "</strong>");
+				transactionManager.rollback(status);
+				e.printStackTrace();
 			}
-			
-			getDao().update(cargo);
 		}
-		
-		faixaSalarialManager.sincronizar(cargoIds);
 	}
 	
 	private Collection<AreaFormacao> clonarAreasFormacao(Long cargoOrigemId) {
@@ -598,6 +579,10 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) 
 	{
 		this.etapaSeletivaManager = etapaSeletivaManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 
 	

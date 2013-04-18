@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mockit.Mockit;
@@ -848,9 +849,10 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaIds.put(areaOrganizacional1.getId(), areaNova10.getId());
 		
 		Long empresaOrigemId=1L;
-		Long empresaDestinoId=2L;
+		Empresa empresaDestino=EmpresaFactory.getEmpresa();
+		List<String> mensagens = new ArrayList<String>();
 		
-		areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds);
+		areaOrganizacionalManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, mensagens);
 		
 		assertEquals(3, areaIds.size());
 	}

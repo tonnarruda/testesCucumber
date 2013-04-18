@@ -665,14 +665,13 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(faixaSalarial.getId(), retorno.getId());
 	}
 	
-	public void testSincronizar()
+	public void testSincronizar() throws Exception
 	{
-		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
-		cargoIds.put(1L, 10L);
-		cargoIds.put(2L, 12L);
+		Cargo cargoOrigem = CargoFactory.getEntity(2L);
+		Cargo cargoDestino = CargoFactory.getEntity(5L);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);		
-		faixaSalarial.setCargo(CargoFactory.getEntity(2L));
+		faixaSalarial.setCargo(cargoOrigem);
 		faixaSalarial.setNome("I");
 		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
 		faixas.add(faixaSalarial);
@@ -687,7 +686,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		
 		faixaSalarialHistoricoManager.expects(once()).method("sincronizar");
 		
-		faixaSalarialManager.sincronizar(cargoIds);
+		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, EmpresaFactory.getEmpresa());
 	}
 	
 	public void testMontaFaixa()

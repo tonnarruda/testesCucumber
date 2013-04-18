@@ -216,6 +216,8 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		p.add(Projections.property("f.valor"), "valor");
 		p.add(Projections.property("f.quantidade"), "quantidade");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("fs.nomeACPessoal"), "projectionFaixaSalarialNomeACPessoal");
 		p.add(Projections.property("i.id"), "projectionIndiceId");
 		p.add(Projections.property("c.id"), "projectionCargoId");
 

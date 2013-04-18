@@ -24,7 +24,6 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
@@ -107,7 +106,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		}
 	}
 
-	private void prepareSaveUpdate(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa) throws Exception
+	private void prepareSaveUpdate(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa)
 	{
 		if(empresa.isAcIntegra())
 		{
@@ -326,23 +325,29 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return pendenciaACs;
 	}
 
-	public void sincronizar(Map<Long, Long> faixaSalarialIds) {
+	public Collection<FaixaSalarialHistorico> sincronizar(Map<Long, Long> faixaSalarialIds, Empresa empresaDestino)
+	{
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricosRetorno= new ArrayList<FaixaSalarialHistorico>();
 		
 		for (Long faixaSalarialId : faixaSalarialIds.keySet()) {
-			
+
 			Collection<FaixaSalarialHistorico> historicos = getDao().findHistoricosByFaixaSalarialId(faixaSalarialId);
-			
+
 			// clonando Faixas Salariais
 			for (FaixaSalarialHistorico faixaSalarialHistorico : historicos)
 			{
-				
 				faixaSalarialHistorico.setId(null);
 				faixaSalarialHistorico.setIndice(null);
 				faixaSalarialHistorico.setProjectionFaixaSalarialId( faixaSalarialIds.get(faixaSalarialId) );
-				
+
+				prepareSaveUpdate(faixaSalarialHistorico, faixaSalarialHistorico.getFaixaSalarial(), empresaDestino);
 				getDao().save(faixaSalarialHistorico);
+				
+				faixaSalarialHistoricosRetorno.add(faixaSalarialHistorico);
+				
 			}
 		}
+		return faixaSalarialHistoricosRetorno;
 	}
 
 	public FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial)

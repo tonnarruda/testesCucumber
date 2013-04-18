@@ -620,6 +620,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		faixaSalarialManager.expects(once()).method("sincronizar");
 		
-		cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
+		cargoManager.sincronizar(empresaOrigemId, EmpresaFactory.getEmpresa(), areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, null);
 	}
 }

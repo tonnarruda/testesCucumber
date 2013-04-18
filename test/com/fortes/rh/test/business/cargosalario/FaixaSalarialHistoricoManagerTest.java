@@ -585,7 +585,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoDao.expects(once()).method("findHistoricosByFaixaSalarialId").with(eq(99L)).will(returnValue(historicos));
 		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(faixaSalarialHistoricoDepoisDoSave));
 		
-		faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds);
+		faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds, EmpresaFactory.getEmpresa());
 	}
 
 	public void testGetsSets()

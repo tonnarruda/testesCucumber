@@ -7,6 +7,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
@@ -56,7 +57,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional findByIdProjection(Long areaId);
 	public Collection<AreaOrganizacional> findQtdColaboradorPorArea(Long estabelecimentoId, Date dataIni);
 	public Collection<AreaOrganizacional> findByEmpresasIds(Long[] empresaIds, Boolean ativo);
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds);
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds,  List<String> mensagens);
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception;
 	public void bind(AreaOrganizacional areaOrganizacionalTmp, TAreaOrganizacional areaOrganizacional) throws Exception;
 	public Collection<CheckBox> populaCheckOrderDescricao(Long[] empresaIds);
