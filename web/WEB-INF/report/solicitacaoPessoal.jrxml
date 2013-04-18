@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitacaoPessoal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" uuid="b4082f41-f438-4ebe-a882-75b97a874174">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.542173157718137"/>
+	<property name="ireport.zoom" value="2.483685292236638"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -20,7 +20,7 @@
 	<field name="solicitacao.ambiente.nome" class="java.lang.String"/>
 	<field name="solicitacao.quantidade" class="java.lang.Integer"/>
 	<field name="vinculo" class="java.lang.String"/>
-	<field name="solicitacao.horario" class="java.lang.String"/>
+	<field name="solicitacao.horarioComercial" class="java.lang.String"/>
 	<field name="solicitacao.remuneracao" class="java.lang.Double"/>
 	<field name="escolaridade" class="java.lang.String"/>
 	<field name="sexo" class="java.lang.String"/>
@@ -361,7 +361,7 @@
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Horário de Trabalho:]]></text>
+				<text><![CDATA[Horário Comercial:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="99d5d611-6870-45ef-8f6e-5cf346c936e7" key="textField-6" positionType="Float" mode="Transparent" x="64" y="15" width="63" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
@@ -403,7 +403,7 @@
 					<font size="10"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.horario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{solicitacao.horarioComercial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="61a5e967-246c-4170-a0b6-b4d82612bee7" key="textField-7" positionType="Float" mode="Transparent" x="5" y="15" width="43" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
