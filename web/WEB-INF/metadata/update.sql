@@ -19570,7 +19570,7 @@ update parametrosdosistema set appversao = '1.1.104.109';--.go
 
 alter table exame add column aso boolean default false; --.go
 
-DO $$
+CREATE FUNCTION padraASO() RETURNS integer AS $$
 DECLARE
     mviews1 RECORD;
     mviews2 RECORD;
@@ -19618,7 +19618,11 @@ BEGIN
 		update empresa set exame_id = null where exame_id = mviews1.exame_id;
 		delete from exame where id = mviews1.exame_id;
 	END LOOP;
-END$$ LANGUAGE plpgsql;--.go
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select padraASO();--.go
+drop function padraASO();--.go
 
 alter table empresa drop column exame_id;--.go 
 insert into migrations values('20130402081343');--.go
