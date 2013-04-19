@@ -255,9 +255,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 			try
 			{
 				msgAlert = colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresId, colaboradoresTurmas, turma, dnt, filtrarPor, selectPrioridades);
-				
-				
-				
 			}
 			catch (Exception e)
 			{
