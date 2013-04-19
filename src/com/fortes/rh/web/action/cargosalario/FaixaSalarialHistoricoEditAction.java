@@ -89,7 +89,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		
 		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome"), "getId", "getNome");
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS), "getId", "getNome");
 		
 		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -111,7 +111,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		
 		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome"), "getId", "getNome");
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS), "getId", "getNome");
 		
 		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);

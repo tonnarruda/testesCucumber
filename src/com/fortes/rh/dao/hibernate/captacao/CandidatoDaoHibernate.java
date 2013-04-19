@@ -184,7 +184,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-		criteria.createCriteria("c.empresa", "e");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("id"), "id");
@@ -198,6 +197,21 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
 		p.add(Projections.property("e.id"), "empresaId");
 		criteria.setProjection(p);
+		
+		montaProjectionFind(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, criteria);
+
+		criteria.setFirstResult(((page - 1) * pagingSize));
+		criteria.setMaxResults(pagingSize);
+
+		criteria.addOrder(Order.asc("c.nome"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+		return criteria.list();
+	}
+
+	private void montaProjectionFind(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Criteria criteria)
+	{
+		criteria.createCriteria("c.empresa", "e");
 		
 		if (exibeExterno)
 			criteria.add(Expression.eq("origem", OrigemCandidato.EXTERNO));
@@ -229,49 +243,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", Hibernate.STRING));
 
 		criteria.add(Expression.eq("e.id", empresaId));
-
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
-
-		criteria.addOrder(Order.asc("c.nome"));
-
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
-		return criteria.list();
-	}
-
-	private void getCountMaisFind(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, Criteria criteria, boolean exibeContratados, boolean exibeExterno)
-	{
-		if (exibeExterno)
-			criteria.add(Expression.eq("origem", OrigemCandidato.EXTERNO));
-		
-		if (!exibeContratados)
-			criteria.add(Expression.eq("contratado", false));
-
-		// Nome
-		if(StringUtils.isNotBlank(nomeBusca))
-			criteria.add(Expression.like("nome", "%"+ nomeBusca +"%").ignoreCase() );
-		// CPF
-		if(StringUtils.isNotBlank(cpfBusca))
-			criteria.add(Expression.like("pessoal.cpf", "%"+ cpfBusca +"%").ignoreCase() );
-		if(visualizar == 'D')
-			criteria.add(Expression.eq("disponivel", true));
-		else if(visualizar == 'I')
-			criteria.add(Expression.eq("disponivel", false));
-
-		if(dataIni != null)
-			criteria.add(Expression.ge("dataAtualizacao", dataIni));
-		if(dataFim != null)
-			criteria.add(Expression.le("dataAtualizacao", dataFim));
-
-		if (StringUtils.isNotBlank(indicadoPor))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", Hibernate.STRING));
-
-		if (StringUtils.isNotBlank(observacaoRH))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", Hibernate.STRING));
-
-		criteria.add(Expression.eq("empresa.id", empresaId) );
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}
 
 	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
@@ -508,10 +479,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
 	{
-		Criteria criteria = getSession().createCriteria(Candidato.class);
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		criteria.setProjection(Projections.rowCount());
 
-		getCountMaisFind(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, criteria, exibeContratados, exibeExterno);
+		montaProjectionFind(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, criteria);
 
 		return (Integer) criteria.list().get(0);
 	}

@@ -21,7 +21,7 @@ public class EstabelecimentoFactory
 
 		Estabelecimento estabelecimento = new Estabelecimento();
 		estabelecimento.setId(null);
-		estabelecimento.setNome("nome da area de formação");
+		estabelecimento.setNome("nome do estabelecimento");
 		estabelecimento.setEndereco(endereco);
 		estabelecimento.setComplementoCnpj("0001");
 		estabelecimento.setEmpresa(null);

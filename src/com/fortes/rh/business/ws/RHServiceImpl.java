@@ -163,7 +163,7 @@ public class RHServiceImpl implements RHService
 
 	public TCargo[] getCargos(Long empresaId)
 	{
-		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado");
+		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 		return cargosToArray(cargos, true);
 	}
 

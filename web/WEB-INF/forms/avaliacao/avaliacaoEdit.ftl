@@ -8,15 +8,22 @@
 			<title>Editar Modelo de Avaliação</title>
 			<#assign btnClass="btnGravar"/>
 			<#assign formAction="update.action"/>
+			<#assign edicao=true/>
 		<#else>
 			<title>Inserir Modelo de Avaliação</title>
 			<#assign formAction="insert.action"/>
+			<#assign edicao=false/>
 		</#if>
 	
 	<script type='text/javascript'>
 
 		$(function() {
 		
+		
+			<#if edicao>
+				$('#tipoModeloAvaliacao').attr('disabled', 'disabled').css('background', '#F6F6F6');
+			</#if>
+			
 			<#if avaliacao.tipoModeloAvaliacao != 'S'>
 				$('#tipoModeloAvaliacao').change(function() {
 					if ($(this).val() == 'A')

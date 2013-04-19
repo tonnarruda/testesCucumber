@@ -117,6 +117,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
 			areaOrganizacional.setResponsavel(null);
+		
+		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
+			areaOrganizacional.setCoResponsavel(null);
 
 		areaOrganizacional.setEmpresa(empresa);
 
@@ -130,31 +133,31 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 				try
 				{
 					boolean maeSemColaboradores = true;
-					if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
+					if (areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
 						maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
 
-					if(maeSemColaboradores)
-					{
-						String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-						if(codigoAc != null)
-						{
-							areaOrganizacional.setCodigoAC(codigoAc);
-							save(areaOrganizacional);
-							getDao().getHibernateTemplateByGenericDao().flush();
-							// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
-						}else
-							throw new IntegraACException("Metodo: AcPessoalClientLotacao.criarLotacao, codigoAc retornou null");
-					}
-					else
+					if (!maeSemColaboradores)
 						throw new AreaColaboradorException("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
+
+					String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
+					if (codigoAc == null)
+						throw new IntegraACException("Metodo: AcPessoalClientLotacao.criarLotacao, codigoAc retornou null");
+					
+					areaOrganizacional.setCodigoAC(codigoAc);
+					getDao().save(areaOrganizacional);
+					// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
+					getDao().getHibernateTemplateByGenericDao().flush();
 				}
 				catch (AreaColaboradorException e)
 				{
 					throw e;
 				}
+				catch (IntegraACException e)
+				{
+					throw e;
+				}
 				catch (Exception e)
 				{
-					areaOrganizacional.setId(null);
 					acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
 					throw e;
 				}
@@ -794,9 +797,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
 
-	public void desvinculaResponsavel(Long colaboradorId)
+	public void desvinculaResponsaveis(Long colaboradorId)
 	{
 		getDao().desvinculaResponsavel(colaboradorId);		
+		getDao().desvinculaCoResponsavel(colaboradorId);		
 	}
 	
 }

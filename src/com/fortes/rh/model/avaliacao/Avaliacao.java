@@ -1,6 +1,7 @@
 package com.fortes.rh.model.avaliacao;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
@@ -154,5 +156,10 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 
 	public void setPercentualAprovacao(Double percentualAprovacao) {
 		this.percentualAprovacao = percentualAprovacao;
+	}
+
+	public String getTipoModeloAvaliacaoDescricao() 
+	{
+		return new TipoModeloAvaliacao().get(this.tipoModeloAvaliacao); 	
 	}
 }

@@ -3,11 +3,8 @@
  * Requisito: RFA004*/
 package com.fortes.rh.dao.hibernate.geral;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -23,9 +20,6 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.relatorio.TurnOver;
-import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -510,14 +504,28 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
+	public void desvinculaCoResponsavel(Long colaboradorId)
+	{
+		String hql = "update AreaOrganizacional set coResponsavel.id = null where coResponsavel.id = :id";
+		
+		desvinculaResponsaveis(colaboradorId, hql);
+	}
+	
 	public void desvinculaResponsavel(Long colaboradorId)
 	{
-		String hql = "update AreaOrganizacional set responsavel.id = null where responsavel.id = :responsavelId";
+		String hql = "update AreaOrganizacional set responsavel.id = null where responsavel.id = :id";
 
+		desvinculaResponsaveis(colaboradorId, hql);
+	}
+
+	private void desvinculaResponsaveis(Long colaboradorId, String hql)
+	{
 		Query query = getSession().createQuery(hql);
 
-		query.setLong("responsavelId", colaboradorId);
+		query.setLong("id", colaboradorId);
 
 		query.executeUpdate();
 	}
+	
+	
 }

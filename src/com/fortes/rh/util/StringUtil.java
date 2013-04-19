@@ -589,6 +589,6 @@ public final class StringUtil
 	}
 
 	public static String replaceXml(String texto) {
-		return texto.replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;").replace("\"", "&quot;").replace("'", "&apos;");
+		return texto.replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;").replace("\"", "&quot;").replace("'", "&apos;").replace("	", "");
 	}
 }

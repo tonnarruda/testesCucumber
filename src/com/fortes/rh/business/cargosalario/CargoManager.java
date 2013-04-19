@@ -26,7 +26,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor);
+	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo);
 	public Cargo findByIdProjection(Long id);
 	public Collection<Cargo> populaCargos(String[] cargosCheck);
 	public Collection<Cargo> populaCargos(Long[] ids);
@@ -34,7 +34,6 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
 	public Collection<CheckBox> populaCheckBox(String[] gruposCheck, String[] cargosCheck, Long empresaId) throws Exception;
 	public Collection<Cargo> getCargosFromFaixaSalarialHistoricos(Collection<FaixaSalarialHistorico> faixaSalarialHistoricos);
-	public Collection<Cargo> findAllSelectModuloExterno(Long empresaId, String ordenarPor);
 	boolean verifyExistCargoNome(String cargoNome, Long empresaId);
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId);
 	public Map findByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds);

@@ -52,7 +52,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		idsFamiliasAreasJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areaOrganizacionais, idsAreasConfiguradas);
 		
 		empresaId = getEmpresaSistema().getId();
-		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado");
+		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS);
 	}
 	
 	public String imprimir() throws Exception
