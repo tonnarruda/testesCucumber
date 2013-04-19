@@ -60,7 +60,7 @@
 				<param name="documentName">ocorrencias_detalhadas.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Pontos</param>
-				<param name="propertiesGroup">colaborador.nome</param>
+				<param name="propertiesGroup">colaborador.id</param>
 				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -70,7 +70,7 @@
 				<param name="documentName">ocorrencias_providencias.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Providência,Pontos</param>
-				<param name="propertiesGroup">colaborador.nome</param>
+				<param name="propertiesGroup">colaborador.id</param>
 				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,providencia.descricao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -80,6 +80,7 @@
 				<param name="documentName">ocorrencias_providencias.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Providência,Colaborador,Matrícula,Ocorrência,Início,Término,Observação,Pontos</param>
+				<param name="propertiesGroup">providencia.id</param>
 				<param name="properties">providencia.descricaoSemProvidencia,colaborador.nome,colaborador.matricula,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>

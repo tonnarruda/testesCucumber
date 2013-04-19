@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.exception.XlsException;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.TipoRelatorio;
 import com.fortes.rh.model.geral.Colaborador;
@@ -180,6 +181,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			if (tipo.equals(TipoRelatorio.XLS))
 			{
+				XlsException.checaNumLinhasMaxXLS(colaboradoresOcorrencias.size());
 				extensao = "XLS";
 				reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 				reportTitle = "Ranking de Ocorrências";
@@ -211,6 +213,13 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			return acao + extensao;
 		}
+		catch (XlsException xls)
+		{
+			xls.printStackTrace();
+			addActionWarning(xls.getMessage());
+			prepareRelatorioOcorrencia();
+			return Action.INPUT;
+		}
 		catch (ColecaoVaziaException cE)
 		{
 			addActionMessage(cE.getMessage());
@@ -227,57 +236,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 
 	}
 	
-	public String buscaOcorrenciaXLS() throws Exception
-	{
-		try
-		{
-			Collection<Long> empresaIds = new ArrayList<Long>();
-			if(empresa == null || empresa.getId() == null)
-			{
-				compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-				empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_OCORRENCIA");
-				empresaIds = LongUtil.collectionToCollectionLong(empresas);
-			}else
-			{
-				empresaIds.add(empresa.getId());
-			}
-			
-			Collection<Long> ocorrenciaIds = LongUtil.arrayStringToCollectionLong(ocorrenciaCheck);
-			Collection<Long> colaboradorIds = LongUtil.arrayStringToCollectionLong(colaboradorCheck);
-			Collection<Long> areaIds = LongUtil.arrayStringToCollectionLong(areaCheck);
-			Collection<Long> estabelecimentoIds = LongUtil.arrayStringToCollectionLong(estabelecimentoCheck);
-			
-			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
-
-			parametros.put("dataIni", dataIni);
-			parametros.put("dataFim", dataFim);
-
-			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
-				throw new ColecaoVaziaException("Não existem dados para o relatório");
-
-			parametros = RelatorioUtil.getParametrosRelatorio("Ranking de Ocorrências", getEmpresaSistema(), null);
-			
-			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
-			reportTitle = "Ranking de Ocorrências";
-			
-			return Action.SUCCESS;
-		}
-		catch (ColecaoVaziaException cE)
-		{
-			addActionMessage(cE.getMessage());
-			prepareRelatorioOcorrencia();
-			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			addActionError("Não foi possível gerar o relatório");
-			prepareRelatorioOcorrencia();
-			return Action.INPUT;
-		}
-
-	}
-
 	public Object getModel()
 	{
 		return getOcorrencia();

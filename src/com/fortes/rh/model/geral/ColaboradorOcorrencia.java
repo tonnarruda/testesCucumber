@@ -42,7 +42,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
     public ColaboradorOcorrencia(Long colaboradorOcorrenciaId, Date colaboradorOcorrenciaDataIni, Date colaboradorOcorrenciaDataFim,
 			String colaboradorOcorrenciaObservacao, Long colaboradorId, String colaboradorMatricula, String colaboradorNome, String colaboradorNomeComercial,
 			int ocorrenciaPontuacao, String ocorrenciaDescricao, String estabelecimentoNome, String areaOrganizacionalNome,
-			String descricaoProvidencia)
+			Long idProvidencia, String descricaoProvidencia)
 	{	
     	setId(colaboradorOcorrenciaId);
 		setOcorrenciaDescricao(ocorrenciaDescricao);
@@ -59,6 +59,7 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 
 		setEstabelecimentoNome(estabelecimentoNome);
 		setAreaNome(areaOrganizacionalNome);   	
+		setIdProvidencia(idProvidencia);
 		setDescricaoProvidencia(descricaoProvidencia);
 	}
     
@@ -238,7 +239,15 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 		this.ocorrencia = ocorrencia;
 	}
 	
-    public void setDescricaoProvidencia(String descricaoProvidencia)
+	public void setIdProvidencia(Long idProvidencia)
+	{
+		if(getProvidencia() == null)
+			setProvidencia(new Providencia());
+		
+		getProvidencia().setId(idProvidencia);
+	}
+
+	public void setDescricaoProvidencia(String descricaoProvidencia)
     {
     	if(getProvidencia() == null)
     		setProvidencia(new Providencia());

@@ -19,9 +19,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.fortes.rh.exception.XlsException;
 import com.opensymphony.util.BeanUtils;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.webwork.dispatcher.WebWorkResultSupport;
+import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.util.OgnlValueStack;
 
@@ -39,9 +41,10 @@ public class XlsResult extends WebWorkResultSupport {
     protected String dinamicProperties;
     protected int[] rowNumIni, rowNumFim;
     protected String[] nomeAgruoadorAnterior;
+    Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
     
 	@Override
-	protected void doExecute(String finalLocation, ActionInvocation invocation) throws Exception 
+	protected void doExecute(String finalLocation, ActionInvocation invocation) throws XlsException, Exception 
 	{
 		try {
 			OgnlValueStack stack = invocation.getStack();
@@ -59,7 +62,12 @@ public class XlsResult extends WebWorkResultSupport {
 			if(propertiesGroup != null)
 				propertiesGroupArray = propertiesGroup.split(",");
 
-		    Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
+		    @SuppressWarnings("unchecked")
+			Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
+		    
+		    if(dataSourceRef.size() > 65535)
+		    	throw new XlsException();
+		    
 		    String reportFilterRef = (String)stack.findValue(reportFilter);
 		    String reportTitleRef = (String)stack.findValue(reportTitle);
 	
@@ -102,7 +110,7 @@ public class XlsResult extends WebWorkResultSupport {
 	
 		    int rowIndex = 4;
 		    String propName="";
-		    Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
+		    String propNameGroup="";
 		    
 		    rowNumIni = new int[propertiesGroupArray.length]; 
 		    rowNumFim = new int[propertiesGroupArray.length]; 
@@ -110,11 +118,12 @@ public class XlsResult extends WebWorkResultSupport {
 		    
 	    	for (int i = 0; i < propertiesGroupArray.length; i++)
 	    	    rowNumIni[i] = rowNumFim[i]= 3;
-		    
+	    	
 		    for (Object obj : dataSourceRef) 
 		    {
 		    	row = sheet.createRow(rowIndex++);
 		    	Object prop;
+		    	Object propGroup;
 			    for (int i = 0; i < propertiesArray.length; i++)
 			    {
 			    	prop = BeanUtils.getValue(obj, propertiesArray[i]);
@@ -124,8 +133,12 @@ public class XlsResult extends WebWorkResultSupport {
 					cell.setCellValue(propName);
 					cell.setCellStyle(columnStyle);
 					
-					if(propertiesGroupArray.length > 0)
-						mesclaCelulas(propertiesGroupArray, propertiesArray, celMescladas, propertiesArray[i], propName, i);
+					if(propertiesGroupArray.length > i)
+					{
+						propGroup = BeanUtils.getValue(obj, propertiesGroupArray[i]);
+						propNameGroup = propGroup!=null?propGroup.toString():"";
+						mesclaCelulas(propNameGroup, i);
+					}
 			    }
 			}
 		    
@@ -149,47 +162,26 @@ public class XlsResult extends WebWorkResultSupport {
 		    
 		    outputStream.flush();
 			outputStream.close();
-
+		}catch (XlsException xls){
+			xls.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Erro ao exportar para Excel.");
 		}	    
 	}
 
-	private void mesclaCelulas(String[] propertiesGroupArray, String[] propertiesArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName, String valorCelula, int colNum) 
+	private void mesclaCelulas(String nomeAgrupador, int colNum) 
 	{
-		if(colNum == 0)
-			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, valorCelula);
-		else if(colNum < propertiesGroupArray.length)
-			populaCellMescladas(propertiesGroupArray, celMescladas,	propertiesName, colNum, nomeAgruoadorAnterior[colNum-1] + valorCelula);
-	}
+		if(colNum != 0)
+			nomeAgrupador += "_" + nomeAgruoadorAnterior[colNum-1];
 
-	private void populaCellMescladas(String[] propertiesGroupArray,	Map<String, CellRangeAddress> celMescladas, String propertiesName,int colNum, String celMescle) 
-	{
-		if(campoKey(propertiesName).equals(propertiesGroupArray[colNum]))
-		{
-			if(celMescladas.get(celMescle) != null)
-				rowNumFim[colNum] = celMescladas.get(celMescle).getLastRow() + 1;
-			else 
-				rowNumIni[colNum] = ++rowNumFim[colNum];
+		if(celMescladas.get(nomeAgrupador) != null)
+			rowNumFim[colNum] = celMescladas.get(nomeAgrupador).getLastRow() + 1;
+		else 
+			rowNumIni[colNum] = ++rowNumFim[colNum];
 
-			celMescladas.put(celMescle, new CellRangeAddress(rowNumIni[colNum], rowNumFim[colNum], colNum, colNum));
-			nomeAgruoadorAnterior[colNum] = celMescle;
-		}
-	}
-
-	private String campoKey(String propertiesName) 
-	{
-		String[] campos = propertiesName.split(".");
-		String campoKey = "";
-		
-		for (int c = 0; c < campos.length - 1; c++)
-			campoKey += campos[c];
-		
-		if(campos.length != 0)
-			campoKey += ".";
-		
-		return campoKey + "id";
+		celMescladas.put(nomeAgrupador, new CellRangeAddress(rowNumIni[colNum], rowNumFim[colNum], colNum, colNum));
+		nomeAgruoadorAnterior[colNum] = nomeAgrupador;
 	}
 
     public void setReportFilter(String reportFilter) {

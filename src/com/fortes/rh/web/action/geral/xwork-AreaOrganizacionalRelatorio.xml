@@ -21,7 +21,7 @@
 				<param name="documentName">areaOrganizacionalPorColaborador.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa</param>
-				<param name="propertiesGroup">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao</param>
+				<param name="propertiesGroup">empresa.id,estabelecimento.id,areaOrganizacional.id</param>
 				<param name="properties">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao,nome,cargoFaixa</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>

@@ -100,9 +100,8 @@
 				<param name="documentName">rankingPerformaceExperiencia.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Avaliado,Avaliação,Avaliador,Respondido em,Performance,Média</param>
-				<param name="propertiesGroup">id,avaliacaoDesempenho.id</param>
-				<param name="propertiestemp">colab,avaliacaoDesempenhoId</param>
-				<param name="properties">nome,avaliacaoDesempenho.titulo,nomeAvaliador,respondidaEmFormatada,performance,mediaPerformanceFormatada</param>
+				<param name="propertiesGroup">id,avaliacaoDesempenhoId</param>
+				<param name="properties">nome,avaliacaoDesempenhoTitulo,nomeAvaliador,respondidaEmFormatada,performance,mediaPerformanceFormatada</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		
