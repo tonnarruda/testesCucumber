@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -16,6 +17,7 @@ import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Empresa;
@@ -53,6 +55,7 @@ public class QuestionarioListAction extends MyActionSupportList
     private FichaMedicaManager fichaMedicaManager;
     private EmpresaManager empresaManager;
     private EstabelecimentoManager estabelecimentoManager;
+    private TurmaManager turmaManager;
 
 	private Questionario questionario;
 	private ColaboradorQuestionario colaboradorQuestionario;
@@ -331,8 +334,15 @@ public class QuestionarioListAction extends MyActionSupportList
 	    		return Action.INPUT;
 	    	}
 	
-	    	String titulo = TipoQuestionario.getDescricaoMaisc(questionario.getTipo());
 	   	   	String filtro = TipoQuestionario.getFiltro(questionario, filtroQuestionario);
+	   	   	String titulo = TipoQuestionario.getDescricaoMaisc(questionario.getTipo());
+	   	   	String complementoFiltro = "";
+	   	   	
+	   	  	if(turmaId != null)
+	    	{
+	    		Turma turma = turmaManager.findByIdProjection(turmaId);
+	    		complementoFiltro += "Curso: " + turma.getCurso().getNome() + " /" + "Turma: " + turma.getDescricao();
+	    	}
 	   	   	
 	   	   	// No caso da Entrevista, setamos como anônima de acordo com opção "exibir nomes"
 	    	if (questionario.verificaTipo(TipoQuestionario.ENTREVISTA) || questionario.verificaTipo(TipoQuestionario.AVALIACAOTURMA))
@@ -351,7 +361,6 @@ public class QuestionarioListAction extends MyActionSupportList
 
     		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds);
     		String areas = areaOrganizacionalManager.nomeAreas(areaIds);
-    		String complementoFiltro = "";
     		
     		if(StringUtils.isNotBlank(estabelecimentos))
     			complementoFiltro += "\nEstab.: " + estabelecimentos;
@@ -752,5 +761,9 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAreaOrganizacionalsCheckList() {
 		return areaOrganizacionalsCheckList;
+	}
+
+	public void setTurmaManager(TurmaManager turmaManager) {
+		this.turmaManager = turmaManager;
 	}
 }
