@@ -14,6 +14,7 @@
       <interceptor name="reference-resolver" class="com.opensymphony.xwork.interceptor.ExternalReferencesInterceptor" />
       <interceptor name="fileUploadToProperty" class="com.fortes.webwork.interceptor.FileUploadToPropertyInterceptor" />
       <interceptor name="validationException" class="com.fortes.webwork.interceptor.ValidationExceptionInterceptor" />
+      <interceptor name="store" class="com.fortes.webwork.interceptor.MyMessageStoreInterceptor"/>
       <interceptor name="exception" class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor"/>
       <interceptor-stack name="showFileStack">
         <interceptor-ref name="reference-resolver" />

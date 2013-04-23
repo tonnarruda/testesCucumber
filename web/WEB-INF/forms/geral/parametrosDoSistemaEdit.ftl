@@ -131,12 +131,10 @@
 				<img src="<@ww.url includeParams="none" value="/imgs/ChatFortes.gif" theme="simple"/>">	
 				Configuração para Suporte:
 			</h2>
-			<@ww.textfield label="Codigo da Empresa" name="parametrosDoSistema.codEmpresaSuporte" id="codEmpresaSuporte" size="18" maxLength="10" required="false" liClass="liLeft"/>
 			<@ww.textfield label="Codigo do Cliente" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false"/>
 		</div>
 	</div>
 	<br/>
-
 
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
@@ -145,6 +143,7 @@
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoTabs" />
+	<@ww.hidden name="parametrosDoSistema.codEmpresaSuporte" />
 	
 	<li>
 		<@ww.div cssClass="divInfo">

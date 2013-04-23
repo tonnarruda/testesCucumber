@@ -15,7 +15,7 @@
 <body>
 <@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" required="true"/>
+		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" maxLength="50" required="true"/>
 		<@ww.hidden name="motivoDemissao.id" />
 	</@ww.form>
 

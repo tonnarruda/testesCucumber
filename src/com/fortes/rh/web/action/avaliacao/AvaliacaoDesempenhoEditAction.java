@@ -389,11 +389,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho);
-			addActionMessage("Avaliação liberada com sucesso.");
+			addActionSuccess("Avaliação <strong>liberada</strong> com sucesso.");
 		}
 		catch (FortesException e)
 		{
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 		}
 		catch (Exception e) 
 		{
@@ -408,7 +408,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.bloquear(avaliacaoDesempenho);
-			addActionMessage("Avaliação bloqueada com sucesso.");
+			addActionSuccess("Avaliação <strong>bloqueada</strong> com sucesso.");
 		}
 		catch (Exception e) 
 		{

@@ -1,0 +1,1 @@
+update parametrosdosistema set codempresasuporte = '0002';--.go

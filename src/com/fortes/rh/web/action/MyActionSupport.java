@@ -2,8 +2,8 @@ package com.fortes.rh.web.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
@@ -15,6 +15,8 @@ import com.opensymphony.xwork.ActionSupport;
 
 public abstract class MyActionSupport extends ActionSupport
 {
+	private static final long serialVersionUID = 2609579938880531255L;
+	
 	private Empresa empresaSistema = null;
 	private Usuario usuarioSistema = null;
 	private Long videoAjuda = null;
@@ -22,8 +24,11 @@ public abstract class MyActionSupport extends ActionSupport
 	private String actionMsg = null;
 	public static final String MESSAGE = "message";
 	
-	private List<String> actionWarnings = new ArrayList<String>();
-	private List<String> actionSuccess = new ArrayList<String>();
+	private Collection<String> actionWarnings = new ArrayList<String>();
+	private Collection<String> actionSuccess = new ArrayList<String>();
+	
+	public static String actionWarningsSessionKey = "__MessageStoreInterceptor_ActionWarnings_SessionKey";
+    public static String actionSuccessSessionKey = "__MessageStoreInterceptor_ActionSuccess_SessionKey";
 
 	public Empresa getEmpresaSistema()
 	{
@@ -100,12 +105,12 @@ public abstract class MyActionSupport extends ActionSupport
 		this.videoAjuda = videoAjuda;
 	}
 
-	public List<String> getActionWarnings() 
+	public Collection<String> getActionWarnings() 
 	{
 		return actionWarnings;
 	}
 
-	public void setActionWarnings(List<String> actionWarnings) 
+	public void setActionWarnings(Collection<String> actionWarnings) 
 	{
 		this.actionWarnings = actionWarnings;
 	}
@@ -115,12 +120,12 @@ public abstract class MyActionSupport extends ActionSupport
 		this.actionWarnings.add(actionWarning);
 	}
 	
-	public List<String> getActionSuccess() 
+	public Collection<String> getActionSuccess() 
 	{
 		return actionSuccess;
 	}
 
-	public void setActionSuccess(List<String> actionSuccess) 
+	public void setActionSuccess(Collection<String> actionSuccess) 
 	{
 		this.actionSuccess = actionSuccess;
 	}

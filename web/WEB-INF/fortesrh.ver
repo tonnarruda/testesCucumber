@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.106.112" data="22/04/2013">
+		<Modulo nome=" "><![CDATA[
+			:: C&S > Relatórios > Descrição de Cargos: Novo layout do relatório.
+			:: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Nova coluna "Tipo de Avaliação".
+			:: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Editar: Impossibilitar a edição do "Tipo de Avaliação".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.106.111" data="11/04/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Cadastros > Candidatos > Inserir/Editar > Documentos: Novo campo para registrar a informação do numero do PIS.
