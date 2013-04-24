@@ -919,6 +919,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nomeComercial = nomeComercial;
 		this.desligado = desligado;
 	}
+	
+	public Colaborador(Long id, String nome, String cpf, Date dataDeligamento, Long candidatoId, String candidatoNome)
+	{
+		super();
+		this.setId(id);
+		this.setNome(nome);
+		this.setPessoalCpf(cpf);
+		this.setDataDesligamento(dataDeligamento);
+		this.setCandidatoId(candidatoId);
+		this.setCandidatoNome(candidatoNome);
+	}
 
 	public Colaborador(Long id, String nomeComercial, Funcao funcao, Ambiente ambiente)
 	{
@@ -1305,6 +1316,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (this.candidato == null)
 			this.candidato = new Candidato();
 		this.candidato.setId(candidatoId);
+	}
+	
+	public void setCandidatoNome(String candidatoNome)
+	{
+		if (this.candidato == null)
+			this.candidato = new Candidato();
+		this.candidato.setNome(candidatoNome);
 	}
 
 	public void setProjectionRg(String rg)

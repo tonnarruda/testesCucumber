@@ -2511,6 +2511,29 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("12", qtdTabelasComCandidatos);
 	}
 	
+	public void testFindColaboradoresMesmoCpf()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity();
+		colab1.setPessoalCpf("65617632973");
+		colab1.setDataDesligamento(DateUtil.criarDataMesAno(1, 2, 2013));
+		colab1.setEmpresa(empresa);
+		colaboradorDao.save(colab1);
+
+		Colaborador colab2 = ColaboradorFactory.getEntity();
+		colab2.setPessoalCpf("36548541251");
+		colab2.setEmpresa(empresa);
+		colaboradorDao.save(colab2);
+		
+		Candidato cand1 = CandidatoFactory.getCandidato();
+		cand1.setCpf("65617632973");
+		candidatoDao.save(cand1);
+		
+		assertEquals(colab1.getId(), ((Colaborador) candidatoDao.findColaboradoresMesmoCpf(new Long[] { cand1.getId() }).toArray()[0]).getId() );
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;

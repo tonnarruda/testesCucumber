@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 
 public interface CandidatoDao extends GenericDao<Candidato>
@@ -56,4 +57,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<ComoFicouSabendoVaga> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
 	public void removeAreaInteresseConhecimentoCargo(Long candidatoId);
 	public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado);
+	public Collection<Colaborador> findColaboradoresMesmoCpf(Long[] candidatosIds);
 }
