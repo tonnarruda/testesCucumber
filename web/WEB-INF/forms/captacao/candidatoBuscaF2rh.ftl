@@ -177,7 +177,7 @@
 
 		<div class="buttonGroup">
 			<#if solicitacao?exists && solicitacao.id?exists>
-				<button onclick="prepareEnviarForm();" class="btnInserirSelecionados"></button>
+				<button onclick="prepareEnviarFormF2RH();" class="btnInserirSelecionados"></button>
 				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar"></button>
 			</#if>
 		</div>

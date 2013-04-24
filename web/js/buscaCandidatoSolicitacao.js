@@ -54,12 +54,17 @@ function marcarDesmarcar(frm)
 	}
 }
 
+function prepareEnviarFormF2RH()
+{
+	if( $("input[name='candidatosId']:checked").size() < 1)
+		jAlert("Nenhum candidato selecionadoZZZ!");
+	else
+		document.formCand.submit();
+}
+
 function prepareEnviarForm()
 {
-	if ( !($('#popup').length) )
-		$('body').append("<div id='popup'></div>");
-	
-	var candidatosIdsMarcados = $("input[name='candidatosId']:checked"); 
+	var candidatosIdsMarcados = $("input[name='candidatosId']:checked");
 	
 	if( candidatosIdsMarcados.size() < 1)
 	{
@@ -93,7 +98,7 @@ function prepareEnviarForm()
 				$(colaboradores).each(function(i, colaborador) {
 					clss = i%2 == 0 ? 'odd' : 'even';
 					msg += "<tr class='" + clss + "'>";
-					msg += "	<td><input type='checkbox' checked='checked' onclick='toggleCandidato(this.checked, " + colaborador.candidatoId + ")'/></td>";
+					msg += "	<td><input type='checkbox' name='candidatosPopupId' value='" + colaborador.candidatoId + "' checked='checked' onclick='toggleCandidato(this.checked, " + colaborador.candidatoId + ")'/></td>";
 					msg += "	<td>" + colaborador.candidatoNome + "</td>";
 					msg += "	<td>" + colaborador.nome + "</td>";
 					msg += "	<td align='center'>" + colaborador.cpf + "</td>";
@@ -102,6 +107,9 @@ function prepareEnviarForm()
 				});
 				msg += "	</tbody>";
 				msg += "</table>";
+				
+				if ( !($('#popup').length) )
+					$('body').append("<div id='popup'></div>");
 				
 				$("#popup").html(msg)
 							.dialog({	title: "Colaboradores ou ex-colaboradores detectados",
@@ -128,6 +136,7 @@ function prepareEnviarForm()
 function toggleCandidato(marcar, candidatoId)
 {
 	$("input[name='candidatosId'][value='" + candidatoId + "']").attr('checked', marcar);
+	$("input[name='candidatosPopupId'][value='" + candidatoId + "']").not(this).attr('checked', marcar);
 }
 
 // ids de candidatoSolicitacao
