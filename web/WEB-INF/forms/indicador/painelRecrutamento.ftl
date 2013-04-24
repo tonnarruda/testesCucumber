@@ -69,17 +69,17 @@
 
 			var divulgacaoVaga = ${grfDivulgacaoVaga};
 			
-			montaGrafico("#vagasPorCargo", contratadosFaixa, 'Vagas Preenchidas por Cargo');
-			montaGrafico("#vagasPorArea", contratadosArea, 'Vagas Preenchidas por Área');
-			montaGrafico("#vagasPorMotivo", contratadosMotivo, 'Vagas Preenchidas por Motivo');
-			montaGrafico("#divulgacaoVaga", divulgacaoVaga, 'Estatística de Divulgação de Vagas');
+			montaGrafico("#vagasPorCargo", contratadosFaixa, 'Vagas Preenchidas por Cargo', 0.02);
+			montaGrafico("#vagasPorArea", contratadosArea, 'Vagas Preenchidas por Área', 0.02);
+			montaGrafico("#vagasPorMotivo", contratadosMotivo, 'Vagas Preenchidas por Motivo', 0.02);
+			montaGrafico("#divulgacaoVaga", divulgacaoVaga, 'Estatística de Divulgação de Vagas', 0);
 		});
 		
 		var popup;
 		
-		function montaGrafico(obj, dados, titulo)
+		function montaGrafico(obj, dados, titulo, combinePercMin)
 		{
-			montaPie(dados, obj, { combinePercentMin: 0.02, percentMin: 0.03, noColumns: 2, container: obj + "Legenda" });
+			montaPie(dados, obj, { combinePercentMin: combinePercMin, percentMin: 0.03, noColumns: 2, container: obj + "Legenda" });
 			
 			$(obj + "Imprimir")
 					.unbind()
@@ -92,7 +92,7 @@
 								popup.focus();
 								popup.document.getElementById('popupTitulo').innerHTML = titulo;
 								
-								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: 0.02, percentMin: 0.03} );
+								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: combinePercMin, percentMin: 0.03} );
 								popup.window.print();
 								popup.window.close();
 							}
