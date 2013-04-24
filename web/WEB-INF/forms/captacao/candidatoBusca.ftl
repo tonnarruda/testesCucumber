@@ -5,24 +5,19 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		
+		#menuBusca a.ativaAvancada{ color: #FFCB03; }
 	</style>
 
 	<#if solicitacao?exists && solicitacao.id?exists>
 		<title>Inserir Candidatos na Solicitação</title>
 	<#else>
-		<#if BDS?exists && BDS>
-			<title>Exportar Candidatos para BDS</title>
-		<#else>
-			<title>Triagem de currículos</title>
-		</#if>
+		<title>Triagem de currículos</title>
 	</#if>
 
-	<#if BDS?exists && BDS>
-		<#assign actionInserir="prepareEnviarFormBDS();"/>
-	<#else>
-		<#assign actionInserir="prepareEnviarForm();"/>
-	</#if>
-
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
@@ -33,17 +28,12 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-	</style>
-	<style type="text/css">#menuBusca a.ativaAvancada{color: #FFCB03;}</style>
 
 	<script type="text/javascript">
-	
 		$(function(){
 			enviaEmpresa($('#empresaSelect').val());
 			
-			 populaBairros();
+			populaBairros();
 			var obj = document.getElementById("legendas");
 			if(obj != null)
 				obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
@@ -74,20 +64,6 @@
 		{
 			addChecks("bairrosCheck",data)
 		}
-
-		function prepareEnviarFormBDS()
-		{
-			if(verificaCandidatos())
-			{
-				document.formCand.action = "selecionaDestinatariosBDS.action";
-				document.formCand.submit();
-			}
-			else
-			{
-				jAlert("Nenhum Candidato selecionado!");
-			}
-		}
-
 
 		function limparFiltro()
 		{
@@ -139,33 +115,27 @@
 </head>
 
 <body>
-	<#if !BDS>
-		<#include "buscaCandidatoSolicitacaoLinks.ftl" />
-	</#if>
+	<#include "buscaCandidatoSolicitacaoLinks.ftl" />
 
 	<#include "../util/topFiltro.ftl" />
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>
 
 		<@ww.form name="formBusca" id="formBusca" action="busca.action" onsubmit="${validarCampos}" method="POST">
 
-			<#if BDS?exists && !BDS>
-				<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
-			</#if>
+			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 
 			<@ww.hidden name="BDS"/>
-			<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
+			<#if solicitacao?exists && solicitacao.id?exists>
 				<@ww.hidden name="solicitacao.id"/>
 			</#if>
 
-			<@ww.textfield label="Indicado Por" id="indicadoPor" name="indicadoPorBusca" cssStyle="width: 300px;"/>
+			<@ww.textfield label="Indicado por" id="indicadoPor" name="indicadoPorBusca" cssStyle="width: 300px;"/>
 
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 280px;" liClass="liLeft"/>
 			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" liClass="liLeft" cssClass="mascaraCpf"/>
 
 			<li>
-				<span>
-				Cadastrado/Atualizado entre:
-				</span>
+				<span>Cadastrado/Atualizado entre:</span>
 			</li>
 			<@ww.datepicker name="dataCadIni" id="dataCadIni" value="${dataIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 			<@ww.label value="e" liClass="liLeft" />
@@ -184,9 +154,7 @@
 			<@ww.select label="Sexo" name="sexo" id="sexo" list="sexos" cssStyle="width: 130px;" liClass="liLeft"/>
 
 			<li>
-				<span>
-				Idade Preferencial:
-				</span>
+				<span>Idade Preferencial:</span>
 			</li>
 
 			<@ww.textfield name="idadeMin" id="dataPrevIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
@@ -200,17 +168,14 @@
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
 			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList"/>
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
-			<br>
+			<br />
 			<#if solicitacao?exists && solicitacao.id?exists && solicitacao.experiencia?exists>
-			<br>
-				${solicitacao.experiencia}
-			<br>
+				<br />
+					${solicitacao.experiencia}
+				<br />
 			</#if>
 			<li>
-				<span>
-				Experiência de:
-				<br>
-				</span>
+				<span>Experiência de:<br /></span>
 			</li>
 			<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 			<li>meses</li>
@@ -221,7 +186,7 @@
 		       "2":"Qualquer Palavra",
 		       "1":"Todas as Palavras",
 		       "3":"Frase Exata"}' />
-			<br>
+			<br />
 			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
 			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />
 			
@@ -238,20 +203,19 @@
 
 	<#include "../util/bottomFiltro.ftl" />
 
-	<#if BDS?exists && !BDS && solicitacao?exists && solicitacao.id?exists>
-		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V">
-		</button>
+	<#if solicitacao?exists && solicitacao.id?exists>
+		<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 	</#if>
 
 	<#if candidatos?exists >
-		</BR>
+		<br />
 		<div id="legendas" align="right"></div>
-		</BR>
+		<br />
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 
 		<#if solicitacao?exists && solicitacao.id?exists>
 			<div class="buttonGroup">
-				<button onclick="${actionInserir}" class="btnInserirSelecionados" accesskey="I"></button>
+				<button onclick="prepareEnviarForm();" class="btnInserirSelecionados" accesskey="I"></button>
 				<button onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}';" class="btnVoltar" accesskey="V"></button>
 			</div>
 		</#if>

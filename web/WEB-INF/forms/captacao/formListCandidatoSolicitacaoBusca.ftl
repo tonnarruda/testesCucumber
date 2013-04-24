@@ -1,8 +1,6 @@
 <@ww.form name="formCand" action="insertCandidatos.action" validate="true" method="POST">
 
-	<#if BDS?exists && !BDS>
-		<@ww.hidden name="solicitacao.id"/>
-	</#if>
+	<@ww.hidden name="solicitacao.id"/>
 
 	<@display.table name="candidatos" id="candidato" class="dados" >
 		

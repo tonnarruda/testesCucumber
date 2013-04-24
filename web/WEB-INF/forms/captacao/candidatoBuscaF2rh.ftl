@@ -12,8 +12,8 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		#menuBusca a.ativaF2rh { color: #FFCB03; }
 	</style>
-	<style type="text/css">#menuBusca a.ativaF2rh{color: #FFCB03;}</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	

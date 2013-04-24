@@ -1369,4 +1369,18 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		JDBCConnection.executeQuery(sqls);
 	}
+
+	public Collection<Colaborador> findColaboradoresMesmoCpf(Long[] candidatosIds) 
+	{
+		Collection<Colaborador> colaboradores = getSession().createQuery(
+															"select new Colaborador(col.id, col.nome, col.pessoal.cpf, col.dataDesligamento, can.id, can.nome) " +
+															"from Colaborador col, Candidato can " +
+															"where col.pessoal.cpf = can.pessoal.cpf " +
+															"and can.id in (:candidatosIds) " +
+															"order by col.nome")
+															.setParameterList("candidatosIds", candidatosIds, Hibernate.LONG)
+															.list();
+		
+		return colaboradores;
+	}
 }
