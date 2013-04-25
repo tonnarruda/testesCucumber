@@ -27,7 +27,6 @@ import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.axis.soap.SOAPConstants;
 
-import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 
 public class MockCall

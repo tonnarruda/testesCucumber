@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -447,7 +446,11 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC);
+		AreaOrganizacional areaOrganizacionalTmp = getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC); 
+
+		correcaoTransientObjectException(areaOrganizacionalTmp);
+
+		return areaOrganizacionalTmp;
 	}
 
 	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long areaInativaId) throws Exception
@@ -496,7 +499,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds,  List<String> mensagens)
 	{
-		String codigoAc;
 		Long areaOrigemId;
 		Long areaMaeId;
 		Long areaMaeIdAntiga;
@@ -505,7 +507,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Map<Long, Long> areaIdsAreaMaeIds = new  HashMap<Long, Long>();
 
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		TransactionStatus status = transactionManager.getTransaction(def);
 
 		try{
@@ -535,9 +537,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			}
 
 			if(empresaDestino.isAcIntegra())
-				for (AreaOrganizacional areaOrganizacional : areasDestino) 
-					insereNoAcPessoal(empresaDestino, areaOrganizacional);
+				for (AreaOrganizacional areaOrganizacional : areasDestino)
+					insereNoAcPessoal(empresaDestino, areaOrganizacional, areasDestino);
 
+			transactionManager.commit(status);
 		}catch (IntegraACException e)
 		{
 			mensagens.add("Ocorreu um erro ao importar a área organizacional para o AC Pessoal.");
@@ -550,29 +553,35 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	private String insereNoAcPessoal(Empresa empresaDestino,AreaOrganizacional areaOrganizacional) throws Exception,IntegraACException 
+	private AreaOrganizacional insereNoAcPessoal(Empresa empresaDestino,AreaOrganizacional areaOrganizacional, Collection<AreaOrganizacional> areaOrganizacionais) throws Exception,IntegraACException 
 	{
-		String codigoAc = areaOrganizacional.getCodigoAC();
-		
-		if(codigoAc == null )
+		areaOrganizacional = populaAreaMae(areaOrganizacional, areaOrganizacionais);
+		if(areaOrganizacional.getAreaMaeId() != null)
 		{
-			if(areaOrganizacional.getAreaMaeId() == null)
-			{
-				areaOrganizacional.setAreaMae(null);
-				codigoAc = salvaNoAcPessoal(empresaDestino,areaOrganizacional);
-			}else
-			{
-				AreaOrganizacional areaMae = findAreaOrganizacionalCodigoAc(areaOrganizacional.getAreaMaeId());
-				insereNoAcPessoal(empresaDestino,areaMae);
-				areaOrganizacional.setAreaMae(areaMae);
-				codigoAc = salvaNoAcPessoal(empresaDestino,areaOrganizacional);
-			}
+			AreaOrganizacional areaMae = insereNoAcPessoal(empresaDestino,areaOrganizacional.getAreaMae(), areaOrganizacionais);
+			areaOrganizacional.setAreaMae(areaMae);
+		}
 
+		String codigoAc = areaOrganizacional.getCodigoAC();
+		if(codigoAc == null || codigoAc.equals(""))
+		{
+			correcaoTransientObjectException(areaOrganizacional);
+			codigoAc = salvaNoAcPessoal(empresaDestino,areaOrganizacional);
 			areaOrganizacional.setCodigoAC(codigoAc);
 			getDao().update(areaOrganizacional);
 		}
 		
-		return codigoAc;
+		correcaoTransientObjectException(areaOrganizacional);
+		return areaOrganizacional;
+	}
+
+	private AreaOrganizacional populaAreaMae(AreaOrganizacional areaOrganizacional, Collection<AreaOrganizacional> areaOrganizacionais) 
+	{
+		for (AreaOrganizacional area : areaOrganizacionais) 
+			if(area.getId().equals(areaOrganizacional.getId()))
+				return area;
+		
+		return areaOrganizacional;
 	}
 
 	private String salvaNoAcPessoal(Empresa empresaDestino,AreaOrganizacional areaOrganizacional) throws Exception, IntegraACException 
@@ -855,6 +864,18 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	{
 		getDao().desvinculaResponsavel(colaboradorId);		
 		getDao().desvinculaCoResponsavel(colaboradorId);		
+	}
+	
+	private void correcaoTransientObjectException(AreaOrganizacional areaOrganizacionalTmp) 
+	{
+		if(areaOrganizacionalTmp.getResponsavel() !=null && areaOrganizacionalTmp.getResponsavel().getId() == null)
+			areaOrganizacionalTmp.setResponsavel(null);
+
+		if(areaOrganizacionalTmp.getCoResponsavel() !=null && areaOrganizacionalTmp.getCoResponsavel().getId() == null)
+			areaOrganizacionalTmp.setCoResponsavel(null);
+
+		if(areaOrganizacionalTmp.getAreaMae() != null && areaOrganizacionalTmp.getAreaMae().getId() == null)
+			areaOrganizacionalTmp.setAreaMae(null);
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {

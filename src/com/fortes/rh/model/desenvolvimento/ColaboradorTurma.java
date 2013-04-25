@@ -24,7 +24,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.geral.Pessoal;
 
 @SuppressWarnings("serial")
 @Entity

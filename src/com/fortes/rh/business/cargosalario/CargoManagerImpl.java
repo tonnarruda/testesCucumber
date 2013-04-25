@@ -306,8 +306,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
 		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
-
-		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
 		Map<Long, GrupoOcupacional> novosGruposOcupacionais = new HashMap<Long, GrupoOcupacional>();
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -319,13 +317,12 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		{
 			try{
 				status = transactionManager.getTransaction(def);
-				
 				Long cargoOrigemId = cargo.getId();
 				GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
-				clonar(cargo, empresaDestino.getId());
-
+				
 				Collection<AreaOrganizacional> areasOrganizacionais = popularAreasOrganizacionaisComIds(areaIds, cargoOrigemId);
 				cargo.setAreasOrganizacionais(areasOrganizacionais);
+				clonar(cargo, empresaDestino.getId());
 
 				Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
 				cargo.setConhecimentos(conhecimentos);

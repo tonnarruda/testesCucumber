@@ -3,8 +3,6 @@ package com.fortes.rh.test.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;

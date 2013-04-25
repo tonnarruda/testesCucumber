@@ -85,14 +85,14 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		return ocorrencia;
 	}
 
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) 
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino) throws Exception 
 	{
 		Collection<Ocorrencia> ocorrenciaInteresseDeOrigem = getDao().findSincronizarOcorrenciaInteresse(empresaOrigemId);
 		
 		for (Ocorrencia ocorrencia : ocorrenciaInteresseDeOrigem)
 		{
-			clonar(ocorrencia, empresaDestinoId);
-			update(ocorrencia);
+			clonar(ocorrencia, empresaDestino.getId());
+			saveOrUpdate(ocorrencia, empresaDestino);
 		}
 	}
 	
@@ -115,6 +115,7 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		
 		ocorrenciaInteresse.setId(null);
 		ocorrenciaInteresse.setEmpresaId(empresaDestinoId);
+		ocorrenciaInteresse.setCodigoAC(null);
 		
 		getDao().save(ocorrenciaInteresse);
 	}

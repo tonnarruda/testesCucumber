@@ -579,13 +579,15 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Collection<FaixaSalarialHistorico> historicos = new ArrayList<FaixaSalarialHistorico>();
 		historicos.add(faixaSalarialHistorico);
 		
+		FaixaSalarial faixaSalarialDestino = FaixaSalarialFactory.getEntity(130L);
+		
 		FaixaSalarialHistorico faixaSalarialHistoricoDepoisDoSave = FaixaSalarialHistoricoFactory.getEntity(2000L);
-		faixaSalarialHistoricoDepoisDoSave.setFaixaSalarial(FaixaSalarialFactory.getEntity(130L));
+		faixaSalarialHistoricoDepoisDoSave.setFaixaSalarial(faixaSalarialDestino);
 		
 		faixaSalarialHistoricoDao.expects(once()).method("findHistoricosByFaixaSalarialId").with(eq(99L)).will(returnValue(historicos));
 		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(faixaSalarialHistoricoDepoisDoSave));
 		
-		faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds, EmpresaFactory.getEmpresa());
+		faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), faixaSalarialDestino.getId(), EmpresaFactory.getEmpresa());
 	}
 
 	public void testGetsSets()

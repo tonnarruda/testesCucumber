@@ -37,7 +37,6 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
-import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;

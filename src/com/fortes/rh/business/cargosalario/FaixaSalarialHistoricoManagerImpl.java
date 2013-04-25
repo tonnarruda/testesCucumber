@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -325,29 +324,18 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return pendenciaACs;
 	}
 
-	public Collection<FaixaSalarialHistorico> sincronizar(Map<Long, Long> faixaSalarialIds, Empresa empresaDestino)
+	public FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino)
 	{
-		Collection<FaixaSalarialHistorico> faixaSalarialHistoricosRetorno= new ArrayList<FaixaSalarialHistorico>();
+		FaixaSalarialHistorico faixaSalarialHistorico = getDao().findHistoricoAtual(faixaSalarialOrigemId);
+
+		faixaSalarialHistorico.setId(null);
+		faixaSalarialHistorico.setIndice(null);
+		faixaSalarialHistorico.setProjectionFaixaSalarialId(faixaSalarialDestinoId);
+
+		prepareSaveUpdate(faixaSalarialHistorico, faixaSalarialHistorico.getFaixaSalarial(), empresaDestino);
+		getDao().save(faixaSalarialHistorico);
 		
-		for (Long faixaSalarialId : faixaSalarialIds.keySet()) {
-
-			Collection<FaixaSalarialHistorico> historicos = getDao().findHistoricosByFaixaSalarialId(faixaSalarialId);
-
-			// clonando Faixas Salariais
-			for (FaixaSalarialHistorico faixaSalarialHistorico : historicos)
-			{
-				faixaSalarialHistorico.setId(null);
-				faixaSalarialHistorico.setIndice(null);
-				faixaSalarialHistorico.setProjectionFaixaSalarialId( faixaSalarialIds.get(faixaSalarialId) );
-
-				prepareSaveUpdate(faixaSalarialHistorico, faixaSalarialHistorico.getFaixaSalarial(), empresaDestino);
-				getDao().save(faixaSalarialHistorico);
-				
-				faixaSalarialHistoricosRetorno.add(faixaSalarialHistorico);
-				
-			}
-		}
-		return faixaSalarialHistoricosRetorno;
+		return faixaSalarialHistorico;
 	}
 
 	public FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial)

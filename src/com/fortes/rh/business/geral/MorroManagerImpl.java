@@ -8,7 +8,6 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.log4j.Logger;
 
 import com.fortes.rh.util.ArquivoUtil;

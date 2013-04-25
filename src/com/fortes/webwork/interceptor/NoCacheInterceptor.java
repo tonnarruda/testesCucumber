@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
-//import com.opensymphony.xwork.interceptor.PreResultListener;
 
 public class NoCacheInterceptor implements Interceptor
 {

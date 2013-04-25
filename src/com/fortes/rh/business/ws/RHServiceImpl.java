@@ -847,9 +847,12 @@ public class RHServiceImpl implements RHService
 		if (!aprovado)
 		{
 			FaixaSalarialHistorico faixaSalarialHistorico = faixaSalarialHistoricoManager.findByIdProjection(faixaSalarialHistoricoId);
-			String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
-			Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
-			usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.CARGO_SALARIO);
+			if(faixaSalarialHistorico != null)
+			{
+				String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
+				Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.CARGO_SALARIO);
+			}
 		}
 
 		if(faixaSalarialHistoricoManager.setStatus(faixaSalarialHistoricoId, aprovado))
@@ -1054,7 +1057,7 @@ public class RHServiceImpl implements RHService
 		String parametros = "areaOrganizacional: " + tAreaOrganizacional.getCodigo() + "\nempresa: " + tAreaOrganizacional.getEmpresaCodigo() + "\ngrupoAC: " + tAreaOrganizacional.getGrupoAC();
 		try
 		{
-			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());		
+			AreaOrganizacional areaOrganizacionalTmp = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tAreaOrganizacional.getCodigo(), tAreaOrganizacional.getEmpresaCodigo(), tAreaOrganizacional.getGrupoAC());
 			areaOrganizacionalManager.remove(areaOrganizacionalTmp);
 			return new FeedbackWebService(true);
 		}
@@ -1204,12 +1207,16 @@ public class RHServiceImpl implements RHService
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
-			faixaSalarialManager.remove(faixaSalarial);
-			
-			Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());
-			if(faixas.isEmpty())
-				cargoManager.remove(faixaSalarial.getCargo());
+
+			if(false)
+			{
+				FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
+				faixaSalarialManager.remove(faixaSalarial);
+
+				Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());
+				if(faixas.isEmpty())
+					cargoManager.remove(faixaSalarial.getCargo());
+			}
 			
 			return new FeedbackWebService(true);
 		}

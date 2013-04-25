@@ -11,7 +11,6 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AgendaManager;
-import com.fortes.rh.business.sesmt.ComposicaoSesmtManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.PcmsoManagerImpl;

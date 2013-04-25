@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.importacao;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 

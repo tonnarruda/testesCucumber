@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.struts.SpringBindingActionForm;
-
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -21,7 +19,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.FichaMedica;
-import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;

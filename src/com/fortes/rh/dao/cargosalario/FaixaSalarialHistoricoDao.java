@@ -25,4 +25,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 	ReajusteFaixaSalarial findReajusteFaixaSalarial(Date faixasalarialHistoricoData, Long faixaSalarialId);
+	FaixaSalarialHistorico findHistoricoAtual(Long faixaSalarialId);
 }

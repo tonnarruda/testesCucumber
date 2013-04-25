@@ -91,6 +91,19 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 		this.setProjectionFaixaSalarialNome(faixaSalarialNome);
 	}
 
+	//findHistoricoAtual
+	public FaixaSalarialHistorico(Long id, Date data, Integer tipo, Double valor, Double quantidade, Long indiceId, Long faixaSalarialId)
+	{
+		this.setId(id);
+		this.setData(data);
+		this.setTipo(tipo);
+		this.setValor(valor);
+		this.setQuantidade(quantidade);
+		this.setProjectionIndiceId(indiceId);
+		this.setProjectionHistoricoFaixaSalarial(this);
+		this.setProjectionFaixaSalarialId(faixaSalarialId);
+	}
+
 	//Projections
 	public void setProjectionHistoricoFaixaSalarial(FaixaSalarialHistorico projectionHistoricoFaixaSalarial)
 	{

@@ -2,10 +2,9 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.dao.sesmt.NaturezaLesaoDao;
+import com.fortes.rh.model.sesmt.NaturezaLesao;
 
 public class NaturezaLesaoManagerImpl extends GenericManagerImpl<NaturezaLesao, NaturezaLesaoDao> implements NaturezaLesaoManager
 {

@@ -2,7 +2,6 @@ package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -35,7 +34,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void remove(Long faixaSalarialHistoricoId, Empresa empresa) throws Exception;
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<PendenciaAC> findPendenciasByFaixaSalarialHistorico(Long empresaId);
-	Collection<FaixaSalarialHistorico> sincronizar(Map<Long, Long> faixaSalarialIds, Empresa empresaDestino);
+	FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino);
 	FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);

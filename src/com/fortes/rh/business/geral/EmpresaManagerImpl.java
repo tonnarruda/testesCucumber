@@ -243,7 +243,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA))
 		{
-			ocorrenciaManager.sincronizar(empresaOrigemId, empresaDestinoId);
+			ocorrenciaManager.sincronizar(empresaOrigemId, empresaDestino);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS))

@@ -431,4 +431,23 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 		return (ReajusteFaixaSalarial) criteria.uniqueResult();
 	}
+
+	public FaixaSalarialHistorico findHistoricoAtual(Long faixaSalarialId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.tipo, fsh.valor, fsh.quantidade, fsh.indice.id, fsh.faixaSalarial.id) ");
+		hql.append("from FaixaSalarialHistorico as fsh ");
+		hql.append("where fsh.faixaSalarial.id = :faixaId ");
+		hql.append("and fsh.status = :status ");
+		hql.append("and fsh.data = (select max(fsh2.data) ");
+		hql.append("				from FaixaSalarialHistorico as fsh2 ");
+		hql.append("				where fsh2.faixaSalarial.id = fsh.faixaSalarial.id ");
+		hql.append("				and fsh2.data <= :hoje and fsh2.status = :status ) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("faixaId", faixaSalarialId);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return (FaixaSalarialHistorico) query.uniqueResult();
+	}
 }

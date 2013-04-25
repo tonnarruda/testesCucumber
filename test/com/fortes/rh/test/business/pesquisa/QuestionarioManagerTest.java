@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.mail.internet.AddressException;
-
 import mockit.Mockit;
 
 import org.jmock.Mock;
@@ -16,7 +14,6 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -33,7 +30,6 @@ import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -50,7 +46,6 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.AspectoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
@@ -62,7 +57,6 @@ import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 

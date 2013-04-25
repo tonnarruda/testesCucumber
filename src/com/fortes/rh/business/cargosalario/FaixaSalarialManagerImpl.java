@@ -3,7 +3,6 @@ package com.fortes.rh.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -277,30 +276,8 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	{
 		return getDao().findByCargoComCompetencia(cargoId);
 	}
-
-	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino) throws Exception
-	{
-		Map<Long, Long> faixaSalarialIds = new HashMap<Long, Long>();
-		clonar(cargoOrigemId, cargoDestino, faixaSalarialIds, empresaDestino);
-		Collection<FaixaSalarialHistorico> faixaSalarialHistoricosClonados = faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds, empresaDestino);
-		
-		if(empresaDestino.isAcIntegra())
-		{
-			for (FaixaSalarialHistorico faixaSalarialHistoricoClonado : faixaSalarialHistoricosClonados) 
-			{
-				if(faixaSalarialHistoricoClonado.getFaixaSalarial().getNomeACPessoal() == null || faixaSalarialHistoricoClonado.getFaixaSalarial().getNomeACPessoal().equals(""))
-					faixaSalarialHistoricoClonado.getFaixaSalarial().setNomeACPessoal(cargoDestino.getNome() + " " + faixaSalarialHistoricoClonado.getFaixaSalarial().getNome());
-
-				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarialHistoricoClonado.getFaixaSalarial(), faixaSalarialHistoricoClonado, empresaDestino);
-				if (codigoAC == null || codigoAC.equals(""))
-					throw new IntegraACException();
-
-				getDao().updateCodigoAC(codigoAC, faixaSalarialHistoricoClonado.getFaixaSalarial().getId());
-			}
-		}
-	}
 	
-	private void clonar(Long cargoOrigemId, Cargo cargoDestino, Map<Long, Long> faixaSalarialIds, Empresa empresa) 
+	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino) throws Exception 
 	{
 		Collection<FaixaSalarial> faixas = getDao().findByCargo(cargoOrigemId);
 		
@@ -311,14 +288,23 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			faixaSalarial.setId(null);
 			faixaSalarial.setCodigoAC(null);
 			faixaSalarial.setProjectionCargoId( cargoDestino.getId() );
-			
-			//existe a mesma regra dentro de faixaSalarialHistoricoManager.sincronizar
-			if(empresa.isAcIntegra() && (faixaSalarial.getNomeACPessoal() == null || faixaSalarial.getNomeACPessoal().equals("")))
+
+			if(empresaDestino.isAcIntegra() && (faixaSalarial.getNomeACPessoal() == null || faixaSalarial.getNomeACPessoal().equals("")))
 				faixaSalarial.setNomeACPessoal(cargoDestino.getNome() + " " + faixaSalarial.getNome());
 			
 			getDao().save(faixaSalarial);
-			
-			faixaSalarialIds.put(faixaOrigemId, faixaSalarial.getId());
+
+			if(empresaDestino.isAcIntegra())
+			{
+				FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
+				faixaSalarialHistoricoAtualClonado.setFaixaSalarial(faixaSalarial);
+	
+				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarialHistoricoAtualClonado.getFaixaSalarial(), faixaSalarialHistoricoAtualClonado, empresaDestino);
+				if (codigoAC == null || codigoAC.equals(""))
+					throw new IntegraACException();
+				
+				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
+			}
 		}
 	}
 

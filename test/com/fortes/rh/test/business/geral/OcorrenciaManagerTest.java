@@ -10,9 +10,7 @@ import com.fortes.rh.business.geral.OcorrenciaManagerImpl;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
@@ -179,7 +177,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		ocorrenciaDao.expects(once()).method("save");
 		ocorrenciaDao.expects(once()).method("update");
 		
-		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino.getId());
+		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino);
 		
 		assertEquals(empresaDestino.getId(), ocorrencia.getEmpresa().getId() );
 	}

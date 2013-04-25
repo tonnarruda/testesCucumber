@@ -1,6 +1,5 @@
 package com.fortes.rh.test.dicionario;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import junit.framework.TestCase;

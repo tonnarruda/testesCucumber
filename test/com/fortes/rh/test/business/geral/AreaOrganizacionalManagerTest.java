@@ -15,6 +15,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -44,7 +45,7 @@ import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
@@ -59,6 +60,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 	private Mock areaOrganizacionalDao = null;
 	Mock parametrosDoSistemaManager;
 	Mock colaboradorManager;
+	Mock transactionManager;
 
     protected void setUp() throws Exception
     {
@@ -70,8 +72,8 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
         areaOrganizacionalManager.setDao((AreaOrganizacionalDao) areaOrganizacionalDao.proxy());
 		areaOrganizacionalManager.setAcPessoalClientLotacao((AcPessoalClientLotacao) acPessoalClientLotacao.proxy());
 
-//        transactionManager = new Mock(PlatformTransactionManager.class);
-//        areaOrganizacionalManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        transactionManager = new Mock(PlatformTransactionManager.class);
+        areaOrganizacionalManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
@@ -840,10 +842,9 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaOrganizacional2.setAreaMae(areaNova10);
 		areaOrganizacional3.setAreaMae(areaNova11);
 		
+		transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
 		areaOrganizacionalDao.expects(once()).method("findSincronizarAreas").will(returnValue(areas));
-		
 		areaOrganizacionalDao.expects(atLeastOnce()).method("save");
-//		areaOrganizacionalDao.expects(atLeastOnce()).method("update");
 		
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
 		areaIds.put(areaOrganizacional1.getId(), areaNova10.getId());
@@ -856,6 +857,8 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		assertEquals(3, areaIds.size());
 	}
+	
+
 	
 	public void testSetFamiliaAreasComExamesPrevistos() throws Exception
 	{

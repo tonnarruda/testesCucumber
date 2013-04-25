@@ -2,7 +2,6 @@ package com.fortes.rh.dao.sesmt;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;

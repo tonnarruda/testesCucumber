@@ -13,7 +13,7 @@ public interface OcorrenciaManager extends GenericManager<Ocorrencia>
 	Ocorrencia findByCodigoAC(String codigo, String codigoEmpresa, String grupoAC);
 	Ocorrencia saveFromAC(Ocorrencia ocorrencia) throws Exception;
 	void remove(Ocorrencia ocorrencia, Empresa empresa) throws Exception;
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId); 
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino) throws Exception; 
 	Collection<Ocorrencia> findAllSelect(Long[] empresaIds);
 	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
 	Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId);

@@ -32,7 +32,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
-import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;

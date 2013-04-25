@@ -3,8 +3,6 @@ package com.fortes.rh.business.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;

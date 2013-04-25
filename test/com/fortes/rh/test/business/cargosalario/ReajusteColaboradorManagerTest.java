@@ -58,7 +58,6 @@ import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;

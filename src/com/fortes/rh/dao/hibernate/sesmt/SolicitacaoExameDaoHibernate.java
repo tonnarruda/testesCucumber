@@ -10,7 +10,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
