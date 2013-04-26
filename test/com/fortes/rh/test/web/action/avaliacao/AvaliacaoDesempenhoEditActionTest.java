@@ -447,8 +447,8 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		//exception
 		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).will(throwException(new FortesException("Não foi possível liberar esta avaliação: número insuficiente de participantes.")));
 		assertEquals("success",action.liberar());
-		assertEquals(1, action.getActionErrors().size());
-		assertEquals("Não foi possível liberar esta avaliação: número insuficiente de participantes.", action.getActionErrors().toArray()[0]);
+		assertEquals(1, action.getActionWarnings().size());
+		assertEquals("Não foi possível liberar esta avaliação: número insuficiente de participantes.", action.getActionWarnings().toArray()[0]);
 	}
 
 	public void testEnviarLembrete() throws Exception

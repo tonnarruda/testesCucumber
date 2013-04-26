@@ -19645,3 +19645,9 @@ update papel set codigo = 'ROLE_DISSIDIO_FAIXASALARIAL' where id = 566;--.go
 update papel set codigo = 'ROLE_DISSIDIO_INDICE' where id = 570;--.go
 insert into migrations values('20130409102059');--.go
 update parametrosdosistema set appversao = '1.1.106.111';--.go
+-- versao 1.1.106.111
+
+update parametrosdosistema set appversao = '1.1.106.111';--.go
+-- versao 1.1.106.112
+
+update parametrosdosistema set appversao = '1.1.106.112';--.go
