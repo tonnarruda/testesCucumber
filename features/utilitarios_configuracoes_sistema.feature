@@ -20,7 +20,7 @@ Funcionalidade: Configurações do Sistema
     E eu desmarco "Compartilhar Candidatos entre empresas."
     E eu desmarco "Compartilhar Colaboradores entre empresas."
     E eu preencho "E-mail do Suporte Técnico" com "teste@abc.com.br"
-    E eu preencho "Codigo da Empresa" com "123"
+    
     E eu preencho "Codigo do Cliente" com "456"
     E eu preencho "Servidor SMTP" com "smtp.abc.com.br"
     E eu preencho "Porta SMTP" com "25"
