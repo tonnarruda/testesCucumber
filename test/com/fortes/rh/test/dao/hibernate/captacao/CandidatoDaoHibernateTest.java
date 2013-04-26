@@ -2506,8 +2506,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		
 		String qtdTabelasComCandidatos = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col " +
 																		"where col.column_name = 'candidato_id' " +
+																		"and col.table_schema = 'public' " +
 																		"and col.table_name <> 'candidatoeleicao';"); // candidatoeleicao é na realidade um colaborador
-		//se almentar atualizar removercandidato no manager
+		//se aumentar atualizar removercandidato no manager
 		assertEquals("12", qtdTabelasComCandidatos);
 	}
 	
