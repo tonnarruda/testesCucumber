@@ -260,6 +260,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.dataAtualizacao"), "dataAtualizacao");
 		p.add(Projections.property("c.origem"), "origem");
 		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
@@ -280,6 +281,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		 */
 		p.add(Projections.groupProperty("c.id"));
 		p.add(Projections.groupProperty("c.nome"));
+		p.add(Projections.groupProperty("c.pessoal.cpf"));
 		p.add(Projections.groupProperty("c.dataAtualizacao"));
 		p.add(Projections.groupProperty("c.dataCadastro"), "dataCadastro");
 		p.add(Projections.groupProperty("c.pessoal.escolaridade"));
@@ -1017,6 +1019,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.dataAtualizacao"), "dataAtualizacao");
 		p.add(Projections.property("c.origem"), "origem");
 		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
@@ -1031,6 +1034,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		p.add(Projections.groupProperty("c.id"));
 		p.add(Projections.groupProperty("c.nome"));
+		p.add(Projections.groupProperty("c.pessoal.cpf"));
 		p.add(Projections.groupProperty("c.dataAtualizacao"));
 		p.add(Projections.groupProperty("c.pessoal.escolaridade"));
 		p.add(Projections.groupProperty("c.origem"));
@@ -1253,7 +1257,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		sql.append(" )/:divisao as compatibilidade,  "); 
 		
-		sql.append(" (exists (select cs.id from CandidatoSolicitacao cs where cs.candidato_id=c.id)) as inscritoSolicitacao ");
+		sql.append(" (exists (select cs.id from CandidatoSolicitacao cs where cs.candidato_id=c.id)) as inscritoSolicitacao, ");
+		sql.append(" c.cpf ");
 		
 		sql.append("from candidato c ");
 		sql.append("left join experiencia ex on ex.candidato_id=c.id and ex.cargo_id = :cargoId ");
@@ -1262,7 +1267,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		sql.append("left join cidade as cid on cid.id = c.cidade_id ");
 		sql.append("where c.blacklist = false ");
 		sql.append("and c.empresa_id = :empresaId ");
-		sql.append("group by c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cc.cargos_id, cid.id, cid.nome, e.sigla ");
+		sql.append("group by c.id, c.nome, c.dataNascimento, c.sexo, c.pretencaoSalarial, c.escolaridade, cc.cargos_id, cid.id, cid.nome, e.sigla, c.cpf ");
 		sql.append("order by compatibilidade desc, experiencia desc");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -1330,11 +1335,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 				cand.setPessoalEscolaridade((String) res[5]);
 				cand.setEnderecoCidadeNome((String) res[6]);
 				cand.setEnderecoUfSigla((String) res[7]);
-				
 				cand.setTempoExperiencia((Integer) res[8]);
-				
 				cand.setPercentualCompatibilidade(((Double) res[9])*100);
 				cand.setInscritoSolicitacao((Boolean) res[10]);
+				cand.setPessoalCpf((String) res[11]);
 				lista.add(cand);
 			}
 		}
@@ -1370,17 +1374,16 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		JDBCConnection.executeQuery(sqls);
 	}
 
-	public Collection<Colaborador> findColaboradoresMesmoCpf(Long[] candidatosIds) 
+	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs) 
 	{
-		Collection<Colaborador> colaboradores = getSession().createQuery(
-															"select new Colaborador(col.id, col.nome, col.pessoal.cpf, col.dataDesligamento, can.id, can.nome) " +
-															"from Colaborador col, Candidato can " +
-															"where col.pessoal.cpf = can.pessoal.cpf " +
-															"and can.id in (:candidatosIds) " +
-															"order by col.nome")
-															.setParameterList("candidatosIds", candidatosIds, Hibernate.LONG)
-															.list();
+		StringBuilder hql = new StringBuilder("select new Colaborador(col.id, col.nome, col.pessoal.cpf, col.dataDesligamento) ");
+		hql.append("from Colaborador col ");
+		hql.append("where col.pessoal.cpf in (:candidatosCpfs) ");
+		hql.append("order by col.nome");
 		
-		return colaboradores;
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("candidatosCpfs", candidatosCpfs, Hibernate.STRING);
+				
+		return query.list();
 	}
 }

@@ -57,5 +57,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<ComoFicouSabendoVaga> countComoFicouSabendoVagas(Long empresaId, Date dataIni, Date dataFim);
 	public void removeAreaInteresseConhecimentoCargo(Long candidatoId);
 	public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado);
-	public Collection<Colaborador> findColaboradoresMesmoCpf(Long[] candidatosIds);
+	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs);
 }

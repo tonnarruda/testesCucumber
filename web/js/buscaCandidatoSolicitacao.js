@@ -54,17 +54,9 @@ function marcarDesmarcar(frm)
 	}
 }
 
-function prepareEnviarFormF2RH()
-{
-	if( $("input[name='candidatosId']:checked").size() < 1)
-		jAlert("Nenhum candidato selecionadoZZZ!");
-	else
-		document.formCand.submit();
-}
-
 function prepareEnviarForm()
 {
-	var candidatosIdsMarcados = $("input[name='candidatosId']:checked");
+	var candidatosIdsMarcados = $("#formCand input[name='candidatosId']:checked");
 	
 	if( candidatosIdsMarcados.size() < 1)
 	{
@@ -72,34 +64,42 @@ function prepareEnviarForm()
 	}
 	else
 	{
-		var candidatosIds = [];
+		var cpfs = [];
+		
 		$(candidatosIdsMarcados).each(function(i, marcado){
-			candidatosIds[i] = $(marcado).val();
+			cpfs[i] = $(marcado).attr('cpf');
 		});
 		
-		CandidatoDWR.findExColaboradores( candidatosIds, function(colaboradores) {
+		CandidatoDWR.findColaboradoresMesmoCpf( cpfs, function(colaboradores) {
+			
 			if( $(colaboradores).size() > 0 )
 			{
 				var msg = "";
 				var clss = "";
+				var candNome = "";
 
-				msg += "<p>Identificamos pelo CPF do(s) candidato(s) selecionado(s) os seguintes colaboradores:</p>"; 
+				msg += "<p>Foram encontrados colaboradores com o mesmo CPF de alguns candidatos selecionados.<br />"; 
+				msg += "Desmarque os candidatos que não devem permanecer nessa triagem:</p>"; 
 				msg += "<table class='dados'>";
 				msg += "	<thead>";
 				msg += "		<tr>";
 				msg += "			<th width='30'></th>";
 				msg += "			<th>Candidato</th>";
-				msg += "			<th width='220' style='background:#7BA6D3;'>Colaborador</th>";
-				msg += "			<th width='105' style='background:#7BA6D3;'>CPF</th>";
-				msg += "			<th width='85' style='background:#7BA6D3;'>Desligado em</th>";
+				msg += "			<th width='5' style='background-color:#f2f2f2'></th>";
+				msg += "			<th width='220'>Colaborador</th>";
+				msg += "			<th width='105'>CPF</th>";
+				msg += "			<th width='85'>Desligado em</th>";
 				msg += "		</tr>";
 				msg += "	</thead>";
 				msg += "	<tbody>";
 				$(colaboradores).each(function(i, colaborador) {
+					candNome = $("#formCand a[cpf='" + colaborador.cpf + "']").text();
+					
 					clss = i%2 == 0 ? 'odd' : 'even';
 					msg += "<tr class='" + clss + "'>";
-					msg += "	<td><input type='checkbox' name='candidatosPopupId' value='" + colaborador.candidatoId + "' checked='checked' onclick='toggleCandidato(this.checked, " + colaborador.candidatoId + ")'/></td>";
-					msg += "	<td>" + colaborador.candidatoNome + "</td>";
+					msg += "	<td><input type='checkbox' name='candidatosPopupId' cpf='" + colaborador.cpf + "' value='" + colaborador.cpf + "' checked='checked' onclick='toggleCandidato(this.checked, \"" + colaborador.cpf + "\")'/></td>";
+					msg += "	<td>" + candNome + "</td>";
+					msg += "	<td style='background-color:#f2f2f2;'></td>";
 					msg += "	<td>" + colaborador.nome + "</td>";
 					msg += "	<td align='center'>" + colaborador.cpf + "</td>";
 					msg += "	<td align='center'>" + colaborador.dataDesligamento + "</td>";
@@ -133,10 +133,10 @@ function prepareEnviarForm()
 	}
 }
 
-function toggleCandidato(marcar, candidatoId)
+function toggleCandidato(marcar, cpf)
 {
-	$("input[name='candidatosId'][value='" + candidatoId + "']").attr('checked', marcar);
-	$("input[name='candidatosPopupId'][value='" + candidatoId + "']").not(this).attr('checked', marcar);
+	$("#formCand input[name='candidatosId'][cpf='" + cpf + "']").attr('checked', marcar);
+	$("#popup input[name='candidatosPopupId'][cpf='" + cpf + "']").not(this).attr('checked', marcar);
 }
 
 // ids de candidatoSolicitacao
