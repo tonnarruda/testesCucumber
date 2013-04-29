@@ -73,9 +73,9 @@ public class CandidatoDWR
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeECpf");
 	}
 	
-	public Collection<Object> findExColaboradores(Long[] candidatosIds)
+	public Collection<Object> findColaboradoresMesmoCpf(String[] candidatosCpfs)
 	{
-		Collection<Colaborador> colaboradores = candidatoManager.findColaboradoresMesmoCpf(candidatosIds);
+		Collection<Colaborador> colaboradores = candidatoManager.findColaboradoresMesmoCpf(candidatosCpfs);
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;
@@ -85,10 +85,9 @@ public class CandidatoDWR
 			colaboradorMap = new HashMap<String, String>();
 			colaboradorMap.put("id", colaborador.getId().toString());
 			colaboradorMap.put("nome", colaborador.getNome());
-			colaboradorMap.put("cpf", colaborador.getPessoal().getCpfFormatado());
+			colaboradorMap.put("cpf", colaborador.getPessoal().getCpf());
+			colaboradorMap.put("cpfFormatado", colaborador.getPessoal().getCpfFormatado());
 			colaboradorMap.put("dataDesligamento", colaborador.getDataDesligamentoFormatada());
-			colaboradorMap.put("candidatoId", colaborador.getCandidato().getId().toString());
-			colaboradorMap.put("candidatoNome", colaborador.getCandidato().getNome());
 			retorno.add(colaboradorMap);
 		}
 		

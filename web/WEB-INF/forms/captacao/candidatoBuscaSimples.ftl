@@ -131,9 +131,9 @@
 	</#if>
 
 	<#if candidatos?exists >
-		</BR>
-		<div id="legendas" align="right"></div>
-		</BR>
+		<br />
+			<div id="legendas" align="right"></div>
+		<br />
 
 		<#include "formListCandidatoSolicitacaoBusca.ftl" />
 

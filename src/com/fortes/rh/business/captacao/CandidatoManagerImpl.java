@@ -1342,9 +1342,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return graficoDivulgacaoVaga;
 	}
 	
-	public Collection<Colaborador> findColaboradoresMesmoCpf(Long[] candidatosIds) 
+	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs) 
 	{
-		return getDao().findColaboradoresMesmoCpf(candidatosIds);
+		return getDao().findColaboradoresMesmoCpf(candidatosCpfs);
 	}
 
 	public int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
