@@ -562,6 +562,26 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     cargo :nome => cargo_nome
   end
 
+  insert :candidato do
+    nome candidato_nome
+    nomecomercial colaborador_nome
+    logradouro
+    conjugetrabalha true
+    sexo 'M'
+    blacklist false
+    colocacao 'E'
+    contratado false
+    deficiencia 0
+    disponivel true
+    origem 'C'
+    pagapensao false
+    possuiveiculo true
+    qtdfilhos 1
+    quantidade 0
+    escolaridade '10'
+    empresa :nome => 'Empresa Padrão'
+  end
+
   insert :colaborador do
     nome colaborador_nome
     nomecomercial colaborador_nome

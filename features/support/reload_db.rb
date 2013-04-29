@@ -39,7 +39,7 @@ def popula_db conn
     File.readlines("./web/WEB-INF/metadata/create_data.sql").each do |linha|
         if linha =~ /^(set|select)/i
           sql << linha
-        elsif linha =~ /( cid | codigoCBO | cidade )/i
+        elsif linha =~ /( cid | codigoCBO | cidade | areaformacao )/i
           if linha =~ /^insert into cidade.*Fortaleza/i
             sql << linha
           elsif linha =~ /^insert into/i and i <= 6
