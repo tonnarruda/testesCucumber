@@ -53,18 +53,18 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	HistoricoFuncaoManager historicoFuncaoManager = null;
 	
 	// TODO refatorar esse código, não devia estar nesse manager
-	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Date data, String nit, String responsavel, String observacoes, String[] respostas) throws Exception
+	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String responsavel, String observacoes, String[] respostas) throws Exception
 	{
 		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager"); 
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
 		Collection<HistoricoColaborador> historicosDoColaboradors = historicoColaboradorManager.findByColaboradorData(colaborador.getId(),data);
 		
 		if(historicosDoColaboradors == null || historicosDoColaboradors.isEmpty())
-			throw new PppRelatorioException("Não existe dados para gerar o relatório.");
+			throw new PppRelatorioException("Não existem dados para gerar o relatório.");
 		
 		historicosDoColaboradors = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicosDoColaboradors); 
 				
-		this.validarPpp(historicosDoColaboradors);
+		this.validarPpp(historicosDoColaboradors, empresa);
 		
 		Collection<Cat> cats = catManager.findCatsColaboradorByDate(colaborador,data);
 		colaborador = colaboradorManager.findById(colaborador.getId());
@@ -274,12 +274,12 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		return null;
 	}
 	
-	private void validarPpp(Collection<HistoricoColaborador> historicos) throws PppRelatorioException 
+	private void validarPpp(Collection<HistoricoColaborador> historicos, Empresa empresa) throws PppRelatorioException 
 	{
 		PppRelatorioException pppRelatorioException = new PppRelatorioException();
 		
 		this.validaHistoricos(historicos, pppRelatorioException);
-		this.validaAmbientes(historicos, pppRelatorioException);
+		this.validaAmbientes(historicos, pppRelatorioException, empresa);
 		this.validaFuncoes(historicos, pppRelatorioException);
 		
 		if (pppRelatorioException.isAtivo())
@@ -297,7 +297,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 	}
 
-	private void validaAmbientes(Collection<HistoricoColaborador> historicosDoColaborador, PppRelatorioException pppRelatorioException) 
+	private void validaAmbientes(Collection<HistoricoColaborador> historicosDoColaborador, PppRelatorioException pppRelatorioException, Empresa empresa) 
 	{
 		for (HistoricoColaborador historicoColaborador : historicosDoColaborador)
 		{
@@ -308,7 +308,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				if (historicoAmbiente == null)
 					pppRelatorioException.addHistoricoSemHistoricoAmbiente(historicoColaborador.getData(), historicoColaborador.getAmbiente().getId());
 				else if (historicoAmbiente.getRiscoAmbientes() != null && historicoAmbiente.getRiscoAmbientes().size() > 0)
-					validaMedicaoNoHistoricoAmbiente(pppRelatorioException, historicoColaborador.getAmbiente(), historicoColaborador.getData());
+					validaMedicaoNoHistoricoAmbiente(pppRelatorioException, historicoColaborador.getAmbiente(), historicoColaborador.getData(), empresa);
 			}
 		}
 	}
@@ -327,11 +327,11 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 	}
 
-	private void validaMedicaoNoHistoricoAmbiente(PppRelatorioException pppRelatorioException, Ambiente ambiente, Date historicoAmbienteData) 
+	private void validaMedicaoNoHistoricoAmbiente(PppRelatorioException pppRelatorioException, Ambiente ambiente, Date historicoAmbienteData, Empresa empresa) 
 	{
 		MedicaoRisco medicaoRisco = riscoMedicaoRiscoManager.findUltimaAteData(ambiente.getId(), historicoAmbienteData);
 		if (medicaoRisco == null)
-			pppRelatorioException.addAmbienteSemMedicao(ambiente, historicoAmbienteData);
+			pppRelatorioException.addAmbienteSemMedicao(ambiente, historicoAmbienteData, empresa);
 	}
 
 	public Integer getCount(Long cargoId)

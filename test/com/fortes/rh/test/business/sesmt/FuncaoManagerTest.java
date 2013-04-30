@@ -252,6 +252,9 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	@SuppressWarnings("deprecation")
 	public void testPopulaRelatorioPppExcecao()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setControlaRiscoPor('A');
+		
 		Ambiente ambiente = AmbienteFactory.getEntity(10L);
 		Ambiente ambiente2 = AmbienteFactory.getEntity(12L);
 		Funcao funcao = FuncaoFactory.getEntity(3L);
@@ -313,7 +316,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			funcaoManager.populaRelatorioPpp(colaborador , new Date(), "111", "Resp.", "obs", new String[5]);
+			funcaoManager.populaRelatorioPpp(colaborador , empresa, new Date(), "111", "Resp.", "obs", new String[5]);
 		}
 		catch (PppRelatorioException e)
 		{
@@ -330,10 +333,10 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		
 		String mensagemFormatada = pppRelatorioException.getMensagemDeInformacao();
 		
-		assertEquals("Não foi possível gerar o relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
-				"01/09/2005 - Situação do colaborador não possui Ambiente definido.<br />" +
-				"27/09/2005 - Situação do colaborador não possui Ambiente definido.<br />" +
-				"27/09/2005 - Situação do colaborador não possui Função definida.<br />" +
+		assertEquals("Existem pendências para a geração desse relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
+				"01/09/2005 - Situação do colaborador não possui ambiente definido.<br />" +
+				"27/09/2005 - Situação do colaborador não possui ambiente definido.<br />" +
+				"27/09/2005 - Situação do colaborador não possui função definida.<br />" +
 				"30/01/2006 - Ambiente do colaborador não possui histórico nesta data.<br />" +
 				"01/09/2005 - Função do colaborador não possui histórico nesta data.<br />", mensagemFormatada);
 	}

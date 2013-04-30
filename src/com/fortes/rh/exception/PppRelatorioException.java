@@ -2,7 +2,9 @@ package com.fortes.rh.exception;
 
 import java.util.Date;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.opensymphony.xwork.ActionContext;
@@ -21,7 +23,7 @@ public class PppRelatorioException extends Exception
 	
 	public PppRelatorioException()
 	{
-		super("Não foi possível gerar o relatório. Verifique as informações abaixo antes de prosseguir: <br>");
+		super("Existem pendências para a geração desse relatório. Verifique as informações abaixo antes de prosseguir: <br>");
 	}
 	
 	public PppRelatorioException(String mensagem)
@@ -39,7 +41,7 @@ public class PppRelatorioException extends Exception
 		ativar();
 		
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
-		String msg = dataFmt.concat(" - Situação do colaborador não possui Ambiente definido.");
+		String msg = dataFmt.concat(" - Situação do colaborador não possui ambiente definido.");
 		
 		selecionaLink(historicoSemAmbiente, colaboradorId, msg);
 	}
@@ -49,7 +51,7 @@ public class PppRelatorioException extends Exception
 		ativar();
 		
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
-		String msg = dataFmt.concat(" - Situação do colaborador não possui Função definida.");
+		String msg = dataFmt.concat(" - Situação do colaborador não possui função definida.");
 		
 		selecionaLink(historicoSemFuncao, colaboradorId, msg);
 	}
@@ -104,7 +106,7 @@ public class PppRelatorioException extends Exception
 		return ativo;
 	}
 
-	public void addAmbienteSemMedicao(Ambiente ambiente, Date historicoAmbienteData)
+	public void addAmbienteSemMedicao(Ambiente ambiente, Date historicoAmbienteData, Empresa empresa)
 	{
 		ativar();
 		
@@ -112,6 +114,11 @@ public class PppRelatorioException extends Exception
 		
 		// adiciona a mensagem apenas se ainda não houver para esta data
 		if (historicoAmbienteSemMedicao.indexOf(dataFmt) == -1)
-			historicoAmbienteSemMedicao.append(dataFmt + " - Ambiente (" + ambiente.getNome()  + ") possui riscos mas não possui medição nesta data.<br>");
+		{
+			if (empresa.getControlaRiscoPor() == 'A' && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_MEDICAORISCO"}))
+				historicoAmbienteSemMedicao.append("<a href='../medicaoRisco/list.action?showFilter=true&ambiente.id=" + ambiente.getId() + "'>" + dataFmt + " - Ambiente <strong>" + ambiente.getNome()  + "</strong> possui riscos mas não possui medição nesta data.</a><br />");
+			else
+				historicoAmbienteSemMedicao.append(dataFmt + " - Ambiente <strong>" + ambiente.getNome()  + "</strong> possui riscos mas não possui medição nesta data.<br>");
+		}
 	}
 }

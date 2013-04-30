@@ -105,7 +105,7 @@ public class PppEditActionTest extends MockObjectTestCase
 		action.setNit("12332");
 		action.setObservacoes("...");
 		
-		funcaoManager.expects(once()).method("populaRelatorioPpp").with(new Constraint[]{eq(colaborador), eq(data), ANYTHING, ANYTHING, ANYTHING, eq(respostas)});
+		funcaoManager.expects(once()).method("populaRelatorioPpp").with(new Constraint[]{eq(colaborador), ANYTHING, eq(data), ANYTHING, ANYTHING, ANYTHING, eq(respostas)});
 		
 		action.gerarRelatorio();
 	}
