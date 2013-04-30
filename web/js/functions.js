@@ -336,19 +336,25 @@ function validaCamposObrigatorios(campos, formulario)
 	{
 		if(exibeLabelDosCamposNaoPreenchidos)
 		{
+			desmarcarAbas();
 			var camposNaoPreenchidos = [];
 			
 			//CUIDADO pegando a cor pelo rgb do #FFEEC2
-			$("input:text,textarea,select").each(function() {
+			$("input:text,textarea,select,.listCheckBox").each(function() {
 				var labelInput = $(this);
 				if(labelInput.css('background-color') == "rgb(255, 238, 194)" || labelInput.css('background-color') == "#ffeec2") {
 					//var campoId = labelInput.attr('i').find('label').text().match(/(.+):/);
-										
 					var campoId = labelInput.attr('id');
-					var label =	$("label[for='" + campoId + "']");
+					
+					if (labelInput.hasClass('listCheckBox'))
+						var label =	$("label[for='" + campoId.replace('listCheckBox','') + "']");
+					else
+						var label =	$("label[for='" + campoId + "']");
 					
 					if (label)
 						camposNaoPreenchidos.push(label.text().replace(':','').replace('*','').replace('\n','').trim());
+					
+					marcarAbas('#' + campoId);
 				}
 			});
 			
@@ -439,8 +445,6 @@ function validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmi
 		else
 		{
 			var form0 = document.getElementsByName(formulario)[0];
-
-			
 			form0.submit();
 		}
 	}
@@ -1261,4 +1265,15 @@ function contraste(className)
 		    $(this).css('color', (brilho > 125) ? '#333' : '#FFF');
 		});
 	} catch(e) {}
+}
+
+function marcarAbas(seletor) {
+	$(seletor).parents("div[id^='content']").each(function() { 
+		var aba = $(this).attr('id').replace('content','aba');
+		$('#' + aba + ' a' ).css('color','red'); 
+	});
+}
+
+function desmarcarAbas() {
+	$("div[id^='aba'] a").css('color','inherit');
 }
