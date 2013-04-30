@@ -12,7 +12,6 @@ import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaColaboradorManagerTest extends MockObjectTestCase

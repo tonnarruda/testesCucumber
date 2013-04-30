@@ -1,10 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.CidadeDao;
@@ -14,7 +10,6 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
-import com.fortes.rh.util.CollectionUtil;
 
 public class CidadeDaoHibernateTest extends GenericDaoHibernateTest<Cidade>
 {

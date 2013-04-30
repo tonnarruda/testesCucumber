@@ -27,7 +27,6 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
-import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 
 public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<MedicaoRisco>
 {

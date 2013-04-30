@@ -3,6 +3,7 @@ package com.fortes.rh.test.dao.hibernate.acesso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;

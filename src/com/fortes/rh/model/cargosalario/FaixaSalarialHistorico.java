@@ -91,11 +91,23 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 		this.setProjectionFaixaSalarialNome(faixaSalarialNome);
 	}
 
+	//findHistoricoAtual
+	public FaixaSalarialHistorico(Long id, Date data, Integer tipo, Double valor, Double quantidade, Long indiceId, Long faixaSalarialId)
+	{
+		this.setId(id);
+		this.setData(data);
+		this.setTipo(tipo);
+		this.setValor(valor);
+		this.setQuantidade(quantidade);
+		this.setProjectionIndiceId(indiceId);
+		this.setProjectionHistoricoFaixaSalarial(this);
+		this.setProjectionFaixaSalarialId(faixaSalarialId);
+	}
+
 	//Projections
 	public void setProjectionHistoricoFaixaSalarial(FaixaSalarialHistorico projectionHistoricoFaixaSalarial)
 	{
-		if(this.faixaSalarial == null)
-			this.faixaSalarial = new FaixaSalarial();
+		iniciaFaixaSalarial();
 
 		this.getFaixaSalarial().setFaixaSalarialHistoricoAtual(projectionHistoricoFaixaSalarial);
 	}
@@ -154,19 +166,27 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 
 	public void setProjectionFaixaSalarialId(Long projectionFaixaSalarialId)
     {
-    	if(this.faixaSalarial == null)
-    		this.faixaSalarial = new FaixaSalarial();
-
+    	iniciaFaixaSalarial();
     	this.faixaSalarial.setId(projectionFaixaSalarialId);
     }
 
 	public void setProjectionFaixaSalarialNome(String projectionFaixaSalarialNome)
     {
-    	if(this.faixaSalarial == null)
-    		this.faixaSalarial = new FaixaSalarial();
-
+    	iniciaFaixaSalarial();
     	this.faixaSalarial.setNome(projectionFaixaSalarialNome);
     }
+	
+	public void setProjectionFaixaSalarialNomeACPessoal(String projectionFaixaSalarialNomeACPessoal)
+	{
+		iniciaFaixaSalarial();
+		this.faixaSalarial.setNomeACPessoal(projectionFaixaSalarialNomeACPessoal);
+	}
+
+	private void iniciaFaixaSalarial() 
+	{
+		if(this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+	}
 
     public void setProjectionIndiceId(Long projectionIndiceId)
     {
@@ -186,8 +206,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 
     public void setProjectionCargoId(Long projectionCargoId)
     {
-    	if(this.faixaSalarial == null)
-    		this.faixaSalarial = new FaixaSalarial();
+    	iniciaFaixaSalarial();
 
     	if(this.faixaSalarial.getCargo() == null)
     		this.faixaSalarial.setCargo(new Cargo());
@@ -197,8 +216,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 
     public void setProjectionCargoNome(String projectionCargoNome)
     {
-    	if(this.faixaSalarial == null)
-    		this.faixaSalarial = new FaixaSalarial();
+    	iniciaFaixaSalarial();
 
     	if(this.faixaSalarial.getCargo() == null)
     		this.faixaSalarial.setCargo(new Cargo());

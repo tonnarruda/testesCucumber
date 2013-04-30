@@ -26,7 +26,6 @@ import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pesquisa;
-import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<ColaboradorQuestionario> implements ColaboradorQuestionarioDao

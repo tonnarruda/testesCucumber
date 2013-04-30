@@ -10,9 +10,9 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaturamentoMensalDao;
+import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 
 @SuppressWarnings("unchecked")
 public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<FaturamentoMensal> implements FaturamentoMensalDao

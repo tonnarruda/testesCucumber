@@ -1,12 +1,12 @@
 package com.fortes.rh.test.model.sesmt;
 
+import junit.framework.TestCase;
+
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-
-import junit.framework.TestCase;
 
 public class SolicitacaoExameTest extends TestCase
 {

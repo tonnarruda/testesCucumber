@@ -11,10 +11,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.AtitudeManager;
@@ -43,7 +48,7 @@ import com.fortes.web.tags.CheckBox;
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager
 {
 	private AcPessoalClientLotacao acPessoalClientLotacao;
-	private ColaboradorManager colaboradorManager;
+	private PlatformTransactionManager transactionManager;
 
 	public Collection<AreaOrganizacional> findAreasPossiveis(Collection<AreaOrganizacional> areas, Long id)
 	{
@@ -176,7 +181,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	private boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae)
 	{
-		colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 
 		Collection<Colaborador> colaboradores = colaboradorManager.findByArea(areaMae);
 
@@ -375,14 +380,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	private void montaIds(AreaOrganizacional area, HashSet<Long> lista)
-	{
-		if(area.getAreaMae() != null && area.getAreaMae().getId() != null){
-			lista.add(area.getAreaMae().getId());
-//			insereMae(areas, area);
-		}
-	}
-	
 	public Collection<AreaOrganizacional> getDistinctAreaMae(Collection<AreaOrganizacional> todasAreas, Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		Collection<AreaOrganizacional> retorno = new ArrayList<AreaOrganizacional>();
@@ -449,7 +446,11 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
-		return getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC);
+		AreaOrganizacional areaOrganizacionalTmp = getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC); 
+
+		correcaoTransientObjectException(areaOrganizacionalTmp);
+
+		return areaOrganizacionalTmp;
 	}
 
 	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long areaInativaId) throws Exception
@@ -496,36 +497,99 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findByEmpresasIds(empresaIds, ativo);
 	}
 
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds)
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds,  List<String> mensagens)
 	{
+		Long areaOrigemId;
+		Long areaMaeId;
+		Long areaMaeIdAntiga;
 		Collection<AreaOrganizacional> areasOrigem = getDao().findSincronizarAreas(empresaOrigemId);
 		Collection<AreaOrganizacional> areasDestino = new ArrayList<AreaOrganizacional>(areasOrigem.size());
 		Map<Long, Long> areaIdsAreaMaeIds = new  HashMap<Long, Long>();
-		
-		for (AreaOrganizacional areaOrganizacional : areasOrigem)
-		{
-			Long areaOrigemId = areaOrganizacional.getId();
-			Long areaMaeId = areaOrganizacional.getAreaMaeId();
-			
-			clonar(areaOrganizacional, empresaDestinoId);
-			
-			areaIds.put(areaOrigemId, areaOrganizacional.getId());
-			areaIdsAreaMaeIds.put(areaOrganizacional.getId(), areaMaeId);
-			
-			areasDestino.add(areaOrganizacional);
-		}
-		
-		for (AreaOrganizacional areaOrganizacional : areasDestino) {
-			
-			Long areaMaeIdAntiga =  areaIdsAreaMaeIds.get(areaOrganizacional.getId());
-			Long areaMaeId = areaIds.get(areaMaeIdAntiga);
-			
-			if (areaMaeId != null)
+
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try{
+			for (AreaOrganizacional areaOrganizacional : areasOrigem)
 			{
-				areaOrganizacional.setAreaMaeId(areaMaeId);
-				getDao().update(areaOrganizacional);
+				areaOrigemId = areaOrganizacional.getId();
+				areaMaeId = areaOrganizacional.getAreaMaeId();
+
+				clonar(areaOrganizacional, empresaDestino.getId());
+
+				areaIds.put(areaOrigemId, areaOrganizacional.getId());
+				areaIdsAreaMaeIds.put(areaOrganizacional.getId(), areaMaeId);
+
+				areasDestino.add(areaOrganizacional);
 			}
+
+			for (AreaOrganizacional areaOrganizacional : areasDestino) 
+			{
+				areaMaeIdAntiga =  areaIdsAreaMaeIds.get(areaOrganizacional.getId());
+				areaMaeId = areaIds.get(areaMaeIdAntiga);
+
+				if (areaMaeId != null)
+				{
+					areaOrganizacional.setAreaMaeId(areaMaeId);
+					getDao().update(areaOrganizacional);
+				}
+			}
+
+			if(empresaDestino.isAcIntegra())
+				for (AreaOrganizacional areaOrganizacional : areasDestino)
+					insereNoAcPessoal(empresaDestino, areaOrganizacional, areasDestino);
+
+			transactionManager.commit(status);
+		}catch (IntegraACException e)
+		{
+			mensagens.add("Ocorreu um erro ao importar a área organizacional para o AC Pessoal.");
+			transactionManager.rollback(status);
+		}catch (Exception e)
+		{
+			mensagens.add("Ocorreu um erro ao importar a área organizacional.");
+			transactionManager.rollback(status);
+			e.printStackTrace();
 		}
+	}
+
+	private AreaOrganizacional insereNoAcPessoal(Empresa empresaDestino,AreaOrganizacional areaOrganizacional, Collection<AreaOrganizacional> areaOrganizacionais) throws Exception,IntegraACException 
+	{
+		areaOrganizacional = populaAreaMae(areaOrganizacional, areaOrganizacionais);
+		if(areaOrganizacional.getAreaMaeId() != null)
+		{
+			AreaOrganizacional areaMae = insereNoAcPessoal(empresaDestino,areaOrganizacional.getAreaMae(), areaOrganizacionais);
+			areaOrganizacional.setAreaMae(areaMae);
+		}
+
+		String codigoAc = areaOrganizacional.getCodigoAC();
+		if(codigoAc == null || codigoAc.equals(""))
+		{
+			correcaoTransientObjectException(areaOrganizacional);
+			codigoAc = salvaNoAcPessoal(empresaDestino,areaOrganizacional);
+			areaOrganizacional.setCodigoAC(codigoAc);
+			getDao().update(areaOrganizacional);
+		}
+		
+		correcaoTransientObjectException(areaOrganizacional);
+		return areaOrganizacional;
+	}
+
+	private AreaOrganizacional populaAreaMae(AreaOrganizacional areaOrganizacional, Collection<AreaOrganizacional> areaOrganizacionais) 
+	{
+		for (AreaOrganizacional area : areaOrganizacionais) 
+			if(area.getId().equals(areaOrganizacional.getId()))
+				return area;
+		
+		return areaOrganizacional;
+	}
+
+	private String salvaNoAcPessoal(Empresa empresaDestino,AreaOrganizacional areaOrganizacional) throws Exception, IntegraACException 
+	{
+		String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresaDestino);
+		if (codigoAc == null || codigoAc.equals(""))
+			throw new IntegraACException();
+		return codigoAc;
 	}
 
 	private Long clonar(AreaOrganizacional areaOrganizacional, Long empresaDestinoId) {
@@ -539,7 +603,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areaOrganizacional.getId();
 	}
 	
-	// 
 	public Collection<ExamesPrevistosRelatorio> setFamiliaAreas(Collection<ExamesPrevistosRelatorio> examesPrevistosRelatorios, Long empresaId) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
@@ -801,6 +864,22 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	{
 		getDao().desvinculaResponsavel(colaboradorId);		
 		getDao().desvinculaCoResponsavel(colaboradorId);		
+	}
+	
+	private void correcaoTransientObjectException(AreaOrganizacional areaOrganizacionalTmp) 
+	{
+		if(areaOrganizacionalTmp.getResponsavel() !=null && areaOrganizacionalTmp.getResponsavel().getId() == null)
+			areaOrganizacionalTmp.setResponsavel(null);
+
+		if(areaOrganizacionalTmp.getCoResponsavel() !=null && areaOrganizacionalTmp.getCoResponsavel().getId() == null)
+			areaOrganizacionalTmp.setCoResponsavel(null);
+
+		if(areaOrganizacionalTmp.getAreaMae() != null && areaOrganizacionalTmp.getAreaMae().getId() == null)
+			areaOrganizacionalTmp.setAreaMae(null);
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 	
 }

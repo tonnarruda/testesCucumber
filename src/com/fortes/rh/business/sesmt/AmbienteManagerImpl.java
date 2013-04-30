@@ -6,12 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;

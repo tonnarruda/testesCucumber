@@ -64,6 +64,9 @@
     <property name="acPessoalClientLotacao">
       <ref bean="acPessoalClientLotacao" />
     </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
   </bean>
   <bean id="areaOrganizacionalManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -194,6 +197,9 @@
     </property>
     <property name="atitudeManager">
       <ref bean="atitudeManager" />
+    </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
     </property>
   </bean>
   <bean id="cargoManager" parent="parentManager">

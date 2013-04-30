@@ -21,6 +21,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
+import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -575,17 +576,45 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		// clonar historicos das faixas 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1000L);
 		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
-		
-		Collection<FaixaSalarialHistorico> historicos = new ArrayList<FaixaSalarialHistorico>();
-		historicos.add(faixaSalarialHistorico);
+		FaixaSalarial faixaSalarialDestino = FaixaSalarialFactory.getEntity(130L);
 		
 		FaixaSalarialHistorico faixaSalarialHistoricoDepoisDoSave = FaixaSalarialHistoricoFactory.getEntity(2000L);
-		faixaSalarialHistoricoDepoisDoSave.setFaixaSalarial(FaixaSalarialFactory.getEntity(130L));
+		faixaSalarialHistoricoDepoisDoSave.setFaixaSalarial(faixaSalarialDestino);
 		
-		faixaSalarialHistoricoDao.expects(once()).method("findHistoricosByFaixaSalarialId").with(eq(99L)).will(returnValue(historicos));
+		faixaSalarialHistoricoDao.expects(once()).method("findHistoricoAtual").with(eq(99L)).will(returnValue(faixaSalarialHistorico));
 		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(faixaSalarialHistoricoDepoisDoSave));
 		
-		faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds);
+		Exception ex = null;
+		try {
+			faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), faixaSalarialDestino.getId(), EmpresaFactory.getEmpresa());
+		} catch (FaixaJaCadastradaException e) {
+			ex = e;
+			e.printStackTrace();
+		}
+		
+		assertNull(ex);
+	}
+	
+	public void testSincronizarException()
+	{
+		Map<Long, Long> faixaSalarialIds = new HashMap<Long, Long>();
+		faixaSalarialIds.put(99L, 130L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);
+		
+		FaixaSalarial faixaSalarialDestino = FaixaSalarialFactory.getEntity(130L);
+		
+		faixaSalarialHistoricoDao.expects(once()).method("findHistoricoAtual").with(eq(99L)).will(returnValue(null));
+		
+		Exception ex = null;
+		try {
+			faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), faixaSalarialDestino.getId(), EmpresaFactory.getEmpresa());
+		} catch (FaixaJaCadastradaException e) {
+			ex = e;
+			e.printStackTrace();
+		}
+		
+		assertNotNull(ex);
 	}
 
 	public void testGetsSets()

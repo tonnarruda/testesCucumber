@@ -12,7 +12,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.NaturezaLesaoDao;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
-import com.sun.org.apache.xpath.internal.Expression;
 
 @SuppressWarnings("unchecked")
 public class NaturezaLesaoDaoHibernate extends GenericDaoHibernate<NaturezaLesao> implements NaturezaLesaoDao

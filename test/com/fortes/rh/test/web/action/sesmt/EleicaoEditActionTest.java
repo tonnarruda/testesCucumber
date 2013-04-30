@@ -19,7 +19,6 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;

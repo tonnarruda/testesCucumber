@@ -12,6 +12,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
@@ -72,6 +73,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	Mock etapaSeletivaManager;
 	Mock habilidadeManager;
 	Mock atitudeManager;
+	Mock transactionManager;
 	
 
 	protected void setUp() throws Exception
@@ -117,6 +119,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		habilidadeManager = mock(HabilidadeManager.class);
 		cargoManager.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
 		
+		transactionManager = new Mock(PlatformTransactionManager.class);
+		cargoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -615,10 +620,12 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<AreaFormacao> areasFormacao = new ArrayList<AreaFormacao>(); 
 		areaFormacaoManager.expects(once()).method("findByCargo").will(returnValue(areasFormacao ));
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		cargoDao.expects(once()).method("update");
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		faixaSalarialManager.expects(once()).method("sincronizar");
 		
-		cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
+		cargoManager.sincronizar(empresaOrigemId, EmpresaFactory.getEmpresa(), areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, null);
 	}
 }

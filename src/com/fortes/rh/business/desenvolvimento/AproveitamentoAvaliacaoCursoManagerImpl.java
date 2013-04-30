@@ -3,7 +3,6 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;

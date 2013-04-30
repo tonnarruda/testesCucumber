@@ -2518,13 +2518,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		empresaDao.save(empresa);
 		
 		Colaborador colab1 = ColaboradorFactory.getEntity();
-		colab1.setPessoalCpf("65617632973");
+		colab1.setPessoalCpf("65617222222");
 		colab1.setDataDesligamento(DateUtil.criarDataMesAno(1, 2, 2013));
 		colab1.setEmpresa(empresa);
 		colaboradorDao.save(colab1);
 
 		Colaborador colab2 = ColaboradorFactory.getEntity();
-		colab2.setPessoalCpf("36548541251");
+		colab2.setPessoalCpf("36548111111");
 		colab2.setEmpresa(empresa);
 		colaboradorDao.save(colab2);
 		

@@ -1,9 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
-import java.util.ArrayList;
 import java.util.Collection;
-
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;

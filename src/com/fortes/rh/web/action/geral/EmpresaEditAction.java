@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +30,6 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -58,6 +58,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Empresa empresaDestino;
 	private String[] cadastrosCheck;
 	private Collection<CheckBox> cadastrosCheckList;
+	private String ocorrenciaCheck;
+	private Collection<CheckBox> ocorrenciaCheckList = new ArrayList<CheckBox>();
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private File logo;
@@ -270,7 +272,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareImportarCadastros() 
 	{
 		empresas = empresaManager.findAll();
-		
 		cadastrosCheckList = empresaManager.populaCadastrosCheckBox();
 		
 		return SUCCESS;
@@ -280,9 +281,18 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	{
 		try 
 		{
-			empresaManager.sincronizaEntidades(empresaOrigem.getId(), empresaDestino.getId(), cadastrosCheck);
-			addActionMessage("Cadastros importados com sucesso.");
+			List<String> mensagens = empresaManager.sincronizaEntidades(empresaOrigem.getId(), empresaDestino.getId(), cadastrosCheck, ocorrenciaCheck.split(","));
 			
+			if (!mensagens.isEmpty()) 
+			{
+				for (String mensagem : mensagens)
+					addActionWarning(mensagem);
+				addActionSuccess("Os demais cadastros foram importados com sucesso.");
+			} 
+			else {
+				addActionSuccess("Cadastros importados com sucesso.");
+			}
+
 			empresaOrigem = null;
 			empresaDestino = null;
 		} 
@@ -433,5 +443,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Collection<CheckBox> getOcorrenciaCheckList() {
+		return ocorrenciaCheckList;
+	}
+
+	public void setOcorrenciaCheck(String ocorrenciaCheck) {
+		this.ocorrenciaCheck = ocorrenciaCheck;
 	}
 }

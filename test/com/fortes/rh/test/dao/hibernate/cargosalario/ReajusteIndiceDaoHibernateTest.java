@@ -3,10 +3,6 @@ package com.fortes.rh.test.dao.hibernate.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
-
-import sun.awt.SunToolkit.InfiniteLoop;
-
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;

@@ -3,17 +3,21 @@ package com.fortes.rh.test.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManagerImpl;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
-import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
 public class OcorrenciaManagerTest extends MockObjectTestCase
@@ -21,6 +25,7 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 	OcorrenciaManagerImpl ocorrenciaManager = null;
 	Mock ocorrenciaDao = null;
 	Mock acPessoalClientOcorrencia;
+	Mock empresaManager;
 
 	@Override
 	protected void setUp() throws Exception
@@ -33,6 +38,9 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		ocorrenciaManager.setDao((OcorrenciaDao) ocorrenciaDao.proxy());
 		acPessoalClientOcorrencia = mock(AcPessoalClientOcorrencia.class);
 		ocorrenciaManager.setAcPessoalClientOcorrencia((AcPessoalClientOcorrencia)acPessoalClientOcorrencia.proxy());
+		
+		empresaManager = new Mock(EmpresaManager.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
 	public void testRemoveByCodigoAC()
@@ -176,10 +184,11 @@ public class OcorrenciaManagerTest extends MockObjectTestCase
 		ocorrencias.add(ocorrencia);
 		
 		ocorrenciaDao.expects(once()).method("findSincronizarOcorrenciaInteresse").with(eq(empresaOrigem.getId())).will(returnValue(ocorrencias));
-		ocorrenciaDao.expects(once()).method("save");
-		ocorrenciaDao.expects(once()).method("update");
+		ocorrenciaDao.expects(atLeastOnce()).method("save");
+		MockSpringUtil.mocks.put("empresaManager", empresaManager);
+		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresaOrigem.getId())).will(returnValue(empresaOrigem));
 		
-		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino.getId());
+		ocorrenciaManager.sincronizar(empresaOrigem.getId(), empresaDestino, null);
 		
 		assertEquals(empresaDestino.getId(), ocorrencia.getEmpresa().getId() );
 	}

@@ -3,8 +3,6 @@ package com.fortes.rh.test.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -665,14 +663,13 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(faixaSalarial.getId(), retorno.getId());
 	}
 	
-	public void testSincronizar()
+	public void testSincronizar() throws Exception
 	{
-		Map<Long, Long> cargoIds = new HashMap<Long, Long>();
-		cargoIds.put(1L, 10L);
-		cargoIds.put(2L, 12L);
+		Cargo cargoOrigem = CargoFactory.getEntity(2L);
+		Cargo cargoDestino = CargoFactory.getEntity(5L);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);		
-		faixaSalarial.setCargo(CargoFactory.getEntity(2L));
+		faixaSalarial.setCargo(cargoOrigem);
 		faixaSalarial.setNome("I");
 		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
 		faixas.add(faixaSalarial);
@@ -681,13 +678,12 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		faixaSalarialDepoisDoSave.setCargo(CargoFactory.getEntity(12L));
 		
 		// clonar faixa
-		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(1L)).will(returnValue(new ArrayList<FaixaSalarial>()));
-		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(2L)).will(returnValue(faixas));
-		faixaSalarialDao.expects(once()).method("save").with(eq(faixaSalarial)).will(returnValue(faixaSalarialDepoisDoSave));
-		
+		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(cargoOrigem.getId())).will(returnValue(faixas));
+		faixaSalarialDao.expects(once()).method("save").with(eq(faixaSalarial)).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("sincronizar");
 		
-		faixaSalarialManager.sincronizar(cargoIds);
+		
+		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, EmpresaFactory.getEmpresa());
 	}
 	
 	public void testMontaFaixa()

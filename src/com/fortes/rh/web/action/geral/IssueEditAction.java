@@ -8,7 +8,6 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.github.Issue;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
-import com.sun.org.apache.bcel.internal.generic.ISUB;
 
 public class IssueEditAction extends MyActionSupportList
 {

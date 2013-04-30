@@ -14,7 +14,6 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 

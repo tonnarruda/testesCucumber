@@ -2,7 +2,6 @@ package com.fortes.rh.test.business.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 
 import org.jmock.Mock;
@@ -10,35 +9,23 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManagerImpl;
-import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
-import com.fortes.rh.model.acesso.UsuarioEmpresa;
-import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
-import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
-import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
-import com.fortes.rh.util.DateUtil;
 
 public class AvaliacaoManagerTest extends MockObjectTestCase
 {

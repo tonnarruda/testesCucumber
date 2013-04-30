@@ -3,9 +3,6 @@ package com.fortes.rh.model.cargosalario;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fortes.rh.model.cargosalario.FaturamentoMensal;
-import com.fortes.rh.model.geral.Empresa;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -13,6 +10,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
 @Entity

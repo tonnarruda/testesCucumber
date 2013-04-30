@@ -2,9 +2,9 @@ package com.fortes.test.thumb;
 
 import java.io.File;
 
-import com.fortes.thumb.GeradorDeThumbnailUtils;
-
 import junit.framework.TestCase;
+
+import com.fortes.thumb.GeradorDeThumbnailUtils;
 
 public class GeradorDeThumbnailUtilsTest extends TestCase {
 

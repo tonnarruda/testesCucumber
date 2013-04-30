@@ -575,7 +575,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	public Colaborador(
 						String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
-						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String estadoCivil,
 						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -602,6 +602,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
+		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
 				
 		if (this.pessoal == null)
@@ -683,7 +684,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public Colaborador(
 			String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, String empresaNome,
-			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String estadoCivil,
 			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -715,6 +716,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
+		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
 		
 		if (this.pessoal == null)
@@ -2704,4 +2706,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setComissaoMembros(Collection<ComissaoMembro> comissaoMembros) {
 		this.comissaoMembros = comissaoMembros;
 	}
+	
+	public String getEnviadoParaAC() {
+		return naoIntegraAc ? "Nâo" : "Sim";
+	}
+
+
 }
