@@ -531,6 +531,21 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 	}
 	
+	public String relatorioAniversariantesXls()
+	{
+			String retorno = relatorioAniversariantes();
+			
+			if(retorno.equals(SUCCESS))
+			{
+				if(exibir == 'A')
+					return exibirNomeComercial?"sucessoAreaNomeComercial":"sucessoArea";
+				else
+					return exibirNomeComercial?"sucessoCargoNomeComercial":"sucessoCargo";
+			}
+			
+			return Action.INPUT;
+	}
+	
 	
 	public String relatorioAniversariantes()
 	{
@@ -542,7 +557,9 @@ public class ColaboradorListAction extends MyActionSupportList
 			empresaIds = empresaManager.selecionaEmpresa(empresa, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_ANIVERSARIANTES");
 			colaboradors = colaboradorManager.findAniversariantes(empresaIds, mes, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Aniversariantes do mês: " + meses.get(mes), getEmpresaSistema(), null);
+			reportTitle="Aniversariantes do mês: " + meses.get(mes);
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
 			parametros.put("EXIBIR_NOME_COMERCIAL", exibirNomeComercial);
 			parametros.put("EXIBIR_CARGO", exibirCargo);
 			parametros.put("EXIBIR_AREA", exibirArea);
