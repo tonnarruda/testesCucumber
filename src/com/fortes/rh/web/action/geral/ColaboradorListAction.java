@@ -234,7 +234,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			addActionError(e.getTargetException().getMessage());
 			return "error";
 		}
-		addActionMessage("Colaborador excluído com sucesso.");
+		addActionSuccess("Colaborador excluído com sucesso.");
 		return Action.SUCCESS;
 	}
 

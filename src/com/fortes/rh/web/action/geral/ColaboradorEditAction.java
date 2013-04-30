@@ -599,7 +599,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				if (StringUtils.equals(encerrarSolicitacao, "S")) 
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
-				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
+				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  cadastrado com sucesso.");
 				
 				transactionManager.commit(status);
 				
