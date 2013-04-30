@@ -1379,6 +1379,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		StringBuilder hql = new StringBuilder("select new Colaborador(col.id, col.nome, col.pessoal.cpf, col.dataDesligamento) ");
 		hql.append("from Colaborador col ");
 		hql.append("where col.pessoal.cpf in (:candidatosCpfs) ");
+		hql.append(" and col.pessoal.cpf <> '' ");
 		hql.append("order by col.nome");
 		
 		Query query = getSession().createQuery(hql.toString());

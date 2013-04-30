@@ -79,6 +79,8 @@ public class ColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
+	private final String NOMENCLATURA_ENVIADO_AC = "Enviado AC";
+	
 	private ColaboradorManager colaboradorManager = null;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -279,6 +281,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	}
 
 	private void montaColunas() {
+		boolean existeEmpresaIntegradaAc = empresaManager.checkEmpresaIntegradaAc();
+		
 		colunas = ReportColumn.getColumns();
 
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COMPROU_SESMT"}) )
@@ -287,6 +291,9 @@ public class ColaboradorListAction extends MyActionSupportList
 			colunas.add(new ReportColumn("Ambiente", "ambienteNome", "amb.nome", 100, false));
 		}
 		
+		if(existeEmpresaIntegradaAc)
+			colunas.add(new ReportColumn(NOMENCLATURA_ENVIADO_AC, "enviadoParaAC", "naoIntegraAc", 25, false));	
+
 		if(habilitaCampoExtra)
 		{
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
@@ -379,11 +386,15 @@ public class ColaboradorListAction extends MyActionSupportList
 		    drb.setColumnSpace(4);
 		    drb.setOddRowBackgroundStyle(oddDetailStyle);
 		    drb.setPrintBackgroundOnOddRows(true);
-		    
             
+		    boolean integradaAc = empresaManager.checkEmpresaIntegradaAc(empresa.getId());
+		    
 		    AbstractColumn aCol;
 		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
             {
+		    	if(!integradaAc && coluna.getName().equals(NOMENCLATURA_ENVIADO_AC))
+		    		continue;
+		    	
 	            aCol = ColumnBuilder.getNew()
 	            					.setColumnProperty(coluna.getProperty(), String.class.getName())
 	            					.setTitle(coluna.getName())
