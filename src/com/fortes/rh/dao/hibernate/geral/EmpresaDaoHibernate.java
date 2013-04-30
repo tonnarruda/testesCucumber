@@ -414,6 +414,13 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true");
 		return !query.list().isEmpty();
 	}
+	
+	public boolean checkEmpresaIntegradaAc(Long empresaId) 
+	{
+		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true and e.id=:empresaId ");
+		query.setLong("empresaId", empresaId);
+		return !query.list().isEmpty();
+	}
 
 	public Collection<Empresa> findComCodigoAC() {
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");

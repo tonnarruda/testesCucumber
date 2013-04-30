@@ -845,6 +845,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
 		areaOrganizacionalDao.expects(once()).method("findSincronizarAreas").will(returnValue(areas));
 		areaOrganizacionalDao.expects(atLeastOnce()).method("save");
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
 		areaIds.put(areaOrganizacional1.getId(), areaNova10.getId());

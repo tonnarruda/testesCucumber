@@ -199,7 +199,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return entidades;
 	}
 
-	public List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck) throws Exception
+	public List<String> sincronizaEntidades(Long empresaOrigemId, Long empresaDestinoId, String[] cadastrosCheck, String[] tipoOcorrenciasCheck) throws Exception
 	{
 		Empresa empresaDestino = findByIdProjection(empresaDestinoId);
 		Map<Long, Long> areaIds = new  HashMap<Long, Long>();
@@ -243,7 +243,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA))
 		{
-			ocorrenciaManager.sincronizar(empresaOrigemId, empresaDestino);
+			ocorrenciaManager.sincronizar(empresaOrigemId, empresaDestino, tipoOcorrenciasCheck);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.EPIS))
@@ -499,6 +499,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public boolean checkEmpresaIntegradaAc() {
 		return getDao().checkEmpresaIntegradaAc();
+	}
+
+	public boolean checkEmpresaIntegradaAc(Long empresaId) {
+		return getDao().checkEmpresaIntegradaAc(empresaId);
 	}
 
 	public Collection<Empresa> findComCodigoAC() {

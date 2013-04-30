@@ -22,6 +22,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -350,6 +351,10 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			}catch (IntegraACException e)
 			{
 				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por pendências no AC Pessoal.");
+				transactionManager.rollback(status);
+			}catch (FaixaJaCadastradaException e)
+			{
+				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por não existir histórico da faixa salarial.");
 				transactionManager.rollback(status);
 			}catch (Exception e)
 			{

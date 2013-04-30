@@ -1207,16 +1207,12 @@ public class RHServiceImpl implements RHService
 		String parametros = "cargo: " + tCargo.getCodigo() + "\nempresa: " + tCargo.getEmpresaCodigoAC() + "\ngrupoAC: " + tCargo.getGrupoAC();
 		try
 		{
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
+			faixaSalarialManager.remove(faixaSalarial);
 
-			if(false)
-			{
-				FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tCargo.getCodigo(), tCargo.getEmpresaCodigoAC(), tCargo.getGrupoAC());
-				faixaSalarialManager.remove(faixaSalarial);
-
-				Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());
-				if(faixas.isEmpty())
-					cargoManager.remove(faixaSalarial.getCargo());
-			}
+			Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(faixaSalarial.getCargo().getId());
+			if(faixas.isEmpty())
+				cargoManager.remove(faixaSalarial.getCargo());
 			
 			return new FeedbackWebService(true);
 		}

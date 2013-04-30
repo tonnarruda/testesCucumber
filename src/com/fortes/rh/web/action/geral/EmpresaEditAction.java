@@ -58,6 +58,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Empresa empresaDestino;
 	private String[] cadastrosCheck;
 	private Collection<CheckBox> cadastrosCheckList;
+	private String ocorrenciaCheck;
+	private Collection<CheckBox> ocorrenciaCheckList = new ArrayList<CheckBox>();
 	private ParametrosDoSistema parametrosDoSistema;
 
 	private File logo;
@@ -270,7 +272,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String prepareImportarCadastros() 
 	{
 		empresas = empresaManager.findAll();
-		
 		cadastrosCheckList = empresaManager.populaCadastrosCheckBox();
 		
 		return SUCCESS;
@@ -280,7 +281,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	{
 		try 
 		{
-			List<String> mensagens = empresaManager.sincronizaEntidades(empresaOrigem.getId(), empresaDestino.getId(), cadastrosCheck);
+			List<String> mensagens = empresaManager.sincronizaEntidades(empresaOrigem.getId(), empresaDestino.getId(), cadastrosCheck, ocorrenciaCheck.split(","));
 			
 			if (!mensagens.isEmpty()) 
 			{
@@ -442,5 +443,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Collection<CheckBox> getOcorrenciaCheckList() {
+		return ocorrenciaCheckList;
+	}
+
+	public void setOcorrenciaCheck(String ocorrenciaCheck) {
+		this.ocorrenciaCheck = ocorrenciaCheck;
 	}
 }

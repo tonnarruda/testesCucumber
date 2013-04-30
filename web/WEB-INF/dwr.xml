@@ -148,6 +148,9 @@
 	    <create creator="spring" javascript="MorroDWR">
 			<param name="beanName" value="morroDWR"/>
 		</create>
+	    <create creator="spring" javascript="EmpresaDWR">
+			<param name="beanName" value="empresaDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		

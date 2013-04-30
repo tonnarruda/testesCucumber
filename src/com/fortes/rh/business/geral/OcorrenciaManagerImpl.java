@@ -10,6 +10,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TOcorrencia;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientOcorrencia;
 
 public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, OcorrenciaDao> implements OcorrenciaManager
@@ -85,14 +86,36 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		return ocorrencia;
 	}
 
-	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino) throws Exception 
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, String[] tipoOcorrenciasCheck) throws Exception 
 	{
 		Collection<Ocorrencia> ocorrenciaInteresseDeOrigem = getDao().findSincronizarOcorrenciaInteresse(empresaOrigemId);
+
+		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
+		Empresa empresaOrigem = empresaManager.findByIdProjection(empresaOrigemId);
 		
-		for (Ocorrencia ocorrencia : ocorrenciaInteresseDeOrigem)
+		if(!empresaOrigem.isAcIntegra() && empresaDestino.isAcIntegra())
 		{
-			clonar(ocorrencia, empresaDestino.getId());
-			saveOrUpdate(ocorrencia, empresaDestino);
+			for (int i = 0 ; i < tipoOcorrenciasCheck.length; i++) 
+			{
+				for (Ocorrencia ocorrencia : ocorrenciaInteresseDeOrigem)
+				{
+					if(ocorrencia.getId().toString().equals(tipoOcorrenciasCheck[i]))
+					{
+						ocorrencia.setIntegraAC(true);
+						clonar(ocorrencia, empresaDestino.getId());
+						ocorrencia.setEmpresa(empresaDestino);
+						saveOrUpdate(ocorrencia, empresaDestino);
+					}
+				}
+			}
+		}else
+		{
+			for (Ocorrencia ocorrencia : ocorrenciaInteresseDeOrigem)
+			{
+				clonar(ocorrencia, empresaDestino.getId());
+				ocorrencia.setEmpresa(empresaDestino);
+				saveOrUpdate(ocorrencia, empresaDestino);
+			}
 		}
 	}
 	

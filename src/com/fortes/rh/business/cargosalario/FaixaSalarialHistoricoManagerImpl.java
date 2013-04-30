@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
@@ -324,10 +325,13 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return pendenciaACs;
 	}
 
-	public FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino)
+	public FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino) throws FaixaJaCadastradaException
 	{
 		FaixaSalarialHistorico faixaSalarialHistorico = getDao().findHistoricoAtual(faixaSalarialOrigemId);
 
+		if(faixaSalarialHistorico == null)
+			throw new FaixaJaCadastradaException();
+		
 		faixaSalarialHistorico.setId(null);
 		faixaSalarialHistorico.setIndice(null);
 		faixaSalarialHistorico.setProjectionFaixaSalarialId(faixaSalarialDestinoId);

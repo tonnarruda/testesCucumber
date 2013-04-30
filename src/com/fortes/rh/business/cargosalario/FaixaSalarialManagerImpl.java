@@ -16,6 +16,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorMa
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -294,9 +295,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			
 			getDao().save(faixaSalarial);
 
+			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
+
 			if(empresaDestino.isAcIntegra())
 			{
-				FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
 				faixaSalarialHistoricoAtualClonado.setFaixaSalarial(faixaSalarial);
 	
 				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarialHistoricoAtualClonado.getFaixaSalarial(), faixaSalarialHistoricoAtualClonado, empresaDestino);

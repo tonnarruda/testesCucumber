@@ -678,11 +678,10 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		faixaSalarialDepoisDoSave.setCargo(CargoFactory.getEntity(12L));
 		
 		// clonar faixa
-		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(1L)).will(returnValue(new ArrayList<FaixaSalarial>()));
-		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(2L)).will(returnValue(faixas));
-		faixaSalarialDao.expects(once()).method("save").with(eq(faixaSalarial)).will(returnValue(faixaSalarialDepoisDoSave));
-		
+		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(cargoOrigem.getId())).will(returnValue(faixas));
+		faixaSalarialDao.expects(once()).method("save").with(eq(faixaSalarial)).will(returnValue(faixaSalarial));
 		faixaSalarialHistoricoManager.expects(once()).method("sincronizar");
+		
 		
 		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, EmpresaFactory.getEmpresa());
 	}
