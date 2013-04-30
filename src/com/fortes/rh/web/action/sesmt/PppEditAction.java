@@ -97,7 +97,7 @@ public class PppEditAction extends MyActionSupportList
 			parametros.put("IMG_DIR", imgDir);
 			parametros.put("IMPRIMIR_RECIBO", imprimirRecibo);
 			
-			dataSource = funcaoManager.populaRelatorioPpp(colaborador, data, nit, responsavel, observacoes, respostas);
+			dataSource = funcaoManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, responsavel, observacoes, respostas);
 			
 			return SUCCESS;
 		}
