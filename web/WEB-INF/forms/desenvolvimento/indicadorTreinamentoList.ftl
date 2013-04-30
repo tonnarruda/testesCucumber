@@ -16,6 +16,9 @@
 		
 		.legendColorBox { width: 20px; border: none; }
 		.legendColorBox > div { border: 1px solid #fff !important; }
+		
+		#custo { width: 220px !important; }
+		#custoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
@@ -101,7 +104,7 @@
 			
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
-			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto });
+			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#custoLegenda' });
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
@@ -222,7 +225,8 @@
 						<br />
 						<div class="gogDivTituloX">Custo por Tipo de Despesa</div>
 						<div class="gogDivFormularioX">
-							<div id="custo" class="graph" ></div>
+							<div id="custoLegenda"></div>
+							<div id="custo" class="graph"></div>
 						</div>
 						<br />
 					</div>
