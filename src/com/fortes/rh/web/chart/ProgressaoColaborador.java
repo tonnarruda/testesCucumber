@@ -15,9 +15,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
-import com.opensymphony.xwork.ActionSupport;
+import com.fortes.rh.web.action.MyActionSupport;
 
-public class ProgressaoColaborador extends ActionSupport
+public class ProgressaoColaborador extends MyActionSupport
 {
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private Long id;

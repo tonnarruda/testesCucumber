@@ -3,12 +3,12 @@ package com.fortes.rh.web.action.geral;
 
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.model.geral.Mensagem;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionSupport;
 import com.opensymphony.xwork.ModelDriven;
 
 @SuppressWarnings({"serial", ""})
-public class MensagemEditAction extends ActionSupport implements ModelDriven
+public class MensagemEditAction extends MyActionSupport implements ModelDriven
 {
 	private MensagemManager mensagemManager = null;
 

@@ -18,9 +18,9 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
-import com.opensymphony.xwork.ActionSupport;
+import com.fortes.rh.web.action.MyActionSupport;
 
-public class ResultadoPesquisa extends ActionSupport
+public class ResultadoPesquisa extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 

@@ -14,12 +14,12 @@ import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
-import com.opensymphony.xwork.ActionSupport;
 
 @SuppressWarnings("serial")
-public class AuditoriaListAction extends ActionSupport
+public class AuditoriaListAction extends MyActionSupport
 {
 	private AuditoriaManager auditoriaManager;
 	private UsuarioManager usuarioManager;
