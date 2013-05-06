@@ -48,6 +48,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -171,8 +172,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String json;
 
 	private ByteArrayInputStream byteArrayInputStream;
-	private String codEmpresa;
-	private String codEmpregado;
 	private String mesAno;
 
 	public String find() throws Exception
@@ -233,19 +232,44 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareContraCheque() throws Exception
+	public String prepareReciboPagamento() throws Exception
 	{
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		
+		if(colaborador == null)
+		{
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
+		}
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionWarning("Só é possível solicitar seu recibo de pagamento pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+			colaborador = null;
+		}
+		
 		return Action.SUCCESS;
 	}
 	
-	public String contraCheque() throws Exception
+	public String reciboPagamento() throws Exception
 	{
-		String contraCheque = colaboradorManager.findContraCheque(codEmpresa, codEmpregado, DateUtil.criarDataMesAno(mesAno));
-		
-		BASE64Decoder decoder = new BASE64Decoder();  
-        byte[] contraChequeBytes = decoder.decodeBuffer(contraCheque); 
-		
-        byteArrayInputStream = new ByteArrayInputStream(contraChequeBytes);
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboPagamento = colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
+			
+			BASE64Decoder decoder = new BASE64Decoder();  
+	        byte[] reciboPagamentoBytes = decoder.decodeBuffer(reciboPagamento); 
+			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
         
 		return Action.SUCCESS;
 	}
@@ -1138,22 +1162,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	public Character getEnviadoParaAC()
 	{
 		return enviadoParaAC;
-	}
-
-	public String getCodEmpresa() {
-		return codEmpresa;
-	}
-
-	public void setCodEmpresa(String codEmpresa) {
-		this.codEmpresa = codEmpresa;
-	}
-
-	public String getCodEmpregado() {
-		return codEmpregado;
-	}
-
-	public void setCodEmpregado(String codEmpregado) {
-		this.codEmpregado = codEmpregado;
 	}
 
 	public String getMesAno() {
