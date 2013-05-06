@@ -42,7 +42,7 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		return (MedicoCoordenador) criteria.uniqueResult();
 	}
 
-	public Collection<MedicoCoordenador> findByEmpresa(Long empresaId, String ascOuDesc)
+	public Collection<MedicoCoordenador> findByEmpresa(Long empresaId, Boolean ascendente)
 	{
 		Date hoje = new Date();
 		Criteria criteria = getSession().createCriteria(MedicoCoordenador.class, "m");
@@ -61,10 +61,12 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		criteria.add(Expression.eq("m.empresa.id", empresaId));
 		criteria.add(Expression.le("m.inicio", hoje));
 		
-		if (ascOuDesc != null && ascOuDesc.equalsIgnoreCase("asc"))
-			criteria.addOrder(Order.asc("m.inicio"));
-		else
-			criteria.addOrder(Order.desc("m.inicio")); 
+		if (ascendente != null) {
+			if (ascendente) 
+				criteria.addOrder(Order.asc("m.inicio"));
+			else
+				criteria.addOrder(Order.desc("m.inicio"));
+		}
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(MedicoCoordenador.class));

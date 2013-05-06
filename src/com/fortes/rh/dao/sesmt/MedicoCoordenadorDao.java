@@ -12,5 +12,5 @@ public interface MedicoCoordenadorDao extends GenericDao<MedicoCoordenador>
 
 	MedicoCoordenador findByIdProjection(Long medicoCoordenadorId);
 
-	Collection<MedicoCoordenador> findByEmpresa(Long empresaId, String ascOuDesc);
+	Collection<MedicoCoordenador> findByEmpresa(Long empresaId, Boolean ascendente);
 }
