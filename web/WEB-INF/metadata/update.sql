@@ -19651,3 +19651,8 @@ update parametrosdosistema set appversao = '1.1.106.111';--.go
 -- versao 1.1.106.112
 
 update parametrosdosistema set appversao = '1.1.106.112';--.go
+-- versao 1.1.106.113
+
+update parametrosdosistema set codempresasuporte = '0002';--.go
+insert into migrations values('20130423102211');--.go
+update parametrosdosistema set appversao = '1.1.106.113';--.go

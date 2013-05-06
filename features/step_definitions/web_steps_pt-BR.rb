@@ -563,9 +563,7 @@ Dado /^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
   end
 
   insert :candidato do
-    nome candidato_nome
-    nomecomercial colaborador_nome
-    logradouro
+    nome colaborador_nome
     conjugetrabalha true
     sexo 'M'
     blacklist false
