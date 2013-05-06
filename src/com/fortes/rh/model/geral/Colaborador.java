@@ -1756,6 +1756,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		empresa.setCodigoAC(codigo);
 	}
 
+	public void setEmpresaGrupoAC(String codigo)
+	{
+		criarEmpresa();
+		empresa.setGrupoAC(codigo);
+	}
+
 	public void setCampoExtraColaborador(Boolean campoExtraColaborador)
 	{
 		if(campoExtraColaborador != null)

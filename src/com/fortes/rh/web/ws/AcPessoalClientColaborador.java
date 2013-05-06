@@ -25,5 +25,5 @@ public interface AcPessoalClientColaborador
 
 	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa);
 
-	public String findContraCheque(String codEmpresa, String codEmpregado, Date mesAno) throws Exception;
+	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
 }
