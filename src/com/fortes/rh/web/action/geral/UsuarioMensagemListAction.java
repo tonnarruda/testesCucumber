@@ -2,11 +2,11 @@ package com.fortes.rh.web.action.geral;
 
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.model.geral.UsuarioMensagem;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionSupport;
 
 @SuppressWarnings("serial")
-public class UsuarioMensagemListAction extends ActionSupport
+public class UsuarioMensagemListAction extends MyActionSupport
 {
 	private UsuarioMensagemManager usuarioMensagemManager = null;
 	private UsuarioMensagem usuarioMensagem;
