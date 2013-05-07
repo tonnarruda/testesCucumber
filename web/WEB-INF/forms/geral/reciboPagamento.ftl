@@ -12,7 +12,7 @@
 		<@ww.actionmessage />
 		
 		<#if colaborador.id?exists>
-			<@ww.form name="form" action="reciboPagamento.action" onsubmit="${validarCampos}" method="POST" target="_blank">
+			<@ww.form name="form" action="reciboPagamento.action" onsubmit="${validarCampos}" method="POST">
 				<@ww.textfield label="Mês/Ano" id="mesAno" name="mesAno" maxLength="7" size="7" cssClass="mascaraMesAnoData"/>
 				<div class="buttonGroup">
 					<button onclick="${validarCampos};" class="btnDownload"></button>

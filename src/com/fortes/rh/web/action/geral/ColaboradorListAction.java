@@ -261,8 +261,24 @@ public class ColaboradorListAction extends MyActionSupportList
 			BASE64Decoder decoder = new BASE64Decoder();  
 	        byte[] reciboPagamentoBytes = decoder.decodeBuffer(reciboPagamento); 
 			
-	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"recibo_" + mesAno.replace("/", "") + ".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoBytes);
 		} 
+		catch (IntegraACException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
