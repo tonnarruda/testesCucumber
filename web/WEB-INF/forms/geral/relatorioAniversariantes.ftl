@@ -36,6 +36,12 @@
 			addChecks('areasCheck',data);
 		}
 		
+		function submeterAction(action)
+		{
+			$('form[name=form]').attr('action', action);
+			return validaFormulario('form', null, null);
+		}
+		
 		$(document).ready(function($)
 		{
 			DWREngine.setAsync(false);
@@ -76,7 +82,8 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="return validaFormulario('form', null, null);" class="btnRelatorio" ></button>
+		<button onclick="return submeterAction('relatorioAniversariantes.action');" class="btnRelatorio" ></button>
+		<button onclick="return submeterAction('relatorioAniversariantesXls.action');" class="btnRelatorioExportar"></button>
 	</div>
 </body>
 </html>

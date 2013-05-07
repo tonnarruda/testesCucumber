@@ -78,7 +78,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		Collection<HistoricoColaborador> historicosColaboradorFuncao = historicoColaboradorManager.findDistinctFuncao(historicosDoColaboradors);
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findHistoricoFuncaoColaborador(historicosColaboradorFuncao,data, colaborador.getDataDesligamento());
 		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.getEngenheirosAteData(colaborador, data);
-		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.getMedicosAteData(colaborador.getEmpresa().getId(), data, colaborador.getDataDesligamento());
+		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.getMedicosAteData(data, colaborador);
 		
 		PppRelatorio pppRelatorio = new PppRelatorio(colaborador, estabelecimento, data);
 		pppRelatorio.setRespostas(respostas);

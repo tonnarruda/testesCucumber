@@ -132,6 +132,9 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 
 			historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, reajuste.getTipoSalarioProposto(), reajuste.getIndiceProposto(), reajuste.getQuantidadeIndiceProposto(), reajuste.getSalarioProposto());
 
+			if(reajuste.getObservacao() !=null)
+				historicoColaborador.setObsACPessoal(reajuste.getObservacao());
+			
 			if(reajuste.getAmbienteProposto() != null && reajuste.getAmbienteProposto().getId() != null)
 				historicoColaborador.setAmbiente(reajuste.getAmbienteProposto());
 
