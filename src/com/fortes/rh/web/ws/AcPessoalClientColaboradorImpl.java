@@ -8,7 +8,6 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
-import org.apache.axis.client.Service;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -22,7 +21,6 @@ import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
-import com.fortes.rh.model.ws.TRetornoFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
@@ -303,44 +301,19 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		call.addParameter("Ano", xmlint, ParameterMode.IN);
 		call.addParameter("Mes", xmlint, ParameterMode.IN);
 		
-		QName qnameFeedBack = new QName(grupoAC.getAcUrlWsdl(), "TRetornoFeedbackPessoalWebService");
-        call.registerTypeMapping(TRetornoFeedbackPessoalWebService.class, qnameFeedBack, new BeanSerializerFactory(TRetornoFeedbackPessoalWebService.class, qnameFeedBack), new BeanDeserializerFactory(TRetornoFeedbackPessoalWebService.class, qnameFeedBack));
-    	call.setReturnType(qnameFeedBack);
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 		
     	Calendar calendar = Calendar.getInstance();
 		calendar.setTime(mesAno);		
 		
 		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1 };
     	
-		TRetornoFeedbackPessoalWebService result =  (TRetornoFeedbackPessoalWebService) call.invoke(param);
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
        	Boolean retorno = result.getSucesso("GetReciboDePagamento", param, this.getClass());
 		
        	if (!retorno)
-        	throw new IntegraACException("Situação do colaborador inexistente no Ac Pessoal.");
+        	throw new IntegraACException(result.getMensagem());
        	
        	return result.getRetorno();
-		
-		/*
-		Call call = (Call) new Service().createCall();
-		call.setTargetEndpointAddress("http://10.1.2.80:1024/soap/IAcPessoal");
-		call.setOperationName(new QName("GetReciboDePagamento"));
-		
-		QName xmlstring = new QName("xs:string");
-		QName xmlint = new QName("xs:int");
-		
-		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
-		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
-		call.addParameter("Ano", xmlint, ParameterMode.IN);
-		call.addParameter("Mes", xmlint, ParameterMode.IN);
-		
-		call.setReturnType(org.apache.axis.encoding.XMLType.XSD_STRING);
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(mesAno);		
-		
-		Object[] param = new Object[]{ codEmpresa, codEmpregado, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1 };
-		
-		return (String) call.invoke(param);
-		*/
 	}
 }
