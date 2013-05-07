@@ -9,6 +9,9 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js"/>"></script>
+	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresaIds?exists>
@@ -16,39 +19,6 @@
 				empresaIds.push(${empresaId});
 			</#list>
 		</#if>
-		
-		function populaEstabelecimento(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
-		}
-
-		function createListEstabelecimento(data)
-		{
-			addChecks('estabelecimentosCheck',data);
-		}
-		
-		function populaCargo(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
-		}
-
-		function createListCargo(data)
-		{
-			addChecks('cargosCheck',data);
-		}
-		
-		function populaArea(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
-		}
-
-		function createListArea(data)
-		{
-			addChecks('areaOrganizacionalsCheck',data);
-		}
 		
 		function compl()
 		{
@@ -75,10 +45,15 @@
 		{
 			var empresa = $('#empresa').val();
 			
-			populaArea(empresa);
-			populaCargo(empresa);
+			populaAreaComCargoVinculado(empresa);
 			populaEstabelecimento(empresa);
-		});
+			populaCargosByAreaVinculados();
+			
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargosByAreaVinculados();
+			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);;		});
 	</script>
 </head>
 <body>
@@ -97,7 +72,7 @@
 	<@ww.form name="form" action="relatorioColaboradorCargo.action" onsubmit="${validarCampos}" validate="true" method="POST">
 		
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="newChangeEmpresa(this.value);"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -131,7 +106,8 @@
 		</li>
 		<br>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
-		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" />
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" onClick="populaCargosByAreaVinculados();"/>
+		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />

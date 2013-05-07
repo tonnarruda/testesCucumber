@@ -192,7 +192,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		else
 			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
 		
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areaOrganizacionalsCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
