@@ -197,7 +197,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
-		assertTrue(((String)action.getActionMessages().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
+		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
 	}
 	
 	public void testPrepareUpdateInfoPessoaisEmpresaSemColaborador() throws Exception
@@ -205,7 +205,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(null));
 		
 		assertEquals("success", action.prepareUpdateInfoPessoais());
-		assertTrue(((String)action.getActionMessages().toArray()[0]).equals("Você não tem Colaborador cadastrado"));
+		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Sua conta de usuário não está vinculada à nenhum colaborador"));
 	}
 	
 	public void testPreparePerformanceFuncional()
