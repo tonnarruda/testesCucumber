@@ -87,6 +87,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Integer tempoDeEmpresa;
 	private String reportFilter;
 	private String reportTitle;
+	Collection<String> columnsNameDinamic;
 	private List<AcompanhamentoExperienciaColaborador> acompanhamentos;
 	private boolean considerarAutoAvaliacao;
 	
@@ -237,16 +238,19 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			
 			acompanhamentos = colaboradorManager.getAvaliacoesExperienciaPendentesPeriodo(periodoIni, periodoFim, getEmpresaSistema(), areasCheck, estabelecimentoCheck, periodoExperiencias);
 			
-			String filtro = "Período: " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n"; 
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Acompanhamento de Experiência", getEmpresaSistema(), filtro);
+			reportTitle = "Relatório de Acompanhamento de Experiência";
+			reportFilter = "Período: " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim) + "\n"; 
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			
 			String rodape = periodoExperienciaManager.findRodapeDiasDoPeriodoDeExperiencia(periodoExperiencias); 
 			parametros.put("rodapePeriodoExperiencia", rodape);
 			
 			int coluna = 1;
-			for (PeriodoExperiencia periodo : periodoExperiencias)
+			columnsNameDinamic = new ArrayList<String>();
+			for (PeriodoExperiencia periodo : periodoExperiencias){
 				parametros.put("tituloPeriodo" + coluna++, periodo.getDiasDescricao());
-				
+				columnsNameDinamic.add(periodo.getDiasDescricao());
+			}
 		}
 		catch (Exception e)
 		{
@@ -683,5 +687,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public Collection<FaixaPerformanceAvaliacaoDesempenho> getFaixaPerformanceAvaliacaoDesempenhos() {
 		return faixaPerformanceAvaliacaoDesempenhos;
+	}
+
+	public Collection<String> getColumnsNameDinamic() {
+		return columnsNameDinamic;
 	}
 }

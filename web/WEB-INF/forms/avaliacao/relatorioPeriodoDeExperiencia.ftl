@@ -23,17 +23,21 @@
 		    else
 		        $("input[name='periodoCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
 		}
+		function submeterAction(action)
+		{
+			$('form[name=form]').attr('action', action);
+			return validaFormulario('form', new Array('periodoIni', 'periodoFim','@periodoCheck'), new Array('periodoIni', 'periodoFim'));
+		}
 	</script> 
 	<#assign periodoIniFormatado = "${periodoIni?date}" />
 	<#assign periodoFimFormatado = "${periodoFim?date}" />
-	<#assign validarCampos="return validaFormulario('form', new Array('periodoIni', 'periodoFim','@periodoCheck'), new Array('periodoIni', 'periodoFim'))"/>
 </head>
 
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" onsubmit="${validarCampos}" method="POST">
+	<@ww.form name="form" action="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action" method="POST">
 
 		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/><br/>
@@ -44,7 +48,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="${validarCampos};" ></button>
+		<button onclick="return submeterAction('imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia.action');" class="btnRelatorio" ></button>
+		<button onclick="return submeterAction('imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaXls.action');" class="btnRelatorioExportar"></button>
 	</div>
 </body>
 
