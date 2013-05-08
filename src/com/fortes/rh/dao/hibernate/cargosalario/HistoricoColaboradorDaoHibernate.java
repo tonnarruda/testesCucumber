@@ -1234,6 +1234,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(areaIds != null && areaIds.length>0)
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 
+		if(grupoOcupacionalIds != null && grupoOcupacionalIds.length>0)
+			hql.append(" and go.id in (:grupoOcupacionalIds) ");
+
 		if(empresaId != null )
 			hql.append("and co.empresa.id = :empresaId ");
 
@@ -1258,6 +1261,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		if(areaIds != null && areaIds.length>0)
 			query.setParameterList("areaOrganizacionalIds", areaIds, Hibernate.LONG);
+		
+		if(grupoOcupacionalIds != null && grupoOcupacionalIds.length>0)
+			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
 
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
