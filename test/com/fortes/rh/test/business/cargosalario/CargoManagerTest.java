@@ -312,9 +312,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Long[] idsLong = new Long[] { 1L };
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong), ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong), ANYTHING, ANYTHING).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
+		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L, null));
 	}
 	
 	public void testFindBySolicitacao()
@@ -330,9 +330,9 @@ public class CargoManagerTest extends MockObjectTestCase
 	{
 		Long[] idsLong = new Long[] {};
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null), ANYTHING).will(returnValue(null));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null), ANYTHING, ANYTHING).will(returnValue(null));
 
-		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
+		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L, null));
 	}
 
 	public void testGetCargosFromFaixaSalarialHistoricos()
@@ -571,7 +571,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		String[] gruposCheck = new String[] { "1" };
 		assertEquals(1, cargoManager.populaCheckBox(gruposCheck, null, 1L).size());

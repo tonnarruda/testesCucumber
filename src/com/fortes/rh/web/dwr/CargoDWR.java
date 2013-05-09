@@ -16,16 +16,29 @@ public class CargoDWR
 
 	public Map getCargoByGrupo(String[] grupoOcupacionalIds, Long empresaId)
 	{
-		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId);
+		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, null);
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
 	}
+
+	public Map getCargoByGrupoAtivoInativo(String[] grupoOcupacionalIds, Long empresaId, Character ativo)
+	{
+		Boolean cargoAtivo = null;
+		if(ativo == 'A')
+			cargoAtivo = true;
+		if(ativo == 'I')
+			cargoAtivo = false;
+		
+		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, cargoAtivo);
+		
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
+	}
 	
-	private Collection<Cargo> getCargosByGrupoCollection (String[] grupoOcupacionalIds, Long empresaId)
+	private Collection<Cargo> getCargosByGrupoCollection (String[] grupoOcupacionalIds, Long empresaId, Boolean cargoAtivo)
 	{
 		Long [] idsLong = LongUtil.arrayStringToArrayLong(grupoOcupacionalIds);
 		
-		Collection<Cargo> cargos = cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, empresaId);
+		Collection<Cargo> cargos = cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, empresaId, cargoAtivo);
 		
 		return cargos;
 	}
@@ -45,7 +58,7 @@ public class CargoDWR
 	
 	public Map getCargoByGruposMaisSemGruposRelacionado(String[] gruposIds, Long empresaId)
 	{
-		Collection<Cargo> cargos = getCargosByGrupoCollection(gruposIds, empresaId);
+		Collection<Cargo> cargos = getCargosByGrupoCollection(gruposIds, empresaId, null);
 		
 		Collection<Cargo> cargosSemGrupoRelacionada = cargoManager.getCargosSemGrupoRelacionado(empresaId); 						
 		

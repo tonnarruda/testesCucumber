@@ -488,9 +488,9 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricos.add(faixaSalarialHistorico1);
 		faixaSalarialHistoricos.add(faixaSalarialHistorico2);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data1.getTime()), eq(Boolean.FALSE), eq(1L)}).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data1.getTime()), eq(Boolean.FALSE), eq(1L), eq(null)}).will(returnValue(faixaSalarialHistoricos));
 
-		assertNotNull(faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data1.getTime(), Boolean.FALSE, 1L));
+		assertNotNull(faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data1.getTime(), Boolean.FALSE, 1L, null));
 	}
 
 	public void testFindByGrupoDataException()
@@ -502,12 +502,12 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		
 		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data), eq(Boolean.FALSE), eq(1L)}).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(ids), eq(new ArrayList<Long>()), eq(new ArrayList<Long>()), eq(data), eq(Boolean.FALSE), eq(1L), eq(null)}).will(returnValue(faixaSalarialHistoricos));
 
 		Exception exception = null;
 		try
 		{
-			faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data, Boolean.FALSE, 1L);
+			faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoChecks, null, null, data, Boolean.FALSE, 1L, null);
 		}
 		catch (Exception e)
 		{

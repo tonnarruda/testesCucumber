@@ -16,7 +16,7 @@ public interface CargoDao extends GenericDao<Cargo>
 //	public Collection<Cargo> findByGrupoOcupacionalIds(Long[] gruposOcupacionaisIds);
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo);
 	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo);
-	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId);
+	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo);
 	public Collection<Cargo> findByAreaOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> findCargosByIds(Long[] cargoIds, Long empresaId);
 	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo);

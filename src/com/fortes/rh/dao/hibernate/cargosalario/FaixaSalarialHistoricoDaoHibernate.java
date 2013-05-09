@@ -257,7 +257,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return query.list();
 	}
 	
-	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId)
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new FaixaSalarialHistorico(hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, i.nome, hi.valor, hi.data, c.id, c.nome, f.id, f.nome) ");
@@ -285,6 +285,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(cargoIds != null && !cargoIds.isEmpty())
 			hql.append("and c.id in (:cargoIds) ");
+
+		if(cargoAtivo != null)
+			hql.append("and c.ativo = :cargoAtivo ");
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			hql.append("and a.id in (:areaIds) ");
@@ -307,6 +310,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(cargoIds != null && !cargoIds.isEmpty())
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+
+		if(cargoAtivo != null)
+			query.setBoolean("cargoAtivo", cargoAtivo);
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);

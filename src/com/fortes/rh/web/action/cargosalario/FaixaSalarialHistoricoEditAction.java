@@ -52,6 +52,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	private String[] grupoOcupacionalsCheck;
 	private String[] areasCheck;
 	private String[] cargosCheck;
+	private Character situacaoCargo; 
 	
 	private Long empresaId;
 
@@ -100,7 +101,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public String relatorioHistoricoFaixaSalarial() throws Exception
 	{
-		faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, null, Boolean.FALSE, getEmpresaSistema().getId());
+		faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, null, Boolean.FALSE, getEmpresaSistema().getId(), isCargoAtivo());
 		parametros = RelatorioUtil.getParametrosRelatorio("Históricos das Faixas Salariais", getEmpresaSistema(), "");
 		return Action.SUCCESS;
 	}
@@ -111,7 +112,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		
 		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS), "getId", "getNome");
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.ATIVO), "getId", "getNome");
 		
 		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
@@ -124,7 +125,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	{
 		try
 		{
-			faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, data, Boolean.TRUE, getEmpresaSistema().getId());
+			faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, data, Boolean.TRUE, getEmpresaSistema().getId(), isCargoAtivo());
 			cargos = cargoManager.getCargosFromFaixaSalarialHistoricos(faixaSalarialHistoricos);
 		}
 		catch (Exception e)
@@ -139,7 +140,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 		return Action.SUCCESS;
 	}
-	
+
 	public String relatorioAnaliseTabelaSalarial() throws Exception
 	{
 		analiseTabelaSalarialList();
@@ -205,6 +206,16 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
+	private Boolean isCargoAtivo() 
+	{
+		Boolean cargoAtivo = null;
+		if(situacaoCargo != null && situacaoCargo == 'A')
+			cargoAtivo = Cargo.ATIVO;
+		if(situacaoCargo != null && situacaoCargo == 'I')
+			cargoAtivo = Cargo.INATIVO;
+		return cargoAtivo;
+	}
+	
 	public Object getModel()
 	{
 		return getFaixaSalarialHistorico();
@@ -336,5 +347,9 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public void setSituacaoCargo(Character situacaoCargo) {
+		this.situacaoCargo = situacaoCargo;
 	}
 }

@@ -145,7 +145,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo.setGrupoOcupacional(grupoOcupacional);
 		cargo = cargoDao.save(cargo);
 
-		Collection<Cargo> retorno = cargoDao.findByGrupoOcupacionalIdsProjection(new Long[] {grupoOcupacional.getId()}, null);
+		Collection<Cargo> retorno = cargoDao.findByGrupoOcupacionalIdsProjection(new Long[] {grupoOcupacional.getId()}, null, null);
 
 		assertEquals(1, retorno.size());
 	}

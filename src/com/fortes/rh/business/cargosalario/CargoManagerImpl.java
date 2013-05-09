@@ -66,14 +66,14 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findCargos(page, pagingSize, empresaId, areaId, cargoNome, ativo);
 	}
 
-	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId)
+	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo)
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
 		if(idsLong != null && idsLong.length > 0)
-			cargos = getDao().findByGrupoOcupacionalIdsProjection(idsLong, empresaId);
+			cargos = getDao().findByGrupoOcupacionalIdsProjection(idsLong, empresaId, cargoAtivo);
 		else
-			cargos = getDao().findByGrupoOcupacionalIdsProjection(null, empresaId);
+			cargos = getDao().findByGrupoOcupacionalIdsProjection(null, empresaId, cargoAtivo);
 
 		return cargos;
 	}
@@ -209,7 +209,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		else
 		{
 			Long [] gruposIds = LongUtil.arrayStringToArrayLong(gruposCheck);
-			Collection<Cargo> cargos = getDao().findByGrupoOcupacionalIdsProjection(gruposIds, empresaId);
+			Collection<Cargo> cargos = getDao().findByGrupoOcupacionalIdsProjection(gruposIds, empresaId, null);
 
 			Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
