@@ -228,7 +228,7 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		medicaoRiscoManager.removeCascade(medicaoRisco.getId());
-		addActionMessage("Medição excluída com sucesso.");
+		addActionSuccess("Medição excluída com sucesso.");
 
 		return SUCCESS;
 	}

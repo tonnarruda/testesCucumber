@@ -1,9 +1,7 @@
 package com.fortes.rh.test.business.avaliacao;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -14,7 +12,6 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 
 public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 {

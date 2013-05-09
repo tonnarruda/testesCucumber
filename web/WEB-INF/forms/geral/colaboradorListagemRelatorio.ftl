@@ -23,6 +23,7 @@
 	</#if>
 	
 	<#include "../ftl/mascarasImports.ftl" />
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
@@ -110,6 +111,7 @@
 		
 			var empresa = $('#empresa').val();
 			
+			mostraFiltroEnviadosParaAC();
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
 			
@@ -296,6 +298,19 @@
 			$('#periodos').append(periodo);
 			$('#tempoIni, #tempoFim').val('');
 		}
+		
+		function mostraFiltroEnviadosParaAC(){
+			EmpresaDWR.isAcintegra($('#empresa').val(), function(acIntegra) {
+				if(acIntegra) {
+					$('#enviadosAC').show();
+				} else {
+					$('#enviadoParaAC').val('1');	
+					$('#enviadosAC').hide();	
+				}
+				 
+			});
+		}
+		
 	</script>
 	<#if dataIni?exists>
 		<#assign valueDataIni = dataIni?date/>
@@ -317,7 +332,7 @@
 	<@ww.form name="form" action="relatorioDinamico.action" onsubmit="return validarCampos();" validate="true" method="POST">
 	
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);mostraFiltroEnviadosParaAC()"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -330,13 +345,13 @@
 		<@ww.select label="Sexo" id="sexo" name="sexo" list="sexos" cssStyle="width: 160px;" />
 		<@ww.select label="Deficiência" id="deficiencia" name="deficiencia" list=r"#{'1':'Todas', '2':'Somente Deficientes', '3':'Sem Deficiência'}" cssStyle="width: 160px;"/>
 		
-		<#if empresaSistema.acIntegra>
+		<div id="enviadosAC"> 
 			Considerar colaboradores:<br />
 			<@ww.select id="enviadoParaAC" name="enviadoParaAC" list=r"#{'1':'Enviados e Não Enviados para o AC Pessoal', '2':'Não Enviados para o AC Pessoal', '3':'Enviados para o AC Pessoal'}"  theme="simple"/>
 			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /><br />
 			
 			<br clear="all"/>
-		</#if>
+		</div>
 		
 		<fieldset class="fieldsetPadrao" style="width:578px; margin-bottom: 10px;">
 			<legend>Tempo de Serviço</legend>

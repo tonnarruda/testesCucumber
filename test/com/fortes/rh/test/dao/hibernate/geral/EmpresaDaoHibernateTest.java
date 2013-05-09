@@ -205,7 +205,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		Empresa retorno = empresaDao.findByIdProjection(998855920L);
 		assertEquals(null, retorno);
 		
-		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'empresa_id';");
+		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'empresa_id' and col.table_schema = 'public';");
 		//se esse quebrar, provavelmente tem que inserir uma linha de delete com removeEmpresaPadrao
 		assertEquals("54", qtdTabelasComEmpresa);
 	}
@@ -297,6 +297,20 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		empresaDao.save(empresa2);
 		
 		assertTrue(empresaDao.checkEmpresaIntegradaAc());
+	}
+	
+	public void testCheckEmpresaIntegradaAcComEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(3025L);
+		empresa.setAcIntegra(false);
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa(3026L);
+		empresa2.setAcIntegra(true);
+		empresaDao.save(empresa2);
+		
+		assertFalse(empresaDao.checkEmpresaIntegradaAc(empresa.getId()));
+		assertTrue(empresaDao.checkEmpresaIntegradaAc(empresa2.getId()));
 	}
 	
 	public void testFindComCodigoAC() 

@@ -599,7 +599,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				if (StringUtils.equals(encerrarSolicitacao, "S")) 
 					solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
-				addActionMessage("Colaborador \"" + colaborador.getNome() + "\"  cadastrado com sucesso.");
+				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  cadastrado com sucesso.");
 				
 				transactionManager.commit(status);
 				
@@ -777,7 +777,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 
-		addActionMessage("Colaborador \"" + colaborador.getNome() + "\" editado com sucesso.");
+		addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong> alterado com sucesso.");
 		return Action.SUCCESS;
 	}
 
@@ -794,12 +794,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema());
 			prepareUpdateInfoPessoais();
 			
-			addActionMessage("Colaborador editado com sucesso.");
+			addActionSuccess("Colaborador alterado com sucesso.");
 		}
 		catch (Exception e)
 		{
 			prepareUpdateInfoPessoais();
-			addActionError("Erro ao Editar Colaborador.");
+			addActionError("Erro ao alterar Colaborador.");
 		}
 
 		return Action.SUCCESS;

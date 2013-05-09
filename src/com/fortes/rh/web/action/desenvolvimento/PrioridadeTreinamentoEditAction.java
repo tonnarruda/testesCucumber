@@ -2,12 +2,12 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import com.fortes.rh.business.desenvolvimento.PrioridadeTreinamentoManager;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionSupport;
 import com.opensymphony.xwork.ModelDriven;
 
 @SuppressWarnings("serial")
-public class PrioridadeTreinamentoEditAction extends ActionSupport implements ModelDriven
+public class PrioridadeTreinamentoEditAction extends MyActionSupport implements ModelDriven
 {
 	private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
 

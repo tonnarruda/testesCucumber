@@ -3,7 +3,6 @@ package com.fortes.rh.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +16,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorMa
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -277,33 +277,35 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	{
 		return getDao().findByCargoComCompetencia(cargoId);
 	}
-
-	public void sincronizar(Map<Long, Long> cargoIds) {
-		
-		Map<Long, Long> faixaSalarialIds = new HashMap<Long, Long>();
-		
-		clonar(cargoIds, faixaSalarialIds);
-		
-		faixaSalarialHistoricoManager.sincronizar(faixaSalarialIds);
-	}
 	
-	private void clonar(Map<Long, Long> cargoIds, Map<Long, Long> faixaSalarialIds) {
+	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino) throws Exception 
+	{
+		Collection<FaixaSalarial> faixas = getDao().findByCargo(cargoOrigemId);
 		
-		for (Long cargoId : cargoIds.keySet())
+		for (FaixaSalarial faixaSalarial : faixas)
 		{
-			Collection<FaixaSalarial> faixas = getDao().findByCargo(cargoId);
+			Long faixaOrigemId = faixaSalarial.getId();
 			
-			for (FaixaSalarial faixaSalarial : faixas)
+			faixaSalarial.setId(null);
+			faixaSalarial.setCodigoAC(null);
+			faixaSalarial.setProjectionCargoId( cargoDestino.getId() );
+
+			if(empresaDestino.isAcIntegra() && (faixaSalarial.getNomeACPessoal() == null || faixaSalarial.getNomeACPessoal().equals("")))
+				faixaSalarial.setNomeACPessoal(cargoDestino.getNome() + " " + faixaSalarial.getNome());
+			
+			getDao().save(faixaSalarial);
+
+			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
+
+			if(empresaDestino.isAcIntegra())
 			{
-				Long faixaOrigemId = faixaSalarial.getId();
+				faixaSalarialHistoricoAtualClonado.setFaixaSalarial(faixaSalarial);
+	
+				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarialHistoricoAtualClonado.getFaixaSalarial(), faixaSalarialHistoricoAtualClonado, empresaDestino);
+				if (codigoAC == null || codigoAC.equals(""))
+					throw new IntegraACException();
 				
-				faixaSalarial.setId(null);
-				faixaSalarial.setCodigoAC(null);
-				faixaSalarial.setProjectionCargoId( cargoIds.get(cargoId) );
-				
-				getDao().save(faixaSalarial);
-				
-				faixaSalarialIds.put(faixaOrigemId, faixaSalarial.getId());
+				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}
 		}
 	}

@@ -1,8 +1,6 @@
 package com.fortes.rh.test.web.action.captacao;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

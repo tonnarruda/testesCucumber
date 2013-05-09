@@ -13,7 +13,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecimento> implements EstabelecimentoDao

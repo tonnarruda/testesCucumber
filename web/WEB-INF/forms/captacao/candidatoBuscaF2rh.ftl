@@ -12,11 +12,14 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
+		#menuBusca a.ativaF2rh { color: #FFCB03; }
 	</style>
-	<style type="text/css">#menuBusca a.ativaF2rh{color: #FFCB03;}</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -96,11 +99,8 @@
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome"  cssStyle="width: 110px;" headerKey="" headerValue=""  liClass="liLeft"/>
 			<@ww.select label="Sexo" name="curriculo.sexo" id="sexo" list="sexos" cssStyle="width: 100px;"  liClass="liLeft"/>
 			<li>
-				<span>
-				Idade Preferencial:
-				</span>
+				<span>Idade Preferencial:</span>
 			</li>
-
 			<@ww.textfield name="idadeMin" id="dataPrevIni" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.textfield name="idadeMax" id="dataPrevFim" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
@@ -128,7 +128,7 @@
 		<br>
 
 	<#if curriculos?exists && 0 < curriculos?size>
-		<br>
+		<br />
 		<@ww.form name="formCand" id="formCand" action="insertCandidatosByF2rh.action" validate="true" method="POST">
 
 			<@ww.hidden name="solicitacao.id"/>
@@ -137,12 +137,12 @@
 			
 				<#if solicitacao?exists && solicitacao.id?exists>			
 					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;">
-						<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
+						<input type="checkbox" value="${curriculo.id?string?replace(".", "")?replace(",","")}" name="candidatosId" cpf="${curriculo.user.login}" />
 					</@display.column>
 				</#if>
 			
 				<@display.column title="Nome" style="width: 250px;">
-					<a title="Ver Currículo" href="javascript:popup('http://www.f2rh.com.br/curriculos/${curriculo.id?string?replace(".", "")?replace(",","")}?s=${curriculo.s}', 780, 750)">
+					<a title="Ver Currículo" href="javascript:popup('http://www.f2rh.com.br/curriculos/${curriculo.id?string?replace(".", "")?replace(",","")}?s=${curriculo.s}', 780, 750)" cpf="${curriculo.user.login}">
 						${curriculo.nome}
 					</a>
 				</@display.column>

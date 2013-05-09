@@ -1,6 +1,8 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -69,6 +71,27 @@ public class CandidatoDWR
 		Collection<Candidato> candidatos = candidatoManager.findByNomeCpf(candidato, empresaId);
 		
 		return new CollectionUtil<Candidato>().convertCollectionToMap(candidatos,"getId","getNomeECpf");
+	}
+	
+	public Collection<Object> findColaboradoresMesmoCpf(String[] candidatosCpfs)
+	{
+		Collection<Colaborador> colaboradores = candidatoManager.findColaboradoresMesmoCpf(candidatosCpfs);
+		
+		Collection<Object> retorno = new ArrayList<Object>();
+		Map<String, String> colaboradorMap;
+		
+		for (Colaborador colaborador : colaboradores) 
+		{
+			colaboradorMap = new HashMap<String, String>();
+			colaboradorMap.put("id", colaborador.getId().toString());
+			colaboradorMap.put("nome", colaborador.getNome());
+			colaboradorMap.put("cpf", colaborador.getPessoal().getCpf());
+			colaboradorMap.put("cpfFormatado", colaborador.getPessoal().getCpfFormatado());
+			colaboradorMap.put("dataDesligamento", colaborador.getDataDesligamentoFormatada());
+			retorno.add(colaboradorMap);
+		}
+		
+		return retorno;
 	}
 
 	public String montaMensagemExclusao(Long candidatoId, Long empresaId)

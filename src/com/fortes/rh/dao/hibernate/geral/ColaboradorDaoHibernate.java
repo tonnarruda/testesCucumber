@@ -1071,8 +1071,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(es.id, es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.id, emp.nome, " +
-				"co.nomeComercial, co.matricula, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.pessoal.estadoCivil,  " +
+		hql.append("select new Colaborador(es.id, es.nome, ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.id, emp.nome, " +
+				"co.nomeComercial, co.matricula, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.pessoal.estadoCivil,  " +
 				"co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +

@@ -7,13 +7,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
-import com.fortes.rh.model.dicionario.TipoAplicacaoReajuste;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.LongUtil;
-import com.fortes.web.tags.CheckBox;
-import com.fortes.web.tags.Option;
 
 
 public class FaixaSalarialDWR

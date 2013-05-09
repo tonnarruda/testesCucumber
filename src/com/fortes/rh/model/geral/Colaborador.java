@@ -577,7 +577,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
 						Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome,
-						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String estadoCivil,
 						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -606,6 +606,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
+		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
 				
 		if (this.pessoal == null)
@@ -688,7 +689,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
 			Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, 
-			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo,  String estadoCivil,
+			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String estadoCivil,
 			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
@@ -722,6 +723,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
 		this.dataDesligamento = dataDesligamento;
 		this.vinculo = vinculo;
+		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
 		
 		if (this.pessoal == null)
@@ -927,6 +929,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 		this.desligado = desligado;
+	}
+	
+	// findColaboradoresMesmoCpf
+	public Colaborador(Long id, String nome, String cpf, Date dataDeligamento)
+	{
+		super();
+		this.setId(id);
+		this.setNome(nome);
+		this.setPessoalCpf(cpf);
+		this.setDataDesligamento(dataDeligamento);
 	}
 
 	public Colaborador(Long id, String nomeComercial, Funcao funcao, Ambiente ambiente)
@@ -1314,6 +1326,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (this.candidato == null)
 			this.candidato = new Candidato();
 		this.candidato.setId(candidatoId);
+	}
+	
+	public void setCandidatoNome(String candidatoNome)
+	{
+		if (this.candidato == null)
+			this.candidato = new Candidato();
+		this.candidato.setNome(candidatoNome);
 	}
 
 	public void setProjectionRg(String rg)
@@ -2701,4 +2720,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setComissaoMembros(Collection<ComissaoMembro> comissaoMembros) {
 		this.comissaoMembros = comissaoMembros;
 	}
+	
+	public String getEnviadoParaAC() {
+		return naoIntegraAc ? "Nâo" : "Sim";
+	}
+
+
 }

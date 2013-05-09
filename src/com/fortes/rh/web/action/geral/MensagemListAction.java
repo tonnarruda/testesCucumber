@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.model.geral.Mensagem;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionSupport;
 
 
 /**
@@ -14,7 +14,7 @@ import com.opensymphony.xwork.ActionSupport;
 * author $author
 */
 @SuppressWarnings("serial")
-public class MensagemListAction extends ActionSupport
+public class MensagemListAction extends MyActionSupport
 {
 	private MensagemManager mensagemManager = null;
 

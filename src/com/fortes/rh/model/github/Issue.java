@@ -3,7 +3,6 @@ package com.fortes.rh.model.github;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fortes.rh.model.github.Label;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")

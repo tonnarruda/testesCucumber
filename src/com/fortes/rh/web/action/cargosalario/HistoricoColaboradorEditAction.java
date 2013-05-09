@@ -318,12 +318,12 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaboradorManager.updateAmbientesEFuncoes(historicoColaboradors);
 
 			prepareUpdateAmbientesEFuncoes();
-			addActionMessage("Ambientes e Funções do Colaborador gravados com sucesso.");
+			addActionSuccess("Ambientes e funções do colaborador gravados com sucesso.");
 			return SUCCESS;
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao gravar os Ambientes e Funções do Colaborador.");
+			addActionError("Ocorreu um erro ao gravar os ambientes e as funções do colaborador.");
 			prepareUpdateAmbientesEFuncoes();
 			return INPUT;
 		}

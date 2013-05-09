@@ -177,10 +177,9 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(2, faixaSalarialHistoricoDao.findByTabelaReajusteId(tabela1.getId()).size());
 		assertEquals(1, faixaSalarialHistoricoDao.findByTabelaReajusteId(tabela2.getId()).size());
 	}
-	
 
-	public void testFindReajusteFaixaSalarial() {
-		
+	public void testFindReajusteFaixaSalarial() 
+	{
 		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixa1);
 		
@@ -220,7 +219,37 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		
 		assertEquals(reajuste1.getId(), ((ReajusteFaixaSalarial) faixaSalarialHistoricoDao.findReajusteFaixaSalarial(data, faixa1.getId())).getId());
 	}
-	
+	public void testfindHistoricoAtual() {
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa1);
+		
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa2);
+		
+		Date data = DateUtil.criarDataMesAno(01, 01, 2010);
+		Date data2 = DateUtil.incrementaMes(data, 5);
+		
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
+		historico1.setFaixaSalarial(faixa1);
+		historico1.setData(data);
+		historico1.setStatus(1);
+		faixaSalarialHistoricoDao.save(historico1);
+		
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
+		historico2.setFaixaSalarial(faixa2);
+		historico2.setData(data);
+		historico2.setStatus(1);
+		faixaSalarialHistoricoDao.save(historico2);
+
+		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity();
+		historico3.setFaixaSalarial(faixa2);
+		historico3.setData(data2);
+		historico3.setStatus(1);
+		faixaSalarialHistoricoDao.save(historico3);
+		
+		assertEquals(historico3.getId(), ((FaixaSalarialHistorico) faixaSalarialHistoricoDao.findHistoricoAtual(faixa2.getId())).getId());
+	}
 	
 	public void testFindByIdProjection()
 	{
@@ -437,7 +466,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistorico3.setIndice(indice);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1, Boolean.FALSE, empresa.getId());
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), null, data1, Boolean.FALSE, empresa.getId(), null);
 
 		assertEquals(1, retorno.size());
 	}
@@ -519,7 +548,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		areaIds.add(areaOrganizacional1.getId());
 		areaIds.add(areaOrganizacional2.getId());
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1, Boolean.FALSE, empresa.getId());
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByGrupoCargoAreaData(grupoIds, new ArrayList<Long>(), areaIds, data1, Boolean.FALSE, empresa.getId(), null);
 
 		assertEquals(1, retorno.size());
 	}

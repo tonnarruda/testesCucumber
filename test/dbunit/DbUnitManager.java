@@ -157,7 +157,7 @@ public class DbUnitManager {
 	 * @throws DatabaseUnitException
 	 */
 	private IDatabaseConnection getDbUnitConnection() throws DatabaseUnitException {
-		IDatabaseConnection dbconn = new DatabaseConnection(this.getConnection());
+		IDatabaseConnection dbconn = new DatabaseConnection(this.getConnection(), "public");
 		dbconn.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new PostgresqlDataTypeFactory());
 		return dbconn;
 	}

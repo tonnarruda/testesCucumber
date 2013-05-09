@@ -12,6 +12,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
@@ -72,6 +73,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	Mock etapaSeletivaManager;
 	Mock habilidadeManager;
 	Mock atitudeManager;
+	Mock transactionManager;
 	
 
 	protected void setUp() throws Exception
@@ -117,6 +119,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		habilidadeManager = mock(HabilidadeManager.class);
 		cargoManager.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
 		
+		transactionManager = new Mock(PlatformTransactionManager.class);
+		cargoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -307,9 +312,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Long[] idsLong = new Long[] { 1L };
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong), ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(idsLong), ANYTHING, ANYTHING).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
+		assertEquals(cargos, cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L, null));
 	}
 	
 	public void testFindBySolicitacao()
@@ -325,9 +330,9 @@ public class CargoManagerTest extends MockObjectTestCase
 	{
 		Long[] idsLong = new Long[] {};
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null), ANYTHING).will(returnValue(null));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(eq(null), ANYTHING, ANYTHING).will(returnValue(null));
 
-		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L));
+		assertNull(cargoManager.findByGrupoOcupacionalIdsProjection(idsLong, 1L, null));
 	}
 
 	public void testGetCargosFromFaixaSalarialHistoricos()
@@ -566,7 +571,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		String[] gruposCheck = new String[] { "1" };
 		assertEquals(1, cargoManager.populaCheckBox(gruposCheck, null, 1L).size());
@@ -615,10 +620,12 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<AreaFormacao> areasFormacao = new ArrayList<AreaFormacao>(); 
 		areaFormacaoManager.expects(once()).method("findByCargo").will(returnValue(areasFormacao ));
 		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		cargoDao.expects(once()).method("update");
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
 		faixaSalarialManager.expects(once()).method("sincronizar");
 		
-		cargoManager.sincronizar(empresaOrigemId, empresaDestinoId, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds);
+		cargoManager.sincronizar(empresaOrigemId, EmpresaFactory.getEmpresa(), areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, null);
 	}
 }

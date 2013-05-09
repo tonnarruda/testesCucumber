@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 
 public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoordenador, MedicoCoordenadorDao> implements MedicoCoordenadorManager
@@ -23,7 +24,7 @@ public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoord
 
 	public Collection<MedicoCoordenador> findByEmpresa(Long empresaId)
 	{
-		return getDao().findByEmpresa(empresaId, "desc");
+		return getDao().findByEmpresa(empresaId, false);
 	}
 
 	public File getAssinaturaDigital(Long id) throws Exception
@@ -31,20 +32,21 @@ public class MedicoCoordenadorManagerImpl extends GenericManagerImpl<MedicoCoord
 		return getDao().getFile("assinaturaDigital", id);
 	}
 	
-	public Collection<MedicoCoordenador> getMedicosAteData(Long empresaId, Date data, Date dataDesligamento)
+	public Collection<MedicoCoordenador> getMedicosAteData(Date data, Colaborador colaborador)
 	{
-		Collection<MedicoCoordenador> medicoCoordenadors = getDao().findByEmpresa(empresaId, "asc");
+		Collection<MedicoCoordenador> medicoCoordenadors = getDao().findByEmpresa(colaborador.getEmpresa().getId(), true);
 		Collection<MedicoCoordenador> resultado = new ArrayList<MedicoCoordenador>();
 		
 		for (MedicoCoordenador medicoCoordenador : medicoCoordenadors)
 		{
-			if (medicoCoordenador.getInicio().compareTo(data) <= 0)
-			{
-				if (medicoCoordenador.getFim() != null && medicoCoordenador.getFim().compareTo(data) > 0)
-					medicoCoordenador.setFim(null);
-				
-				medicoCoordenador.setDataDesligamento(dataDesligamento);
-				resultado.add(medicoCoordenador);
+			if (medicoCoordenador.getInicio().compareTo(data) <= 0) { 
+				if (colaborador.getDataAdmissao().compareTo(data) <= 0 
+						&& (colaborador.getDataDesligamento() == null || medicoCoordenador.getInicio().compareTo(colaborador.getDataDesligamento()) <= 0) 
+						&& (medicoCoordenador.getFim() == null || colaborador.getDataAdmissao().compareTo(medicoCoordenador.getFim()) <= 0)) 
+				{
+					medicoCoordenador.setDataDesligamento(colaborador.getDataDesligamento());
+					resultado.add(medicoCoordenador);
+				} 
 			}
 			else
 				break;

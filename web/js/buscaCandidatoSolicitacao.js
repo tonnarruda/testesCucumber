@@ -54,33 +54,89 @@ function marcarDesmarcar(frm)
 	}
 }
 
-function verificaCandidatos()
-{
-	if(document.formCand.candidatosId.length == undefined)
-	{
-		return document.formCand.candidatosId.checked;
-	}
-
-	for(i = 0; i < document.formCand.candidatosId.length; i++)
-	{
-		if(document.formCand.candidatosId[i].checked)
-			return true;
-	}
-
-	return false;
-}
-
 function prepareEnviarForm()
 {
-	if(verificaCandidatos())
-	{
-		
-		document.formCand.submit();
-	}
-	else
+	var candidatosIdsMarcados = $("#formCand input[name='candidatosId']:checked");
+	
+	if( candidatosIdsMarcados.size() < 1)
 	{
 		jAlert("Nenhum candidato selecionado!");
 	}
+	else
+	{
+		var cpfs = [];
+		
+		$(candidatosIdsMarcados).each(function(i, marcado){
+			cpfs[i] = $(marcado).attr('cpf');
+		});
+		
+		CandidatoDWR.findColaboradoresMesmoCpf( cpfs, function(colaboradores) {
+			
+			if( $(colaboradores).size() > 0 )
+			{
+				var msg = "";
+				var clss = "";
+				var candNome = "";
+
+				msg += "<p>Foram encontrados colaboradores com o mesmo CPF de alguns candidatos selecionados.<br />"; 
+				msg += "Desmarque os candidatos que não devem permanecer nessa triagem:</p>"; 
+				msg += "<table class='dados'>";
+				msg += "	<thead>";
+				msg += "		<tr>";
+				msg += "			<th width='30'></th>";
+				msg += "			<th>Candidato</th>";
+				msg += "			<th width='5' style='background-color:#f2f2f2'></th>";
+				msg += "			<th width='220'>Colaborador</th>";
+				msg += "			<th width='105'>CPF</th>";
+				msg += "			<th width='85'>Desligado em</th>";
+				msg += "		</tr>";
+				msg += "	</thead>";
+				msg += "	<tbody>";
+				$(colaboradores).each(function(i, colaborador) {
+					candNome = $("#formCand a[cpf='" + colaborador.cpf + "']").text();
+					
+					clss = i%2 == 0 ? 'odd' : 'even';
+					msg += "<tr class='" + clss + "'>";
+					msg += "	<td><input type='checkbox' name='candidatosPopupId' cpf='" + colaborador.cpf + "' value='" + colaborador.cpf + "' checked='checked' onclick='toggleCandidato(this.checked, \"" + colaborador.cpf + "\")'/></td>";
+					msg += "	<td>" + candNome + "</td>";
+					msg += "	<td style='background-color:#f2f2f2;'></td>";
+					msg += "	<td>" + colaborador.nome + "</td>";
+					msg += "	<td align='center'>" + colaborador.cpf + "</td>";
+					msg += "	<td align='center'>" + colaborador.dataDesligamento + "</td>";
+					msg += "</tr>";
+				});
+				msg += "	</tbody>";
+				msg += "</table>";
+				
+				if ( !($('#popup').length) )
+					$('body').append("<div id='popup'></div>");
+				
+				$("#popup").html(msg)
+							.dialog({	title: "Colaboradores ou ex-colaboradores detectados",
+										modal: true, 
+										width: 720,
+										buttons: [
+												    {
+												        text: "Concluir",
+												        click: function() { document.formCand.submit(); }
+												    },
+												    {
+												        text: "Cancelar",
+												        click: function() { $(this).dialog("close"); }
+												    }
+												] 
+										});
+			}
+			else
+				document.formCand.submit();
+		});
+	}
+}
+
+function toggleCandidato(marcar, cpf)
+{
+	$("#formCand input[name='candidatosId'][cpf='" + cpf + "']").attr('checked', marcar);
+	$("#popup input[name='candidatosPopupId'][cpf='" + cpf + "']").not(this).attr('checked', marcar);
 }
 
 // ids de candidatoSolicitacao

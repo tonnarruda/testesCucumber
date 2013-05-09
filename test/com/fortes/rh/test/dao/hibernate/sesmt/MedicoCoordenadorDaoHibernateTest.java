@@ -130,8 +130,8 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 		medico2 = medicoCoordenadorDao.save(medico2);
 		medico3 = medicoCoordenadorDao.save(medico3);
 
-		Collection<MedicoCoordenador> collection = medicoCoordenadorDao.findByEmpresa(empresa1.getId(), "asc");
-		collection = medicoCoordenadorDao.findByEmpresa(empresa1.getId(), "desc");
+		Collection<MedicoCoordenador> collection = medicoCoordenadorDao.findByEmpresa(empresa1.getId(), false);
+		collection = medicoCoordenadorDao.findByEmpresa(empresa1.getId(), false);
 
 		assertEquals(2, collection.size());
 		assertTrue(collection.contains(medico2));

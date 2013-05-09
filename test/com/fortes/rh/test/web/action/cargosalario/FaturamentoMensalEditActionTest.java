@@ -2,10 +2,8 @@ package com.fortes.rh.test.web.action.cargosalario;
 
 import java.util.ArrayList;
 
-import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;

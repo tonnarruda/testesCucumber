@@ -216,6 +216,8 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		p.add(Projections.property("f.valor"), "valor");
 		p.add(Projections.property("f.quantidade"), "quantidade");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("fs.nomeACPessoal"), "projectionFaixaSalarialNomeACPessoal");
 		p.add(Projections.property("i.id"), "projectionIndiceId");
 		p.add(Projections.property("c.id"), "projectionCargoId");
 
@@ -255,7 +257,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return query.list();
 	}
 	
-	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId)
+	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new FaixaSalarialHistorico(hf.id, hf.data, hf.tipo, hf.valor, hf.quantidade, i.id, i.nome, hi.valor, hi.data, c.id, c.nome, f.id, f.nome) ");
@@ -283,6 +285,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(cargoIds != null && !cargoIds.isEmpty())
 			hql.append("and c.id in (:cargoIds) ");
+
+		if(cargoAtivo != null)
+			hql.append("and c.ativo = :cargoAtivo ");
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			hql.append("and a.id in (:areaIds) ");
@@ -305,6 +310,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		
 		if(cargoIds != null && !cargoIds.isEmpty())
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
+
+		if(cargoAtivo != null)
+			query.setBoolean("cargoAtivo", cargoAtivo);
 		
 		if(areaIds != null && !areaIds.isEmpty())
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
@@ -428,5 +436,24 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return (ReajusteFaixaSalarial) criteria.uniqueResult();
+	}
+
+	public FaixaSalarialHistorico findHistoricoAtual(Long faixaSalarialId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.tipo, fsh.valor, fsh.quantidade, fsh.indice.id, fsh.faixaSalarial.id) ");
+		hql.append("from FaixaSalarialHistorico as fsh ");
+		hql.append("where fsh.faixaSalarial.id = :faixaId ");
+		hql.append("and fsh.status = :status ");
+		hql.append("and fsh.data = (select max(fsh2.data) ");
+		hql.append("				from FaixaSalarialHistorico as fsh2 ");
+		hql.append("				where fsh2.faixaSalarial.id = fsh.faixaSalarial.id ");
+		hql.append("				and fsh2.data <= :hoje and fsh2.status = :status ) ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("faixaId", faixaSalarialId);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return (FaixaSalarialHistorico) query.uniqueResult();
 	}
 }

@@ -1,7 +1,5 @@
 package com.fortes.rh.test.business.geral;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Locale;
 
 import org.jmock.Mock;

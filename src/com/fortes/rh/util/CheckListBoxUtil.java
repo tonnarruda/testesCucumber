@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import com.fortes.model.AbstractModel;
 import com.fortes.web.tags.CheckBox;
 
 /**

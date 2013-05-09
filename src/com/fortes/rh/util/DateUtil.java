@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -625,13 +624,9 @@ public class DateUtil
 	{
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(dataAntiga);
+		calendar.add(GregorianCalendar.DAY_OF_MONTH, periodicidade);
 		
-		Calendar calendarResult = new GregorianCalendar();
-		calendarResult.set(GregorianCalendar.MONTH, calendar.get(GregorianCalendar.MONTH));
-		calendarResult.set(GregorianCalendar.YEAR, calendar.get(GregorianCalendar.YEAR));
-		calendarResult.set(GregorianCalendar.DAY_OF_MONTH, calendar.get(GregorianCalendar.DAY_OF_MONTH) + periodicidade);
-		
-		return calendarResult.getTime();
+		return calendar.getTime();
 	}
 
 	public static Date incrementaMes(Date dataAntiga, Integer periodicidade)

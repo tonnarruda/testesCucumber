@@ -26,6 +26,15 @@ public class OcorrenciaDWR
 	}
 
 	@SuppressWarnings("unchecked")
+	public Map<Object, Object> getByEmpresa(Long empresaId) throws Exception
+	{
+		Collection<Ocorrencia> ocorrencias = new ArrayList<Ocorrencia>();
+		ocorrencias = ocorrenciaManager.findAllSelect(new Long[]{empresaId});
+		
+		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias, "getId", "getDescricao");
+	}
+
+	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getByEmpresaComCodigoAc(Long empresaId) throws Exception
 	{
 		Collection<Ocorrencia> ocorrencias  = ocorrenciaManager.findComCodigoAC(empresaId);

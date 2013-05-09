@@ -71,7 +71,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
 	
-			addActionMessage("Colaborador desligado com sucesso.");
+			addActionSuccess("Colaborador desligado com sucesso.");
 		
 		} catch (Exception e) {
 			addActionError(e.getMessage());

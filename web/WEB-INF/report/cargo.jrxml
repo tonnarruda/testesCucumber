@@ -4,15 +4,10 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="25"/>
+	<property name="ireport.y" value="265"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<subDataset name="faixas e competencias" uuid="3bbf31d5-2949-45a8-b76a-be9b0ea82482">
-		<queryString language="SQL">
-			<![CDATA[]]>
-		</queryString>
-	</subDataset>
 	<subDataset name="faixas" uuid="e243829d-9ab6-461f-81f8-740adf16d789">
 		<field name="competencias" class="java.lang.Object"/>
 		<field name="nome" class="java.lang.String"/>
@@ -498,9 +493,9 @@
 				<textFieldExpression><![CDATA[$F{experiencia}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="52">
+		<band height="53">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="52" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="53" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -514,14 +509,14 @@
 				<text><![CDATA[Faixas Salariais]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement uuid="bdf358a4-3d38-4fcd-b059-1caa3a95371e" mode="Transparent" x="0" y="13" width="535" height="39" backcolor="#FFFFFF"/>
+				<reportElement uuid="bdf358a4-3d38-4fcd-b059-1caa3a95371e" mode="Transparent" x="0" y="13" width="535" height="38" backcolor="#FFFFFF"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="faixas" uuid="82662b86-d71b-4637-8160-3c00d1a66632">
 						<dataSourceExpression><![CDATA[$F{faixaSalarials}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="39" width="535">
+					<jr:listContents height="38" width="535">
 						<textField>
-							<reportElement uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2" x="0" y="0" width="535" height="14" isPrintWhenDetailOverflows="true"/>
+							<reportElement uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2" x="0" y="0" width="535" height="13" isPrintWhenDetailOverflows="true"/>
 							<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
 							<textElement>
 								<font size="8"/>
@@ -529,7 +524,7 @@
 							<textFieldExpression><![CDATA["Faixa Salarial : " + $F{nome}]]></textFieldExpression>
 						</textField>
 						<componentElement>
-							<reportElement uuid="f4288dda-ecd0-4d1e-b8e0-aa620aa6ff08" mode="Transparent" x="16" y="26" width="503" height="12"/>
+							<reportElement uuid="f4288dda-ecd0-4d1e-b8e0-aa620aa6ff08" mode="Transparent" x="16" y="25" width="503" height="12"/>
 							<jr:list printOrder="Vertical">
 								<datasetRun subDataset="competencias" uuid="2cb7eb80-8398-45cb-a2f8-4978c1e9a069">
 									<dataSourceExpression><![CDATA[$F{competencias}]]></dataSourceExpression>
@@ -564,7 +559,7 @@
 							</jr:list>
 						</componentElement>
 						<staticText>
-							<reportElement uuid="bc0768dc-c1eb-46a3-acaf-8b6371e6d82b" positionType="Float" stretchType="RelativeToBandHeight" x="16" y="14" width="276" height="12" isPrintWhenDetailOverflows="true"/>
+							<reportElement uuid="bc0768dc-c1eb-46a3-acaf-8b6371e6d82b" positionType="Float" x="16" y="13" width="276" height="12" isPrintWhenDetailOverflows="true"/>
 							<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 								<topPen lineWidth="0.5"/>
 								<leftPen lineWidth="0.5"/>
@@ -577,7 +572,7 @@
 							<text><![CDATA[Competência Exigida]]></text>
 						</staticText>
 						<staticText>
-							<reportElement uuid="c8201c96-ccdd-46b4-9bc4-06a08cd17347" x="292" y="14" width="227" height="12" isPrintWhenDetailOverflows="true"/>
+							<reportElement uuid="c8201c96-ccdd-46b4-9bc4-06a08cd17347" x="292" y="13" width="227" height="12" isPrintWhenDetailOverflows="true"/>
 							<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 								<topPen lineWidth="0.5"/>
 								<bottomPen lineWidth="0.5"/>

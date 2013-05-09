@@ -1,7 +1,6 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;

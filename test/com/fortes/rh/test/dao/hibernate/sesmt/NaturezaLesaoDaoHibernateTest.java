@@ -5,13 +5,9 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.sesmt.NaturezaLesaoDao;
-import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.acesso.UsuarioFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.NaturezaLesaoFactory;
 

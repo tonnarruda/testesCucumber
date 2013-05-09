@@ -108,6 +108,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.cnae"), "cnae");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.grupoAC"), "grupoAC");
+		p.add(Projections.property("e.codigoAC"), "codigoAC");
 		p.add(Projections.property("e.exibirSalario"), "exibirSalario");
 		p.add(Projections.property("e.exibirColaboradorSubstituido"), "exibirColaboradorSubstituido");
 		p.add(Projections.property("e.turnoverPorSolicitacao"), "turnoverPorSolicitacao");
@@ -411,6 +412,13 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 
 	public boolean checkEmpresaIntegradaAc() {
 		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true");
+		return !query.list().isEmpty();
+	}
+	
+	public boolean checkEmpresaIntegradaAc(Long empresaId) 
+	{
+		Query query = getSession().createQuery("select e.acIntegra from Empresa e where e.acIntegra = true and e.id=:empresaId ");
+		query.setLong("empresaId", empresaId);
 		return !query.list().isEmpty();
 	}
 

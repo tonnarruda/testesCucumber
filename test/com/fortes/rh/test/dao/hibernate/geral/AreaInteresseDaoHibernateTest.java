@@ -1,7 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;

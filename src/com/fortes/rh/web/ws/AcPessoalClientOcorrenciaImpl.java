@@ -1,7 +1,5 @@
 package com.fortes.rh.web.ws;
 
-import static org.apache.axis.Constants.XSD_BOOLEAN;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 

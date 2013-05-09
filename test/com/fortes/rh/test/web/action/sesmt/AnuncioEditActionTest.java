@@ -1,13 +1,11 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;

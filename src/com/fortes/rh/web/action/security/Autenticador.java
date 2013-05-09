@@ -5,10 +5,11 @@ import org.apache.log4j.Logger;
 import remprot.RPClient;
 
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.ActionSupport;
 
 @SuppressWarnings("serial")
-public class Autenticador extends ActionSupport
+public class Autenticador extends MyActionSupport
 {
 	private String codigoResposta;
 	private String codigoOperacional;

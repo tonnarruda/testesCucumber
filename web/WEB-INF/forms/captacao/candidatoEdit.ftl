@@ -152,43 +152,51 @@
 		}
 		
 		exibeLabelDosCamposNaoPreenchidos = true;
+		marcaAbas = true;
 		function validarCamposCpf()
 		{
 			<#if moduloExterno?exists && moduloExterno>
+				$('#formacao, #idioma, #expProfissional, #cpf, #comoFicouSabendoVagaQual').css('backgroundColor','inherit');
+			
 				var msg = "Os seguintes campos são obrigatórios: <br />";
 				var formacaoInvalido = $.inArray('formacao', arrayObrigatorios) > -1 && $('#formacao tbody tr').size() < 1;
 				var idiomaInvalido = $.inArray('idioma', arrayObrigatorios) > -1 && $('#idiomaTable tbody tr').size() < 1;
 				var expInvalido = $.inArray('expProfissional', arrayObrigatorios) > -1 && $('#exp tbody tr').size() < 1;
 				var ficouSabendoVaga = $.inArray('comoFicouSabendoVaga', arrayObrigatorios) > -1 && $('#comoFicouSabendoVaga').val() == 1 && ($('#comoFicouSabendoVagaQual').val() == null || $('#comoFicouSabendoVagaQual').val() == '');
 				
+				if ($("#cpf").val() == "   .   .   -  ")
+		    	{
+		    		marcarAbas('#cpf');
+		    		$('#cpf').css('backgroundColor','#ffeec2');
+		    		msg += "CPF<br />";
+		    	}
+				
 				if (formacaoInvalido)
 				{
+		    		marcarAbas('#formacao');
 					$('#formacao').css('backgroundColor','#ffeec2');
 		    		msg += "Formação Escolar<br />";
 				}
 
 				if (idiomaInvalido)
 				{
+		    		marcarAbas('#idioma');
 					$('#idioma').css('backgroundColor','#ffeec2');
 		    		msg += "Idiomas<br />";
 				}
 
 				if (expInvalido)
 				{
+		    		marcarAbas('#expProfissional');
 					$('#expProfissional').css('backgroundColor','#ffeec2');
 		    		msg += "Experiência Profissional<br />";
 				}
 		    		
-		    	if ($("#cpf").val() == "   .   .   -  ")
-		    	{
-		    		msg += "CPF<br />";
-		    		$('#cpf').css('backgroundColor','#ffeec2');
-		    	}
-		    	
 		    	if(ficouSabendoVaga )
 		    	{
-		    		msg += "Qual?<br />";
+		    		marcarAbas('#comoFicouSabendoVagaQual');
 		    		$('#comoFicouSabendoVagaQual').css('backgroundColor','#ffeec2');
+		    		msg += "Qual?<br />";
 		    	}
 		    			    	
 		    	if (ficouSabendoVaga  || formacaoInvalido || idiomaInvalido || expInvalido || $("#cpf").val() == "   .   .   -  ") {
@@ -211,9 +219,9 @@
 				arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
 					return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 				});
-				
-				
+
 				return validaFormularioEPeriodo('form', arrayObrigatorios, new Array('cpf', 'nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
+		   	
 		   	<#else>
 		       	if ($("#cpf").val() == "   .   .   -  ")
 		   			return validaFormularioEPeriodo('form', new Array('nome','escolaridade','ende','num','uf','cidade','ddd','fone'), new Array('nascimento', 'cep', 'emissao', 'vencimento', 'rgDataExpedicao', 'ctpsDataExpedicao', 'pis', 'data1', 'data2', 'data3'));
@@ -229,8 +237,10 @@
 		
 		function setaCampos()
 		{
+			desmarcarAbas();
+		
 			<#if moduloExterno?exists && moduloExterno && !candidato.id?exists>
-					if( !validarSenhaExterno())
+				if( !validarSenhaExterno())
 			  		return false;
 			<#else>
 				if( !validarSenhaInterno())
@@ -241,7 +251,7 @@
 			<#if maxCandidataCargo?exists && 0 < maxCandidataCargo>
 				if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') > ${maxCandidataCargo})
 				{
-					jAlert("Não é permitido selecionar mais de ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
+					jAlert("Não é permitido selecionar mais do que ${maxCandidataCargo} cargos (Cargo / Função Pretendida)");
 					return false;
 				}
 			</#if>
@@ -269,15 +279,21 @@
 		
 		function validarSenhaExterno()
 		{	
-			if(document.getElementById('senha').value == "" )
+			$('#senha, #comfirmaSenha').css('backgroundColor','#fff');
+		
+			if( $('#senha').val() == "" )
 			{
+				marcarAbas('#senha');
+				$('#senha').css('backgroundColor','#ffeec2');
 				jAlert("Senha obrigatória para acesso ao modulo exteno.");
 				return false;
 			}
 		    
-			if((document.getElementById('senha').value != document.getElementById('comfirmaSenha').value) )
+			if( $('#senha').val() != $('#comfirmaSenha').val() )
 			{
-				jAlert("Senha não confere.");
+				marcarAbas('#comfirmaSenha');
+				$('#senha, #comfirmaSenha').css('backgroundColor','#ffeec2');
+				jAlert("Confirmação de senha não confere com a senha inserida.");
 				return false;
 			}
 		
@@ -490,7 +506,7 @@
 		<li id="wwgrp_infoAdicionais" class="campo">
 			<@ww.div >
 				<ul>
-					Informações Adicionais:<br />
+					<label for="infoAdicionais">Informações Adicionais:</label><br />
 					<@ww.textarea id="infoAdicionais" name="obs" cssStyle="width: 705px;" onblur="${capitalizar}"/>
 				</ul>
 			</@ww.div>
@@ -688,7 +704,7 @@
 			<@ww.div id="wwgrp_identidade" cssClass="campo">
 				<ul>
 					<b><@ww.label label="Identidade" /></b>
-			    	<@ww.textfield label="Número" name="candidato.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+			    	<@ww.textfield label="RG" name="candidato.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
 			  	   	<@ww.textfield label="Órgão Emissor" name="candidato.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
 			       	<@ww.select label="Estado" name="candidato.pessoal.rgUf.id" id="rgUf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			      	<@ww.datepicker label="Data de Expedição" name="candidato.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
@@ -761,7 +777,7 @@
       </div>
       
       <div id="content6" class="6" style="display:none;">
-		<@ww.label label="Descrição do Currículo" />
+		<label for="ocrTexto">Descrição do Currículo:</label>
 		<@ww.textarea name="candidato.ocrTexto" id="ocrTexto" cssStyle="width: 777px;height: 500px"/>
 	  </div>
       

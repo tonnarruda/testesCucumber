@@ -28,7 +28,6 @@ import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
-import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;

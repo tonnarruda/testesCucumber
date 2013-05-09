@@ -9,7 +9,6 @@ import net.vidageek.mirror.dsl.Mirror;
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.fortes.rh.model.sesmt.Evento;
-import com.fortes.rh.security.spring.aop.MetodoInterceptadoImpl;
 import com.fortes.security.auditoria.MetodoInterceptado;
 
 public class MetodoInterceptadoImplTest extends TestCase {

@@ -10,6 +10,11 @@ public class IntegraACException extends Exception
 	private static final long serialVersionUID = 1958750031897346627L;
 	private Exception cause;
 	
+	public IntegraACException()
+	{
+		super();
+	}
+
 	public IntegraACException(String msg)
 	{
 		super(msg);

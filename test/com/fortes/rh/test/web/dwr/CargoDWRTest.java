@@ -44,7 +44,7 @@ public class CargoDWRTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoManager.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoManager.expects(once()).method("findByGrupoOcupacionalIdsProjection").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
 
 		Map retorno = cargoDWR.getCargoByGrupo(grupoOcupacionalIds, 1L);
 

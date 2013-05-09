@@ -2506,9 +2506,29 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		
 		String qtdTabelasComCandidatos = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col " +
 																		"where col.column_name = 'candidato_id' " +
+																		"and col.table_schema = 'public' " +
 																		"and col.table_name <> 'candidatoeleicao';"); // candidatoeleicao é na realidade um colaborador
-		//se almentar atualizar removercandidato no manager
+		//se aumentar atualizar removercandidato no manager
 		assertEquals("12", qtdTabelasComCandidatos);
+	}
+	
+	public void testFindColaboradoresMesmoCpf()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity();
+		colab1.setPessoalCpf("65617222222");
+		colab1.setDataDesligamento(DateUtil.criarDataMesAno(1, 2, 2013));
+		colab1.setEmpresa(empresa);
+		colaboradorDao.save(colab1);
+
+		Colaborador colab2 = ColaboradorFactory.getEntity();
+		colab2.setPessoalCpf("36548111111");
+		colab2.setEmpresa(empresa);
+		colaboradorDao.save(colab2);
+		
+		assertEquals(2, candidatoDao.findColaboradoresMesmoCpf(new String[] { "", colab1.getPessoal().getCpf(), colab2.getPessoal().getCpf() }).size() );
 	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)

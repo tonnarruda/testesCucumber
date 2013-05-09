@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 
 public interface MedicoCoordenadorManager extends GenericManager<MedicoCoordenador>
@@ -13,5 +14,5 @@ public interface MedicoCoordenadorManager extends GenericManager<MedicoCoordenad
 	MedicoCoordenador findByIdProjection(Long medicoCoordenadorId);
 	Collection<MedicoCoordenador> findByEmpresa(Long empresaId);
 	File getAssinaturaDigital(Long id) throws Exception;
-	Collection<MedicoCoordenador> getMedicosAteData(Long empresaId, Date data, Date dataDesligamento);
+	Collection<MedicoCoordenador> getMedicosAteData(Date data, Colaborador colaborador);
 }

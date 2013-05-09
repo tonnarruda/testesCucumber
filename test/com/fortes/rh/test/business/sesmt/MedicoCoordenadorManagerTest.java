@@ -8,6 +8,7 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.model.type.File;
@@ -17,11 +18,16 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 {
 	private MedicoCoordenadorManagerImpl medicoCoordenadorManager;
 	private Mock medicoCoordenadorDao;
+	
+	// Utilizado em testGetMedicosAteData
+	private int contador = 0;
 
 	protected void setUp() throws Exception
     {
@@ -103,53 +109,168 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		assertNotNull(medicoCoordenadorManager.findByEmpresa(1L));
 	}
 	
-	public void testGetMedicosAteData()
+	/*
+	 * Este teste contempla apenas as regras individuais, sempre heverá 1(Um) ou 0(Zero) engenheiro
+	 * que fará parte dp PPP.
+	 */
+	public void testGetMedicosAteDataComUmOuZeroEngenheiro()
 	{
-		Calendar hoje = Calendar.getInstance();
+		Date data_1 = DateUtil.criarDataMesAno(01, 01, 2013);
+		Date data_2 = DateUtil.criarDataMesAno(01, 02, 2013);
+		Date data_3 = DateUtil.criarDataMesAno(01, 03, 2013);
+		Date data_4 = DateUtil.criarDataMesAno(01, 04, 2013);
+		Date data_5 = DateUtil.criarDataMesAno(01, 04, 2013);
+
+		boolean estaNaRelacao = true;
+		boolean naoEstaNaRelacao = false;
 		
-		Calendar antes = Calendar.getInstance();
-		antes.add(Calendar.MONTH, -2);
+		// Teste com desligamento e fim não nulos
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_1, data_1, data_1, data_1, estaNaRelacao);
 		
-		Calendar depois = Calendar.getInstance();
-		depois.add(Calendar.MONTH, +2);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, data_5, data_2, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, data_4, data_2, data_5, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, data_3, data_2, data_5, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_1, data_3, data_2, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, data_5, data_2, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_1, data_4, data_2, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, data_5, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, data_4, data_3, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, data_3, data_4, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_1, data_2, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, data_2, data_3, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_1, data_2, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_2, data_4, data_1, data_5, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_2, data_5, data_1, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_2, data_3, data_1, data_5, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_2, data_3, data_1, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_2, data_5, data_1, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_2, data_4, data_1, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_3, data_4, data_1, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_3, data_5, data_1, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_4, data_5, data_1, data_3, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_5, data_3, data_4, data_1, data_2, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_3, data_5, data_1, data_2, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_4, data_5, data_1, data_2, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, data_5, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, data_4, data_3, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, data_3, data_4, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, data_5, data_2, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, data_5, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_4, data_5, data_2, data_3, naoEstaNaRelacao);
+
+		// Teste com desligamento e fim nulos
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_1, null, data_1, null, estaNaRelacao);
 		
-		Calendar dataDesligamento = Calendar.getInstance();
-		dataDesligamento.add(Calendar.MONTH, +1);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, null, data_2, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, null, data_3, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_2, null, data_1, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_3, null, data_1, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, null, data_3, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, null, data_2, null, naoEstaNaRelacao);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setDataDesligamento(dataDesligamento.getTime());
+		// Teste com desligamento nulo
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_1, null, data_1, data_1, estaNaRelacao);
+		
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, null, data_2, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, null, data_2, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, null, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_2, null, data_1, data_4, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_2, null, data_1, data_3, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_3, null, data_1, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_4, null, data_1, data_3, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, null, data_3, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, null, data_2, data_4, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_4, null, data_2, data_3, naoEstaNaRelacao);
+		
+		// Teste com fim nulo
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_1, data_1, data_1, null, estaNaRelacao);
+		
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, data_4, data_2, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, data_3, data_2, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, data_4, data_3, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_1, data_3, data_4, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_1, data_2, data_4, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_1, data_2, data_3, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_3, data_2, data_4, data_1, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_4, data_2, data_3, data_1, null, estaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_2, data_3, data_4, data_1, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, data_4, data_3, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_2, data_3, data_4, null, naoEstaNaRelacao);
+		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, null, naoEstaNaRelacao);
+	}
+
+	public void testGetMedicosAteDataComVariosMedicos()
+	{
+		Date admissao = DateUtil.criarDataMesAno(01, 01, 2013);
+		Date desligamento = DateUtil.criarDataMesAno(01, 04, 2013);
+
+		Date inicio_1 = DateUtil.criarDataMesAno(01, 02, 2013);
+		Date inicio_2 = DateUtil.criarDataMesAno(10, 02, 2013);
+		Date fim = DateUtil.criarDataMesAno(01, 03, 2013);
+		
+		Date dataPPP = DateUtil.criarDataMesAno(05, 02, 2013);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
+		colaboradorDoPPP.setEmpresa(empresa);
+		colaboradorDoPPP.setDataAdmissao(admissao);
+		colaboradorDoPPP.setDataDesligamento(desligamento);
 		
 		MedicoCoordenador medicoCoordenador1 = new MedicoCoordenador();
-		medicoCoordenador1.setCrm("123");
-		medicoCoordenador1.setNome("João Adalberto Jr.");
-		medicoCoordenador1.setInicio(antes.getTime());
-		medicoCoordenador1.setFim(depois.getTime());
+		medicoCoordenador1.setId(1L);
+		medicoCoordenador1.setInicio(inicio_1);
+		medicoCoordenador1.setFim(fim);
 		
 		MedicoCoordenador medicoCoordenador2 = new MedicoCoordenador();
-		medicoCoordenador2.setCrm("5235");
-		medicoCoordenador2.setNome("Maria Joaquina Silva");
-		medicoCoordenador2.setInicio(hoje.getTime());
-		medicoCoordenador2.setFim(null);
+		medicoCoordenador2.setId(2L);
+		medicoCoordenador2.setInicio(inicio_1);
+		medicoCoordenador2.setFim(fim);
 		
-		MedicoCoordenador medicoCoordenadorFora = new MedicoCoordenador();
-		medicoCoordenadorFora.setCrm("995");
-		medicoCoordenadorFora.setNome("Amaral Gomes");
-		medicoCoordenadorFora.setInicio(depois.getTime());
-		medicoCoordenadorFora.setFim(depois.getTime());
+		MedicoCoordenador medicoCoordenador3 = new MedicoCoordenador();
+		medicoCoordenador3.setId(3L);
+		medicoCoordenador3.setInicio(inicio_1);
+		medicoCoordenador3.setFim(null);
 		
-		Collection<MedicoCoordenador> medicoCoordenadors = new ArrayList<MedicoCoordenador>();
-		medicoCoordenadors.add(medicoCoordenador1);
-		medicoCoordenadors.add(medicoCoordenador2);
-		medicoCoordenadors.add(medicoCoordenadorFora);
+		MedicoCoordenador medicoCoordenador4 = new MedicoCoordenador();
+		medicoCoordenador4.setId(4L);
+		medicoCoordenador4.setInicio(inicio_2);
+		medicoCoordenador4.setFim(fim);
 		
-		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L),ANYTHING).will(returnValue(medicoCoordenadors));
+		MedicoCoordenador medicoCoordenador5 = new MedicoCoordenador();
+		medicoCoordenador5.setId(5L);
+		medicoCoordenador5.setInicio(inicio_2);
+		medicoCoordenador5.setFim(fim);
 		
-		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(1L, hoje.getTime(), colaborador.getDataDesligamento());
+		MedicoCoordenador[] medicoCoordenadores = new MedicoCoordenador[]{medicoCoordenador1, medicoCoordenador2, medicoCoordenador3, medicoCoordenador4, medicoCoordenador5};
+		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L), eq(true)).will(returnValue(Arrays.asList(medicoCoordenadores)));
 		
-		assertEquals(2, resultado.size());
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(dataPPP, colaboradorDoPPP);
 		
-		MedicoCoordenador medico2 = ((MedicoCoordenador) resultado.toArray()[1]);
-		assertEquals("Deve ter anulado a data FIM, pois ela é futura à data desejada, então fica em aberto",null, medico2.getFim());
+		assertEquals(3, resultado.size());
+		assertEquals(medicoCoordenador1.getId(), ((MedicoCoordenador)resultado.toArray()[0]).getId());
+		assertEquals(medicoCoordenador2.getId(), ((MedicoCoordenador)resultado.toArray()[1]).getId());
+		assertEquals(medicoCoordenador3.getId(), ((MedicoCoordenador)resultado.toArray()[2]).getId());
+	}
+
+	private void testaSeMedicoFazParteDoRelatorioPPP(Date ppp, Date admissao, Date desligamento, Date inicio, Date fim, boolean estaNaRelacao)
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
+		colaboradorDoPPP.setEmpresa(empresa);
+		
+		MedicoCoordenador medicoCoordenador1 = new MedicoCoordenador();
+		medicoCoordenador1.setInicio(inicio);
+		medicoCoordenador1.setFim(fim);
+		
+		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L), eq(true)).will(returnValue(Arrays.asList(new MedicoCoordenador[]{medicoCoordenador1})));
+		
+		colaboradorDoPPP.setDataAdmissao(admissao);
+		colaboradorDoPPP.setDataDesligamento(desligamento);
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(ppp, colaboradorDoPPP);
+		
+		assertEquals(++contador+"o teste.",estaNaRelacao, resultado.size() == 1);
 	}
 
 }

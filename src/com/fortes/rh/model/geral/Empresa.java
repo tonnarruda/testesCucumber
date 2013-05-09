@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -19,7 +18,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")

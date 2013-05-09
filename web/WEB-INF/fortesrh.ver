@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.106.113" data="06/05/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem : Novo popup de aviso para candidatos com o mesmo CPF de colaboradores ao inserir os candidatos selecionados (Exceto na aba "Triagem de Colaboradores").
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova coluna para impressão "Enviado AC" em campos disponíveis (Somente para empresas integradas com AC Pessoal).
+			:: Utilitários > Importar Cadastros: Ao importar os cadastros de cargo, área organizacional e tipo de ocorrência os mesmos serão enviados para o AC Pessoal quando a empresa destino for integrada.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.106.112" data="22/04/2013">
 		<Modulo nome=" "><![CDATA[
 			:: C&S > Relatórios > Descrição de Cargos: Novo layout do relatório.
@@ -31,7 +38,7 @@
     </Versao>
 	<Versao id="1.1.103.108" data="18/03/2013">
 		<Modulo nome=" "><![CDATA[
-			:: Tela de Login: Exibir somente as em empresas que pertence ao usuário digitado.
+			:: Tela de Login: Exibir somente as empresas que pertence ao usuário digitado.
 			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção de exibir Faixa Salarial Atual.
 			:: SESMT > Movimentações > Medição de Riscos > inserir: Novo botão para carregar a medição de riscos anterior.
     	]]></Modulo>

@@ -15,7 +15,7 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	boolean verifyData(Long faixaSalarialHistoricoId, Date data, Long faixaSalarialId);
 	FaixaSalarialHistorico findByFaixaSalarialId(Long faixaSalariaId);
 	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataProxima);
-	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId);
+	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<FaixaSalarialHistorico> findPendenciasByFaixaSalarialHistorico(Long empresaId);
@@ -25,4 +25,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 	ReajusteFaixaSalarial findReajusteFaixaSalarial(Date faixasalarialHistoricoData, Long faixaSalarialId);
+	FaixaSalarialHistorico findHistoricoAtual(Long faixaSalarialId);
 }

@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.dwr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.jmock.Mock;
@@ -12,7 +11,6 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoManager;
 import com.fortes.rh.business.sesmt.ComissaoReuniaoPresencaManager;
 import com.fortes.rh.model.sesmt.ComissaoReuniao;
-import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.test.factory.sesmt.ComissaoReuniaoFactory;
 import com.fortes.rh.web.dwr.ComissaoReuniaoDWR;
 

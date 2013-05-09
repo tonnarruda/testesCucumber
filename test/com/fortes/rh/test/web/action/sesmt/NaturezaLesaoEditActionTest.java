@@ -8,7 +8,6 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.NaturezaLesaoFactory;

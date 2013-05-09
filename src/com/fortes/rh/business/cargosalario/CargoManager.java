@@ -5,6 +5,7 @@
 package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
@@ -23,7 +24,7 @@ public interface CargoManager extends GenericManager<Cargo>
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo);
 	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo);
-	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId);
+	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo);
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;
 	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo);
@@ -40,7 +41,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<CheckBox> populaCheckBoxAllCargos();
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId);
 	public Collection<Cargo> findAllSelectDistinctNome();
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds);
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC);
 	public Cargo preparaCargoDoAC(TCargo tCargo);
 	public void updateCBO(Long id, TCargo tCargo);

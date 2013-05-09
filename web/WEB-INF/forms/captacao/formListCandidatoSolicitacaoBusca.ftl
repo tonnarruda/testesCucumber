@@ -1,8 +1,6 @@
-<@ww.form name="formCand" action="insertCandidatos.action" validate="true" method="POST">
+<@ww.form name="formCand" id="formCand" action="insertCandidatos.action" validate="true" method="POST">
 
-	<#if BDS?exists && !BDS>
-		<@ww.hidden name="solicitacao.id"/>
-	</#if>
+	<@ww.hidden name="solicitacao.id"/>
 
 	<@display.table name="candidatos" id="candidato" class="dados" >
 		
@@ -14,13 +12,13 @@
 
 		<#if solicitacao?exists && solicitacao.id?exists>
 			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;" class="${classe}">
-				<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
+				<input type="checkbox" name="candidatosId" value="${candidato.id?string?replace(".", "")?replace(",","")}" cpf="${candidato.pessoal.cpf}" />
 			</@display.column>
 		</#if>
 		
 		<@display.column title="Nome"  class="${classe}">
-			<a title="Ver Informação"  class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)">
-			${candidato.nome}
+			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)" cpf="${candidato.pessoal.cpf}">
+				${candidato.nome}
 			</a>
 			<#if candidato.pessoal?exists && candidato.pessoal.indicadoPor?exists && candidato.pessoal.indicadoPor?trim != "">
 				<span href=#  style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Indicado por: <br>${candidato.pessoal.indicadoPor?j_string}');return false">
@@ -31,7 +29,7 @@
 		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 200px;" class="${classe}"/>
 		<@display.column title="Cidade/UF" class="${classe}">
 			<#if candidato.endereco.cidade.nome?exists>
-			${candidato.endereco.cidade.nome}/${candidato.endereco.uf.sigla}
+				${candidato.endereco.cidade.nome}/${candidato.endereco.uf.sigla}
 			</#if>
 		</@display.column>
 		<@display.column property="dataAtualizacao" title="Atualizado em" format="{0,date,dd/MM/yyyy}" style="width: 85px;text-align: center;" class="${classe}"/>

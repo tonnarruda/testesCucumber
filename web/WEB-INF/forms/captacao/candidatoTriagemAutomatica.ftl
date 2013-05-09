@@ -5,8 +5,8 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-		
 		#menuBusca a.ativaTriagemAutomatica{color: #FFCB03;}
 		.cinza { color: #BBB; }
 	</style>
@@ -17,6 +17,7 @@
 		<title>Triagem de currículos</title>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -49,8 +50,7 @@
 				});
 			</#if>
 			
-			var obj = document.getElementById("legendas");
-			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo";
+			$("#legendas").append("&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Participa ou participou de processo seletivo");
 		});
 		
 		function triar() 
@@ -262,7 +262,7 @@
 	<#if candidatos?exists >
 		<div id="legendas" align="right"></div>
 		<br>
-		<@ww.form name="formCand" action="insertCandidatos.action" validate="true" method="POST">
+		<@ww.form name="formCand" id="formCand" action="insertCandidatos.action" validate="true" method="POST">
 			<#if BDS?exists && !BDS>
 				<@ww.hidden name="solicitacao.id"/>
 			</#if>
@@ -277,13 +277,13 @@
 		
 				<#if solicitacao?exists && solicitacao.id?exists>
 					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;" >
-						<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" />
+						<input type="checkbox" value="${candidato.id?string?replace(".", "")?replace(",","")}" name="candidatosId" cpf="${candidato.pessoal.cpf}" />
 					</@display.column>
 				</#if>
 				
 				<@display.column title="Nome">
-					<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}"/>', 580, 750)">
-					${candidato.nome}
+					<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}"/>', 580, 750)" cpf="${candidato.pessoal.cpf}">
+						${candidato.nome}
 					</a>
 				</@display.column>
 				<@display.column property="pessoal.sexo" title="Sexo" style="width: 30px; text-align: center;" class="${classe}"/>

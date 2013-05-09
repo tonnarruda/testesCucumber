@@ -6,9 +6,7 @@ import net.sf.json.processors.JsonValueProcessor;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fortes.business.GenericManager;
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.util.SpringUtil;
 
 public class AbstractModelJsonValueProcessor implements JsonValueProcessor {
 

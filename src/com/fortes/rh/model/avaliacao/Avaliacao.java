@@ -1,7 +1,6 @@
 package com.fortes.rh.model.avaliacao;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

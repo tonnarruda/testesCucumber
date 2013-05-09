@@ -16,7 +16,6 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements IndiceDao
