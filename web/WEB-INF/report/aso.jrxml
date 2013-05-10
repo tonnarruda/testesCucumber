@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aso" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="19" bottomMargin="19" isFloatColumnFooter="true" uuid="ae681565-fc59-460b-a101-5d86e7b4f4c3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.6105100000000154"/>
+	<property name="ireport.zoom" value="3.797498335832449"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="111"/>
+	<property name="ireport.y" value="598"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -12,6 +12,7 @@
 		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="EXISTE_EXAMES" class="java.lang.Boolean"/>
 	<field name="pessoa.nome" class="java.lang.String"/>
 	<field name="motivos" class="java.lang.String"/>
 	<field name="pessoa.pessoal.rg" class="java.lang.String"/>
@@ -410,9 +411,43 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
-		<band height="99" splitType="Prevent">
-			<subreport isUsingCache="true">
-				<reportElement uuid="1d82dd4c-fdc6-4317-99ac-c3f79890ec82" key="subreport-1" stretchType="RelativeToTallestObject" x="0" y="60" width="567" height="39"/>
+		<band height="91" splitType="Prevent">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bd255417-1f5b-45ef-b2b0-1a01e706be44" key="textField" positionType="Float" x="0" y="75" width="567" height="16">
+					<printWhenExpression><![CDATA[$P{EXISTE_EXAMES}]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" bottomPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+					<paragraph firstLineIndent="3" leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="65535ee8-6c7d-4d6a-ab43-1bdc5ce3c643" key="textField" positionType="Float" x="0" y="59" width="567" height="16">
+					<printWhenExpression><![CDATA[$P{EXISTE_EXAMES}]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" bottomPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+					<paragraph firstLineIndent="3" leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="false">
+				<reportElement uuid="1d82dd4c-fdc6-4317-99ac-c3f79890ec82" key="subreport-1" stretchType="RelativeToTallestObject" x="0" y="60" width="567" height="31"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -456,7 +491,7 @@
 			</subreport>
 		</band>
 		<band height="110" splitType="Stretch">
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="d689a75a-3f35-4d7a-b14e-abcbdaf7a4ad" key="textField-17" positionType="Float" x="0" y="94" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
@@ -471,7 +506,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{grpRiscoOcupacional}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="f79916da-6f8c-47fb-9392-faf71eb2ccae" key="textField" positionType="Float" x="0" y="78" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
@@ -499,7 +534,7 @@
 				</textElement>
 				<text><![CDATA[  4 - RISCOS OCUPACIONAIS]]></text>
 			</staticText>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="65535ee8-6c7d-4d6a-ab43-1bdc5ce3c643" key="textField" positionType="Float" x="0" y="14" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
@@ -514,7 +549,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{grpRiscoFisico}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="cade22a6-9f92-42a6-aeb2-ec3ab71cb5fb" key="textField" positionType="Float" x="0" y="62" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
@@ -529,7 +564,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{grpRiscoErgonomico}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="99afa1a0-8019-40ef-b8ec-bed332829b05" key="textField" positionType="Float" x="0" y="46" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
@@ -544,7 +579,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{grpRiscoBiologico}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="bd255417-1f5b-45ef-b2b0-1a01e706be44" key="textField" positionType="Float" x="0" y="30" width="567" height="16"/>
 				<box topPadding="2" bottomPadding="2">
 					<pen lineWidth="0.5"/>
