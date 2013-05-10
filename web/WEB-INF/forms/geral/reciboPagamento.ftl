@@ -5,7 +5,7 @@
 		
 		<#include "../ftl/mascarasImports.ftl" />
 	
-		<#assign validarCampos="return validaFormulario('form', new Array('codEmpresa','codEmpregado','mesAno'), new Array('mesAno') )"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('mesAno'), new Array('mesAno') )"/>
 	</head>
 	<body>
 		<@ww.actionerror />
