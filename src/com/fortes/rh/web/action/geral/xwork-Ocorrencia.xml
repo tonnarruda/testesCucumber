@@ -95,7 +95,7 @@
 				<param name="reportTitle">reportTitle</param>
 			</result>
 			
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
+			<result name="input" type="redirect">prepareRelatorioOcorrencia.action</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
 			<result name="success" type="redirect">list.action</result>

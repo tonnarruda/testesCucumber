@@ -138,6 +138,7 @@
     </global-results>
     
     <global-exception-mappings>
+      <exception-mapping exception="com.fortes.rh.exception.XlsException" result="message"/>
       <exception-mapping exception="java.lang.Exception" result="exceptionError"/>
     </global-exception-mappings>
     

@@ -14,7 +14,6 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.XlsException;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.TipoRelatorio;
 import com.fortes.rh.model.geral.Colaborador;
@@ -181,7 +180,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			
 			if (tipo.equals(TipoRelatorio.XLS))
 			{
-				XlsException.checaNumLinhasMaxXLS(colaboradoresOcorrencias.size());
 				extensao = "XLS";
 				reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " à " + DateUtil.formataDiaMesAno(dataFim);
 				reportTitle = "Ranking de Ocorrências";
@@ -212,13 +210,6 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 				acao = "relatorioSemDetalhe";
 			
 			return acao + extensao;
-		}
-		catch (XlsException xls)
-		{
-			xls.printStackTrace();
-			addActionWarning(xls.getMessage());
-			prepareRelatorioOcorrencia();
-			return Action.INPUT;
 		}
 		catch (ColecaoVaziaException cE)
 		{
