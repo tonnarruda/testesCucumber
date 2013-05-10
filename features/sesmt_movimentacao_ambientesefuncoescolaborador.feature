@@ -19,4 +19,4 @@ Funcionalidade: Ambientes e Funções do Colaborador
     E eu seleciono "desenvolvimento" de "historicoColaboradors[0].ambiente.id"
     
     Então eu clico no botão "Gravar"
-    E eu devo ver "Ambientes e Funções do Colaborador gravados com sucesso."
+    E eu devo ver "Ambientes e funções do colaborador gravados com sucesso."
