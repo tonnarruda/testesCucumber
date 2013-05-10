@@ -62,6 +62,15 @@ function changeEmpresa(value)
 	$('#cargoSemArea').attr('checked', false);
 }
 
+function newChangeEmpresa(value)
+{
+	$("input[name='areasCheck']:checked").attr('checked',false);
+	
+	populaAreaComCargoVinculado(value);
+	populaEstabelecimento(value);
+	populaCargosByAreaVinculados(value);
+}
+
 function populaEstabelecimento(empresaId)
 {
 	DWRUtil.useLoadingMessage('Carregando...');

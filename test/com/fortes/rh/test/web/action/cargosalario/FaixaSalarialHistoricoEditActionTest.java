@@ -322,7 +322,7 @@ public class FaixaSalarialHistoricoEditActionTest extends MockObjectTestCase
     	Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
     	faixaSalarialHistoricos.add(FaixaSalarialHistoricoFactory.getEntity(232L));
 		
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L)}).will(returnValue(faixaSalarialHistoricos));
+    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), ANYTHING}).will(returnValue(faixaSalarialHistoricos));
     	cargoManager.expects(once()).method("getCargosFromFaixaSalarialHistoricos").with(eq(faixaSalarialHistoricos)).will(returnValue(new ArrayList<Cargo>()));
     	
     	assertEquals("success",action.analiseTabelaSalarialList());
@@ -341,7 +341,7 @@ public class FaixaSalarialHistoricoEditActionTest extends MockObjectTestCase
     	Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
     	faixaSalarialHistoricos.add(FaixaSalarialHistoricoFactory.getEntity(232L));
 		
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L)}).will(returnValue(faixaSalarialHistoricos));
+    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), eq(null)}).will(returnValue(faixaSalarialHistoricos));
     	cargoManager.expects(once()).method("getCargosFromFaixaSalarialHistoricos").with(eq(faixaSalarialHistoricos)).will(returnValue(new ArrayList<Cargo>()));
     	
     	assertEquals("success",action.relatorioAnaliseTabelaSalarial());
@@ -356,7 +356,7 @@ public class FaixaSalarialHistoricoEditActionTest extends MockObjectTestCase
     	action.setAreasCheck(areasCheck);
     	action.setData(data);
     	
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(null),eq(null),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L)}).will(throwException(new Exception("Sem dados para o filtro")));
+    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(null),eq(null),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), eq(null)}).will(throwException(new Exception("Sem dados para o filtro")));
     	//prepare
     	grupoOcupacionalManager.expects(once()).method("populaCheckOrderNome").will(returnValue(new ArrayList<CheckBox>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(new ArrayList<CheckBox>()));

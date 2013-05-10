@@ -21,10 +21,12 @@ import com.opensymphony.webwork.dispatcher.WebWorkResultSupport;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.util.OgnlValueStack;
 
+@SuppressWarnings("serial")
 public class XlsResult extends WebWorkResultSupport {
 
     protected String dataSource;
     protected String columns;
+    protected String columnsNameDinamic;
     protected String properties;
     protected String documentName;
     protected String reportFilter;
@@ -48,8 +50,8 @@ public class XlsResult extends WebWorkResultSupport {
 			String[] columnsArray = columns.split(",");
 			String[] propertiesArray = properties.split(",");
 
-			
 		    Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
+		    Collection<Object> columnsNameDinamicRef = (Collection<Object>) stack.findValue(columnsNameDinamic);
 		    String reportFilterRef = (String)stack.findValue(reportFilter);
 		    String reportTitleRef = (String)stack.findValue(reportTitle);
 	
@@ -86,7 +88,18 @@ public class XlsResult extends WebWorkResultSupport {
 				cell.setCellValue(columnsArray[i]);
 				cell.setCellStyle(columnHeaderStyle);
 			}
-	
+		    
+		    if(columnsNameDinamicRef != null)
+		    {
+		    	int pos = columnsArray.length;
+			    for (Object columnsNameDinamic : columnsNameDinamicRef)
+			    {
+			    	cell = row.createCell(pos++);
+					cell.setCellValue((columnsNameDinamic != null)?columnsNameDinamic.toString():"");
+					cell.setCellStyle(columnHeaderStyle);
+			    }
+		    }
+		    
 		    int rowIndex = 4;
 		    for (Object obj : dataSourceRef) 
 		    {
@@ -163,4 +176,8 @@ public class XlsResult extends WebWorkResultSupport {
 		this.dinamicProperties = dinamicProperties;
 	}
 
+
+	public void setColumnsNameDinamic(String columnsNameDinamic) {
+		this.columnsNameDinamic = columnsNameDinamic;
+	}
 }

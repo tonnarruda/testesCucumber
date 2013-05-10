@@ -25,7 +25,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, empresaId);
+			CargoDWR.getCargoByGrupoAtivoInativo(createListCargos, gruposIds, empresaId, $('#situacao').val());
 		}
 
 		function createListCargos(data)
@@ -38,11 +38,15 @@
 			value =	document.getElementById('optFiltro').value;
 			if(value == '1')
 			{
+				marcarDesmarcarListCheckBox(document.forms[0], 'areasCheck',false);
 				oculta("divAreaOrganizacionals");
 				exibe("divGruposCargos");
 			}
 			else if(value == '2')
 			{
+				marcarDesmarcarListCheckBox(document.forms[0], 'grupoOcupacionalsCheck',false);
+				marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck',false);
+				$('#situacao').val('T');
 				exibe("divAreaOrganizacionals");
 				oculta("divGruposCargos");
 			}
@@ -80,11 +84,17 @@
 		
 		<span id="divGruposCargos" style="display:''">
 			<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" onClick="populaCargos(document.form,'grupoOcupacionalsCheck', ${empresaId});"/>
-			<@frt.checkListBox name="cargosCheck" label="Cargos" id="cargosCheck" list="cargosCheckList" width="600" />
+			<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
+				<legend>Cargos</legend>
+				<@ww.select label="Situação" id="situacao" name="situacaoCargo" list=r"#{'T':'Todos', 'I':'Inativos'}" cssStyle="width: 160px;" headerKey="A" headerValue="Ativos" onchange="populaCargos(document.form,'grupoOcupacionalsCheck', ${empresaId});"/>
+				<@frt.checkListBox name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="600" />
+				OBS: O cargo só aparecerá na listagem ou no relatório se o mesmo apresentar pelo menos um histórico em sua faixa salarial.
+			</fieldset>
+			<br />
 		</span>
 		
 		<span id="divAreaOrganizacionals" style="display:none">
-			<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600"/>
 		</span>
 	</@ww.form>
 

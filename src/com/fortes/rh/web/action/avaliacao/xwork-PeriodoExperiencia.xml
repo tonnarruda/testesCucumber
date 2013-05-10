@@ -57,6 +57,19 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
 		</action>
+		<action name="imprimeRelatorioPeriodoDeAcompanhamentoDeExperienciaXls" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia">
+			<result name="success" type="xls">
+				<param name="dataSource">acompanhamentos</param>
+				<param name="documentName">periodoDeAcompanhamentoDeExperiencia.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Cargo/Faixa,Data de Admissão</param>
+				<param name="columnsNameDinamic">columnsNameDinamic</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,cargoFaixa,dataAdmissao,periodoColunaUm,periodoColunaDois,periodoColunaTres,periodoColunaQuatro</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
+		</action>
 
 		<action name="prepareCartoesAcompanhamentoPeriodoExperiencia" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareCartoesAcompanhamentoPeriodoExperiencia">
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/cartoesAcompanhamentoPeriodoDeExperiencia.ftl</result>

@@ -46,17 +46,15 @@
 		$(function() {
 			var empresa = $('#empresa').val();
 	
-			populaArea(empresa);
+			populaAreaComCargoVinculado(empresa);
 			populaEstabelecimento(empresa);
-			populaCargosByArea(empresa);
-			verificaCargoSemAreaRelacionada(empresa);
+			populaCargosByAreaVinculados(empresa);
 			
-			$('#cargoSemArea').click(function() {
-				if($(this).is(":checked"))
-					addCheckCargoSemArea();
-				else
-					populaCargosByArea(empresa);
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargosByAreaVinculados();
 			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);;
 		});
 	</script>
 </head>
@@ -66,7 +64,7 @@
 
 	<@ww.form name="form" action="gerarRelatorio.action" onsubmit="return validarCampos();" validate="true" method="POST">
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="changeEmpresa(this.value);"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="newChangeEmpresa(this.value);"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -76,8 +74,8 @@
 		</#if>
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
-		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" onClick="populaCargosByArea();"/>
-		<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
+		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" onClick="populaCargosByAreaVinculados();"/>
+		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 		<@frt.checkListBox name="cargosCheck" label="Cargos" list="cargosCheckList" width="600" />
 		
 		<#if habilitaCampoExtra>
