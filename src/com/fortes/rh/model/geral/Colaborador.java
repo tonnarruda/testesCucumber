@@ -1015,6 +1015,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getHistoricoColaborador().getFaixaSalarial().getFaixaSalarialHistoricoAtual().setStatus(faixaSalarialHistoricoStatus);
 	}
 	
+	private void setProjectionCamposExtrasId(Long projectionCamposExtrasId)
+	{
+		if(this.camposExtras == null)
+			this.camposExtras = new CamposExtras();
+		
+		this.camposExtras.setId(projectionCamposExtrasId);
+	}
+		
 	private void setHistoricoColaboradorStatusProjection(Integer historicoColaboradorStatus)
 	{
 		if(this.historicoColaborador == null)
