@@ -106,20 +106,22 @@ public class XlsResult extends WebWorkResultSupport {
 		    
 		    row = sheet.createRow(3);
 		    
-		    int pos = 0;
 		    for (int i = 0; i < columnsArray.length; i++) 
 		    {
 				cell = row.createCell(i);
 				cell.setCellValue(columnsArray[i]);
 				cell.setCellStyle(columnHeaderStyle);
-				pos = i + 1 ;
 			}
 		    
-		    for (Object columnsNameDinamic : columnsNameDinamicRef)
+		    if(columnsNameDinamicRef != null)
 		    {
-		    	cell = row.createCell(pos++);
-				cell.setCellValue((columnsNameDinamic != null)?columnsNameDinamic.toString():"");
-				cell.setCellStyle(columnHeaderStyle);
+		    	int pos = columnsArray.length;
+			    for (Object columnsNameDinamic : columnsNameDinamicRef)
+			    {
+			    	cell = row.createCell(pos++);
+					cell.setCellValue((columnsNameDinamic != null)?columnsNameDinamic.toString():"");
+					cell.setCellStyle(columnHeaderStyle);
+			    }
 		    }
 		    
 		    int rowIndex = 4;
