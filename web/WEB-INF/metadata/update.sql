@@ -19656,3 +19656,6 @@ update parametrosdosistema set appversao = '1.1.106.112';--.go
 update parametrosdosistema set codempresasuporte = '0002';--.go
 insert into migrations values('20130423102211');--.go
 update parametrosdosistema set appversao = '1.1.106.113';--.go
+-- versao 1.1.106.114
+
+update parametrosdosistema set appversao = '1.1.106.114';--.go

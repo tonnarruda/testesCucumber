@@ -164,7 +164,12 @@ public class ExameListAction extends MyActionSupportList
 		{
 			asoRelatorio = solicitacaoExameManager.montaRelatorioAso(getEmpresaSistema(), solicitacaoExame);
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
-			parametros.put("EXISTE_EXAMES", asoRelatorio.getExames().size() == 0);
+			
+			boolean existeExames = false;
+			if(asoRelatorio.getExames() != null)
+				existeExames = asoRelatorio.getExames().size() == 0;
+				
+			parametros.put("EXISTE_EXAMES", existeExames);
 		} catch (ColecaoVaziaException e)
 		{
 			addActionError(e.getMessage());
