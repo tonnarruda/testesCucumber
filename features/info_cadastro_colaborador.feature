@@ -82,7 +82,7 @@ Funcionalidade: Cadastrar Colaborador
     Então eu clico "Dados Funcionais"
     E eu seleciono "Financeiro > Compras > Almoxarifado" de "Área Organizacional"
     Quando eu clico no botão "Gravar"
-    Então eu devo ver "editado com sucesso"
+    Então eu devo ver "alterado com sucesso."
     E eu devo ver "Silva Barbosa"
     
     Então eu clico na linha "Silva Barbosa" da imagem "Competências"

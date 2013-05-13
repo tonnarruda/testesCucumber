@@ -285,7 +285,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		StringBuilder hql = new StringBuilder();
 
 		if (detalhamento)
-			hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.matricula, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome, p.descricao) ");
+			hql.append("select distinct new ColaboradorOcorrencia(co.id, co.dataIni, co.dataFim, co.observacao, c.id, c.matricula, c.nome, c.nomeComercial, o.pontuacao, o.descricao, es.nome, ao.nome, p.id, p.descricao) ");
 		else
 			hql.append("select distinct new ColaboradorOcorrencia(c.id, c.matricula, c.nome, SUM(o.pontuacao)) ");
 		
@@ -328,7 +328,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			hql.append("order by ");
 			
 			if(!agruparPorColaborador)
-				hql.append(" p.descricao asc, ");
+				hql.append(" p.descricao asc, p.id asc, ");
 			
 			hql.append(" c.nome asc, c.id asc, co.dataIni asc ");
 		} else

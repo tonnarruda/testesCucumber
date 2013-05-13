@@ -55,12 +55,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">ocorrencias.pdf</param>
 			</result>
-			
 			<result name="semProvidenciaXLS" type="xls">
 				<param name="dataSource">colaboradoresOcorrencias</param>
 				<param name="documentName">ocorrencias_detalhadas.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Pontos</param>
+				<param name="propertiesGroup">colaborador.id</param>
 				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -70,6 +70,7 @@
 				<param name="documentName">ocorrencias_providencias.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Colaborador,Ocorrência,Início,Término,Observação,Providência,Pontos</param>
+				<param name="propertiesGroup">colaborador.id</param>
 				<param name="properties">colaborador.nome,ocorrencia.descricao,dataIni,dataFim,observacao,providencia.descricao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -79,6 +80,7 @@
 				<param name="documentName">ocorrencias_providencias.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Providência,Colaborador,Matrícula,Ocorrência,Início,Término,Observação,Pontos</param>
+				<param name="propertiesGroup">providencia.id</param>
 				<param name="properties">providencia.descricaoSemProvidencia,colaborador.nome,colaborador.matricula,ocorrencia.descricao,dataIni,dataFim,observacao,ocorrencia.pontuacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
@@ -93,7 +95,7 @@
 				<param name="reportTitle">reportTitle</param>
 			</result>
 			
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaRelatorioFiltro.ftl</result>
+			<result name="input" type="redirect">prepareRelatorioOcorrencia.action</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.OcorrenciaEditAction" method="insertOrUpdate">
 			<result name="success" type="redirect">list.action</result>

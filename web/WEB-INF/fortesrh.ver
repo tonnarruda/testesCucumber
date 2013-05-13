@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.106.114" data="13/05/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Relatórios em XLS: Novo agrupador de linhas ao gerar relatório.
+			:: C&S > Relatórios > Analise da tabela salarial: Novo filtro na listagem de cargo pela situação (Todos, Ativos e Inativos).
+			:: C&S > Relatórios >  Colaboradores por Cargo: Nova opção para considerar cargos vinculados as áreas organizacionais selecionadas.
+			:: Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo relatório por xls.
+			:: Info. funcionais > Relatórios > Aniversariantes do mês: Novo relatório por xls.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.106.113" data="06/05/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem : Novo popup de aviso para candidatos com o mesmo CPF de colaboradores ao inserir os candidatos selecionados (Exceto na aba "Triagem de Colaboradores").

@@ -1071,7 +1071,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(es.nome,ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.nome, " +
+		hql.append("select new Colaborador(es.id, es.nome, ao.id, ao.nome, re.nome, co.nome, cg.nome, fs.nome, emp.id, emp.nome, " +
 				"co.nomeComercial, co.matricula, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.pessoal.estadoCivil,  " +
 				"co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
@@ -1609,7 +1609,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		if(origem == MOTIVODEMISSAO)
-			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.motivo, cg.nome, fs.nome, es.nome, ao.id, ao.nome) ");
+			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.id, mo.motivo, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome) ");
 		else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append("select mo.motivo, count(mo.motivo) ");
 
@@ -1644,13 +1644,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// Ordenação
 		if(origem == MOTIVODEMISSAO){
 			if (agruparPor.equals("E")){
-				hql.append("order by es.nome, co.nomeComercial ");
+				hql.append("order by es.nome, co.nome ");
 			} else if (agruparPor.equals("M")) {
-				hql.append("order by mo.motivo, co.nomeComercial ");
+				hql.append("order by mo.motivo, co.nome ");
 			} else if (agruparPor.equals("A")) {
-				hql.append("order by ao.nome, co.nomeComercial ");
+				hql.append("order by ao.nome, co.nome ");
 			} else {
-				hql.append("order by co.nomeComercial ");
+				hql.append("order by co.nome ");
 			}
 		} else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append(" group by mo.motivo order by mo.motivo  ");
@@ -1733,7 +1733,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, es.nome, ao.id, ao.nome, fs.nome, ca.nome, hc.tipoSalario, hc.salario, ");
+		hql.append("select new Colaborador(co.id, co.nome, es.id, es.nome, ao.id, ao.nome, fs.nome, ca.nome, hc.tipoSalario, hc.salario, ");
 		hql.append("                       hc.quantidadeIndice, hc.status, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor, ao.areaMae.id) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
@@ -1780,7 +1780,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, es.nome, ao.id, ao.nome, fs.nome, ca.nome, rc.tipoSalarioProposto, rc.salarioProposto, ");
+		hql.append("select new Colaborador(co.id, co.nome, es.id, es.nome, ao.id, ao.nome, fs.nome, ca.nome, rc.tipoSalarioProposto, rc.salarioProposto, ");
 		hql.append("                       rc.quantidadeIndiceProposto, -1, ih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fsh.status, fshih.valor, ao.areaMae.id) ");
 		hql.append("from TabelaReajusteColaborador as trc ");
 		hql.append("left join trc.reajusteColaboradors as rc ");
@@ -3127,7 +3127,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.titulo, emp.nome) ");
+		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.id, ad.titulo, emp.nome) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
@@ -3163,7 +3163,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  if(!considerarAutoAvaliacao) 
 			  hql.append("and co.id <> aval.id ");
 
-		  hql.append("order by  co.nome, ad.titulo, aval.nome ");//importante para relatorio
+		  hql.append("order by  co.nome, co.id, ad.titulo, ad.id, aval.nome ");//importante para relatorio
 		  
 		  Query query = getSession().createQuery(hql.toString());
 		  

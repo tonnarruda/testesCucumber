@@ -15,5 +15,6 @@
 <body>
 	<ww:actionmessage />
 
+	<button onclick="history.go(-1)" class="btnVoltar"></button>
 </body>
 </html>
