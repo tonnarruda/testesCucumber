@@ -54,12 +54,15 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		else
 			configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
 
-		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) 
+		if(configuracaoNiveisCompetencias != null)
 		{
-			if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) 
 			{
-				configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
-				getDao().save(configuracaoNivelCompetencia);
+				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
+				{
+					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+					getDao().save(configuracaoNivelCompetencia);
+				}
 			}
 		}
 	}
