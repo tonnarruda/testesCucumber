@@ -4,9 +4,10 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
@@ -805,7 +806,7 @@ SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 571, false);
+SELECT pg_catalog.setval('papel_sequence', 573, false);
 
 
 --
@@ -23479,6 +23480,7 @@ INSERT INTO migrations (name) VALUES ('20130405155933');
 INSERT INTO migrations (name) VALUES ('20130409102059');
 INSERT INTO migrations (name) VALUES ('20130409102059');
 INSERT INTO migrations (name) VALUES ('20130423102211');
+INSERT INTO migrations (name) VALUES ('20130510140434');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -23579,11 +23581,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (480, 'ROLE_CAD_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 2, true, NULL, 469);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, NULL, 455);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (377, 'ROLE_COLAB_REL', 'Relatórios', '#', 3, true, NULL, 373);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 1, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (400, 'ROLE_REL_MOTIVO_DEMISSAO', 'Desligamentos', '/geral/motivoDemissao/prepareRelatorioMotivoDemissao.action', 2, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (403, 'ROLE_MOV_QUESTIONARIO', 'Resultados das Entrevistas', '/pesquisa/questionario/prepareResultadoEntrevista.action', 3, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (423, 'ROLE_REL_ANIVERSARIANTES', 'Aniversariantes do mês', '/geral/colaborador/prepareRelatorioAniversariantes.action', 4, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (472, 'ROLE_REL_ADMITIDOS', 'Admitidos', '/geral/colaborador/prepareRelatorioAdmitidos.action', 5, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (479, 'ROLE_CAD_PERIODOEXPERIENCIA', 'Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/prepareResultado.action', 1, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (490, 'ROLE_REL_ACOMP_EXPERIENCIA_PREVISTO', 'Acompanhamento de Experiência Previsto', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperienciaPrevisto.action', 2, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (513, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareRelatorioAcompanhamentoExperiencia.action', 3, true, NULL, 486);
@@ -23591,9 +23588,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (521, 'ROLE_REL_ACOMP_PERIODO_EXPERIENCIA', 'Cartões de Acompanhamento do Período de Experiência', '/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action', 5, true, NULL, 486);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (73, 'ROLE_IND', 'Estatísticas de Vagas por Motivo', '/indicador/duracaoPreenchimentoVaga/prepareMotivo.action', 5, true, NULL, 360);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (69, 'ROLE_IND', 'Duração para Preenchimento de Vagas', '/indicador/duracaoPreenchimentoVaga/prepare.action', 6, true, NULL, 360);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 6, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 7, true, NULL, 377);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 8, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (504, 'ROLE_INFO_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadores.action', 3, true, NULL, 373);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (390, 'ROLE_UTI', 'Cadastros', '#', 1, true, NULL, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (58, 'ROLE_UTI_EMPRESA', 'Empresas', '/geral/empresa/list.action', 1, true, NULL, 390);
@@ -23608,6 +23602,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (41, 'ROLE_CONFIGURACAO', 'Configurações', '#', 3, true, NULL, 37);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (485, 'ROLE_CAMPO_EXTRA', 'Campos Extras', '/geral/configuracaoCampoExtra/prepareUpdate.action', 2, true, NULL, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (502, 'ROLE_UTI_CONFIGURACAO', 'Sistema', '/geral/parametrosDoSistema/prepareUpdate.action', 1, true, NULL, 41);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 2, true, NULL, 377);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (503, 'ROLE_CONFIG_CANDIDATO_EXT', 'Cadastro de Candidato (externo)', '/geral/parametrosDoSistema/listCamposCandidato.action', 3, true, NULL, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (514, 'ROLE_CONFIG_LIMITE_COLABORADOR', 'Limite de Colab. por Cargo', '/geral/configuracaoLimiteColaborador/list.action', 4, true, NULL, 41);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (540, 'ROLE_CAD_GERENCIADOR_COMUNICACAO', 'Gerenciador de Comunicação', '/geral/gerenciadorComunicacao/list.action', 5, true, NULL, 41);
@@ -23743,6 +23738,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (565, 'ROLE_DISSIDIO_COLABORADOR', 'Colaboradores', '/cargosalario/reajusteColaborador/prepareDissidio.action', 1, true, NULL, 395);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (566, 'ROLE_DISSIDIO_FAIXASALARIAL', 'Faixas Salariais', '/cargosalario/reajusteFaixaSalarial/prepareDissidio.action', 2, true, NULL, 395);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (570, 'ROLE_DISSIDIO_INDICE', 'Índices', '/cargosalario/reajusteIndice/prepareDissidio.action', 3, true, NULL, 395);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (400, 'ROLE_REL_MOTIVO_DEMISSAO', 'Desligamentos', '/geral/motivoDemissao/prepareRelatorioMotivoDemissao.action', 3, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (403, 'ROLE_MOV_QUESTIONARIO', 'Resultados das Entrevistas', '/pesquisa/questionario/prepareResultadoEntrevista.action', 4, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (423, 'ROLE_REL_ANIVERSARIANTES', 'Aniversariantes do mês', '/geral/colaborador/prepareRelatorioAniversariantes.action', 5, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (472, 'ROLE_REL_ADMITIDOS', 'Admitidos', '/geral/colaborador/prepareRelatorioAdmitidos.action', 6, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (398, 'ROLE_REL_TURNOVER', 'Turnover (rotatividade)', '/indicador/indicadorTurnOver/prepare.action', 7, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 8, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (506, 'ROLE_REL_LISTA_COLAB', 'Listagem de Colaboradores', '/geral/colaborador/prepareRelatorioDinamico.action', 9, true, NULL, 377);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) VALUES (572, 'ROLE_REL_RECIBO_PAGAMENTO', 'Recibo de pagamento', '/geral/colaborador/prepareReciboPagamento.action', 1, true, NULL, 377);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -23765,7 +23768,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.106.114', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.52.1', false, NULL, NULL, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, modulos, atualizapapeisidsapartirde, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.106.114', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, NULL, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -23979,6 +23982,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 564);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 566);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 565);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 570);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 572);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;
