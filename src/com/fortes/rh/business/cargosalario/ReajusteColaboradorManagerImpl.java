@@ -250,18 +250,19 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 
 	public Collection<ReajusteColaborador> ordenaPorEstabelecimentoAreaOrGrupoOcupacional(Long empresaId, Collection<ReajusteColaborador> reajusteColaboradors, String filtro) throws Exception
 	{
+		//monta familia das areas
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+		areas = areaOrganizacionalManager.montaFamilia(areas);
+		
+		for (ReajusteColaborador reajusteTmp : reajusteColaboradors)
+		{
+			reajusteTmp.setAreaOrganizacionalProposta(areaOrganizacionalManager.getAreaOrganizacional(areas, reajusteTmp.getAreaOrganizacionalProposta().getId()));
+			reajusteTmp.setAreaOrganizacionalAtual(areaOrganizacionalManager.getAreaOrganizacional(areas, reajusteTmp.getAreaOrganizacionalAtual().getId()));
+		}
+		
 		//Ordena por Area e Estabelecimento
 		if(filtro.equals("1"))
 		{
-			//monta familia das areas
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
-			areas = areaOrganizacionalManager.montaFamilia(areas);
-
-			for (ReajusteColaborador reajusteTmp : reajusteColaboradors)
-			{
-				reajusteTmp.setAreaOrganizacionalProposta(areaOrganizacionalManager.getAreaOrganizacional(areas, reajusteTmp.getAreaOrganizacionalProposta().getId()));
-			}
-
 			CollectionUtil<ReajusteColaborador> cu1 = new CollectionUtil<ReajusteColaborador>();
 			reajusteColaboradors = cu1.sortCollectionStringIgnoreCase(reajusteColaboradors, "descricaoEstabelecimentoAreaOrganizacionalPropostos");
 		}

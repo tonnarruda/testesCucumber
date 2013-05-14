@@ -60,6 +60,9 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
     private FuncaoDao funcaoDao;
     private AmbienteDao ambienteDao;
 
+    private final int FILTRAR_POR_AREA = 1;
+    private final int FILTRAR_POR_GRUPO = 2;
+
     public ReajusteColaborador getEntity()
     {
         ReajusteColaborador reajusteColaborador = new ReajusteColaborador();
@@ -88,9 +91,6 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
 
         GrupoOcupacional grupoOcupacionalProposto = GrupoOcupacionalFactory.getGrupoOcupacional();
         grupoOcupacionalDao.save(grupoOcupacionalProposto);
-
-        Collection<Long> grupoIds = new ArrayList<Long>();
-        grupoIds.add(grupoOcupacionalProposto.getId());
 
         Cargo cargoProposto = CargoFactory.getEntity();
         cargoProposto.setGrupoOcupacional(grupoOcupacionalProposto);
@@ -126,17 +126,43 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         reajusteColaborador.setEstabelecimentoProposto(estabelecimentoProposto);
         reajusteColaboradorDao.save(reajusteColaborador);
         
+        // Cadastros fora da seleção
+        AreaOrganizacional areaOrganizacionalPropostoFora = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalPropostoFora.setAreasInteresse(null);
+        areaOrganizacionalDao.save(areaOrganizacionalPropostoFora);
+        
+        ReajusteColaborador reajusteColaboradorFora = ReajusteColaboradorFactory.getReajusteColaborador();
+        reajusteColaboradorFora.setAreaOrganizacionalProposta(areaOrganizacionalPropostoFora);
+        reajusteColaboradorFora.setColaborador(colaborador);
+        reajusteColaboradorFora.setFaixaSalarialAtual(faixaSalarialAtual);
+        reajusteColaboradorFora.setFaixaSalarialProposta(faixaSalarialProposto);
+        reajusteColaboradorFora.setTabelaReajusteColaborador(tabelaReajusteColaborador);
+        reajusteColaboradorFora.setEstabelecimentoAtual(estabelecimentoAtual);
+        reajusteColaboradorFora.setEstabelecimentoProposto(estabelecimentoProposto);
+        reajusteColaboradorDao.save(reajusteColaboradorFora);
+        
         Collection<Long> estabelecimentosIds = new ArrayList<Long>();
         estabelecimentosIds.add(estabelecimentoProposto.getId());
         
         Collection<Long> areasIds = new ArrayList<Long>();
         areasIds.add(areaOrganizacionalProposto.getId());
         
-        Collection<ReajusteColaborador> reajusteColaboradors = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, 2);
-        assertEquals(1, reajusteColaboradors.size());
+        Collection<Long> grupoIds = new ArrayList<Long>();
+        grupoIds.add(grupoOcupacionalProposto.getId());
 
-        Collection<ReajusteColaborador> reajusteColaboradorsAreas = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, 1);
+        ReajusteColaborador reajusteColaboradorRetorno;
+        
+        Collection<ReajusteColaborador> reajusteColaboradors = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, FILTRAR_POR_GRUPO);
+        reajusteColaboradorRetorno =  (ReajusteColaborador) reajusteColaboradors.toArray()[0];
+        
+        assertEquals(2, reajusteColaboradors.size());
+        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno.getId());
+
+        Collection<ReajusteColaborador> reajusteColaboradorsAreas = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, FILTRAR_POR_AREA);
+        reajusteColaboradorRetorno =  (ReajusteColaborador) reajusteColaboradorsAreas.toArray()[0];
+        
         assertEquals(1, reajusteColaboradorsAreas.size());
+        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno.getId());
     }
 
     public void testDeleteByColaboradoresTabelaReajuste()
