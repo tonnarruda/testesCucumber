@@ -2386,10 +2386,4 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
 		this.auditoriaManager = auditoriaManager;
 	}
-
-	@Override
-	public String g(Collection<Integer> diasLembrete, Long empresaId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
