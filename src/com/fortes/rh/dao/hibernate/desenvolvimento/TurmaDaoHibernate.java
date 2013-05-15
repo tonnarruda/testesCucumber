@@ -273,7 +273,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		return turmas;
 	}
 
-	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, Boolean realizada)
+	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, Boolean realizada, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.curso", "c");
@@ -307,6 +307,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
         if (realizada != null)
         	criteria.add(Expression.eq("t.realizada", realizada));
+
+		if (empresaId != null)
+			criteria.add(Expression.eq("t.empresa.id", empresaId));
 
         if(pagingSize != 0)
         {

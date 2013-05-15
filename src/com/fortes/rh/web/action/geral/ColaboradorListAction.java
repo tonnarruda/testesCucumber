@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.StringUtils;
 
+import sun.misc.BASE64Decoder;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
@@ -46,6 +48,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.Sexo;
@@ -168,6 +171,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	private String descricao;
 	private String json;
 
+	private ByteArrayInputStream byteArrayInputStream;
+	private String mesAno;
+
 	public String find() throws Exception
 	{
 		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
@@ -223,6 +229,64 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		integraAc = getEmpresaSistema().isAcIntegra();
 		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareReciboPagamento() throws Exception
+	{
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		
+		if(colaborador == null)
+		{
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
+		}
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionWarning("Só é possível solicitar seu recibo de pagamento pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+			colaborador = null;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String reciboPagamento() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboPagamento = colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
+			
+			BASE64Decoder decoder = new BASE64Decoder();  
+	        byte[] reciboPagamentoBytes = decoder.decodeBuffer(reciboPagamento); 
+			
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"recibo_" + mesAno.replace("/", "") + ".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoBytes);
+		} 
+		catch (IntegraACException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
+        
 		return Action.SUCCESS;
 	}
 
@@ -1114,5 +1178,21 @@ public class ColaboradorListAction extends MyActionSupportList
 	public Character getEnviadoParaAC()
 	{
 		return enviadoParaAC;
+	}
+
+	public String getMesAno() {
+		return mesAno;
+	}
+
+	public void setMesAno(String mesAno) {
+		this.mesAno = mesAno;
+	}
+
+	public ByteArrayInputStream getByteArrayInputStream() {
+		return byteArrayInputStream;
+	}
+
+	public void setByteArrayInputStream(ByteArrayInputStream byteArrayInputStream) {
+		this.byteArrayInputStream = byteArrayInputStream;
 	}
 }

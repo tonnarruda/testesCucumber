@@ -1,6 +1,8 @@
 package com.fortes.rh.web.ws;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
@@ -282,5 +284,36 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamento");
+
+		QName xmlstring = new QName("xs:string");
+		QName xmlint = new QName("xs:int");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("Ano", xmlint, ParameterMode.IN);
+		call.addParameter("Mes", xmlint, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+    	Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mesAno);		
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1 };
+    	
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("GetReciboDePagamento", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
 	}
 }
