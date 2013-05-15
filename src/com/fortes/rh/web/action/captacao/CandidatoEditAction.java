@@ -536,7 +536,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getUf() != null && candidato.getEndereco().getUf().getId() != null)
 			cidades = cidadeManager.find(new String[]{"uf"}, new Object[]{candidato.getEndereco().getUf()}, new String[]{"nome"});
 		
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, candidato.getCargos(), "getId");
 		
 		sexos = new SexoCadastro();
@@ -563,16 +563,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String insertCurriculo() throws Exception
 	{		
-//		try
-//		{
-//			candidatoManager.validaQtdCadastros();			
-//		} catch (Exception e)
-//		{
-//			addActionMessage(e.getMessage());
-//			prepare();
-//			return Action.INPUT;
-//		}
-	
 		try
 		{
 			if (candidato.getId() == null)
