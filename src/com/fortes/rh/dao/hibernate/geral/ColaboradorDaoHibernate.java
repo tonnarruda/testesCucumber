@@ -2643,11 +2643,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome, fun.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.funcao as fun "); 
 		hql.append("left join co.empresa as emp ");
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");

@@ -275,7 +275,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 
 	private Collection<Integer> getIntervaloAviso (String diasLembrete) {
-		if (diasLembrete == null)
+		if (StringUtils.isBlank(diasLembrete))
 			return new ArrayList<Integer>();
 		
 		String[] dias = diasLembrete.split("&");
@@ -587,10 +587,12 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						if (StringUtils.isNotBlank(colaborador.getNomeComercial()))
 							mensagem.append(" (").append(colaborador.getNomeComercial()).append(") ");
 						
+						mensagem.append("\nMatrícula: ").append(StringUtils.defaultString(colaborador.getMatricula()));
 						mensagem.append("\nEmpresa: ").append(colaborador.getEmpresaNome());
 						mensagem.append("\nEstabelecimento: ").append(colaborador.getEstabelecimento().getNome())
+								.append("\nÁrea Organizacional: ").append(colaborador.getAreaOrganizacional().getDescricao())
 								.append("\nCargo: ").append(colaborador.getFaixaSalarial().getDescricao())
-								.append("\nÁrea: ").append(colaborador.getAreaOrganizacional().getDescricao())
+								.append("\nFunção: ").append(colaborador.getFuncaoNome())
 								.append("\nData da avaliação: ").append(data);
 						
 						String link = "";

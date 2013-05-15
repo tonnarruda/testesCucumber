@@ -262,7 +262,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionError(e.getMessage());
 		}
-
+		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
