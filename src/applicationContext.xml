@@ -283,7 +283,7 @@
   </bean>
   <bean id="cronTriggerlembreteHabilitacaoAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteHabilitacaoAVencer" />
-	<property name="cronExpression" value="0 1 17 * * ?" /> <!-- Todo os dias as 05:30h am -->
+	<property name="cronExpression" value="0 0 5 * * ?" /> <!-- Todo os dias as 05:30h am -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
