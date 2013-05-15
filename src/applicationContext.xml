@@ -255,7 +255,7 @@
   </bean>
   <bean id="cronTriggerLembretePeriodoExperiencia" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembretePeriodoExperiencia" />
-    <property name="cronExpression" value="0 0 7 * * ?" />
+    <property name="cronExpression" value="0 0 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
   </bean>
   <bean id="cronTriggerQuantidadeCurriculos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="quantidadeCurriculos" />
@@ -283,7 +283,7 @@
   </bean>
   <bean id="cronTriggerlembreteHabilitacaoAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteHabilitacaoAVencer" />
-	<property name="cronExpression" value="0 0 5 * * ?" /> <!-- Todo os dias as 05:30h am -->
+	<property name="cronExpression" value="0 0 5 * * ?" /> <!-- Todo os dias as 05:00h am -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">

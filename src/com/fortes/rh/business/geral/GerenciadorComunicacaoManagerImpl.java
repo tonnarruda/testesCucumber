@@ -439,11 +439,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId(), colaboradorAvaliacao.getColaborador().getEmpresa().getId());
 	    		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 	    		{
-	    			for (String diasLembreteGerenciadorComunicacao : gerenciadorComunicacao.getQtdDiasLembrete().split("&")) 
+	    			Collection<Integer> diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+	    			
+	    			for (Integer diasLembreteGerenciadorComunicacao : diasLembrete) 
 	    			{
 	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(colaboradorAvaliacao.getColaborador().getDataAdmissao(), new Date());
 
-	    				if( (colaboradorAvaliacao.getPeriodoExperiencia().getDias() - Integer.parseInt(diasLembreteGerenciadorComunicacao)) == diasDeEmpresaDoColaborador)
+	    				if( (colaboradorAvaliacao.getPeriodoExperiencia().getDias() - diasLembreteGerenciadorComunicacao) == diasDeEmpresaDoColaborador)
 						{
 		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
 			    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
