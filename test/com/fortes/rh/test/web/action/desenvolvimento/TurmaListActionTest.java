@@ -15,10 +15,13 @@ import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
@@ -32,6 +35,8 @@ public class TurmaListActionTest extends MockObjectTestCase
 	private Mock colaboradorTurmaManager;
 	private Mock cursoManager;
 	private Mock avaliacaoCursoManager;
+	private Mock parametrosDoSistemaManager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
@@ -41,11 +46,15 @@ public class TurmaListActionTest extends MockObjectTestCase
         colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
         cursoManager = new Mock(CursoManager.class);
         avaliacaoCursoManager = new Mock(AvaliacaoCursoManager.class);
+        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        empresaManager = new Mock(EmpresaManager.class);
 
         action.setAvaliacaoCursoManager((AvaliacaoCursoManager) avaliacaoCursoManager.proxy());
         action.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
         action.setTurmaManager((TurmaManager) turmaManager.proxy());
         action.setCursoManager((CursoManager) cursoManager.proxy());
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -74,15 +83,19 @@ public class TurmaListActionTest extends MockObjectTestCase
     	filtroPT.setRealizada('S');
     	
     	action.setFiltroPlanoTreinamento(filtroPT);
-    	
     	action.setShowFilter(true);
-
     	Collection<Turma> turmas = new ArrayList<Turma>();
+		
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
 
-    	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cursos));
     	cursoManager.expects(once()).method("somaCargaHoraria").with(ANYTHING).will(returnValue("14:30"));
-    	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('S')}).will(returnValue(turmas));
-
+    	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('S'), ANYTHING}).will(returnValue(turmas));
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
     	assertEquals("successFiltroPlanoTreinamento", action.filtroPlanoTreinamento());
     	assertEquals(cursos, action.getCursos());
     	assertNotNull(action.getFiltroPlanoTreinamento());
@@ -102,11 +115,17 @@ public class TurmaListActionTest extends MockObjectTestCase
 
     	action.setShowFilter(true);
     	Collection<Turma> turmas = new ArrayList<Turma>();
+    	
+    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+    	parametrosDoSistema.setCompartilharColaboradores(true);
+    	parametrosDoSistema.setCompartilharCandidatos(true);
 
-    	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cursos));
     	cursoManager.expects(once()).method("somaCargaHoraria").with(ANYTHING).will(returnValue("14:30"));
-    	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('N')}).will(returnValue(turmas));
-
+    	turmaManager.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, eq(filtroPT.getCursoId()), eq(filtroPT.getDataIni()), eq(filtroPT.getDataFim()), eq('N'), ANYTHING}).will(returnValue(turmas));
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		
     	assertEquals("successFiltroPlanoTreinamento", action.filtroPlanoTreinamento());
     }
 

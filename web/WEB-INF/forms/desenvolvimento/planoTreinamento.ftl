@@ -15,6 +15,7 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'), true)"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -83,6 +84,29 @@
 			jAlert("Envio de email falhou.");
 		}
 		
+		function populaCursos(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			CursoDWR.getCursosByEmpresa(createListCursos, empresaId);
+		}
+
+		function createListCursos(data)
+		{
+			$('#curso').find('option').remove();
+			$('#curso').append($("<option></option>").attr("value",'').text('Todos'));
+			
+			var existeData = false;
+			$.each(data, function(key, value) {   
+			     $('#curso').append($("<option></option>").attr("value",key).text(value));
+				existeData = true; 
+			});
+
+			if(existeData == false)
+			{
+				$('#curso').find('option').remove();
+				$('#curso').append($("<option></option>").attr("value",'').text('Não existem cursos/turmas para empresa selecionada.'));
+			}
+		}
 		
 	</script>
 
@@ -106,7 +130,8 @@
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="filtroPlanoTreinamento.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.select label="Curso" name="filtroPlanoTreinamento.cursoId" list="cursos"  listKey="id" listValue="nome"  headerKey="" headerValue="Todos" />
+		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaCursos(this.value);"/>
+		<@ww.select id="curso" label="Curso" name="filtroPlanoTreinamento.cursoId" list="cursos"  listKey="id" listValue="nome"  headerKey="" headerValue="Todos" cssStyle="width: 800px;"/>
 		Período:<br>
 		<@ww.datepicker name="filtroPlanoTreinamento.dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft" />

@@ -196,8 +196,8 @@ public class TurmaManagerTest extends MockObjectTestCase
 	public void testFindPlanosDeTreinamento()
 	{
 		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmaDao.expects(once()).method("findPlanosDeTreinamento").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(turmas));
-		assertEquals(turmas, turmaManager.findPlanosDeTreinamento(0, 15, null, null, null, 't'));
+		turmaDao.expects(once()).method("findPlanosDeTreinamento").withAnyArguments().will(returnValue(turmas));
+		assertEquals(turmas, turmaManager.findPlanosDeTreinamento(0, 15, null, null, null, 't', null));
 	}
 
 	public void testCountPlanosDeTreinamento()

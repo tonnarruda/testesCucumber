@@ -212,9 +212,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findTurmas(page, pagingSize, cursoId);
 	}
 
-	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada)
+	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada, Long empresaId)
 	{
-		Collection<Turma> turmas = getDao().findPlanosDeTreinamento(page, pagingSize, cursoId, dataIni, dataFim, realizadaValue(realizada));
+		Collection<Turma> turmas = getDao().findPlanosDeTreinamento(page, pagingSize, cursoId, dataIni, dataFim, realizadaValue(realizada), empresaId);
 		for (Turma turma : turmas)
 		{
 			turma.setQtdPessoas(colaboradorTurmaManager.getCount(turma.getId(), null, null, null));

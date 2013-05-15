@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.TipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -55,6 +56,7 @@ public class TurmaListAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private TipoDespesaManager tipoDespesaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Turma turma;
 	private Curso curso;
@@ -102,26 +104,33 @@ public class TurmaListAction extends MyActionSupportList
 	
 	private char colaboradoresAvaliados;
 	private char agruparPor;
+	private boolean compartilharColaboradores;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
 
-		cursos = cursoManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+		cursos = cursoManager.findAllSelect(empresaId);
 
 		if(getShowFilter()) {
-			turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada());
+			turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada(), empresaId);
 			totalCargaHoraria = cursoManager.somaCargaHoraria(turmas);
+			
+			if(turmas.size() == 0)
+				addActionMessage("Não existem cursos/tumas a serem listadas para o filtro informado.");
 		}
 		else
 			addActionMessage("Utilize o filtro para buscar as Turmas.");
+		
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
 
 		return "successFiltroPlanoTreinamento";
 	}
 
 	public String imprimirPlanoTreinamento() throws Exception
 	{
-		turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada());
+		turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada(), empresaId);
 		parametros = RelatorioUtil.getParametrosRelatorio("Plano de Treinamento", getEmpresaSistema(), montaFiltro());
 
 		return Action.SUCCESS;
@@ -721,5 +730,14 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setCursosColaboradores(Map<Curso, Set<Colaborador>> cursosColaboradores) {
 		this.cursosColaboradores = cursosColaboradores;
+	}
+
+	public boolean isCompartilharColaboradores() {
+		return compartilharColaboradores;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
