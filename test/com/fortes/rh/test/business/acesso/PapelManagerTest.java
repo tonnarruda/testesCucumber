@@ -54,8 +54,6 @@ public class PapelManagerTest extends MockObjectTestCase
 		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
 		
 		String[] permissoes = new String[]{"1","2","3"};
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
-		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(permissoes));
 
 		assertNotNull(papelManager.getPerfilOrganizado(permissoes));
 	}
