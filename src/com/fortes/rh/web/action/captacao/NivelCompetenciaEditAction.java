@@ -156,7 +156,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
-			addActionMessage("Níveis de Competência da Faixa Salarial salvos com sucesso.");
+			addActionSuccess("Níveis de Competência da Faixa Salarial salvos com sucesso.");
 		}
 		catch (Exception e)
 		{
@@ -173,7 +173,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId());
-			addActionMessage("Níveis de Competência do Candidato salvos com sucesso.");
+			addActionSuccess("Níveis de Competência do Candidato salvos com sucesso.");
 		}
 		catch (Exception e)
 		{
@@ -246,7 +246,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
-			addActionMessage("Níveis de Competência do Colaborador salvos com sucesso.");
+			addActionSuccess("Níveis de Competência do Colaborador salvos com sucesso.");
 		}
 		catch (Exception e)
 		{

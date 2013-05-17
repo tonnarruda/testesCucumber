@@ -53,6 +53,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private String filtro;
 	private String total;
 	private Boolean exibirObservacao;
+	private Boolean exibirAreaEstabelecimento;
 
 	private Collection<ReajusteColaborador> dataSource;
 	private Collection<ReajusteIndice> dataSourceIndice;
@@ -174,7 +175,11 @@ public class ReajusteRelatorioAction extends MyActionSupport
 					throw new FortesException(" Não existem dados para o filtro informado.<br>");
 
 				dataSource = reajusteColaboradorManager.ordenaPorEstabelecimentoAreaOrGrupoOcupacional(getEmpresaSistema().getId(), dataSource, filtro);
-				retorno = Action.SUCCESS;
+				
+				if (exibirAreaEstabelecimento)
+					retorno = "successExibirAreaEstabelecimento";
+				else
+					retorno = Action.SUCCESS;
 			}
 
 			valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaboradorAux.getData());
@@ -444,9 +449,13 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		this.indicesCheck = indicesCheck;
 	}
 
-	
 	public boolean isVerTodasAreas()
 	{
 		return verTodasAreas;
+	}
+	
+	public void setExibirAreaEstabelecimento(Boolean exibirAreaEstabelecimento)
+	{
+		this.exibirAreaEstabelecimento = exibirAreaEstabelecimento;
 	}
 }

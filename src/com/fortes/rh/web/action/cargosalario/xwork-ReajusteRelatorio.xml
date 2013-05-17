@@ -11,16 +11,25 @@
 				<param name="location">WEB-INF/report/simula_reajuste.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">simula_reajuste.pdf</param>
+			</result>
+			<result name="successExibirAreaEstabelecimento" type="jasper">
+				<param name="location">WEB-INF/report/simula_reajuste_area_estabelecimento.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">simula_reajuste_area_estabelecimento.pdf</param>
 			</result>
 			<result name="successIndice" type="jasper">
 				<param name="location">WEB-INF/report/simula_reajuste_indice.jasper</param>
 				<param name="dataSource">dataSourceIndice</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">simula_reajuste_indice.pdf</param>
 			</result>
 			<result name="successFaixaSalarial" type="jasper">
 				<param name="location">WEB-INF/report/simula_reajuste_faixaSalarial.jasper</param>
 				<param name="dataSource">dataSourceFaixaSalarial</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">simula_reajuste_faixaSalarial.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteRelatorioFiltro.ftl</result>
 		</action>

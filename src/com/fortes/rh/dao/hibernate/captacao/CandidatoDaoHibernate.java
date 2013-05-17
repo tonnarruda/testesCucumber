@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
@@ -51,7 +52,9 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
@@ -180,69 +183,132 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		return (Candidato) criteria.uniqueResult();
 	}
-
+	
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
 	{
-		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("id"), "id");
-		p.add(Projections.property("nome"), "nome");
-		p.add(Projections.property("idF2RH"), "idF2RH");
-		p.add(Projections.property("disponivel"), "disponivel");
-		p.add(Projections.property("contratado"), "contratado");
-		p.add(Projections.property("c.dataCadastro"), "dataCadastro");
-		p.add(Projections.property("dataAtualizacao"), "dataAtualizacao");
-		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
-		p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
-		p.add(Projections.property("e.id"), "empresaId");
-		criteria.setProjection(p);
+		StringBuilder sql = new StringBuilder();
+		sql.append("select can.id, can.nome, can.idF2RH, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf) as jaFoiColaborador "); 
+		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql);
 		
-		montaProjectionFind(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, criteria);
-
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
-
-		criteria.addOrder(Order.asc("c.nome"));
+		List resultado = query.list();
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		Candidato cand;
 		
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
-		return criteria.list();
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			cand = new Candidato();
+			
+			cand.setId(((BigInteger)res[0]).longValue());
+			cand.setNome((String)res[1]);
+			
+			if((BigInteger)res[2] != null)
+				cand.setIdF2RH(((BigInteger)res[2]).intValue());
+			
+			if((Boolean) res[3] != null)
+				cand.setDisponivel((Boolean) res[3]);
+			
+			if((Boolean) res[4] != null)
+				cand.setContratado((Boolean) res[4]);
+			
+			cand.setDataCadastro((Date) res[5]);
+			cand.setDataAtualizacao((Date) res[6]);
+			cand.setPessoalIndicadoPor((String) res[7]);
+			cand.setPessoalCpf((String) res[8]);
+			
+			if((BigInteger)res[9] != null)
+				cand.setEmpresaId(((BigInteger)res[9]).longValue());
+			
+			cand.setJaFoiColaborador((Boolean) res[10]);
+
+			candidatos.add(cand);
+		}
+		
+		return candidatos;
 	}
 
-	private void montaProjectionFind(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Criteria criteria)
+	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
 	{
-		criteria.createCriteria("c.empresa", "e");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select count(*) as total "); 
 		
-		if (exibeExterno)
-			criteria.add(Expression.eq("origem", OrigemCandidato.EXTERNO));
+		Query query = montaListaCandidato(0, 0, nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql);
 		
-		if (!exibeContratados)
-			criteria.add(Expression.eq("c.contratado", false));
+		return (Integer) query.uniqueResult();
+	}
 
-		// Nome
+	private Query montaListaCandidato(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, StringBuilder sql) 
+	{
+		sql.append("from Candidato can ");
+		sql.append("left join Empresa emp on can.empresa_id = emp.id ");
+		sql.append("where can.empresa_id = :empresaId ");
+				
+		if (exibeExterno)
+			sql.append("and can.origem = :origem ");
+				
+		if (!exibeContratados)
+			sql.append("and can.contratado = false ");
+
 		if(StringUtils.isNotBlank(nomeBusca))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nomeBusca + "%", Hibernate.STRING));
-		// CPF
+			sql.append("and normalizar(upper(can.nome)) like normalizar(:nomeBusca) ");
+		
 		if(StringUtils.isNotBlank(cpfBusca))
-			criteria.add(Expression.like("c.pessoal.cpf", "%"+ cpfBusca +"%").ignoreCase() );
-		//Visualizar disponiveis
+			sql.append("and can.cpf like :cpfBusca ");
+		
 		if(visualizar == 'D')
-			criteria.add(Expression.eq("c.disponivel", true));
+			sql.append("and can.disponivel = true ");
 		else if(visualizar == 'I')
-			criteria.add(Expression.eq("c.disponivel", false));
+			sql.append("and can.disponivel = false ");
 
 		if(dataIni != null)
-			criteria.add(Expression.ge("c.dataAtualizacao", dataIni));
+			sql.append("and can.dataAtualizacao >= :dataIni ");
+	
 		if(dataFim != null)
-			criteria.add(Expression.le("c.dataAtualizacao", dataFim));
+			sql.append("and can.dataAtualizacao <= :dataFim ");
+		
+		if(StringUtils.isNotBlank(indicadoPor))
+			sql.append("and normalizar(upper(can.indicadoPor)) like normalizar(:indicadoPor) ");
 
-		if (StringUtils.isNotBlank(indicadoPor))
-        	criteria.add(Restrictions.sqlRestriction("normalizar(this_.indicadoPor) ilike  normalizar(?)", "%" + indicadoPor + "%", Hibernate.STRING));
-
-		if (StringUtils.isNotBlank(observacaoRH))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.observacaoRH) ilike  normalizar(?)", "%" + observacaoRH + "%", Hibernate.STRING));
-
-		criteria.add(Expression.eq("e.id", empresaId));
+		if(StringUtils.isNotBlank(observacaoRH))
+			sql.append("and normalizar(upper(can.observacaoRH)) like normalizar(:observacaoRH) ");
+		
+		if (pagingSize != 0)
+			sql.append(" order by can.nome ");
+		
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+			
+		if (exibeExterno)
+			query.setCharacter("origem", OrigemCandidato.EXTERNO);
+		
+		if(StringUtils.isNotBlank(nomeBusca))
+			query.setString("nomeBusca", "%" + nomeBusca.toUpperCase() + "%");
+		
+		if(StringUtils.isNotBlank(cpfBusca))
+			query.setString("cpfBusca", "%" + cpfBusca + "%");
+		
+		if(dataIni != null)
+			query.setDate("dataIni", dataIni);
+		
+		if(dataFim != null)
+			query.setDate("dataFim", dataFim);
+		
+		if(StringUtils.isNotBlank(indicadoPor))
+			query.setString("indicadoPor", "%" + indicadoPor.toUpperCase() + "%");
+		
+		if(StringUtils.isNotBlank(observacaoRH))
+			query.setString("observacaoRH", "%" + observacaoRH.toUpperCase() + "%");
+		
+		query.setLong("empresaId", empresaId);
+		
+		if (pagingSize != 0)
+		{
+			query.setFirstResult((page - 1) * pagingSize);
+			query.setMaxResults(pagingSize);
+		}
+		else
+			query.addScalar("total", Hibernate.INTEGER);
+		
+		return query;
 	}
 
 	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
@@ -477,16 +543,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			}
 		}
 
-	}
-
-	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
-	{
-		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-		criteria.setProjection(Projections.rowCount());
-
-		montaProjectionFind(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, criteria);
-
-		return (Integer) criteria.list().get(0);
 	}
 
 	public Collection<Candidato> findCandidatosById(Long[] ids)

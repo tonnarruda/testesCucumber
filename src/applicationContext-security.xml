@@ -218,6 +218,8 @@
 				/geral/colaborador/relatorioAdmitidos*/**=ROLE_REL_ADMITIDOS
 				/geral/colaborador/prepareRelatorioDinamico.action* = ROLE_REL_LISTA_COLAB
 				/geral/colaborador/relatorioDinamico*/** = ROLE_REL_LISTA_COLAB
+				/geral/colaborador/prepareReciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
+				/geral/colaborador/reciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
 				/geral/ocorrencia/prepareRelatorioOcorrencia*/**=ROLE_REL_OCORRENCIA
 				/geral/ocorrencia/buscaOcorrencia*/**=ROLE_REL_OCORRENCIA
 				/geral/gasto/*/**=ROLE_CAD_GASTO

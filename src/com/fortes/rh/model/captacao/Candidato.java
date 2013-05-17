@@ -130,6 +130,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private int tempoExperiencia;
 	@Transient
 	private Boolean inscritoSolicitacao;
+	@Transient
+	private boolean jaFoiColaborador;
 
 	@ManyToOne
 	private ComoFicouSabendoVaga comoFicouSabendoVaga;
@@ -1221,5 +1223,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setInscritoSolicitacao(Boolean inscritoSolicitacao) {
 		this.inscritoSolicitacao = inscritoSolicitacao;
+	}
+
+	public boolean isJaFoiColaborador() {
+		return jaFoiColaborador;
+	}
+
+	public void setJaFoiColaborador(boolean jaFoiColaborador) {
+		this.jaFoiColaborador = jaFoiColaborador;
 	}
 }

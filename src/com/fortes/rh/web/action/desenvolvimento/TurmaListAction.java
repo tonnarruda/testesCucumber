@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.TipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -55,6 +56,7 @@ public class TurmaListAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private TipoDespesaManager tipoDespesaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Turma turma;
 	private Curso curso;
@@ -102,26 +104,33 @@ public class TurmaListAction extends MyActionSupportList
 	
 	private char colaboradoresAvaliados;
 	private char agruparPor;
+	private boolean compartilharColaboradores;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
 		prepareDatas();
 
-		cursos = cursoManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+		cursos = cursoManager.findAllSelect(empresaId);
 
 		if(getShowFilter()) {
-			turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada());
+			turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada(), empresaId);
 			totalCargaHoraria = cursoManager.somaCargaHoraria(turmas);
+			
+			if(turmas.size() == 0)
+				addActionMessage("Não existem cursos/tumas a serem listadas para o filtro informado.");
 		}
 		else
 			addActionMessage("Utilize o filtro para buscar as Turmas.");
+		
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
 
 		return "successFiltroPlanoTreinamento";
 	}
 
 	public String imprimirPlanoTreinamento() throws Exception
 	{
-		turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada());
+		turmas = turmaManager.findPlanosDeTreinamento(0, 0, filtroPlanoTreinamento.getCursoId(), filtroPlanoTreinamento.getDataIni(), filtroPlanoTreinamento.getDataFim(), filtroPlanoTreinamento.getRealizada(), empresaId);
 		parametros = RelatorioUtil.getParametrosRelatorio("Plano de Treinamento", getEmpresaSistema(), montaFiltro());
 
 		return Action.SUCCESS;
@@ -243,24 +252,28 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		int i = 0;
 		String[] diasCheck = null;
-		String[] avaliacoesCheck = null;
 		String custosTurma = null;
 		
 		try 
 		{
 			for (Turma turma : turmas) 
 			{
-				turma.setEmpresa(getEmpresaSistema());
-				diasCheck = (String[]) diasTurmasCheck.toArray()[i];
-				avaliacoesCheck = (String[]) avaliacaoTurmasCheck.toArray()[i];
-				custosTurma = (String) custos.toArray()[i];
+				if (turma != null) {
+					turma.setEmpresa(getEmpresaSistema());
+					diasCheck = (String[]) diasTurmasCheck.toArray()[i];
+					custosTurma = (String) custos.toArray()[i];
 
-				turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), LongUtil.arrayStringToArrayLong(avaliacoesCheck));
+					Long[] avaliacoesCheck = null;
+					if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
+						avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
+
+					turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck);
+				}
 				
 				i++;
 			}
 			
-			addActionMessage("Turmas criadas com sucesso");
+			addActionSuccess("Turmas criadas com sucesso");
 		
 		} catch (Exception e) 
 		{
@@ -311,7 +324,7 @@ public class TurmaListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		turmaManager.removeCascade(turma.getId());
-		addActionMessage("Turma excluída com sucesso.");
+		addActionSuccess("Turma excluída com sucesso.");
 
 		if(planoTreinamento)
 			return "successFiltroPlanoTreinamento";
@@ -721,5 +734,14 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setCursosColaboradores(Map<Curso, Set<Colaborador>> cursosColaboradores) {
 		this.cursosColaboradores = cursosColaboradores;
+	}
+
+	public boolean isCompartilharColaboradores() {
+		return compartilharColaboradores;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

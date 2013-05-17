@@ -193,4 +193,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId);
+	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
 }

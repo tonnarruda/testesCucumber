@@ -2365,6 +2365,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findHabilitacaAVencer(diasLembrete, empresaId);
 	}
 	
+	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception 
+	{
+		return acPessoalClientColaborador.getReciboPagamento(colaborador, mesAno);
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

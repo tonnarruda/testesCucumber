@@ -27,17 +27,18 @@ public class ReajusteColaboradorDaoHibernate extends GenericDaoHibernate<Reajust
 
 		hql.append("select new ReajusteColaborador(rc.id, aa.id, fsa.nome, ca.nome, fsp.id, fsp.nome, fsp.codigoAC, ");
 		hql.append("cp.nome, rc.tipoSalarioAtual, rc.tipoSalarioProposto, rc.salarioAtual, rc.salarioProposto, rc.observacao,  ");
-		hql.append("c.id, c.nome, c.nomeComercial,c.codigoAC, c.naoIntegraAc, c.desligado, c.dataDesligamento, aa.id, ap.id, ap.nome, ap.codigoAC, trc.id, trc.data, ");
+		hql.append("c.id, c.nome, c.nomeComercial,c.codigoAC, c.naoIntegraAc, c.desligado, c.dataDesligamento, aa.id, aa.nome, ap.id, ap.nome, ap.codigoAC, trc.id, trc.data, ");
 		hql.append("fsha.valor, fsha.tipo, fsha.quantidade, ");
 		hql.append("fshp.valor, fshp.tipo, fshp.quantidade, ");
 		hql.append("iha.valor, rc.quantidadeIndiceAtual, ");
 		hql.append("ihp.valor, rc.quantidadeIndiceProposto, ");
 		hql.append("ihfsha.valor, ihfshp.valor, ihfshp.id, ");
-		hql.append("go.id, go.nome, ep.id, ep.nome, ep.codigoAC, fshp.id, ip.id, ip.nome, ip.codigoAC, ifshp.id, amp.id, fp.id, ia.nome )");
+		hql.append("go.id, go.nome, ep.id, ep.nome, ep.codigoAC, ea.nome, fshp.id, ip.id, ip.nome, ip.codigoAC, ifshp.id, amp.id, fp.id, ia.nome) ");
 
 		hql.append("from ReajusteColaborador as rc ");
 
 		hql.append("left join rc.estabelecimentoProposto as ep ");
+		hql.append("left join rc.estabelecimentoAtual as ea ");
 		hql.append("left join rc.tabelaReajusteColaborador as trc ");
 		hql.append("left join rc.colaborador as c ");
 		hql.append("left join rc.areaOrganizacionalProposta as ap ");

@@ -597,21 +597,27 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 	public void testOrdenaPorEstabelecimentoAreaOrGrupoOcupacionalByEstabelecimentoAndAreaOrganizacional()
 	{
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
-		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(2L);
+		AreaOrganizacional areaOrganizacionalProposta1 = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional areaOrganizacionalProposta2 = AreaOrganizacionalFactory.getEntity(2L);
+		AreaOrganizacional areaOrganizacionalAtual1 = AreaOrganizacionalFactory.getEntity(3L);
+		AreaOrganizacional areaOrganizacionalAtual2 = AreaOrganizacionalFactory.getEntity(4L);
 
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		areaOrganizacionals.add(areaOrganizacional1);
-		areaOrganizacionals.add(areaOrganizacional2);
+		areaOrganizacionals.add(areaOrganizacionalProposta1);
+		areaOrganizacionals.add(areaOrganizacionalProposta2);
+		areaOrganizacionals.add(areaOrganizacionalAtual1);
+		areaOrganizacionals.add(areaOrganizacionalAtual2);
 
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 
 		ReajusteColaborador reajusteColaborador1 = ReajusteColaboradorFactory.getReajusteColaborador(1L);
-		reajusteColaborador1.setAreaOrganizacionalProposta(areaOrganizacional1);
+		reajusteColaborador1.setAreaOrganizacionalProposta(areaOrganizacionalProposta1);
+		reajusteColaborador1.setAreaOrganizacionalAtual(areaOrganizacionalAtual1);
 		reajusteColaborador1.setEstabelecimentoProposto(estabelecimento);
 
 		ReajusteColaborador reajusteColaborador2 = ReajusteColaboradorFactory.getReajusteColaborador(2L);
-		reajusteColaborador2.setAreaOrganizacionalProposta(areaOrganizacional2);
+		reajusteColaborador2.setAreaOrganizacionalProposta(areaOrganizacionalProposta2);
+		reajusteColaborador2.setAreaOrganizacionalAtual(areaOrganizacionalAtual2);
 		reajusteColaborador2.setEstabelecimentoProposto(estabelecimento);
 
 		Collection<ReajusteColaborador> reajusteColaboradors = new ArrayList<ReajusteColaborador>();
@@ -620,8 +626,10 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").withAnyArguments().will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").withAnyArguments().will(returnValue(areaOrganizacionals));
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacional1));
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacional2));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacionalProposta1));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalAtual().getId())).will(returnValue(areaOrganizacionalAtual1));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacionalProposta2));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalAtual().getId())).will(returnValue(areaOrganizacionalAtual2));
 
 		Exception erro = null;
 		try
@@ -640,6 +648,17 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 	public void testOrdenaPorEstabelecimentoAreaOrGrupoOcupacionalByGrupoOcupacional()
 	{
+		AreaOrganizacional areaOrganizacionalProposta1 = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional areaOrganizacionalProposta2 = AreaOrganizacionalFactory.getEntity(2L);
+		AreaOrganizacional areaOrganizacionalAtual1 = AreaOrganizacionalFactory.getEntity(3L);
+		AreaOrganizacional areaOrganizacionalAtual2 = AreaOrganizacionalFactory.getEntity(4L);
+
+		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+		areaOrganizacionals.add(areaOrganizacionalProposta1);
+		areaOrganizacionals.add(areaOrganizacionalProposta2);
+		areaOrganizacionals.add(areaOrganizacionalAtual1);
+		areaOrganizacionals.add(areaOrganizacionalAtual2);
+		
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional(1L);
 
 		Cargo cargo = CargoFactory.getEntity(1L);
@@ -649,14 +668,25 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		faixaSalarial.setCargo(cargo);
 
 		ReajusteColaborador reajusteColaborador1 = ReajusteColaboradorFactory.getReajusteColaborador(1L);
+		reajusteColaborador1.setAreaOrganizacionalProposta(areaOrganizacionalProposta1);
+		reajusteColaborador1.setAreaOrganizacionalAtual(areaOrganizacionalAtual1);
 		reajusteColaborador1.setFaixaSalarialProposta(faixaSalarial);
 
 		ReajusteColaborador reajusteColaborador2 = ReajusteColaboradorFactory.getReajusteColaborador(2L);
+		reajusteColaborador2.setAreaOrganizacionalProposta(areaOrganizacionalProposta2);
+		reajusteColaborador2.setAreaOrganizacionalAtual(areaOrganizacionalAtual2);
 		reajusteColaborador2.setFaixaSalarialProposta(faixaSalarial);
 
 		Collection<ReajusteColaborador> reajusteColaboradors = new ArrayList<ReajusteColaborador>();
 		reajusteColaboradors.add(reajusteColaborador1);
 		reajusteColaboradors.add(reajusteColaborador2);
+
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").withAnyArguments().will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").withAnyArguments().will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacionalProposta1));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador1.getAreaOrganizacionalAtual().getId())).will(returnValue(areaOrganizacionalAtual1));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalProposta().getId())).will(returnValue(areaOrganizacionalProposta2));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(eq(areaOrganizacionals),eq(reajusteColaborador2.getAreaOrganizacionalAtual().getId())).will(returnValue(areaOrganizacionalAtual2));
 
 		Exception erro = null;
 		try

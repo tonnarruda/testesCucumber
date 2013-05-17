@@ -23,7 +23,7 @@ public interface TurmaManager extends GenericManager<Turma>
 	public List filtroRelatorioByColaborador(LinkedHashMap parametros);
 	public Map<String, Object> getParametrosRelatorio(Empresa empresa, Map<String, Object> parametros);
 	public Collection<Turma> findAllSelect(Long cursoId);
-	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada);
+	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada, Long empresaId);
 	public Integer countPlanosDeTreinamento(Long cursoId, Date dataIni, Date dataFim, char realizada);
 	public void updateRealizada(Long turmaId, boolean realizada)throws Exception;
 	public void updateCusto(Long turmaId, double totalCusto);

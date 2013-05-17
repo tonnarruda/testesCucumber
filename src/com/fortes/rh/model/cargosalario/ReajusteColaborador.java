@@ -80,12 +80,12 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 
 	public ReajusteColaborador(Long id, Long areaAtualId, String faixaSalarialAtualNome, String cargoAtualNome, Long faixaSalarialPropostaId, String faixaSalarialPropostaNome,
 			String faixaSalarialPropostaCodigoAC, String cargoPropostoNome, Integer tipoSalarioAtual, Integer tipoSalarioProposto, Double salarioAtual, Double salarioProposto, String observacao,
-			Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAC, boolean colaboradorDesligado, Date colaboradorDataDesligamento, Long areaColaboradorId, Long areaPropostaId, String areaPropostaNome,
-			String areaPropostaCodigoAC, Long tabelaReajusteColaboradorId, Date tabelaReajusteColaboradorData, Double faixaSalarialHistoricoAtualValor, Integer faixaSalarialHistoricoAtualTipo,
+			Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAC, boolean colaboradorDesligado, Date colaboradorDataDesligamento, Long areaColaboradorId,
+			String areaAtualNome, Long areaPropostaId, String areaPropostaNome, String areaPropostaCodigoAC, Long tabelaReajusteColaboradorId, Date tabelaReajusteColaboradorData, Double faixaSalarialHistoricoAtualValor, Integer faixaSalarialHistoricoAtualTipo,
 			Double faixaSalarialHistoricoAtualQuantidade, Double faixaSalarialHistoricoPropostoValor, Integer faixaSalarialHistoricoPropostoTipo, Double faixaSalarialHistoricoPropostoQuantidade,
 			Double indiceHistoricoAtualValor, Double quantidadeIndiceAtual, Double indiceHistoricoPropostoValor, Double quantidadeIndiceProposto,
 			Double indiceHistoricoFaixaSalarialAtualValor, Double indiceHistoricoFaixaSalarialPropostaValor, Long indiceHistoricoFaixaSalarialPropostaId,
-			Long grupoOcupacionalId, String grupoOcupacionalNome, Long estabelecimentoId, String estabelecimentoNome, String estabelecimentoCodigoAC,Long faixaSalarialHistoricoPropostoId,
+			Long grupoOcupacionalId, String grupoOcupacionalNome, Long estabelecimentoId, String estabelecimentoPropostoNome, String estabelecimentoCodigoAC, String estabelecimentoAtualNome ,Long faixaSalarialHistoricoPropostoId,
 			Long projectionIndicePropostoId, String indicePropostoNome, String projectionIndicePropostoCodigoAC, Long indiceFaixaSalarialHistoricoPropostoId, Long ambientePropostoId, Long funcaoPropostaId, String indiceAtualNome)
 	{
 		this.setId(id);
@@ -97,6 +97,7 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 		this.setAreaOrganizacionalPropostaId(areaPropostaId);
 		this.setAreaOrganizacionalPropostaNome(areaPropostaNome);
 		this.setAreaOrganizacionalPropostaCodigoAC(areaPropostaCodigoAC);
+		this.setProjectionAreaAtualNome(areaAtualNome);
 		this.setTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);
 		this.setTabelaReajusteColaboradorData(tabelaReajusteColaboradorData);
 		this.setIdColaborador(colaboradorId);
@@ -137,8 +138,10 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 		this.setProjectionGrupoOcupacionalPropostoNome(grupoOcupacionalNome);
 
 		this.setProjectionEstabelecimentoPropostoId(estabelecimentoId);
-		this.setProjectionEstabelecimentoPropostoNome(estabelecimentoNome);
+		this.setProjectionEstabelecimentoPropostoNome(estabelecimentoPropostoNome);
 		this.setProjectionEstabelecimentoPropostoCodigoAC(estabelecimentoCodigoAC);
+		
+		this.setProjectionEstabelecimentoAtualNome(estabelecimentoAtualNome);
 
 		this.setProjectionIndicePropostoId(projectionIndicePropostoId);
 		this.setProjectionIndicePropostoNome(indicePropostoNome);

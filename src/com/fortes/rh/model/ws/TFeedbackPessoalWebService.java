@@ -12,8 +12,19 @@ public class TFeedbackPessoalWebService implements Serializable
 	private String mensagem;
 	private String exception;
 	private String codigoretorno;
+	private String retorno;
 	
-	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno) {
+	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno, String retorno) {
+		super();
+		this.sucesso = sucesso;
+		this.mensagem = mensagem;
+		this.exception = exception;
+		this.codigoretorno = codigoretorno;
+		this.retorno = retorno;
+	}
+	
+	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno) 
+	{
 		super();
 		this.sucesso = sucesso;
 		this.mensagem = mensagem;
@@ -85,5 +96,12 @@ public class TFeedbackPessoalWebService implements Serializable
 	public void setCodigoretorno(String codigoretorno) {
 		this.codigoretorno = codigoretorno;
 	}
-	
+
+	public String getRetorno() {
+		return retorno;
+	}
+
+	public void setRetorno(String retorno) {
+		this.retorno = retorno;
+	}
 }
