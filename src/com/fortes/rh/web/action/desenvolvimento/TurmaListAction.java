@@ -252,24 +252,28 @@ public class TurmaListAction extends MyActionSupportList
 	{
 		int i = 0;
 		String[] diasCheck = null;
-		String[] avaliacoesCheck = null;
 		String custosTurma = null;
 		
 		try 
 		{
 			for (Turma turma : turmas) 
 			{
-				turma.setEmpresa(getEmpresaSistema());
-				diasCheck = (String[]) diasTurmasCheck.toArray()[i];
-				avaliacoesCheck = (String[]) avaliacaoTurmasCheck.toArray()[i];
-				custosTurma = (String) custos.toArray()[i];
+				if (turma != null) {
+					turma.setEmpresa(getEmpresaSistema());
+					diasCheck = (String[]) diasTurmasCheck.toArray()[i];
+					custosTurma = (String) custos.toArray()[i];
 
-				turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), LongUtil.arrayStringToArrayLong(avaliacoesCheck));
+					Long[] avaliacoesCheck = null;
+					if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
+						avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
+
+					turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck);
+				}
 				
 				i++;
 			}
 			
-			addActionMessage("Turmas criadas com sucesso");
+			addActionSuccess("Turmas criadas com sucesso");
 		
 		} catch (Exception e) 
 		{
@@ -320,7 +324,7 @@ public class TurmaListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		turmaManager.removeCascade(turma.getId());
-		addActionMessage("Turma excluída com sucesso.");
+		addActionSuccess("Turma excluída com sucesso.");
 
 		if(planoTreinamento)
 			return "successFiltroPlanoTreinamento";

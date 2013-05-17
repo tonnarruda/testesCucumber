@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pdi" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a2367db5-5ee0-43ae-8b09-d26ab0f62218">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -52,7 +52,7 @@
 		<groupHeader>
 			<band height="14" splitType="Stretch">
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="8e5ee69b-a91d-4285-9cdf-362c05af787a" key="textField-16" x="14" y="2" width="765" height="12"/>
+					<reportElement uuid="8e5ee69b-a91d-4285-9cdf-362c05af787a" key="textField-16" x="14" y="2" width="768" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -128,7 +128,7 @@
 				<text><![CDATA[Competência]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="20c5c4cb-0c3e-415e-ac35-bf80c7885e62" key="textField-13" x="14" y="17" width="765" height="12"/>
+				<reportElement uuid="20c5c4cb-0c3e-415e-ac35-bf80c7885e62" key="textField-13" x="14" y="17" width="767" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -167,7 +167,7 @@
 				<text><![CDATA[Nível do Cargo/Faixa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9c99f7b9-bf78-4b66-aeba-90c0d5a900da" key="staticText-26" x="624" y="30" width="157" height="12"/>
+				<reportElement uuid="9c99f7b9-bf78-4b66-aeba-90c0d5a900da" key="staticText-26" x="624" y="30" width="158" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
