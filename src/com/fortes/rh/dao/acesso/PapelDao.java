@@ -10,8 +10,6 @@ import com.fortes.rh.model.acesso.Papel;
 
 public interface PapelDao extends GenericDao<Papel> 
 {
-	Collection<Papel> findPapeisAPartirDe(Long atualizaPapeisIdsAPartirDe);
-
 	Collection<Papel> findByPerfil(Long perfilId);
 
 	Collection<Papel> findNotIn(Collection<Long> ids);

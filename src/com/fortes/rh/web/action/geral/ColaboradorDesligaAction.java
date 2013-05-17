@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -105,9 +106,22 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String reLiga() throws Exception
 	{
-		colaboradorManager.religaColaborador(colaborador.getId());
+		try
+		{
+			colaboradorManager.validaQtdCadastros();			
+			colaboradorManager.religaColaborador(colaborador.getId());
+			
+			addActionMessage("Colaborador religado com sucesso.");
+		} 
+		catch (FortesException e) 
+		{
+			addActionMessage(e.getMessage());
+		} 
+		catch (Exception e) 
+		{
+			addActionError(e.getMessage());
+		}
 				
-		addActionMessage("Colaborador Religado com sucesso.");
 		return Action.SUCCESS;
 	}
 

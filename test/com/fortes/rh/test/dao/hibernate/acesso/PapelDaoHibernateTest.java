@@ -28,23 +28,6 @@ public class PapelDaoHibernateTest extends GenericDaoHibernateTest<Papel>
 		return papel;
 	}
 	
-	public void testFindPapeisAPartirDe()
-	{
-		Papel papel1 = new Papel();
-		papelDao.save(papel1);
-		
-		Papel papel2 = new Papel();
-		papelDao.save(papel2);
-		
-		Papel papel3 = new Papel();
-		papelDao.save(papel3);
-		
-		Collection<Papel> ids = papelDao.findPapeisAPartirDe(papel2.getId());
-		
-		assertEquals(2, ids.size());
-		assertFalse(ids.contains(papel1));
-	}
-	
 	public void testFindByPerfil()
 	{
 		Papel papel1 = new Papel();

@@ -1,0 +1,1 @@
+alter table parametrosdosistema drop column atualizaPapeisIdsAPartirDe; --.go

@@ -1,0 +1,2 @@
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (571, 'ROLE_REGISTRAR_NOVA_LICENCA', 'Registrar Nova Licença', '/registraNovaLicenca.action', 15, true, 37);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 571);--.go

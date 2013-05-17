@@ -3,9 +3,12 @@ package com.fortes.rh.web.action.security;
 import org.apache.log4j.Logger;
 
 import remprot.RPClient;
+import remprot.RPWebClient;
+import remprot.RPWebPacket;
 
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionSupport;
 
 @SuppressWarnings("serial")
@@ -16,15 +19,16 @@ public class Autenticador extends MyActionSupport
 	private String cnpj;
 	private String nome;
 	private String ultimoReset;
+	private int ticket;
 
 	private static Logger logger = Logger.getLogger(Autenticador.class);
-	//TODO remprot
+	
 	public String codigoOperacional()
 	{
 		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
 
 		try {
-			codigoOperacional = client.requestKey(cnpj, nome, false);
+			codigoOperacional = client.requestKey(cnpj, nome, true);
 			ultimoReset = DateUtil.formataDiaMesAno(client.getLastResetDate());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,24 +36,82 @@ public class Autenticador extends MyActionSupport
 
 		return ActionSupport.SUCCESS;
 	}
-
+	
 	public String validaCodigoResposta()
 	{
-		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();
-		client.applyResponse(cnpj, nome, codigoResposta);
-		
-		client.loadLicense();
+		// TODO remprot - Tratar os erros com mensagens bem explicadas
+		RPClient client = getClientRemprot(codigoResposta);
 
-		if (client.getRegistered())
+		if (com.fortes.rh.util.Autenticador.isRegistrado())
 			return ActionSupport.SUCCESS;
 		else
 		{
-			addActionError("Erro ao liberar licença: código do erro: " + String.valueOf(client.getErrors()));
+			addActionError("Erro ao liberar licença. (Código do erro: " + String.valueOf(client.getErrors())+")");
 			logger.info("Erro do RemProt ao liberar licença: " + String.valueOf(client.getErrors()));
 			return ActionSupport.INPUT;
 		}
 	}
-
+	
+	public String geraTicket()
+	{
+		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
+		
+		try {
+			codigoOperacional = client.requestKey(cnpj, nome, true);
+			
+			RPWebClient rpWebClient = new RPWebClient();
+			RPWebPacket rpWebPacket = rpWebClient.WebStoreOperational(nome, cnpj, codigoOperacional);
+			ticket = rpWebPacket.TicketNo;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ActionSupport.SUCCESS;
+	}
+	
+	public String validaTicket()
+	{
+		try {
+			RPWebClient rpWebClient = new RPWebClient();
+			RPWebPacket rpWebPacket = rpWebClient.WebRetrieveAnswer(ticket);
+			
+			if(!rpWebPacket.Successful){
+				addActionError("Ticket ainda não validado. Aguarde a validação do técnico e clique em OK.");
+				return ActionSupport.INPUT;
+			}
+			
+			RPClient client = getClientRemprot(rpWebPacket.AnswerCode);
+			
+			if (!com.fortes.rh.util.Autenticador.isRegistrado())
+			{
+				addActionError("Impossível liberar licença. (Código do erro: " + String.valueOf(client.getErrors())+ ")");
+				logger.info("Erro do RemProt ao liberar licença: " + String.valueOf(client.getErrors()));
+				return ActionSupport.INPUT;
+			}
+			
+		} catch (Exception e) {
+			addActionError("Erro ao liberar licença. Entre em contato com o suporte." );
+			e.printStackTrace();
+			return ActionSupport.INPUT;
+		}
+		
+		return ActionSupport.SUCCESS;
+	}
+	
+	private RPClient getClientRemprot(String codigoResposta)
+	{
+		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();
+		client.applyResponse(cnpj, nome, codigoResposta);
+		client.loadLicense();
+		
+		return client;
+	}
+	
+	public String registraNovaLicenca() 
+	{
+		return Action.SUCCESS;
+	}
+	
 	public String getCodigoOperacional()
 	{
 		return this.codigoOperacional;
@@ -92,5 +154,17 @@ public class Autenticador extends MyActionSupport
 
 	public String getUltimoReset() {
 		return ultimoReset;
+	}
+
+	
+	public int getTicket()
+	{
+		return ticket;
+	}
+
+	
+	public void setTicket(int ticket)
+	{
+		this.ticket = ticket;
 	}
 }

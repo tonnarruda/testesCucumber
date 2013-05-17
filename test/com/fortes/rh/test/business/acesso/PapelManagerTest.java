@@ -51,14 +51,13 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeis.add(p3);
 		papeis.add(p4);
 
-//		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
-		papelDao.expects(once()).method("findAll").will(returnValue(papeis));
+		papelDao.expects(once()).method("findNotIn").will(returnValue(papeis));
 		
 		String[] permissoes = new String[]{"1","2","3"};
 		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(permissoes));
 
-		assertNotNull(papelManager.getPerfilOrganizado(permissoes, false));
+		assertNotNull(papelManager.getPerfilOrganizado(permissoes));
 	}
 	
 	public void testGetPapeisPermitidos()
@@ -70,77 +69,14 @@ public class PapelManagerTest extends MockObjectTestCase
 		papeisPermitidosIds.add(2L);
 		papeisPermitidosIds.add(3L);
 		
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
-		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(permissoes));
+		papelDao.expects(once()).method("findAll").will(returnValue(papeisPermitidosIds));
 		
-		assertEquals(papeisPermitidosIds, papelManager.getPapeisPermitidos());
-	}
-	
-	public void testAtualizarPapeis()
-	{
-		Collection<Long> modulosJaExistentes = new ArrayList<Long>();
-		modulosJaExistentes.add(1L);
-		modulosJaExistentes.add(2L);
-		
-		Collection<Papel> novosPapeis = new ArrayList<Papel>();
-		
-		Papel papel1 = new Papel(); 
-		papel1.setId(10L);
-		papel1.setPapelMaeId(1L);
-		novosPapeis.add(papel1);
-		
-		Papel papel2SemPermissao = new Papel(); 
-		papel2SemPermissao.setId(11L);
-		papel2SemPermissao.setPapelMaeId(33L);
-		novosPapeis.add(papel2SemPermissao);
-		
-		Papel papel3 = new Papel(); 
-		papel3.setId(12L);
-		papel3.setPapelMaeId(2L);
-		novosPapeis.add(papel3);
-
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
-		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(new String[]{"1","2"}));
-		
-		papelDao.expects(once()).method("findPapeisAPartirDe").with(eq(10L)).will(returnValue(novosPapeis));
-		
-		parametrosDoSistemaManager.expects(once()).method("updateModulos").with(eq("1,2,10,12")).isVoid();
-		parametrosDoSistemaManager.expects(once()).method("disablePapeisIds").isVoid();
-		
-		papelManager.atualizarPapeis(10L);
-	}
-	
-	public void testAtualizarPapeisAddFamilia()
-	{
-		Collection<Long> modulosJaExistentes = new ArrayList<Long>();
-		modulosJaExistentes.add(1L);
-		modulosJaExistentes.add(2L);
-		
-		Collection<Papel> novosPapeis = new ArrayList<Papel>();
-		
-		Papel papel1 = new Papel(); 
-		papel1.setId(10L);
-		papel1.setPapelMaeId(1L);
-		novosPapeis.add(papel1);
-		
-		Papel papel2 = new Papel(); 
-		papel2.setId(11L);
-		papel2.setPapelMaeId(10L);
-		novosPapeis.add(papel2);
-		
-		Papel papel3 = new Papel(); 
-		papel3.setId(12L);
-		papel3.setPapelMaeId(10L);
-		novosPapeis.add(papel3);
-		
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
-		parametrosDoSistemaManager.expects(once()).method("getModulosDecodificados").will(returnValue(new String[]{"1","2"}));
-		
-		papelDao.expects(once()).method("findPapeisAPartirDe").with(eq(10L)).will(returnValue(novosPapeis));
-		parametrosDoSistemaManager.expects(once()).method("updateModulos").with(eq("1,2,10,11,12")).isVoid();
-		parametrosDoSistemaManager.expects(once()).method("disablePapeisIds").isVoid();
-		
-		papelManager.atualizarPapeis(10L);
+		try {
+			assertEquals(papeisPermitidosIds, papelManager.getPapeisPermitidos());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void testMontarArvore()

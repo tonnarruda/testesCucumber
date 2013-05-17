@@ -12,9 +12,8 @@ import com.fortes.rh.model.acesso.Papel;
 
 public interface PapelManager extends GenericManager<Papel>
 {
-	String getPerfilOrganizado(String[] marcados, boolean acessoModulos);
-	Collection<Long> getPapeisPermitidos();
-	void atualizarPapeis(Long atualizaPapeisIdsAPartirDe);
+	String getPerfilOrganizado(String[] marcados);
+	Collection<Long> getPapeisPermitidos() throws Exception;
 	Collection<Papel> findByPerfil(Long perfilId);
 	String montarArvore(Collection<Papel> papeis);
 }

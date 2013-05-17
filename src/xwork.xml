@@ -158,9 +158,20 @@
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>
+    <action name="registraNovaLicenca" class="com.fortes.rh.web.action.security.Autenticador" method="registraNovaLicenca">
+      <result name="success" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
+      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
+    </action>
     <action name="codigoOperacional" class="com.fortes.rh.web.action.security.Autenticador" method="codigoOperacional">
       <result name="success" type="freemarker">/WEB-INF/pages/codigoResposta.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
+    </action>
+    <action name="geraTicket" class="com.fortes.rh.web.action.security.Autenticador" method="geraTicket">
+      <result name="success" type="freemarker">/WEB-INF/pages/mensagemTicket.ftl</result>
+    </action>
+    <action name="validaTicket" class="com.fortes.rh.web.action.security.Autenticador" method="validaTicket">
+      <result name="success" type="redirect">/logout.action</result>
+      <result name="input" type="freemarker">/WEB-INF/pages/mensagemTicket.ftl</result>
     </action>
     <action name="validaCodigoResposta" class="com.fortes.rh.web.action.security.Autenticador" method="validaCodigoResposta">
       <result name="success" type="redirect">/index.action</result>

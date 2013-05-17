@@ -47,6 +47,9 @@
 	<decorator name="login" page="login.ftl">
 		<pattern>/login.action</pattern>
 		<pattern>/codigoOperacional.action</pattern>
+		<pattern>/registraNovaLicenca.action*</pattern>
+		<pattern>/geraTicket.action</pattern>
+		<pattern>/validaTicket.action</pattern>
 		<pattern>/validaCodigoResposta.action</pattern>
 		<pattern>/acesso/usuario/prepareCriarUsuario.action*</pattern>
 		<pattern>/acesso/usuario/criarUsuario.action</pattern>

@@ -98,9 +98,6 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		if(StringUtils.isBlank(parametrosDoSistema.getEmailPass()))
 			parametrosDoSistema.setEmailPass(parametrosDoSistemaAux.getEmailPass());
 
-		if (parametrosDoSistemaAux.getModulos() != null)
-			parametrosDoSistema.setModulos(parametrosDoSistemaAux.getModulos());
-		
 		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
 			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
 

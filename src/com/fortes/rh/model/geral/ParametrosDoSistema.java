@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -17,6 +16,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.Perfil;
+import com.fortes.rh.util.DateUtil;
 
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="parametrosDoSistema_sequence", allocationSize=1)
@@ -52,8 +52,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Column(length=200)
     private String caminhoBackup;
-    @Lob
-    private String modulos;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
     
@@ -67,8 +65,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
     
-    private Long atualizaPapeisIdsAPartirDe;
-
 	@ManyToOne
     private Perfil perfilPadrao;
 
@@ -220,21 +216,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	{
 		this.upperCase = capitalizarCampos;
 	}
-	public String getModulos()
-	{
-		return modulos;
-	}
-	public void setModulos(String modulos)
-	{
-		this.modulos = modulos;
-	}
-
-	public Long getAtualizaPapeisIdsAPartirDe() {
-		return atualizaPapeisIdsAPartirDe;
-	}
-	public void setAtualizaPapeisIdsAPartirDe(Long atualizaPapeisIdsAPartirDe) {
-		this.atualizaPapeisIdsAPartirDe = atualizaPapeisIdsAPartirDe;
-	}
 	
 	/**
 	 * Verifica se o envio de e-mail está habilitado na aplicação.
@@ -299,7 +280,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.proximaVersao = proximaversao;
 	}
 	public boolean verificaRemprot() {
-		return this.proximaVersao == null || new Date().getTime() - this.proximaVersao.getTime() > 0;
+		return this.proximaVersao == null || proximaVersao.before(DateUtil.criarDataMesAno(new Date()));
 	}
 	public boolean isAutenticacao() {
 		return autenticacao;

@@ -8,6 +8,7 @@ import org.apache.axis.utils.StringUtils;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.Autenticador;
 
 public abstract class Menu 
 {
@@ -18,7 +19,7 @@ public abstract class Menu
 		roles = new ArrayList<Papel>();
         for (Papel papel : rolesPapel)
         {
-        	if (papel.isMenu())
+        	if ( papel.isMenu() ) 
         		roles.add(papel);
         }
 

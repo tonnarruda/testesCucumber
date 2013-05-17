@@ -6,7 +6,5 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 public interface ParametrosDoSistemaDao extends GenericDao<ParametrosDoSistema>
 {
 	ParametrosDoSistema findByIdProjection(Long id);
-	void updateModulos(String papeis);
-	void disablePapeisIds();
 	void updateServidorRemprot(String servidorRemprot);
 }

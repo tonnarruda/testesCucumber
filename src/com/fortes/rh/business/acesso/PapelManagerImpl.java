@@ -7,85 +7,50 @@ package com.fortes.rh.business.acesso;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.Autenticador;
 
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	private String[] marcados;
-	private Collection<Papel> listaFull = new ArrayList<Papel>();
-
-	public String getPerfilOrganizado(String[] marcados, boolean acessoModulos)
+	public String getPerfilOrganizado(String[] marcados)
 	{
-		this.marcados = marcados;
+		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
 
-		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
-		String[] permissoes = parametrosDoSistemaManager.getModulosDecodificados(parametros);
+		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
 
-		//TODO remprot msgAG
-//		Collection<Long> modulosConfigurados = Autenticador.getModulosNaoConfigurados(parametros.getServidorRemprot());
-//
-//		this.listaFull = getDao().findNotIn(modulosConfigurados);
-		this.listaFull = findAll(new String[]{"ordem"});
-		Collection<Papel> papeisPermitidos = new ArrayList<Papel>();
-
-		if (acessoModulos)
-		{
-			this.marcados = permissoes;
-			 papeisPermitidos = listaFull;
-		}
-		else
-		{
-			for (Papel papel : listaFull)
-			{
-				boolean permitido = false;
-				for (String permissao : permissoes)
-				{
-					if (papel.getId().equals(Long.valueOf(permissao)))
-					{
-						permitido = true;
-						break;
-					}
-				}
-				if (permitido)
-					papeisPermitidos.add(papel);
-			}
-		}
-
-		return montarOpcoes(papeisPermitidos);
+		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados);
 	}
 	
-	private String montarOpcoes(Collection<Papel> papeis)
+	private String montarOpcoes(Collection<Papel> papeisSemModulosNaoConfigurados, String[] marcados)
 	{
 		StringBuilder perfilOrganizado = new StringBuilder();
 		String marcar = "";
 
-		for (Papel papel : papeis)
+		for (Papel papel : papeisSemModulosNaoConfigurados)
 		{
 			if(papel.getPapelMae() == null)
 			{
-				if (this.marcados != null)
+				if (marcados != null)
 				{
 					marcar = "";
 					for (int i = 0; i < marcados.length; i++)
 					{
-						if (papel.getId().toString().equals(marcados[i]))
+						if (papel.getId().toString().equals(marcados[i])){
 							marcar = "checked";
+							break;
+						}
 					}
 				}
 
 				papel.setIdExibir("idCheck" + papel.getId());
 				perfilOrganizado.append("<li><input type='checkbox' " + marcar + " onchange='checkSystem(this)' onclick='checkSystem(this)' onfocus='blur()' name='permissoes' value='" + papel.getId() + "' id='" + papel.getIdExibir() + "' /><label for='" + papel.getIdExibir() + "'>" + papel.getNome() + "</label>");
-				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeis, papel.getIdExibir()) + "</ul>\n</li>\n");
+				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeisSemModulosNaoConfigurados, papel.getIdExibir(), marcados) + "</ul>\n</li>\n");
 			}
 		}
 
@@ -128,9 +93,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return filhos.toString();
 	}
 
-	
-
-	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir)
+	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir, String[] marcados)
 	{
 		StringBuilder filhos = new StringBuilder();
 		String maisFilhos = "";
@@ -148,7 +111,10 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 					for (int i = 0; i < marcados.length; i++)
 					{
 						if (papel.getId().toString().equals(marcados[i]))
+						{
 							marcar = "checked";
+							break;
+						}
 					}
 				}
 
@@ -156,7 +122,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 				filhos.append("<li><input type='checkbox' " + marcar + " onchange='checkSystem(this)' onclick='checkSystem(this)' onfocus='blur()' name='permissoes' value='" + papel.getId() + "' id='" + papel.getIdExibir() + "' /><label for='" + papel.getIdExibir() + "'>" + papel.getNome() + "</label>");
 				filhoNumero++;
 
-				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir());
+				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir(), marcados);
 				if(maisFilhos != "")
 				{
 					filhos.append("\n<ul class='padding'>\n" + maisFilhos + "</ul>\n");
@@ -169,39 +135,47 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return filhos.toString();
 	}
 
-	public Collection<Long> getPapeisPermitidos()
+	public Collection<Long> getPapeisPermitidos() throws Exception
 	{
-		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
-		String[] modulosPermitidos = parametrosDoSistemaManager.getModulosDecodificados(parametros);
+		Collection<Long> modulosConfigurados = new ArrayList<Long>();
+		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
 		
-		Collection<Long> modulosIds = LongUtil.arrayStringToCollectionLong(modulosPermitidos);
+		for (Long modulo : Autenticador.modulos) {
+			if (!modulosNaoConfigurados.contains(modulo))
+				modulosConfigurados.add(modulo);
+		}
 		
-		return modulosIds;
+		Collection<Long> papeisPermitidos = new ArrayList<Long>(modulosConfigurados);
+		papeisPermitidos.addAll(addFilhos(modulosConfigurados));
+		
+		return papeisPermitidos;
 	}
 	
-	public void atualizarPapeis(Long atualizaPapeisIdsAPartirDe) 
+	private Collection<Long> addFilhos(Collection<Long> modulos) throws Exception
 	{
-		if (atualizaPapeisIdsAPartirDe != null)
+		Collection<Long> retornoPapeisPermitidos = new ArrayList<Long>();
+		Collection<Papel> todosPapeis = findAll(); 
+
+		for (Long modulo: modulos) 
+			retornoPapeisPermitidos.addAll(maisPapeis(modulo, todosPapeis));
+		
+		return retornoPapeisPermitidos;
+	}
+
+	private Collection<Long> maisPapeis(Long papelId, Collection<Papel> todosPapeis )
+	{
+		Collection<Long> retornoPapeisPermitidos = new ArrayList<Long>();
+		
+		for (Papel papel : todosPapeis) 
 		{
-			Collection<Long> papeisPermitidosIds = getPapeisPermitidos();
-			
-			Collection<Papel> novosPapeis = getDao().findPapeisAPartirDe(atualizaPapeisIdsAPartirDe);
-			
-			Collection<Long> todosOsPapeisPermitidos = new TreeSet<Long>();
-			todosOsPapeisPermitidos.addAll(papeisPermitidosIds);
-			
-			for (Papel papel : novosPapeis)
+			if(papel.getPapelMae() != null && papelId.equals(papel.getPapelMae().getId()))
 			{
-				if (papel.getPapelMae()!=null && papel.getPapelMae().getId()!=null && todosOsPapeisPermitidos.contains(papel.getPapelMae().getId()))
-					todosOsPapeisPermitidos.add(papel.getId());
-				
+				retornoPapeisPermitidos.add(papel.getId());
+				retornoPapeisPermitidos.addAll(maisPapeis(papel.getId(), todosPapeis));
 			}
-			
-			String modulos = StringUtil.converteCollectionLongToString(todosOsPapeisPermitidos); 
-			
-			parametrosDoSistemaManager.updateModulos(modulos);
-			parametrosDoSistemaManager.disablePapeisIds();
 		}
+		
+		return retornoPapeisPermitidos;
 	}
 	
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)

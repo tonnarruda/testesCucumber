@@ -188,8 +188,10 @@
 				/login.action*=ROLE_ANONYMOUS,ROLE_USER
 				/logout.action*=ROLE_ANONYMOUS,ROLE_USER
 				/configAutenticador.action*=ROLE_ANONYMOUS,ROLE_USER
+				/registraNovaLicenca.action*=ROLE_REGISTRAR_NOVA_LICENCA
 				/concurrentSessionError.jsp*=ROLE_ANONYMOUS
 				/codigoOperacional.action*=ROLE_ANONYMOUS,ROLE_USER
+				/geraTicket.action*=ROLE_ANONYMOUS,ROLE_USER
 				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
 				/browsersCompativeis.action*=ROLE_ANONYMOUS,ROLE_USER
 				/videoteca.action*=ROLE_USER

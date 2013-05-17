@@ -28,7 +28,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.atualizadoSucesso"), "atualizadoSucesso");
 		p.add(Projections.property("ps.acVersaoWebServiceCompativel"), "acVersaoWebServiceCompativel");
 		p.add(Projections.property("ps.upperCase"), "upperCase");
-		p.add(Projections.property("ps.atualizaPapeisIdsAPartirDe"), "atualizaPapeisIdsAPartirDe");
 		p.add(Projections.property("ps.codEmpresaSuporte"), "codEmpresaSuporte");
 		p.add(Projections.property("ps.codClienteSuporte"), "codClienteSuporte");
 		p.add(Projections.property("ps.camposCandidatoVisivel"), "camposCandidatoVisivel");
@@ -43,28 +42,12 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.caminhoBackup"), "caminhoBackup");
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
-		p.add(Projections.property("ps.modulos"), "modulos");
+		p.add(Projections.property("ps.proximaVersao"), "proximaVersao");
 		criteria.setProjection(p);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
 
 		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
-	}
-
-	public void updateModulos(String papeis)
-	{
-		String hql = "update ParametrosDoSistema p set p.modulos = :papeisCodificados";
-		Query query = getSession().createQuery(hql);
-		query.setString("papeisCodificados", papeis);
-		query.executeUpdate();
-	}
-
-	public void disablePapeisIds() {
-		
-		String hql = "update ParametrosDoSistema p set p.atualizaPapeisIdsAPartirDe = null";
-		Query query = getSession().createQuery(hql);
-		
-		query.executeUpdate();
 	}
 
 	public void updateServidorRemprot(String servidorRemprot) {

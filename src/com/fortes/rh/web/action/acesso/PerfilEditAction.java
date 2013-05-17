@@ -39,7 +39,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-		exibirPerfil = papelManager.getPerfilOrganizado(null, false);
+		exibirPerfil = papelManager.getPerfilOrganizado(null);
 		return Action.SUCCESS;
 	}
 
@@ -48,7 +48,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 		prepare();
 		permissoes = perfilManager.montaPermissoes(perfil);
 
-		exibirPerfil = papelManager.getPerfilOrganizado(permissoes, false);
+		exibirPerfil = papelManager.getPerfilOrganizado(permissoes);
 
 		return Action.SUCCESS;
 	}
@@ -65,41 +65,6 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		perfil.setPapeis(getPapeisInformados());
 		perfilManager.update(perfil);
-
-		return Action.SUCCESS;
-	}
-
-	public String prepareModulos() throws Exception
-	{
-		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L))
-		{
-			//TODO remprot msgAC
-			//modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
-			permissoes = perfilManager.montaPermissoes(perfil);
-			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, true);
-		}
-		else
-			addActionError("Você não tem permissão para acessar essa tela.");
-
-		return Action.SUCCESS;
-	}
-
-	public String updateModulos() throws Exception
-	{
-		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L))
-		{
-			//TODO remprot msgAC
-			//modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados(parametrosDoSistemaManager.findByIdProjection(1L).getServidorRemprot());
-			String papeis = StringUtil.converteArrayToString(permissoes);
-			parametrosDoSistemaManager.updateModulos(papeis);
-
-			addActionMessage("Dados gravados com sucesso.");
-
-			permissoes = perfilManager.montaPermissoes(perfil);
-			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, true);
-		}
-		else
-			addActionError("Você não tem permissão para acessar essa tela.");
 
 		return Action.SUCCESS;
 	}

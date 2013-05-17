@@ -35,7 +35,9 @@ public class RelatorioUtil
     	String msgRegistro = "";
 		if (parametrosDoSistema.verificaRemprot())
 		{
-			if(!Autenticador.isDemo())
+			if(Autenticador.isDemo())
+				msgRegistro = Autenticador.getMsgPadrao();
+			else
 				msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
 		}
 

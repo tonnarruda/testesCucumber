@@ -50,6 +50,7 @@ import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -534,13 +535,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-			if (parametrosDoSistema.verificaRemprot())
-				colaboradorManager.validaQtdCadastros();			
+			colaboradorManager.validaQtdCadastros();			
 			
-		} catch (Exception e)
+		} catch (FortesException e) 
 		{
 			addActionMessage(e.getMessage());
+			prepare();
+			return Action.INPUT;
+		} catch (Exception e) 
+		{
+			addActionError(e.getMessage());
 			prepare();
 			return Action.INPUT;
 		}
