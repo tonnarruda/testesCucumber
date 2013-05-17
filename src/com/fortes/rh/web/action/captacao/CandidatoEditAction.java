@@ -554,7 +554,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		maxCandidataCargo = empresa.getMaxCandidataCargo();
 
 		ufs = estadoManager.findAll(new String[]{"sigla"});
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
 		sexos = new SexoCadastro();
 		
 		return Action.SUCCESS;
