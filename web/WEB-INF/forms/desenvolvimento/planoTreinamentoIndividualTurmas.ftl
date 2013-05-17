@@ -147,6 +147,7 @@
 					obrigatorios.push('prevFim' + i);
 					obrigatorios.push('custo' + i);
 					obrigatorios.push('@diasTurmasCheck[' + i + ']');
+					obrigatorios.push('@avaliacaoTurmasCheck[' + i + ']');
 	
 					validados.push('prevIni' + i);
 					validados.push('prevFim' + i);

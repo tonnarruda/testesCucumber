@@ -262,7 +262,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionError(e.getMessage());
 		}
-
+		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		if(habilitaCampoExtra)
@@ -363,11 +363,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		if(colaborador == null)
 		{
-			addActionMessage("Você não tem Colaborador cadastrado");
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
 		}
 		else if( ! colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))//isso é muito importante, evita que o cara edite o colaborador com os dados errado no AC (Francisco Barroso)
 		{
-			addActionMessage("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa " + colaborador.getEmpresaNome() + " para alterar suas informações.");
+			addActionWarning("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa " + colaborador.getEmpresaNome() + " para alterar suas informações.");
 			colaborador = null;
 		}
 		else

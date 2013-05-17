@@ -19,7 +19,7 @@
 			selecionaTipoReajuste('${tabelaReajusteColaborador.tipoReajuste}');
 			<#assign visualizarBotaoCancelar=true/>
 		<#else>
-			selecionaTipoReajuste();
+			carregaTipoReajuste();
 		</#if>
 		<#if !verTodasAreas>
 			$('#divOptFiltro').hide();
@@ -88,7 +88,7 @@
 		if(tipoReajuste == 'C')
 		{
 			$('#colaboradorReajuste').show();
-			document.getElementById('grupoOcupacional').style.display = "none";
+			filtrarOpt();
 		}
 		else if(tipoReajuste == 'F')
 		{
@@ -142,6 +142,7 @@
 			
 			<@ww.select label="Imprimir somente totais" name="total" list=r"#{'false':'Não', 'true':'Sim'}" />
 		
+			<@ww.checkbox label="Exibir estabelecimento e área organizacional" id="exibirAreaEstabelecimento" name="exibirAreaEstabelecimento" labelPosition="left"/>
 			<@ww.checkbox label="Exibir observação" id="exibirObservacao" name="exibirObservacao" labelPosition="left"/>
 		</@ww.div>
 		

@@ -2,6 +2,7 @@ package com.fortes.rh.web.ws;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -23,4 +24,6 @@ public interface AcPessoalClientColaborador
 	public TRemuneracaoVariavel[] getRemuneracoesVariaveis(Empresa empresa, String[] colaboradoresIds, String anoMesInicial, String anoMesFinal) throws Exception;
 
 	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa);
+
+	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
 }

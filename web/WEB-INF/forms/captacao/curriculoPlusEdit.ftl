@@ -54,15 +54,8 @@
 				}
 			</#if>
 
-			if(qtdeChecksSelected(document.getElementsByName('form')[0],'cargosCheck') == 0 )
-			{
-				jAlert("Deve ser selecionado pelo menos um item do campo 'Cargo/Função Pretendida'");
-				return false;
-			}
-
-			validaFormulario('form', new Array(${validaAnexo}), new Array('nascimento','cpf'));
+			validaFormulario('form', new Array('@cargosCheck',${validaAnexo}), new Array('nascimento','cpf'));
 		}
-
 
 		var numero = 2;
 		function addFileInput() {
@@ -147,7 +140,6 @@
 		<br>
 
 		${avisoAnexo}
-		
 		<br>
 		Arquivo de texto gerado via OCR:${obrigacaoAnexo}
 		<@ww.file name="ocrTexto" id="ocrTexto" accept="text/*"/>
@@ -162,7 +154,6 @@
 		<@ww.hidden name="candidato.id" />
 		
 	</@ww.form>
-
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnSalvarArquivos"></button>

@@ -297,7 +297,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		Curso curso = CursoFactory.getEntity();
 		curso = cursoDao.save(curso);
 		
-		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10, curso.getId(), dataPrevIni, dataPrevFim, true);
+		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10, curso.getId(), dataPrevIni, dataPrevFim, true, null);
 		
 		assertEquals(0, turmas.size());
 	}
@@ -369,7 +369,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma2.setRealizada(false);
 		turmaDao.save(turma2);
 		
-		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true);
+		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true, null);
 		
 		assertEquals(1, turmas.size());
 	}

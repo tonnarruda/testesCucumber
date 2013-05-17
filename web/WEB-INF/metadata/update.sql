@@ -19656,3 +19656,18 @@ update parametrosdosistema set appversao = '1.1.106.112';--.go
 update parametrosdosistema set codempresasuporte = '0002';--.go
 insert into migrations values('20130423102211');--.go
 update parametrosdosistema set appversao = '1.1.106.113';--.go
+-- versao 1.1.106.114
+
+update parametrosdosistema set appversao = '1.1.106.114';--.go
+-- versao 1.1.106.114
+
+update papel set ordem = ordem + 1 where papelmae_id = 377;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (572, 'ROLE_REL_RECIBO_PAGAMENTO', 'Recibo de pagamento', '/geral/colaborador/prepareReciboPagamento.action', 1, true, 377);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 572);--.go
+UPDATE parametrosdosistema SET atualizaPapeisIdsAPartirDe=572 WHERE atualizaPapeisIdsAPartirDe is null;--.go
+alter sequence papel_sequence restart with 573;--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.53.1' where id = 1;--.go
+insert into migrations values('20130510140434');--.go
+update parametrosdosistema set appversao = '1.1.106.114';--.go
