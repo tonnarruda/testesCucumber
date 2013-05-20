@@ -23,7 +23,6 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -47,7 +46,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private CidadeManager cidadeManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GrupoACManager grupoACManager;
-	private ExameManager exameManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Collection<Estado> ufs = null;
@@ -131,11 +129,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String insert() throws Exception
 	{
-		if(StringUtils.isBlank(empresa.getGrupoAC()))
-			empresa.setGrupoAC(null);
-		
-		if(StringUtils.isBlank(empresa.getCodigoAC()))
-			empresa.setCodigoAC(null);
+		empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
+		empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
 		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
 		
@@ -174,11 +169,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	public String update() throws Exception
 	{
-		if(StringUtils.isBlank(empresa.getGrupoAC()))
-			empresa.setGrupoAC(null);
-		
-		if(StringUtils.isBlank(empresa.getCodigoAC()))
-			empresa.setCodigoAC(null);
+		empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
+		empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
 		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
 		
@@ -419,11 +411,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
 	}
-
-	public void setExameManager(ExameManager exameManager) {
-		this.exameManager = exameManager;
-	}
-
 
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
