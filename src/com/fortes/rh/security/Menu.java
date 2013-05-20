@@ -8,11 +8,15 @@ import org.apache.axis.utils.StringUtils;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.Autenticador;
 
 public abstract class Menu 
 {
 	private static Collection<Papel> roles;
+	private static Collection<String> papeisParaEmpresasIntegradas = new ArrayList<String>();
+	
+	static{
+		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_PAGAMENTO");
+	}
 	
 	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada)
 	{
@@ -53,7 +57,7 @@ public abstract class Menu
 					menu.append("</ul>\n");
 				}
 
-				menu.append(getFilhos(papel.getId(), contexto, empresasDoUsuario));
+				menu.append(getFilhos(papel.getId(), contexto, empresaLogada));
 				
 				if(exibeMenuTru)
 					menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
@@ -96,7 +100,7 @@ public abstract class Menu
 		return menu.toString();
 	}
 
-	private static String getFilhos(Long id, String contexto, Collection<Empresa> empresasDoUsuario)
+	private static String getFilhos(Long id, String contexto, Empresa empresaLogada)
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
@@ -106,9 +110,12 @@ public abstract class Menu
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id)
 			{
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
-				menuFilho.append("<li><a href='" + url + "'>" + papel.getNome() + "</a>");
+				
+				if (!papeisParaEmpresasIntegradas.contains(papel.getCodigo()) || (papeisParaEmpresasIntegradas.contains(papel.getCodigo()) && empresaLogada.isAcIntegra()) ) {
+					menuFilho.append("<li><a href='" + url + "'>" + papel.getNome() + "</a>");
+				}
 
-				maisFilhos = getFilhos(papel.getId(), contexto, empresasDoUsuario);
+				maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);
 
 				if (!maisFilhos.equals(""))
 				{
