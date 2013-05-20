@@ -237,7 +237,11 @@ public class ColaboradorListAction extends MyActionSupportList
 		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		
-		if(colaborador == null)
+		if(!getEmpresaSistema().isAcIntegra())
+		{
+			addActionWarning("Esta empresa não está integrada com AC Pessoal.");
+		}
+		else if(colaborador == null)
 		{
 			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
 		}
