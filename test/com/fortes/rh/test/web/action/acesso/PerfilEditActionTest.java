@@ -54,7 +54,7 @@ public class PerfilEditActionTest extends MockObjectTestCase
 
     public void testPrepareInsert() throws Exception
     {
-    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL, eq(false));
+    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL);
 
     	assertEquals("success",action.prepareInsert());
     }
@@ -69,7 +69,7 @@ public class PerfilEditActionTest extends MockObjectTestCase
     	
     	manager.expects(once()).method("montaPermissoes").with(eq(perfil));
     	
-    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL, eq(false));
+    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL);
     	
     	assertEquals("success",action.prepareUpdate());
     	assertEquals(perfil,action.getPerfil());

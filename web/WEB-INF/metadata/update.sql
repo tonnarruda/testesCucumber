@@ -19671,3 +19671,13 @@ alter sequence papel_sequence restart with 573;--.go
 update parametrosdosistema set acversaowebservicecompativel = '1.1.53.1' where id = 1;--.go
 insert into migrations values('20130510140434');--.go
 update parametrosdosistema set appversao = '1.1.106.114';--.go
+-- versao 1.1.107.115
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (571, 'ROLE_REGISTRAR_NOVA_LICENCA', 'Registrar Nova Licença', '/registraNovaLicenca.action', 15, true, 37);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 571);--.go
+insert into migrations values('20130517141546');--.go
+alter table parametrosdosistema drop column atualizaPapeisIdsAPartirDe; --.go
+insert into migrations values('20130517141703');--.go
+alter table parametrosdosistema drop column modulos; --.go
+insert into migrations values('20130517141729');--.go
+update parametrosdosistema set appversao = '1.1.107.115';--.go

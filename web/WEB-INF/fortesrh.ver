@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.107.115" data="20/05/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Novo autenticador de licença.
+			:: C&S > Relatórios > Realinhamentos: Nova opção para impressão do estabelecimento e da área organizacional.
+			:: R&S > Cadastros > Candidatos: Nova indentificação do candidato que já foi colaborador através de um ícone preto e branco.
+			:: T&D > Movimentações > Plano de Treinamento: Novo filtro por empresa.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.106.114" data="13/05/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Relatórios em XLS: Novo agrupador de linhas ao gerar relatório.
