@@ -23,7 +23,7 @@ public class Contato implements Serializable
 	private String foneFixo;
 	@Column(length=10)
 	private String foneCelular;
-	@Column(length=40)
+	@Column(length=200)
 	private String email;
 	@Column(length=30)
 	private String nomeContato;
