@@ -335,9 +335,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-			if (parametrosDoSistema.verificaRemprot())
-				colaboradorManager.validaQtdCadastros();
+			colaboradorManager.validaQtdCadastros();
 		} catch (Exception e)
 		{
 			addActionMessage(e.getMessage());

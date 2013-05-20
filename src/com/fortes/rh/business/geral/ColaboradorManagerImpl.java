@@ -1523,17 +1523,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
-		
-		RPClient remprot = Autenticador.getRemprot();
-		if(Autenticador.isRegistrado())
-		{
-			if(qtdColaboradorNoBanco >= remprot.getUserCount())
-				throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
-		}	
-		else
-			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-				throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		if (parametrosDoSistema.verificaRemprot()) {
+
+			int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+
+			RPClient remprot = Autenticador.getRemprot();
+			if(Autenticador.isRegistrado())
+			{
+				if(qtdColaboradorNoBanco >= remprot.getUserCount())
+					throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
+			}	
+			else
+				if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+					throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+		}
 	}
 
 	public String avisoQtdCadastros() throws Exception
