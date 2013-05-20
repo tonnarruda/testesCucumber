@@ -67,12 +67,6 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
 
 		assertFalse("Incompatível", retorno);
 	}
-    
-    public void testDisablePapeisIds()
-    {
-    	parametrosDoSistemaDao.expects(once()).method("disablePapeisIds").isVoid();
-    	parametrosDoSistemaManager.disablePapeisIds();
-    }
 
     Empresa empresa = EmpresaFactory.getEmpresa(1L);
     
@@ -85,28 +79,6 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
     {
     	acPessoalClientSistema.expects(once()).method("idACIntegrado").with(eq(empresa)).will(returnValue(true));
     	assertTrue(parametrosDoSistemaManager.isACIntegrado(empresa));
-    }
-    
-    public void testUpdateModulos()
-    {
-    	parametrosDoSistemaDao.expects(once()).method("updateModulos").isVoid();
-    	String papeis = "1,2,30,100";
-		parametrosDoSistemaManager.updateModulos(papeis);
-    }
-    public void testGetModulosDecodificados()
-    {
-    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setModulos("MSwyLDM=");
-    	
-    	String[] papeis = {"1","2","3"};
-    	assertEquals(papeis.length, parametrosDoSistemaManager.getModulosDecodificados(parametrosDoSistema).length);
-    }
-    public void testGetModulosDecodificadosSemModulos()
-    {
-    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setModulos("");
-    	
-    	assertEquals(0, parametrosDoSistemaManager.getModulosDecodificados(parametrosDoSistema).length);
     }
 
     public void testAjustaCamposExtras()

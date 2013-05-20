@@ -24,6 +24,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import remprot.RPClient;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
@@ -42,6 +44,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
@@ -87,6 +90,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -1519,31 +1523,31 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void validaQtdCadastros() throws Exception
 	{
 		//TODO remprot
-		//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
-		//		
-		//		RPClient remprot = Autenticador.getRemprot();
-		//		if(remprot.getRegistered())
-		//		{
-		//			if(qtdColaboradorNoBanco >= remprot.getUserCount())
-		//				throw new Exception("Sua licença só permite cadastrar " + remprot.getUserCount() + " colaboradores.<br>Quantidade de colaboradores cadastrados no sistema: " + qtdColaboradorNoBanco);			
-		//		}	
-		//		else
-		//			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
-		//				throw new Exception("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
+		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+		
+		RPClient remprot = Autenticador.getRemprot();
+		if(Autenticador.isRegistrado())
+		{
+			if(qtdColaboradorNoBanco >= remprot.getUserCount())
+				throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
+		}	
+		else
+			if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+				throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
 	}
 
 	public String avisoQtdCadastros() throws Exception
 	{
-		//		TODO remprot
-		//		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
-		//		
-		//		RPClient remprot = Autenticador.getRemprot();
-		//		if(remprot.getRegistered())
-		//		{
-		//			if((remprot.getUserCount() - (remprot.getUserCount() * 0.05 )) <= qtdColaboradorNoBanco )
-		//				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
-		//		}	
-
+//		TODO remprot
+		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+		
+		RPClient remprot = Autenticador.getRemprot();
+		if(Autenticador.isRegistrado())
+		{
+			if((remprot.getUserCount() - (remprot.getUserCount() * 0.05 )) <= qtdColaboradorNoBanco )
+				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
+		}	
+		
 		return null;
 	}
 

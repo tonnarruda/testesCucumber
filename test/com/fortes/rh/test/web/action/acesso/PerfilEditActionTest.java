@@ -110,37 +110,6 @@ public class PerfilEditActionTest extends MockObjectTestCase
     	assertEquals("success",action.update());
     }
     
-    public void testPrepareModulos()
-    {
-    	Perfil perfil = new Perfil();
-    	perfil.setId(1L);
-    	perfil.setNome("Perfil 1");
-    	action.setPerfil(perfil);
-
-    	manager.expects(once()).method("montaPermissoes").with(eq(perfil));
-    	papelManager.expects(once()).method("getPerfilOrganizado").will(returnValue("ok"));
-    	
-    	try {
-    		assertEquals("success",action.prepareModulos());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	
-    }
-    
-    public void testUpdateModulos()
-    {
-    	parametrosDoSistemaManager.expects(once()).method("updateModulos");
-    	manager.expects(once()).method("montaPermissoes");
-    	papelManager.expects(once()).method("getPerfilOrganizado").will(returnValue("ok"));
-    	
-    	try {
-    		assertEquals("success",action.updateModulos());
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-    
     public void testGetSet()
     {
     	action.setExibirPerfil("");

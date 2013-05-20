@@ -45,10 +45,15 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		}
 
 		Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
-		configuraPapeis(userDetails, empresaId);
+		
+		try {
+			configuraPapeis(userDetails, empresaId);
+		} catch (Exception e) {
+			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
+		}
 	}
 	
-	public void configuraPapeis(UserDetails userDetails, Long empresaId) 
+	public void configuraPapeis(UserDetails userDetails, Long empresaId) throws Exception 
 	{
 		UsuarioEmpresa usuarioEmpresa = usuarioEmpresaManager.findByUsuarioEmpresa(((UserDetailsImpl)userDetails).getId(), empresaId);
 
@@ -56,7 +61,8 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		{
 			ParametrosDoSistema parametrosDoSistema =  parametrosDoSistemaManager.findByIdProjection(1L);
 			
-			papelManager.atualizarPapeis(parametrosDoSistema.getAtualizaPapeisIdsAPartirDe());
+			// TODO remprot : Esta linha será desnecessária qdo não estiver mais utilizando o campo atualizaPapeisIdsAPartirDe(ParametrosDoSistema)
+//			papelManager.atualizarPapeis(parametrosDoSistema.getAtualizaPapeisIdsAPartirDe());
 			
 			String contexto = parametrosDoSistema.getAppContext();
 
@@ -74,7 +80,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 
 				for (Papel papel : usuarioEmpresa.getPerfil().getPapeis())
 				{
-					if (papeisPermitidos.contains(papel.getId()))
+					if (papeisPermitidos.contains(papel.getId()) || papel.isSemModulo())
 						roles.add(papel);
 				}
 			}

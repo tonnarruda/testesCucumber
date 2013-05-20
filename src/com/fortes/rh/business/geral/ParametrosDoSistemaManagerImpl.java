@@ -11,7 +11,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ParametrosDoSistemaDao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 
 public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<ParametrosDoSistema, ParametrosDoSistemaDao> implements ParametrosDoSistemaManager
@@ -59,30 +58,6 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	public boolean isACIntegrado(Empresa empresa) throws Exception
 	{
 		return acPessoalClientSistema.idACIntegrado(empresa);
-	}
-
-	public void updateModulos(String papeis)
-	{
-		String papeisCodificados = StringUtil.encodeString(papeis);
-		getDao().updateModulos(papeisCodificados);
-	}
-
-	public String[] getModulosDecodificados(ParametrosDoSistema parametros)
-	{
-		String permissoesDecodificadas = "";
-		String modulos = parametros.getModulos();
-
-		if (StringUtils.isNotBlank(modulos))
-		{
-			permissoesDecodificadas = StringUtil.decodeString(modulos);
-			return permissoesDecodificadas.split(",");			
-		}
-
-		return new String[]{};
-	}
-
-	public void disablePapeisIds() {
-		getDao().disablePapeisIds();
 	}
 
 	public String getUrlDaAplicacao() {

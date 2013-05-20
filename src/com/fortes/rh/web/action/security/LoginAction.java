@@ -46,21 +46,20 @@ public class LoginAction extends MyActionSupport
 			else
 			{
 				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-				if (parametrosDoSistema.verificaRemprot())
-				{
-					try {
-						servidorRemprot = parametrosDoSistema.getServidorRemprot();
-						Autenticador.verificaCopia(parametrosDoSistema.getServidorRemprot());
-					} catch (NotRegistredException e) {
-						msgRemprot = e.getMessage();
-						msgAutenticacao = Autenticador.getMsgPadrao();
-						return "not_registered";
-					} catch (NotConectAutenticationException e) {
-						msgRemprot = e.getMessage();
-						msgAutenticacao = Autenticador.getMsgPadrao();
-						return "not_conect"; 
-					}					
-				}
+				try {
+					servidorRemprot = parametrosDoSistema.getServidorRemprot();
+					Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot());
+				} catch (NotRegistredException e) {
+					msgRemprot = e.getMessage();
+					msgAutenticacao = Autenticador.getMsgPadrao();
+					return "not_registered";
+				} catch (NotConectAutenticationException e) {
+					msgRemprot = e.getMessage();
+					msgAutenticacao = Autenticador.getMsgPadrao();
+					return "not_conect"; 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}					
 			}
 			
 			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);

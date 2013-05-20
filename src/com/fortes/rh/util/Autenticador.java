@@ -7,17 +7,37 @@ import org.apache.log4j.Logger;
 
 import remprot.RPClient;
 
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 
 public class Autenticador
 {
 	private static int qtdCadastrosVersaoDemo = 10;
-	private static int appId = 33;
+	private static int appId = 47;
 	private static String appNome = "RH";
 	private static final Logger logger = Logger.getLogger(Autenticador.class);
 	private static RPClient clientRemprot = null;
 	private static String urlServidorRemprot;
+	private static boolean verificaLicensa;
 	
-	public static void verificaCopia(String url) throws Exception
+	public static final Collection<Long> modulos = new ArrayList<Long>(8);
+	static {
+		modulos.add(357L);
+		modulos.add(361L);
+		modulos.add(353L);
+		modulos.add(365L);
+		modulos.add(373L);
+		modulos.add(382L);
+		modulos.add(75L);
+		modulos.add(37L);
+	}
+
+	public static boolean isRegistrado()
+	{
+		return (!verificaLicensa || getRemprot().getRegistered());
+	}
+	
+	public static void verificaCopia(String url, boolean verificaLicensaRemprot) throws Exception
 	{
 		/*
 		Passo como parametros de criacao da classe o codigo do sistema para reset (fornecido pelo AG)
@@ -26,30 +46,34 @@ public class Autenticador
 		da licenca.
 		*/
 		//TODO remprot
-//		urlServidorRemprot = url;
-//		clientRemprot = null;
-//		
-//		clientRemprot = getRemprot();
-//
-//		System.out.println("applicationId: " + clientRemprot.getApplicationId());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
-//		System.out.println("installationId: " + clientRemprot.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
-//		System.out.println("resetCounter: " + clientRemprot.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
-//		System.out.println("customerId: " + clientRemprot.getCustomerId());		    // CPF ou CNPJ do cliente
-//		System.out.println("customerName: " + clientRemprot.getCustomerName());	    // denominacao social do cliente
-//		System.out.println("nextCrashDate: " + clientRemprot.getNextCrashDate());	// data limite da execucao (o remprot nao implementa os bloqueios, o sistema deve faze-lo)
-//		System.out.println("errors: " + clientRemprot.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
-//		System.out.println("registered: " + clientRemprot.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
-//		System.out.println("modulos: " + clientRemprot.getEnabledModules());	    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
-//		System.out.println("qtd colab: " + clientRemprot.getUserCount());		    // qtd colaboradores
-//		
-//		if(clientRemprot.getErrors() == 65535)
-//		{
-//			logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
-//			throw new NotConectAutenticationException();
-//		}
-//		
-//		if(!clientRemprot.getRegistered())
-//			throw new NotRegistredException();
+		urlServidorRemprot = url;
+		clientRemprot = null;
+		verificaLicensa = verificaLicensaRemprot;
+		
+		if (verificaLicensa) {
+			
+			clientRemprot = getRemprot();
+
+			System.out.println("applicationId: " + clientRemprot.getApplicationId());	// codigo de reset do produto (numero fixo para cada produto: AC=1, AG=16, Nettion=22 etc)
+			System.out.println("installationId: " + clientRemprot.getInstallationId());	// numero de serie recebido atraves de codigo de resposta (unico por cliente, sequencial independente de produto)
+			System.out.println("resetCounter: " + clientRemprot.getResetCounter());	    // quantas vezes esta licenca já recebeu resets (ajuda a detectar fraudes)
+			System.out.println("customerId: " + clientRemprot.getCustomerId());		    // CPF ou CNPJ do cliente
+			System.out.println("customerName: " + clientRemprot.getCustomerName());	    // denominacao social do cliente
+			System.out.println("nextCrashDate: " + clientRemprot.getNextCrashDate());	// data limite da execucao (o remprot nao implementa os bloqueios, o sistema deve faze-lo)
+			System.out.println("errors: " + clientRemprot.getErrors());			        // se errors==0 entao nao houve problemas na conversa com o servidor
+			System.out.println("registered: " + clientRemprot.getRegistered());		    // se nao esta registrado entao é cópia pirata (ou maquina nova, dá no mesmo)
+			System.out.println("modulos: " + clientRemprot.getEnabledModules());	    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
+			System.out.println("qtd colab: " + clientRemprot.getUserCount());		    // qtd colaboradores
+
+			if(clientRemprot.getErrors() == 65535)
+			{
+				logger.error("ERRO NA COMUNICAÇÃO COM O REMPROT: " + clientRemprot.getErrors());			
+				throw new NotConectAutenticationException();
+			}
+
+			if(!clientRemprot.getRegistered())
+				throw new NotRegistredException();
+		}
 	}
 	
 	private static int RECRUT_SELECAO = 1;
@@ -59,7 +83,7 @@ public class Autenticador
 	private static int AVAL_DESEMP = 16;
 	private static int SESMT = 32;
 	
-	public static Collection<Long> getModulosNaoConfigurados(String url)
+	public static Collection<Long> getModulosNaoConfigurados()
 	{
 		RPClient c = getRemprot();
 			    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,
@@ -71,30 +95,29 @@ public class Autenticador
 	public static Collection<Long> getModulosNaoConfigurados(int chave) 
 	{
 		//TODO remprot
-		chave = 63;
-		
-		Collection<Long> modulos = new ArrayList<Long>();
-		modulos.add(357L);
-		modulos.add(361L);
-		modulos.add(353L);
-		modulos.add(365L);
-		modulos.add(382L);
-		modulos.add(75L);
+//		chave = 63;
 
-		if((chave & RECRUT_SELECAO) == RECRUT_SELECAO)
-			modulos.remove(357L);
-		if((chave & CARGO_SALARIO) == CARGO_SALARIO)
-			modulos.remove(361L);
-		if((chave & PESQUISA) == PESQUISA)
-			modulos.remove(353L);
-		if((chave & TRE_DESENV) == TRE_DESENV)
-			modulos.remove(365L);
-		if((chave & AVAL_DESEMP) == AVAL_DESEMP)
-			modulos.remove(382L);
-		if((chave & SESMT) == SESMT)
-			modulos.remove(75L);
+		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();
+		modulosNaoConfigurados.addAll(modulos);
 		
-		return modulos;
+		if((chave & RECRUT_SELECAO) == RECRUT_SELECAO)
+			modulosNaoConfigurados.remove(357L);
+		if((chave & CARGO_SALARIO) == CARGO_SALARIO)
+			modulosNaoConfigurados.remove(361L);
+		if((chave & PESQUISA) == PESQUISA)
+			modulosNaoConfigurados.remove(353L);
+		if((chave & TRE_DESENV) == TRE_DESENV)
+			modulosNaoConfigurados.remove(365L);
+		if((chave & AVAL_DESEMP) == AVAL_DESEMP)
+			modulosNaoConfigurados.remove(382L);
+		if((chave & SESMT) == SESMT)
+			modulosNaoConfigurados.remove(75L);
+		
+		// Estes módulos sempre aparecerão no menu.
+		modulosNaoConfigurados.remove(373L);
+		modulosNaoConfigurados.remove(37L);
+		
+		return modulosNaoConfigurados;
 	}
 
 	public static RPClient getRemprot()
@@ -102,7 +125,7 @@ public class Autenticador
 		//TODO remprot
 		if(clientRemprot == null)
 		{
-			clientRemprot = new RPClient(appId, appNome);
+			clientRemprot = new RPClient(appId, appNome);///appNome);
 			/* Aqui eu indico que o servidor de licencas está rodando no endereço IP 10.1.254.2 */
 			clientRemprot.setServerAddress(urlServidorRemprot);
 			/* Aqui eu carrego os dados da licenca */
@@ -114,9 +137,8 @@ public class Autenticador
 
 	public static boolean isDemo()
 	{
-		clientRemprot = getRemprot();
-//		return !clientRemprot.getRegistered();
-		return false;
+		//TODO remprot
+		return !isRegistrado();
 	}
 
 	public static String getMsgPadrao()
@@ -127,8 +149,7 @@ public class Autenticador
 	public static String getMsgAutenticado(String url)
 	{
 		//TODO remprot
-//		return isDemo() ? getMsgPadrao() : "";
-		return "";
+		return isDemo() ? getMsgPadrao() : "";
 	}
 
 	public static int getQtdCadastrosVersaoDemo()

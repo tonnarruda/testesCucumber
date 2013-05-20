@@ -157,4 +157,9 @@ public class Papel extends AbstractModel implements Serializable, Cloneable
 	{
 		this.accesskey = accesskey;
 	}
+	
+	public boolean isSemModulo()
+	{
+		return !this.menu && papelMae == null;
+	}
 }

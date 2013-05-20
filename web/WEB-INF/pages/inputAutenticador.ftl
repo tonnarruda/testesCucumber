@@ -7,14 +7,22 @@
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
 	</style>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
-	<#assign validarCampos="return validaFormulario('form', new Array('cnpj', 'nome'), null)"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('cnpj', 'nome'), null, true)"/>
 
 
-<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>"></script>
-<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.maskedinput-1.1.4.js"/>"></script>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 	</style>
+	
+	<script type="text/javascript">
+		function enviaTicket() {
+			if (validaFormulario('form', new Array('cnpj', 'nome'), null, true)) {
+				window.location='geraTicket.action?cnpj='+$('#cnpj').val()+'&nome='+$('#nome').val();
+			} else {
+				return false;
+			}
+		}
+	</script>
 </head>
 <body>
 <@ww.actionerror />
@@ -33,16 +41,17 @@
 		</tr>
 		<tr>
 			<td class="corpo" colspan="2" style="padding:10px">
-					<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" maxlength="14" cssStyle="width:110px !important" /><br>
-					<@ww.textfield label="Nome/Denominação Social do Licenciado" name="nome" id="nome" cssStyle="width:300px !important"/>
+				<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" maxlength="14" cssStyle="width:110px !important" /><br>
+				<@ww.textfield label="Nome/Denominação Social do Licenciado" name="nome" id="nome" cssStyle="width:320px !important"/>
   				<br>
 			</td>
 		</tr>
 		<tr>
 			<td width="109px" height="79px" class="logo"></td>
-			<td class="rodape" valign="top" align="right">
-				<button type="button" onclick="window.location='login.action?demonstracao=true'" class="btnDemo" style="background-color:transparent"></button>
-				<button onclick="${validarCampos};" class="btnEnviarBlue" style="background-color:transparent"></button>
+			<td class="rodape" valign="top" align="left">
+				<button type="button" onclick="window.location='login.action?demonstracao=true'" class="btnDemo" style="background-color:transparent;margin-right:5px;"></button>
+				<button type="button" onclick="javascript:enviaTicket();" class="btnGerarTicket" style="background-color:transparent;margin-right:5px;"></button>
+				<#-- <button onclick="${validarCampos};" class="btnEnviarBlue" style="background-color:transparent"></button> -->
 			</td>
 		</tr>
 	</table>
