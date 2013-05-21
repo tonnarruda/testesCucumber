@@ -231,37 +231,37 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	{
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		String link = parametrosDoSistema.getAppUrl();
-		
+
 		Collection<String> emails = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
 		Collection<String> emailsRH = new CollectionUtil<String>().convertArrayToCollection(empresa.getEmailRespRH().split(";"));
-		
-		emails.addAll(emailsRH);
-		
+
 		if (emails != null && !emails.isEmpty())
-		{
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
-			
-			String nomeSolicitante = "";
-			if(solicitante != null)
-				nomeSolicitante = solicitante.getNomeMaisNomeComercial();
-			
-			solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
-		
-			String nomeLiberador = "";
-			if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
-		        nomeLiberador = nomeSolicitante;
-			
-			String subject = "Liberação de Solicitação de Pessoal";
-			StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
-			
-			if (solicitacao.getDescricao() != null)
-				body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
-			
-			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
-			
-			mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
-		}
+			emails.addAll(emailsRH);
+		else
+			emails = emailsRH;
+
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
+
+		String nomeSolicitante = "";
+		if(solicitante != null)
+			nomeSolicitante = solicitante.getNomeMaisNomeComercial();
+
+		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
+
+		String nomeLiberador = "";
+		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
+			nomeLiberador = nomeSolicitante;
+
+		String subject = "Liberação de Solicitação de Pessoal";
+		StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
+
+		if (solicitacao.getDescricao() != null)
+			body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
+
+		montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
+
+		mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
 	}
 	public void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
 	{
