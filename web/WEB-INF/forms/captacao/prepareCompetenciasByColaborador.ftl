@@ -9,6 +9,18 @@
 			#boxgrafico { width: 966px; border: 1px solid #7E9DB9; margin-top: 15px; padding-top: 10px; }
 			#grafico { width: 640px; height: 440px; margin: 0px auto; }
 		</style>
+
+		<style type="text/css" media="print">
+			* { color: #333; }
+			#topDiv, #menuDropDown, .buttonGroup { display: none; }
+			#waDiv { margin: 0; left: 0; }
+			#waDivTitulo { color: #333; background-color: #fff; border: 1px solid #333; }
+			.waDivFormulario { border: none; }
+			#legendas span, .nivelFaixa { border: 1px solid #333; }
+			.dados, #boxgrafico { border: none; }
+			.dados, .dados th, #boxgrafico { border-bottom: 1px solid #333; }
+			.dados * { background-color: #fff; }
+		</style>
 		
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -250,6 +262,7 @@
 				<button class="btnGravarDesabilitado"></button>
 			</#if>
 			<button onclick="window.location='listCompetenciasColaborador.action?colaborador.id=${colaborador.id}';" class="btnVoltar"></button>
+			<button onclick="window.print();" class="btnImprimir"></button>
 		</div>
 	</body>
 </html>
