@@ -113,12 +113,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			nivelCompetenciaManager.remove(nivelCompetencia.getId());
-			addActionMessage("Nível de Competência excluído com sucesso.");
+			addActionSuccess("Nível de competência excluído com sucesso");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este Nível de Competência.");
+			addActionError("Não foi possível excluir este nível de competência");
 		}
 
 		return list();
@@ -156,7 +156,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
-			addActionSuccess("Níveis de Competência da Faixa Salarial salvos com sucesso.");
+			addActionSuccess("Níveis de competência da faixa salarial salvos com sucesso");
 		}
 		catch (Exception e)
 		{
@@ -173,7 +173,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId());
-			addActionSuccess("Níveis de Competência do Candidato salvos com sucesso.");
+			addActionSuccess("Níveis de competência do candidato salvos com sucesso");
 		}
 		catch (Exception e)
 		{
@@ -207,7 +207,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
 		
 		if (niveisCompetenciaFaixaSalariais.isEmpty())
-			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo.");
+			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo");
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
@@ -246,7 +246,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
-			addActionSuccess("Níveis de Competência do Colaborador salvos com sucesso.");
+			addActionSuccess("Níveis de competência do colaborador salvos com sucesso.");
 		}
 		catch (Exception e)
 		{

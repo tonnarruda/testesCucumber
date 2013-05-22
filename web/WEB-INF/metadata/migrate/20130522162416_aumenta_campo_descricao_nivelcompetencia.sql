@@ -1,0 +1,1 @@
+alter table nivelcompetencia alter column descricao type character varying (60); --.go
