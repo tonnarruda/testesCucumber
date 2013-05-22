@@ -835,6 +835,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			}
 			else
 			{
+				colaborador.getCandidato().setContratado(!colaborador.isDesligado());
+				candidatoManager.update(colaborador.getCandidato());
+
 				candidato = new Candidato();
 				candidato.setId(colaborador.getCandidato().getId());
 			}
@@ -843,10 +846,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			return Action.SUCCESS;
 		}catch(Exception e){
-
+			
 			transactionManager.rollback(status);
 			e.printStackTrace();
 			addActionError("Erro na atualização dos dados.");
+			
 			return Action.INPUT;
 		}
 	}
