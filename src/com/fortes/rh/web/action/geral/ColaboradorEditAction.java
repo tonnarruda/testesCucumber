@@ -88,7 +88,6 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.relatorio.RelatorioPerformanceFuncional;
@@ -133,7 +132,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private HistoricoCandidatoManager historicoCandidatoManager;
 	private CatManager catManager;
 	private ComissaoManager comissaoManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private CamposExtrasManager camposExtrasManager;
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
@@ -812,34 +810,45 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareColaboradorSolicitacao() throws Exception
 	{
 		colaborador = (Colaborador) colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId());
-		
-		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
-		{
-			candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId(), true);
-			if (candidato != null && checarCandidatoMesmoCpf)
-				return Action.INPUT;
-			
-			colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
-			colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
-			colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
 
-			if (!vincularCandidatoMesmoCpf)
-				candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
-			
-			colaborador.setCandidato(candidato);
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
 
-			colaboradorManager.update(colaborador);
+		try {
+			if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
+			{
+				candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId(), true);
+				if (candidato != null && checarCandidatoMesmoCpf)
+					return Action.INPUT;
+
+				colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
+				colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
+				colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
+
+				if (!vincularCandidatoMesmoCpf)
+					candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
+
+				colaborador.setCandidato(candidato);
+				colaboradorManager.update(colaborador);
+				candidatoManager.updateDisponivelAndContratadoByColaborador(true, !colaborador.isDesligado(), colaborador.getId());
+			}
+			else
+			{
+				candidato = new Candidato();
+				candidato.setId(colaborador.getCandidato().getId());
+			}
+
+			transactionManager.commit(status);
+
+			return Action.SUCCESS;
+		}catch(Exception e){
+
+			transactionManager.rollback(status);
+			e.printStackTrace();
+			addActionError("Erro na atualização dos dados.");
+			return Action.INPUT;
 		}
-		else
-		{
-			colaborador.getCandidato().setContratado(false);
-			candidatoManager.update(colaborador.getCandidato());
-
-			candidato = new Candidato();
-			candidato.setId(colaborador.getCandidato().getId());
-		}
-
-		return Action.SUCCESS;
 	}
 
 	public String preparePerformanceFuncional() throws Exception
@@ -1546,11 +1555,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public Collection<ParticipacaoColaboradorCipa> getParticipacoesNaCipaColaborador() {
 		return participacoesNaCipaColaborador;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 
 	public boolean isHabilitaCampoExtra()

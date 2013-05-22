@@ -48,7 +48,7 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosDaSolicitacao, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar);
 	public void converteTodasAsFotosParaThumbnail();
 	public String getSenha(Long id);
-	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long colaboradorId);
+	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradorId);
 	public Collection<Candidato> findQtdCadastradosByOrigem(Date dataIni, Date dataFim);
 	public Collection<String> getComoFicouSabendoVagas();
 	public void updateExamePalografico(Candidato candidato);

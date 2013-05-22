@@ -18,6 +18,8 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import net.sf.antcontrib.logic.ForEach;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -943,8 +945,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 			usuarioManager.desativaAcessoSistema(colaboradorId);
-			candidatoManager.habilitaByColaborador(colaboradorId);
-			candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.INDIFERENTE);
+			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
+			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradorId);
 			areaOrganizacionalManager.desvinculaResponsaveis(colaboradorId);
 
 			if(desligaByAC)
@@ -965,8 +967,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
-		candidatoManager.reabilitaByColaborador(colaboradorId);
-		candidatoSolicitacaoManager.setStatusByColaborador(colaboradorId, StatusCandidatoSolicitacao.APROMOVER);
+		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
+		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 	}
 
@@ -988,7 +990,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
 
-		candidatoManager.reabilitaByColaborador(colaboradorId);
+		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
 		mensagemManager.removeMensagemDesligamento(colaboradorId);
 		getDao().religaColaborador(colaboradorId);
 
@@ -1458,8 +1460,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 
-		candidatoManager.habilitaByColaborador(colaborador.getId());
-		candidatoSolicitacaoManager.setStatusByColaborador(colaborador.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
+		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
+		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaborador.getId());
 
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 
@@ -2180,6 +2182,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception {
 		if (colaboradorIds != null && colaboradorIds.length > 0) {
 			historicoColaboradorManager.deleteHistoricoColaborador(colaboradorIds);
+			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorIds);
+			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradorIds);
 			getDao().remove(colaboradorIds);
 		}
 	}

@@ -502,13 +502,13 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         return criteria.list();
 	}
 
-	public void setStatusByColaborador(Long colaboradorId, char status) 
+	public void setStatusByColaborador(char status, Long... colaboradorId) 
 	{
-		String hql = "update CandidatoSolicitacao set status = :status where candidato.id=(select candidato.id from Colaborador where id = :colaboradorId)";
+		String hql = "update CandidatoSolicitacao set status = :status where candidato.id in (select candidato.id from Colaborador where id in (:colaboradorId))";
 
 		Query query = getSession().createQuery(hql);
 		query.setCharacter("status", status);
-		query.setLong("colaboradorId", colaboradorId);
+		query.setParameterList("colaboradorId", colaboradorId, Hibernate.LONG);
 		
 		query.executeUpdate();
 	}

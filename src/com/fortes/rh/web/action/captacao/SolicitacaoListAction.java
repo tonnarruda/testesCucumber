@@ -156,6 +156,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String gravarSolicitacoesCandidato() throws Exception
     {
+    	if(solicitacaosCheckIds != null && solicitacaosCheckIds.length > 0)
+    	{
+    		candidato = candidatoManager.findById(candidato.getId());
+    		candidato.setDisponivel(true);
+    		candidatoManager.update(candidato);
+    	}
+
     	for(String id : solicitacaosCheckIds)
     	{
     		solicitacao = new Solicitacao();

@@ -457,7 +457,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		colaborador.setCandidato(candidatoSolicitacao.getCandidato());
 		colaboradorDao.save(colaborador);
 		
-		candidatoSolicitacaoDao.setStatusByColaborador(colaborador.getId(), StatusCandidatoSolicitacao.INDIFERENTE);
+		candidatoSolicitacaoDao.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaborador.getId());
 		candidatoSolicitacao = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
 		
 		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());

@@ -834,12 +834,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     {
         Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
+        candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
         usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-        candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
         areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
         historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(colaborador.getId()));
-        candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
         colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), true);
@@ -849,11 +849,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     {
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
+    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
     	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId()));
     	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
-    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), eq(StatusCandidatoSolicitacao.INDIFERENTE));
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
@@ -948,8 +948,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	empresa.setAcIntegra(true);
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
-    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(colaborador.getId())).isVoid();
-    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(eq(colaborador.getId()), ANYTHING).isVoid();
+    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+    	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	colaboradorIdiomaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	experienciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();

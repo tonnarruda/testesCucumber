@@ -577,7 +577,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		Candidato candidato = null;
 		
 		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
+		{
 			candidato = new Candidato();
+			candidato.setDataCadastro(new Date());
+		}
 		else
 			candidato = colaborador.getCandidato();
 
@@ -590,7 +593,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setPretencaoSalarial(null);
 		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
-		candidato.setContratado(false);
+		candidato.setContratado(!colaborador.isDesligado());
 		candidato.setObservacao(colaborador.getObservacao());
 		candidato.setOrigem(OrigemCandidato.CADASTRADO);
 		candidato.setEmpresa(colaborador.getEmpresa());
@@ -1283,14 +1286,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	
 	}
 
-	public void habilitaByColaborador(Long colaboradorId) 
+	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradorId) 
 	{
-		getDao().updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
-	}
-
-	public void reabilitaByColaborador(Long colaboradorId) 
-	{
-		getDao().updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);		
+		getDao().updateDisponivelAndContratadoByColaborador(disponivel, disponivel, colaboradorId);
 	}
 
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas)

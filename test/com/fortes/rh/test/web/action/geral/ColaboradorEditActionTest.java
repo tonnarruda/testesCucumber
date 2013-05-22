@@ -132,7 +132,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setComissaoManager((ComissaoManager) comissaoManager.proxy());
 		action.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
 		action.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
-		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 		action.setConfiguracaoPerformanceManager((ConfiguracaoPerformanceManager) configuracaoPerformanceManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);

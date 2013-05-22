@@ -855,7 +855,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
 	{
-		candidatoSolicitacaoManager.setStatusByColaborador(historicoColaborador.getColaborador().getId(), StatusCandidatoSolicitacao.APROMOVER);
+		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, historicoColaborador.getColaborador().getId());
 	}
 
 	public Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId)
