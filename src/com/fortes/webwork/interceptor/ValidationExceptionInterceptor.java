@@ -96,8 +96,26 @@ public class ValidationExceptionInterceptor implements Interceptor
 		}
 		catch (Exception e)
 		{
-			if (actionSuport != null)
-			{
+			if (e.getCause() instanceof ConstraintViolationException) {
+				
+				ConstraintViolationException esception = (ConstraintViolationException) e.getCause();
+
+				Object[] erros = getPalavrasEntreAspas(esception.getSQLException().getMessage().trim());
+				
+				String entity = "atual";//erros[1];
+				String dep = "outra entidade";//erros[3];
+
+				if(erros.length > 2){
+					entity = erros[0].toString().replace("\"","").toUpperCase();
+					dep = erros[2].toString().replace("\"","").toUpperCase();
+				} 
+				
+				if (actionSuport != null) {
+					String errorMessage = "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
+					actionSuport.addActionError(errorMessage);
+					logger.error(errorMessage);
+				}
+			} else if (actionSuport != null){
 				actionSuport.addActionError(e.getMessage());
 				e.printStackTrace();
 			}
