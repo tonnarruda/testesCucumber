@@ -240,7 +240,7 @@ public class CandidatoListAction extends MyActionSupportList
 		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, getEmpresaSistema().getId(), indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
 
 		if(candidatos == null || candidatos.isEmpty())
-			addActionMessage("Não existem candidatos a serem listados!");
+			addActionMessage("Não existem candidatos a serem listados");
 
 		if (!msgAlert.equals(""))
 			addActionMessage(msgAlert);
@@ -252,7 +252,7 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		try {
 			candidatoManager.removeCandidato(candidato);
-			addActionMessage("Candidato excluído com sucesso!");
+			addActionSuccess("Candidato excluído com sucesso");
 		} catch (Exception e) {
 			String message = "Erro ao excluir candidato";
 			
@@ -602,7 +602,7 @@ public class CandidatoListAction extends MyActionSupportList
 		prepareBusca();
 
 		if(candidatos == null || candidatos.size() == 0)
-			addActionMessage("Não existem candidatos a serem listados!");
+			addActionMessage("Não existem candidatos a serem listados");
 		else
 			setShowFilter(false);
 
@@ -638,7 +638,7 @@ public class CandidatoListAction extends MyActionSupportList
 		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
 
 		if(candidatos == null || candidatos.size() == 0)
-			addActionMessage("Não existem candidatos a serem listados!");
+			addActionMessage("Não existem candidatos a serem listados");
 		else {
 			setShowFilter(false);
 		}
@@ -651,7 +651,7 @@ public class CandidatoListAction extends MyActionSupportList
 		candidatos = candidatoManager.triagemAutomatica(solicitacao, StringUtil.isBlank(tempoExperiencia)?0:Integer.parseInt(tempoExperiencia), pesos, percentualMinimo);
 
 		if(candidatos == null || candidatos.size() == 0)
-			addActionMessage("Não existem candidatos a serem listados!");
+			addActionMessage("Não existem candidatos a serem listados");
 		else
 			setShowFilter(false);
 
@@ -687,7 +687,7 @@ public class CandidatoListAction extends MyActionSupportList
 			try
 			{
 				if(candidatoManager.exportaCandidatosBDS(getEmpresaSistema(), candidatos, empresasCheck, emailAvulso, anuncioBDS))
-					addActionMessage("Candidatos exportados com sucesso.");
+					addActionSuccess("Candidatos exportados com sucesso.");
 
 			}
 			catch (Throwable e)
@@ -882,7 +882,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String sucessoInclusao() throws Exception
 	{
-		addActionMessage("Operação Efetuada com Sucesso!");
+		addActionSuccess("Operação efetuada com sucesso");
 		return Action.SUCCESS;
 	}
 

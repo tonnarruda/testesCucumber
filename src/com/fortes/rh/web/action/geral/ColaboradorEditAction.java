@@ -573,7 +573,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if(habilitaCampoExtra && camposExtras != null)
 				colaborador.setCamposExtras(camposExtrasManager.save(camposExtras));
-			if(colaborador.getCamposExtras() == null || colaborador.getCamposExtras().getId() == null)
+			
+			if(!habilitaCampoExtra || colaborador.getCamposExtras() == null || colaborador.getCamposExtras().getId() == null)
 				colaborador.setCamposExtras(null);
 			
 			if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
