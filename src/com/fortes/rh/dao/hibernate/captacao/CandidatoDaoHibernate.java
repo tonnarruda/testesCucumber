@@ -52,9 +52,7 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
-import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
@@ -1196,6 +1194,17 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setBoolean("disponivel", disponivel);
 		query.setBoolean("contratado", contratado);
 		query.setParameterList("colaboradorId", colaboradorId, Hibernate.LONG);
+		
+		query.executeUpdate();
+	}
+	
+	public void updateDisponivel(boolean disponivel, Long candidatoId) 
+	{
+		String hql = "update Candidato set disponivel = :disponivel where id = :candidatoId";
+		
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("disponivel", disponivel);
+		query.setLong("candidatoId", candidatoId);
 		
 		query.executeUpdate();
 	}

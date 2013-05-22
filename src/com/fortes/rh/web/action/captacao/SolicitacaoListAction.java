@@ -10,6 +10,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
@@ -48,6 +53,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Anuncio anuncio;
     private HistoricoCandidatoManager historicoCandidatoManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
+    private PlatformTransactionManager transactionManager;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
     private HashMap<Character, String> status;
@@ -156,36 +162,49 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String gravarSolicitacoesCandidato() throws Exception
     {
-    	if(solicitacaosCheckIds != null && solicitacaosCheckIds.length > 0)
-    	{
-    		candidato = candidatoManager.findById(candidato.getId());
-    		candidato.setDisponivel(true);
-    		candidatoManager.update(candidato);
-    	}
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
 
-    	for(String id : solicitacaosCheckIds)
-    	{
-    		solicitacao = new Solicitacao();
-	    	solicitacao.setId(Long.parseLong(id));
+		try {
 
-    		candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
-    	}
-    	
-    	if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"}))
-    	{
-    		setActionMsg("Colaborador inserido na solicitação com sucesso.");
-    		return "successColaboradorList";
-    	}
-    	
-    	if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
-    		return "successSolicitacao";
-    	
-    	verSolicitacoes();
-    	
-    	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
-    	
-    	addActionMessage("Candidato incluído com sucesso");
-    	
+			if(solicitacaosCheckIds != null && solicitacaosCheckIds.length > 0)
+				candidatoManager.updateDisponivel(true, candidato.getId());
+
+			for(String id : solicitacaosCheckIds)
+			{
+				solicitacao = new Solicitacao();
+				solicitacao.setId(Long.parseLong(id));
+
+				candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
+			}
+
+			if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"}))
+			{
+				setActionMsg("Colaborador inserido na solicitação com sucesso.");
+				return "successColaboradorList";
+			}
+
+			if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
+				return "successSolicitacao";
+
+			verSolicitacoes();
+
+			CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
+
+			transactionManager.commit(status);
+			
+			addActionSuccess("Candidato incluído com sucesso");
+			
+		}catch(Exception e){
+
+			transactionManager.rollback(status);
+			e.printStackTrace();
+			addActionError("Não foi possível concluir esta operação.");
+
+			return Action.INPUT;
+		}
+
 		return Action.SUCCESS;
     }
 
@@ -468,5 +487,11 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setStatusBusca(char statusBusca) {
 		this.statusBusca = statusBusca;
+	}
+
+	
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
 	}
 }

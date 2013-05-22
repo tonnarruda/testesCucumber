@@ -2223,6 +2223,24 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(false, retorno.isDisponivel());
 		assertEquals(true, retorno.isContratado());
 	}
+	
+	public void testUpdateDisponivel()
+	{
+		Candidato candidato = getCandidato();
+		candidato.setDisponivel(false);
+		candidato.setContratado(true);
+		candidatoDao.save(candidato);
+		
+		candidatoDao.updateDisponivel(true, candidato.getId());
+		
+		Candidato retorno = candidatoDao.findByCandidatoId(candidato.getId());
+		assertEquals(true, retorno.isDisponivel());
+		
+		candidatoDao.updateDisponivel(false, candidato.getId());
+		
+		retorno = candidatoDao.findByCandidatoId(candidato.getId());
+		assertEquals(false, retorno.isDisponivel());
+	}
 
 	public void testFindCandidatosForSolicitacaoAllEmpresas()
 	{

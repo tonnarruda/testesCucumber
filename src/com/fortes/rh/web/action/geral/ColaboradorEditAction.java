@@ -831,7 +831,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 				colaborador.setCandidato(candidato);
 				colaboradorManager.update(colaborador);
-				candidatoManager.updateDisponivelAndContratadoByColaborador(true, !colaborador.isDesligado(), colaborador.getId());
+				candidatoManager.updateDisponivelAndContratadoByColaborador(false, !colaborador.isDesligado(), colaborador.getId());
 			}
 			else
 			{

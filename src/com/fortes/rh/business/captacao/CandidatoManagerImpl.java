@@ -1279,7 +1279,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   		} catch (Exception e) {}
 		} catch (Exception e) {}
 
-		
 		candidato.setPessoal(pessoal);
 		candidato.setContato(contato);
 		candidato.setEndereco(endereco);
@@ -1288,7 +1287,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradorId) 
 	{
-		getDao().updateDisponivelAndContratadoByColaborador(disponivel, disponivel, colaboradorId);
+		getDao().updateDisponivelAndContratadoByColaborador(disponivel, contratado, colaboradorId);
+	}
+
+	public void updateDisponivel(boolean disponivel, Long candidatoId)
+	{
+		getDao().updateDisponivel(disponivel, candidatoId);
 	}
 
 	public void enviaEmailQtdCurriculosCadastrados(Collection<Empresa> empresas)

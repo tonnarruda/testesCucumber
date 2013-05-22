@@ -834,7 +834,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     {
         Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
-        candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+        candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
         usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
@@ -849,7 +849,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     {
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
-    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+    	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
     	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
@@ -948,7 +948,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	empresa.setAcIntegra(true);
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
-    	candidatoManager.expects(once()).method("habilitaByColaborador").with(eq(new Long[]{colaborador.getId()})).isVoid();
+    	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	colaboradorIdiomaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
