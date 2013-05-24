@@ -3,10 +3,13 @@ package com.fortes.rh.test.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.transaction.TransactionManager;
+
 import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -38,6 +41,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 	private Mock cargoManager;
 	private Mock empresaManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock transactionManager;
 
     protected void setUp() throws Exception
     {
@@ -48,12 +52,15 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         cargoManager = new Mock(CargoManager.class);        
         empresaManager = new Mock(EmpresaManager.class);
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        transactionManager = new Mock(PlatformTransactionManager.class);
+        
         action.setSolicitacaoManager((SolicitacaoManager) manager.proxy());
         action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         action.setCargoManager((CargoManager)cargoManager.proxy());
         action.setEmpresaManager((EmpresaManager)empresaManager.proxy());
         action.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
+        action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         
@@ -182,7 +189,10 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	parametrosDoSistema.setCompartilharCandidatos(true);
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
+		candidatoManager.expects(once()).method("updateDisponivel").withAnyArguments().isVoid();
 		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(2L)).will(returnValue(candidato));
 		manager.expects(once()).method("findSolicitacaoList").with(eq(1L),eq(false),eq(StatusAprovacaoSolicitacao.APROVADO),eq(false)).will(returnValue(new ArrayList<Solicitacao>()));
 		

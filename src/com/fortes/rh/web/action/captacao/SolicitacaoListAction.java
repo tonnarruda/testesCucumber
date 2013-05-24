@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.transaction.TransactionManager;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -489,9 +491,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.statusBusca = statusBusca;
 	}
 
-	
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
 }
