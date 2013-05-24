@@ -18,8 +18,6 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
-import net.sf.antcontrib.logic.ForEach;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
