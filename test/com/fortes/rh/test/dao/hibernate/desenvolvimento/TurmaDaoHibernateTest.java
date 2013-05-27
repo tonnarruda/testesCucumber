@@ -369,9 +369,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma2.setRealizada(false);
 		turmaDao.save(turma2);
 		
-		Collection<Turma> turmas = turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true, null);
-		
-		assertEquals(1, turmas.size());
+		assertEquals("Apenas realizada", turma.getId(), ((Turma) turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true, null).toArray()[0]).getId());
 	}
 	
 	public void testCountPlanosDeTreinamento()

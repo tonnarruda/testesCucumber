@@ -198,6 +198,7 @@
 				<param name="location">WEB-INF/report/plano_treinamento_new.jasper</param>
 				<param name="dataSource">turmas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">planoTreinamento.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamento.ftl</result>
 		</action>

@@ -299,11 +299,13 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		if (cursoId != null)
 			criteria.add(Expression.eq("c.id", cursoId));
 
-		if (dataIni != null)
-			criteria.add(Expression.ge("t.dataPrevIni", dataIni));
-
-		if (dataFim != null)
-			criteria.add(Expression.le("t.dataPrevFim", dataFim));
+		if (dataIni != null && dataFim != null)
+		{
+			criteria.add(Expression.or( 
+							Expression.or(Expression.between("t.dataPrevIni", dataIni, dataFim), Expression.between("t.dataPrevFim", dataIni, dataFim)), 
+							Expression.and(Expression.le("t.dataPrevIni", dataIni), Expression.ge("t.dataPrevFim", dataFim))
+						));
+		}
 
         if (realizada != null)
         	criteria.add(Expression.eq("t.realizada", realizada));
