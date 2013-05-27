@@ -1,0 +1,1 @@
+update exame set nome = 'Exame de Aptidões Física e Mental'  where aso = true and nome = 'Exame de Aptidões Física e Mental na Movimentação';--.go
