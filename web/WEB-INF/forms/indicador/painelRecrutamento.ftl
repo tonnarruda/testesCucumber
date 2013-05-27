@@ -182,12 +182,12 @@
 				</div>
 		    	<div id="indicadores">
 		    		<ul>
-		    			<li>Nº de Currículos Recebidos/Cadastrados:	${qtdCandidatosCadastrados}</li>
-		    			<li>Nº de Candidatos Participantes de Uma ou Mais Etapa Seletiva: ${qtdCandidatosAtendidos}</li>
-		    			<li>Nº de Etapas Realizadas: ${qtdEtapasRealizadas?string(",##0.##")}</li>
-		    			<li>Nº de Vagas Preenchidas: ${qtdVagasPreenchidas}</li>
-		    			<li>Nº de Candidatos Atendidos p/ Preench. de uma Vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
-		    			<li>Índice de Eficiência do Processo Seletivo: ${indiceProcSeletivo?string(",##0.##")}%
+		    			<li>Nº de currículos recebidos/cadastrados:	${qtdCandidatosCadastrados}</li>
+		    			<li>Nº de candidatos participantes de uma ou mais etapas seletivas: ${qtdCandidatosAtendidos}</li>
+		    			<li>Nº de etapas realizadas: ${qtdEtapasRealizadas?string(",##0.##")}</li>
+		    			<li>Nº de vagas preenchidas: ${qtdVagasPreenchidas}</li>
+		    			<li>Média de candidatos atendidos p/ preench. de uma vaga: ${qtdCandidatosAtendidosPorVaga?string(",##0.##")}</li>
+		    			<li>Índice de eficiência do processo seletivo: ${indiceProcSeletivo?string(",##0.##")}%
 		    				<img align='absMiddle' id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
 		    			</li>
 		    		</ul>
