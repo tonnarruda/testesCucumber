@@ -93,7 +93,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu devo ver o alert "Selecione os níveis para as competências indicadas." e clico no ok
     E eu escolho "niveisCompetenciaFaixaSalariais[1].nivelCompetencia.id"
     E eu clico no botão "Gravar"
-    E eu devo ver "Níveis de Competência da Faixa Salarial salvos com sucesso."
+    E eu devo ver "Níveis de competência da faixa salarial salvos com sucesso"
     E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Faixas Salariais"

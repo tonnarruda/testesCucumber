@@ -63,5 +63,5 @@ Funcionalidade: Cadastrar Candidato
     E eu clico no botão "Pesquisar"
     Então eu não devo ver "joao"
     E eu não devo ver "maria"
-    E eu devo ver "Não existem candidatos a serem listados!"
+    E eu devo ver "Não existem candidatos a serem listados"
     

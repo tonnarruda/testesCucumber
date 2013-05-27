@@ -370,6 +370,12 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaDao.save(turma2);
 		
 		assertEquals("Apenas realizada", turma.getId(), ((Turma) turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, true, null).toArray()[0]).getId());
+		assertEquals("Apenas não realizada", turma2.getId(), ((Turma) turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), dataPrevIni, dataPrevFim, false, null).toArray()[0]).getId());
+		assertEquals("Apenas data ini. no filtro", 2, (turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), DateUtil.criarDataMesAno(01, 02, 2000), DateUtil.criarDataMesAno(01, 01, 2002), null, null).size()));
+		assertEquals("Apenas data fin. no filtro", 2, (turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), DateUtil.criarDataMesAno(01, 12, 1999), DateUtil.criarDataMesAno(01, 01, 2000), null, null).size()));
+		assertEquals("Data ini. e fin. fora do filtro", 2, (turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), DateUtil.criarDataMesAno(01, 12, 1999), DateUtil.criarDataMesAno(01, 01, 2002), null, null).size()));
+		assertEquals("Data ini. e fin. antes do filtro", 0, (turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), DateUtil.criarDataMesAno(01, 11, 1999), DateUtil.criarDataMesAno(31, 12, 1999), null, null).size()));
+		assertEquals("Data ini. e fin. depois do filtro", 0, (turmaDao.findPlanosDeTreinamento(1, 10,  curso.getId(), DateUtil.criarDataMesAno(02, 01, 2001), DateUtil.criarDataMesAno(31, 12, 2001), null, null).size()));
 	}
 	
 	public void testCountPlanosDeTreinamento()

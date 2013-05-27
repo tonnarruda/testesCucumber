@@ -19681,3 +19681,11 @@ insert into migrations values('20130517141703');--.go
 alter table parametrosdosistema drop column modulos; --.go
 insert into migrations values('20130517141729');--.go
 update parametrosdosistema set appversao = '1.1.107.115';--.go
+-- versao 1.1.108.116
+
+alter table candidato alter column email type varchar(200);--.go
+alter table colaborador alter column email type varchar(200);--.go
+insert into migrations values('20130520110256');--.go
+alter table nivelcompetencia alter column descricao type character varying (60);--.go
+insert into migrations values('20130522162416');--.go
+update parametrosdosistema set appversao = '1.1.108.116';--.go

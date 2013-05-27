@@ -39,7 +39,7 @@ Funcionalidade: Cadastrar Candidato
     E eu preencho "Senha" com "1234"
     E eu preencho "Confirmar Senha" com "1234"
     Quando eu clico no botão "Gravar"
-    Então eu devo ver "Operação Efetuada com Sucesso!"
+    Então eu devo ver "Operação efetuada com sucesso"
     Quando eu clico no botão "Voltar"
     Então eu devo ver "Candidatos"
     E eu devo ver "_Pedro"

@@ -4,19 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -802,7 +806,7 @@ CREATE TABLE candidato (
     ddd character varying(5),
     fonefixo character varying(10),
     fonecelular character varying(10),
-    email character varying(40),
+    email character varying(200),
     cpf character varying(11),
     pis character varying(11),
     rg character varying(15),
@@ -1493,7 +1497,7 @@ CREATE TABLE colaborador (
     ddd character varying(5),
     fonefixo character varying(10),
     fonecelular character varying(10),
-    email character varying(40),
+    email character varying(200),
     vinculo character varying(5),
     codigoac character varying(12),
     cursos text,
@@ -4804,7 +4808,7 @@ SELECT pg_catalog.setval('naturezalesao_sequence', 1, false);
 
 CREATE TABLE nivelcompetencia (
     id bigint NOT NULL,
-    descricao character varying(15),
+    descricao character varying(60),
     ordem integer,
     empresa_id bigint
 );
@@ -28007,6 +28011,8 @@ INSERT INTO migrations (name) VALUES ('20130510140434');
 INSERT INTO migrations (name) VALUES ('20130517141546');
 INSERT INTO migrations (name) VALUES ('20130517141703');
 INSERT INTO migrations (name) VALUES ('20130517141729');
+INSERT INTO migrations (name) VALUES ('20130520110256');
+INSERT INTO migrations (name) VALUES ('20130522162416');
 
 
 --
@@ -28305,7 +28311,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.107.115', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.108.116', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, NULL, true, false, 600, NULL, NULL);
 
 
 --

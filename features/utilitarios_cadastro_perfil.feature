@@ -5,8 +5,6 @@ Funcionalidade: Cadastrar Perfil
   Cenário: Cadastro de Perfil
     Dado que exista um papel "configuracoes" 
     Dado que exista um papel "mensagens"
-    E que todos os papeis estejam permitidos
-
     Dado que eu esteja logado
 
     Quando eu acesso o menu "Utilitários > Cadastros > Perfis"
