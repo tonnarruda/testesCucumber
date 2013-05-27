@@ -214,7 +214,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 	public Collection<Turma> findPlanosDeTreinamento(int page, int pagingSize, Long cursoId, Date dataIni, Date dataFim, char realizada, Long empresaId)
 	{
-		empresaId = ((-1L) == empresaId) ? null : empresaId;
+		empresaId = (empresaId == null || empresaId == -1l) ? null : empresaId;
 		
 		Collection<Turma> turmas = getDao().findPlanosDeTreinamento(page, pagingSize, cursoId, dataIni, dataFim, realizadaValue(realizada), empresaId);
 		for (Turma turma : turmas)
@@ -243,7 +243,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public Collection<Turma> findByCursos(Long[] cursoIds)
 	{
 		return getDao().findByCursos(cursoIds);
-		
 	}
 
 	public Boolean realizadaValue(char realizada)

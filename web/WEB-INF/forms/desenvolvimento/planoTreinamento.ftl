@@ -12,7 +12,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	<#assign validarCampos="return validaFormulario('form', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'), true)"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'), true)"/>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
@@ -133,9 +133,9 @@
 		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaCursos(this.value);"/>
 		<@ww.select id="curso" label="Curso" name="filtroPlanoTreinamento.cursoId" list="cursos"  listKey="id" listValue="nome"  headerKey="" headerValue="Todos" cssStyle="width: 800px;"/>
 		Período:<br>
-		<@ww.datepicker name="filtroPlanoTreinamento.dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
+		<@ww.datepicker name="filtroPlanoTreinamento.dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
-		<@ww.datepicker name="filtroPlanoTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData" />
+		<@ww.datepicker name="filtroPlanoTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 		<@ww.select label="Realizada" name="filtroPlanoTreinamento.realizada" list=r"#{'T':'Todas','S':'Sim','N':'Não'}" />
 
 		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="javascript: document.form.action ='filtroPlanoTreinamento.action';">
