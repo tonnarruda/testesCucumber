@@ -33,7 +33,7 @@ Funcionalidade: Campos Extras para Candidato
     Quando eu clico na aba "EXTRA"
     E eu preencho "Nome da mãe" com "Maria"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Operação Efetuada com Sucesso!"
+    Então eu devo ver "Operação efetuada com sucesso"
     Quando eu clico no botão "Voltar"
     E eu devo ver "_Pedro do Teste"
 

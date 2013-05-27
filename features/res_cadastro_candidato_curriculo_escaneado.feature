@@ -12,7 +12,7 @@ Funcionalidade: Cadastrar Candidato
     Quando eu clico no botão "InserirCurriculoEscaneado"
     Então eu devo ver o título "Escanear Currículo"
     Quando eu clico no botão "SalvarArquivos"
-	Então eu devo ver o alert "Deve ser selecionado pelo menos um item do campo 'Cargo/Função Pretendida'" e clico no ok
+	Então eu devo ver o alert "Preencha os campos indicados." e clico no ok
 	E eu marco "baba"
     Quando eu clico no botão "SalvarArquivos"
     Então eu devo ver o alert do valida campos e clico no ok

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.108.116" data="27/05/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Cadastros > Colaboradores > Competências do Colaborador: Nova opção de impressão.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.107.115" data="20/05/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Melhorias no autenticador de licença.

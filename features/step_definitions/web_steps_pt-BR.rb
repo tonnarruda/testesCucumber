@@ -8,6 +8,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado$/ do
+  exec_sql "update  parametrosdosistema  set servidorremprot = '10.1.254.2';"
   unless page.has_selector?('.saudacao') && page.has_selector?('.nomeUsuario')
     # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
@@ -20,6 +21,7 @@ Dado /^que eu esteja logado$/ do
     page.execute_script("$('#splash').dialog('close');")
   end
 end
+
 
 Quando /^eu acesso "([^"]*)"$/ do |path|
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
@@ -729,10 +731,6 @@ Dado /^que exista um papel "([^"]*)"$/ do |papel_nome|
    end
 end
  
-Dado /^que todos os papeis estejam permitidos$/ do
-   exec_sql "update parametrosdosistema set modulos = encode(cast(array_to_string(array(select id from papel order by id), ',') as bytea), 'base64');"
-end
-
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
 end

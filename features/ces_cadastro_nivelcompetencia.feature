@@ -31,7 +31,7 @@ Funcionalidade: Cadastrar Nível de Competência
 
     Então eu clico em excluir "nivel01"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Nível de Competência excluído com sucesso."
+    Então eu devo ver "Nível de competência excluído com sucesso"
     E eu não devo ver "nivel01"
 
     Então eu clico no botão "Inserir"
@@ -89,4 +89,4 @@ Funcionalidade: Cadastrar Nível de Competência
     E eu preencho "Peso" com "11"
     E eu preencho "Descrição" com "nivel11"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Não é permitido cadastrar mais do que dez Níveis de Competência."
+    Então eu devo ver "Não é permitido cadastrar mais do que dez Níveis de Competência"
