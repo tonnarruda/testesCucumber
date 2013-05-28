@@ -111,8 +111,10 @@ public abstract class Menu
 			{
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				
+				menuFilho.append("<li>");
+				
 				if (!papeisParaEmpresasIntegradas.contains(papel.getCodigo()) || (papeisParaEmpresasIntegradas.contains(papel.getCodigo()) && empresaLogada.isAcIntegra()) ) {
-					menuFilho.append("<li><a href='" + url + "'>" + papel.getNome() + "</a>");
+					menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 				}
 
 				maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);

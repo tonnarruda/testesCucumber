@@ -2960,6 +2960,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Long areasIdsPorResponsavel[] = (Long[]) parametros.get("areasIdsPorResponsavel");
 		Long estabelecimentoId = (Long) parametros.get("estabelecimentoId");
 		Long cargoId = (Long) parametros.get("cargoId");
+		Long faixaSalarialId = (Long) parametros.get("faixaSalarialId");
 		String situacao = (String) parametros.get("situacao");
 		String cpfBusca = (String) parametros.get("cpfBusca");
 		
@@ -3040,6 +3041,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			sql.append("and hc.areaOrganizacional_id = :areaBuscaId ");
 		if(cargoId != null)
 			sql.append("and fs.cargo_id = :cargoId ");
+		if(faixaSalarialId != null)
+			sql.append("and fs.id = :faixaSalarialId ");
 		if(estabelecimentoId != null)
 			sql.append("and hc.estabelecimento_id = :estabelecimentoId ");
 		if(areasIdsPorResponsavel != null)
@@ -3093,6 +3096,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("areaBuscaId", areaBuscaId);
 		if(cargoId != null)
 			query.setLong("cargoId", cargoId);
+		if(faixaSalarialId != null)
+			query.setLong("faixaSalarialId", faixaSalarialId);
 		if(estabelecimentoId != null)
 			query.setLong("estabelecimentoId", estabelecimentoId);
 		if(areasIdsPorResponsavel != null)

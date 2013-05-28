@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.web.tags.Option;
 
 
 public class FaixaSalarialDWR
@@ -36,6 +37,20 @@ public class FaixaSalarialDWR
 		}
 
 		return new HashMap<String, String>();
+	}
+	
+	public Collection<Option> findByCargo(String cargoId)
+	{
+		Collection<Option> faixasRetorno = new ArrayList<Option>();
+
+		if (cargoId != null && !cargoId.equals("-1"))
+		{
+			Collection<FaixaSalarial> faixas = faixaSalarialManager.findFaixaSalarialByCargo(Long.valueOf(cargoId));
+			for (FaixaSalarial faixaSalarial : faixas) 
+				faixasRetorno.add( new Option(faixaSalarial.getId(), faixaSalarial.getNome()) );
+		}
+
+		return faixasRetorno;
 	}
 
 	public Map getByEmpresa(Long empresaId)

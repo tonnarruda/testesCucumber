@@ -8,6 +8,23 @@ public class Option
 	private boolean selecionado;
 	private boolean desabilitado;
 
+	public Option() {}
+	
+	public Option(Long id, String nome) 
+	{
+		this.id = id;
+		this.nome = nome;
+	}
+	
+	public Option(Long id, String nome, String titulo, boolean selecionado, boolean desabilitado) 
+	{
+		this.id = id;
+		this.nome = nome;
+		this.titulo = titulo;
+		this.selecionado = selecionado;
+		this.desabilitado = desabilitado;
+	}
+
 	public Long getId()
 	{
 		return id;

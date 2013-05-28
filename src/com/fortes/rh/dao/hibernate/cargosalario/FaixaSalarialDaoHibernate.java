@@ -125,7 +125,10 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 			criteria.addOrder(Order.asc("c.nome"));
 		}
 		else if (origem == FAIXASALARIAL)
+		{
 			criteria.add(Expression.eq("f.id", id));
+			criteria.addOrder(Order.asc("f.nome"));
+		}
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));

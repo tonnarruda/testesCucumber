@@ -50,6 +50,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -107,6 +108,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Estabelecimento estabelecimento = new Estabelecimento();
 	private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
 	private Cargo cargo = new Cargo();
+	private FaixaSalarial faixaSalarial = new FaixaSalarial();
 	private Empresa empresa;
 	
 	private Map situacaos = new SituacaoColaborador();
@@ -218,6 +220,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		parametros.put("areasIdsPorResponsavel", areasIdsPorResponsavel);
 		parametros.put("estabelecimentoId", estabelecimento.getId());
 		parametros.put("cargoId", cargo.getId());
+		parametros.put("faixaSalarialId", faixaSalarial.getId());
 		parametros.put("situacao", situacao);
 		
 		//BACALHAU, refatorar outra consulta que ta com HQL, essa é em SQL...ajustar size ta pegando o tamanho da lista
@@ -1198,5 +1201,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setByteArrayInputStream(ByteArrayInputStream byteArrayInputStream) {
 		this.byteArrayInputStream = byteArrayInputStream;
+	}
+
+	public FaixaSalarial getFaixaSalarial() {
+		return faixaSalarial;
+	}
+
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
+		this.faixaSalarial = faixaSalarial;
 	}
 }

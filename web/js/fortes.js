@@ -234,8 +234,7 @@ function addChecksByCollection(divName, dados, onClick)
     	result += "</label><br>";
 	}
 
-	var obj = document.getElementById('listCheckBox'+ divName);
-	obj.innerHTML = result;
+	$('#listCheckBox'+ divName).html(result);
 }
 
 function addOptionsByCollection(selectId, dados)
@@ -247,14 +246,14 @@ function addOptionsByCollection(selectId, dados)
 
 	for (var prop in dados)
 	{
-		selecionado = dados[prop]['selecionado'] ? 'selected="selected"' : '';
-		desabilitado = dados[prop]['desabilitado'] ? 'disabled="disabled" style="color:#cccccc"' : '';
-		titulo = dados[prop]['titulo'] ? 'title="' + dados[prop]['titulo'] + '"' : '';
+		selecionado = dados[prop]['selecionado'] ? 'selected=\"selected\"' : '';
+		desabilitado = dados[prop]['desabilitado'] ? 'disabled=\"disabled\" style=\"color:#cccccc\"' : '';
+		titulo = dados[prop]['titulo'] ? 'title=\"' + dados[prop]['titulo'] + '\"' : '';
 		
 		result += "<option value='" + dados[prop]['id'] + "' " + titulo + " " + selecionado + " " + desabilitado + ">" + dados[prop]['nome'] + "</option>\n";
 	}
 
-	document.getElementById(selectId).innerHTML = result;
+	$('#' + selectId).html(result);
 }
 
 function compararData(dataInicio, dataFinal)

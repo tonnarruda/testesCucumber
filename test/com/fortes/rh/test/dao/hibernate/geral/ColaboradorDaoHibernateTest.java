@@ -4987,6 +4987,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		 faixaSalarial.setNome("I");
 		 faixaSalarial.setCargo(cargo);
 		 faixaSalarialDao.save(faixaSalarial);
+
+		 FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		 faixaSalarial2.setNome("II");
+		 faixaSalarial2.setCargo(cargo);
+		 faixaSalarialDao.save(faixaSalarial2);
 		
 		 Empresa empresa = EmpresaFactory.getEmpresa(4L);
 		 empresaDao.save(empresa);
@@ -5009,7 +5014,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		 HistoricoColaborador historicoColaboradorJoao = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2008), joao, faixaSalarial);
 		 historicoColaboradorDao.save(historicoColaboradorJoao);
 		
-		 HistoricoColaborador historicoColaboradorMaria = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2020), maria, faixaSalarial);
+		 HistoricoColaborador historicoColaboradorMaria = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2020), maria, faixaSalarial2);
 		 historicoColaboradorDao.save(historicoColaboradorMaria);
 		
 		 HistoricoColaborador historicoColaboradorPedroAntigo = inicializaHistorico(DateUtil.criarDataMesAno(1, 1, 2000), pedro, faixaSalarial);
@@ -5037,6 +5042,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		 historicoColaboradorDao.getHistoricoProximo(historicoColaboradorJoao);//miguel do SQL
 		
 		 assertEquals(4, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
+
+		 parametros.put("faixaSalarialId", faixaSalarial.getId());
+		 
+		 assertEquals(3, colaboradorDao.findComHistoricoFuturoSQL(parametros, 0, 0).size());
 	 }
 	
 	public void testFindByEstabelecimentoDataAdmissao()

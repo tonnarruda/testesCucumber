@@ -11,6 +11,7 @@
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
@@ -18,6 +19,26 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<script>
+		$(function() {
+			$('#cargo').change(function() {
+				var cargoId = $(this).val();
+				
+				if (cargoId)
+					FaixaSalarialDWR.findByCargo(createListFaixas, cargoId);
+			});
+			
+			$('#cargo').change();
+		});
+		
+		function createListFaixas(data)
+		{
+			addOptionsByCollection('faixaSalarial', data);
+			
+			<#if faixaSalarial.id?exists>
+				$('#faixaSalarial').val(${faixaSalarial.id});
+			</#if>
+		}
+	
 		function enviarPrepareUpDate(colaborador)
 		{
 			link = "prepareUpdate.action?colaborador.id="+colaborador+
@@ -104,23 +125,30 @@
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
-			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 243px;"/>
-			<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
-			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
-			<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
+			<table>
+				<tr>
+					<td width="370">
+						<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 243px;"/>
+						<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
+						<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
+						<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
+						
+						<#if integraAc && !colaborador.naoIntegraAc>
+							<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
+						<#else>
+							<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
+						</#if>
+					</td>
+					<td>
+						<@ww.select label="Área Organizacional" name="areaOrganizacional.id" id="areaOrganizacional" list="areasList"  listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
+						<@ww.select label="Estabelecimento" name="estabelecimento.id" id="estabelecimento" list="estabelecimentosList" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
+						<@ww.select label="Cargo" name="cargo.id" id="cargo" list="cargosList" listKey="id" listValue="nomeMercado" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
+						<@ww.select label="Faixa Salarial" name="faixaSalarial.id" id="faixaSalarial" headerValue="Selecione..." headerKey="" cssStyle="width:355px;"/>
+					</td>
+				</tr>
+			</table>
 			
-			<#if integraAc && !colaborador.naoIntegraAc>
-				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
-			<#else>
-				<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
-			</#if>
-			
-			<@ww.select label="Área Organizacional" name="areaOrganizacional.id" id="areaOrganizacional" list="areasList"  listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-			<@ww.select label="Estabelecimento" name="estabelecimento.id" id="estabelecimento" list="estabelecimentosList" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-			<@ww.select label="Cargo" name="cargo.id" id="cargo" list="cargosList" listKey="id" listValue="nomeMercado" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-
 			<@ww.hidden id="pagina" name="page"/>
-
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
