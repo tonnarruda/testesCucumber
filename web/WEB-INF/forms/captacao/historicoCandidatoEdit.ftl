@@ -62,11 +62,12 @@
 
 		function enviaForm()
 		{
+			var camposObrigatorios = new Array('fase','data','horaIni','horaFim','resp');
 			<#if !candidatoSol?exists || !candidatoSol.id?exists>
-				validaCandidatos()
+				camposObrigatorios.push('@candidatosCheck');
 			</#if>
 		
-				if(validaFormulario('form', new Array('fase','data','horaIni','horaFim','resp'), new Array('data','horaIni','horaFim'), true))
+				if(validaFormulario('form', camposObrigatorios, new Array('data','horaIni','horaFim'), true))
 				{
 					if($('#horaIni').val() <= $('#horaFim').val())
 					{
@@ -78,17 +79,6 @@
 						jAlert("Hora Final menor que Hora Inicial.");
 					}
 				}
-		}
-
-		function validaCandidatos()
-		{
-			var qtdSelect = qtdeChecksSelected(document.forms[0], 'candidatosCheck');
-			if(qtdSelect == 0)
-			{
-				jAlert("Nenhum Candidato selecionado.");
-				return false;
-			}
-			return true;
 		}
 
 		$(document).ready(function($)
@@ -132,7 +122,7 @@
 				<@ww.div cssClass="divFiltro">
 					<ul>
 						<@ww.select label="Filtrar Candidatos por Etapa" name="etapaSeletivaIdFiltro" id="etapaSeletiva" list="etapas" onchange="javascript:getCandidatoAptoByEtapa(this.value, ${solicitacao.id})" listKey="id" listValue="nome"  headerKey="-1" headerValue="" />
-						<@frt.checkListBox label="Candidatos" name="candidatosCheck" list="candidatosCheckList" id="candidatosCheck"/>
+						<@frt.checkListBox label="Candidatos*" name="candidatosCheck" list="candidatosCheckList" id="candidatosCheck"/>
 					</ul>
 				</@ww.div>
 			</li>
