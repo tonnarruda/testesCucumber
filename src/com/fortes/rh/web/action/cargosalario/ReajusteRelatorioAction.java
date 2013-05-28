@@ -176,7 +176,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 
 				dataSource = reajusteColaboradorManager.ordenaPorEstabelecimentoAreaOrGrupoOcupacional(getEmpresaSistema().getId(), dataSource, filtro);
 				
-				if (exibirAreaEstabelecimento)
+				if (exibirAreaEstabelecimento && total.equals("false"))
 					retorno = "successExibirAreaEstabelecimento";
 				else
 					retorno = Action.SUCCESS;
