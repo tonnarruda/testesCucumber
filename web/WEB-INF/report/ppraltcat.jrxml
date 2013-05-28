@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="672"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -13,6 +13,8 @@
 	</parameter>
 	<parameter name="EXIBIR_COMPOSICAO_SESMT" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="AGRUPADO_POR_AMBIENTE" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="EXIBIR_LOGO_EMPRESA" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<field name="ppra" class="com.fortes.rh.model.sesmt.relatorio.Ppra"/>
 	<field name="ltcat" class="com.fortes.rh.model.sesmt.relatorio.Ltcat"/>
 	<field name="cabecalho" class="com.fortes.rh.model.sesmt.relatorio.PpraLtcatCabecalho"/>
@@ -188,6 +190,12 @@ DO AMBIENTE DE TRABALHO]]></text>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{cabecalho}.getFuncoes()]]></textFieldExpression>
 				</textField>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement uuid="f4652f5e-cb04-4c04-ab29-ba07f7989e80" x="2" y="7" width="52" height="42" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getLogoUrl() != null && !$P{CABECALHO}.getLogoUrl().equals("") && $P{EXIBIR_LOGO_EMPRESA})]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
+				</image>
 			</band>
 		</groupFooter>
 	</group>
@@ -365,6 +373,12 @@ DE RISCOS AMBIENTAIS]]></text>
 					</subreportParameter>
 					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppraltcat_PPRA.jasper"]]></subreportExpression>
 				</subreport>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement uuid="f4652f5e-cb04-4c04-ab29-ba07f7989e80" x="2" y="5" width="52" height="42" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getLogoUrl() != null && !$P{CABECALHO}.getLogoUrl().equals("") && $P{EXIBIR_LOGO_EMPRESA})]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
+				</image>
 			</band>
 		</groupHeader>
 		<groupFooter>

@@ -1,0 +1,1 @@
+alter table empresa add column exibirlogoempresaPPRALTCAT boolean default false;--.go
