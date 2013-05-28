@@ -1,0 +1,1 @@
+update faixasalarialhistorico set status = 1 where status = 0;--.go

@@ -32,7 +32,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 	private Integer tipo;
 	private Double valor;
 	private Double quantidade;
-	private Integer status = 0;
+	private Integer status;
 
 	@Transient
 	private String obsReajuste;
