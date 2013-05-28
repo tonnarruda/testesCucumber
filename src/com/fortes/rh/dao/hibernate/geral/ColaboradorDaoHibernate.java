@@ -2838,7 +2838,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados)
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		// subQuery
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
@@ -2878,7 +2878,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
 		subQuery.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("ao.id", areasIds));
 
+		if(cargosIds != null && cargosIds.length > 0)
+			criteria.add(Expression.in("ca.id", cargosIds));
+		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

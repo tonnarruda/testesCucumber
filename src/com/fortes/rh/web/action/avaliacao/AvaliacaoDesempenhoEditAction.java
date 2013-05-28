@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -20,6 +21,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -30,6 +32,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.rh.web.action.cargosalario.CargoListAction;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.Action;
@@ -44,6 +47,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorManager colaboradorManager;
+	private CargoManager cargoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
@@ -59,8 +63,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private String[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private String[] cargosCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	
-	//pesquisa colaborador
+	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
@@ -122,7 +128,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		isAvaliados = true;
 		prepareParticipantes();
-		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false);
+		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
 		
 		return Action.SUCCESS;
 	}
@@ -142,7 +148,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados);
+		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados, null, null, null);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
 	
@@ -187,8 +193,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String prepareResultado()
 	{
 		try {
+			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+			
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true);
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
 			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome");
 			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
 		} catch (Exception e) {
@@ -230,8 +239,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			
-			
 			resultados = avaliacaoDesempenhoManager.montaResultado(LongUtil.arrayStringToCollectionLong(colaboradorsCheck), avaliacaoDesempenho, agruparPorAspectos, desconsiderarAutoAvaliacao);
 			parametros = RelatorioUtil.getParametrosRelatorio("Resultado Avaliação Desempenho (" + avaliacaoDesempenho.getTitulo() + ")", getEmpresaSistema(), "Resultado por Perguntas\nPeríodo: " + avaliacaoDesempenho.getPeriodoFormatado());
 			
@@ -436,7 +443,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho = (AvaliacaoDesempenho) avaliacaoDesempenhos.toArray()[0];
 		
 		if(avaliacaoDesempenho != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}) )
-			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false);
+			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
 		
 		if(avaliacaoDesempenho != null)
 			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida(), false);
@@ -728,5 +735,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setDesconsiderarAutoAvaliacao(boolean desconsiderarAutoAvaliacao)
 	{
 		this.desconsiderarAutoAvaliacao = desconsiderarAutoAvaliacao;
+	}
+
+	public Collection<CheckBox> getCargosCheckList() {
+		return cargosCheckList;
+	}
+
+	public void setCargosCheck(String[] cargosCheck) {
+		this.cargosCheck = cargosCheck;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 }

@@ -9,6 +9,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -33,6 +34,7 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -100,9 +102,9 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresAvaliados));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,eq(false),ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		
 		action.prepareAvaliados();
 		
@@ -113,7 +115,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(colaboradoresAvaliados));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
 		action.prepareAvaliadores();
@@ -186,9 +188,9 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,eq(false),ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("success",action.insertAvaliados());
 		
@@ -201,7 +203,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
 		assertEquals("success",action.insertAvaliadores());
@@ -222,9 +224,9 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true)).will(returnValue(colaboradorAvaliados));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {eq(avaliacaoDesempenho.getId()), eq(true),ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, eq(false)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,eq(false),ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		
 		manager.expects(once()).method("gerarAutoAvaliacoes").with(ANYTHING, ANYTHING);
 		colaboradorQuestionarioManager.expects(once()).method("excluirColaboradorQuestionarioByAvaliacaoDesempenho").with(ANYTHING);
@@ -306,8 +308,13 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		
 		assertEquals("success",action.prepareResultado());
 	}
@@ -355,11 +362,17 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		action.setOpcaoResultado("avaliador");
 		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		colaboradorQuestionarioManager.expects(once()).method("getPerformance").will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("input", action.resultado());
 	}
@@ -387,6 +400,10 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		parametrosDoSistema.setCompartilharCandidatos(true);
+
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		action.setOpcaoResultado("criterio");
 		
@@ -394,7 +411,10 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("montaResultado").with(ANYTHING,ANYTHING,ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException()));
 		//prepare
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
+		
+		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
+		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		
 		assertEquals("input",action.resultado());
 		assertEquals(1, action.getActionMessages().size());
