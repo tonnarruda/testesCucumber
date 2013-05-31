@@ -88,7 +88,7 @@
 		<property name="filterInvocationDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter,concurrentSessionFilter,authenticationProcessingFilter,anonymousProcessingFilter,securityEnforcementFilter
+				/**=httpSessionContextIntegrationFilter,concurrentSessionFilter,authenticationProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -145,15 +145,6 @@
 		</property>
 	</bean>
 
-	<bean id="securityEnforcementFilter" class="org.acegisecurity.intercept.web.SecurityEnforcementFilter">
-		<property name="filterSecurityInterceptor">
-			<ref local="filterInvocationInterceptor" />
-		</property>
-		<property name="authenticationEntryPoint">
-			<ref local="authenticationProcessingFilterEntryPoint" />
-		</property>
-	</bean>
-
 	<bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
 		<property name="loginFormUrl">
 			<value>/login.action</value>
@@ -161,6 +152,10 @@
 		<property name="forceHttps">
 			<value>false</value>
 		</property>
+	</bean>
+	
+	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint"><ref local="authenticationProcessingFilterEntryPoint"/></property>
 	</bean>
 
 	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
