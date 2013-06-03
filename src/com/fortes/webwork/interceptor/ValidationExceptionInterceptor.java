@@ -10,9 +10,9 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.ActionSupport;
 import com.opensymphony.xwork.interceptor.Interceptor;
 
 public class ValidationExceptionInterceptor implements Interceptor
@@ -33,11 +33,11 @@ public class ValidationExceptionInterceptor implements Interceptor
 		String result = null;
 		
 		final Object action = invocation.getAction();
-		ActionSupport actionSuport = null;
+		MyActionSupport actionSuport = null;
 
-		if (action instanceof ActionSupport)
+		if (action instanceof MyActionSupport)
 		{
-			actionSuport = (ActionSupport) action;
+			actionSuport = (MyActionSupport) action;
 		}
 		
 		try
@@ -66,7 +66,7 @@ public class ValidationExceptionInterceptor implements Interceptor
 			
 			if (actionSuport != null) {
 				String errorMessage = "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
-				actionSuport.addActionError(errorMessage);
+				actionSuport.addActionWarning(errorMessage);
 				logger.error(errorMessage);
 			}
 			this.logaErros(e);
@@ -88,7 +88,7 @@ public class ValidationExceptionInterceptor implements Interceptor
 		catch (ConstraintViolationException e)
 		{
 			if (actionSuport != null) {
-				actionSuport.addActionError("Violação de integridade no Banco de Dados.");
+				actionSuport.addActionWarning("Violação de integridade no Banco de Dados.");
 				logger.error("Violação de integridade no Banco de Dados.");
 			}
 			this.logaErros(e);
@@ -112,7 +112,7 @@ public class ValidationExceptionInterceptor implements Interceptor
 				
 				if (actionSuport != null) {
 					String errorMessage = "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
-					actionSuport.addActionError(errorMessage);
+					actionSuport.addActionWarning(errorMessage);
 					logger.error(errorMessage);
 				}
 			} else if (actionSuport != null){
