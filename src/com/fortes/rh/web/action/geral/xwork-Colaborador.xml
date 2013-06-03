@@ -54,8 +54,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome Comercial,Área Organizacional,Estabelecimento</param>
-				<param name="properties">nomeComercial,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Nome Comercial,Área Organizacional,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,nomeComercial,areaOrganizacional.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -63,8 +63,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome,Área Organizacional,Estabelecimento</param>
-				<param name="properties">nome,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Nome,Área Organizacional,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,nome,areaOrganizacional.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -72,8 +72,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome Comercial,Cargo,Estabelecimento</param>
-				<param name="properties">nomeComercial,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Nome Comercial,Cargo,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,nomeComercial,faixaSalarial.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -81,8 +81,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome,Cargo,Estabelecimento</param>
-				<param name="properties">nome,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Nome,Cargo,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,nome,faixaSalarial.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
