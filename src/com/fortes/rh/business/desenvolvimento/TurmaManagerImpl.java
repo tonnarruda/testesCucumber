@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -43,7 +44,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
-	public void removeCascade(Long id) throws Exception
+	public void removeCascade(Long turmaId) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -51,11 +52,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 
 		try
 		{
-			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.find(new String[]{"turma.id"}, new Object[]{id});
-			aproveitamentoAvaliacaoCursoManager.removeByTurma(id);
-			turmaTipoDespesaManager.removeByTurma(id);
+			Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.find(new String[]{"turma.id"}, new Object[]{turmaId});
+			aproveitamentoAvaliacaoCursoManager.removeByTurma(turmaId);
+			turmaTipoDespesaManager.removeByTurma(turmaId);
 			//	Remove todos os relacionamentos com Questionario/Resposta na turma
-			colaboradorQuestionarioManager.removeByColaboradorETurma(null, id);
+			colaboradorQuestionarioManager.removeByColaboradorETurma(null, turmaId);
 			
 			if(colaboradoresTurmas.size() > 0)
 			{
@@ -65,9 +66,12 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 				colaboradorTurmaManager.remove(colaboradorTurmaIds);
 			}
 
-			diaTurmaManager.deleteDiasTurma(id);
+			diaTurmaManager.deleteDiasTurma(turmaId);
+			
+			TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
+			turmaAvaliacaoTurmaManager.removeByTurma(turmaId);
 
-			remove(id);
+			remove(turmaId);
 
 			transactionManager.commit(status);
 		}

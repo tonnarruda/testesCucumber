@@ -24,6 +24,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
@@ -65,6 +66,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock cursoManager;
 	Mock turmaTipoDespesaManager;
 	Mock faturamentoMensalManager;
+	Mock turmaAvaliacaoTurmaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -99,10 +101,14 @@ public class TurmaManagerTest extends MockObjectTestCase
 		faturamentoMensalManager = new Mock(FaturamentoMensalManager.class);
 		turmaManager.setFaturamentoMensalManager((FaturamentoMensalManager) faturamentoMensalManager.proxy());
 		
+		turmaAvaliacaoTurmaManager = new Mock(TurmaAvaliacaoTurmaManager.class);
+		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
+		
+		MockSpringUtil.mocks.put("turmaAvaliacaoTurmaManager", turmaAvaliacaoTurmaManager);
 	}
 
     protected void tearDown() throws Exception
@@ -250,6 +256,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 
 		diaTurmaManager.expects(once()).method("deleteDiasTurma").isVoid();
+		turmaAvaliacaoTurmaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaDao.expects(once()).method("remove").with(eq(turma.getId())).isVoid();
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 

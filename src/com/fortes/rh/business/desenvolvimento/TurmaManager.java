@@ -14,7 +14,7 @@ import com.fortes.rh.model.geral.Empresa;
 
 public interface TurmaManager extends GenericManager<Turma>
 {
-	public void removeCascade(Long id) throws Exception;
+	public void removeCascade(Long turmaId) throws Exception;
 	public Turma findByIdProjection(Long turmaId);
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON)throws Exception;
 	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception;

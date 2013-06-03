@@ -8,4 +8,5 @@ public interface TurmaAvaliacaoTurmaManager extends GenericManager<TurmaAvaliaca
 	void salvarAvaliacaoTurmas(Long turmaId, Long[] avaliacaoTurmaIds);
 	boolean verificaAvaliacaoliberada(Long turmaId);
 	void updateLiberada(Long turmaId, Long avaliacaoTurmaId, Boolean liberada, Long empresaId);
+	void removeByTurma(Long turmaId);
 }

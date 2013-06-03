@@ -16,7 +16,7 @@ public class TurmaAvaliacaoTurmaManagerImpl extends GenericManagerImpl<TurmaAval
 	
 	public void salvarAvaliacaoTurmas(Long turmaId, Long[] avaliacaoTurmaIds) 
 	{
-		getDao().removeByTurma(turmaId);
+		removeByTurma(turmaId);
 		
 		if (avaliacaoTurmaIds != null)
 		{
@@ -45,6 +45,11 @@ public class TurmaAvaliacaoTurmaManagerImpl extends GenericManagerImpl<TurmaAval
 		}
 		getDao().updateLiberada(turmaId, avaliacaoTurmaId, liberada);
 	}
+	
+	public void removeByTurma(Long turmaId)
+	{
+		getDao().removeByTurma(turmaId);
+	}
 
 	public void setTurmaManager(TurmaManager turmaManager) {
 		this.turmaManager = turmaManager;
@@ -57,4 +62,6 @@ public class TurmaAvaliacaoTurmaManagerImpl extends GenericManagerImpl<TurmaAval
 	public void setAvaliacaoTurmaManager(AvaliacaoTurmaManager avaliacaoTurmaManager) {
 		this.avaliacaoTurmaManager = avaliacaoTurmaManager;
 	}
+
+	
 }
