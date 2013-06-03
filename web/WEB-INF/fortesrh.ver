@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.109.117" data="03/06/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação: Novos filtros por empresa, area organizacional e cargo.
+			:: Info. Funcionais > Cadastros > Colaboradores: Novo filtro por faixa salarial.
+			:: Utilitários > Cadastros > Empresas: Nova opção para exibir a logo da empresa na impressão do PPRA e LTCAT.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.108.116" data="27/05/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Cadastros > Colaboradores > Competências do Colaborador: Nova opção de impressão.

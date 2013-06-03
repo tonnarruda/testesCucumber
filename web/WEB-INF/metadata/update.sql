@@ -19689,3 +19689,12 @@ insert into migrations values('20130520110256');--.go
 alter table nivelcompetencia alter column descricao type character varying (60);--.go
 insert into migrations values('20130522162416');--.go
 update parametrosdosistema set appversao = '1.1.108.116';--.go
+-- versao 1.1.109.117
+
+update exame set nome = 'Exame de Aptidões Física e Mental'  where aso = true and nome = 'Exame de Aptidões Física e Mental na Movimentação';--.go
+insert into migrations values('20130527135252');--.go
+alter table empresa add column exibirlogoempresaPPRALTCAT boolean default false;--.go
+insert into migrations values('20130528161528');--.go
+update faixasalarialhistorico set status = 1 where status = 0;--.go
+insert into migrations values('20130528170035');--.go
+update parametrosdosistema set appversao = '1.1.109.117';--.go

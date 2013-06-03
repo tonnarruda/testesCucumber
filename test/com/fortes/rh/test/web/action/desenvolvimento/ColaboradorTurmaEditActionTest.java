@@ -166,7 +166,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	avaliacaoCursoManager.expects(once()).method("findByCurso").with(eq(turma.getCurso().getId())).will(returnValue(Arrays.asList(AvaliacaoCursoFactory.getEntity())));
     	
     	action.insertColaboradorNota();
-    	assertEquals("Erro ao inserir Colaborador e Nota(s).", action.getActionErrors().toArray()[0]);
+    	assertEquals("Ocorreu um erro ao inserir o colaborador e as notas.", action.getActionErrors().toArray()[0]);
     }
     
     public void testPrepareInsert() throws Exception
