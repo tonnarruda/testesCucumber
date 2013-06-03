@@ -145,17 +145,17 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		try
 		{
 			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
-			addActionMessage("Colaborador e Nota(s) inseridos com sucesso.");
+			addActionSuccess("Colaborador e notas inseridos com sucesso.");
 		}
 		catch (FortesException e)
 		{
 			e.printStackTrace();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Erro ao inserir Colaborador e Nota(s).");
+			addActionError("Ocorreu um erro ao inserir o colaborador e as notas.");
 		}
 		
 		prepareInsertNota();
