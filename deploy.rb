@@ -34,7 +34,7 @@ deploy_config.select{|k,v| ARGV.include? k}.each_pair do |name, config|
   	puts "Apagando pasta work da aplicacao"
     conn.exec "rm -rf #{tomcat_home}/work/*"
 		
-  	puts "Enviando war para o servidor de homologacao"
+  	puts "Enviando war para o servidor da aplicacao"
 		conn.upload config['repository_app'], "#{app_path}.war"
 		#conn.exec "cp #{tomcat_home}/webapps/unifor.war #{app_path}.war"
 		
