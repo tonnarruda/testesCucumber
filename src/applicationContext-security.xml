@@ -369,13 +369,17 @@
 				/cargosalario/indiceHistorico/*/**=ROLE_CAD_INDICE
 				/cargosalario/faturamentoMensal/*/**=ROLE_FATURAMENTO
 				
-				/desenvolvimento/turma/prepareFrequencia*/**=ROLE_FREQUENCIA
-				/desenvolvimento/turma/verTurmasCurso*/**=ROLE_FREQUENCIA
-				/desenvolvimento/turma/preparePresenca*/**=ROLE_FREQUENCIA
-				/desenvolvimento/turma/filtroPlanoTreinamento*/**=ROLE_MOV_PLANO_TREINAMENTO
+				/desenvolvimento/turma/prepareFrequencia*/**=ROLE_FREQUENCIA, ROLE_MOV_CURSO
+				/desenvolvimento/turma/verTurmasCurso*/**=ROLE_FREQUENCIA, ROLE_MOV_CURSO
+				/desenvolvimento/turma/preparePresenca*/**=ROLE_FREQUENCIA, ROLE_MOV_CURSO
 				/desenvolvimento/turma/prepareImprimirCertificado*/**=ROLE_CERTIFICADO_CURSO
 				/desenvolvimento/turma/imprimirCertifica*/**=ROLE_CERTIFICADO_CURSO
 				/desenvolvimento/turma/getColaboradoresByFiltro*/**=ROLE_CERTIFICADO_CURSO
+				/desenvolvimento/turma/preparePdi*/**=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
+				/desenvolvimento/turma/pdi*/**=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
+				/desenvolvimento/turma/imprimirPdi*/**=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
+				/desenvolvimento/turma/prepareAplicarPdi*/**=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
+				/desenvolvimento/turma/aplicarPdi*/**=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
 				/desenvolvimento/turma/prepareImprimirTurmaSemPlano*/**=ROLE_REL_SEM_INDICACAO
 				/desenvolvimento/turma/prepareImprimirTurma*/**=ROLE_REL_PLANO
 				/desenvolvimento/turma/prepareImprimirMatriz*/**=ROLE_REL_MATRIZ
@@ -396,13 +400,13 @@
 				/desenvolvimento/colaboradorTurma/relatorioColaboradorSemTreinamento*/**=ROLE_REL_COLABORADOR_SEM_TREINAMENTO
 				/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorSemIndicacao*/**=ROLE_REL_SEM_INDICACAO
 				/desenvolvimento/colaboradorTurma/relatorioColaboradorSemIndicacaoTreinamento*/**=ROLE_REL_SEM_INDICACAO
-				/desenvolvimento/colaboradorTurma/*/**=ROLE_MOV_CURSO
+				/desenvolvimento/colaboradorTurma/*/**=ROLE_MOV_CURSO, ROLE_MOV_PLANO_TREINAMENTO
 				/desenvolvimento/colaboradorTurma/relatorioColaboradorSemTreinamento.action*=ROLE_REL_COLABORADOR_SEM_TREINAMENTO,ROLE_REL_COLABORADOR_COM_TREINAMENTO
 				/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action*=ROLE_REL_HISTORICO_TREINAMENTOS
 				/desenvolvimento/curso/*/**=ROLE_MOV_CURSO
 				/desenvolvimento/avaliacaoCurso/*/**=ROLE_MOV_AVALIACAO_CURSO
 				/desenvolvimento/dnt/*/**=ROLE_MOV_CURSO_DNT,ROLE_MOV_CURSO_DNT_GESTOR
-				/desenvolvimento/turma/*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICAD, ROLE_MOV_CURSO
+				/desenvolvimento/turma/*/**=ROLE_MOV_TURMA,ROLE_REL_CERTIFICAD, ROLE_MOV_CURSO, ROLE_MOV_PLANO_TREINAMENTO
 				/desenvolvimento/turma/filtroPlanoTreinamento.action*=ROLE_MOV_PLANO_TREINAMENTO
 				/desenvolvimento/turma/preparePdi.action*=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
 				/desenvolvimento/turma/pdi.action*=ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL
@@ -419,15 +423,16 @@
 				/pesquisa/pesquisa/preview.action*= ROLE_USER
 				/pesquisa/pesquisa/*/**= ROLE_MOV_QUESTIONARIO
 				/pesquisa/entrevista/*/**= ROLE_MOV_QUESTIONARIO
-				/pesquisa/pergunta/*/**= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
+				/pesquisa/pergunta/*/**= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA
 				
-				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
-				/pesquisa/questionario/prepareAplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA
+				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA
+				/pesquisa/questionario/prepareAplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA
+				/pesquisa/questionario/imprimir*= ROLE_AVALIACAO_TURMA
 				/pesquisa/questionario/*/**= ROLE_MOV_QUESTIONARIO
 				
 				/pesquisa/resposta/*/**= ROLE_MOV_QUESTIONARIO
 				
-				/pesquisa/aspecto/*/**=ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_CAD_AVALIACAO,ROLE_CAD_PERIODOEXPERIENCIA,ROLE_MOV_SOLICITACAO
+				/pesquisa/aspecto/*/**=ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_CAD_AVALIACAO,ROLE_CAD_PERIODOEXPERIENCIA,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO,ROLE_AVALIACAO_TURMA
 				
 				/pesquisa/colaboradorQuestionario/*/**= ROLE_MOV_QUESTIONARIO
 				
@@ -515,7 +520,7 @@
 				/avaliacao/avaliacaoExperiencia/*AvaliacaoExperiencia.action*=ROLE_MOV_PERIODOEXPERIENCIA
 				
 				/avaliacao/avaliacaoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
-				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO
+				/avaliacao/perguntaAvaliacao/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO, ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
 				
 				/avaliacao/desempenho/prepareResponderAvaliacaoDesempenho*=ROLE_USER
 				/avaliacao/desempenho/responderAvaliacaoDesempenho*=ROLE_USER
