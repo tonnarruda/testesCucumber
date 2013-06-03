@@ -29,6 +29,6 @@ rhoficial_informatica:
   app_name: fortesrh
   db_name: fortesrh
   backup_folder: /home/fortes/RH/backup_db
-  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_106_114/fortesrh.war
+  repository_app: //10.1.254.1/public/Outros/PRONTO/FortesRH/Instalador/1_1_108_116/fortesrh.war
   environment:
     JRE_HOME: /usr	
