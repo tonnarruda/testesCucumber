@@ -2,6 +2,7 @@ package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Expression;
@@ -80,7 +81,9 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 	{
 		Criteria criteria = getSession().createCriteria(AvaliacaoCurso.class, "a");
 		
-		criteria.add(Restrictions.sqlRestriction("normalizar(this_.titulo) ilike  normalizar(?)", "%" + titulo + "%", Hibernate.STRING));
+		if (!StringUtils.isEmpty(titulo))
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.titulo) ilike  normalizar(?)", "%" + titulo + "%", Hibernate.STRING));
+		
 		criteria.addOrder(Order.asc("a.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		

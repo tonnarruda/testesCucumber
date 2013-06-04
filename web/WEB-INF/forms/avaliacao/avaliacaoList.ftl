@@ -13,6 +13,8 @@
 
 	<#if modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
 		<title>Modelos de Avaliação de Solicitação</title>
+	<#elseif modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getAvaliacaoAluno()>
+		<title>Modelos de Avaliação de Aluno</title>
 	<#else>
 		<title>Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência</title>
 	</#if>

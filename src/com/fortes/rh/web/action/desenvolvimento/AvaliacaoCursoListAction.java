@@ -17,7 +17,7 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 
 	private Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
 	private AvaliacaoCurso avaliacaoCurso;
-	private Map tipos = new TipoAvaliacaoCurso();
+	private Map<Character, String> tipos = new TipoAvaliacaoCurso();
 
 	public String execute() throws Exception
 	{
@@ -26,10 +26,8 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		if(avaliacaoCurso != null )
-			avaliacaoCursos = avaliacaoCursoManager.buscaFiltro(avaliacaoCurso.getTitulo());
-		else
-			avaliacaoCursos = avaliacaoCursoManager.findAll(new String[]{"titulo"});
+		String titulo = avaliacaoCurso != null ? avaliacaoCurso.getTitulo() : null;
+		avaliacaoCursos = avaliacaoCursoManager.buscaFiltro(titulo);
 
 		return Action.SUCCESS;
 	}
@@ -37,12 +35,12 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		avaliacaoCursoManager.remove(avaliacaoCurso.getId());
-		addActionMessage("Avaliação excluída com sucesso.");
+		addActionSuccess("Avaliação excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}
 
-	public Collection getAvaliacaoCursos()
+	public Collection<AvaliacaoCurso> getAvaliacaoCursos()
 	{
 		return avaliacaoCursos;
 	}
@@ -66,7 +64,7 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 
-	public Map getTipos()
+	public Map<Character, String> getTipos()
 	{
 		return tipos;
 	}

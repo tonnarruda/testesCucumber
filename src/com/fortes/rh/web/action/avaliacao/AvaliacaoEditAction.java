@@ -128,7 +128,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		avaliacaoManager.remove(avaliacao.getId());
-		addActionMessage("Modelo de Avaliação excluído com sucesso.");
+		addActionSuccess("Modelo de avaliação excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}

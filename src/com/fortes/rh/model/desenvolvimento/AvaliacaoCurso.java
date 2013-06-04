@@ -7,10 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 
 @SuppressWarnings("serial")
@@ -24,6 +26,8 @@ public class AvaliacaoCurso extends AbstractModel implements Serializable
 	private Double minimoAprovacao;
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="avaliacaoCursos")
 	private Collection<Curso> cursos;
+	@ManyToOne
+	private Avaliacao avaliacao;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="avaliacaoCurso")
 	private Collection<AproveitamentoAvaliacaoCurso> aproveitamentoAvaliacaoCursos;
@@ -76,6 +80,14 @@ public class AvaliacaoCurso extends AbstractModel implements Serializable
 	public void setTitulo(String titulo)
 	{
 		this.titulo = titulo;
+	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 
 }

@@ -65,17 +65,17 @@
 
 			<@ww.textarea label="Observação" name="avaliacao.cabecalho"/>
 
-			<#if avaliacao.tipoModeloAvaliacao != 'S'>
+			<#if avaliacao.tipoModeloAvaliacao != 'S' && avaliacao.tipoModeloAvaliacao != 'L'>
 				<@ww.checkbox label="Exibir resultado ao colaborador após autoavaliação" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
 			</#if>
 			
-			<#if avaliacao.tipoModeloAvaliacao == 'S'>
+			<#if avaliacao.tipoModeloAvaliacao == 'S' || avaliacao.tipoModeloAvaliacao == 'L'>
 				<@ww.textfield label="Percentual mínimo para aprovação" name="avaliacao.percentualAprovacao" id="percentualAprovacao" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress="return somenteNumeros(event,',');"/>
 			</#if>
 			
 			<@ww.select label="Ativa" name="avaliacao.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}"/>
 
-			<#if avaliacao.tipoModeloAvaliacao != 'S'>
+			<#if avaliacao.tipoModeloAvaliacao != 'S' && avaliacao.tipoModeloAvaliacao != 'L'>
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
 				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="diasComDescricao" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 				<@ww.checkbox label="Avaliar competências exigidas pelo cargo" id="avaliarCompetenciasCargo" name="avaliacao.avaliarCompetenciasCargo" labelPosition="left"/>

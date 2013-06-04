@@ -3,6 +3,7 @@ package com.fortes.rh.test.web.action.desenvolvimento;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
@@ -12,6 +13,7 @@ public class AvaliacaoCursoEditActionTest extends MockObjectTestCase
 {
 	private AvaliacaoCursoEditAction action;
 	private Mock avaliacaoCursoManager;
+	private Mock avaliacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -19,11 +21,14 @@ public class AvaliacaoCursoEditActionTest extends MockObjectTestCase
         action = new AvaliacaoCursoEditAction();
         avaliacaoCursoManager = new Mock(AvaliacaoCursoManager.class);
         action.setAvaliacaoCursoManager((AvaliacaoCursoManager) avaliacaoCursoManager.proxy());
+        avaliacaoManager = new Mock(AvaliacaoManager.class);
+        action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
     }
 
     protected void tearDown() throws Exception
     {
         avaliacaoCursoManager = null;
+        avaliacaoManager = null;
         action = null;
         super.tearDown();
     }
@@ -39,11 +44,14 @@ public class AvaliacaoCursoEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoCurso(avaliacaoCurso);
     	
     	avaliacaoCursoManager.expects(once()).method("findById").with(eq(avaliacaoCurso.getId())).will(returnValue(avaliacaoCurso));
+    	avaliacaoManager.expects(once()).method("findToList").withAnyArguments();
     	assertEquals("success", action.prepareUpdate());
     }
     
     public void testPrepareInsert() throws Exception
     {
+    	avaliacaoManager.expects(once()).method("findToList").withAnyArguments();
+    	
     	assertEquals("success", action.prepareInsert());
     }
     

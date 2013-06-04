@@ -48,7 +48,7 @@ public class AspectoListAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			msgErr = "Não foi possível excluir o Aspecto, pois existem perguntas relacionadas a ele.";
+			msgErr = "Não foi possível excluir o aspecto, pois existem perguntas relacionadas a ele.";
 		}
 	}
 	
@@ -69,9 +69,9 @@ public class AspectoListAction extends MyActionSupportList
 		aspectos = aspectoManager.findByQuestionario(questionario.getId());
 
 		if(!msg.equals(""))
-			addActionMessage(msg);
+			addActionSuccess(msg);
 		if(!msgErr.equals(""))
-			addActionError(msgErr);
+			addActionWarning(msgErr);
 
 		questionario = questionarioManager.findByIdProjection(questionario.getId());
 		//monta a url do botão voltar pelo questionario
@@ -86,9 +86,9 @@ public class AspectoListAction extends MyActionSupportList
 		aspectos = aspectoManager.findByQuestionario(avaliacao.getId());
 		
 		if(!msg.equals(""))
-			addActionMessage(msg);
+			addActionSuccess(msg);
 		if(!msgErr.equals(""))
-			addActionError(msgErr);
+			addActionWarning(msgErr);
 		
 		return Action.SUCCESS;
 	}

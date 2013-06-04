@@ -40,11 +40,6 @@ public class AvaliacaoCursoListActionTest extends MockObjectTestCase
     {
     	Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
 
-    	avaliacaoCursoManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(avaliacaoCursos));
-    	assertEquals("success", action.list());
-    	assertEquals(avaliacaoCursos, action.getAvaliacaoCursos());
-    	
-    	//teste com avaliacaoCurso
     	AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1L);
     	avaliacaoCurso.setTitulo("teste");
     	action.setAvaliacaoCurso(avaliacaoCurso);

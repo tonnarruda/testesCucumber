@@ -10,9 +10,8 @@ public class TipoAvaliacaoCursoTest extends TestCase
 
 	public void testMap()
 	{
-		TipoAvaliacaoCurso apto = new TipoAvaliacaoCurso();
-	
-		assertEquals(2, apto.size());
+		TipoAvaliacaoCurso tipo = new TipoAvaliacaoCurso();
+		assertEquals(3, tipo.size());
 	}
 
 	public void testGetDescSexoParaFicha()
@@ -20,5 +19,6 @@ public class TipoAvaliacaoCursoTest extends TestCase
 		assertEquals("", TipoAvaliacaoCurso.getDescricao(TIPO_INVALIDO));
 		assertEquals("Nota", TipoAvaliacaoCurso.getDescricao(TipoAvaliacaoCurso.NOTA));
 		assertEquals("Porcentagem (%)", TipoAvaliacaoCurso.getDescricao(TipoAvaliacaoCurso.PORCENTAGEM));
+		assertEquals("Avaliação", TipoAvaliacaoCurso.getDescricao(TipoAvaliacaoCurso.AVALIACAO));
 	}
 }

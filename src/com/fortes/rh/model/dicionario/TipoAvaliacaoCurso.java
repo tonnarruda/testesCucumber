@@ -2,31 +2,27 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class TipoAvaliacaoCurso extends LinkedHashMap 
+@SuppressWarnings("serial")
+public class TipoAvaliacaoCurso extends LinkedHashMap<Character, String> 
 {
 	public static final char NOTA = 'n';
 	public static final char PORCENTAGEM = 'p';
+	public static final char AVALIACAO = 'a';
 	
-	@SuppressWarnings("unchecked")
 	public TipoAvaliacaoCurso() 
 	{
 		put(NOTA, "Nota");
 		put(PORCENTAGEM, "Porcentagem (%)");
+		put(AVALIACAO, "Avaliação");
 	}
 	
 	public static String getDescricao(char tipo)
 	{
-		String retorno = "";
-		switch (tipo)
-		{
-			case NOTA:
-				retorno = "Nota";
-				break;
-			case PORCENTAGEM:
-				retorno = "Porcentagem (%)";
-				break;
-		}
-
-		return retorno;
+		TipoAvaliacaoCurso tipoAvaliacaoCurso = new TipoAvaliacaoCurso();
+		
+		if (!tipoAvaliacaoCurso.containsKey(tipo))
+			return "";
+		
+		return tipoAvaliacaoCurso.get(tipo);
 	}
 }

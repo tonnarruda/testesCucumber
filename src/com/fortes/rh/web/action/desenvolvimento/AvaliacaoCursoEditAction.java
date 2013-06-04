@@ -1,8 +1,11 @@
 package com.fortes.rh.web.action.desenvolvimento;
 
+import java.util.Collection;
 import java.util.Map;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -13,8 +16,11 @@ import com.opensymphony.xwork.ModelDriven;
 public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDriven
 {
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private AvaliacaoManager avaliacaoManager;
+	
 	private AvaliacaoCurso avaliacaoCurso;
-	private Map tipos = new TipoAvaliacaoCurso();
+	private Map<Character, String> tipos = new TipoAvaliacaoCurso();
+	private Collection<Avaliacao> avaliacoes;
 
 	public String execute() throws Exception
 	{
@@ -25,6 +31,8 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 	{
 		if (avaliacaoCurso != null && avaliacaoCurso.getId() != null)
 			avaliacaoCurso = (AvaliacaoCurso) avaliacaoCursoManager.findById(avaliacaoCurso.getId());
+		
+		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao" }, new String[] { "L" });
 	}
 
 	public String prepareInsert() throws Exception
@@ -41,12 +49,18 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 
 	public String insert() throws Exception
 	{
+		if (avaliacaoCurso.getAvaliacao() != null && avaliacaoCurso.getAvaliacao().getId() == null)
+			avaliacaoCurso.setAvaliacao(null);
+			
 		avaliacaoCursoManager.save(avaliacaoCurso);
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
+		if (avaliacaoCurso.getAvaliacao() != null && avaliacaoCurso.getAvaliacao().getId() == null)
+			avaliacaoCurso.setAvaliacao(null);
+		
 		avaliacaoCursoManager.update(avaliacaoCurso);
 		return Action.SUCCESS;
 	}
@@ -73,8 +87,20 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 
-	public Map getTipos()
+	public Map<Character, String> getTipos()
 	{
 		return tipos;
+	}
+
+	public Collection<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(Collection<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
 	}
 }
