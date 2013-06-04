@@ -19658,9 +19658,6 @@ insert into migrations values('20130423102211');--.go
 update parametrosdosistema set appversao = '1.1.106.113';--.go
 -- versao 1.1.106.114
 
-update parametrosdosistema set appversao = '1.1.106.114';--.go
--- versao 1.1.106.114
-
 update papel set ordem = ordem + 1 where papelmae_id = 377;--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (572, 'ROLE_REL_RECIBO_PAGAMENTO', 'Recibo de pagamento', '/geral/colaborador/prepareReciboPagamento.action', 1, true, 377);--.go
