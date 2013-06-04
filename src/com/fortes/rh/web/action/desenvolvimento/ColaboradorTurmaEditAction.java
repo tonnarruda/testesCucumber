@@ -189,7 +189,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private void populaEmpresas() 
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_MOV_TURMA");
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), new String[]{"ROLE_MOV_TURMA","ROLE_MOV_PLANO_TREINAMENTO"});
 	}
 
 	public String listFiltro() throws Exception
