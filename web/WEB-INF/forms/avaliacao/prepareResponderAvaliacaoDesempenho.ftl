@@ -32,10 +32,15 @@
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#ECECEC');
+						var nivelColaborador = linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]');
+						
+						nivelColaborador.attr('checked','checked');
+						nivelColaborador.parent().css('background-color','#ECECEC');
+						
 						<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}')
+							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
 								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#7CC0B9');
+							}
 						</#list>
 					</#list>
 				</#if>
@@ -67,6 +72,7 @@
 	<#else>
 		<#assign data="" />
 	</#if>
+	
 </head>
 <body>
 	<@ww.actionerror />
