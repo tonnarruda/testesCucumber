@@ -3,6 +3,10 @@ package com.fortes.rh.business.avaliacao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
@@ -62,6 +66,26 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	public void enviaLembrete() 
 	{
 		gerenciadorComunicacaoManager.enviaMensagemLembretePeriodoExperiencia();
+	}
+	
+	public String montaObsAvaliadores(Collection<ColaboradorResposta> colaboradorRespostas)
+	{
+		String obs = "";//importante para decisão do relatório
+		Map<Long, String> obsAvaliadoresMap = new HashMap<Long, String>();
+		
+		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+		{
+			if(colaboradorResposta.getColaboradorQuestionario() != null && StringUtils.isNotBlank(colaboradorResposta.getColaboradorQuestionario().getObservacao()))
+			{
+				if(!obsAvaliadoresMap.containsKey(colaboradorResposta.getColaboradorQuestionario().getId()))
+				{
+					obsAvaliadoresMap.put(colaboradorResposta.getColaboradorQuestionario().getId(), colaboradorResposta.getColaboradorQuestionario().getObservacao());
+					obs += colaboradorResposta.getColaboradorQuestionario().getColaborador().getNome() + ": " + colaboradorResposta.getColaboradorQuestionario().getObservacao() + "\n\n";
+				}
+			}
+		}
+		
+		return obs;
 	}
 	
 	public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao, Long empresaId) throws Exception

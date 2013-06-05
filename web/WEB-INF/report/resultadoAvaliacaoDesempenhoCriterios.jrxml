@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultadoAvaliacaoDesempenhoCriterios" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="dac6e5bb-4210-4a23-93f7-1d926e839a4d">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="11"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -19,6 +19,7 @@
 	<parameter name="QUESTIONARIO_CABECALHO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="EXIBIR_CABECALHO" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="TOTAL_COLAB_RESP" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="EXIBIR_OBS_AVALIADOS" class="java.lang.Boolean"/>
 	<field name="pergunta.id" class="java.lang.Long"/>
 	<field name="pergunta.texto" class="java.lang.String"/>
 	<field name="pergunta.ordem" class="java.lang.Integer"/>
@@ -37,6 +38,7 @@
 	<field name="performance" class="java.lang.Double"/>
 	<field name="pergunta.aspecto.pontuacaoObtida" class="java.lang.Integer"/>
 	<field name="pergunta.aspecto.pontuacaoMaxima" class="java.lang.Integer"/>
+	<field name="obsAvaliadores" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="None" calculation="Count">
 		<variableExpression><![CDATA[$F{pergunta.id}]]></variableExpression>
 	</variable>
@@ -84,7 +86,39 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band splitType="Stretch"/>
+			<band height="25" splitType="Stretch">
+				<printWhenExpression><![CDATA[$P{EXIBIR_OBS_AVALIADOS}.booleanValue()]]></printWhenExpression>
+				<staticText>
+					<reportElement uuid="939ba05e-3a02-47c0-993f-35f2939fac89" key="staticText-1" mode="Opaque" x="0" y="0" width="535" height="13" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$P{EXIBIR_OBS_AVALIADOS}.booleanValue()]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="5">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observações dos Avaliadores:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="95c69208-1ece-4734-a0f2-a822e3f459ee" key="textField" x="16" y="13" width="517" height="12">
+						<printWhenExpression><![CDATA[$P{EXIBIR_OBS_AVALIADOS}.booleanValue()]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{obsAvaliadores}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupFooter>
 	</group>
 	<group name="grpAspecto" isReprintHeaderOnEachPage="true">

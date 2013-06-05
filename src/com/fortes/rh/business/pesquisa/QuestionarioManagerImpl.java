@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
@@ -320,6 +321,8 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		
 		String avaliadoNome = colaboradorManager.getNome(avaliadoId);
 		Double mediaPeformance = colaboradorQuestionarioManager.getMediaPeformance(avaliadoId, avaliacaoDesempenho.getId(), desconsiderarAutoAvaliacao);
+		AvaliacaoManager avaliacaoManager = (AvaliacaoManager) SpringUtil.getBean("avaliacaoManager");
+		String obsAvaliadores = avaliacaoManager.montaObsAvaliadores(colaboradorRespostas);
 				
 		for (Pergunta pergunta: perguntas)
 		{
@@ -346,6 +349,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 			//configura os comentarios para as respostas do loop anterior
 			if(!resultadoQuestionario.getPergunta().getTipo().equals(TipoPergunta.SUBJETIVA))
 				resultadoQuestionario.montaComentarioDistinct();
+			resultadoQuestionario.setObsAvaliadores(obsAvaliadores);
 		}
 		
 		return resultadoQuestionarios;

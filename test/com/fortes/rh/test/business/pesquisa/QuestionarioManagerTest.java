@@ -12,6 +12,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
@@ -74,6 +75,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 	private Mock colaboradorRespostaManager;
 	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
+	private Mock avaliacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -84,6 +86,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
         pesquisaManager = new Mock(PesquisaManager.class);
         entrevistaManager = new Mock(EntrevistaManager.class);
         fichaMedicaManager = new Mock(FichaMedicaManager.class);
+        avaliacaoManager = new Mock(AvaliacaoManager.class);
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         perguntaManager = new Mock(PerguntaManager.class);
         respostaManager = new Mock(RespostaManager.class);
@@ -105,6 +108,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		colaboradorRespostaManager = new Mock(ColaboradorRespostaManager.class);
 		MockSpringUtil.mocks.put("colaboradorRespostaManager", colaboradorRespostaManager);
 		MockSpringUtil.mocks.put("fichaMedicaManager", fichaMedicaManager);
+		MockSpringUtil.mocks.put("avaliacaoManager", avaliacaoManager);
 
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 
@@ -557,6 +561,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		
 		colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Double(2)));
 		colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
+		avaliacaoManager.expects(once()).method("montaObsAvaliadores").will(returnValue("obsAvaliadores"));
 		perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
 		
 		Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);
@@ -626,6 +631,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	
     	colaboradorQuestionarioManager.expects(once()).method("getMediaPeformance").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Double(2)));
     	colaboradorManager.expects(once()).method("getNome").with(eq(1L)).will(returnValue("José"));
+    	avaliacaoManager.expects(once()).method("montaObsAvaliadores").will(returnValue("obsAvaliadores"));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, eq("José"));
     	
     	Collection<ResultadoAvaliacaoDesempenho> resultados = questionarioManager.montaResultadosAvaliacaoDesempenho(perguntas, null, respostas, avaliadoId, colaboradorRespostas, percentuaisDeRespostas, avaliacaoDesempenho, 1, desconsiderarAutoAvaliacao);

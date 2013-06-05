@@ -7,7 +7,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.web.action.captacao.MotivoSolicitacaoListAction;
 
@@ -15,13 +18,18 @@ public class MotivoSolicitacaoListActionTest extends MockObjectTestCase
 {
 	private MotivoSolicitacaoListAction action;
 	private Mock manager;
+	private Mock empresaManager;
 
     protected void setUp() throws Exception
     {
         super.setUp();
         action = new MotivoSolicitacaoListAction();
+
         manager = new Mock(MotivoSolicitacaoManager.class);
         action.setMotivoSolicitacaoManager((MotivoSolicitacaoManager) manager.proxy());
+        
+        empresaManager = new Mock(EmpresaManager.class);
+        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
     }
 
     protected void tearDown() throws Exception
@@ -47,8 +55,13 @@ public class MotivoSolicitacaoListActionTest extends MockObjectTestCase
     	Collection<MotivoSolicitacao> motivoSolicitacaos = new ArrayList<MotivoSolicitacao>();
     	motivoSolicitacaos.add(ms1);
     	motivoSolicitacaos.add(ms2);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setTurnoverPorSolicitacao(true);
+    	action.setEmpresaSistema(empresa);
 
     	manager.expects(once()).method("findAll").will(returnValue(motivoSolicitacaos));
+    	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
 
     	assertEquals(action.list(), "success");
     	manager.verify();

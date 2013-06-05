@@ -8,6 +8,7 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 	
 	private Long avaliadoId;
 	private String avaliadoNome;
+	private String obsAvaliadores;
 	private Double performance;
 	
 	public ResultadoAvaliacaoDesempenho(Long avaliadoId, String avaliadoNome, Double performance)
@@ -31,5 +32,13 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 
 	public void setPerformance(Double performance) {
 		this.performance = performance;
+	}
+
+	public String getObsAvaliadores() {
+		return obsAvaliadores;
+	}
+
+	public void setObsAvaliadores(String obsAvaliadores) {
+		this.obsAvaliadores = obsAvaliadores;
 	}
 }

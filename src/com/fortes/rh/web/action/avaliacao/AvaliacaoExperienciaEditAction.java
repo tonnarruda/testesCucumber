@@ -10,11 +10,13 @@ import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
@@ -34,6 +36,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
 	
 	private Avaliacao avaliacaoExperiencia;
 	
@@ -64,6 +67,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private boolean exibirRespostas;
 	private boolean exibirComentarios;
 	private boolean exibirCabecalho;
+	private boolean exibirObsAvaliadores;
 	private boolean agruparPorAspectos;
 	private Collection<ResultadoQuestionario> resultados;
 	private boolean compartilharColaboradores;
@@ -112,9 +116,14 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	CollectionUtil<Pergunta> clu = new CollectionUtil<Pergunta>();
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
-	
+	    	
     		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId());
     		parametros.put("TOTAL_COLAB_RESP", avaliacaoExperiencia.getTotalColab());
+    		
+    		String obsAval = "";
+    		if(exibirObsAvaliadores)
+    			obsAval = avaliacaoManager.montaObsAvaliadores(colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresa.getId()));
+    		parametros.put("OBS_AVALIADOS", obsAval);
 		}
 		catch (Exception e)
 		{
@@ -299,5 +308,14 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
 	public Collection<Avaliacao> getAvaliacaoExperienciasInativas() {
 		return avaliacaoExperienciasInativas;
+	}
+
+	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
+		this.exibirObsAvaliadores = exibirObsAvaliadores;
+	}
+
+	public void setColaboradorRespostaManager(
+			ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
 	}
 }

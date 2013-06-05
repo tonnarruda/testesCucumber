@@ -90,6 +90,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean exibirComentarios;
 	private boolean agruparPorAspectos;
 	private boolean desconsiderarAutoAvaliacao;
+	private boolean exibirObsAvaliadores;
 	private Long[] participanteIds;
 	
 	
@@ -247,6 +248,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", exibirRespostas);
 	    	parametros.put("EXIBIR_COMENTARIOS", exibirComentarios);
 			parametros.put("QUESTIONARIO_CABECALHO", avaliacaoDesempenho.getAvaliacao().getCabecalho());
+    		parametros.put("EXIBIR_OBS_AVALIADOS", exibirObsAvaliadores);
 		
 		} catch (ColecaoVaziaException e) 
 		{
@@ -751,5 +753,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
+		this.exibirObsAvaliadores = exibirObsAvaliadores;
 	}
 }

@@ -17,12 +17,16 @@ import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
@@ -165,6 +169,44 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		}
 		
 		assertEquals("Nenhuma pergunta foi respondida.", exception.getMessage());
+	}
+
+	public void testMontaObsAvaliadores() 
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Rubinha");
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setNome("Escocia");
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setId(1L);
+		colaboradorQuestionario.setObservacao("obs avaliado1");
+		colaboradorQuestionario.setColaborador(colaborador);
+
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setId(2L);
+		colaboradorQuestionario2.setObservacao("obs avaliado1");
+		colaboradorQuestionario2.setColaborador(colaborador2);
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+
+		ColaboradorResposta colaboradorResposta2 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+
+		ColaboradorResposta colaboradorResposta3 = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta3.setColaboradorQuestionario(colaboradorQuestionario2);
+		
+		ColaboradorResposta colaboradorResposta4 = ColaboradorRespostaFactory.getEntity();
+		
+		Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+		colaboradorRespostas.add(colaboradorResposta);
+		colaboradorRespostas.add(colaboradorResposta2);
+		colaboradorRespostas.add(colaboradorResposta3);
+		colaboradorRespostas.add(colaboradorResposta4);
+		
+		assertEquals("Rubinha: obs avaliado1\n\nEscocia: obs avaliado1\n\n", avaliacaoManager.montaObsAvaliadores(colaboradorRespostas));
 	}
 	
 }

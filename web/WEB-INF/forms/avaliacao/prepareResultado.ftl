@@ -127,6 +127,7 @@
 		<@ww.select label="Resultado" required="true" name="opcaoResultado" id="opcaoResultado" list=r"#{'avaliador':'Resultado por Avaliador', 'criterio':'Resultado por Perguntas'}" onchange="filtrarOpt(this.value);"/>
 		
 		<div id="opcoesDoRelatorio">
+			<@ww.checkbox label="Exibir observações dos avaliadores" id="exibirObsAvaliadores" name="exibirObsAvaliadores" labelPosition="left"/>
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>
 			<@ww.checkbox label="Exibir comentários" id="exibirComentarios" name="exibirComentarios" labelPosition="left"/>
 			<@ww.checkbox label="Agrupar perguntas por aspecto" id="agruparPorAspectos" name="agruparPorAspectos" labelPosition="left"/>

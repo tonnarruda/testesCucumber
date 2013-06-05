@@ -323,6 +323,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cr.id"), "id");
 		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
+		p.add(Projections.property("cq.observacao"), "projectionColaboradorQuestionarioObservacao");
 		p.add(Projections.property("cr.comentario"), "comentario");
 		p.add(Projections.property("cr.valor"), "valor");
 		p.add(Projections.property("r.id"), "projectionRespostaId");
@@ -530,6 +531,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cr.id"), "id");
 		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
+		p.add(Projections.property("cq.observacao"), "projectionColaboradorQuestionarioObservacao");
 		p.add(Projections.property("cr.comentario"), "comentario");
 		p.add(Projections.property("cr.valor"), "valor");
 		p.add(Projections.property("cr.resposta"), "resposta");
@@ -537,6 +539,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		p.add(Projections.property("r.ordem"), "projectionRespostaOrdem");
 		p.add(Projections.property("cr.pergunta"), "pergunta");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
+		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("c.id"), "projectionColaboradorId");
 		p.add(Projections.property("av.id"), "projectionAvaliadorId");
 		p.add(Projections.property("av.nomeComercial"), "projectionAvaliadorNomeComercial");
