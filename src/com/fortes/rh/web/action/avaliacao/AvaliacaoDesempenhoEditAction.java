@@ -21,7 +21,6 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -32,7 +31,6 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
-import com.fortes.rh.web.action.cargosalario.CargoListAction;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.Action;
@@ -322,10 +320,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			else
 				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), getEmpresaSistema().getId());
 				
-			addActionMessage("Avaliação de Desempenho clonada com sucesso.");
+			addActionMessage("Avaliação de desempenho clonada com sucesso.");
 		} 
 		catch (Exception e) {
-			addActionError("Não foi possível clonar a Avaliação de Desempenho.");
+			addActionError("Não foi possível clonar a avaliação de desempenho.");
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
@@ -349,12 +347,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try
 		{
 			avaliacaoDesempenhoManager.remove(avaliacaoDesempenho.getId());
-			addActionMessage("Avaliação de Desempenho excluída com sucesso.");
+			addActionMessage("Avaliação de desempenho excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir esta Avaliação de Desempenho.");
+			addActionError("Não foi possível excluir esta avaliação de desempenho.");
 		}
 
 		return SUCCESS;
@@ -370,7 +368,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir as respostas da Avaliação de Desempenho.");
+			addActionError("Não foi possível excluir as respostas da avaliação de desempenho.");
 		}
 
 		avaliacaoDesempenhoQuestionarioList();
@@ -386,7 +384,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível as Avaliações.");
+			addActionError("Não foi possível as avaliações.");
 			e.printStackTrace();
 		}
 		
@@ -398,7 +396,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho);
-			addActionSuccess("Avaliação <strong>liberada</strong> com sucesso.");
+			addActionSuccess("Avaliação liberada com sucesso.");
 		}
 		catch (FortesException e)
 		{
@@ -406,7 +404,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível liberar esta Avaliação.");
+			addActionError("Não foi possível liberar esta avaliação.");
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -417,11 +415,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.bloquear(avaliacaoDesempenho);
-			addActionSuccess("Avaliação <strong>bloqueada</strong> com sucesso.");
+			addActionSuccess("Avaliação bloqueada com sucesso.");
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível bloquear esta Avaliação.");
+			addActionError("Não foi possível bloquear esta avaliação.");
 			e.printStackTrace();
 		}
 		

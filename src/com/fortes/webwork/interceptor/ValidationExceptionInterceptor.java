@@ -88,8 +88,8 @@ public class ValidationExceptionInterceptor implements Interceptor
 		catch (ConstraintViolationException e)
 		{
 			if (actionSuport != null) {
-				actionSuport.addActionWarning("Violação de integridade no Banco de Dados.");
-				logger.error("Violação de integridade no Banco de Dados.");
+				actionSuport.addActionWarning("Violação de integridade no banco de dados.");
+				logger.error("Violação de integridade no banco de dados.");
 			}
 			this.logaErros(e);
 			return Action.ERROR;			
