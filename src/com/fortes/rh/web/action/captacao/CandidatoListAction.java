@@ -235,9 +235,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		populaEmpresas();
+		
+		if(empresaId == null)
+			empresaId = getEmpresaSistema().getId();
+		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
-		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, getEmpresaSistema().getId(), indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
-		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, getEmpresaSistema().getId(), indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
+		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
+		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
 
 		if(candidatos == null || candidatos.isEmpty())
 			addActionMessage("Não existem candidatos a serem listados");

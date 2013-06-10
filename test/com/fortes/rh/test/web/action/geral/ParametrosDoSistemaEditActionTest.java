@@ -65,7 +65,7 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
     	perfilManager.expects(once()).method("findAll").withNoArguments().will(returnValue(new ArrayList<Perfil>()));
 
     	assertEquals("success", action.update());
-    	assertEquals("Configurações do Sistema atualizadas com sucesso!", action.getActionMessages().toArray()[0]);
+    	assertEquals("Configurações do sistema atualizadas com sucesso.", action.getActionSuccess().toArray()[0]);
     }
     
     public void testGetsSets() throws Exception

@@ -105,7 +105,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		
 		perfils = perfilManager.findAll();
-		addActionMessage("Configurações do Sistema atualizadas com sucesso!");
+		addActionSuccess("Configurações do sistema atualizadas com sucesso.");
 
 		return Action.SUCCESS;
 	}

@@ -102,11 +102,13 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
     public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
 	{
     	Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+        criteria.createCriteria("c.empresa", "e");
         
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("c.id"), "id");
         p.add(Projections.property("c.nome"), "nome");
         p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
+        p.add(Projections.property("e.nome"),"empresaNome");
         
         criteria.setProjection(p);
 		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
@@ -239,8 +241,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	{
 		sql.append("from Candidato can ");
 		sql.append("left join Empresa emp on can.empresa_id = emp.id ");
-		sql.append("where can.empresa_id = :empresaId ");
+		sql.append("where true = true ");
 				
+		if(empresaId != null && empresaId > 0)
+			sql.append("and can.empresa_id = :empresaId ");
+		
 		if (exibeExterno)
 			sql.append("and can.origem = :origem ");
 				
@@ -296,7 +301,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(StringUtils.isNotBlank(observacaoRH))
 			query.setString("observacaoRH", "%" + observacaoRH.toUpperCase() + "%");
 		
-		query.setLong("empresaId", empresaId);
+		if(empresaId != null && empresaId > 0)
+			query.setLong("empresaId", empresaId);
 		
 		if (pagingSize != 0)
 		{
