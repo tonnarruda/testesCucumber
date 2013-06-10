@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.109.118" data="10/06/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Nova opção de exibir observações dos avaliadores no relatório.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.109.117" data="03/06/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação: Novos filtros por empresa, area organizacional e cargo.
@@ -24,7 +29,7 @@
 		<Modulo nome=" "><![CDATA[
 			:: Relatórios em XLS: Novo agrupador de linhas ao gerar relatório.
 			:: C&S > Relatórios > Analise da tabela salarial: Novo filtro na listagem de cargo pela situação (Todos, Ativos e Inativos).
-			:: C&S > Relatórios >  Colaboradores por Cargo: Nova opção para considerar cargos vinculados as áreas organizacionais selecionadas.
+			:: C&S > Relatórios > Colaboradores por Cargo: Nova opção para considerar cargos vinculados as áreas organizacionais selecionadas.
 			:: Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Novo relatório por xls.
 			:: Info. funcionais > Relatórios > Recibo de pagamento: Novo relatório.
 			:: Info. funcionais > Relatórios > Aniversariantes do mês: Novo relatório por xls.

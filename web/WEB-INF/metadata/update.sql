@@ -19695,3 +19695,6 @@ insert into migrations values('20130528161528');--.go
 update faixasalarialhistorico set status = 1 where status = 0;--.go
 insert into migrations values('20130528170035');--.go
 update parametrosdosistema set appversao = '1.1.109.117';--.go
+-- versao 1.1.109.118
+
+update parametrosdosistema set appversao = '1.1.109.118';--.go
