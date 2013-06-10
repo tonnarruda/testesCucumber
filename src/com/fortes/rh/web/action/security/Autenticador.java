@@ -7,6 +7,7 @@ import remprot.RPWebClient;
 import remprot.RPWebPacket;
 
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionSupport;

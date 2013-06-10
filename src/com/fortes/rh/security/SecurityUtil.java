@@ -36,9 +36,9 @@ public class SecurityUtil
 	public static Usuario getUsuarioLoged(Map session)
 	{
 		SecurityContext sc = getSecurityContext(session);
-		if(sc == null)
+		if(sc == null || !(sc.getAuthentication().getPrincipal() instanceof UserDetailsImpl))
 			return null;
-
+		
 		Long id = ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getId();
 
 		return ((UsuarioManager) SpringUtil.getBean("usuarioManager")).findById(id);

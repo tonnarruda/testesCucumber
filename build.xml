@@ -249,7 +249,7 @@
 	</target>
 
 	<target name="drop-temp-db">
-		<echo message="Reconfiurando banco original" />
+		<echo message="Reconfigurando banco original" />
 		<sql driver="org.postgresql.Driver"
 			url="jdbc:postgresql://localhost:5432/template1"
 			userid="postgres"

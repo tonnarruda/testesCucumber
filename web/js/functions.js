@@ -1277,3 +1277,14 @@ function marcarAbas(seletor) {
 function desmarcarAbas() {
 	$("div[id^='aba'] a").css('color','inherit');
 }
+
+function removerAcento(texto){
+	texto = texto.replace(new RegExp('[ÁÀÂÃ]','gi'), 'A');
+	texto = texto.replace(new RegExp('[ÉÈÊ]','gi'), 'E');
+	texto = texto.replace(new RegExp('[ÍÌÎ]','gi'), 'I');
+	texto = texto.replace(new RegExp('[ÓÒÔÕ]','gi'), 'O');
+	texto = texto.replace(new RegExp('[ÚÙÛ]','gi'), 'U');
+	texto = texto.replace(new RegExp('[Ç]','gi'), 'C');
+	texto = texto.toUpperCase();
+	return texto;
+}
