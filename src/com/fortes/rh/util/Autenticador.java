@@ -94,28 +94,28 @@ public class Autenticador
 
 	public static Collection<Long> getModulosNaoConfigurados(int chave) 
 	{
-		//TODO remprot
-//		chave = 63;
-
 		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();
-		modulosNaoConfigurados.addAll(modulos);
 		
-		if((chave & RECRUT_SELECAO) == RECRUT_SELECAO)
-			modulosNaoConfigurados.remove(357L);
-		if((chave & CARGO_SALARIO) == CARGO_SALARIO)
-			modulosNaoConfigurados.remove(361L);
-		if((chave & PESQUISA) == PESQUISA)
-			modulosNaoConfigurados.remove(353L);
-		if((chave & TRE_DESENV) == TRE_DESENV)
-			modulosNaoConfigurados.remove(365L);
-		if((chave & AVAL_DESEMP) == AVAL_DESEMP)
-			modulosNaoConfigurados.remove(382L);
-		if((chave & SESMT) == SESMT)
-			modulosNaoConfigurados.remove(75L);
-		
-		// Estes módulos sempre aparecerão no menu.
-		modulosNaoConfigurados.remove(373L);
-		modulosNaoConfigurados.remove(37L);
+		if(verificaLicensa) {
+			modulosNaoConfigurados.addAll(modulos);
+
+			if((chave & RECRUT_SELECAO) == RECRUT_SELECAO)
+				modulosNaoConfigurados.remove(357L);
+			if((chave & CARGO_SALARIO) == CARGO_SALARIO)
+				modulosNaoConfigurados.remove(361L);
+			if((chave & PESQUISA) == PESQUISA)
+				modulosNaoConfigurados.remove(353L);
+			if((chave & TRE_DESENV) == TRE_DESENV)
+				modulosNaoConfigurados.remove(365L);
+			if((chave & AVAL_DESEMP) == AVAL_DESEMP)
+				modulosNaoConfigurados.remove(382L);
+			if((chave & SESMT) == SESMT)
+				modulosNaoConfigurados.remove(75L);
+			
+			// Estes módulos sempre aparecerão no menu.
+			modulosNaoConfigurados.remove(373L);
+			modulosNaoConfigurados.remove(37L);
+		}
 		
 		return modulosNaoConfigurados;
 	}
