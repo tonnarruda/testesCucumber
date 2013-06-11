@@ -59,6 +59,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean atualizadoSucesso;
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
+    private Boolean compartilharCursos;
 
     private Integer sessionTimeout;
     
@@ -317,6 +318,12 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setCaminhoBackup(String caminhoBackup)
 	{
 		this.caminhoBackup = caminhoBackup;
+	}
+	public Boolean getCompartilharCursos() {
+		return compartilharCursos;
+	}
+	public void setCompartilharCursos(Boolean compartilharCursos) {
+		this.compartilharCursos = compartilharCursos;
 	}
 	
 }
