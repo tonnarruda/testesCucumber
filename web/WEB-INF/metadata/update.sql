@@ -19697,4 +19697,6 @@ insert into migrations values('20130528170035');--.go
 update parametrosdosistema set appversao = '1.1.109.117';--.go
 -- versao 1.1.109.118
 
+update parametrosdosistema set proximaVersao = '28/07/2013';--.go
+insert into migrations values('20130611134745');--.go
 update parametrosdosistema set appversao = '1.1.109.118';--.go

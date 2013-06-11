@@ -1,0 +1,1 @@
+update parametrosdosistema set proximaVersao = '28/07/2013';--.go
