@@ -9,6 +9,7 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
@@ -93,6 +95,9 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean turnoverPorSolicitacao;
     
     private char controlaRiscoPor = 'A'; // A - Ambiente ; F - Função
+
+    @ManyToMany(mappedBy="empresasParticipantes")
+    private Collection<Curso> cursos;
 	
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -489,5 +494,13 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setExibirLogoEmpresaPpraLtcat(boolean exibirLogoEmpresaPpraLtcat)
 	{
 		this.exibirLogoEmpresaPpraLtcat = exibirLogoEmpresaPpraLtcat;
+	}
+
+	public Collection<Curso> getCursos() {
+		return cursos;
+	}
+
+	public void setCursos(Collection<Curso> cursos) {
+		this.cursos = cursos;
 	}
 }

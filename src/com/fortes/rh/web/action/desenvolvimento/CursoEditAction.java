@@ -6,8 +6,11 @@ import java.util.Collection;
 
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -20,13 +23,21 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private CursoManager cursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Curso curso;
-	private String[] avaliacaoCursoCheck;
-	private Collection<CheckBox> avaliacaoCursoCheckList = new ArrayList<CheckBox>();
 	private boolean codigoTRUCurso;
+	private boolean compartilharCursos;
 	private String nomeCursoBusca;
 	private int page;
+	
+	private String[] avaliacaoCursoCheck;
+	private Collection<CheckBox> avaliacaoCursoCheckList = new ArrayList<CheckBox>();
+	private Long[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	
+	private Collection<Empresa> empresas;
 
 	public String execute() throws Exception
 	{
@@ -41,6 +52,12 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		codigoTRUCurso = getEmpresaSistema().isCodigoTruCurso();
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
 		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
+		
+		empresas = empresaManager.findEmpresasPermitidas(true, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
+		empresas.remove(getEmpresaSistema());
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId","getNome");
+		
+		compartilharCursos = parametrosDoSistemaManager.findById(1L).getCompartilharCursos();
 	}
 
 	public String prepareInsert() throws Exception
@@ -53,6 +70,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		prepare();
 		avaliacaoCursoCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoCursoCheckList, curso.getAvaliacaoCursos(), "getId");
+		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, curso.getEmpresasParticipantes(), "getId");
 
 		if (!curso.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
@@ -69,6 +87,9 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoCheck));
 
+		Collection<Empresa> empresasParticipantes = new CollectionUtil<Empresa>().convertArrayLongToCollection(Empresa.class, empresasCheck);
+		
+		curso.setEmpresasParticipantes(empresasParticipantes);
 		curso.setEmpresa(getEmpresaSistema());
 		cursoManager.save(curso);
 
@@ -86,6 +107,9 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 		try
 		{
+			Collection<Empresa> empresasParticipantes = new CollectionUtil<Empresa>().convertArrayLongToCollection(Empresa.class, empresasCheck);
+			curso.setEmpresasParticipantes(empresasParticipantes);
+			
 			cursoManager.update(curso, getEmpresaSistema(), avaliacaoCursoCheck);
 		}
 		catch (Exception e)
@@ -163,5 +187,29 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public void setCodigoTRUCurso(boolean codigoTRUCurso) {
 		this.codigoTRUCurso = codigoTRUCurso;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+
+	public void setEmpresasCheck(Long[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public boolean isCompartilharCursos() {
+		return compartilharCursos;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

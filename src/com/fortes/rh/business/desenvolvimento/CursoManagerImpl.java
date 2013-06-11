@@ -144,8 +144,10 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
+		
 		if (avaliacaoCursoIds == null || avaliacaoCursoIds.length == 0)
 			avaliacaoCursoIds = null;
+		
 		try {
 			aproveitamentoAvaliacaoCursoManager.remove(curso.getId(), avaliacaoCursoIds);
 			CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
@@ -153,6 +155,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			curso.setEmpresa(empresa);
 			update(curso);
 			transactionManager.commit(status);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			transactionManager.rollback(status);

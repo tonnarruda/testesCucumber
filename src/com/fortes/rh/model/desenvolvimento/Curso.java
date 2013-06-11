@@ -55,6 +55,9 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="curso")
 	private Collection<Turma> turmas;
 
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Empresa> empresasParticipantes;
+
 	public Curso()
 	{
 
@@ -256,5 +259,13 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	public void setTurmas(Collection<Turma> turmas)
 	{
 		this.turmas = turmas;
+	}
+
+	public Collection<Empresa> getEmpresasParticipantes() {
+		return empresasParticipantes;
+	}
+
+	public void setEmpresasParticipantes(Collection<Empresa> empresasParticipantes) {
+		this.empresasParticipantes = empresasParticipantes;
 	}
 }
