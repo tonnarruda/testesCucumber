@@ -230,6 +230,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -238,7 +239,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		p.add(Projections.property("c.cargaHoraria"), "cargaHoraria");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
+		
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
 

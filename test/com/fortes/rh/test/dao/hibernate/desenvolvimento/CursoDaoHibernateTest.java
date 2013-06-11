@@ -585,18 +585,42 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 
 	public void testFindByFiltro()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
 
 		Curso curso = CursoFactory.getEntity();
 		curso.setNome("Curso de direção");
-		curso.setEmpresa(empresa);
+		curso.setEmpresa(emp1);
 		cursoDao.save(curso);
 
 		Curso cursoFiltroBusca = new Curso();
 		cursoFiltroBusca.setNome("Direção");
 
-		assertEquals(1, cursoDao.findByFiltro(1, 1000, cursoFiltroBusca, empresa.getId()).size());
+		assertEquals(1, cursoDao.findByFiltro(1, 1000, cursoFiltroBusca, emp1.getId()).size());
+	}
+	
+	public void testFindByFiltroEmpresasParticipantes()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+
+		Collection<Empresa> empresasParticipantes = new ArrayList<Empresa>();
+		empresasParticipantes.add(emp2);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de direção");
+		curso.setEmpresa(emp1);
+		curso.setEmpresasParticipantes(empresasParticipantes);
+		cursoDao.save(curso);
+
+		Curso cursoFiltroBusca = new Curso();
+		cursoFiltroBusca.setNome("Direção");
+		
+		assertEquals(1, cursoDao.findByFiltro(1, 1000, cursoFiltroBusca, emp1.getId()).size());
+		assertEquals(1, cursoDao.findByFiltro(1, 1000, cursoFiltroBusca, emp2.getId()).size());
 	}
 
 	public void testGetCount()
