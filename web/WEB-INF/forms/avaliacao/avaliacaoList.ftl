@@ -71,7 +71,9 @@
 		</@display.column>
 		
 		<@display.column title="Avaliação" property="titulo" class="${classe}"/>
-		<@display.column title="Tipo de Avaliação" property="tipoModeloAvaliacaoDescricao" class="${classe}" style="width:250px"/>
+		<#if modeloAvaliacao != tipoModeloAvaliacao.getSolicitacao() && modeloAvaliacao != tipoModeloAvaliacao.getAvaliacaoAluno()>
+			<@display.column title="Tipo de Avaliação" property="tipoModeloAvaliacaoDescricao" class="${classe}" style="width:250px"/>
+		</#if>
 	</@display.table>
 	
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
