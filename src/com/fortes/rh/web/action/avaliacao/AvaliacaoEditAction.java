@@ -111,6 +111,15 @@ public class AvaliacaoEditAction extends MyActionSupportList
     	
 		return Action.SUCCESS;
 	}
+	
+	public String prepareResponder() throws Exception
+	{
+		avaliacao = avaliacaoManager.findById(avaliacao.getId());
+		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
+		urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
+		
+		return Action.SUCCESS;
+	}
 
 	public String list() throws Exception
 	{

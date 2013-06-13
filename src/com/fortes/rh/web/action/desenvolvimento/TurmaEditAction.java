@@ -479,13 +479,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		try
 		{
 			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
-			addActionMessage("Aproveitamento/Notas salvos com sucesso.");
+			addActionSuccess("Aproveitamento/Notas salvos com sucesso.");
 			prepareAproveitamento();
 			return Action.SUCCESS;
 		}
 		catch (NumberFormatException e)
 		{
-			addActionError("Erro ao salvar Aproveitamento/Notas, existem notas inválidas.");
+			addActionWarning("Aproveitamento/Notas não foram salvos pois existem notas inválidas.");
 			prepareAproveitamento();
 			return Action.INPUT;
 		}

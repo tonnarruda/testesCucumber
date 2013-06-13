@@ -57,7 +57,7 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
 	public String delete() throws Exception
 	{
 		avaliacaoTurmaManager.delete(avaliacaoTurma.getId(), getEmpresaSistema().getId());
-		setActionMsg("Modelo de Avaliação de Curso excluído com sucesso.");
+		addActionSuccess("Modelo de avaliação de curso excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -72,7 +72,7 @@ public class AvaliacaoTurmaListAction extends  MyActionSupportList
     		else
     			avaliacaoTurmaManager.clonarAvaliacaoTurma(avaliacaoTurma.getId(), getEmpresaSistema().getId());
     		
-    		addActionMessage("Modelo de Avaliação de Curso clonado com sucesso.");
+    		addActionSuccess("Modelo de avaliação de curso clonado com sucesso.");
 			list();
     		return Action.SUCCESS;
 		}

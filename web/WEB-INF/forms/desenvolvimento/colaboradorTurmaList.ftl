@@ -14,7 +14,7 @@
 		.avaliacoes ul li a { text-decoration: none; }
 	</style>
 	
-	<title>Colaboradores Inscritos no curso de ${turma.curso.nome}, Turma - ${turma.descricao}</title>
+	<title>Colaboradores Inscritos no Curso de ${turma.curso.nome}, Turma - ${turma.descricao}</title>
 	
     <#include "../ftl/mascarasImports.ftl" />
     <#include "../ftl/showFilterImports.ftl" />

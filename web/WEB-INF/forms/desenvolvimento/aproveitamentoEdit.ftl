@@ -59,8 +59,11 @@
 						</#if>
 					</#list>
 
-					<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
-
+					<#if avaliacaoCurso.tipo == 'a'>
+						<a href="../../avaliacao/modelo/prepareResponder.action?avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
+					<#else>
+						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
+					</#if>
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>
 				</@display.column>
 			</@display.table>

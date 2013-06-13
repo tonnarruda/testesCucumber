@@ -29,10 +29,13 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("a.id"), "id");
 		p.add(Projections.property("a.titulo"), "titulo");
+		p.add(Projections.property("a.tipo"), "tipo");
+		p.add(Projections.property("a.avaliacao"), "avaliacao");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("c.id", cursoId));
 		criteria.addOrder(Order.asc("a.titulo"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		

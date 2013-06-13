@@ -4,10 +4,6 @@
 <xwork>
 	<package name="avaliacao" extends="default" namespace="/avaliacao/modelo">
 	
-	<!-- Mapeamentos para o crud do MODELO de Avaliação.  
-	 	 Usados por Avaliacao de Experiencia e Avaliacao de Desempenho. 
-	 -->
-	
 		<action name="updateFilter" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="updateFilter">
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
@@ -53,6 +49,10 @@
 		
 		<action name="visualizar" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="visualizar">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioAplicar.ftl</result>
+		</action>
+		
+		<action name="prepareResponder" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="prepareResponder">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
 		</action>
 		
 		<action name="imprimir" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="imprimir">
