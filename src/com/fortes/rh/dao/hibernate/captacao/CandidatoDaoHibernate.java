@@ -202,8 +202,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			cand.setId(((BigInteger)res[0]).longValue());
 			cand.setNome((String)res[1]);
 			
-			if((BigInteger)res[2] != null)
-				cand.setIdF2RH(((BigInteger)res[2]).intValue());
+			if((Integer)res[2] != null)
+				cand.setIdF2RH(((Integer)res[2]).intValue());
 			
 			if((Boolean) res[3] != null)
 				cand.setDisponivel((Boolean) res[3]);
