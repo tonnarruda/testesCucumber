@@ -576,7 +576,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
-						Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome,
+						Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, boolean empresaAcIntegra, 
 						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String estadoCivil,
 						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
@@ -596,8 +596,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setNome(coNome);
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
-		this.setEmpresaNome(empresaNome);
 		this.setEmpresaId(empresaId);
+		this.setEmpresaNome(empresaNome);
+		this.getEmpresa().setAcIntegra(empresaAcIntegra);
 		
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
@@ -688,7 +689,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
-			Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, 
+			Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, boolean empresaAcIntegra, 
 			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String estadoCivil,
 			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
@@ -705,8 +706,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setNome(coNome);
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
-		this.setEmpresaNome(empresaNome);
 		this.setEmpresaId(empresaId);
+		this.setEmpresaNome(empresaNome);
+		this.getEmpresa().setAcIntegra(empresaAcIntegra);
 		
 		if (this.funcao == null)
 			this.funcao =  new Funcao();
@@ -2744,8 +2746,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	public String getEnviadoParaAC() {
-		return naoIntegraAc ? "Nâo" : "Sim";
+		if (empresa == null || !empresa.isAcIntegra())
+			return "-";
+		
+		return naoIntegraAc ? "Não" : "Sim";
 	}
-
-
 }

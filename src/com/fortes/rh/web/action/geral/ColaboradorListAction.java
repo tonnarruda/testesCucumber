@@ -458,7 +458,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		    drb.setOddRowBackgroundStyle(oddDetailStyle);
 		    drb.setPrintBackgroundOnOddRows(true);
             
-		    boolean integradaAc = empresaManager.checkEmpresaIntegradaAc(empresa.getId());
+		    boolean integradaAc = true;
+		    if (empresa != null && empresa.getId() != null)
+		    	integradaAc = empresaManager.checkEmpresaIntegradaAc(empresa.getId());
 		    
 		    AbstractColumn aCol;
 		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
@@ -531,7 +533,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(e.getMessage().equals("SEM_DADOS"))
 				addActionMessage("Não existem dados para o filtro informado.");
 			else
-				addActionMessage("Não foi possível gerar o relatório.");
+				addActionError("Não foi possível gerar o relatório.");
 				
 			prepareRelatorioDinamico();
  			return Action.INPUT;
