@@ -187,14 +187,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 				return "successColaboradorList";
 			}
 
+			transactionManager.commit(status);
 			if (solicitacaosCheckIds != null && solicitacaosCheckIds.length == 1 && empresa.getId().equals(getEmpresaSistema().getId()))
 				return "successSolicitacao";
 
 			verSolicitacoes();
 
 			CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
-
-			transactionManager.commit(status);
 			
 			addActionSuccess("Candidato incluído com sucesso");
 			
