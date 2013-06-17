@@ -1890,14 +1890,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countEstadoCivil(data, empresaIds, areasIds);
 	}
 
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return  getDao().countFormacaoEscolar(data, empresaIds, areasIds);
+		return  getDao().countFormacaoEscolar(data, empresaIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds)
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds)
 	{
-		return  getDao().countFaixaEtaria(data, empresaIds, areasIds);
+		return  getDao().countFaixaEtaria(data, empresaIds, areasIds, cargosIds);
 	}
 
 	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 

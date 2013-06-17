@@ -84,6 +84,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
+	private Date dataIniDeslig;
+	private Date dataFimDeslig;
 	private Date dataIniTurn;
 	private Date dataFimTurn;
 	private String dataMesAnoIni;
@@ -120,6 +122,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfProvidencia = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
+	private int qtdItensOcorrencia = 20;
 	private Integer countAdmitidos;
 	private Integer countDemitidos;
 	private Double turnover;
@@ -131,6 +134,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String json;
 	private Long[] retiraDissidioIds;
 	private int mesesSemReajuste;
+	private int abaMarcada = 1;
 
 	private boolean sugerir = true;
 	private Boolean compartilharColaboradores;
@@ -141,16 +145,20 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_INFO_PAINEL_IND");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
    		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 			
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
+		Long[] cargosIds = LongUtil.arrayStringToArrayLong(cargosCheck);
 		
 		Date hoje = new Date();
 		dataBase = (dataBase == null) ? hoje : dataBase;
 		dataFim = (dataFim == null) ? hoje : dataFim;
 		dataIni = (dataIni == null) ? DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true) : dataIni;
+		dataFimDeslig = (dataFimDeslig == null) ? hoje : dataFimDeslig;
+		dataIniDeslig = (dataIniDeslig == null) ? DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true) : dataIniDeslig;
 		dataFimTurn = (dataFimTurn == null) ? hoje : dataFimTurn;
 		dataIniTurn = (dataIniTurn == null) ? DateUtil.retornaDataAnteriorQtdMeses(hoje, 12, true) : dataIniTurn;
 		if (dataMesAnoIni == null || dataMesAnoIni.equals("  /    ") || dataMesAnoIni.equals(""))
@@ -169,21 +177,23 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, areasIds);
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, areasIds, cargosIds);
 		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, areasIds);
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, areasIds);
-		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
-		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, areasIds, qtdItensDesligamento);
+		
+		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItensOcorrencia);
+		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, areasIds, qtdItensOcorrencia);
+
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, areasIds, qtdItensDesligamento);
 		
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaIds, areasIds, true);
-		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaIds, areasIds, false);
+		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, areasIds, true);
+		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, areasIds, false);
 		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresaIds, areasIds);
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
@@ -933,5 +943,37 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setDataFimTurn(Date dataFimTurn) {
 		this.dataFimTurn = dataFimTurn;
+	}
+
+	public int getQtdItensOcorrencia() {
+		return qtdItensOcorrencia;
+	}
+
+	public void setQtdItensOcorrencia(int qtdItensOcorrencia) {
+		this.qtdItensOcorrencia = qtdItensOcorrencia;
+	}
+
+	public Date getDataIniDeslig() {
+		return dataIniDeslig;
+	}
+
+	public void setDataIniDeslig(Date dataIniDeslig) {
+		this.dataIniDeslig = dataIniDeslig;
+	}
+
+	public Date getDataFimDeslig() {
+		return dataFimDeslig;
+	}
+
+	public void setDataFimDeslig(Date dataFimDeslig) {
+		this.dataFimDeslig = dataFimDeslig;
+	}
+
+	public int getAbaMarcada() {
+		return abaMarcada;
+	}
+
+	public void setAbaMarcada(int abaMarcada) {
+		this.abaMarcada = abaMarcada;
 	}
 }
