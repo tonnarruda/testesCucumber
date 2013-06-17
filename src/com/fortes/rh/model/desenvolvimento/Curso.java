@@ -1,6 +1,7 @@
 package com.fortes.rh.model.desenvolvimento;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -261,6 +262,16 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		this.turmas = turmas;
 	}
 
+	public Collection<Long> getEmpresasParticipantesIds() 
+	{
+		Collection<Long> empresaIds = new ArrayList<Long>();
+
+		for (Empresa empresa : empresasParticipantes) 
+			empresaIds.add(empresa.getId());
+		
+		return empresaIds;
+	}
+	
 	public Collection<Empresa> getEmpresasParticipantes() {
 		return empresasParticipantes;
 	}

@@ -238,7 +238,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.cargaHoraria"), "cargaHoraria");
 
-		criteria.setProjection(p);
+		criteria.setProjection(Projections.distinct(p));
 		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
 		
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))

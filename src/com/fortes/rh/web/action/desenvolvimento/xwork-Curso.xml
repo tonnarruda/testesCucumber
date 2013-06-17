@@ -25,6 +25,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.CursoEditAction" method="prepareUpdate">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="error" type="redirect">list.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoEdit.ftl</result>
 		</action>
