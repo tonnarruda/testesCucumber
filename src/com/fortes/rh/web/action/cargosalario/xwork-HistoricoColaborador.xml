@@ -91,6 +91,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
 		</action>
 		<action name="painelIndicadores" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadores">
+			<interceptor-ref name="showFilterStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/painelIndicadores.ftl</result>
 		</action>
 		<action name="painelIndicadoresCargoSalario" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadoresCS">
