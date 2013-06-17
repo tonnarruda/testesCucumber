@@ -145,7 +145,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			}
 			
 			// Adiciona coluna para o gap
-			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "GAP", false, false));
+			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "GAP", false, false, 0));
 		}
 
 		Long idColaboradorAnterior = null;
@@ -169,16 +169,29 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			{
 				if(!configNivelCompetenciaColaborador.getColaboradorId().equals(idColaboradorAnterior))
 				{
-					vo = new ConfiguracaoNivelCompetenciaVO(nome, new ArrayList<MatrizCompetenciaNivelConfiguracao>(matrizModelo));
+					Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracaos = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+					for (MatrizCompetenciaNivelConfiguracao matrizCompNivelConfig : matrizModelo)
+						matrizCompetenciaNivelConfiguracaos.add(new MatrizCompetenciaNivelConfiguracao(matrizCompNivelConfig.getCompetencia(), matrizCompNivelConfig.getNivel(), matrizCompNivelConfig.getConfiguracaoFaixa(), matrizCompNivelConfig.getConfiguracao(), matrizCompNivelConfig.getGap()));
+					
+					vo = new ConfiguracaoNivelCompetenciaVO(nome, matrizCompetenciaNivelConfiguracaos);
 					vo.setTotalPontosFaixa(totalPontosFaixa);
 					vos.add(vo);
 				}
 				
-				boolean isConfiguracaoFaixa = competenciaNiveisConfigurados.containsKey(competencia) && competenciaNiveisConfigurados.get(competencia).equals(nivel);
 				vo.somaTotalPontos(ordem);
-				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, ordem + " - " + nivel, isConfiguracaoFaixa, true));
-				//Configura o gap
-				vo.getMatrizes().add(new MatrizCompetenciaNivelConfiguracao(competencia, "GAP", false, false, (ordem - ordemFaixa)));
+				boolean isConfiguracaoFaixa = competenciaNiveisConfigurados.containsKey(competencia) && competenciaNiveisConfigurados.get(competencia).equals(nivel);
+
+				for (MatrizCompetenciaNivelConfiguracao matrizCompNivelConfig : vo.getMatrizes()) 
+				{
+					if(matrizCompNivelConfig.getCompetencia().equals(competencia))
+					{
+						if((ordem + " - " + nivel).equals(matrizCompNivelConfig.getNivel())){
+							matrizCompNivelConfig.setConfiguracaoFaixa(isConfiguracaoFaixa);
+							matrizCompNivelConfig.setConfiguracao(true);
+						}else if("GAP".equals(matrizCompNivelConfig.getNivel()))
+							matrizCompNivelConfig.setGap(ordem - ordemFaixa);
+					}
+				}
 				
 				if((ordem - ordemFaixa) > 0)
 					vo.setTotalGapExcedenteAoCargo(ordem - ordemFaixa); 

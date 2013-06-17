@@ -141,7 +141,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaJoao);
 		configuracaoNivelCompetencia1.setCompetenciaDescricao("Java");
 		configuracaoNivelCompetencia1.setNivelCompetencia(nivelBom);
-		configuracaoNivelCompetencia1.setNivelCompetenciaColaborador(nivelBom);
+		configuracaoNivelCompetencia1.setNivelCompetenciaColaborador(nivelPessimo);
 		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
 		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
@@ -156,7 +156,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetencia3.setId(3L);
 		configuracaoNivelCompetencia3.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaMaria);
 		configuracaoNivelCompetencia3.setCompetenciaDescricao("C#");
-		configuracaoNivelCompetencia3.setNivelCompetencia(nivelRuim);
+		configuracaoNivelCompetencia3.setNivelCompetencia(nivelPessimo);
 		configuracaoNivelCompetencia3.setNivelCompetenciaColaborador(nivelRuim);
 		configuracaoNivelCompetencia3.setTipoCompetencia(TipoCompetencia.ATITUDE);
 		
@@ -165,7 +165,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		CollectionUtil<ConfiguracaoNivelCompetencia> clu = new CollectionUtil<ConfiguracaoNivelCompetencia>();
 		Long[] competenciaIds = clu.convertCollectionToArrayIds(configuracaoNivelCompetencias);
 
-		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelRuim,nivelBom);
+		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelPessimo,nivelRuim,nivelBom);
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(eq(competenciaIds), eq(faixaSalarial.getId()), eq(true)).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
@@ -177,13 +177,20 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizJoao = ((ConfiguracaoNivelCompetenciaVO)result.toArray()[0]).getMatrizes();
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizMaria = ((ConfiguracaoNivelCompetenciaVO)result.toArray()[1]).getMatrizes();
 		
-		assertEquals("Matriz padrão (9) com GAP, mais competências do João (2 + 2GAP = 4)", 13, matrizJoao.size());
-		assertEquals("Matriz padrão (9) com GAP, mais competências da Maria (1 + 1GAP = 2)", 11, matrizMaria.size());
-		//Ajustar Teste
-		//assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracaoFaixa());
-		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracao());
-		//assertEquals(Boolean.TRUE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracaoFaixa());
-		assertEquals(Boolean.FALSE, ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracao());
+		assertEquals("Matriz padrão (12)", 12, matrizJoao.size());
+		assertEquals("Matriz padrão (12)", 12, matrizMaria.size());
+
+		assertFalse(((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[0]).getConfiguracao());
+		assertFalse(((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getConfiguracao());
+
+		assertEquals(new Integer(0), ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[3]).getGap());
+		assertEquals(new Integer(0), ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[7]).getGap());
+		assertEquals(new Integer(-2), ((MatrizCompetenciaNivelConfiguracao)matrizJoao.toArray()[11]).getGap());
+
+		assertEquals(new Integer(1), ((MatrizCompetenciaNivelConfiguracao)matrizMaria.toArray()[3]).getGap());
+		assertEquals(new Integer(0), ((MatrizCompetenciaNivelConfiguracao)matrizMaria.toArray()[7]).getGap());
+		assertEquals(new Integer(0), ((MatrizCompetenciaNivelConfiguracao)matrizMaria.toArray()[11]).getGap());
+		
 	}
 
 	public void testMontaMatrizCompetenciaCandidato()
