@@ -457,6 +457,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		empresaDao.save(empresa2);
 		
 		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa1);
 		cursoDao.save(curso);
 		
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);

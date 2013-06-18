@@ -201,7 +201,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (turma != null && turma.getId() != null)
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
 
-		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllEmpresasParticipantes(getEmpresaSistema().getId());
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
