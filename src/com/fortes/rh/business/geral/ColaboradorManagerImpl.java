@@ -1881,13 +1881,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsByPapel(usuarioEmpresaIds);
 	}
 
-	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countSexo(data, empresaIds, areasIds);
+		return getDao().countSexo(data, empresaIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds) {
-		return getDao().countEstadoCivil(data, empresaIds, areasIds);
+	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	{
+		return getDao().countEstadoCivil(data, empresaIds, areasIds, cargosIds);
 	}
 
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
@@ -1900,36 +1901,37 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return  getDao().countFaixaEtaria(data, empresaIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countDeficiencia(data, empresaIds, areasIds);
+		return getDao().countDeficiencia(data, empresaIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, qtdItens);
+		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) 
+	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countColocacao(dataBase, empresaIds, areasIds);
+		return getDao().countColocacao(dataBase, empresaIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, areasIds, qtdItens);
+		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, int qtdItens) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countProvidencia(dataIni, dataFim, empresaIds, areasIds, qtdItens);
+		return getDao().countProvidencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds) {
-		return getDao().getCountAtivos(dataBase, empresaIds, areasIds);
+	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	{
+		return getDao().getCountAtivos(dataBase, empresaIds, areasIds, cargosIds);
 	}
 
-	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, boolean isAdmitidos) 
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, boolean isAdmitidos) 
 	{
 		Integer totalPorEmpresas = 0;
 		if(empresaIds != null)
@@ -1937,7 +1939,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (Long empresaId : empresaIds)
 			{	
 				Empresa empresaTmp = empresaManager.findByIdProjection(empresaId);
-				totalPorEmpresas += getDao().countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaTmp, areasIds, isAdmitidos);
+				totalPorEmpresas += getDao().countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaTmp, areasIds, cargosIds, isAdmitidos);
 			}			
 		}
 
@@ -1948,7 +1950,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		if(filtrarPor == 1)
 			cargosIds = null;
-		else
+		else if(filtrarPor == 2)
 			areasIds = null;
 
 		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);

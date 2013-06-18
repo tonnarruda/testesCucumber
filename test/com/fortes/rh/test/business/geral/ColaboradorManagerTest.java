@@ -403,8 +403,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(20)));
     	colaboradorDao.expects(once()).method("countAdmitidosDemitidosTurnover").withAnyArguments().will(returnValue(new Integer(2)));
     	
-    	assertEquals(new Integer(22), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, Arrays.asList(empresa1.getId(), empresa2.getId()), new Long[]{areaOrganizacional.getId()}, true));
-    	assertEquals(new Integer(0), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, null, new Long[]{areaOrganizacional.getId()}, true));
+    	assertEquals(new Integer(22), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, Arrays.asList(empresa1.getId(), empresa2.getId()), new Long[]{areaOrganizacional.getId()}, null, true));
+    	assertEquals(new Integer(0), colaboradorManager.countAdmitidosDemitidosTurnover(null, null, null, new Long[]{areaOrganizacional.getId()}, null, true));
     }
 
     public void testGetColaboradoresByEstabelecimentoAreaGrupo()

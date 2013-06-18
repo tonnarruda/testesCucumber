@@ -29,7 +29,7 @@
 		.filtro-esquerda { float: left; }
 		.filtro-direita { float: right; }
 		
-		fieldset { margin-bottom: 10px; }
+		fieldset { margin-bottom: 10px; background: inherit; }
 	</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
