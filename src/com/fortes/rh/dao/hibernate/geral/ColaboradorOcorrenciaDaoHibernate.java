@@ -199,7 +199,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return exists;
 	}
 
-	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds) 
+	public Collection<Absenteismo> countFaltasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasIds) 
 	{
 		String diasDoPeriodo = "select cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date) + serie as dia from generate_series(0, cast('" + DateUtil.formataAnoMesDia(dataFim) + "' as date) - cast('" + DateUtil.formataAnoMesDia(dataIni) + "' as date)) as serie ";
 
@@ -220,6 +220,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		sql.append("				 	where hc2.colaborador_id = c.id ");
 		sql.append("						and hc2.data <= :data and hc2.status = :status ");
 		sql.append("				 ) ");
+		sql.append("            left join FaixaSalarial fs on hc.faixasalarial_id = fs.id ");
 		sql.append("			where o.absenteismo = true ");
 		sql.append("		    and hc.status = :status ");
 		
@@ -227,6 +228,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 			sql.append("	    and c.empresa_id in (:empresaIds) ");
 		if(areasIds != null && !areasIds.isEmpty())
 			sql.append("	    and hc.areaorganizacional_id in (:areaIds) ");
+		if(cargosIds != null && !cargosIds.isEmpty())
+			sql.append("	    and fs.cargo_id in (:cargosIds) ");
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			sql.append("	    and hc.estabelecimento_id in (:estabelecimentoIds) ");
 		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())
@@ -251,6 +254,8 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		
 		if(areasIds != null && !areasIds.isEmpty())
 			query.setParameterList("areaIds", areasIds, Hibernate.LONG);
+		if(cargosIds != null && !cargosIds.isEmpty())
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
 		if(ocorrenciasIds != null && !ocorrenciasIds.isEmpty())

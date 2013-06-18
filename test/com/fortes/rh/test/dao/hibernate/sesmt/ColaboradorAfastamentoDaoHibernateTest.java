@@ -428,7 +428,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		Collection<Long> estabelecimentoIds = Arrays.asList(1L, 2L);
 		
 		@SuppressWarnings("unused")
-		Collection<Absenteismo> absenteismo = colaboradorAfastamentoDao.countAfastamentosByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), Arrays.asList(EmpresaFactory.getEmpresa(1L).getId()), estabelecimentoIds, areasIds, null);
+		Collection<Absenteismo> absenteismo = colaboradorAfastamentoDao.countAfastamentosByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), Arrays.asList(EmpresaFactory.getEmpresa(1L).getId()), estabelecimentoIds, areasIds, null, null);
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
 	

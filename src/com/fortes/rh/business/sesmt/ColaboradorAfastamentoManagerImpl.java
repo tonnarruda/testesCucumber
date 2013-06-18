@@ -331,9 +331,9 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return colaboradorAfastamentos;
 	}
 
-	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> afastamentosIds) 
+	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> afastamentosIds) 
 	{
-		return getDao().countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, afastamentosIds);
+		return getDao().countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, afastamentosIds);
 	}
 
 	public ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId)
