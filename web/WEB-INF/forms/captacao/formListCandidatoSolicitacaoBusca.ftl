@@ -28,7 +28,7 @@
 		</@display.column>
 		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 200px;" class="${classe}"/>
 		<@display.column title="Cidade/UF" class="${classe}">
-			<#if candidato.endereco.cidade.nome?exists>
+			<#if candidato.endereco.cidade.nome?exists && candidato.endereco.uf.sigla?exists>
 				${candidato.endereco.cidade.nome}/${candidato.endereco.uf.sigla}
 			</#if>
 		</@display.column>
