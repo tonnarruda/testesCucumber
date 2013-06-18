@@ -222,8 +222,11 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		prepare();
 		
-		if (!turma.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-			throw new Exception("Permissão negada!");
+		if (!cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))
+		{
+			addActionWarning("A Turma solicitado não existe ou não esta compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
+			return Action.ERROR;
+		}
 
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
 		
@@ -332,60 +335,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		return Action.SUCCESS;
 	}
 
-	// TODO Relatório quebrado, nao está sendo utilizado. remover?
-//	@SuppressWarnings("unchecked")
-//	public String imprimirRelatorioTreinamentos() throws Exception
-//	{
-//		LinkedHashMap filtro = new LinkedHashMap();
-//
-//		filtro.put("semPlano", semPlano);
-//		filtro.put("dntId", dnt.getId());
-//
-//		if (colaborador != null && colaborador.getId() != null)
-//			filtro.put("colaboradorId", colaborador.getId());
-//		else
-//		{
-//			filtro.put("areas", LongUtil.arrayStringToCollectionLong(areasCheck));
-//			filtro.put("estabelecimentos", LongUtil.arrayStringToCollectionLong(estabelecimentosCheck));
-//		}
-//
-//		colaboradorTurmasLista = colaboradorTurmaManager.filtroRelatorioPlanoTrei(filtro);
-//		colaboradorTurmasLista = colaboradorTurmaManager.setCustoRateado(colaboradorTurmasLista);
-//
-//		if (colaboradorTurmasLista == null || colaboradorTurmasLista.size() == 0)
-//		{
-//			ResourceBundle bundle = ResourceBundle.getBundle("application");
-//			addActionMessage(bundle.getString("error.relatorio.vazio"));
-//
-//			prepareImprimirTurma();
-//			areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-//			estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
-//
-//			return Action.INPUT;
-//		}
-//
-//		emptyData.addAll(colaboradorTurmasLista);
-//		parametros.putAll(colaboradorTurmaManager.processaPlanoTreiSumario(colaboradorTurmasLista));
-//
-//		try
-//		{
-//			String filtroRelatorio = "Previsão: Não informada";
-//			if (turma.getDataPrevIni() != null && turma.getDataPrevFim() != null)
-//				filtroRelatorio = "Previsão: " + DateUtil.formataDiaMesAno(turma.getDataPrevIni()) + " - "
-//						+ DateUtil.formataDiaMesAno(turma.getDataPrevFim());
-//
-//			parametros = RelatorioUtil.getParametrosRelatorio("Plano de Treinamentos", getEmpresaSistema(), filtroRelatorio);
-//
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//			return Action.INPUT;
-//		}
-//
-//		return Action.SUCCESS;
-//	}
-
 	public String prepareRelatorio() throws Exception
 	{
 		return Action.SUCCESS;
@@ -394,7 +343,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String prepareImprimirCertificado() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllEmpresasParticipantes(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}

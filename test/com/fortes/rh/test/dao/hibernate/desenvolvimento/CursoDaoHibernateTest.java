@@ -682,7 +682,52 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		conhecimentoDao.save(conhecimento);
 
 		assertEquals(1, cursoDao.findByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO).size());
-	}	
+	}
+	
+	public void testFindAllByEmpresasParticipantes()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+
+		Collection<Empresa> empresasParticipantes = new ArrayList<Empresa>();
+		empresasParticipantes.add(emp2);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(emp1);
+		curso.setEmpresasParticipantes(empresasParticipantes);
+		cursoDao.save(curso);
+
+		assertEquals(1, cursoDao.findAllEmpresasParticipantes(emp1.getId()).size());
+		assertEquals(1, cursoDao.findAllEmpresasParticipantes(emp2.getId()).size());
+	}
+
+	public void testExisteEmpresasNoCurso()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+
+		Collection<Empresa> empresasParticipantes = new ArrayList<Empresa>();
+		empresasParticipantes.add(emp2);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de direção");
+		curso.setEmpresa(emp1);
+		curso.setEmpresasParticipantes(empresasParticipantes);
+		cursoDao.save(curso);
+		
+		Curso cursoFiltroBusca = new Curso();
+		cursoFiltroBusca.setNome("Direção");
+		
+		assertTrue(cursoDao.existeEmpresasNoCurso(emp1.getId(), curso.getId()));
+		assertTrue(cursoDao.existeEmpresasNoCurso(emp2.getId(), curso.getId()));
+		assertFalse(cursoDao.existeEmpresasNoCurso(33L, curso.getId()));
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

@@ -218,9 +218,10 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	public Integer getCount(Curso curso, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
 		criteria.setProjection(Projections.rowCount());
 
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
 
@@ -320,5 +321,39 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setLong("competenciaId", competenciaId);
 
 		return query.list();
+	}
+
+	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
+		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+
+		return criteria.list();
+	}
+	
+	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+        criteria.createCriteria("c.empresasParticipantes", "ep", Criteria.LEFT_JOIN);
+
+    	ProjectionList p = Projections.projectionList().create();
+
+    	p.add(Projections.property("c.id"), "id");
+    	criteria.setProjection(p);
+    	
+    	criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("ep.id", empresaId) ) );
+    	criteria.add(Expression.eq("c.id", cursoId));
+
+    	return criteria.list().size() > 0;
 	}
 }

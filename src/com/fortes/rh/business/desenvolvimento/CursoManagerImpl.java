@@ -58,6 +58,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByCertificacao(certificacaoId);
 	}
 
+	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId) 
+	{
+		return getDao().findAllEmpresasParticipantes(empresaId);
+	}
+	
 	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
 	{
 		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds);
@@ -228,6 +233,12 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return cursos;
 	}	
 	
+	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId) 
+	{
+		return getDao().existeEmpresasNoCurso(empresaId, cursoId);
+	}
+
+	
 	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia)
 	{
 		return getDao().findByCompetencia(conhecimentoId, tipoCompetencia);
@@ -247,4 +258,6 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		this.transactionManager = transactionManager;
 	}
+
+	
 }

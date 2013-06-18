@@ -201,11 +201,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.estabelecimento as e ");
 		hql.append("left join ct.turma as t ");
+		hql.append("left join t.curso as c ");
+		hql.append("left join c.empresasParticipantes as ep ");
 		hql.append("where ");
 		hql.append("	t.id = :turmaId ");
 		
 		if(empresaId != null)
-			hql.append("	and emp.id = :empresaId ");
+			hql.append("	and (c.empresa.id = :empresaId or ep.id = :empresaId)");
 		
 		hql.append("	and hc.data = ( ");
 		hql.append("		select max(hc2.data) " );

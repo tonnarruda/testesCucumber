@@ -25,4 +25,6 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 	public Collection<Curso> findByCompetencia(Long competenciaId, Character tipoCompetencia);
+	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId);
+	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 }

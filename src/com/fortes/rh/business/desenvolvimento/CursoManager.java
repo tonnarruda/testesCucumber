@@ -32,4 +32,6 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId);
 	public Collection<Curso> populaCursos(Long[] cursosCheckIds);
 	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia);
+	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId);
+	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 }

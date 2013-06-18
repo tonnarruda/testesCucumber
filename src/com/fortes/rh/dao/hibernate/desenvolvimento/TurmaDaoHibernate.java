@@ -33,8 +33,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     public Turma findByIdProjection(Long turmaId)
     {
     	Criteria criteria = getSession().createCriteria(Turma.class, "t");
-    	criteria.createCriteria("t.curso", "c");
     	criteria.createCriteria("t.empresa", "e");
+    	criteria.createCriteria("t.curso", "c");
 
     	ProjectionList p = Projections.projectionList().create();
 
@@ -53,7 +53,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
     	p.add(Projections.property("c.cargaHoraria"), "projectionCursoCargaHoraria");
     	p.add(Projections.property("e.id"), "projectionEmpresaId");
 
-    	criteria.setProjection(p);
+    	criteria.setProjection(Projections.distinct(p));
     	criteria.add(Expression.eq("t.id", turmaId));
 
     	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

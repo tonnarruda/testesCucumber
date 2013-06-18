@@ -99,7 +99,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public String update() throws Exception
 	{
-		if (!curso.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		if (!curso.getEmpresa().getId().equals(getEmpresaSistema().getId()) && !curso.getEmpresasParticipantesIds().contains(getEmpresaSistema().getId()))
 		{
 			addActionError("O Curso solicitado não existe na empresa.");
 			return Action.INPUT;

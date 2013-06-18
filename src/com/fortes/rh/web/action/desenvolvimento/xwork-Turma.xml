@@ -36,6 +36,7 @@
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
+			<result name="error" type="redirect">list.action?curso.id=${curso.id}</result>
 		</action>
 		<action name="prepareFrequencia" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareFrequencia">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareFrequencia.ftl</result>
