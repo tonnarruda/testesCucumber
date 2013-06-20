@@ -377,6 +377,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	{
         Criteria criteria = getSession().createCriteria(Turma.class,"t");
         criteria.createCriteria("t.curso", "c");
+        criteria.createCriteria("c.empresasParticipantes", "ep", Criteria.LEFT_JOIN);
         criteria.createCriteria("c.empresa", "e");
 
         ProjectionList p = Projections.projectionList().create();
@@ -387,7 +388,14 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         p.add(Projections.property("c.nome"), "cursoNome");
 
         criteria.setProjection(Projections.distinct(p));
-        criteria.add( Expression.or( Expression.in("c.empresa.id", empresaIds), Expression.in("e.id", empresaIds) ) );
+        criteria.add( Expression.or( 
+        								Expression.in("c.empresa.id", empresaIds), 
+        								Expression.or(
+        												Expression.in("e.id", empresaIds), 
+        												Expression.in("ep.id", empresaIds)
+        											 ) 
+        						   ) 
+        			);
 
 		if (dataPrevIni != null)
 			criteria.add(Expression.ge("t.dataPrevIni", dataPrevIni));

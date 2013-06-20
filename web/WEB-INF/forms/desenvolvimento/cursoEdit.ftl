@@ -26,6 +26,8 @@
 	</#if>
 
 	<@ww.actionerror />
+	<@ww.actionmessage />
+	
 	<@ww.form name="form" action="${formAction}" id="form" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Nome" name="curso.nome" id="nome" cssClass="inputNome" required="true" cssStyle="width:409px;" maxLength="100"/>
 	

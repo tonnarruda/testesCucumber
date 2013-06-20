@@ -157,7 +157,6 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			aproveitamentoAvaliacaoCursoManager.remove(curso.getId(), avaliacaoCursoIds);
 			CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 			curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoIds));
-			curso.setEmpresa(empresa);
 			update(curso);
 			transactionManager.commit(status);
 		

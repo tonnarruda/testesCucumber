@@ -58,7 +58,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public String imprimirRelatorio()
 	{
 		Turma turma = turmaManager.findById(colaboradorTurma.getTurma().getId());
-		if (!turma.getCurso().getEmpresa().getId().equals(getEmpresaSistema().getId()) && !turma.getCurso().getEmpresasParticipantesIds().contains(getEmpresaSistema().getId()))
+		if (!turma.getCurso().getEmpresa().equals(getEmpresaSistema()) && !turma.getCurso().getEmpresasParticipantes().contains(getEmpresaSistema()))
 		{
 			setActionMsg("O Curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			prepareRelatorio();

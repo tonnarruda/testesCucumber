@@ -72,10 +72,11 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		avaliacaoCursoCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoCursoCheckList, curso.getAvaliacaoCursos(), "getId");
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, curso.getEmpresasParticipantes(), "getId");
 
-		if (!curso.getEmpresa().getId().equals(getEmpresaSistema().getId()) && !curso.getEmpresasParticipantesIds().contains(getEmpresaSistema().getId()))
-		{
-			addActionWarning("O Curso solicitado não existe ou não esta compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
+		if (!cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId())){
+			addActionWarning("O curso solicitado não existe ou não esta compartilhado para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
+		} else if(!curso.getEmpresa().equals(getEmpresaSistema())){
+			addActionMessage("Este curso foi compartilhado pela empresa " + curso.getEmpresa().getNome() +".");
 		}
 
 		return Action.SUCCESS;
@@ -95,19 +96,16 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 		return Action.SUCCESS;
 	}
-	
 
 	public String update() throws Exception
 	{
-		if (!curso.getEmpresa().getId().equals(getEmpresaSistema().getId()) && !curso.getEmpresasParticipantesIds().contains(getEmpresaSistema().getId()))
-		{
-			addActionError("O Curso solicitado não existe na empresa.");
-			return Action.INPUT;
-		}
-
 		try
 		{
 			Collection<Empresa> empresasParticipantes = new CollectionUtil<Empresa>().convertArrayLongToCollection(Empresa.class, empresasCheck);
+			
+			if(!curso.getEmpresa().equals(getEmpresaSistema())){
+				empresasParticipantes.add(getEmpresaSistema());
+			}
 			curso.setEmpresasParticipantes(empresasParticipantes);
 			
 			cursoManager.update(curso, getEmpresaSistema(), avaliacaoCursoCheck);
