@@ -90,6 +90,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Date dataFimTurn;
 	private String dataMesAnoIni;
 	private String dataMesAnoFim;
+	private Integer[] tempoServicoIni;
+	private Integer[] tempoServicoFim;
 	
 	private String origemSituacao = "T";
 	private char agruparPor; 
@@ -120,6 +122,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfColocacao = "";
 	private String grfOcorrencia = "";
 	private String grfProvidencia = "";
+	private String grfTurnoverTempoServico = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
 	private int qtdItensOcorrencia = 20;
@@ -168,6 +171,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
 		
+		if (tempoServicoIni == null || tempoServicoIni.length == 0)
+		{
+			tempoServicoIni = new Integer[] { 0, 3, 5, 7, 9, 11 };
+			tempoServicoFim = new Integer[] { 2, 4, 6, 8, 10, 12 };
+		}
+			
+		
 		Collection<Long> empresaIds = LongUtil.arrayStringToCollectionLong(empresasCheck);
 		if(empresaIds.isEmpty())
 		{
@@ -189,6 +199,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, areasIds, cargosIds, qtdItensDesligamento);
 		
+		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck));
+		
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds));
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
@@ -205,6 +217,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfColocacao = StringUtil.toJSON(graficoColocacao, null);
 		grfOcorrencia = StringUtil.toJSON(graficoOcorrencia, null);
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
+		grfTurnoverTempoServico = StringUtil.toJSON(graficoTurnoverTempoServico, null);
 		
 		CollectionUtil<String> cUtil = new CollectionUtil<String>();
 		TurnOverCollection turnOverCollection = new TurnOverCollection();
@@ -975,5 +988,25 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setAbaMarcada(int abaMarcada) {
 		this.abaMarcada = abaMarcada;
+	}
+
+	public Integer[] getTempoServicoIni() {
+		return tempoServicoIni;
+	}
+
+	public void setTempoServicoIni(Integer[] tempoServicoIni) {
+		this.tempoServicoIni = tempoServicoIni;
+	}
+
+	public Integer[] getTempoServicoFim() {
+		return tempoServicoFim;
+	}
+
+	public void setTempoServicoFim(Integer[] tempoServicoFim) {
+		this.tempoServicoFim = tempoServicoFim;
+	}
+
+	public String getGrfTurnoverTempoServico() {
+		return grfTurnoverTempoServico;
 	}
 }

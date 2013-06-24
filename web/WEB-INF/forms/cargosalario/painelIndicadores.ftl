@@ -76,8 +76,9 @@
 				montaGraficoPizza(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9}, "Providências");
 				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
 				montaGraficoPizza(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
+				montaGraficoPizza(${grfTurnoverTempoServico}, "#turnoverTempoServico", {}, "Turnover por Tempo de Serviço");
 
-				montaGraficoPizza(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190}, "Motivo Desligamento");
+				montaGraficoPizza(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190}, "Motivo de Desligamento");
 				
 				var absenteismo = ${grfEvolucaoAbsenteismo};
 				var turnover = ${grfEvolucaoTurnover};
@@ -109,6 +110,10 @@
 				});
 				
 				$('#aba${abaMarcada} a').click();
+				
+				<#list 0..(tempoServicoIni?size-1) as i>
+					addPeriodo(${tempoServicoIni[i]}, ${tempoServicoFim[i]});
+				</#list>
 			});
 			
 			var popup;
@@ -210,6 +215,33 @@
 			{
 				addChecks('cargosCheck',data);
 			}
+			
+			function delPeriodo(item)
+			{
+				$(item).parent().parent().remove();
+			}
+			
+			function addPeriodo(ini, fim)
+			{
+				if ( $('#periodos li').size() >= 12 ) 
+				{
+					jAlert('Não é possível inserir mais do que 12 períodos para esse gráfico.');
+					return false;
+				}
+				
+				ini = ini != undefined ? ini : "";
+				fim = fim != undefined ? fim : "";
+				
+				var periodo = '<li><span>';
+				periodo += '<img title="Remover período" onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
+				periodo += '<input type="text" name="tempoServicoIni" id="tempoServicoIni" value="' + ini + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+				periodo += '&nbsp;a&nbsp;';
+				periodo += '<input type="text" name="tempoServicoFim" id="tempoServicoFim" value="' + fim + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+				periodo += '&nbsp;meses</span></li>';
+			
+				$('#periodos').append(periodo);
+				$('#tempoIni, #tempoFim').val('');
+			}
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -310,6 +342,15 @@
 						<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 						<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim"/>
 						<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="430"/>
+						
+						<li>Períodos de tempo de serviço:</li>
+						<div id="periodosServico">
+							<ul id="periodos"></ul>
+							<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();">
+								<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+								Adicionar período
+							</a>
+						</div>
 					</fieldset>
 				</div>
 				
@@ -451,6 +492,18 @@
 								<div>Turnover: ${turnover}</div>
 							</div>
 					 	</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="grid-cell" colspan="3">
+						<div class="cell-title">
+							Turnover por tempo de serviço
+							<img id="turnoverTempoServicoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						</div>
+						<div class="graphWrapper" style="height: 390px !important;">
+					    	<div id="turnoverTempoServico" class="graph2"></div>
+			    			<div id="turnoverTempoServicoLegenda"></div>
+					    </div>
 					</td>
 				</tr>
 				<tr>

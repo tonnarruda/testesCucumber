@@ -13,9 +13,19 @@ public class TurnOver
 	private Double qtdDemitidos;
 	private Double qtdAtivos;
 	
+	private Integer qtdColaboradores;
+	private Integer tempoServico;
+	
 	public TurnOver() 
 	{
 		super();
+	}
+	
+	public TurnOver(Integer qtdColaboradores, Integer tempoServico) 
+	{
+		super();
+		this.setQtdColaboradores(qtdColaboradores);
+		this.setTempoServico(tempoServico);
 	}
 
 	public void setMesAnoQtdDemitidos(Date mesAno, Double qtdDemitidos) 
@@ -85,6 +95,22 @@ public class TurnOver
 
 	public void setQtdAtivos(Double qtdAtivos) {
 		this.qtdAtivos = qtdAtivos;
+	}
+
+	public Integer getTempoServico() {
+		return tempoServico;
+	}
+
+	public void setTempoServico(Integer tempoServico) {
+		this.tempoServico = tempoServico;
+	}
+
+	public Integer getQtdColaboradores() {
+		return qtdColaboradores;
+	}
+
+	public void setQtdColaboradores(Integer qtdColaboradores) {
+		this.qtdColaboradores = qtdColaboradores;
 	}
 
 	

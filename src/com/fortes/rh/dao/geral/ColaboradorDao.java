@@ -129,4 +129,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida();
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId);
+	public Collection<TurnOver> countDemitidosTempoServico(Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 }

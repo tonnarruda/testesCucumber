@@ -5978,6 +5978,96 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(colaborador3.getId(), ((Colaborador)colaboradors.toArray()[0]).getId());
 
 	}
+	
+	public void testCountDemitidosTempoServico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial fs1 = FaixaSalarialFactory.getEntity();
+		fs1.setCargo(cargo);
+		faixaSalarialDao.save(fs1);
+		
+		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(a1);
+		
+		Colaborador c1 = ColaboradorFactory.getEntity();
+		c1.setEmpresa(empresa);
+		c1.setVinculo(Vinculo.EMPREGO);
+		c1.setDataAdmissao(DateUtil.criarDataMesAno(1, 2, 2010));
+		c1.setDataDesligamento(DateUtil.criarDataMesAno(1, 3, 2012));
+		colaboradorDao.save(c1);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(c1);
+		hc1.setFaixaSalarial(fs1);
+		hc1.setAreaOrganizacional(a1);
+		hc1.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc1);
+		
+		Colaborador c2 = ColaboradorFactory.getEntity();
+		c2.setEmpresa(empresa);
+		c2.setVinculo(Vinculo.EMPREGO);
+		c2.setDataAdmissao(DateUtil.criarDataMesAno(1, 2, 2010));
+		c2.setDataDesligamento(DateUtil.criarDataMesAno(1, 8, 2010));
+		colaboradorDao.save(c2);
+		
+		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
+		hc2.setColaborador(c2);
+		hc2.setFaixaSalarial(fs1);
+		hc2.setAreaOrganizacional(a1);
+		hc2.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		hc2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc2);
+		
+		Colaborador c3 = ColaboradorFactory.getEntity();
+		c3.setEmpresa(empresa);
+		c3.setVinculo(Vinculo.EMPREGO);
+		c3.setDataAdmissao(DateUtil.criarDataMesAno(1, 5, 2011));
+		c3.setDataDesligamento(DateUtil.criarDataMesAno(1, 11, 2011));
+		colaboradorDao.save(c3);
+		
+		HistoricoColaborador hc3 = HistoricoColaboradorFactory.getEntity();
+		hc3.setColaborador(c3);
+		hc3.setFaixaSalarial(fs1);
+		hc3.setAreaOrganizacional(a1);
+		hc3.setData(DateUtil.criarDataMesAno(1, 5, 2011));
+		hc3.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc3);
+		
+		Colaborador c4 = ColaboradorFactory.getEntity();
+		c4.setEmpresa(empresa);
+		c4.setVinculo(Vinculo.EMPREGO);
+		c4.setDataAdmissao(DateUtil.criarDataMesAno(1, 5, 2009));
+		c4.setDataDesligamento(DateUtil.criarDataMesAno(1, 11, 2009));
+		colaboradorDao.save(c4);
+		
+		HistoricoColaborador hc4 = HistoricoColaboradorFactory.getEntity();
+		hc4.setColaborador(c4);
+		hc4.setFaixaSalarial(fs1);
+		hc4.setAreaOrganizacional(a1);
+		hc4.setData(DateUtil.criarDataMesAno(1, 5, 2009));
+		hc4.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc4);
+		
+		Collection<TurnOver> retorno = colaboradorDao.countDemitidosTempoServico(DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(empresa.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		
+		assertEquals(2, retorno.size());
+
+		TurnOver t1 = ((TurnOver) retorno.toArray()[0]);
+		TurnOver t2 = ((TurnOver) retorno.toArray()[1]);
+		
+		assertEquals(new Integer(2), t1.getQtdColaboradores());
+		assertEquals(new Integer(6), t1.getTempoServico());
+		
+		assertEquals(new Integer(1), t2.getQtdColaboradores());
+		assertEquals(new Integer(25), t2.getTempoServico());
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

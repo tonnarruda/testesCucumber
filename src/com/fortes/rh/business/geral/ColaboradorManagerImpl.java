@@ -2090,6 +2090,38 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return graficoEvolucaoTurnover;
 	}
+	
+	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
+	{
+		Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(dataIni, dataFim, empresasIds, areasIds, cargosIds, vinculos);
+		Map<String, Integer> qtds = new HashMap<String, Integer>();
+		String chave;
+		
+		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
+		{
+			for (TurnOver turnOver : turnOvers)
+			{				
+				for (int i = 0; i < tempoServicoIni.length; i++) 
+				{
+					if (turnOver.getTempoServico() >= tempoServicoIni[i] && turnOver.getTempoServico() <= tempoServicoFim[i])
+					{
+						chave = StringUtils.leftPad(tempoServicoIni[i].toString(), 2, '0') + " a " + StringUtils.leftPad(tempoServicoFim[i].toString(), 2, '0') + " meses";
+						if (!qtds.containsKey(chave))
+							qtds.put(chave, 0);
+						
+						qtds.put(chave, qtds.get(chave) + turnOver.getQtdColaboradores());
+					}
+				}
+			}
+		}
+
+		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
+		
+		for (Map.Entry<String, Integer> entry : qtds.entrySet()) 
+			dados.add(new DataGrafico(null, entry.getKey(), entry.getValue(), null));
+
+		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");
+	}
 
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds) 
 	{
