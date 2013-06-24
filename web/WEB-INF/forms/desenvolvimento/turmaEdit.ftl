@@ -233,7 +233,11 @@
 			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
 		</#if>
 
-		<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
+		<#if turmaPertenceAEmpresaLogada>
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
+		<#else>
+			<@ww.hidden name="avaliacaoTurmasCheck" />
+		</#if>
 
 		<@ww.hidden name="turma.id" id="turmaId" />
 		<@ww.hidden name="turma.empresa.id" />

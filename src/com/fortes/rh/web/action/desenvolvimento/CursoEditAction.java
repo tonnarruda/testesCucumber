@@ -29,6 +29,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private Curso curso;
 	private boolean codigoTRUCurso;
 	private boolean compartilharCursos;
+	private boolean cursoCompartilhado;
 	private String nomeCursoBusca;
 	private int page;
 	
@@ -76,6 +77,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 			addActionWarning("O curso solicitado não existe ou não esta compartilhado para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		} else if(!curso.getEmpresa().equals(getEmpresaSistema())){
+			cursoCompartilhado = true;
 			addActionMessage("Este curso foi compartilhado pela empresa " + curso.getEmpresa().getNome() +".");
 		}
 
@@ -209,5 +211,10 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+	
+	public boolean isCursoCompartilhado()
+	{
+		return cursoCompartilhado;
 	}
 }

@@ -40,7 +40,7 @@
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
 		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		
-		<div style="display:<#if compartilharCursos>block<#else>none</#if>">
+		<div style="display:<#if cursoCompartilhado>none<#else>block</#if>">
 			<@frt.checkListBox label="Compartilhar com as empresas" name="empresasCheck" list="empresasCheckList"/>
 		</div>
 		

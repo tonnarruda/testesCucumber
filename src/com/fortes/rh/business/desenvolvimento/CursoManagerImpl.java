@@ -237,7 +237,6 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().existeEmpresasNoCurso(empresaId, cursoId);
 	}
 
-	
 	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia)
 	{
 		return getDao().findByCompetencia(conhecimentoId, tipoCompetencia);

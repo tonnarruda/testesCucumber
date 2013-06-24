@@ -299,6 +299,68 @@ public class TurmaManagerTest extends MockObjectTestCase
 		assertNotNull(ex);
 	}
 
+	public void testInserir()
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		String[] diasCheck = new String[]{"1"};
+		String despesa = "200,00";
+		Long[] avaliacaoTurmaIds = {1L};
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+
+		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		turmaTipoDespesaManager.expects(once()).method("save").with(eq(despesa),eq(turma.getId())).isVoid();
+		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
+		
+		Exception ex = null;
+		try
+		{
+			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds);
+		}
+		catch (Exception e)
+		{
+			ex = e;
+		}
+		
+		assertNull(ex);
+		
+	}
+	
+	public void testAtualizar()
+	{
+		Turma turma = TurmaFactory.getEntity(1L);
+		String[] diasCheck = new String[]{"1"};
+		String[] selectPrioridades = null;
+		Long[] avaliacaoTurmaIds = {1L};
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		String[] colaboradorTurmas = {colaboradorTurma.getId().toString()};
+		
+		colaboradorTurmaManager.expects(once()).method("saveUpdate").with(eq(colaboradorTurmas),eq(selectPrioridades)).isVoid();
+		
+		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
+		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		
+		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
+		
+		Exception ex = null;
+		try
+		{
+			turmaManager.atualizar(turma, diasCheck, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds);
+		}
+		catch (Exception e)
+		{
+			ex = e;
+		}
+		
+		assertNull(ex);
+		
+	}
+	
 	public void testSalvarTudo()
 	{
 		Turma turma = TurmaFactory.getEntity(1L);

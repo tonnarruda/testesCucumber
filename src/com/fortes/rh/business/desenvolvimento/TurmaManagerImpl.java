@@ -13,7 +13,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
@@ -85,6 +84,24 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public Turma findByIdProjection(Long turmaId)
 	{
 		return getDao().findByIdProjection(turmaId);
+	}
+
+	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds) throws Exception
+	{
+		salvarTurmaDiasCusto(turma, dias, custos);
+
+		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
+		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
+	}
+
+	public void atualizar(Turma turma, String[] dias, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds) throws Exception
+	{
+		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
+
+		updateTurmaDias(turma, dias);
+		
+		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
+		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 	}
 
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON) throws Exception
@@ -340,6 +357,4 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	{
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
-
-	
 }

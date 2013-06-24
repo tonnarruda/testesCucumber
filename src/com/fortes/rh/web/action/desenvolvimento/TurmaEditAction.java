@@ -173,6 +173,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private char realizada;
 	private String custos;
 	private boolean contemCustosDetalhados = false;
+	private boolean turmaPertenceAEmpresaLogada = true;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	
@@ -224,10 +225,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		
 		if (!cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))
 		{
-			addActionWarning("A Turma solicitado não existe ou não esta compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
+			addActionWarning("A turma solicitada não existe ou não está compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		}
 
+		if(!turma.getEmpresa().equals(getEmpresaSistema()))
+			turmaPertenceAEmpresaLogada = false;
+		
 		avaliacaoRespondida = turmaManager.verificaAvaliacaoDeTurmaRespondida(turma.getId());
 		
 		if(!avaliacaoRespondida)
@@ -259,20 +263,14 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma.setEmpresa(getEmpresaSistema());
 
-		turmaManager.salvarTurmaDiasCusto(turma, diasCheck, custos);
-
-		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
+		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
-
-		turmaManager.updateTurmaDias(turma, diasCheck);
-		
-		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
+		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1205,5 +1203,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
 		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
+	}
+	
+	public boolean isTurmaPertenceAEmpresaLogada()
+	{
+		return turmaPertenceAEmpresaLogada;
 	}
 }

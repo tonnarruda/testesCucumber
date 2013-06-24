@@ -8,6 +8,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
@@ -195,8 +196,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
 
-    	turmaManager.expects(once()).method("salvarTurmaDiasCusto");
-    	turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas");
+    	turmaManager.expects(once()).method("inserir").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).isVoid();;
     	
     	assertEquals("success", action.insert());
     }
@@ -208,9 +208,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
     	
-    	colaboradorTurmaManager.expects(once()).method("saveUpdate").with(ANYTHING, ANYTHING);
-    	turmaManager.expects(once()).method("updateTurmaDias").with(ANYTHING, ANYTHING);
-    	turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas");
+    	turmaManager.expects(once()).method("atualizar").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
     	
     	assertEquals("success", action.update());
     }
