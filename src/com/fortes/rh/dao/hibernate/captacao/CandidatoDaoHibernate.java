@@ -187,7 +187,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select can.id, can.nome, can.idF2RH, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf) as jaFoiColaborador "); 
+		sql.append("select can.id, can.nome, can.idF2RH, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf and can.cpf is not null and can.cpf <> '') as jaFoiColaborador "); 
 		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql);
 		
 		List resultado = query.list();
