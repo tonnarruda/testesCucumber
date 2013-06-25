@@ -929,17 +929,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje");
+		hql.append("			and hc2.data <= :hoje ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("		) ");
 		hql.append(" order by co.nomeComercial ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("hoje", new Date());
 		query.setBoolean("desligado", false);
-		
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
-		
 		if(areasOrganizacionaisIds != null && !areasOrganizacionaisIds.isEmpty())
 			query.setParameterList("areaIds", areasOrganizacionaisIds, Hibernate.LONG);
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
@@ -978,12 +979,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		select max(hc2.data) ");
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje");
+		hql.append("			and hc2.data <= :hoje ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("		) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setBoolean("desligado", false);
 		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("colaboradorNome", "%" + colaboradorNome.toUpperCase() + "%");
