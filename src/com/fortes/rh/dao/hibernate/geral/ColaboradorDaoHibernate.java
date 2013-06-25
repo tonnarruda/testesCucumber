@@ -3104,7 +3104,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc , colab_.dataSolicitacaoDesligamentoAc, a.id ");
+		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc , colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status ");
 		sql.append("from historicoColaborador hc ");
 		sql.append("inner join ");
 		sql.append("( ");

@@ -211,6 +211,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private String statusAvaliacao = "";
 	@Transient
+	private boolean statusAcPessoalConfirmado;
+	@Transient
 	private Long avaliacaoDesempenhoId;
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
@@ -2771,5 +2773,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "-";
 		
 		return naoIntegraAc ? "Não" : "Sim";
+	}
+
+	public boolean isStatusAcPessoalConfirmado() {
+		return statusAcPessoalConfirmado;
+	}
+
+	public void setStatusAcPessoalConfirmado(boolean statusAcPessoalConfirmado) {
+		this.statusAcPessoalConfirmado = statusAcPessoalConfirmado;
 	}
 }

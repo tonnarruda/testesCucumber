@@ -17,6 +17,7 @@ public class LinkTag extends TagSupport
 	private String imgName = "";
 	private String verifyRole = "";
 	private boolean opacity = false;
+	private boolean disabled = false;
 	
 	public LinkTag()
 	{
@@ -43,11 +44,15 @@ public class LinkTag extends TagSupport
 		{
 			link.append("<a");
 			
-			if(!href.equals(""))
-				link.append(" href=\"" + href + "\"");
-
-			if(!onclick.equals(""))
-				link.append(" onclick=\"" + onclick + "\"");
+			if(!disabled)
+			{
+					if(!href.equals(""))
+						link.append(" href=\"" + href + "\"");
+		
+					if(!onclick.equals(""))
+						link.append(" onclick=\"" + onclick + "\"");
+			}else
+				opacity = true;
 			
 			link.append(" >");
 			
@@ -62,7 +67,7 @@ public class LinkTag extends TagSupport
 				
 				if(opacity)
 					link.append(" style=\"opacity:0.2;filter:alpha(opacity=20);\"");
-				
+
 				link.append(" >");
 			}
 			
@@ -118,5 +123,13 @@ public class LinkTag extends TagSupport
 
 	public void setOpacity(boolean opacity) {
 		this.opacity = opacity;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 }
