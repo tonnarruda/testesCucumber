@@ -13,6 +13,7 @@
 			.semAcidentes p { font-size: 14px; font-weight: bold; }
 			.semAcidentes span { font-size: 22px; color: #333; }
 			.graph li { padding: 13px; }
+			.legendLabel { width: 210px; }
 		</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
