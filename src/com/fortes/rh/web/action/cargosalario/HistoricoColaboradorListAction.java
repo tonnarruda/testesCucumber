@@ -177,7 +177,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			tempoServicoFim = new Integer[] { 2, 4, 6, 8, 10, 12 };
 		}
 			
-		
 		Collection<Long> empresaIds = LongUtil.arrayStringToCollectionLong(empresasCheck);
 		if(empresaIds.isEmpty())
 		{

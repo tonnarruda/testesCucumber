@@ -2093,12 +2093,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
 	{
-		Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(dataIni, dataFim, empresasIds, areasIds, cargosIds, vinculos);
 		Map<String, Integer> qtds = new HashMap<String, Integer>();
+		Empresa empresa;
 		String chave;
 		
-		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
+		for (Long empresaId : empresasIds)
 		{
+			empresa = empresaManager.findByIdProjection(empresaId);
+			
+			Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(empresa, dataIni, dataFim, areasIds, cargosIds, vinculos);
+			
 			for (TurnOver turnOver : turnOvers)
 			{				
 				for (int i = 0; i < tempoServicoIni.length; i++) 

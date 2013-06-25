@@ -13,8 +13,6 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
-<#assign validarCampos="return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));"/>
-
 <script type='text/javascript'>
 	$(document).ready(function($)
 	{
@@ -25,6 +23,16 @@
 		populaArea(empresa);
 		populaCargo(empresa);
 		populaEstabelecimento(empresa);
+		
+		$('#agruparPorTempoServico').change(function() {
+			var marcado = $(this).is(":checked");
+			$('#periodosServico').toggle( marcado );
+
+			if (marcado && $('#periodos li').size() == 0)
+				addPeriodo();
+		});
+		
+		$('#agruparPorTempoServico').change();
 	});
 
 	function populaEstabelecimento(empresaId){
@@ -64,6 +72,47 @@
 			document.getElementById('divCargos').style.display = "";
 		}
 	}
+	
+	function delPeriodo(item)
+	{
+		$(item).parent().parent().remove();
+	}
+	
+	function addPeriodo()
+	{
+		var periodo = '<li><span>';
+		periodo += '<img title="Remover período" onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
+		periodo += '<input type="text" name="tempoServicoIni" id="tempoServicoIni" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+		periodo += '&nbsp;a&nbsp;';
+		periodo += '<input type="text" name="tempoServicoFim" id="tempoServicoFim" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+		periodo += '&nbsp;meses</span></li>';
+	
+		$('#periodos').append(periodo);
+		$('#tempoIni, #tempoFim').val('');
+	}
+	
+	function enviarForm()
+	{
+		if ( $('#agruparPorTempoServico').is(":checked") )
+		{
+			var valida = true;
+			var foco;
+			$("input[name='tempoServicoIni'],input[name='tempoServicoFim']").each(function(i, item) {
+				if ( !$(this).val() ) {
+					valida = false;
+					$(this).css('background-color', '#FFEEC2');
+				} else
+					$(this).css('background-color', '#FFFFFF');
+			});
+			
+			if (!valida) {
+				jAlert("Preencha os períodos corretamente");
+				return false;
+			}
+		}
+	
+		return validaFormularioEPeriodoMesAno('form', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
+	}
 </script>
 </head>
 <body>
@@ -97,10 +146,21 @@ Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Col
 	</div>
 	
 	<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105"/>
+	
+	<@ww.checkbox label="Exibir colaboradores agrupados por tempo de serviço" name="agruparPorTempoServico" id="agruparPorTempoServico" labelPosition="left"/>
+	<div id="periodosServico" style="display:none;">
+		<ul id="periodos"></ul>
+		
+		<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();" style="text-decoration:none;">
+			<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+			Adicionar período
+		</a>
+	</div>
+	<br />
 </@ww.form>
 
 <div class="buttonGroup">
-	<button onclick="${validarCampos};" class="btnRelatorio" accesskey="I"></button>
+	<button type="button" onclick="enviarForm()" class="btnRelatorio" accesskey="I"></button>
 </div>
 
 </body>

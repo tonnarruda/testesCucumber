@@ -1478,6 +1478,60 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return turnOvers;
 	}
 	
+	public Collection<TurnOver> countDemitidosTempoServico(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos)
+	{
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.geral.relatorio.TurnOver(count(co.id) as qtd, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
+		hql.append("	inner join co.historicoColaboradors hc ");
+		hql.append("	inner join hc.faixaSalarial fs ");
+		if (empresa.isTurnoverPorSolicitacao())
+		{
+			hql.append("	inner join co.candidato ca ");
+			hql.append("	inner join ca.candidatoSolicitacaos cs ");
+			hql.append("	inner join cs.solicitacao s ");
+			hql.append("	inner join s.motivoSolicitacao ms ");
+		}
+		hql.append("	where co.empresa.id = :empresaId ");
+		hql.append("	and (co.dataDesligamento between :dataIni and :dataFim)  ");
+		hql.append("    and hc.data = ( ");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("		where hc2.colaborador.id = co.id ");
+		hql.append("		and hc2.status = :status ");
+		hql.append("   ) ");
+
+		if (areasIds != null && !areasIds.isEmpty())
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+
+		if (cargosIds != null && !cargosIds.isEmpty())
+			hql.append("and fs.cargo.id in (:cargosIds) ");
+
+		if (vinculos != null && !vinculos.isEmpty())
+			hql.append("and co.vinculo in (:vinculos) ");
+
+		if (empresa.isTurnoverPorSolicitacao())
+			hql.append("and ms.turnover = true ");
+		
+		hql.append("group by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
+		hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresa.getId());
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		if (areasIds != null && !areasIds.isEmpty())
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			
+		if (cargosIds != null && !cargosIds.isEmpty())
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		
+		if (vinculos != null && !vinculos.isEmpty())
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+		
+		return (Collection<TurnOver>) query.list();
+	}
+	
 	public Integer countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo) 
 	{
 		StringBuilder hql = new StringBuilder("select count(co.id) from Colaborador co ");
@@ -4473,49 +4527,5 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();	
-	}
-	
-	public Collection<TurnOver> countDemitidosTempoServico(Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos)
-	{
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.geral.relatorio.TurnOver(count(co.id) as qtd, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
-		hql.append("	inner join co.historicoColaboradors hc ");
-		hql.append("	left join hc.faixaSalarial fs ");
-		hql.append("	where co.empresa.id in (:empresasIds) ");
-		hql.append("	and (co.dataDesligamento between :dataIni and :dataFim)  ");
-		hql.append("    and hc.data = ( ");
-		hql.append("      select max(hc2.data) ");
-		hql.append("      from HistoricoColaborador as hc2 ");
-		hql.append("      where hc2.colaborador.id = co.id ");
-		hql.append("      and hc2.status = :status ");
-		hql.append("   ) ");
-
-		if (areasIds != null && !areasIds.isEmpty())
-			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
-
-		if (cargosIds != null && !cargosIds.isEmpty())
-			hql.append("and fs.cargo.id in (:cargosIds) ");
-
-		if (vinculos != null && !vinculos.isEmpty())
-			hql.append("and co.vinculo in (:vinculos) ");
-
-		hql.append("group by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
-		hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
-		
-		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("empresasIds", empresasIds, Hibernate.LONG);
-		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
-		if (areasIds != null && !areasIds.isEmpty())
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-			
-		if (cargosIds != null && !cargosIds.isEmpty())
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		
-		if (vinculos != null && !vinculos.isEmpty())
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
-		
-		return (Collection<TurnOver>) query.list();
 	}
 }
