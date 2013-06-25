@@ -172,7 +172,22 @@
 			
 			function enviaForm()
 			{
-				return validaFormulario('formBusca', new Array('@empresasCheck', 'dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataMesAnoIni','dataMesAnoFim'));
+				var valida = true;
+				var foco;
+				$("input[name='tempoServicoIni'],input[name='tempoServicoFim']").each(function(i, item) {
+					if ( !$(this).val() ) {
+						valida = false;
+						$(this).css('background-color', '#FFEEC2');
+					} else
+						$(this).css('background-color', '#FFFFFF');
+				});
+				
+				if (!valida) {
+					jAlert("Preencha os períodos corretamente");
+					return false;
+				}
+				
+				return validaFormulario('formBusca', new Array('@empresasCheck','dataBase','dataIni','dataFim','dataIniDeslig','dataFimDeslig','dataIniTurn','dataFimTurn','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataIniDeslig','dataFimDeslig','dataIniTurn','dataFimTurn','dataMesAnoIni','dataMesAnoFim'));
 			}
 						
 			function populaAreas()
