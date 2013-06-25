@@ -10,14 +10,20 @@
 			<#assign classe=""/>
 		</#if>
 
+		<#if candidato.pessoal.cpf?exists>
+			<#assign cpf = candidato.pessoal.cpf?string/>
+		<#else>
+			<#assign cpf= ""/>
+		</#if>
+
 		<#if solicitacao?exists && solicitacao.id?exists>
 			<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.formCand);' />" style="width: 30px; text-align: center;" class="${classe}">
-				<input type="checkbox" name="candidatosId" value="${candidato.id?string?replace(".", "")?replace(",","")}" cpf="${candidato.pessoal.cpf}" />
+				<input type="checkbox" name="candidatosId" value="${candidato.id?string?replace(".", "")?replace(",","")}" cpf="${cpf}" />
 			</@display.column>
 		</#if>
 		
 		<@display.column title="Nome"  class="${classe}">
-			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)" cpf="${candidato.pessoal.cpf}">
+			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)" cpf="${cpf}">
 				${candidato.nome}
 			</a>
 			<#if candidato.pessoal?exists && candidato.pessoal.indicadoPor?exists && candidato.pessoal.indicadoPor?trim != "">
