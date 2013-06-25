@@ -871,15 +871,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionEmpresa(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor)
-			throws Exception
-			{
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor) throws Exception
+	{
 		Collection<Colaborador> colaboradors = getDao().findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, agruparPor);
 		if (colaboradors == null || colaboradors.isEmpty())
 			throw new Exception("Não existem dados para o filtro informado.");
 
 		return colaboradors;
-			}
+	}
 
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds,
 			Date dataIni, Date dataFim) throws Exception
@@ -1838,7 +1837,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					if (colaborador.getTempoServico() >= tempoServicoIni[i] && colaborador.getTempoServico() <= tempoServicoFim[i])
 					{
 						colaborador.setTempoServicoString("De " + tempoServicoIni[i] + " até " + tempoServicoFim[i] + " meses");
-
 					}
 				}
 			}
@@ -1848,6 +1846,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "tempoServicoString");
 
 		return colaboradores;
+	}
+	
+	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) 
+	{
+		if (filtrarPor == 1)
+			cargosIds = null;
+		else if (filtrarPor == 2)
+			areasIds = null;
+		
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
+		
+		return this.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, "nome");
 	}
 
 	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim)

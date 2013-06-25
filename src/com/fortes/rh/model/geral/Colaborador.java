@@ -245,6 +245,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
 	}
+
+	//findDemitidosTurnover
+	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
+		this.tempoServico = tempoServico;
+	}
 	
 	public Colaborador(String nome, String nomeComercial)
 	{

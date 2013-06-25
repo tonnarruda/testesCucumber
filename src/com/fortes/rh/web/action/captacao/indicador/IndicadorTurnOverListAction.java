@@ -15,6 +15,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.Vinculo;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.security.SecurityUtil;
@@ -54,8 +55,13 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<TurnOverCollection> dataSource;
 	private Collection<Empresa> empresas;
+	private Collection<Colaborador> colaboradores;
 	private Empresa empresa;
 	private int filtrarPor = 1;
+	
+	private boolean agruparPorTempoServico;
+	private Integer[] tempoServicoIni;
+	private Integer[] tempoServicoFim;
 
 	public String prepare() throws Exception
 	{
@@ -86,12 +92,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		
 		try 
 		{
-			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
-			
 			CollectionUtil<String> cUtil = new CollectionUtil<String>();
-			TurnOverCollection turnOverCollection = new TurnOverCollection();
-			turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
-			dataSource = Arrays.asList(turnOverCollection);
+			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
 			
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
 
@@ -117,7 +119,20 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
 			
-			return Action.SUCCESS;
+
+			if ( agruparPorTempoServico )
+			{
+				colaboradores = colaboradorManager.findDemitidosTurnoverTempoServico(tempoServicoIni, tempoServicoFim, empresa.getId(), dataIni, dataFim, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor);
+				return "success_temposervico";
+			}
+			else
+			{
+				TurnOverCollection turnOverCollection = new TurnOverCollection();
+				turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
+				dataSource = Arrays.asList(turnOverCollection);
+				return Action.SUCCESS;
+			}
+			
 		
 		} catch (ColecaoVaziaException e) {
 
@@ -289,5 +304,37 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public void setVinculosCheckList(Collection<CheckBox> vinculosCheckList) {
 		this.vinculosCheckList = vinculosCheckList;
+	}
+
+	public boolean isAgruparPorTempoServico() {
+		return agruparPorTempoServico;
+	}
+
+	public void setAgruparPorTempoServico(boolean agruparPorTempoServico) {
+		this.agruparPorTempoServico = agruparPorTempoServico;
+	}
+
+	public Integer[] getTempoServicoIni() {
+		return tempoServicoIni;
+	}
+
+	public void setTempoServicoIni(Integer[] tempoServicoIni) {
+		this.tempoServicoIni = tempoServicoIni;
+	}
+
+	public Integer[] getTempoServicoFim() {
+		return tempoServicoFim;
+	}
+
+	public void setTempoServicoFim(Integer[] tempoServicoFim) {
+		this.tempoServicoFim = tempoServicoFim;
+	}
+
+	public Collection<Colaborador> getColaboradores() {
+		return colaboradores;
+	}
+
+	public void setColaboradores(Collection<Colaborador> colaboradores) {
+		this.colaboradores = colaboradores;
 	}
 }

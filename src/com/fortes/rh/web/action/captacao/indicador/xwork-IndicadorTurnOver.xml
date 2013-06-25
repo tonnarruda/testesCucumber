@@ -13,6 +13,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">turnOver.pdf</param>
 			</result>
+			<result name="success_temposervico" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServico.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">turnOverPorTempoServico.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
 	</package>

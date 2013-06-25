@@ -5994,65 +5994,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(a1);
 		
-		Colaborador c1 = ColaboradorFactory.getEntity();
-		c1.setEmpresa(empresa);
-		c1.setVinculo(Vinculo.EMPREGO);
-		c1.setDataAdmissao(DateUtil.criarDataMesAno(1, 2, 2010));
-		c1.setDataDesligamento(DateUtil.criarDataMesAno(1, 3, 2012));
-		colaboradorDao.save(c1);
-		
-		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
-		hc1.setColaborador(c1);
-		hc1.setFaixaSalarial(fs1);
-		hc1.setAreaOrganizacional(a1);
-		hc1.setData(DateUtil.criarDataMesAno(1, 2, 2010));
-		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(hc1);
-		
-		Colaborador c2 = ColaboradorFactory.getEntity();
-		c2.setEmpresa(empresa);
-		c2.setVinculo(Vinculo.EMPREGO);
-		c2.setDataAdmissao(DateUtil.criarDataMesAno(1, 2, 2010));
-		c2.setDataDesligamento(DateUtil.criarDataMesAno(1, 8, 2010));
-		colaboradorDao.save(c2);
-		
-		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
-		hc2.setColaborador(c2);
-		hc2.setFaixaSalarial(fs1);
-		hc2.setAreaOrganizacional(a1);
-		hc2.setData(DateUtil.criarDataMesAno(1, 2, 2010));
-		hc2.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(hc2);
-		
-		Colaborador c3 = ColaboradorFactory.getEntity();
-		c3.setEmpresa(empresa);
-		c3.setVinculo(Vinculo.EMPREGO);
-		c3.setDataAdmissao(DateUtil.criarDataMesAno(1, 5, 2011));
-		c3.setDataDesligamento(DateUtil.criarDataMesAno(1, 11, 2011));
-		colaboradorDao.save(c3);
-		
-		HistoricoColaborador hc3 = HistoricoColaboradorFactory.getEntity();
-		hc3.setColaborador(c3);
-		hc3.setFaixaSalarial(fs1);
-		hc3.setAreaOrganizacional(a1);
-		hc3.setData(DateUtil.criarDataMesAno(1, 5, 2011));
-		hc3.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(hc3);
-		
-		Colaborador c4 = ColaboradorFactory.getEntity();
-		c4.setEmpresa(empresa);
-		c4.setVinculo(Vinculo.EMPREGO);
-		c4.setDataAdmissao(DateUtil.criarDataMesAno(1, 5, 2009));
-		c4.setDataDesligamento(DateUtil.criarDataMesAno(1, 11, 2009));
-		colaboradorDao.save(c4);
-		
-		HistoricoColaborador hc4 = HistoricoColaboradorFactory.getEntity();
-		hc4.setColaborador(c4);
-		hc4.setFaixaSalarial(fs1);
-		hc4.setAreaOrganizacional(a1);
-		hc4.setData(DateUtil.criarDataMesAno(1, 5, 2009));
-		hc4.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(hc4);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, a1, fs1, null);
 		
 		
 		Empresa empresaTurnover = EmpresaFactory.getEmpresa();
@@ -6075,21 +6020,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		cs1.setSolicitacao(sol1);
 		candidatoSolicitacaoDao.save(cs1);
 		
-		Colaborador c5 = ColaboradorFactory.getEntity();
-		c5.setCandidato(can1);
-		c5.setEmpresa(empresaTurnover);
-		c5.setVinculo(Vinculo.EMPREGO);
-		c5.setDataAdmissao(DateUtil.criarDataMesAno(1, 5, 2011));
-		c5.setDataDesligamento(DateUtil.criarDataMesAno(1, 11, 2011));
-		colaboradorDao.save(c5);
-		
-		HistoricoColaborador hc5 = HistoricoColaboradorFactory.getEntity();
-		hc5.setColaborador(c5);
-		hc5.setFaixaSalarial(fs1);
-		hc5.setAreaOrganizacional(a1);
-		hc5.setData(DateUtil.criarDataMesAno(1, 5, 2011));
-		hc5.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(hc5);
+		criarColaboradorHistorico(empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, a1, fs1, can1);
 		
 		Collection<TurnOver> retorno = colaboradorDao.countDemitidosTempoServico(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 		
@@ -6107,6 +6038,82 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		retorno = colaboradorDao.countDemitidosTempoServico(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 
 		assertEquals(1, retorno.size());
+	}
+	
+	public void testFindDemitidosTurnover()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial fs1 = FaixaSalarialFactory.getEntity();
+		fs1.setCargo(cargo);
+		faixaSalarialDao.save(fs1);
+		
+		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(a1);
+		
+		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(e1);
+		
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), e1, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, a1, fs1, null);
+		criarColaboradorHistorico(empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, a1, fs1, null);
+		
+		
+		Empresa empresaTurnover = EmpresaFactory.getEmpresa();
+		empresaTurnover.setTurnoverPorSolicitacao(true);
+		empresaDao.save(empresaTurnover);
+
+		Candidato can1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(can1);
+		
+		MotivoSolicitacao ms1 = new MotivoSolicitacao();
+		ms1.setTurnover(true);
+		motivoSolicitacaoDao.save(ms1);
+		
+		Solicitacao sol1 = SolicitacaoFactory.getSolicitacao();
+		sol1.setMotivoSolicitacao(ms1);
+		solicitacaoDao.save(sol1);
+		
+		CandidatoSolicitacao cs1 = new CandidatoSolicitacao();
+		cs1.setCandidato(can1);
+		cs1.setSolicitacao(sol1);
+		candidatoSolicitacaoDao.save(cs1);
+		
+		criarColaboradorHistorico(empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, a1, fs1, can1);
+		
+		Collection<Colaborador> retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		assertEquals(3, retorno.size());
+
+		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(e1.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		assertEquals(1, retorno.size());
+
+		retorno = colaboradorDao.findDemitidosTurnover(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		assertEquals(1, retorno.size());
+	}
+	
+	private void criarColaboradorHistorico(Empresa empresa, Date dataAdmissao, Date dataDesligamento, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Candidato candidato)
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaborador.setEmpresa(empresa);
+		colaborador.setVinculo(Vinculo.EMPREGO);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setDataDesligamento(dataDesligamento);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setData(dataAdmissao);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
