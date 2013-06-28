@@ -1532,7 +1532,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Collection<TurnOver>) query.list();
 	}
 	
-	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
+	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
 	{
 		StringBuilder hql = new StringBuilder("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
 		hql.append("	inner join co.historicoColaboradors hc ");
@@ -1552,7 +1552,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		where hc2.colaborador.id = co.id ");
 		hql.append("		and hc2.status = :status ");
 		hql.append("   ) ");
-		
+
 		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
 
@@ -1567,6 +1567,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if (empresa.isTurnoverPorSolicitacao())
 			hql.append("and ms.turnover = true ");
+		
+		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
+		{
+			hql.append(" and ( ");
+			for (int i = 0; i < tempoServicoIni.length; i++)
+			{
+				hql.append(" (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) between " + tempoServicoIni[i] + " and " + tempoServicoFim[i]);
+				if (i != tempoServicoIni.length - 1)
+					hql.append(" or ");	
+			}
+			hql.append(" ) ");
+		}
 		
 		hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
 		

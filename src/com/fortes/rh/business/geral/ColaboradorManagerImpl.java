@@ -1856,7 +1856,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			areasIds = null;
 		
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
-		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
+		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, tempoServicoIni, tempoServicoFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
 		
 		return this.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, "nome");
 	}
