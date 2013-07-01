@@ -27,10 +27,12 @@
 			</#list>
 		</#if>
 		
-		
 		$(function() {
 			DWREngine.setAsync(true);
-		
+			
+		<#if 1 < empresas?size >
+			$('#empresa').val('');
+		</#if>
 			var empresa = $('#empresa').val();
 	
 			populaCargosByArea(empresa);
@@ -103,7 +105,6 @@
 	</#if>
 
 		<@ww.form name="form" action="imprimeResultado.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.hidden id="empresa" name="empresaSistema.id"/>
 		
 			<#if questionario.tipo == tipoQuestionario.getENTREVISTA()>
 				<@ww.select label="Modelo de Entrevista" required="true" name="questionario.id" id="entrevista" list="entrevistas" listKey="questionario.id" listValue="questionario.titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
@@ -149,6 +150,7 @@
 				<@ww.hidden name="urlVoltar"/>
 				<@ww.hidden name="turmaId"/>
 				<@ww.hidden name="cursoId"/>
+				<@ww.hidden id="empresa" name="empresaSistema.id"/>
 		</@ww.form>
 
 		<div class="buttonGroup">

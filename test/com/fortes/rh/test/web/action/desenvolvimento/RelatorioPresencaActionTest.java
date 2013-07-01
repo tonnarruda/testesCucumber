@@ -107,7 +107,8 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	Collection<Curso> cursos = new ArrayList<Curso>();
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
-    	cursoManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(false));
     	
     	assertEquals("acessonegado", action.imprimirRelatorio());
     	assertEquals(cursos, action.getCursos());
@@ -141,6 +142,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
     	
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setAppVersao("1.01.1");
@@ -190,6 +192,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("findIdEstabelecimentosByTurma").with(eq(colaboradorTurma.getTurma().getId()), eq(empresa.getId())).will(returnValue(Arrays.asList(new Long[]{1L})));    	
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
+    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
     	
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setAppVersao("1.01.1");
@@ -223,6 +226,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
     	colaboradorTurmaManager.expects(once()).method("findByTurma").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(turma.getId(),""))));
+    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
 
     	assertEquals("error", action.imprimirRelatorio());
     }

@@ -22,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("unchecked")
 public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements CursoDao
@@ -323,7 +324,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return query.list();
 	}
 
-	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId) 
+	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
 		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
@@ -355,5 +356,36 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
     	criteria.add(Expression.eq("c.id", cursoId));
 
     	return criteria.list().size() > 0;
+	}
+
+	public Collection<Empresa> findEmpresasParticipantes(Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class,"e");
+        criteria.createCriteria("e.cursos", "c", Criteria.LEFT_JOIN);
+
+    	ProjectionList p = Projections.projectionList().create();
+    	p.add(Projections.property("e.id"), "id");
+    	p.add(Projections.property("e.nome"), "nome");
+    	criteria.setProjection(p);
+    	
+    	criteria.add( Expression.eq("c.id", cursoId) );
+    	criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
+
+    	return criteria.list();
+	}
+
+	public Empresa findEmpresaByCurso(Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+        criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
+
+    	ProjectionList p = Projections.projectionList().create();
+    	p.add(Projections.property("e.id"), "id");
+    	criteria.setProjection(p);
+    	
+    	criteria.add( Expression.eq("c.id", cursoId) );
+    	criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
+
+    	return (Empresa) criteria.uniqueResult();
 	}
 }

@@ -700,8 +700,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		curso.setEmpresasParticipantes(empresasParticipantes);
 		cursoDao.save(curso);
 
-		assertEquals(1, cursoDao.findAllEmpresasParticipantes(emp1.getId()).size());
-		assertEquals(1, cursoDao.findAllEmpresasParticipantes(emp2.getId()).size());
+		assertEquals(1, cursoDao.findAllByEmpresaParticipante(emp1.getId()).size());
+		assertEquals(1, cursoDao.findAllByEmpresaParticipante(emp2.getId()).size());
 	}
 
 	public void testExisteEmpresasNoCurso()
@@ -727,6 +727,39 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertTrue(cursoDao.existeEmpresasNoCurso(emp1.getId(), curso.getId()));
 		assertTrue(cursoDao.existeEmpresasNoCurso(emp2.getId(), curso.getId()));
 		assertFalse(cursoDao.existeEmpresasNoCurso(33L, curso.getId()));
+	}
+	
+	public void testFindEmpresasParticipantes()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+
+		Collection<Empresa> empresasParticipantes = new ArrayList<Empresa>();
+		empresasParticipantes.add(emp1);
+		empresasParticipantes.add(emp2);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de direção");
+		curso.setEmpresasParticipantes(empresasParticipantes);
+		cursoDao.save(curso);
+		
+		assertEquals(2, cursoDao.findEmpresasParticipantes(curso.getId()).size());
+	}
+	
+	public void findEmpresaByCurso()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de direção");
+		curso.setEmpresa(emp1);
+		cursoDao.save(curso);
+		
+		assertEquals(emp1.getId(), cursoDao.findEmpresaByCurso(curso.getId()));
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)

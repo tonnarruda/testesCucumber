@@ -17,6 +17,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -179,10 +180,23 @@
 			<#if contemCustosDetalhados>
 				somenteLeitura(false, 'custo');
 			</#if>
-		
+	
 			$('.despesa').blur(function() {
 				var valor = somaDespesas();
 				$('#totalCustos').text(float2moeda(valor));
+			});
+
+			$('#tooltipCurso').qtip({
+				content: 'A alteração do curso está restrita à empresa que o criou.'
+			});
+			$('#tooltipCusto').qtip({
+				content: 'A alteração do custo está restrita à empresa que o criou.'
+			});
+			$('#tooltipDias').qtip({
+				content: 'Não é possível editar os dias previstos, pois existem presenças.'
+			});
+			$('#tooltipAvaliacao').qtip({
+				content: 'A alteração da avaliação do curso está restrita à empresa que o criou.'
 			});
 		});
 	</script>
@@ -193,19 +207,35 @@
 <body>
 	<@ww.actionerror />
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.select label="Curso" name="turma.curso.id" list="cursos" id="curso" listKey="id" listValue="nome"  headerKey="" headerValue="Selecione..." />
+		
+		<#if turmaPertenceAEmpresaLogada>
+			<@ww.select label="Curso" name="turma.curso.id" list="cursos" id="curso" listKey="id" listValue="nome"  headerKey="" headerValue="Selecione..."/>
+		<#else>
+			<strong>Curso: ${turma.curso.nome}</strong>
+			<img id="tooltipCurso" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -3px; margin-top: -9px;" />
+			<@ww.hidden name="turma.curso.id" id="curso" value="${turma.curso.id}" />
+			</br></br>
+		</#if>
+
 		<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" cssStyle="width: 637px;" maxLength="100"/>
 		<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" liClass="liLeft" />
 		<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" liClass="liLeft"/>
+		
 		<li id="wwgrp_custo">
 			<div class="wwlbl" id="wwlbl_custo">
 				<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
 			</div> 
 			<div class="wwctrl" id="wwctrl_custo">
-				<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
-				<a href="javascript:;" id=detalharCusto  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+				<#if turmaPertenceAEmpresaLogada>
+					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
+					<a href="javascript:;" id=detalharCusto  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+				<#else>
+					<@ww.textfield theme="simple" id="custo" name="turma.custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;" readonly=true/>
+					<img id="tooltipCusto" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -3px" />
+				</#if>
 			</div> 
 		</li>
+		
 		<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 437px;" liClass="liLeft"/>
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 		<@ww.select label="Realizada" name="turma.realizada" list=r"#{true:'Sim',false:'Não'}"/>
@@ -224,7 +254,8 @@
 		<#if turma.temPresenca?exists && turma.temPresenca>
 			<@ww.textfield name="turma.dataPrevIni" value="${dataIni}" id="prevIni" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft" />
 			<@ww.label value="a" liClass="liLeft"/>
-			<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;"/>
+			<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/></br>
+			<img id="tooltipDias" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -90px; margin-bottom:-18px" />
 			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=true valueString=true/>
 		<#else>
 			<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
@@ -236,7 +267,8 @@
 		<#if turmaPertenceAEmpresaLogada>
 			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
 		<#else>
-			<@ww.hidden name="avaliacaoTurmasCheck" />
+			<img id="tooltipAvaliacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 250px; margin-bottom:-18px" />
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true/>
 		</#if>
 
 		<@ww.hidden name="turma.id" id="turmaId" />

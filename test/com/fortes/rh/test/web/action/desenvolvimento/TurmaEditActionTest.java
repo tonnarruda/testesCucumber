@@ -150,7 +150,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	Collection<Curso> cursos = new ArrayList<Curso>();
     	Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>();
 
-    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(cursos));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("find");
 
@@ -161,6 +161,8 @@ public class TurmaEditActionTest extends MockObjectTestCase
     public void testPrepareUpdate() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Curso curso = CursoFactory.getEntity();
+    	action.setCurso(curso);
     	Turma turma = TurmaFactory.getEntity(1L);
     	turma.setEmpresa(empresa);
     	turma.setDataPrevIni(new Date());
@@ -178,7 +180,8 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
     	colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").with(eq(turma.getId())).will(returnValue(true));
 
-    	cursoManager.expects(once()).method("findAllSelect").with(eq(1L)).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(eq(1L)).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(true));
     	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("find");
@@ -203,12 +206,14 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     public void testUpdate() throws Exception
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
     	Turma turma = TurmaFactory.getEntity(10L);
+    	turma.setEmpresa(empresa);
     	
     	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
     	
-    	turmaManager.expects(once()).method("atualizar").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
+    	turmaManager.expects(once()).method("atualizar").withAnyArguments().isVoid();
     	
     	assertEquals("success", action.update());
     }
@@ -362,7 +367,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     public void testPrepareImprimirCertificado() throws Exception
     {
     	Collection<Curso> cursos = new ArrayList<Curso>();
-    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(cursos));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	assertEquals("success", action.prepareImprimirCertificado());
     	assertEquals(cursos, action.getCursos());
@@ -396,7 +401,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     public void testImprimirCertificadoVazio() throws Exception
     {
     	action.setColaboradoresCheck(null);
-    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Curso>()));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(new ArrayList<Curso>()));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	assertEquals("input",action.imprimirCertificado());
     }
@@ -426,7 +431,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     public void testImprimirCertificadoVersoVazio() throws Exception
     {
     	action.setColaboradoresCheck(null);
-    	cursoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Curso>()));
+    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(new ArrayList<Curso>()));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	assertEquals("input",action.imprimirCertificadoVerso());
     }

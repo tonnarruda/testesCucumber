@@ -459,11 +459,16 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		Curso curso = CursoFactory.getEntity();
 		curso.setEmpresa(empresa1);
 		cursoDao.save(curso);
+
+		Curso curso2 = CursoFactory.getEntity();
+		curso2.setEmpresa(empresa2);
+		cursoDao.save(curso2);
 		
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
 		Date dataPrevFim = DateUtil.criarDataMesAno(01, 01, 2001);
 		
 		Turma turmaRealizada = TurmaFactory.getEntity();
+		turmaRealizada.setDescricao("t1");
 		turmaRealizada.setRealizada(true);
 		turmaRealizada.setDataPrevIni(dataPrevIni);
 		turmaRealizada.setDataPrevFim(dataPrevFim);
@@ -472,14 +477,16 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaDao.save(turmaRealizada);
 		
 		Turma turmaNaoRealizada1 = TurmaFactory.getEntity();
+		turmaNaoRealizada1.setDescricao("t2");
 		turmaNaoRealizada1.setRealizada(false);
 		turmaNaoRealizada1.setDataPrevIni(dataPrevIni);
 		turmaNaoRealizada1.setDataPrevFim(dataPrevFim);
 		turmaNaoRealizada1.setEmpresa(empresa1);
-		turmaNaoRealizada1.setCurso(curso);
+		turmaNaoRealizada1.setCurso(curso2);
 		turmaDao.save(turmaNaoRealizada1);
 		
 		Turma turmaNaoRealizada2 = TurmaFactory.getEntity();
+		turmaNaoRealizada2.setDescricao("t3");
 		turmaNaoRealizada2.setRealizada(false);
 		turmaNaoRealizada2.setDataPrevIni(dataPrevIni);
 		turmaNaoRealizada2.setDataPrevFim(dataPrevFim);
@@ -489,6 +496,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		
 		Date hoje = new Date();
 		Turma turmaForaPeriodo = TurmaFactory.getEntity();
+		turmaForaPeriodo.setDescricao("t4");
 		turmaForaPeriodo.setRealizada(false);
 		turmaForaPeriodo.setDataPrevIni(hoje);
 		turmaForaPeriodo.setDataPrevFim(hoje);

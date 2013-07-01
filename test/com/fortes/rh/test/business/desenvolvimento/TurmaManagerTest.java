@@ -350,7 +350,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds);
+			turmaManager.atualizar(turma, diasCheck, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
 		}
 		catch (Exception e)
 		{

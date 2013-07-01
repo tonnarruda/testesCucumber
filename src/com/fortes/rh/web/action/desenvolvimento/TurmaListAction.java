@@ -372,7 +372,7 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String relatorioInvestimento() throws Exception
 	{
-		cursos = cursoManager.findAllSelect(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
 		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 		
 		return Action.SUCCESS;

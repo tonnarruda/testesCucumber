@@ -17,6 +17,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
@@ -25,6 +26,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Entrevista;
@@ -34,6 +36,7 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.AspectoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.EntrevistaFactory;
@@ -56,6 +59,7 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     private Mock fichaMedicaManager;
     private Mock empresaManager;
     private Mock estabelecimentoManager;
+    private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -87,6 +91,9 @@ public class QuestionarioListActionTest extends MockObjectTestCase
         estabelecimentoManager = mock(EstabelecimentoManager.class);
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         
+        parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
+        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -104,6 +111,9 @@ public class QuestionarioListActionTest extends MockObjectTestCase
 
     public void testPrepareResultado() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setCompartilharCursos(false);
+    	
     	Empresa empresa = action.getEmpresaSistema();
 		Collection<Empresa> empresas = new ArrayList<Empresa>();
 		empresas.add(empresa);
@@ -134,6 +144,7 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     	
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));;
 		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(empresaIds)).will(returnValue(new ArrayList<Estabelecimento>()));
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
     	entrevistaManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(entrevistas));
 
@@ -343,10 +354,14 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     
     public void testImprimeResultadoException() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setCompartilharCursos(false);
+    	
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	action.setQuestionario(questionario);
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
     	
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(questionario.getId()), ANYTHING, ANYTHING, eq(false)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(questionario.getId(),""))));
     	
     	empresaManager.expects(once()).method("findDistinctEmpresasByQuestionario").with(eq(questionario.getId())).will(returnValue(new ArrayList<Empresa>()));
@@ -364,12 +379,16 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     
     public void testImprimeResultadoSemPergunta() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setCompartilharCursos(false);
+    	
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	action.setQuestionario(questionario);
     	action.setAgruparPorAspectos(true);
 
     	Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
 
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(action.getQuestionario()));
     	
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));;

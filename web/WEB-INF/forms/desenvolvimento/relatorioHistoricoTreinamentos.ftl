@@ -50,7 +50,7 @@
 
 	<@ww.form id="formRelatorio" name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" >
 		
-		<@frt.checkListBox label="Colaboradores" id="colaboradoresCheck" name="colaboradoresCheck" list="colaboradoresCheckList" form="document.getElementById('formRelatorio')"/>
+		<@frt.checkListBox label="Colaboradores*" id="colaboradoresCheck" name="colaboradoresCheck" list="colaboradoresCheckList" form="document.getElementById('formRelatorio')"/>
 		
 		Período:<br>
 		<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>

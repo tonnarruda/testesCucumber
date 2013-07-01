@@ -58,7 +58,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public String imprimirRelatorio()
 	{
 		Turma turma = turmaManager.findById(colaboradorTurma.getTurma().getId());
-		if (!turma.getCurso().getEmpresa().equals(getEmpresaSistema()) && !turma.getCurso().getEmpresasParticipantes().contains(getEmpresaSistema()))
+		if (turma.getCurso() != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), turma.getCurso().getId()))
 		{
 			setActionMsg("O Curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			prepareRelatorio();
@@ -201,7 +201,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public String prepareRelatorio()
 	{
-		cursos = cursoManager.findAllEmpresasParticipantes(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
 		diasCheckList = new ArrayList<CheckBox>();
 		return Action.SUCCESS;
 	}

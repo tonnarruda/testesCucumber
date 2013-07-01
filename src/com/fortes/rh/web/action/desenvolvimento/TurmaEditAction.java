@@ -202,7 +202,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (turma != null && turma.getId() != null)
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
 
-		cursos = cursoManager.findAllEmpresasParticipantes(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
@@ -223,7 +223,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		prepare();
 		
-		if (!cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))
+		if (curso != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId()))
 		{
 			addActionWarning("A turma solicitada não existe ou não está compartilhada para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
@@ -270,7 +270,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String update() throws Exception
 	{
-		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
+		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -341,7 +341,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String prepareImprimirCertificado() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		cursos = cursoManager.findAllEmpresasParticipantes(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}

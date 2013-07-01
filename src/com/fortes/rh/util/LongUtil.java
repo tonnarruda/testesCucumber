@@ -51,7 +51,7 @@ public class LongUtil
 
 	public static Long[] arrayStringToArrayLong(String[] array)
 	{
-		if(array == null || (array.length == 1 && array[0].equals("[]")))
+		if(array == null || (array.length == 1 && (array[0].equals("[]") || array[0].equals(""))))
 			return new Long[0];
 
 		Long result[] = new Long[array.length];

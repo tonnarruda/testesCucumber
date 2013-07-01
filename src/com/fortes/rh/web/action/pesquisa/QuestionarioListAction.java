@@ -8,10 +8,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.EntrevistaManager;
 import com.fortes.rh.business.pesquisa.FichaMedicaManager;
@@ -56,6 +58,8 @@ public class QuestionarioListAction extends MyActionSupportList
     private EmpresaManager empresaManager;
     private EstabelecimentoManager estabelecimentoManager;
     private TurmaManager turmaManager;
+    private CursoManager cursoManager;
+    private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Questionario questionario;
 	private ColaboradorQuestionario colaboradorQuestionario;
@@ -277,8 +281,13 @@ public class QuestionarioListAction extends MyActionSupportList
 
     public String prepareResultado() throws Exception
     {
-    	empresas = empresaManager.findDistinctEmpresasByQuestionario(questionario.getId());
-		empresaId = getEmpresaSistema().getId();
+    	empresaId = getEmpresaSistema().getId();
+    	
+   		if(parametrosDoSistemaManager.findById(1L).getCompartilharCursos())
+   			empresas = cursoManager.findAllEmpresasParticipantes(cursoId);
+   		else
+   			empresas = empresaManager.findDistinctEmpresasByQuestionario(questionario.getId());
+    	
 		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		
     	questionario = questionarioManager.findByIdProjection(questionario.getId());
@@ -765,5 +774,13 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public void setTurmaManager(TurmaManager turmaManager) {
 		this.turmaManager = turmaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 }

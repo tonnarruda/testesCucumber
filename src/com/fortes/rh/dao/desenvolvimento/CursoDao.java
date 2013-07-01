@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.geral.Empresa;
 
 public interface CursoDao extends GenericDao<Curso>
 {
@@ -20,11 +21,13 @@ public interface CursoDao extends GenericDao<Curso>
 	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
+	public Empresa findEmpresaByCurso(Long cursoId);
 	public Integer getCount(Curso curso, Long empresaId);
 	public Collection<Long> findTurmas(Long empresaId, Long[] cursoIds);
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 	public Collection<Curso> findByCompetencia(Long competenciaId, Character tipoCompetencia);
-	public Collection<Curso> findAllEmpresasParticipantes(Long empresaId);
+	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId);
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
+	public Collection<Empresa> findEmpresasParticipantes(Long cursoId);
 }

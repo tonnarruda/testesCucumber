@@ -73,7 +73,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		avaliacaoCursoCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoCursoCheckList, curso.getAvaliacaoCursos(), "getId");
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, curso.getEmpresasParticipantes(), "getId");
 
-		if (!cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId())){
+		if (curso != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId())){
 			addActionWarning("O curso solicitado não existe ou não esta compartilhado para a empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		} else if(!curso.getEmpresa().equals(getEmpresaSistema())){

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -12,10 +11,8 @@ import com.opensymphony.xwork.Action;
 public class CursoListAction extends MyActionSupportList
 {
 	private CursoManager cursoManager;
-
 	private Collection<Curso> cursos;
 	private Curso curso;
-
 	private String nomeCursoBusca;
 
 	public String execute() throws Exception
@@ -29,7 +26,6 @@ public class CursoListAction extends MyActionSupportList
 		curso.setNome(nomeCursoBusca);
 		
 		setTotalSize(cursoManager.getCount(curso, getEmpresaSistema().getId()));
-
 		cursos = cursoManager.findByFiltro(getPage(), getPagingSize(), curso, getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
