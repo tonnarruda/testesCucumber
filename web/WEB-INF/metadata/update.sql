@@ -19700,3 +19700,8 @@ update parametrosdosistema set appversao = '1.1.109.117';--.go
 update parametrosdosistema set proximaVersao = '28/07/2013';--.go
 insert into migrations values('20130611134745');--.go
 update parametrosdosistema set appversao = '1.1.109.118';--.go
+-- versao 1.1.109.119
+
+update parametrosdosistema set proximaVersao = '21/08/2013';--.go
+insert into migrations values('20130701095239');--.go
+update parametrosdosistema set appversao = '1.1.109.119';--.go

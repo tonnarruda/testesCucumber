@@ -49,9 +49,9 @@ Funcionalidade: Cadastrar Avaliações de Desempenho
 
     Então eu clico em excluir "_avaliacao 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Avaliação de Desempenho excluída com sucesso."
+    E eu devo ver "Avaliação de desempenho excluída com sucesso."
 
     Então eu clico em excluir "_avaliacao 2 (Clone)"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Avaliação de Desempenho excluída com sucesso."
+    E eu devo ver "Avaliação de desempenho excluída com sucesso."
    

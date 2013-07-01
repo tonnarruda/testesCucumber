@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.109.119" data="01/07/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Relatórios > Turnover: Nova opção de exibir colaboradores agrupados por tempo de serviço.
+			:: Info. Funcionais > Painel de Indicadores: Novo filtro por cargo.
+			:: Info. Funcionais > Painel de Indicadores: Novo gráfico de turnover agrupado por tempo de serviço.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.109.118" data="10/06/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Nova opção de exibir observações dos avaliadores no relatório.

@@ -28,4 +28,4 @@ Funcionalidade: Configurações do Sistema
     E eu preencho "Senha" com "1234"
     E eu preencho o campo (JS) "update_parametrosDoSistema_proximaVersao" com "28/07/2013"
     E eu clico no botão "Gravar"
-    Então eu devo ver "Configurações do Sistema atualizadas com sucesso!"
+    Então eu devo ver "Configurações do sistema atualizadas com sucesso."
