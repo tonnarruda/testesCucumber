@@ -8,7 +8,7 @@
 		</action>
 	
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="list">
-			<interceptor-ref name="defaultListStack">
+			<interceptor-ref name="showFilterStack">
 	    		<param name="scope.session">nomeCursoBusca</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoList.ftl</result>
