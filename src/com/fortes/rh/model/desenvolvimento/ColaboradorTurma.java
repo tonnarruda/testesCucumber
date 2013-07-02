@@ -75,6 +75,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	@Transient
 	private Integer qtdAvaliacoesAprovadasPorNota;
 	@Transient
+	private Integer qtdRespostasAvaliacaoTurma;
+	@Transient
 	private Double nota;
 	@Transient
 	private Collection<MatrizTreinamento> matrizTreinamentos;
@@ -163,11 +165,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	// findByTurma
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj)
+	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj, Integer qtdRespostasAvaliacaoTurma)
 	{
 		this.setId(id);
 
 		this.aprovado = aprovado;
+		this.qtdRespostasAvaliacaoTurma = qtdRespostasAvaliacaoTurma;
 
 		this.prioridadeTreinamento = new PrioridadeTreinamento();
 		this.prioridadeTreinamento.setId(prioridadeTreinamentoId);
@@ -753,24 +756,28 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.coluna03RelatorioPresenca = coluna03RelatorioPresenca;
 	}
 
-	
 	public Collection<MatrizTreinamento> getMatrizTreinamentos()
 	{
 		return matrizTreinamentos;
 	}
-
 	
 	public void setMatrizTreinamentos(Collection<MatrizTreinamento> matrizTreinamentos)
 	{
 		this.matrizTreinamentos = matrizTreinamentos;
 	}
 
-	public Collection<ColaboradorPresenca> getColaboradorPresencas() {
+	public Collection<ColaboradorPresenca> getColaboradorPresencas()
+	{
 		return colaboradorPresencas;
 	}
 
-	public void setColaboradorPresencas(
-			Collection<ColaboradorPresenca> colaboradorPresencas) {
+	public void setColaboradorPresencas(Collection<ColaboradorPresenca> colaboradorPresencas)
+	{
 		this.colaboradorPresencas = colaboradorPresencas;
+	}
+	
+	public Integer getQtdRespostasAvaliacaoTurma()
+	{
+		return qtdRespostasAvaliacaoTurma;
 	}
 }

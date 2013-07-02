@@ -119,9 +119,13 @@
 
 				<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO">
 					<#if turma.turmaAvaliacaoTurmas?exists && 0 < turma.turmaAvaliacaoTurmas?size>
-						<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Avaliações" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
+						<#if turma.turmaAvaliacaoTurmas?size == colaboradorTurma.qtdRespostasAvaliacaoTurma>
+							<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Todas avaliações foram respondidas(${colaboradorTurma.qtdRespostasAvaliacaoTurma}/${turma.turmaAvaliacaoTurmas?size})" src="<@ww.url value="/imgs/page_edit.gif"/>"/></a> 
+						<#else>
+							<a href="javascript:;" onclick="abrirMenuRespostas(event, ${colaboradorTurma.colaborador.id});"><img border="0" title="Avaliações(${colaboradorTurma.qtdRespostasAvaliacaoTurma}/${turma.turmaAvaliacaoTurmas?size})" src="<@ww.url value="/imgs/page_new.gif"/>"/></a> 
+						</#if>
 					<#else>
-						<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_edit.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
+						<a href="javascript:;"><img border="0" title="Não existem avaliações definidas para esta turma" src="<@ww.url value="/imgs/page_new.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"/></a>
 					</#if>
 				</@authz.authorize>	
 					
