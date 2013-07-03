@@ -134,6 +134,12 @@
 			if(validaFormulario('form', camposObg, new Array ('dataSol')))
 			{
 				$('#gravar').attr('disabled', true);
+				
+				$('.colaboradorSubstituido').each(function() {
+					if ($(this).val() == '')
+						$(this).parent().remove();
+				});
+				
 				return true;
 			} 
 
@@ -170,6 +176,67 @@
 			DWRUtil.addOptions("ambiente", data);
 		}
 		
+		var contador = 0;
+		function adicionarCampoColaboradorSubstituto(nome) 
+		{
+			if (!nome) nome = '';
+			var campo = "<li>";
+			campo += "<input type='text' id='colaboradorSubstituido" + contador + "' name='colaboradoresSusbstituidos' class='colaboradorSubstituido' size='40' value='" + nome + "'  maxLength='100' cssClass='inputNome' liClass='liLeft' style='margin-top: 5px;'/>";
+			campo += "<img title='Remover' src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' onclick='javascript:$(this).parent().remove();' style='cursor:pointer;'/>";
+			campo += "</li>";
+			$('ul#camposSubstituto').append(campo);
+			inicializaAutocompleteColabSubstituto(contador);
+			contador++;
+		}
+		
+		function inicializaAutocompleteColabSubstituto(contador)
+		{
+			var colabSub = "colaboradorSubstituido" + contador; 
+			$('#'+ colabSub).autocomplete({
+				minLength: 3,
+				source: function( request, response ) {
+					DWRUtil.useLoadingMessage('Carregando...');
+					ColaboradorDWR.findByNome(request.term, ${empresaId}, function(dados) {
+						response( dados );
+					});
+				},
+				focus: function( event, ui ) {
+					return false;
+				},
+				select: function( event, ui ) {
+					DWRUtil.useLoadingMessage('Carregando...');
+					ComissaoDWR.dataEstabilidade(ui.item.value, 
+												function(data) 
+												{
+													if (data)
+													{
+														var msg = 'O Colaborador '+ ui.item.nome +', faz parte <br>da CIPA e possui estabilidade até o dia ' + data + '.' +
+																	'<br /> Deseja realmente substituí-lo?';
+
+														$('<div>'+ msg +'</div>').dialog({	title: 'Alerta!',
+																							modal: true, 
+																							height: 150,
+																							width: 500,
+																								buttons: [ 	{ text: "Sim", click: function() { $('#'+ colabSub).val(ui.item.nome); $(this).dialog("close"); } },
+																							    		{ text: "Não", click: function() { $('#'+ colabSub).val(""); $(this).dialog("close"); } } ] 
+																						});
+														
+													}
+													else
+													{
+														$('#'+ colabSub).val(ui.item.nome);
+													}
+												});
+					return false;
+				}
+			}).data( "autocomplete" )._renderItem = function( ul, item ) {
+				return $( "<li></li>" )
+					.data( "item.autocomplete", item )
+					.append( "<a>" + item.label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex( $('#'+ colabSub).val() ) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>" ) + "</a>" )
+					.appendTo( ul );
+			};		
+		}
+		
 		$(function() {
 			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
 				$('#statusSolicitcao').removeAttr('disabled');
@@ -177,53 +244,16 @@
 			</@authz.authorize>
 			
 			<#if exibeColaboradorSubstituido>
+				<#list colaboradoresSusbstituidos as colaboradorSusbstituido>
+					adicionarCampoColaboradorSubstituto("${colaboradorSusbstituido}");
+				</#list>
+			
+				if ($('.colaboradorSubstituido').size() == 0)
+					adicionarCampoColaboradorSubstituto();
+		
 				$('#tooltipHelp').qtip({
 					content: 'Selecione um colaborador na lista exibida ao digitar o nome para validar se o mesmo possui estabilidade'
 				});
-				
-				$('#colaboradorSubstituido').autocomplete({
-					minLength: 3,
-					source: function( request, response ) {
-						DWRUtil.useLoadingMessage('Carregando...');
-						ColaboradorDWR.findByNome(request.term, ${empresaId}, function(dados) {
-							response( dados );
-						});
-					},
-					focus: function( event, ui ) {
-						return false;
-					},
-					select: function( event, ui ) {
-						DWRUtil.useLoadingMessage('Carregando...');
-						ComissaoDWR.dataEstabilidade(ui.item.value, 
-													function(data) 
-													{
-														if (data)
-														{
-															var msg = 'O Colaborador '+ ui.item.nome +', faz parte <br>da CIPA e possui estabilidade até o dia ' + data + '.' +
-																		'<br /> Deseja realmente substituí-lo?';
-
-															$('<div>'+ msg +'</div>').dialog({	title: 'Alerta!',
-																								modal: true, 
-																								height: 150,
-																								width: 500,
-																									buttons: [ 	{ text: "Sim", click: function() { $('#colaboradorSubstituido').val(ui.item.nome); $(this).dialog("close"); } },
-																								    		{ text: "Não", click: function() { $('#colaboradorSubstituido').val(""); $(this).dialog("close"); } } ] 
-																							});
-															
-														}
-														else
-														{
-															$('#colaboradorSubstituido').val(ui.item.nome);
-														}
-													});
-						return false;
-					}
-				}).data( "autocomplete" )._renderItem = function( ul, item ) {
-					return $( "<li></li>" )
-						.data( "item.autocomplete", item )
-						.append( "<a>" + item.label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex( $('#colaboradorSubstituido').val() ) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>" ) + "</a>" )
-						.appendTo( ul );
-				};
 			</#if>
 		});
 	</script>
@@ -300,8 +330,13 @@
 		
 		<#if exibeColaboradorSubstituido>
 			<div>
-				<@ww.textfield label="Colaborador Substituído" id="colaboradorSubstituido" name="solicitacao.colaboradorSubstituido"  maxLength="100" cssClass="inputNome" liClass="liLeft" style="margin-top: 5px;"/>
+				<label>Colaborador Substituído:</label>
 				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top:20px;" />
+				<ul id="camposSubstituto"></ul>
+				<a href="javascript:;" onclick="javascript:adicionarCampoColaboradorSubstituto();" style="text-decoration: none;">
+					<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 
+					Inserir mais um colaborador substituído
+				</a>
 				<br clear="all"/>
 			</div>
 		</#if>

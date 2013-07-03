@@ -740,6 +740,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	public String getColaboradorSubstituido() {
+		if(colaboradorSubstituido != null)
+			return colaboradorSubstituido.replace("|;", ", ");
+		
 		return colaboradorSubstituido;
 	}
 

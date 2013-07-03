@@ -105,6 +105,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private Collection<Funcao> funcoes;
     private Collection<Ambiente> ambientes;
 
+    private String[] colaboradoresSusbstituidos = new String[]{};
     private String[] bairrosCheck;
     private Collection<CheckBox> bairrosCheckList = new ArrayList<CheckBox>();
     private String[] emailsCheck;
@@ -173,6 +174,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	if (solicitacao != null && solicitacao.getId() != null)
         {
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
+            
+            if(solicitacao.getColaboradorSubstituido() != null)
+            	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split("\\|;"); 
+            
             estado = solicitacao.getCidade().getUf();
             faixaInativaId = solicitacao.getFaixaSalarial().getId();
             areaInativaId = solicitacao.getAreaOrganizacional().getId();
@@ -224,7 +229,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public String prepareInsert() throws Exception
     {
         prepare();
-
         solicitacao.setQuantidade(1);
         solicitacao.setSexo("I");
         return Action.SUCCESS;
@@ -281,6 +285,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
       		solicitacao.setFuncao(null);
       	if (solicitacao.getAmbiente() == null || solicitacao.getAmbiente().getId() == null || solicitacao.getAmbiente().getId() == -1L)
       		solicitacao.setAmbiente(null);
+      	
+      	insereColaboradorSubstituto();
 
         solicitacaoManager.save(solicitacao, emailsCheck, LongUtil.arrayStringToArrayLong(avaliacoesCheck));
         
@@ -294,10 +300,23 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         else
         	solicitacao.setBairros(null);
         
+        insereColaboradorSubstituto();
+        
         solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), getUsuarioLogado());
         
         return Action.SUCCESS;
     }
+
+	private void insereColaboradorSubstituto() 
+	{
+		if(colaboradoresSusbstituidos != null && colaboradoresSusbstituidos.length > 0)
+      	{
+      		solicitacao.setColaboradorSubstituido(colaboradoresSusbstituidos[0]);
+      		for (int i = 1; i < colaboradoresSusbstituidos.length; i++) 
+				if(!colaboradoresSusbstituidos[i].equals(""))
+					solicitacao.setColaboradorSubstituido(solicitacao.getColaboradorSubstituido() + "|;" + colaboradoresSusbstituidos[i]);
+      	}
+	}
 
 	private Collection<Bairro> montaBairros() {
 		Collection<Bairro> bairrosTmp = new ArrayList<Bairro>();
@@ -864,5 +883,13 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setDataFim(Date dataFim)
 	{
 		this.dataFim = dataFim;
+	}
+
+	public String[] getColaboradoresSusbstituidos() {
+		return colaboradoresSusbstituidos;
+	}
+
+	public void setColaboradoresSusbstituidos(String[] colaboradoresSusbstituidos) {
+		this.colaboradoresSusbstituidos = colaboradoresSusbstituidos;
 	}
 }
