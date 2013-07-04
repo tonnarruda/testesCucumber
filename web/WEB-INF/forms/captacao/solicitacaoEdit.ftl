@@ -339,6 +339,7 @@
 				</a>
 				<br clear="all"/>
 			</div>
+			<br />
 		</#if>
 		
 		<#if !solicitacao.id?exists>
