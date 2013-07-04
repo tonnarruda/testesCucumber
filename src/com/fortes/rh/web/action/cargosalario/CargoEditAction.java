@@ -102,6 +102,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private boolean integraAC;
 	private boolean exibColabAdmitido;
 	private boolean exibColabDesatualizado ;
+	private boolean exibirValorFaixaSalarial;
 	private boolean relatorioResumido;
 	private Date dataHistorico;
 	private Collection<Empresa> empresas;
@@ -241,6 +242,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		{
 			cargos = cargoManager.getCargosByIds(LongUtil.arrayStringToArrayLong(cargosCheck), getEmpresaSistema().getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Cargos", getEmpresaSistema(), null);
+			parametros.put("EXIBIR_VALOR_FAIXASALARIAL", exibirValorFaixaSalarial);
 		}
 		catch (Exception e)
 		{
@@ -859,6 +861,11 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setVinculo(String vinculo) {
 		this.vinculo = vinculo;
+	}
+	
+	public void setExibirValorFaixaSalarial(boolean exibirValorFaixaSalarial)
+	{
+		this.exibirValorFaixaSalarial = exibirValorFaixaSalarial;
 	}
 
 }

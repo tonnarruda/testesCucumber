@@ -3,8 +3,10 @@
 package com.fortes.rh.model.cargosalario;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -127,6 +129,13 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.faixaSalarialHistoricoAtual.setValor(historicoFaixaValor);
 	}
 
+	public String getHistoricoFaixaValorFormatado()
+	{
+    	NumberFormat df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    	
+    	return df.format( (faixaSalarialHistoricoAtual.getValorReal() == null ? 0 : faixaSalarialHistoricoAtual.getValorReal()) );
+	}
+	
 	public void setHistoricoFaixaQuantidade(Double historicoFaixaQuantidade)
 	{
 		if(this.faixaSalarialHistoricoAtual == null)

@@ -4,13 +4,17 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="422"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<subDataset name="faixas" uuid="e243829d-9ab6-461f-81f8-740adf16d789">
+		<parameter name="EXIBIR_VALOR_FAIXASALARIAL" class="java.lang.Boolean" isForPrompting="false">
+			<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+		</parameter>
 		<field name="competencias" class="java.lang.Object"/>
 		<field name="nome" class="java.lang.String"/>
+		<field name="historicoFaixaValorFormatado" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="competencias" uuid="898df8de-a7f1-4fb6-bc27-fe31cfcf1c4e">
 		<field name="nome" class="java.lang.String"/>
@@ -18,6 +22,7 @@
 	</subDataset>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="EXIBIR_VALOR_FAIXASALARIAL" class="java.lang.Boolean"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="nomeMercado" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
@@ -512,16 +517,19 @@
 				<reportElement uuid="bdf358a4-3d38-4fcd-b059-1caa3a95371e" mode="Transparent" x="0" y="13" width="535" height="38" backcolor="#FFFFFF"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="faixas" uuid="82662b86-d71b-4637-8160-3c00d1a66632">
+						<datasetParameter name="EXIBIR_VALOR_FAIXASALARIAL">
+							<datasetParameterExpression><![CDATA[$P{EXIBIR_VALOR_FAIXASALARIAL}]]></datasetParameterExpression>
+						</datasetParameter>
 						<dataSourceExpression><![CDATA[$F{faixaSalarials}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="38" width="535">
 						<textField>
-							<reportElement uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2" x="0" y="0" width="535" height="13" isPrintWhenDetailOverflows="true"/>
+							<reportElement uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2" x="0" y="0" width="533" height="13" isPrintWhenDetailOverflows="true"/>
 							<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
 							<textElement>
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression><![CDATA["Faixa Salarial : " + $F{nome}]]></textFieldExpression>
+							<textFieldExpression><![CDATA["Faixa Salarial : " + $F{nome}+ ( $P{EXIBIR_VALOR_FAIXASALARIAL} ? "  (Valor : "+$F{historicoFaixaValorFormatado}+")" : "" )]]></textFieldExpression>
 						</textField>
 						<componentElement>
 							<reportElement uuid="f4288dda-ecd0-4d1e-b8e0-aa620aa6ff08" mode="Transparent" x="16" y="25" width="503" height="12"/>

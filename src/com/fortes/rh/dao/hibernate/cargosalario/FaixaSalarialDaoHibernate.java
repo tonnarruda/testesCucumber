@@ -23,6 +23,8 @@ import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.StringUtil;
@@ -306,8 +308,24 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select fs.id as faixaId, fs.nome as faixaNome, comp.nome as compNome, nc.descricao ");
+		sql.append("select fs.id as faixaId, fs.nome as faixaNome, ");
+		sql.append("   case hf.tipo ");
+		sql.append("      when "+TipoAplicacaoIndice.VALOR+" then hf.valor ");
+		sql.append("      when "+TipoAplicacaoIndice.INDICE+" then hf.quantidade*hi.valor ");
+		sql.append("      else 0.0 ");
+		sql.append("   end as valor, ");
+		sql.append("   comp.nome as compNome, nc.descricao ");
 		sql.append("from faixasalarial fs "); 
+		sql.append("left join faixaSalarialHistorico hf on hf.faixaSalarial_id = fs.id and hf.data = (select max(hf2.data) ");
+		sql.append("                                                                                         from FaixaSalarialHistorico hf2 ");
+		sql.append("                                                                                         where hf2.faixaSalarial_id = fs.id ");
+		sql.append("                                                                                         and hf2.data <= current_date ");
+		sql.append("																					     and hf2.status = 1) ");
+		sql.append("left join indice i on i.id = hf.indice_id ");
+		sql.append("left join indiceHistorico hi on hi.indice_id = i.id and hi.data = (select max(hi2.data) ");
+		sql.append("                                                                         from IndiceHistorico hi2 ");
+		sql.append("                                                                         where hi2.indice_id = i.id ");
+		sql.append("                                                                         and hi2.data <= current_date) ");
 		sql.append("   left join configuracaonivelcompetencia cnc on cnc.faixasalarial_id = fs.id "); 
 		sql.append("   left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia "); 
 		sql.append("   left join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id "); 
@@ -340,6 +358,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 				faixaSalarial = new FaixaSalarial(); 
 				faixaSalarial.setId(((BigInteger)faixa[0]).longValue());
 				faixaSalarial.setNome((String)faixa[1]);
+				faixaSalarial.setHistoricoFaixaValor((Double)faixa[2]);
 				faixaSalarial.setCompetencias(new ArrayList<Competencia>());
 				
 				// Insere uma faixa salarial num map para que esta nao seja criada novamente.
@@ -350,11 +369,11 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 			}
 			
 			// Adiciona competência somente quando a mesma não for nula
-			if ((String)faixa[2] != null) {
+			if ((String)faixa[3] != null) {
 				NivelCompetencia nivelCompetencia = new NivelCompetencia();
 				Competencia comp = new Competencia();
-				comp.setNome((String)faixa[2]);
-				nivelCompetencia.setDescricao((String)faixa[3]);
+				comp.setNome((String)faixa[3]);
+				nivelCompetencia.setDescricao((String)faixa[4]);
 				comp.setNivelCompetencia(nivelCompetencia);
 
 				faixaSalarial.getCompetencias().add(comp);

@@ -7,24 +7,36 @@
 	<#assign formAction="relatorioCargo.action"/>
 	<#assign accessKey="I"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 
 	<script type="text/javascript">
 
-		function populaCargosByGrupo(frm, nameCheck)
+		function populaCargos()
 		{
+			var tipoFiltro = $('#optFiltro').val();
+			
 			DWRUtil.useLoadingMessage('Carregando...');
-			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupo(createListCargos, gruposIds, <@authz.authentication operation="empresaId"/>);
-		}
-
-		function populaCargosByArea(frm, nameCheck)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			var areasIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByArea(createListCargos, areasIds, "getNomeMercado", <@authz.authentication operation="empresaId"/>);
+			
+			if(tipoFiltro == '1') {
+				var areaIds = getArrayCheckeds(document.forms[0], 'areasCheck');
+				
+				if ($('#exibirCargosVinculados').is(":checked")) {
+					CargoDWR.getCargoByArea(createListCargos, areaIds, 'getNomeMercado', ${empresaSistema.id});
+				} else {
+					CargoDWR.getCargoByArea(createListCargos, null, 'getNomeMercado', ${empresaSistema.id});
+				}
+			} else {
+				var grupoIds = getArrayCheckeds(document.forms[0], 'gruposCheck');
+				
+				if ($('#exibirCargosVinculados').is(":checked")) {
+					CargoDWR.getCargoByGrupo(createListCargos, grupoIds, ${empresaSistema.id});
+				} else {
+					CargoDWR.getCargoByGrupo(createListCargos, null, ${empresaSistema.id});
+				}
+			}
 		}
 
 		function createListCargos(data)
@@ -33,16 +45,26 @@
 		}
 
 		function filtrarOpt(){
-			value =	document.getElementById('optFiltro').value;
-			if(value == "1") {
-				document.getElementById('divAreas').style.display = "";
-				document.getElementById('divGrupos').style.display = "none";
-			} else if(value == "2") {
-				document.getElementById('divAreas').style.display = "none";
-				document.getElementById('divGrupos').style.display = "";
+			var tipoFiltro = $('#optFiltro').val();
+			
+			if(tipoFiltro == "1") {
+				$('#divAreas').show();
+				$('#divGrupos').hide();
+				$("label[for='exibirCargosVinculados']").text('Exibir somente os cargos vinculados às áreas organizacionais acima.');
+			} else if(tipoFiltro == "2") {
+				$('#divAreas').hide();
+				$('#divGrupos').show();
+				$("label[for='exibirCargosVinculados']").text('Exibir somente os cargos vinculados aos grupos ocupacionais acima.');
 			}
+			
+			populaCargos();
 		}
-
+		
+		$(function() {
+			$('#exibirCargosVinculados').bind('click', populaCargos);
+			
+			$('#exibirCargosVinculados').attr('checked',true);
+		});
 	</script>
 
 </head>
@@ -55,12 +77,14 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.select id="optFiltro" label="Filtrar Por" name="filtro" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt();"/>
 		<div id="divAreas">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargosByArea(document.forms[0],'areasCheck');"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargos();"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');"/>
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();"/>
 		</div>
+		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="exibirCargosVinculados" name="" labelPosition="left"/>
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos *" list="cargosCheckList" />
+		<@ww.checkbox label="Exibir valores atuais das faixas salariais." id="exibirValorFaixaSalarial" name="exibirValorFaixaSalarial" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

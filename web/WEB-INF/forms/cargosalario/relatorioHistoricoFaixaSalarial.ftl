@@ -26,7 +26,7 @@
 				oculta("divAreaOrganizacionals");
 				exibe("divGruposCargos");
 				populaCargosByGrupo();
-				$('.checkboxLabel').text('Considerar cargos não vinculados a nenhuma Grupo Ocupacional');
+				$("label[for='cargoSemVinculo']").text('Considerar cargos não vinculados a nenhuma grupo ocupacional');
 			}
 			else if(value == '2') // Area Organizacional
 			{
@@ -40,7 +40,7 @@
 				exibe("divAreaOrganizacionals");
 				oculta("divGruposCargos");
 				populaCargosByArea();
-				$('.checkboxLabel').text('Considerar cargos não vinculados a nenhuma Área Organizacional');
+				$("label[for='cargoSemVinculo']").text('Considerar cargos não vinculados a nenhuma área organizacional');
 			}
 		}
 		

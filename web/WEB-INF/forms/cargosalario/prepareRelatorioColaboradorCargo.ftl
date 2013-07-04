@@ -41,8 +41,7 @@
 			$("#" + outroCheck).attr('disabled', $("#" + esseCheck).attr("checked"));
 		}
 		
-		$(document).ready(function($)
-		{
+		$(document).ready(function($){
 			var empresa = $('#empresa').val();
 			
 			populaAreaComCargoVinculado(empresa);
@@ -53,7 +52,8 @@
 				populaCargosByAreaVinculados();
 			});
 			
-			$('#cargosVinculadosAreas').attr('checked', true);;		});
+			$('#cargosVinculadosAreas').attr('checked', true);;		
+		});
 	</script>
 </head>
 <body>

@@ -271,6 +271,7 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 			return this.indice.getValorDoHistoricoAtual();
 		return new Double(0);
 	}
+    
     @NaoAudita
 	private String getNomeDoIndice() {
 		if (this.indice != null)
@@ -315,6 +316,13 @@ public class FaixaSalarialHistorico extends AbstractModel implements Serializabl
 		if (this.getTipo() == null)
 			return null;
 		return SalarioUtil.getValor(this.getTipo(), this.getFaixaSalarial(), this.getIndice(), this.quantidade, this.valor);
+	}
+	/**
+	 * Retorna o valor sem utilização da classe SalárioUtil.
+	 */
+	public Double getValorReal()
+	{
+		return this.valor;
 	}
 	public void setValor(Double valor)
 	{
