@@ -100,7 +100,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 		if (! colaboradorOcorrencia.getColaborador().getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
-			addActionError("A Ocorrência solicitada não existe na empresa " + getEmpresaSistema().getNome() + ".");
+			addActionWarning("A ocorrência solicitada não existe na empresa " + getEmpresaSistema().getNome() + ".");
 
 			list();
 
@@ -199,7 +199,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		try
 		{
 			colaboradorOcorrenciaManager.remove(colaboradorOcorrencia, getEmpresaSistema());
-			addActionMessage("Ocorrência do Colaborador removida com sucesso.");
+			addActionSuccess("Ocorrência do colaborador removida com sucesso.");
 		}
 		catch (IntegraACException ie)
 		{
@@ -248,7 +248,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		
 		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)//imundo, tem que ser maior igual
 		{
-			addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
+			addActionWarning("Não é permitido um período maior que 12 meses para a geração deste relatório");
 			prepareRelatorioAbsenteismo();
 			return Action.INPUT;
 		}

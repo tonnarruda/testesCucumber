@@ -243,8 +243,27 @@
 				/geral/colaborador/relatorioDinamico*/** = ROLE_REL_LISTA_COLAB
 				/geral/colaborador/prepareReciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
 				/geral/colaborador/reciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
+				
+				/geral/ocorrencia/list.action*=ROLE_CAD_OCORRENCIA
+				/geral/ocorrencia/prepareInsert.action*=ROLE_CAD_OCORRENCIA_INSERIR
+				/geral/ocorrencia/insert.action*=ROLE_CAD_OCORRENCIA_INSERIR
+				/geral/ocorrencia/prepareUpdate.action*=ROLE_CAD_OCORRENCIA_EDITAR
+				/geral/ocorrencia/update.action*=ROLE_CAD_OCORRENCIA_EDITAR
+				/geral/ocorrencia/delete.action*=ROLE_CAD_OCORRENCIA_EXCLUIR
 				/geral/ocorrencia/prepareRelatorioOcorrencia*/**=ROLE_REL_OCORRENCIA
 				/geral/ocorrencia/buscaOcorrencia*/**=ROLE_REL_OCORRENCIA
+				/geral/ocorrencia/*/**=ROLE_CAD_OCORRENCIA
+				
+				/geral/colaboradorOcorrencia/list.action*=ROLE_MOV_OCORRENCIA
+				/geral/colaboradorOcorrencia/prepareInsert.action*=ROLE_MOV_OCORRENCIA_INSERIR
+				/geral/colaboradorOcorrencia/insert.action*=ROLE_MOV_OCORRENCIA_INSERIR
+				/geral/colaboradorOcorrencia/prepareUpdate.action*=ROLE_MOV_OCORRENCIA_EDITAR
+				/geral/colaboradorOcorrencia/update.action*=ROLE_MOV_OCORRENCIA_EDITAR
+				/geral/colaboradorOcorrencia/delete.action*=ROLE_MOV_OCORRENCIA_EXCLUIR
+				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
+				/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
+				/geral/colaboradorOcorrencia/*/**=ROLE_MOV_OCORRENCIA
+
 				/geral/gasto/*/**=ROLE_CAD_GASTO
 				/geral/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
 				/geral/documentoVersao/**=ROLE_UTI_HISTORICO_VERSAO
@@ -258,7 +277,6 @@
 				/geral/historicoBeneficio/*/**=ROLE_CAD_BENEFICIO
 				/geral/beneficio/*/**=ROLE_CAD_BENEFICIO
 				/geral/grupoGasto/*/**=ROLE_CAD_GRUPOGASTO
-				/geral/ocorrencia/*/**=ROLE_CAD_OCORRENCIA
 				/geral/colaborador/prepareUpdateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/updateInfoPessoais.action* = ROLE_CAD_INFO_PESSOAL
 				/geral/colaborador/prepareRelatorioAniversariantes*/** = ROLE_REL_ANIVERSARIANTES
@@ -282,9 +300,6 @@
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 								
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
-				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
-				/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
-				/geral/colaboradorOcorrencia/*/**=ROLE_CAD_OCORRENCIA
 				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
 				/geral/areaInteresse/*/**=ROLE_CAD_AREA
 				/geral/motivoDemissao/*elatorioMotivoDemissao*/**=ROLE_REL_MOTIVO_DEMISSAO

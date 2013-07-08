@@ -31,7 +31,7 @@ public class OcorrenciaListAction extends MyActionSupportList
 	public String delete() throws Exception 
 	{
 		ocorrenciaManager.remove(ocorrencia, getEmpresaSistema());
-		addActionMessage("Ocorrência excluída com sucesso.");
+		addActionSuccess("Ocorrência excluída com sucesso.");
 
 		return Action.SUCCESS;
 	}

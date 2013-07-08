@@ -1,5 +1,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+
 <html>
 <head>
 <@ww.head/>
@@ -39,8 +41,8 @@
 	<div style = "font-weight:bold;">Colaborador: ${colaborador.nome}</div><br>
 	<@display.table name="colaboradorOcorrencias" id="colaboradorOcorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EDITAR" href="prepareUpdate.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorOcorrencia.id=${colaboradorOcorrencia.id}&colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
 		</@display.column>
 		<@display.column property="ocorrencia.descricao" 	title="Descrição"/>
 		<@display.column property="dataIni" 				title="Início" 	format="{0,date,dd/MM/yyyy}"/>
@@ -51,8 +53,9 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?colaborador.id=${colaborador.id}&" page='${page}' idFormulario=""/>
 			 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'" accesskey="I">
-		</button>
+		<@authz.authorize ifAllGranted="ROLE_MOV_OCORRENCIA_INSERIR">
+			<button class="btnInserir" onclick="window.location='prepareInsert.action?colaborador.id=${colaborador.id}'" accesskey="I"></button>
+		</@authz.authorize>
 	</div>
 	</#if>
 	 

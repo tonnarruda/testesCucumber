@@ -1,11 +1,14 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+
 <html>
 <head>
 <@ww.head/>
-<style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
-</style>
+	<style type="text/css">
+		@import url('<@ww.url value="/css/displaytag.css"/>');
+	</style>
+	
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
@@ -26,8 +29,8 @@
 	<br>
 	<@display.table name="ocorrencias" id="ocorrencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?ocorrencia.id=${ocorrencia.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ocorrencia.id=${ocorrencia.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EDITAR" href="prepareUpdate.action?ocorrencia.id=${ocorrencia.id}" imgTitle="Editar" imgName="edit.gif"/>
+			<@frt.link verifyRole="ROLE_CAD_OCORRENCIA_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?ocorrencia.id=${ocorrencia.id}&page=${page}'});" imgTitle="Excluir" imgName="delete.gif"/>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="pontuacao" title="Pontuação" style = "width:80px;"/>
@@ -37,8 +40,9 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-	<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-	</button>
+		<@authz.authorize ifAllGranted="ROLE_CAD_OCORRENCIA_INSERIR">
+			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		</@authz.authorize>
 	</div>
 </body>
 </html>
