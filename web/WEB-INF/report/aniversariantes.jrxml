@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aniversariantes" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="1ee3ba0f-f7d5-4d0a-8b01-eff1b2a16c17">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -19,6 +19,7 @@
 	<field name="faixaSalarial.descricao" class="java.lang.String"/>
 	<field name="nomeComercial" class="java.lang.String"/>
 	<field name="estabelecimento.nome" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Page" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
@@ -43,9 +44,9 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="12" splitType="Stretch">
+		<band height="11" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="5340c736-3bb7-4017-b5d1-a4d8a67c1b96" key="staticText-1" x="0" y="0" width="27" height="11"/>
+				<reportElement uuid="5340c736-3bb7-4017-b5d1-a4d8a67c1b96" key="staticText-1" x="0" y="0" width="23" height="11"/>
 				<box leftPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -71,19 +72,6 @@
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Área Organizacional]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="156adb9f-9a17-4de1-bc28-f1b785734f82" key="staticText-3" x="29" y="0" width="196" height="11"/>
-				<box leftPadding="1">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="f3a32b3f-dcd1-4816-8fa8-21f5cb65255c" key="staticText-4" x="227" y="0" width="197" height="11">
@@ -113,10 +101,33 @@
 				</textElement>
 				<text><![CDATA[Estabelecimento]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="5340c736-3bb7-4017-b5d1-a4d8a67c1b96" key="staticText-1" x="25" y="0" width="39" height="11"/>
+				<box leftPadding="1">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Matrícula]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="45be903d-30e7-41cc-aeb8-3a7fd0fc50b0" x="66" y="0" width="159" height="11"/>
+				<box leftPadding="1">
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nome " + ($P{EXIBIR_NOME_COMERCIAL}.booleanValue() == true ? "Comercial" : "")]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="14" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<rectangle>
 				<reportElement uuid="d54d9fb9-1963-46d7-9f68-d1a12e58e5c0" key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="1" width="537" height="11" forecolor="#000000" backcolor="#EEEEEE">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
@@ -126,7 +137,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="cd29f78c-bdd8-4c49-8d07-649f6b54c1a3" key="textField" x="0" y="1" width="27" height="11"/>
+				<reportElement uuid="cd29f78c-bdd8-4c49-8d07-649f6b54c1a3" key="textField" x="0" y="1" width="23" height="11"/>
 				<box leftPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -154,7 +165,7 @@
 				<textFieldExpression><![CDATA[$F{areaOrganizacional.descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="e07c2fdb-b072-4c0f-9d9d-f4ab5c21e6c1" key="textField-8" x="29" y="1" width="196" height="11"/>
+				<reportElement uuid="e07c2fdb-b072-4c0f-9d9d-f4ab5c21e6c1" key="textField-8" x="66" y="1" width="159" height="11"/>
 				<box leftPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -194,13 +205,26 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="cd29f78c-bdd8-4c49-8d07-649f6b54c1a3" key="textField" x="25" y="1" width="39" height="11"/>
+				<box leftPadding="1">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="16" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
 				<reportElement uuid="c264de23-d9bd-44e2-bc32-9a5d72538e28" key="textField-6" x="312" y="2" width="186" height="13"/>
 				<box>
@@ -228,9 +252,9 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="12" splitType="Stretch">
+		<band height="11" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="80491819-30e1-43e8-99e3-8e87def98cb4" key="textField" x="29" y="1" width="154" height="11"/>
+				<reportElement uuid="80491819-30e1-43e8-99e3-8e87def98cb4" key="textField" x="0" y="0" width="154" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

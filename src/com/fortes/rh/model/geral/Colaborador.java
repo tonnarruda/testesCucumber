@@ -862,10 +862,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//Construtor usado pela consulta de aniversariantes
-	public Colaborador(Date dataNascimento, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String cargoNome, String faixaSalarialNome, String areaOrganizacionalNome, String estabelecimentoNome, Long areaOrganizacionalId)
+	public Colaborador(Date dataNascimento, Long colaboradorId, String colaboradorMatricula, String colaboradorNome, String colaboradorNomeComercial, String cargoNome, String faixaSalarialNome, String areaOrganizacionalNome, String estabelecimentoNome, Long areaOrganizacionalId)
 	{
 		setProjectionDataNascimento(dataNascimento);
 		setId(colaboradorId);
+		this.matricula = colaboradorMatricula;
 		this.nome = colaboradorNome;
 		this.nomeComercial = colaboradorNomeComercial;
 		setCargoNomeProjection(cargoNome);
