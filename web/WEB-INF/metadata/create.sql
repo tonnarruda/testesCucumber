@@ -2589,6 +2589,18 @@ CREATE TABLE curso_avaliacaocurso (
 ALTER TABLE public.curso_avaliacaocurso OWNER TO postgres;
 
 --
+-- Name: curso_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE curso_empresa (
+    cursos_id bigint NOT NULL,
+    empresasparticipantes_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.curso_empresa OWNER TO postgres;
+
+--
 -- Name: curso_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -4949,7 +4961,8 @@ CREATE TABLE parametrosdosistema (
     tls boolean DEFAULT false,
     sessiontimeout integer DEFAULT 600,
     emailremetente character varying(100),
-    caminhobackup character varying(200)
+    caminhobackup character varying(200),
+    compartilharcursos boolean DEFAULT false
 );
 
 
@@ -5810,7 +5823,7 @@ CREATE TABLE solicitacao (
     horariocomercial character varying(20),
     status character varying(1),
     observacaoliberador text,
-    colaboradorsubstituido character varying(100),
+    colaboradorsubstituido text,
     ambiente_id bigint,
     funcao_id bigint
 );
@@ -27324,6 +27337,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: curso_empresa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: dependente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -28018,6 +28037,9 @@ INSERT INTO migrations (name) VALUES ('20130527135252');
 INSERT INTO migrations (name) VALUES ('20130528161528');
 INSERT INTO migrations (name) VALUES ('20130528170035');
 INSERT INTO migrations (name) VALUES ('20130701095239');
+INSERT INTO migrations (name) VALUES ('20130702173810');
+INSERT INTO migrations (name) VALUES ('20130705154148');
+INSERT INTO migrations (name) VALUES ('20130708082932');
 
 
 --
@@ -28316,7 +28338,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id) V
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.109.119', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-08-21', true, false, 600, NULL, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.110.120', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-08-21', true, false, 600, NULL, NULL, false);
 
 
 --
@@ -30066,6 +30088,13 @@ ALTER TABLE ONLY usuariomensagem
 
 
 --
+-- Name: index_colaborador_cpf; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_colaborador_cpf ON colaborador USING btree (cpf);
+
+
+--
 -- Name: solicitacaoexame_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31222,6 +31251,22 @@ ALTER TABLE ONLY curso_avaliacaocurso
 
 ALTER TABLE ONLY curso
     ADD CONSTRAINT curso_empresa FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: curso_empresa_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY curso_empresa
+    ADD CONSTRAINT curso_empresa_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);
+
+
+--
+-- Name: curso_empresa_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY curso_empresa
+    ADD CONSTRAINT curso_empresa_empresa_fk FOREIGN KEY (empresasparticipantes_id) REFERENCES empresa(id);
 
 
 --

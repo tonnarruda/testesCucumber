@@ -19705,3 +19705,22 @@ update parametrosdosistema set appversao = '1.1.109.118';--.go
 update parametrosdosistema set proximaVersao = '21/08/2013';--.go
 insert into migrations values('20130701095239');--.go
 update parametrosdosistema set appversao = '1.1.109.119';--.go
+-- versao 1.1.110.120
+
+alter table solicitacao alter column colaboradorsubstituido type text;--.go
+insert into migrations values('20130702173810');--.go
+drop index if exists index_colaborador_cpf;--.go
+create index index_colaborador_cpf on colaborador (cpf);--.go
+
+insert into migrations values('20130705154148');--.go
+CREATE TABLE curso_empresa (
+    cursos_id bigint NOT NULL,
+    empresasParticipantes_id bigint NOT NULL
+);--.go
+
+ALTER TABLE ONLY curso_empresa ADD CONSTRAINT curso_empresa_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);--.go
+ALTER TABLE ONLY curso_empresa ADD CONSTRAINT curso_empresa_empresa_fk FOREIGN KEY (empresasParticipantes_id) REFERENCES empresa(id);--.go
+
+alter table parametrosdosistema add column compartilharcursos boolean default false;--.go
+insert into migrations values('20130708082932');--.go
+update parametrosdosistema set appversao = '1.1.110.120';--.go

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.110.120" data="08/07/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitação de Pessoal: Nova opção de inserir mais de um colaborador substituto.
+			:: C&S > Relatórios > Descrição de Cargos: Nova opção para impressão dos valores atuais das faixas salariais.
+			:: T&D > Cadastros > Cursos/Treinamentos: Nova opção para selecionar empresas a qual desejo compartilhar (Esta opção só será exibida quando a opção “Compartilhar cursos entre empresas” nas configurações do sistema estiver marcado).
+			:: Utilitários > Configurações > Sistema: Nova opção de compartilhar curso entre empresas.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.109.119" data="01/07/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Relatórios > Turnover: Nova opção de exibir colaboradores agrupados por tempo de serviço.

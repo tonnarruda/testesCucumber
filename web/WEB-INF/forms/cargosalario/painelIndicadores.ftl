@@ -470,6 +470,26 @@
 		    			<div id="providenciaLegenda"></div>
 					</td>
 				</tr>
+				<tr>
+					<td class="grid-cell" colspan="3">
+						<div class="cell-title">
+							Absenteísmo
+							<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+						</div>
+						<div class="graphWrapper" style="height: 360px !important;">
+					    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
+					    </div>
+						<div id="evolucaoAbsenteismoInfo">
+							<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+							
+							<div style="clear: both"></div>
+							
+							<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+								<div id="mediaAbsenteismo"></div>
+							</div>
+					 	</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 		
@@ -521,26 +541,7 @@
 					    </div>
 					</td>
 				</tr>
-				<tr>
-					<td class="grid-cell" colspan="3">
-						<div class="cell-title">
-							Absenteísmo
-							<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-						</div>
-						<div class="graphWrapper" style="height: 360px !important;">
-					    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
-					    </div>
-						<div id="evolucaoAbsenteismoInfo">
-							<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
-							
-							<div style="clear: both"></div>
-							
-							<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-								<div id="mediaAbsenteismo"></div>
-							</div>
-					 	</div>
-					</td>
-				</tr>
+				
 			</table>
 		</div>
 		   
