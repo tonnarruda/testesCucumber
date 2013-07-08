@@ -5,3 +5,5 @@ CREATE TABLE curso_empresa (
 
 ALTER TABLE ONLY curso_empresa ADD CONSTRAINT curso_empresa_curso_fk FOREIGN KEY (cursos_id) REFERENCES curso(id);--.go
 ALTER TABLE ONLY curso_empresa ADD CONSTRAINT curso_empresa_empresa_fk FOREIGN KEY (empresasParticipantes_id) REFERENCES empresa(id);--.go
+
+alter table parametrosdosistema add column compartilharcursos boolean default false;--.go

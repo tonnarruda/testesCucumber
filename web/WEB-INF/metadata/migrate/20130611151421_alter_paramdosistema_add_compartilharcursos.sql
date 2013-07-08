@@ -1,1 +1,0 @@
-alter table parametrosdosistema add column compartilharcursos boolean default false;--.go
