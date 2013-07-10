@@ -39,7 +39,7 @@
 
 		function encerraSolicitacao(solicitacaoId, observacaoLiberador)
 		{
-			$('#obsAprova').val(observacaoLiberador);
+			$('#obsAprova').val(observacaoLiberador.split('$#-').join("\""));
 			$('#solicitacaoIdEncerrar').val(solicitacaoId);
 			$('#formDialog').dialog({ modal: true, width: 470 });
 		}
@@ -158,7 +158,7 @@
 							<a href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Anunciar" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 						</#if>
 					</#if>
-					<a href="#" onclick="encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string}');"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
+					<a href="#" onclick="encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace("\"", "$#-")}');"><img border="0" title="${titleEncerra}" src="<@ww.url includeParams="none" value="/imgs/${imgEncerra}"/>"></a>
 					<#if !solicitacao.suspensa>
 						<a href="#" onclick="suspenderSolicitacao('${solicitacao.id}');"><img border="0" title="Suspender solicitação" src="<@ww.url includeParams="none" value="/imgs/control_pause.gif"/>"></a>
 					<#else>
