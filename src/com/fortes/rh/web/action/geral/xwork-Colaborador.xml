@@ -271,5 +271,20 @@
 			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
 		</action>
+		
+		<action name="prepareRelatorioFormacaoEscolar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioFormacaoEscolar">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
+		</action>
+		
+		<action name="imprimeRelatorioFormacaoEscolar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimeRelatorioFormacaoEscolar">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/formacaoEscolar.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">formacaoEscolar.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
+		</action>
 	</package>
 </xwork>

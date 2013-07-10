@@ -132,6 +132,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Collection<CheckBox> areaOrganizacionalsCheckList = new ArrayList<CheckBox>();
 	private Collection<Empresa> empresas;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+	private Long[] cargosCheck;
+	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 
 	private Collection<String> colunasMarcadas = new ArrayList<String>();
 	private Collection<ReportColumn> colunas = new ArrayList<ReportColumn>();
@@ -685,7 +687,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao gerar relatório");
+			addActionError("Não foi possível gerar o relatório");
 			e.printStackTrace();
 			prepareRelatorioAdmitidos();
 
@@ -693,6 +695,52 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		
 		return SUCCESS;
+	}
+	
+	public String prepareRelatorioFormacaoEscolar() throws Exception
+	{
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_AREAORGANIZACIONAL");
+
+		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
+		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
+		
+		empresa = getEmpresaSistema();
+		
+		return SUCCESS;
+	}
+	
+	public String imprimeRelatorioFormacaoEscolar() throws Exception
+	{
+		try
+		{
+			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
+			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areasCheck);
+			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
+				
+			colaboradores = colaboradorManager.findFormacaoEscolar(empresa.getId(), estabelecimentos, areas, cargos);
+
+			colaboradores = colaboradorManager.ordenaPorEstabelecimentoArea(getEmpresaSistema().getId(), colaboradores);
+
+			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Formação Escolar", getEmpresaSistema(), null);
+
+			return Action.SUCCESS;
+		}
+		catch (ColecaoVaziaException e)
+		{
+			addActionMessage(e.getMessage());
+			prepareRelatorioFormacaoEscolar();
+
+			return Action.INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Não foi possível gerar o relatório");
+			e.printStackTrace();
+			prepareRelatorioFormacaoEscolar();
+
+			return Action.INPUT;
+		}
 	}
 	
 	public Collection getColaboradors()
@@ -1211,5 +1259,20 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
 		this.faixaSalarial = faixaSalarial;
+	}
+
+	public Collection<CheckBox> getCargosCheckList()
+	{
+		return cargosCheckList;
+	}
+	
+	public void setCargosCheckList(Collection<CheckBox> cargosCheckList)
+	{
+		this.cargosCheckList = cargosCheckList;
+	}
+	
+	public void setCargosCheck(Long[] cargosCheck)
+	{
+		this.cargosCheck = cargosCheck;
 	}
 }

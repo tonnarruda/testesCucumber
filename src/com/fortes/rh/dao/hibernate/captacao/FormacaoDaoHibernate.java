@@ -40,8 +40,6 @@ public class FormacaoDaoHibernate extends GenericDaoHibernate<Formacao> implemen
 	public Collection<Formacao> findByColaborador(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(Formacao.class, "f");
-		criteria.createCriteria("f.candidato", "cand", Criteria.LEFT_JOIN);
-		criteria.createCriteria("f.colaborador", "colab", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "id");
@@ -51,12 +49,12 @@ public class FormacaoDaoHibernate extends GenericDaoHibernate<Formacao> implemen
 		p.add(Projections.property("f.local"), "local");
 		p.add(Projections.property("f.conclusao"), "conclusao");
 		p.add(Projections.property("f.areaFormacao"), "areaFormacao");
-		p.add(Projections.property("cand.id"), "candidatoId");
-		p.add(Projections.property("colab.id"), "colaboradorId");
+		p.add(Projections.property("f.candidato.id"), "candidatoId");
+		p.add(Projections.property("f.colaborador.id"), "colaboradorId");
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("colab.id", colaboradorId));
+		criteria.add(Expression.eq("f.colaborador.id", colaboradorId));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 

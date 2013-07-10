@@ -65,11 +65,13 @@ import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
+import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
@@ -1049,23 +1051,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradorByHistoricoColaboradors;
 	}
 
-	public Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors)
-			throws Exception
-			{
+	public Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors) throws Exception
+	{
 		// monta familia das areas
 		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(null, AreaOrganizacional.TODAS, null);
 		areas = areaOrganizacionalManager.montaFamilia(areas);
-
-		for (Colaborador colaboradorTmp : colaboradors)
-		{
+		
+		for (Colaborador colaboradorTmp : colaboradors) {
 			colaboradorTmp.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areas, colaboradorTmp.getAreaOrganizacional().getId()));
 		}
-
+		
 		CollectionUtil<Colaborador> cu1 = new CollectionUtil<Colaborador>();
 		colaboradors = cu1.sortCollectionStringIgnoreCase(colaboradors, "descricaoEmpresaEstabelecimentoAreaOrganizacional");
-
+		
 		return colaboradors;
-			}
+	}
 
 	public void verificaColaboradoresSemCodigoAC(Collection<ReajusteColaborador> reajustes) throws Exception
 	{
@@ -2432,6 +2432,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acPessoalClientColaborador.getReciboPagamento(colaborador, mesAno);
 	}
 	
+	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception
+	{
+		fazer teste
+		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, empresaId, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
+		
+		for (Colaborador colaborador : colaboradores) {
+
+			Collection<Formacao> formacoes = formacaoManager.findByColaborador(colaborador.getId());
+			Collection<ColaboradorIdioma> colaboradorIdiomas = colaboradorIdiomaManager.findByColaborador(colaborador.getId()); 
+			
+			colaborador.setFormacao(formacoes);
+			colaborador.setColaboradorIdiomas(colaboradorIdiomas);
+		}
+		
+		return colaboradores;
+	}
+
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

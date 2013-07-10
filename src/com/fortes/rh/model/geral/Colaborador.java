@@ -589,9 +589,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
-						Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
-						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String estadoCivil,
-						String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
+						Long esId, String esNome, Long aoId, String aoNome, String reNome, Long coId, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
+						String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc,  String cursos,
+						String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 						String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
@@ -606,6 +606,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setAreaOrganizacionalId(aoId);
 		this.setAreaOrganizacionalNome(aoNome);
 		this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
+		this.setId(coId);
 		this.setNome(coNome);
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
@@ -622,6 +623,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.vinculo = vinculo;
 		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
+		this.cursos = cursos;
 				
 		if (this.pessoal == null)
 			this.pessoal = new Pessoal();
@@ -702,9 +704,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	//findAreaOrganizacionalByAreas
 	public Colaborador(
-			Long esId, String esNome, Long aoId, String aoNome, String reNome, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
-			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String estadoCivil,
-			String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
+			Long esId, String esNome, Long aoId, String aoNome, String reNome, Long coId, String coNome, String cgNome, String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, 
+			String nomeComercial,  String matricula, Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos,
+			String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, 
 			String rgOrgaoEmissor, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
@@ -716,6 +718,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setAreaOrganizacionalId(aoId);
 		this.setAreaOrganizacionalNome(aoNome);
 		this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
+		this.setId(coId);
 		this.setNome(coNome);
 		this.setFaixaSalarialNomeProjection(fsNome);
 		this.setCargoNomeProjection(cgNome);
@@ -740,6 +743,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.vinculo = vinculo;
 		this.naoIntegraAc = naoIntegraAc;
 		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
+		this.cursos = cursos;
 		
 		if (this.pessoal == null)
 			this.pessoal = new Pessoal();
@@ -2559,7 +2563,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public String getCargoFaixa()
 	{
 		try {
-			return faixaSalarial.getCargo().getNome() + " " + faixaSalarial.getNome();
+			return StringUtils.defaultString(faixaSalarial.getCargo().getNome()) + " " + StringUtils.defaultString(faixaSalarial.getNome());
 		} catch (Exception e) {
 			return "-";
 		}
