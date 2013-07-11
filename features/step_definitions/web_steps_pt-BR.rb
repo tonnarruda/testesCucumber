@@ -22,7 +22,6 @@ Dado /^que eu esteja logado$/ do
   end
 end
 
-
 Quando /^eu acesso "([^"]*)"$/ do |path|
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
 end

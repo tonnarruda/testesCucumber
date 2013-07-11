@@ -22,7 +22,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#if turma?exists && turma.id?exists>
-		<title>Editar Turma - ${turma.curso.nome}</title>
+		<title>Editar Turma - ${turma.descricao}</title>
 		<#assign formAction="update.action"/>
 		<#assign accessKey="A"/>
 	<#else>
