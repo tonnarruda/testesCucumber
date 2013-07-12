@@ -2434,7 +2434,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception
 	{
-		fazer teste
 		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, empresaId, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
 		
 		for (Colaborador colaborador : colaboradores) {

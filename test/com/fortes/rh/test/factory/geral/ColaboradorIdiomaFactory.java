@@ -14,4 +14,12 @@ public class ColaboradorIdiomaFactory
 
 		return colaboradorIdioma;
 	}
+	
+	public static ColaboradorIdioma getEntity(Long id)
+	{
+		ColaboradorIdioma colaboradorIdioma = new ColaboradorIdioma();
+		colaboradorIdioma.setId(id);
+		
+		return colaboradorIdioma;
+	}
 }

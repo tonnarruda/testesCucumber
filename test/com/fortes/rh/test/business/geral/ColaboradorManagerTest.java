@@ -79,6 +79,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -87,6 +88,7 @@ import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
+import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.util.mockObjects.MockAutenticador;
@@ -1409,6 +1411,34 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		colaboradorDao.expects(once()).method("findByEstabelecimentoDataAdmissao").with(eq(matriz.getId()), eq(hoje), ANYTHING).will(returnValue(colaboradores));
 		
 		assertEquals(2, colaboradorManager.findByEstabelecimentoDataAdmissao(matriz.getId(), hoje, null).size());
+    }
+    
+    public void testFindFormacaoEscolar() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+    	Cargo cargo = CargoFactory.getEntity(1L);
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	
+    	Collection<Formacao> formacoes = Arrays.asList(FormacaoFactory.getEntity(1L), FormacaoFactory.getEntity(2L));
+    	Collection<ColaboradorIdioma> colaboradorIdiomas = Arrays.asList(ColaboradorIdiomaFactory.getEntity(3L));
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaborador);
+    	
+    	Collection<Long> estabelecimentoIds = Arrays.asList(estabelecimento.getId());
+    	Collection<Long> areaIds = Arrays.asList(areaOrganizacional.getId());
+    	Collection<Long> cargoIds = Arrays.asList(cargo.getId());
+    	
+    	colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").with(new Constraint[] {eq(false), eq(estabelecimentoIds), eq(areaIds), eq(cargoIds), eq(null), eq(empresa.getId()),  eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(SituacaoColaborador.ATIVO), eq(null)}).will(returnValue(colaboradores));
+    	formacaoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(formacoes));
+    	colaboradorIdiomaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorIdiomas));;
+    	
+    	Collection<Colaborador> colaboradoresRetornados = colaboradorManager.findFormacaoEscolar(empresa.getId(), estabelecimentoIds, areaIds, cargoIds);
+    	
+		assertEquals(1, colaboradoresRetornados.size());
+		assertEquals(2, ((Colaborador)colaboradoresRetornados.toArray()[0]).getFormacao().size());
+		assertEquals(1, ((Colaborador)colaboradoresRetornados.toArray()[0]).getColaboradorIdiomas().size());
     }
     
   //TODO remprot
