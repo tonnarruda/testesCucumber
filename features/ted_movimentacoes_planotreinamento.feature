@@ -23,7 +23,7 @@ Funcionalidade: Cadastrar Plano de Treinamento
     Então eu devo ver o título "Plano de Treinamento" 
     
     Entao eu clico na linha "tdd" da imagem "Editar Turma"
-    E eu devo ver o título "Editar Turma - tdd"
+    E eu devo ver o título "Editar Turma - a1"
     E o campo "Descrição" deve conter "a1"
     E eu preencho "Descrição" com "turma1"
     E eu preencho "Horário" com "08:00"
