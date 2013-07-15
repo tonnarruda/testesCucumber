@@ -69,7 +69,7 @@ public class EpiListAction extends MyActionSupportList
 		
 		catch (RemoveCascadeException e)
 		{
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 		}
 		catch (DataIntegrityViolationException e) 
 		{

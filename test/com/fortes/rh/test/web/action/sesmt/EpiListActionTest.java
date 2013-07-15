@@ -68,14 +68,14 @@ public class EpiListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("removeEpi").with(ANYTHING);
 
     	assertEquals("success", action.delete());
-    	assertFalse(action.getActionMessages().isEmpty());
+    	assertFalse(action.getActionSuccess().isEmpty());
 
     	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(false));
     	manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(1));
     	manager.expects(once()).method("findEpis").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<Epi>()));
 
     	assertEquals("success", action.delete());
-    	assertFalse(action.getActionErrors().isEmpty());
+    	assertFalse(action.getActionMessages().isEmpty());
     }
 
     public void testList() throws Exception
