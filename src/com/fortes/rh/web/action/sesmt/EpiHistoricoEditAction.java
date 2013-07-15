@@ -6,6 +6,7 @@ import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 
@@ -32,7 +33,14 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	
 	public String delete() throws Exception {
 		
-		epiHistoricoManager.remove(new Long[]{epiHistorico.getId()});
+		try {
+			epiHistoricoManager.remove(epiHistorico.getId());
+			addActionSuccess("Histórico do EPI excluído com sucesso");
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			ExceptionUtil.traduzirMensagem(this, e);
+		}
 
 		return Action.SUCCESS;
 	}
@@ -58,7 +66,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	{
     	if (dataJaCadastrada())
     	{
-    		addActionError("Já existe um histórico cadastrado com esta data. Favor escolher outra data.");
+    		addActionMessage("Já existe um histórico cadastrado com esta data. Favor escolher outra data.");
     		return ERROR;
     	}
     	epiHistorico.setEpi(epi);
@@ -93,7 +101,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 	{
     	if (dataJaCadastrada())
     	{
-    		addActionError("Já existe um histórico cadastrado com esta data. Favor escolher outra data.");
+    		addActionMessage("Já existe um histórico cadastrado com esta data. Favor escolher outra data.");
     		return ERROR;
     	}
 

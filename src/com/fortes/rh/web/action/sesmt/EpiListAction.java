@@ -59,7 +59,7 @@ public class EpiListAction extends MyActionSupportList
 		{
 		
 			if(epi == null || epi.getId() == null || !epiManager.verifyExists(new String[]{"id","empresa.id"}, new Object[]{epi.getId(),getEmpresaSistema().getId()}))
-				addActionError("O EPI solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+				addActionMessage("O EPI solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			else
 			{
 				epiManager.removeEpi(epi);
@@ -73,7 +73,7 @@ public class EpiListAction extends MyActionSupportList
 		}
 		catch (DataIntegrityViolationException e) 
 		{
-			addActionError("Não foi possível remover o EPI. Existem registros vinculados a ele.");
+			addActionWarning("Não foi possível remover o EPI. Existem registros vinculados a ele.");
 			e.printStackTrace();
 		}
 		catch (Exception e)
