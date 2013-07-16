@@ -63,7 +63,7 @@ public class EpiListAction extends MyActionSupportList
 			else
 			{
 				epiManager.removeEpi(epi);
-				addActionMessage("EPI excluído com sucesso.");
+				addActionSuccess("EPI excluído com sucesso.");
 			}
 		}
 		
