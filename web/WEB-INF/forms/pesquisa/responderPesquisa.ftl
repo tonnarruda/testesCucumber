@@ -65,58 +65,64 @@
 
 <script>
 
-function submete(formulario, validando)
-{
-	if(validando)
+	function submete(formulario, validando)
 	{
-		<#if respondePorOutroUsuario>
-			var formularioValido = validaRespostas(null, null, false, true, true, false, false);
-		<#else>
-			var formularioValido = validaRespostas(null, null, false, true, true, true, true);
-		</#if> 
-		
-		if(!formularioValido)
-			return false;
+		if(validando)
+		{
+			<#if respondePorOutroUsuario>
+				var formularioValido = validaRespostas(null, null, false, true, true, false, true);
+			<#else>
+				var formularioValido = validaRespostas(null, null, false, true, true, true, true);
+			</#if> 
+			
+			if(!formularioValido)
+				return false;
+		}
+	
+		agrupaPerguntaseRespostas(formulario);
+	
+		document.formAction.submit();
+	}
+	
+	function agrupaPerguntaseRespostas(formulario)
+	{
+		var elemento = null;
+		var perguntasRespostas = "";
+		var respostas = document.getElementById("respostas");
+		respostas.value = "";
+	
+		for(i = 0;i < formulario.length;i++)
+		{
+			elemento = formulario.elements[i];
+	
+			if(elemento.name.substring(0,2) == "PG"){
+				perguntasRespostas += "PG"+elemento.name.substring(2)+"¨";
+			}
+			else if(elemento.name.substring(0,2) == "RO" && elemento.checked){
+				perguntasRespostas += "RO"+elemento.id.substring(2)+"¨";
+			}
+			else if(elemento.name.substring(0,2) == "RM" && elemento.checked){
+				perguntasRespostas += "RM"+elemento.id.substring(2)+"¨";
+			}
+			else if(elemento.name.substring(0,2) == "RN"){
+				perguntasRespostas += "RN"+elemento.value+"¨";
+			}
+			else if(elemento.name.substring(0,2) == "RS" && elemento.value.trim().length > 0){
+				perguntasRespostas += "RS"+elemento.value.trim()+"¨";
+			}
+			else if(elemento.name.substring(0,2) == "RC" && elemento.value.trim().length > 0){
+				perguntasRespostas += "RC"+elemento.value.trim()+"¨";
+			}
+		}
+	
+		respostas.value = perguntasRespostas.substring(0,perguntasRespostas.length-1);
 	}
 
-	agrupaPerguntaseRespostas(formulario);
+	<#assign validarCampos="return submete(document.forms[1],false);"/>
+	<#if validarFormulario?exists && validarFormulario>
+		<#assign validarCampos="return submete(document.forms[1],true);"/>
+	</#if>
 
-	document.formAction.submit();
-}
-
-function agrupaPerguntaseRespostas(formulario)
-{
-	var elemento = null;
-	var perguntasRespostas = "";
-	var respostas = document.getElementById("respostas");
-	respostas.value = "";
-
-	for(i = 0;i < formulario.length;i++)
-	{
-		elemento = formulario.elements[i];
-
-		if(elemento.name.substring(0,2) == "PG"){
-			perguntasRespostas += "PG"+elemento.name.substring(2)+"¨";
-		}
-		else if(elemento.name.substring(0,2) == "RO" && elemento.checked){
-			perguntasRespostas += "RO"+elemento.id.substring(2)+"¨";
-		}
-		else if(elemento.name.substring(0,2) == "RM" && elemento.checked){
-			perguntasRespostas += "RM"+elemento.id.substring(2)+"¨";
-		}
-		else if(elemento.name.substring(0,2) == "RN"){
-			perguntasRespostas += "RN"+elemento.value+"¨";
-		}
-		else if(elemento.name.substring(0,2) == "RS" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RS"+elemento.value.trim()+"¨";
-		}
-		else if(elemento.name.substring(0,2) == "RC" && elemento.value.trim().length > 0){
-			perguntasRespostas += "RC"+elemento.value.trim()+"¨";
-		}
-	}
-
-	respostas.value = perguntasRespostas.substring(0,perguntasRespostas.length-1);
-}
 </script>
 </head>
 <body>
@@ -145,10 +151,6 @@ function agrupaPerguntaseRespostas(formulario)
 		<#return aspecto>
 	</#function>
 
-	<#assign validarCampos="return submete(document.forms[1],false);"/>
-	<#if validarFormulario?exists && validarFormulario>
-		<#assign validarCampos="return submete(document.forms[1],true);"/>
-	</#if>
 	<@ww.actionerror />
 
 	<@ww.form name="formAction" action="salvaQuestionarioRespondido.action?tela=${tela}#c${colaborador.id}" method="POST">

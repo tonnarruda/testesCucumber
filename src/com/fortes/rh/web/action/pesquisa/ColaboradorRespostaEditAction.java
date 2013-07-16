@@ -113,6 +113,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
     public String prepareResponderQuestionarioPorOutroUsuario() throws Exception
     {
     	respondePorOutroUsuario = true; //flag para o ftl (obrigatoriedade de campos subjetivos e etc.)
+    	validarFormulario = true;
     	
     	return prepareResponderQuestionario();
     }
