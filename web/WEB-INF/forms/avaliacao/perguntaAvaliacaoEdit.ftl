@@ -2,19 +2,21 @@
 <html>
 <head>
 <@ww.head/>
-<#if pergunta.id?exists>
-	<title>Editar Pergunta da Avaliação</title>
-	<#assign formAction="update.action"/>
-<#else>
-	<title>Inserir Pergunta da Avaliação</title>
-	<#assign formAction="insert.action"/>
-</#if>
-
-<#if modeloAvaliacao?exists && modeloAvaliacao == 'S'>
-	<#assign tipoAvaliado="candidato"/>
-<#else>
-	<#assign tipoAvaliado="colaborador"/>
-</#if>
+	<#if pergunta.id?exists>
+		<title>Editar Pergunta da Avaliação</title>
+		<#assign formAction="update.action"/>
+		<#assign desabilitaTipo="true"/>
+	<#else>
+		<title>Inserir Pergunta da Avaliação</title>
+		<#assign formAction="insert.action"/>
+		<#assign desabilitaTipo="false"/>
+	</#if>
+	
+	<#if modeloAvaliacao?exists && modeloAvaliacao == 'S'>
+		<#assign tipoAvaliado="candidato"/>
+	<#else>
+		<#assign tipoAvaliado="colaborador"/>
+	</#if>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
@@ -244,7 +246,7 @@
 		<@ww.textfield id="peso" label="Peso" name="pergunta.peso" maxLength="4" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;text-align:right;"/>
 		Pergunta:* <br> <@ww.textfield theme="simple" id="pergunta" label="Pergunta" name="pergunta.texto" required="true" cssStyle="width: 350px;"/>
 		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
-		<@ww.select label="Tipos de Respostas" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();"/>
+		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();" disabled="${desabilitaTipo}" />
 		
 		
 		<#-- Perguntas Objetivas -->
