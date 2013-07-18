@@ -109,7 +109,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 		extintorManutencaoServicoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<ExtintorManutencaoServico>()));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		manager.expects(once()).method("findByIdProjection").with(eq(extintorManutencao.getId())).will(returnValue(extintorManutencao));
-		extintorManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Extintor>()));
+		extintorManager.expects(once()).method("findAllComHistAtual").will(returnValue(new ArrayList<Extintor>()));
 
 		assertEquals("success", action.prepareUpdate());
 		assertNotNull(action.getEstabelecimentos());
@@ -126,7 +126,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("saveOrUpdate").will(returnValue(extintorManutencao));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		extintorManutencaoServicoManager.expects(once()).method("findAll");
-		extintorManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Extintor>()));
+		extintorManager.expects(once()).method("findAllComHistAtual").will(returnValue(new ArrayList<Extintor>()));
 
 		assertEquals("success", action.insert());
 	}
@@ -169,7 +169,7 @@ public class ExtintorManutencaoEditActionTest extends MockObjectTestCase
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		manager.expects(once()).method("findByIdProjection").with(eq(extintorManutencao.getId())).will(returnValue(extintorManutencao));
 		extintorManutencaoServicoManager.expects(once()).method("findAll");
-		extintorManager.expects(once()).method("findByEstabelecimento");
+		extintorManager.expects(once()).method("findAllComHistAtual");
 
 		assertEquals("input", action.update());
 	}

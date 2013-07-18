@@ -10,7 +10,7 @@ public interface ExtintorDao extends GenericDao<Extintor>
 
 	Integer getCount(Long empresaId, String tipoBusca, Integer numeroBusca, Boolean ativo);
 	Collection<Extintor> findAllSelect(int page, int pagingSize, Long empresaId, String tipoBusca, Integer numeroBusca, Boolean valorAtivo);
-	Collection<Extintor> findByEstabelecimento(Long estabelecimentoId, Boolean ativo);
+	Collection<Extintor> findAllComHistAtual(Boolean ativo, Long estabelecimentoId, Long empresaId);
 	Collection<String> findFabricantesDistinctByEmpresa(Long empresaId);
 	Collection<String> findLocalizacoesDistinctByEmpresa(Long empresaId);
 }

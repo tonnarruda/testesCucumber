@@ -411,6 +411,15 @@ public class DateUtilTest extends TestCase
 		data1 = DateUtil.montaDataByString("01/04/2005");
 		assertFalse(DateUtil.between(data1, dataInicio, dataFim));
 	}
+
+	public void testMontaDataByStringComHora()
+	{
+		Date data = DateUtil.montaDataByStringComHora("17/07/2013", "12:00");
+		Date dataInicio = DateUtil.montaDataByStringComHora("17/07/2013", "08:30");
+		Date dataFim = DateUtil.montaDataByStringComHora("17/07/2013", "13:01");
+		
+		assertTrue(DateUtil.between(data, dataInicio, dataFim));
+	}
 	
 	public void testContaDiasUteis()
 	{

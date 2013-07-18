@@ -177,7 +177,43 @@ public class ExtintorDaoHibernateTest extends GenericDaoHibernateTest<Extintor>
 		hist2.setExtintor(extintorInativo);
 		historicoExtintorDao.save(hist2);
 
-		assertEquals(1, extintorDao.findByEstabelecimento(estabelecimento.getId(), true).size());
+		assertEquals(1, extintorDao.findAllComHistAtual(true, estabelecimento.getId(), null).size());
+	}
+	
+	public void testFindByEstabelecimentoComEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Extintor extintor = ExtintorFactory.getEntity();
+		extintor.setEmpresa(empresa);
+		extintor.setAtivo(true);
+		extintorDao.save(extintor);
+		
+		HistoricoExtintor hist1 = HistoricoExtintorFactory.getEntity();
+		hist1.setEstabelecimento(estabelecimento);
+		hist1.setLocalizacao("carro 999");
+		hist1.setExtintor(extintor);
+		historicoExtintorDao.save(hist1);
+		
+		Extintor extintorInativo = ExtintorFactory.getEntity();
+		extintorInativo.setEmpresa(empresa2);
+		extintorInativo.setAtivo(false);
+		extintorDao.save(extintorInativo);
+		
+		HistoricoExtintor hist2 = HistoricoExtintorFactory.getEntity();
+		hist2.setEstabelecimento(estabelecimento);
+		hist2.setLocalizacao("carro 100");
+		hist2.setExtintor(extintorInativo);
+		historicoExtintorDao.save(hist2);
+		
+		assertEquals(0, extintorDao.findAllComHistAtual(true, estabelecimento.getId(), empresa.getId()).size());
 	}
 
 	public void testGetFabricantesDistinct()

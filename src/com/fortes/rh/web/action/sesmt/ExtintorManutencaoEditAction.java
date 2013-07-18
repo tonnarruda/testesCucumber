@@ -58,7 +58,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 		{
 			extintorManutencao = extintorManutencaoManager.findByIdProjection(extintorManutencao.getId());
 			estabelecimento = extintorManutencao.getExtintor().getUltimoHistorico().getEstabelecimento();
-			extintors = extintorManager.findByEstabelecimento(estabelecimento.getId(), true);
+			extintors = extintorManager.findAllComHistAtual(true, estabelecimento.getId(), null);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 			extintorManutencaoManager.saveOrUpdate(extintorManutencao, servicoChecks);
 			addActionMessage("Manutenção gravada com sucesso.");
 
-			extintors = extintorManager.findByEstabelecimento(estabelecimento.getId(), true);
+			extintors = extintorManager.findAllComHistAtual(true, estabelecimento.getId(), null);
 
 			extintorManutencao = null;
 			servicoChecks = null;
@@ -131,7 +131,7 @@ public class ExtintorManutencaoEditAction extends MyActionSupportList
 			extintorId = null;
 
 		if(estabelecimentoId != null)
-			extintors = extintorManager.findByEstabelecimento(estabelecimentoId, true);
+			extintors = extintorManager.findAllComHistAtual(true, estabelecimentoId, null);
 		
 		setTotalSize(extintorManutencaoManager.getCount(getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno));
 		extintorManutencaos = extintorManutencaoManager.findAllSelect(page, pagingSize, getEmpresaSistema().getId(), estabelecimentoId, extintorId, inicio, fim, somenteSemRetorno, localizacao);

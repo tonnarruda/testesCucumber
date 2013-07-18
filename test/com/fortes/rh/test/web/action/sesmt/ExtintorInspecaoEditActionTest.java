@@ -110,7 +110,8 @@ public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("getEmpresasResponsaveis");
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
 		manager.expects(once()).method("findByIdProjection").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
-		extintorManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Extintor>()));
+		
+		extintorManager.expects(once()).method("findAllComHistAtual").with(eq(true), eq(1L), eq(null)).will(returnValue(new ArrayList<Extintor>()));
 
 		assertEquals("success", action.prepareUpdate());
 		assertNotNull(action.getEstabelecimentos());
@@ -126,7 +127,7 @@ public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
 
 		manager.expects(once()).method("saveOrUpdate").will(returnValue(extintorInspecao));
 		estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Estabelecimento>()));
-		extintorManager.expects(once()).method("findByEstabelecimento");
+		extintorManager.expects(once()).method("findAllComHistAtual");
 		extintorInspecaoItemManager.expects(once()).method("findAll");
 		manager.expects(once()).method("getEmpresasResponsaveis");
 
@@ -172,7 +173,7 @@ public class ExtintorInspecaoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("findByIdProjection").with(eq(extintorInspecao.getId())).will(returnValue(extintorInspecao));
 		extintorInspecaoItemManager.expects(once()).method("findAll");
 		manager.expects(once()).method("getEmpresasResponsaveis");
-		extintorManager.expects(once()).method("findByEstabelecimento");
+		extintorManager.expects(once()).method("findAllComHistAtual");
 
 		assertEquals("input", action.update());
 	}

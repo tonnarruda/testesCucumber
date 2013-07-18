@@ -55,7 +55,6 @@
 		<@ww.textfield label="Capacidade (ex.: 12kg)" cssStyle="width:70px;text-align:right;" name="extintor.capacidade" maxLength="10"/>
 		
 		<@ww.select label="Ativo" name="extintor.ativo" id="ativo" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 50px;" />
-
 		
 		<li>
 			<fieldset>

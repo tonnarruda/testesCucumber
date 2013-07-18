@@ -58,7 +58,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
 		epiHistorico = epiHistoricoManager.findById(epiHistorico.getId());
 		epiNome = epiHistorico.getEpi().getNome();
 		epiEhFardamento = epiHistorico.getEpi().getFardamento();
-
+		
 		return Action.SUCCESS;
 	}
 
@@ -106,6 +106,7 @@ public class EpiHistoricoEditAction extends MyActionSupportEdit
     	}
 
 		epiHistoricoManager.update(epiHistorico);
+		
 		return Action.SUCCESS;
 	}
 

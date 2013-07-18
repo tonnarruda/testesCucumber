@@ -68,6 +68,16 @@ public class Extintor extends AbstractModel implements Serializable
 		return (String)new TipoExtintor().get(tipo);
 	}
 	
+	public String getDescricaoMaisLocalizacao()
+	{
+		String retorno = getDescricao();
+		
+		if (this.getUltimoHistorico() != null && this.getUltimoHistorico().getLocalizacao() != null)
+			retorno += " / " + this.getUltimoHistorico().getLocalizacao();
+		
+		return retorno;
+	}
+	
 	/**
 	 * atributo <i>transiente</i>. 
 	 **/

@@ -93,7 +93,7 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 		return criteria.list();
 	}
 
-	public Collection<Extintor> findByEstabelecimento(Long estabelecimentoId, Boolean ativo)
+	public Collection<Extintor> findAllComHistAtual(Boolean ativo, Long estabelecimentoId, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
 		criteria.createCriteria("e.historicoExtintores", "he");
@@ -117,14 +117,18 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 		
 		criteria.add( Property.forName("he.data").eq(maxData) );
 
-		if (estabelecimentoId != null && !estabelecimentoId.equals(""))
-			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
-
 		if (ativo != null)
 			criteria.add(Expression.eq("e.ativo", ativo));
 
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		if (estabelecimentoId != null && !estabelecimentoId.equals(""))
+			criteria.add(Expression.eq("he.estabelecimento.id", estabelecimentoId));
 
+		if (empresaId != null)
+			criteria.add(Expression.eq("est.empresa.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
 		return criteria.list();
 	}
 

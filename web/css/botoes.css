@@ -28,6 +28,11 @@
 	width: 78px !important;
 }
 
+.btnTrocaExtintores{
+	background-image:url(../imgs/btnTrocaExtintores.gif);
+	width: 158px !important;
+}
+
 .btnInserirEtapasEmGrupo{
 	background-image:url(../imgs/btnInserirEtapasEmGrupo.gif);
 	width: 193px !important;
@@ -737,7 +742,8 @@
 .btnBackup,
 .btnDownload,
 .btnOrganograma,
-.btnCriarTurmas
+.btnCriarTurmas,
+.btnTrocaExtintores
 {
 	border: 0;
 	background-repeat: no-repeat;

@@ -59,7 +59,7 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 		{
 			extintorInspecao = extintorInspecaoManager.findByIdProjection(extintorInspecao.getId());
 			estabelecimento = extintorInspecao.getExtintor().getUltimoHistorico().getEstabelecimento();
-			extintors = extintorManager.findByEstabelecimento(estabelecimento.getId(), true);
+			extintors = extintorManager.findAllComHistAtual(true, estabelecimento.getId(), null);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class ExtintorInspecaoEditAction extends MyActionSupportList
 			extintorInspecaoManager.saveOrUpdate(extintorInspecao, itemChecks);
 			addActionMessage("Inspeção gravada com sucesso.");
 
-			extintors = extintorManager.findByEstabelecimento(estabelecimento.getId(), true);
+			extintors = extintorManager.findAllComHistAtual(true, estabelecimento.getId(), null);
 
 			extintorInspecao = null;
 			itemChecks = null;

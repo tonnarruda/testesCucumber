@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 @SuppressWarnings("deprecation")
 public class DateUtil
 {
@@ -480,17 +482,25 @@ public class DateUtil
 			throw new IllegalArgumentException("Data inválida.");
 		}
 		
-//		if(dataStr == null || (dataStr != null && dataStr.trim().equals("")) || (dataStr != null && dataStr.equals("  /  /    ")))
-//			return null;
-//
-//		String[] dataArray = dataStr.split("/");
-//		Date data = new Date();
-//
-//		data.setDate(Integer.parseInt(dataArray[0]));
-//		data.setMonth(Integer.parseInt(dataArray[1]) - 1);
-//		data.setYear(Integer.parseInt(dataArray[2]) - 1900);
-//		
-//		return data;
+	}
+	
+	public static Date montaDataByStringComHora(String dataStr, String hora)
+	{
+		boolean invalida = isDataInvalida(dataStr);
+		if (invalida)
+			return null;
+		
+		boolean erroDeDigitacao = possuiPossivelErroDeDigitacao(dataStr);
+		if (erroDeDigitacao)
+			throw new IllegalArgumentException("Data inválida.");
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			Date result = sdf.parse(dataStr + " " + hora);
+			return result;
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Data inválida.");
+		}
 	}
 	
 	public static Date montaDataByStringPostgres(String dataStr)
@@ -766,6 +776,19 @@ public class DateUtil
 	    }
 	      
 	    return diasUteis;
+	}
+	
+	public static String getHora(Date data)
+	{  
+		String retorno = "";
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		
+		retorno += StringUtils.leftPad(String.valueOf(calendar.get(Calendar.HOUR)), 2, "0");
+		retorno += ":";
+		retorno += StringUtils.leftPad(String.valueOf(calendar.get(Calendar.MINUTE)), 2, "0");
+		
+		return retorno;
 	}
 	
 	public static int getDia(Date data)

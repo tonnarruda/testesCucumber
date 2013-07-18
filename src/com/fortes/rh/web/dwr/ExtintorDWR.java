@@ -24,14 +24,14 @@ public class ExtintorDWR
 
 		if (estabelecimentoId != null && !estabelecimentoId.equals(""))
 		{
-			Collection<Extintor> extintores = extintorManager.findByEstabelecimento(Long.parseLong(estabelecimentoId), true);
+			Collection<Extintor> extintores = extintorManager.findAllComHistAtual(true, Long.parseLong(estabelecimentoId), null);
 
 			if (!extintores.isEmpty())
 			{
 				colecaoRetorno.addAll(extintores);
 			}
 		}else{
-			Collection<Extintor> extintores = extintorManager.findByEstabelecimento(null, true);
+			Collection<Extintor> extintores = extintorManager.findAllComHistAtual(true, null, null);
 			
 			if (!extintores.isEmpty())
 			{

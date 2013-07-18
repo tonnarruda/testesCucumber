@@ -55,14 +55,12 @@
 	<@ww.hidden name="epiHistorico.id" />
 	<@ww.hidden name="epiHistorico.epi.id" />
 	<@ww.hidden name="epi.id" />
+	<@ww.hidden name="troca" />
 	<@ww.token/>
-
 </@ww.form>
 <div class="buttonGroup">
-	<button onclick="${validarCampos}" class="btnGravar" accesskey="${accessKey}">
-	</button>
-	<button onclick="window.location='../epi/prepareUpdate.action?epi.id=${epi.id}'" class="btnCancelar" accesskey="C">
-	</button>
+	<button onclick="${validarCampos}" class="btnGravar" accesskey="${accessKey}"></button>
+	<button onclick="window.location='../epi/prepareUpdate.action?epi.id=${epi.id}'" class="btnCancelar" accesskey="C"></button>
 </div>
 </body>
 </html>

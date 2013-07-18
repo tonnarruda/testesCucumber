@@ -9,9 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,8 +29,11 @@ public class HistoricoExtintor extends AbstractModel implements Serializable
 	@Column(length=50)
 	private String localizacao;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
+
+	@Transient
+	private String hora;
 
 	public Extintor getExtintor() {
 		return extintor;
@@ -50,6 +55,26 @@ public class HistoricoExtintor extends AbstractModel implements Serializable
 
 	public void setExtintor(Extintor extintor) {
 		this.extintor = extintor;
+	}
+
+	private void inicializaExtintor() {
+		if(this.extintor == null)
+			this.extintor = new Extintor();
+	}
+
+	public void setProjectionExtintorId(Long extintorId){
+		inicializaExtintor();
+		this.extintor.setId(extintorId);
+	}
+	
+	public void setProjectionExtintorTipo(String extintorTipo){
+		inicializaExtintor();
+		this.extintor.setTipo(extintorTipo);
+	}
+	
+	public void setProjectionExtintorNumeroCilindro(Integer extintorNumeroCilindro){
+		inicializaExtintor();
+		this.extintor.setNumeroCilindro(extintorNumeroCilindro);
 	}
 
 	public Estabelecimento getEstabelecimento() {
@@ -75,5 +100,16 @@ public class HistoricoExtintor extends AbstractModel implements Serializable
 	public void setData(Date data) {
 		this.data = data;
 	}
-	
+
+	public String getHora() {
+		return DateUtil.getHora(getData());
+	}
+
+	public String getHoraString() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
 }

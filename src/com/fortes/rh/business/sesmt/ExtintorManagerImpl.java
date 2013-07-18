@@ -49,9 +49,9 @@ public class ExtintorManagerImpl extends GenericManagerImpl<Extintor, ExtintorDa
 		return getDao().findAllSelect(page, pagingSize, empresaId, tipoBusca, numeroBusca, valorAtivo);
 	}
 
-	public Collection<Extintor> findByEstabelecimento(Long estabelecimentoId, Boolean ativo)
+	public Collection<Extintor> findAllComHistAtual(Boolean ativo, Long estabelecimentoId, Long empresaId)
 	{
-		return getDao().findByEstabelecimento(estabelecimentoId, ativo);
+		return getDao().findAllComHistAtual(ativo, estabelecimentoId, empresaId);
 	}
 
 	public String getFabricantes(Long empresaId)

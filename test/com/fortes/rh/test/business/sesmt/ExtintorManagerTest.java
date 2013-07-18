@@ -81,8 +81,8 @@ public class ExtintorManagerTest extends MockObjectTestCase
 	public void testFindByEstabelecimento()
 	{
 		Long estabelecimentoId = 2L;
-		extintorDao.expects(once()).method("findByEstabelecimento").with(eq(estabelecimentoId),eq(null)).will(returnValue(new ArrayList<Extintor>()));
-		assertEquals(0, extintorManager.findByEstabelecimento(estabelecimentoId, null).size());
+		extintorDao.expects(once()).method("findAllComHistAtual").with(eq(true), eq(estabelecimentoId),eq(1L)).will(returnValue(new ArrayList<Extintor>()));
+		assertEquals(0, extintorManager.findAllComHistAtual(true, estabelecimentoId, 1L).size());
 	}
 	
 	public void testGetFabricantes()

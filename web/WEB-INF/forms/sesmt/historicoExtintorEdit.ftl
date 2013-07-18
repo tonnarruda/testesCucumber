@@ -8,7 +8,7 @@
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
-	
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<@ww.head/>
 	
 	<#if historicoExtintor.id?exists>
@@ -20,12 +20,18 @@
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
-	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','estabelecimento','localizacao'), new Array('dataHist'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','estabelecimento','localizacao','hora'), new Array('dataHist','hora'))"/>
 
 	<#if historicoExtintor.data?exists>
 		<#assign data = historicoExtintor.data>
 	<#else>
 		<#assign data = "">
+	</#if>
+	
+	<#if troca>
+		<#assign voltar="window.location='../historicoExtintor/list.action'"/>
+	<#else>
+		<#assign voltar="window.location='../extintor/prepareUpdate.action?extintor.id=${extintor.id}'"/>
 	</#if>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
@@ -40,18 +46,22 @@
 <body>
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.datepicker label="A partir de" name="historicoExtintor.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
+		<@ww.datepicker label="A partir de" name="historicoExtintor.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData" liClass="liLeft"/>
+		<@ww.textfield label="Hora" name="historicoExtintor.hora" id="hora" cssStyle="width: 38px;" cssClass="mascaraHora" required="true"/>
 		<@ww.select label="Estabelecimento" name="historicoExtintor.estabelecimento.id" id="estabelecimento" required="true" list="estabelecimentos" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..."/>
 		<@ww.textfield label="Localização" name="historicoExtintor.localizacao" id="localizacao" required="true" maxLength="50"/>
 		
 		<@ww.hidden name="historicoExtintor.id" />
 		<@ww.hidden name="historicoExtintor.extintor.id" />
 		<@ww.hidden name="extintor.id" />
+		<@ww.hidden name="troca" />
+		<@ww.hidden id="pagina" name="page"/>
 	</@ww.form>
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
-		<button onclick="window.location='../extintor/prepareUpdate.action?extintor.id=${extintor.id}'" class="btnCancelar" accesskey="V"></button>
+		<button onclick="${voltar}" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>
 </html>

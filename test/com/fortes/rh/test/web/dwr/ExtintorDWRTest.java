@@ -41,11 +41,11 @@ public class ExtintorDWRTest extends MockObjectTestCase
 		historico.setEstabelecimento(estabelecimento);
 		historico.setExtintor(extintor);
 		
-		extintorManager.expects(once()).method("findByEstabelecimento").with(eq(estabelecimento.getId()), eq(true)).will(returnValue(extintors));
+		extintorManager.expects(once()).method("findAllComHistAtual").with(eq(true), eq(estabelecimento.getId()), eq(null)).will(returnValue(extintors));
 
 		assertNotNull(extintorDWR.getExtintorByEstabelecimento("1", "Selecione..."));
 		
-		extintorManager.expects(once()).method("findByEstabelecimento").with(eq(null), eq(true)).will(returnValue(extintors));
+		extintorManager.expects(once()).method("findAllComHistAtual").with(eq(true), eq(null), eq(null)).will(returnValue(extintors));
 		assertEquals(2, extintorDWR.getExtintorByEstabelecimento("", "").size());
 	}
 }
