@@ -69,7 +69,7 @@
 		{
 			var valueCpf = "   .   .   -  ";
 			var valueData = "  /  /    ";
-			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChave', 'escolaridade', 'idioma', 'nivel', 'uf');
+			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChaveCurriculoEscaneado', 'escolaridade', 'idioma', 'nivel', 'uf');
 			$('#qtdRegistros').val(100);
 			$('#ordenar').val('dataAtualizacao');
 			$('#listCheckBoxcidadesCheck').empty();
@@ -181,7 +181,8 @@
 			<li>meses</li>
 			<li>&nbsp;</li>
 			<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" />
-			<@ww.textfield label="Palavras-chave no currículo" name="palavrasChave" id="palavrasChave" cssStyle="width: 500px;" />
+			<@ww.textfield label="Palavras-chave" name="palavrasChaveOutrosCampos" id="palavrasChaveOutrosCampos" cssStyle="width: 500px;" />
+			<@ww.textfield label="Palavras-chave no currículo escaneado" name="palavrasChaveCurriculoEscaneado" id="palavrasChaveCurriculoEscaneado" cssStyle="width: 500px;" />
 			<@ww.select name="formas" id="formas" list=r'#{
 		       "2":"Qualquer Palavra",
 		       "1":"Todas as Palavras",

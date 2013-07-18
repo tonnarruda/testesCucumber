@@ -172,7 +172,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private String sexo;
 	private Date dataCadIni;
 	private Date dataCadFim;
-	private String palavrasChave;
+	private String palavrasChaveCurriculoEscaneado;
+	private String palavrasChaveOutrosCampos;
 	private String formas;
 	private String tempoExperiencia;
 	private String deficiencia;
@@ -564,7 +565,8 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("escolaridade", escolaridade);
 		parametros.put("veiculo", veiculo);
 		parametros.put("nivel", nivel);
-		parametros.put("palavrasChave", palavrasChave);
+		parametros.put("palavrasChaveCurriculoEscaneado", palavrasChaveCurriculoEscaneado);
+		parametros.put("palavrasChaveOutrosCampos", palavrasChaveOutrosCampos);
 		parametros.put("formas", formas);
 		parametros.put("tempoExperiencia", tempoExperiencia);
 		parametros.put("deficiencia", deficiencia);
@@ -1431,14 +1433,14 @@ public class CandidatoListAction extends MyActionSupportList
 		this.candidatoCurriculoManager = candidatoCurriculoManager;
 	}
 
-	public String getPalavrasChave()
+	public String getPalavrasChaveCurriculoEscaneado()
 	{
-		return palavrasChave;
+		return palavrasChaveCurriculoEscaneado;
 	}
 
-	public void setPalavrasChave(String palavrasChave)
+	public void setPalavrasChaveCurriculoEscaneado(String palavrasChaveCurriculoEscaneado)
 	{
-		this.palavrasChave = palavrasChave;
+		this.palavrasChaveCurriculoEscaneado = palavrasChaveCurriculoEscaneado;
 	}
 
 	public String getFormas()
@@ -1825,5 +1827,15 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setCidadesCheck(Long[] cidadesCheck) {
 		this.cidadesCheck = cidadesCheck;
+	}
+	
+	public String getPalavrasChaveOutrosCampos()
+	{
+		return palavrasChaveOutrosCampos;
+	}
+	
+	public void setPalavrasChaveOutrosCampos(String palavrasChaveOutrosCampos)
+	{
+		this.palavrasChaveOutrosCampos = palavrasChaveOutrosCampos;
 	}
 }

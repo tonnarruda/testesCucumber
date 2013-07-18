@@ -23,7 +23,7 @@
 		</#if>
 		
 		<@display.column title="Nome"  class="${classe}">
-			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChave}&forma=${formas}"/>', 580, 750)" cpf="${cpf}">
+			<a title="Ver Informação" class="${classe}" href="javascript:popup('<@ww.url includeParams="none" value="/captacao/candidato/infoCandidato.action?candidato.id=${candidato.id?string?replace('.', '')}&palavras=${palavrasChaveCurriculoEscaneado}&forma=${formas}"/>', 580, 750)" cpf="${cpf}">
 				${candidato.nome}
 			</a>
 			<#if candidato.pessoal?exists && candidato.pessoal.indicadoPor?exists && candidato.pessoal.indicadoPor?trim != "">

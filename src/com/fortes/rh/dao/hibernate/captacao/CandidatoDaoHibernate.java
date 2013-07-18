@@ -321,6 +321,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (somenteSemSolicitacao)
 			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
+		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
+			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
 		
 		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
@@ -510,43 +512,64 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.add(Expression.eq("c.socioEconomica.possuiVeiculo", veiculo));
 		}
 
-		// where titulo ocrtexto
-		if (isNotBlank((String)parametros.get("palavrasChave"))) {
+		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos"))) {
 			String tipo = (String) parametros.get("formas");
-			// 1:todas
-			// 2:qualquer
-			// 3:frase exata
+			
+			Junction juncaoOr = Expression.disjunction();
+			
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "f1_.curso", (String) parametros.get("palavrasChaveOutrosCampos")));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.cursos", (String) parametros.get("palavrasChaveOutrosCampos")));
+			
+			criteria.add(juncaoOr);
+		}
+		
+		// where titulo ocrtexto
+		if (isNotBlank((String)parametros.get("palavrasChaveCurriculoEscaneado"))) {
+			String tipo = (String) parametros.get("formas");
 
-			if (tipo.equals("1"))
-			{
-				String[] palavrasExpressao = ((String) parametros.get("palavrasChave")).split(" ");
-
-				Junction juncaoTodas = Expression.conjunction();
-				for (int i = 0; i < palavrasExpressao.length; i++)
-				{
-					juncaoTodas.add(Restrictions.sqlRestriction("normalizar(this_.ocrTexto) ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", Hibernate.STRING) );
-				}
-				criteria.add(juncaoTodas);
-			}
-			else if (tipo.equals("2"))
-			{
-				String[] palavrasExpressao = ((String) parametros.get("palavrasChave")).split(" ");
-
-				Junction juncao = Expression.disjunction();
-				for (int i = 0; i < palavrasExpressao.length; i++)
-				{
-					juncao.add(Restrictions.sqlRestriction("normalizar(this_.ocrTexto) ilike  normalizar(?)", "%" + palavrasExpressao[i].trim() + "%", Hibernate.STRING) );
-				}
-				
-				criteria.add(juncao);
-
-			}
-			else if (tipo.equals("3"))
-			{
-				criteria.add(Restrictions.sqlRestriction("normalizar(this_.ocrTexto) ilike  normalizar(?)", "%" + parametros.get("palavrasChave").toString().trim() + "%", Hibernate.STRING) );
-			}
+			criteria.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.ocrTexto", (String) parametros.get("palavrasChaveCurriculoEscaneado")));
 		}
 
+	}
+
+	private Junction montaTipoDeRestricaoDaPalavraChave(String tipo, String campoComparado, String palavraChave)
+	{
+		String TODAS_PALAVRAS = "1";
+		String QUALQUER_PALAVRA = "2";
+		String FRASE_EXATA = "3";
+		
+		
+		if (tipo.equals(QUALQUER_PALAVRA))
+		{
+			Junction juncaoOr = Expression.disjunction();
+			String[] palavrasExpressao = palavraChave.split(" ");
+
+			for (int i = 0; i < palavrasExpressao.length; i++)
+			{
+				juncaoOr.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", Hibernate.STRING) );
+			}
+			
+			return juncaoOr;
+
+		} else { 
+			Junction juncaoAnd = Expression.conjunction();
+
+			if (tipo.equals(TODAS_PALAVRAS))
+			{
+				String[] palavrasExpressao = palavraChave.split(" ");
+
+				for (int i = 0; i < palavrasExpressao.length; i++)
+				{
+					juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavrasExpressao[i] + "%", Hibernate.STRING) );
+				}
+			} 
+			else if (tipo.equals(FRASE_EXATA))
+			{
+				juncaoAnd.add(Restrictions.sqlRestriction("normalizar("+campoComparado+") ilike  normalizar(?)", "%" + palavraChave.trim() + "%", Hibernate.STRING) );
+			}
+			
+			return juncaoAnd;
+		}
 	}
 
 	public Collection<Candidato> findCandidatosById(Long[] ids)

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.CandidatoDao;
@@ -16,6 +18,7 @@ import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.dao.captacao.ExperienciaDao;
+import com.fortes.rh.dao.captacao.FormacaoDao;
 import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
 import com.fortes.rh.dao.captacao.IdiomaDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -36,6 +39,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.Experiencia;
+import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -68,6 +72,7 @@ import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
 import com.fortes.rh.test.factory.captacao.ExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.FormacaoFactory;
 import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
 import com.fortes.rh.test.factory.captacao.IdiomaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -102,6 +107,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private EtapaSeletivaDao etapaSeletivaDao;
 	private ColaboradorDao colaboradorDao;
 	private FaixaSalarialDao faixaSalarialDao;
+	private FormacaoDao formacaoDao;
 	private ComoFicouSabendoVagaDao comoFicouSabendoVagaDao;
 
 	public Candidato getEntity()
@@ -697,7 +703,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	// 1:todas
 	// 2:qualquer
 	// 3:frase exata
-	public void testFindBuscaPalavrasChaves() throws Exception
+	public void testFindBuscapalavrasChaveCurriculoEscaneado() throws Exception
 	{
 		String palavra = "teste palavra";
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -722,7 +728,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 
 		Map parametros = new HashMap();
-		parametros.put("palavrasChave", palavra);
+		parametros.put("palavrasChaveCurriculoEscaneado", palavra);
 		parametros.put("formas", "1");
 		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 
@@ -742,6 +748,72 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
+	}
+	
+	public void testFindBuscapalavrasChaveOutrosCampos() throws Exception
+	{
+		String palavra = "java avançado";
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Formacao formacao1 = FormacaoFactory.getEntity();
+		formacao1.setCurso("Java");
+		
+		Formacao formacao2 = FormacaoFactory.getEntity();
+		formacao2.setCurso("Java Avançado");
+		
+		Candidato c1 = getCandidato();
+		c1.setEmpresa(empresa);
+		c1.setFormacao(Arrays.asList(new Formacao[] {formacao1}));
+		c1.setOcrTexto(palavra);
+		
+		Candidato c2 = getCandidato();
+		c2.setEmpresa(empresa);
+		c2.setFormacao(Arrays.asList(new Formacao[] {formacao2}));
+		c2.setOcrTexto(palavra);
+		
+		Candidato c3 = getCandidato();
+		c3.setEmpresa(empresa);
+		c3.setCursos("Java Básico, Java Intermediário");
+		
+		Candidato c4 = getCandidato();
+		c4.setEmpresa(empresa);
+		c4.setOcrTexto("erro");
+		
+		formacao1.setCandidato(c1);
+		formacaoDao.save(formacao1);
+		formacao2.setCandidato(c2);
+		formacaoDao.save(formacao2);
+		
+		c1 = candidatoDao.save(c1);
+		c2 = candidatoDao.save(c2);
+		c3 = candidatoDao.save(c3);
+		c4 = candidatoDao.save(c4);
+		
+		Collection<Long> idsCandidatos = new ArrayList<Long>();
+		
+		Map parametros = new HashMap();
+		parametros.put("palavrasChaveOutrosCampos", palavra);
+		
+		parametros.put("formas", "1"); // Todas palavras
+		Collection<Candidato> candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
+		
+		assertFalse(candidatos.isEmpty());
+		assertEquals(1, candidatos.size());
+		
+		candidatos.clear();
+		parametros.put("formas", "2"); // Qualquer palavra
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
+		
+		assertFalse(candidatos.isEmpty());
+		assertEquals(3, candidatos.size());
+		
+		candidatos.clear();
+		parametros.put("formas", "3"); // Frase exata
+		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
+		
+		assertFalse(candidatos.isEmpty());
+		assertEquals(1, candidatos.size());
 	}
 
 	public void testFindBuscaCargos() throws Exception
@@ -2624,7 +2696,6 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
-
 	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
 	{
 		this.historicoCandidatoDao = historicoCandidatoDao;
@@ -2650,8 +2721,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		this.idiomaDao = idiomaDao;
 	}
 
-	public void setComoFicouSabendoVagaDao(
-			ComoFicouSabendoVagaDao comoFicouSabendoVagaDao) {
+	public void setComoFicouSabendoVagaDao(ComoFicouSabendoVagaDao comoFicouSabendoVagaDao)
+	{
 		this.comoFicouSabendoVagaDao = comoFicouSabendoVagaDao;
+	}
+
+	public void setFormacaoDao(FormacaoDao formacaoDao)
+	{
+		this.formacaoDao = formacaoDao;
 	}
 }

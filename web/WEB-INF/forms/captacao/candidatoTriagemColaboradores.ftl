@@ -100,8 +100,8 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 
-	<#if !palavrasChave?exists>
-		<#assign palavrasChave=""/>
+	<#if !palavrasChaveCurriculoEscaneado?exists>
+		<#assign palavrasChaveCurriculoEscaneado=""/>
 	</#if>
 	<#if !formas?exists>
 		<#assign formas=""/>
