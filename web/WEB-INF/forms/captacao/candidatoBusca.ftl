@@ -26,11 +26,23 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 
+	<style type="text/css">
+		.fieldsetPalavraChave{
+			background-color: #EEEEEE;
+			width: 430px;
+		}
+	</style>
+	
 	<script type="text/javascript">
 		$(function(){
+			$('#tooltipPalavraChave').qtip({
+				content: 'Este filtro irá incidir sobre os campos "Curso" e "Outros Cursos" contidos na aba "FORMAÇÃO ESCOLAR" e nos campos "Outro Cargo" e "Informações Adicionais" contidos na aba "EXPERIÊNCIAS".'
+			});
+		
 			enviaEmpresa($('#empresaSelect').val());
 			
 			populaBairros();
@@ -69,7 +81,7 @@
 		{
 			var valueCpf = "   .   .   -  ";
 			var valueData = "  /  /    ";
-			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChaveCurriculoEscaneado', 'escolaridade', 'idioma', 'nivel', 'uf');
+			var campos = new Array('indicadoPor', 'nomeBusca', 'dataPrevIni', 'dataPrevFim', 'tempoExperiencia', 'palavrasChaveCurriculoEscaneado','palavrasChaveOutrosCampos', 'escolaridade', 'idioma', 'nivel', 'uf');
 			$('#qtdRegistros').val(100);
 			$('#ordenar').val('dataAtualizacao');
 			$('#listCheckBoxcidadesCheck').empty();
@@ -181,12 +193,19 @@
 			<li>meses</li>
 			<li>&nbsp;</li>
 			<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" />
-			<@ww.textfield label="Palavras-chave" name="palavrasChaveOutrosCampos" id="palavrasChaveOutrosCampos" cssStyle="width: 500px;" />
-			<@ww.textfield label="Palavras-chave no currículo escaneado" name="palavrasChaveCurriculoEscaneado" id="palavrasChaveCurriculoEscaneado" cssStyle="width: 500px;" />
-			<@ww.select name="formas" id="formas" list=r'#{
-		       "2":"Qualquer Palavra",
-		       "1":"Todas as Palavras",
-		       "3":"Frase Exata"}' />
+			
+			<fieldset class="fieldsetPalavraChave">
+				<legend>Palavras Chave</legend>
+				<@ww.textfield label="Palavras chave no currículo escaneado" name="palavrasChaveCurriculoEscaneado" id="palavrasChaveCurriculoEscaneado" cssStyle="width: 475px;" />
+				<div>
+					Palavras chave em outros campos: <img id="tooltipPalavraChave" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -4px" />
+				<@ww.textfield name="palavrasChaveOutrosCampos" id="palavrasChaveOutrosCampos" cssStyle="width: 475px;" />
+				</div>
+				<@ww.select name="formas" id="formas" list=r'#{
+			       "2":"Qualquer Palavra",
+			       "1":"Todas as Palavras",
+			       "3":"Frase Exata"}' />
+			</fieldset>
 			<br />
 			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
 			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />

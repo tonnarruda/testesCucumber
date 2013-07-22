@@ -321,6 +321,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if (somenteSemSolicitacao)
 			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
+		
 		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
 			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
 		
@@ -517,8 +518,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			
 			Junction juncaoOr = Expression.disjunction();
 			
-			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "f1_.curso", (String) parametros.get("palavrasChaveOutrosCampos")));
-			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.cursos", (String) parametros.get("palavrasChaveOutrosCampos")));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "f1_.curso", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.cursos", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "ex4_.nomeMercado", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
+			juncaoOr.add(montaTipoDeRestricaoDaPalavraChave(tipo, "this_.observacao", StringUtils.trimToEmpty((String) parametros.get("palavrasChaveOutrosCampos"))));
 			
 			criteria.add(juncaoOr);
 		}

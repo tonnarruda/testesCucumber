@@ -762,6 +762,9 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Formacao formacao2 = FormacaoFactory.getEntity();
 		formacao2.setCurso("Java Avançado");
 		
+		Experiencia experiencia = ExperienciaFactory.getEntity();
+		experiencia.setNomeMercado("Java complementar");
+		
 		Candidato c1 = getCandidato();
 		c1.setEmpresa(empresa);
 		c1.setFormacao(Arrays.asList(new Formacao[] {formacao1}));
@@ -778,7 +781,18 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		
 		Candidato c4 = getCandidato();
 		c4.setEmpresa(empresa);
-		c4.setOcrTexto("erro");
+		c4.setExperiencias(Arrays.asList(new Experiencia[] {experiencia}));
+		
+		Candidato c5 = getCandidato();
+		c5.setEmpresa(empresa);
+		c5.setObservacao("Curso html avançado concluído em 2010");
+		
+		Candidato c6 = getCandidato();
+		c6.setEmpresa(empresa);
+		c6.setOcrTexto("erro");
+		
+		experiencia.setCandidato(c4);
+		experienciaDao.save(experiencia);
 		
 		formacao1.setCandidato(c1);
 		formacaoDao.save(formacao1);
@@ -789,6 +803,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c2 = candidatoDao.save(c2);
 		c3 = candidatoDao.save(c3);
 		c4 = candidatoDao.save(c4);
+		c5 = candidatoDao.save(c5);
+		c6 = candidatoDao.save(c6);
 		
 		Collection<Long> idsCandidatos = new ArrayList<Long>();
 		
@@ -806,7 +822,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatos = candidatoDao.findBusca(parametros, empresa.getId(), idsCandidatos, false, null, null);
 		
 		assertFalse(candidatos.isEmpty());
-		assertEquals(3, candidatos.size());
+		assertEquals(5, candidatos.size());
 		
 		candidatos.clear();
 		parametros.put("formas", "3"); // Frase exata
