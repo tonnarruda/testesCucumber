@@ -3,6 +3,11 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.HistoricoExtintorDao;
 import com.fortes.rh.model.sesmt.Extintor;
@@ -11,6 +16,8 @@ import com.fortes.rh.util.DateUtil;
 
 public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoExtintor, HistoricoExtintorDao> implements HistoricoExtintorManager
 {
+	private PlatformTransactionManager transactionManager;
+	
 	public void update(HistoricoExtintor historicoExtintor) 
 	{
 		if(historicoExtintor.getHoraString() != null)
@@ -39,24 +46,42 @@ public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoEx
 		return getDao().countAllHistoricosAtuais(data, localizacao, extintorTipo, estabelecimentoId, empresaId);
 	}
 
-	public void insertNewHistoricos(Long[] extintorsCheck, HistoricoExtintor historicoTemp) 
+	public void insertNewHistoricos(Long[] extintorsCheck, HistoricoExtintor historicoTemp) throws Exception 
 	{
-		Extintor extintor;
-		HistoricoExtintor historicoExtintor;
-		for (Long extintorId : extintorsCheck) 
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+
+		try
 		{
-			extintor = new Extintor();
-			extintor.setId(extintorId);
-			
-			historicoExtintor = new HistoricoExtintor();
-			historicoExtintor.setId(null);
-			historicoExtintor.setExtintor(extintor);
-			
-			historicoExtintor.setData(DateUtil.montaDataByStringComHora(DateUtil.formataDiaMesAno(historicoTemp.getData()),historicoTemp.getHoraString()));
-			historicoExtintor.setEstabelecimento(historicoTemp.getEstabelecimento());
-			historicoExtintor.setLocalizacao(historicoTemp.getLocalizacao());
-			
-			save(historicoExtintor);
+			Extintor extintor;
+			HistoricoExtintor historicoExtintor;
+			for (Long extintorId : extintorsCheck) 
+			{
+				extintor = new Extintor();
+				extintor.setId(extintorId);
+				
+				historicoExtintor = new HistoricoExtintor();
+				historicoExtintor.setId(null);
+				historicoExtintor.setExtintor(extintor);
+				
+				historicoExtintor.setData(DateUtil.montaDataByStringComHora(DateUtil.formataDiaMesAno(historicoTemp.getData()),historicoTemp.getHoraString()));
+				historicoExtintor.setEstabelecimento(historicoTemp.getEstabelecimento());
+				historicoExtintor.setLocalizacao(historicoTemp.getLocalizacao());
+				
+				save(historicoExtintor);
+			}
+			transactionManager.commit(status);
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			transactionManager.rollback(status);
+			throw e;
+		}
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 }

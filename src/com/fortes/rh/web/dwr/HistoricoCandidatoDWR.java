@@ -16,11 +16,7 @@ public class HistoricoCandidatoDWR
 
 	public Map getCandidatoAptoByEtapa(Long etapaId, Long solicitacaoId)
 	{
-		if(etapaId == -1)
-			etapaId = null;
-
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacaoId, etapaId, null, true, true, true, null, null, null);
-
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoEtapasEmGrupo(solicitacaoId, etapaId == -1?null:etapaId);
 		return new CollectionUtil<CandidatoSolicitacao>().convertCollectionToMap(candidatoSolicitacaos, "getId", "getCandidatoNome");
 	}
 	

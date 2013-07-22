@@ -47,7 +47,7 @@ public class HistoricoCandidatoDWRTest extends MockObjectTestCase
 		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();
 		candidatoSolicitacaos.add(candidatoSolicitacao);
 
-		candidatoSolicitacaoManager.expects(once()).method("getCandidatoSolicitacaoList").with(new Constraint[] {ANYTHING, ANYTHING, eq(solicitacao.getId()), eq(etapaSeletiva.getId()), ANYTHING, eq(true), eq(true), eq(true), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(candidatoSolicitacaos));
+		candidatoSolicitacaoManager.expects(once()).method("getCandidatoSolicitacaoEtapasEmGrupo").with(eq(solicitacao.getId()), eq(etapaSeletiva.getId())).will(returnValue(candidatoSolicitacaos));
 
 		Map retorno = historicoCandidatoDWR.getCandidatoAptoByEtapa(etapaSeletiva.getId(), solicitacao.getId());
 

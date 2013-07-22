@@ -175,6 +175,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidato = CandidatoFactory.getCandidato();
 		candidato.getEndereco().setUf(null);
 		candidato.getEndereco().setCidade(null);
+		candidato.setContratado(false);
 		candidato = candidatoDao.save(candidato);
 
 		candidatoSolicitacao = new CandidatoSolicitacao();
@@ -322,6 +323,54 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 
 		CandidatoSolicitacao candidatoSolicitacaoTmp = (CandidatoSolicitacao) candidatoSolicitacaos.toArray()[0];
 		assertEquals(etapaSeletiva2, candidatoSolicitacaoTmp.getEtapaSeletiva());
+	}
+	
+	public void testGetCandidatoSolicitacaoEtapaSeletiva()
+	{
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+
+		EtapaSeletiva etapaSeletiva1 = EtapaSeletivaFactory.getEntity();
+		etapaSeletivaDao.save(etapaSeletiva1);
+		
+		EtapaSeletiva etapaSeletiva2 = EtapaSeletivaFactory.getEntity();
+		etapaSeletivaDao.save(etapaSeletiva2);
+
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidato1.setNome("cand1");
+		candidatoDao.save(candidato1);
+
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidato2.setNome("cand2");
+		candidatoDao.save(candidato2);
+		
+		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao1.setCandidato(candidato1);
+		candidatoSolicitacao1.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato2);
+		candidatoSolicitacao2.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		HistoricoCandidato historicoCandidato1 = HistoricoCandidatoFactory.getEntity();
+		historicoCandidato1.setEtapaSeletiva(etapaSeletiva1);
+		historicoCandidato1.setCandidatoSolicitacao(candidatoSolicitacao1);
+		historicoCandidatoDao.save(historicoCandidato1);
+		
+		HistoricoCandidato historicoCandidato2 = HistoricoCandidatoFactory.getEntity();
+		historicoCandidato2.setEtapaSeletiva(etapaSeletiva2);
+		historicoCandidato2.setCandidatoSolicitacao(candidatoSolicitacao1);
+		historicoCandidatoDao.save(historicoCandidato2);
+		
+		HistoricoCandidato historicoCandidatoSol2 = HistoricoCandidatoFactory.getEntity();
+		historicoCandidatoSol2.setEtapaSeletiva(etapaSeletiva1);
+		historicoCandidatoSol2.setCandidatoSolicitacao(candidatoSolicitacao2);
+		historicoCandidatoDao.save(historicoCandidatoSol2);
+		
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.getCandidatoSolicitacaoEtapasEmGrupo(solicitacao.getId(), etapaSeletiva1.getId());
+		assertEquals(2, candidatoSolicitacaos.size());
 	}
 
 	public void testGetCount()

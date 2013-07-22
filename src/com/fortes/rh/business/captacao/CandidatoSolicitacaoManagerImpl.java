@@ -168,6 +168,10 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	{
         return getDao().getCandidatoSolicitacaoList(page, pagingSize, solicitacaoId, etapaSeletivaId, indicadoPor, visualizar, contratado, semHistorico, observacaoRH, nomeBusca, status);
 	}
+    public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoEtapasEmGrupo(Long solicitacaoId, Long etapaSeletivaId)
+    {
+    	return getDao().getCandidatoSolicitacaoEtapasEmGrupo(solicitacaoId, etapaSeletivaId);
+    }
 
 	public Collection<CandidatoSolicitacao> findBySolicitacaoTriagem(Long solicitacaoId)
 	{

@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
@@ -242,6 +243,49 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
 
         return criteria.list();
+    }
+    
+    public Collection<CandidatoSolicitacao> getCandidatoSolicitacaoEtapasEmGrupo(Long solicitacaoId, Long etapaSeletivaId)
+    {
+    	Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
+    	criteria.createCriteria("cs.candidato", "c", Criteria.LEFT_JOIN);
+    	criteria.createCriteria("cs.historicoCandidatos", "h", Criteria.LEFT_JOIN);
+    	criteria.createCriteria("h.etapaSeletiva", "e", Criteria.LEFT_JOIN);
+    	
+    	ProjectionList p = Projections.projectionList().create();
+    	p.add(Projections.property("cs.id"), "id");
+    	p.add(Projections.property("c.id"), "candidatoId");
+    	p.add(Projections.property("c.nome"), "candidatoNome");
+    	criteria.setProjection(p);
+    	
+   		criteria.add(Expression.eq("cs.solicitacao.id", solicitacaoId));
+   		
+   		if(etapaSeletivaId != null)
+        	criteria.add(Expression.eq("e.id", etapaSeletivaId));
+    	
+		Disjunction disjunction = Expression.disjunction();
+		disjunction.add(Expression.ne("h.apto", Apto.NAO));
+		disjunction.add(Expression.isNull("h.apto"));
+		criteria.add(disjunction);
+
+		Disjunction disjunction2 = Expression.disjunction();
+		disjunction2.add(Expression.eq("c.contratado", false));
+		disjunction2.add(Expression.eq("cs.status", StatusCandidatoSolicitacao.APROMOVER));
+		criteria.add(disjunction2);
+    	
+    	Disjunction any = Expression.disjunction();
+    	any.add(Expression.isNull("h.id"));
+    	any.add(Expression.sql("h2_.id = (select h3.id from HistoricoCandidato h3 left join EtapaSeletiva e2 on e2.id = h3.etapaSeletiva_id where h3.candidatoSolicitacao_id = this_.id order by h3.data desc, e2.ordem desc limit 1) "));
+    	criteria.add(any);
+    	
+    	criteria.addOrder(Order.asc("c.nome"));
+    	criteria.addOrder(Order.asc("h.data"));
+    	criteria.addOrder(Order.asc("e.ordem"));
+    	
+    	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+    	criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+    	
+    	return criteria.list();
     }
 
     public Collection<CandidatoSolicitacao> findBySolicitacaoTriagem(Long solicitacaoId)

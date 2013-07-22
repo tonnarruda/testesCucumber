@@ -85,8 +85,7 @@ public class HistoricoCandidatoEditAction extends MyActionSupportEdit implements
 		if(solicitacao != null && solicitacao.getId() != null)
 		{
 			solicitacao = solicitacaoManager.getValor(solicitacao.getId());
-			Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, true, true, true, null, null, null);
-
+			Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoEtapasEmGrupo(solicitacao.getId(), null);
 			candidatosCheckList = CheckListBoxUtil.populaCheckListBox(candidatoSolicitacaos, "getId", "getCandidatoNome");
 		}
 

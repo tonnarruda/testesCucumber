@@ -707,6 +707,9 @@
     <property name="dao">
       <ref bean="historicoExtintorDao" />
     </property>
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
   </bean>
   <bean id="historicoExtintorManager" parent="parentManager">
     <property name="proxyInterfaces">

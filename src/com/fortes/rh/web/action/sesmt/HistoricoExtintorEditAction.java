@@ -13,7 +13,6 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.HistoricoExtintor;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;

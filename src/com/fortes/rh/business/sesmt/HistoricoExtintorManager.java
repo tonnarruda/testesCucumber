@@ -12,6 +12,6 @@ public interface HistoricoExtintorManager extends GenericManager<HistoricoExtint
 	Collection<HistoricoExtintor> findByExtintor(Long extintorId);
 	void removeByExtintor(Long extintorId);
 	Collection<HistoricoExtintor> findAllHistoricosAtuais(Integer page, Integer pagingSize, Date data, String localizacao, String extintorTipo, Long estabelecimentoId, Long empresaId);
-	void insertNewHistoricos(Long[] extintorsCheck, HistoricoExtintor historicoExtintor);
+	void insertNewHistoricos(Long[] extintorsCheck, HistoricoExtintor historicoExtintor) throws Exception;
 	Integer countAllHistoricosAtuais(Date data, String localizacao, String extintorTipo, Long estabelecimentoId, Long empresaId);
 }
