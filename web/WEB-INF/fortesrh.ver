@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.112.122" data="22/07/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem > Triagem Avançada: Novo filtro por palavra chave em outros campos do cadastro de candidatos.
+			:: SESMT > Movimentações > Extintores > Troca de Localização: Nova listagem informando a atual localização do extintor e a possibilidade de inserir um novo local para mais de um extintor simultaneamente.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.111.121" data="15/07/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Utilitários > Cadastros > Perfis: Novas permissões para "Inserir", "Editar" e "Excluir" os tipos de ocorrêcias e as ocorrências dos colaboradores.
