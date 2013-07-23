@@ -23,6 +23,8 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -721,38 +723,42 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
-		sql.append("	distinct co.id as colaborador, ");
+		sql.append("	distinct co.id as colaborador, ");//0
 		sql.append("	co.nome as colaboradornome, ");
 		sql.append("	co.matricula as colaboradormatricula, ");
 		sql.append("	e.id as estabelecimentoId, ");
 		sql.append("	e.nome as estabelecimento, ");
-		sql.append("	a.id as area, ");
+		sql.append("	a.id as area, ");//5
 		sql.append("	t.id as turma, ");
 		sql.append("	t.descricao as col_6_0_, ");
 		sql.append("	t.dataPrevIni as dataPrevIni, ");
 		sql.append("	t.dataPrevFim as dataPrevFim, ");
-		sql.append("	ct.id as colaboradorturma, ");
+		sql.append("	ct.id as colaboradorturma, ");//10
 		sql.append("	ct.aprovado as colaboradorturmaAprovado, ");
 		sql.append("	c.id as col_11_0_, ");
 		sql.append("	c.nome as cursoNome, ");
 		sql.append("	c.percentualMinimoFrequencia as percentualMinimoFrequencia, ");
-		sql.append("	dt.totaldias, ");
+		sql.append("	dt.totaldias, ");//15
 		sql.append("	cp.qtdpresenca, ");
 		sql.append("	ca.qtdavaliacoescurso, ");
 		sql.append("	rct.qtdavaliacoesaprovadaspornota, ");
 		sql.append("	rct.nota, ");
-		sql.append("	emp.nome, ");
+		sql.append("	emp.nome as empNome, ");//20
 		sql.append("	c.cargaHoraria, ");
 		sql.append("	c.conteudoProgramatico, ");
 		sql.append("	t.horario, ");
 		sql.append("	t.instrutor, ");
-		sql.append("	a.nome ");
+		sql.append("	a.nome as areaNome,");//25
+		sql.append("	fs.nome as faixaNome, ");
+		sql.append("	cg.nome as cargoNome ");
 		sql.append("from Colaboradorturma ct  ");
 		sql.append("left join colaborador co on co.id = ct.colaborador_id ");
 		sql.append("left join empresa emp on emp.id = co.empresa_id ");
 		sql.append("left join historicocolaborador hc on hc.colaborador_id = co.id ");
 		sql.append("left join estabelecimento e on e.id = hc.estabelecimento_id ");
 		sql.append("left join areaorganizacional a on a.id = hc.areaorganizacional_id ");
+		sql.append("left join faixaSalarial fs on fs.id = hc.faixaSalarial_id ");
+		sql.append("left join cargo cg on cg.id = fs.cargo_id ");
 		sql.append("left join turma t on t.id=ct.turma_id ");
 		sql.append("left join curso c on c.id=t.curso_id ");
 		sql.append("left join certificacao_curso cc on cc.cursos_id=c.id ");
@@ -873,7 +879,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			ct.getColaborador().setAreaOrganizacional(new AreaOrganizacional());
 			ct.getColaborador().getAreaOrganizacional().setId(((BigInteger)res[5]).longValue());
-			
+
+			ct.getColaborador().setFaixaSalarial(new FaixaSalarial());
+			ct.getColaborador().getFaixaSalarial().setNome((String)res[26]);
+			ct.getColaborador().getFaixaSalarial().setCargo(new Cargo());
+			ct.getColaborador().getFaixaSalarial().getCargo().setNome((String)res[27]);
+
 			if(res[6] != null)
 			{
 				ct.setTurma(new Turma());
@@ -918,8 +929,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			
 			ct.getColaborador().setEmpresa(new Empresa());
 			ct.getColaborador().getEmpresa().setNome((String)res[20]);
-
-			//ultimo do array é 24
+			
 			colaboradorTurmas.add(ct);
 		}
 		

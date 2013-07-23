@@ -79,8 +79,10 @@
 	</@ww.form>
 	
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnRelatorio">
-		</button>
+		<button class="btnRelatorio"  onclick="$('form[name=form]').attr('action', '${formAction}');${validarCampos};"></button>
+		<#if comTreinamento>
+			<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioColaboradorComTreinamentoXls.action');${validarCampos};"></button>
+		</#if>
 	</div>
 </body>
 </html>

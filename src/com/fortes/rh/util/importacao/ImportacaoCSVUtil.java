@@ -64,7 +64,7 @@ public class ImportacaoCSVUtil
 	{	
 		boolean naoAchouLinhaComAfastamento = true;
 		// linhas válidas começam com o código do empregado. O resto é cabeçalho, etc.
-		if (campos.length == 8 && StringUtils.isNumeric(campos[0]))
+		if (campos.length == 10 && StringUtils.isNumeric(campos[0]))
 		{
 			ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
 			colaboradorAfastamento.setColaboradorCodigoAC(StringUtil.formataCodigoAC(campos[0]));
@@ -76,8 +76,11 @@ public class ImportacaoCSVUtil
 			colaboradorAfastamento.setFim(DateUtil.montaDataByString(campos[5]));
 			
 			colaboradorAfastamento.setMedicoNome(campos[6]);
-			colaboradorAfastamento.setObservacao(campos[7]);
+			colaboradorAfastamento.setMedicoCrm(campos[7]);
 			
+			colaboradorAfastamento.setCid(campos[8]);
+			colaboradorAfastamento.setObservacao(campos[9]);
+
 			afastamentos.add(colaboradorAfastamento);
 			naoAchouLinhaComAfastamento = false;
 		}

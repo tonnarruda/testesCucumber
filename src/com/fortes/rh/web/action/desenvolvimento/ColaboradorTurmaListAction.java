@@ -75,6 +75,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Long colaboradorId;
 	private Long cursoId;
 	private String json = "";
+	private String reportTitle;
 
 	private int qtdMesesSemCurso = 0;
 
@@ -329,6 +330,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), aprovado);
 			curso = cursoManager.findByIdProjection(curso.getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), curso.getNome());
+			
+			reportTitle = "Colaboradores que fizeram um treinamento ";
 
 			return Action.SUCCESS;
 		}
@@ -837,5 +840,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public Collection<CheckBox> getColaboradoresCheckList()
 	{
 		return colaboradoresCheckList;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 }
