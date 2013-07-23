@@ -160,7 +160,8 @@ Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Col
 </@ww.form>
 
 <div class="buttonGroup">
-	<button type="button" onclick="enviarForm()" class="btnRelatorio" accesskey="I"></button>
+	<button class="btnRelatorio"  onclick="$('form[name=form]').attr('action', 'list.action');enviarForm();"></button>
+	<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'listXls.action');enviarForm();"></button>
 </div>
 
 </body>

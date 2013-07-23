@@ -21,5 +21,22 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
+		<action name="listXls" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="list">
+			<result name="success" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOver.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">Turnover.pdf</param>
+				<param name="format">XLS</param>
+			</result>
+			<result name="success_temposervico" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServico.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">TurnoverPorTempoServico.pdf</param>
+				<param name="format">XLS</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
+		</action>
 	</package>
 </xwork>
