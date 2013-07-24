@@ -1988,6 +1988,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setCodigoAC(String codigoAC)
 	{
+		if("".equals(codigoAC))
+			codigoAC = null;
+		
 		this.codigoAC = codigoAC;
 	}
 
