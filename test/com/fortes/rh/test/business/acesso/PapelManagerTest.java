@@ -7,16 +7,13 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.PapelManagerImpl;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 
 public class PapelManagerTest extends MockObjectTestCase
 {
 	private PapelManagerImpl papelManager;
 	private Mock papelDao;
-	private Mock parametrosDoSistemaManager;
 
 	protected void setUp(){
 
@@ -24,8 +21,6 @@ public class PapelManagerTest extends MockObjectTestCase
 
 		papelDao = new Mock(PapelDao.class);
 		papelManager.setDao((PapelDao) papelDao.proxy());
-		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
-		papelManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
 	}
 
 	public void testGetPerfilOrganizado(){
@@ -55,7 +50,7 @@ public class PapelManagerTest extends MockObjectTestCase
 		
 		String[] permissoes = new String[]{"1","2","3"};
 
-		assertNotNull(papelManager.getPerfilOrganizado(permissoes));
+		assertNotNull(papelManager.getPerfilOrganizado(permissoes, null));
 	}
 	
 	public void testGetPapeisPermitidos()

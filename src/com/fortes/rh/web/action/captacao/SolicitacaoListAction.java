@@ -5,12 +5,11 @@ package com.fortes.rh.web.action.captacao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.transaction.TransactionManager;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -22,6 +21,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
@@ -32,6 +32,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -56,6 +57,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private HistoricoCandidatoManager historicoCandidatoManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private PlatformTransactionManager transactionManager;
+    private AreaOrganizacionalManager areaOrganizacionalManager;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
     private HashMap<Character, String> status;
@@ -95,18 +97,25 @@ public class SolicitacaoListAction extends MyActionSupportList
         Map session = ActionContext.getContext().getSession();
 
 		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(session, new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
-		boolean roleLiberaSolicitacao = SecurityUtil.verifyRole(session, new String[]{"ROLE_LIBERA_SOLICITACAO"});
 
+		
+		
+		
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
-			setTotalSize(solicitacaoManager.getCount(visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, roleLiberaSolicitacao, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca);
+			Long[] areasIdsComFilhas = new Long[0];
+			
+			if(SecurityUtil.verifyRole(session, new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+				areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
+			
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -492,5 +501,10 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

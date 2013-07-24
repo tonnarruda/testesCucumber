@@ -11,9 +11,38 @@
 	<#assign accessKey="I"/>
 </#if>
 
+	<style type="text/css">
+		@import url('<@ww.url value="/css/displaytag.css"/>');
+  	</style>
+
 	<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
 	<script src='<@ww.url includeParams="none" value="/js/arvoreCheck.js"/>'></script>
-	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript">
+		$(function() {
+			<#list papeisComHelp as papel>
+				$('#help_' + '${papel.idExibir}').qtip({
+					content: '${papel.help}'
+					,
+	         		position: {
+	                  corner: {
+	                     tooltip: 'leftMiddle', 
+	                     target: 'rightMiddle' 
+	                  }
+	                }
+	                ,
+					hide: {
+						fixed: true
+					}
+					,
+			        style: {
+			        	padding: '5px 10px' 
+			        }
+				});
+        	</#list>
+		});	
+	</script>
+
 </head>
 <body>
 	<@ww.actionerror />
@@ -26,7 +55,6 @@
 			${exibirPerfil}
 		</ul>
 		</div>
-
 	<@ww.token/>
 	</@ww.form>
 

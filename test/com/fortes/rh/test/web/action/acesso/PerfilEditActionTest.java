@@ -26,7 +26,6 @@ public class PerfilEditActionTest extends MockObjectTestCase
 	private PerfilEditAction action;
 	private Mock manager;
 	private Mock papelManager;
-	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -37,8 +36,6 @@ public class PerfilEditActionTest extends MockObjectTestCase
         
         papelManager = mock(PapelManager.class);
         action.setPapelManager((PapelManager) papelManager.proxy());
-		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
-		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
         
         Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -54,7 +51,7 @@ public class PerfilEditActionTest extends MockObjectTestCase
 
     public void testPrepareInsert() throws Exception
     {
-    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL);
+    	papelManager.expects(once()).method("getPerfilOrganizado").withAnyArguments();
 
     	assertEquals("success",action.prepareInsert());
     }
@@ -69,7 +66,7 @@ public class PerfilEditActionTest extends MockObjectTestCase
     	
     	manager.expects(once()).method("montaPermissoes").with(eq(perfil));
     	
-    	papelManager.expects(once()).method("getPerfilOrganizado").with(NULL);
+    	papelManager.expects(once()).method("getPerfilOrganizado").withAnyArguments();
     	
     	assertEquals("success",action.prepareUpdate());
     	assertEquals(perfil,action.getPerfil());

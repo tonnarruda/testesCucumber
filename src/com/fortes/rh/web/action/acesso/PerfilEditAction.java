@@ -5,14 +5,10 @@ import java.util.Collection;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.acesso.PerfilManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
-import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
@@ -21,8 +17,8 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	
 	private PerfilManager perfilManager;
 	private PapelManager papelManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
+	private Collection<Papel> papeisComHelp = new ArrayList<Papel>();
 	private Perfil perfil = new Perfil();;
 	private String[] permissoes;
 	private String exibirPerfil;
@@ -39,7 +35,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-		exibirPerfil = papelManager.getPerfilOrganizado(null);
+		exibirPerfil = papelManager.getPerfilOrganizado(null, null);
 		return Action.SUCCESS;
 	}
 
@@ -47,8 +43,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	{
 		prepare();
 		permissoes = perfilManager.montaPermissoes(perfil);
-
-		exibirPerfil = papelManager.getPerfilOrganizado(permissoes);
+		exibirPerfil = papelManager.getPerfilOrganizado(permissoes, papeisComHelp);
 
 		return Action.SUCCESS;
 	}
@@ -131,12 +126,11 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 		this.permissoes = permissoes;
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public Collection<Long> getModulosNaoConfigurados() {
 		return modulosNaoConfigurados;
+	}
+
+	public Collection<Papel> getPapeisComHelp() {
+		return papeisComHelp;
 	}
 }

@@ -20,6 +20,24 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="papel_sequence", allocationSize=1)
 public class Papel extends AbstractModel implements Serializable, Cloneable
 {
+	@Column(length=50)
+	private String codigo;
+	@Column(length=100)
+	private String nome;
+	@Column(length=120)
+	private String url;
+	@Column(length=500)
+	private String help;
+	@ManyToOne
+	private Papel papelMae;
+	private int ordem;
+	private boolean menu;
+
+	@Column(length=1)
+	private String accesskey;
+	@Transient
+	private String idExibir;//usado para lista de checkbox
+
 	public Papel() 
 	{
 		super();
@@ -33,23 +51,7 @@ public class Papel extends AbstractModel implements Serializable, Cloneable
 		this.ordem = ordem;
 		setPapelMaeId(papelMaeId);
 	}
-
-	@Column(length=50)
-	private String codigo;
-	@Column(length=100)
-	private String nome;
-	@Column(length=120)
-	private String url;
-	@ManyToOne
-	private Papel papelMae;
-	private int ordem;
-	private boolean menu;
-
-	@Column(length=1)
-	private String accesskey;
-	@Transient
-	private String idExibir;//usado para lista de checkbox
-
+	
 	public String getNome()
 	{
 		return nome;
@@ -161,5 +163,13 @@ public class Papel extends AbstractModel implements Serializable, Cloneable
 	public boolean isSemModulo()
 	{
 		return !this.menu && papelMae == null;
+	}
+
+	public String getHelp() {
+		return help;
+	}
+
+	public void setHelp(String help) {
+		this.help = help;
 	}
 }
