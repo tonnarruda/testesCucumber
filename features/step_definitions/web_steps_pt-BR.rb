@@ -18,7 +18,6 @@ Dado /^que eu esteja logado$/ do
     E %{eu preencho "password" com "1234"}
     E %{eu clico em "Entrar"}
     Então %{eu devo ver "Bem-vindo(a)"}
-    page.execute_script("$('#splash').dialog('close');")
   end
 end
 
@@ -272,15 +271,6 @@ end
 
 Quando /^eu espero (\d+) segundos$/ do |segundos|
   sleep segundos.to_i
-end
-
-Quando /^eu espero o campo "([^"]*)" ficar habilitado$/ do |field|
-  field = find_field(field)
-  1.upto(100) do
-    break if (field[:disabled] == "false")
-    sleep 0.1
-  end
-  field[:disabled].should == "false"
 end
 
 Quando /^eu saio do campo "([^"]*)"$/ do |field|

@@ -37,6 +37,7 @@
 			DWRUtil.useLoadingMessage('Carregando...');
 			DWRUtil.removeAllOptions("cidade");
 			DWRUtil.addOptions("cidade", data);
+			populaBairros();
 		}
 
 		function populaBairros()

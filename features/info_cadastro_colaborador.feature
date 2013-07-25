@@ -73,7 +73,7 @@ Funcionalidade: Cadastrar Colaborador
     Quando eu preencho "Nome" com "Silva Barbosa"
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
-    E eu espero o campo "Logradouro" ficar habilitado
+    E eu espero 2 segundos
     Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado

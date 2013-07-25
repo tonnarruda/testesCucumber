@@ -38,6 +38,7 @@ Funcionalidade: Extintor
     Então eu clico no botão "Inserir"
     E eu devo ver o título "Inserir Histórico para o Extintor AP"
     E eu preencho o campo (JS) "dataHist" com "24/11/2011"
+    E eu preencho "Hora" com "08:00"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
     E eu preencho "Localização" com "escada4"
     E eu clico no botão "Gravar"

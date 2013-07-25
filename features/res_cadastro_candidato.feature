@@ -49,7 +49,7 @@ Funcionalidade: Cadastrar Candidato
     Quando eu preencho "Nome" com "_Pedro 2"
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
-    E eu espero o campo "Logradouro" ficar habilitado
+    E eu espero "2" segundos
     Entao o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "Cidade" deve ter "Fortaleza" selecionado

@@ -130,7 +130,7 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 	}
 
 	private void setMultiplaEscolha() {
-		if(pergunta.getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA))
+		if(pergunta.getTipo() != null && pergunta.getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA))
 		{
 			respostaObjetiva = multiplaResposta;
 			pesoRespostaObjetiva = pesoRespostaMultipla;
