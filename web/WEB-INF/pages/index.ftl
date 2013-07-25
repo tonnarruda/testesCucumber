@@ -51,6 +51,7 @@
 	
 	<script type='text/javascript'>
 		$(function () {
+			<#--
 			$( "#splash" ).dialog({
 				autoOpen: false,
 				modal: true,
@@ -67,6 +68,7 @@
 			{
 				$("#splash").dialog("open");
 			}
+			-->
 			
 			$( ".column" ).sortable({
 				connectWith: ".column",
@@ -220,7 +222,7 @@
 		</@authz.authorize>
 	</form>
 	
-	<div id="splash">
+	<div id="splash" style="display: none;">
 		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');">
 			FECHAR
 		</a>
