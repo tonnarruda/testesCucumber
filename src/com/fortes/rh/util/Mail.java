@@ -138,7 +138,7 @@ public class Mail
 
     	Properties properties = new Properties();
         properties.put("mail.smtp.host", mailSender.getHost());
-        properties.put("mail.smtp.port", mailSender.getPort());
+        properties.put("mail.smtp.port", mailSender.getPort() + "");
         properties.put("mail.smtp.sendpartial", "true");
         
         properties.put("mail.smtp.starttls.enable",tls.toString());
