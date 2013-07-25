@@ -1,33 +1,24 @@
-/* Autor: Igo Coelho
- * Data: 29/05/2006
- * Requisito: RFA32
- */
-
 package com.fortes.rh.business.acesso;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.util.StringUtil;
 
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-
-	public String getPerfilOrganizado(String[] marcados)
+	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp)
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
-
 		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
-
-		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados);
+		return montarOpcoes(papeisSemModulosNaoConfigurados, marcados, papeisComHelp);
 	}
 	
-	private String montarOpcoes(Collection<Papel> papeisSemModulosNaoConfigurados, String[] marcados)
+	private String montarOpcoes(Collection<Papel> papeisSemModulosNaoConfigurados, String[] marcados, Collection<Papel> papeisComHelp)
 	{
 		StringBuilder perfilOrganizado = new StringBuilder();
 		String marcar = "";
@@ -50,7 +41,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 				papel.setIdExibir("idCheck" + papel.getId());
 				perfilOrganizado.append("<li><input type='checkbox' " + marcar + " onchange='checkSystem(this)' onclick='checkSystem(this)' onfocus='blur()' name='permissoes' value='" + papel.getId() + "' id='" + papel.getIdExibir() + "' /><label for='" + papel.getIdExibir() + "'>" + papel.getNome() + "</label>");
-				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeisSemModulosNaoConfigurados, papel.getIdExibir(), marcados) + "</ul>\n</li>\n");
+				perfilOrganizado.append("\n<ul class='padding'>\n" + getFilhos(papel.getId(), papeisSemModulosNaoConfigurados, papel.getIdExibir(), marcados, papeisComHelp) + "</ul>\n</li>\n");
 			}
 		}
 
@@ -93,7 +84,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return filhos.toString();
 	}
 
-	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir, String[] marcados)
+	private String getFilhos(Long id, Collection<Papel> papeis, String idExibir, String[] marcados, Collection<Papel> papeisComHelp)
 	{
 		StringBuilder filhos = new StringBuilder();
 		String maisFilhos = "";
@@ -120,9 +111,16 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 
 				papel.setIdExibir(idExibir + "_" + filhoNumero);
 				filhos.append("<li><input type='checkbox' " + marcar + " onchange='checkSystem(this)' onclick='checkSystem(this)' onfocus='blur()' name='permissoes' value='" + papel.getId() + "' id='" + papel.getIdExibir() + "' /><label for='" + papel.getIdExibir() + "'>" + papel.getNome() + "</label>");
+				
+				if(papel.getHelp() != null && !StringUtil.isBlank(papel.getHelp()))
+				{
+					filhos.append("<img id=help_" + papel.getIdExibir() + " src=\"/fortesrh/imgs/help.gif?perfil.id=1\" width=\"16\" height=\"16\" style=\"margin-left:2px;margin-bottom:-4px\"/>");
+					papeisComHelp.add(papel);
+				}
+
 				filhoNumero++;
 
-				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir(), marcados);
+				maisFilhos = getFilhos(papel.getId(), papeis, papel.getIdExibir(), marcados, papeisComHelp);
 				if(maisFilhos != "")
 				{
 					filhos.append("\n<ul class='padding'>\n" + maisFilhos + "</ul>\n");
@@ -177,16 +175,9 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		
 		return retornoPapeisPermitidos;
 	}
-	
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
 
 	public Collection<Papel> findByPerfil(Long perfilId) 
 	{
 		return getDao().findByPerfil(perfilId);
 	}
-
-
 }

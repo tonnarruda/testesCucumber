@@ -6,9 +6,6 @@
     <property name="dao">
       <ref bean="papelDao" />
     </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
-    </property>
   </bean>
   <bean id="papelManager" parent="parentManager">
     <property name="proxyInterfaces">

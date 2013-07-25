@@ -13,6 +13,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -27,6 +28,7 @@ import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -38,17 +40,17 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
-	public Integer getCount(char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
+	public Integer getCount(char visualizar, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca, statusBusca);
+		montaConsulta(criteria, visualizar, empresaId, usuario, cargoId, descricaoBusca, statusBusca, areasIds);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.anuncio", "an", Criteria.LEFT_JOIN);
@@ -70,7 +72,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("an.exibirModuloExterno"), "projectionAnuncioExibirModuloExterno");
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
 
-		montaConsulta(criteria, visualizar, liberaSolicitacao, empresaId, usuario, cargoId, descricaoBusca, statusBusca);
+		montaConsulta(criteria, visualizar, empresaId, usuario, cargoId, descricaoBusca, statusBusca, areasIds);
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
@@ -83,7 +85,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, char visualizar, boolean liberaSolicitacao, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca)
+	private void montaConsulta(Criteria criteria, char visualizar, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.solicitante", "us", Criteria.LEFT_JOIN);
@@ -114,7 +116,14 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		if(statusBusca != 'T')
 			criteria.add(Expression.eq("s.status", statusBusca)); 
 
-		if(usuario != null && usuario.getId() != null && !liberaSolicitacao)
+		if(areasIds != null && areasIds.length > 0)
+		{
+			Disjunction disjunction = Expression.disjunction();
+			disjunction.add(Expression.eq("s.solicitante.id", usuario.getId()));
+			disjunction.add(Expression.in("s.areaOrganizacional.id", areasIds));
+			criteria.add(disjunction);
+			
+		}else if(usuario != null && usuario.getId() != null)
 			criteria.add(Expression.eq("s.solicitante.id", usuario.getId()));
 
 		if(cargoId != null && cargoId != -1L)

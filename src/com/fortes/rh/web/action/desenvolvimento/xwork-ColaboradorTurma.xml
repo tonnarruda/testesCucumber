@@ -99,6 +99,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
+		<action name="relatorioColaboradorComTreinamentoXls" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamento">
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradorTurmas</param>
+				<param name="documentName">colaboradores_com_treinamento.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado,Cargo,Carga Horária</param>
+				<param name="propertiesGroup">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
+				<param name="properties">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,colaborador.cargoFaixa,curso.cargaHoraria</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
+		</action>
 
 		<action name="prepareRelatorioColaboradorSemIndicacao" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="prepareRelatorioColaboradorSemIndicacao">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorSemIndicacaoTreinamento.ftl</result>
