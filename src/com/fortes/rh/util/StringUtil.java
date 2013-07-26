@@ -14,12 +14,10 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public final class StringUtil
 {
@@ -94,10 +92,10 @@ public final class StringUtil
 	
 	public static String decodeString(String str)
 	{
-		BASE64Decoder dec = new BASE64Decoder();
 		try
 		{
-			return new String(dec.decodeBuffer(str));
+			byte[] decoded = Base64.decodeBase64(str.getBytes());
+			return new String(decoded);
 		}
 		catch (Exception io)
 		{
@@ -107,8 +105,7 @@ public final class StringUtil
 
 	public static String encodeString(String str)
 	{
-		BASE64Encoder encoder = new BASE64Encoder();
-		return encoder.encodeBuffer(str.getBytes()).trim();
+		return new String( Base64.encodeBase64(str.getBytes()) ).trim();
 	}
 
 	public static String removeBreak(String value)

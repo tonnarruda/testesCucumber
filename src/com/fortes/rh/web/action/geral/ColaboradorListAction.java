@@ -19,9 +19,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 
-import sun.misc.BASE64Decoder;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
@@ -267,8 +267,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			String reciboPagamento = colaboradorManager.getReciboPagamento(colaborador, DateUtil.criarDataMesAno(mesAno));
 			
-			BASE64Decoder decoder = new BASE64Decoder();  
-	        byte[] reciboPagamentoBytes = decoder.decodeBuffer(reciboPagamento); 
+	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboPagamento.getBytes()); 
 			
 	        HttpServletResponse response = ServletActionContext.getResponse();
 
