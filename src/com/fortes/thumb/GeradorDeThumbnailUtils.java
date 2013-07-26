@@ -8,16 +8,16 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class GeradorDeThumbnailUtils {
 
@@ -107,13 +107,19 @@ public class GeradorDeThumbnailUtils {
 		BufferedOutputStream out = null;
 		try {
 			
-			out = new BufferedOutputStream(new FileOutputStream(pathThumb));
-
-			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-			param.setQuality((float) qualidade / 100.0f, false);
-			encoder.setJPEGEncodeParam(param);
-			encoder.encode(thumbImage);
+			
+			// convert BufferedImage to byte array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(thumbImage, "jpg", baos);
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+ 
+			// convert byte array back to BufferedImage
+			InputStream in = new ByteArrayInputStream(imageInByte);
+			BufferedImage bImageFromConvert = ImageIO.read(in);
+ 
+			ImageIO.write(bImageFromConvert, "jpg", new File(pathThumb));
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao salvar thumbnail em disco", e);
@@ -171,7 +177,7 @@ public class GeradorDeThumbnailUtils {
     	GeradorDeThumbnailUtils gerador = new GeradorDeThumbnailUtils();
     	
     	String imagemDeOrigem = "/Users/rponte/Development/imagens_fortes/rponte.jpg";
-		String thumb = "/Users/rponte/Development/imagens_fortes/thumb_rponte.jpg";
+//		String thumb = "/Users/rponte/Development/imagens_fortes/thumb_rponte.jpg";
 		
 //		gerador.gera(imagemDeOrigem, thumb);
 		File img = gerador.gera(imagemDeOrigem);
