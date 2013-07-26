@@ -5,6 +5,7 @@
 	<package name="epiHistorico" extends="default" namespace="/sesmt/epiHistorico">
 		
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack" />
 			<result name="success" type="redirect">../epi/prepareUpdate.action?epi.id=${epi.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.EpiHistoricoEditAction" method="prepareInsert">
