@@ -2,7 +2,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-	<title>Funções com Exames</title>
+	<title>Funções por Exames</title>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
