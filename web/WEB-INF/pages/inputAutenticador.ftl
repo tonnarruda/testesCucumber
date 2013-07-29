@@ -5,15 +5,12 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/login.css" />');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 	</style>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<#assign validarCampos="return validaFormulario('form', new Array('cnpj', 'nome'), null, true)"/>
 
-
-	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-	</style>
-	
 	<script type="text/javascript">
 		function enviaTicket() {
 			if (validaFormulario('form', new Array('cnpj', 'nome'), null, true)) {

@@ -6,6 +6,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/login.css" />');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 		
 		.errorMessage { width: 320px; margin: 0px auto; }
 		.errorMessage ul { padding: 0px; }
