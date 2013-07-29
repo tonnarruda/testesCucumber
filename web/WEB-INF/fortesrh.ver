@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.113.123" data="29/07/2013">
+		<Modulo nome=" "><![CDATA[
+			:: T&D > Relatórios > Colaboradores com Treinamento: Novo relatório por xls.
+			:: Info. Funcionais > Relatórios > Turnover: Novo relatório por xls.
+			:: Utilitários > Cadastros > Perfis: Nova layout no modulo R&S e nova forma de ajuda no item de aprovar/reprovar na solicitação de pessoal.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.112.122" data="22/07/2013">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem > Triagem Avançada: Novo filtro por palavra chave em outros campos do cadastro de candidatos.
