@@ -1,5 +1,6 @@
 function populaCargosByArea()
 {
+	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
 	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 	var empresaId = $('#empresa').val();
@@ -22,6 +23,7 @@ function populaCargosByArea()
 
 function populaCargosByAreaVinculados()
 {
+	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
 	var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 	var empresaId = $('#empresa').val();
@@ -73,6 +75,7 @@ function newChangeEmpresa(value)
 
 function populaEstabelecimento(empresaId)
 {
+	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
 	EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
 }
@@ -84,6 +87,7 @@ function createListEstabelecimento(data)
 
 function populaArea(empresaId)
 {
+	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
 	AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
 }
@@ -95,6 +99,7 @@ function createListArea(data)
 
 function populaAreaComCargoVinculado(empresaId)
 {
+	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
 	AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
 }
