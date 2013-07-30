@@ -266,8 +266,8 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		
 		Resposta resposta1PerguntaObjetiva1 = new Resposta();
 		resposta1PerguntaObjetiva1.setPergunta(perguntaObjetiva1);
-		resposta1PerguntaObjetiva1.setTexto("ruim");
-		resposta1PerguntaObjetiva1.setPeso(1);
+		resposta1PerguntaObjetiva1.setTexto("Não se aplica");
+		resposta1PerguntaObjetiva1.setPeso(5);
 		respostaDao.save(resposta1PerguntaObjetiva1);
 		
 		Resposta resposta2PerguntaObjetiva1 = new Resposta();
@@ -319,6 +319,9 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		resposta3PerguntaMultipla.setTexto("Experiência");
 		resposta3PerguntaMultipla.setPeso(2);
 		respostaDao.save(resposta3PerguntaMultipla);
+		
+		//migué consulta SQL
+		avaliacaoDao.find(avaliacao);
 		
 		assertEquals(61, avaliacaoDao.getPontuacaoMaximaDaPerformance(avaliacao.getId()).intValue());
 	}
