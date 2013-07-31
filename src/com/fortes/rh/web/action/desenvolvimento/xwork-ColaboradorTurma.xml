@@ -25,6 +25,7 @@
 				<param name="location">WEB-INF/report/historico_treinamentos.jasper</param>
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">historicoTreinamentos.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioHistoricoTreinamentos.ftl</result>
 		</action>

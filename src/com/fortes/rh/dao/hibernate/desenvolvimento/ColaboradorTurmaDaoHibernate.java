@@ -719,7 +719,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, boolean comHistColaboradorFuturo, Long... turmaIds)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, boolean comHistColaboradorFuturo, Boolean desligado, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
@@ -801,19 +801,26 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("order by aac.colaboradorturma_id ");
 		sql.append(") as rct on rct.colaboradorturma_id = ct.id ");
 		
-		sql.append("where ");
-		sql.append("	co.desligado = :desligado ");
+		sql.append("where hc.data = ( ");
+		sql.append("	select max(hc2.data) from historicocolaborador hc2 ");
+		sql.append("	where hc2.colaborador_id = co.id ");
+		if(!comHistColaboradorFuturo)
+			sql.append("	and hc2.data <= :hoje ");
+		sql.append("	and hc2.status <> :statusCancelado ) ");
 		
-		if(certificacao != null)
+		if (desligado != null)
+			sql.append("	and co.desligado = :desligado ");
+		
+		if (certificacao != null)
 			sql.append("	and cc.certificacaos_id = :certificacaoId ");
 		
-		if(turmaIds != null && turmaIds.length > 0)
+		if (turmaIds != null && turmaIds.length > 0)
 			sql.append("	and t.id in (:turmaId) ");
 
-		if(cursoId != null)
+		if (cursoId != null)
 			sql.append("	and c.id = :cursoId ");
 		
-		if(empresaId != null)
+		if (empresaId != null)
 			sql.append("	and co.empresa_id = :empresaId ");
 			
 		if (areaIds != null && areaIds.length > 0)
@@ -822,20 +829,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			sql.append("and e.id in (:estabelecimentosId) ");
 			
-		sql.append("and hc.data = ( ");
-		sql.append("select max(hc2.data) from historicocolaborador hc2 ");
-		sql.append("	where hc2.colaborador_id = co.id ");
-		
-		if(!comHistColaboradorFuturo)
-			sql.append("	and hc2.data <= :hoje ");
-		
-		sql.append("	and hc2.status <> :statusCancelado ) ");
-		
 		sql.append("	order by " + orderBy);
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		query.setBoolean("desligado", false);
+		if (desligado != null)
+			query.setBoolean("desligado", desligado);
 
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);

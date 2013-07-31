@@ -568,7 +568,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
 		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null)).will(returnValue(colaboradors));
 		
 
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
@@ -672,7 +672,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		
 		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmasAprovados));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null)).will(returnValue(colaboradors));
 		
 		Collection<ColaboradorTurma> colaboradorTurmasResposta = new ArrayList<ColaboradorTurma>();		
 		colaboradorTurmasResposta = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(1L, null, null, 1L);
@@ -1030,7 +1030,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradores.add(colaborador);
 		
 		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
-		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradores));
+		colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(null)).will(returnValue(colaboradores));
 		
 		Collection<Colaborador> retorno = colaboradorTurmaManager.findAprovadosByTurma(turmaIds);
 		assertEquals(1, retorno.size());
