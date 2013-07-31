@@ -495,7 +495,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			prepareAproveitamento();
 			return Action.INPUT;
 		}
-
 	}
 
 	public String updateAproveitamento()

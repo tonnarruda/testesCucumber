@@ -32,7 +32,7 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 		if (avaliacaoCurso != null && avaliacaoCurso.getId() != null)
 			avaliacaoCurso = (AvaliacaoCurso) avaliacaoCursoManager.findById(avaliacaoCurso.getId());
 		
-		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao" }, new String[] { "L" });
+		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao", "empresa.id" }, new Object[] { "L", getEmpresaSistema().getId() });
 	}
 
 	public String prepareInsert() throws Exception

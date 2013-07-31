@@ -6,34 +6,11 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 
-		input.radio
-		{
-			border: 0;
-		}
-		#aspecto
-		{
-			margin: 10px 0;
-			padding: 5px;
-			background-color: #DDDDDD;
-			font-weight: bold;
-		}
-		#perguntaResposta
-		{
-			padding: 5px;
-		}
-
-		#perguntaResposta input
-		{
-			margin-left: -2px;
-			_margin-left: -5px;
-		}
-
-		#tituloPergunta
-		{
-			margin: 5px 0;
-			padding: 0;
-			font-weight: bold;
-		}
+		input.radio { border: 0; }
+		.aspecto { margin: 10px 0; padding: 3px 8px; background-color: #DDDDDD; font-weight: bold; }
+		#perguntaResposta { padding: 5px; }
+		#perguntaResposta input { margin-left: -2px; _margin-left: -5px; }
+		#tituloPergunta { margin: 5px 0; padding: 0; font-weight: bold; }
 	</style>
 
 	<script type="text/javascript">
@@ -100,13 +77,13 @@
 		<#list perguntas as pergunta>
 			<#if pergunta.aspecto.nome?exists>
 				<#if pergunta.aspecto.nome != aspectoAnterior>
-					<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">${pergunta.aspecto.nome}</div>
+					<div class="aspecto">${pergunta.aspecto.nome}</div>
 					<#assign aspectoAnterior="${pergunta.aspecto.nome}"/>
 				</#if>
 			<#else>
 				<#if aspectoAnterior != "Sem Aspecto">
 					<#assign aspectoAnterior="Sem Aspecto"/>
-					<div style="background-color: lightgray;color:black;margin-top: 5px;margin-bottom:5px;">Sem Aspecto</div>
+					<div class="aspecto">Sem Aspecto</div>
 				</#if>
 			</#if>
 				
@@ -140,11 +117,9 @@
 		</#list>
 	</#if>
 	
-		<br>
+	<br />
 	<div class="cabecalho">
 		<#if questionario?exists && questionario.fichaMedica?exists && questionario.fichaMedica.rodape?exists>
 			<p>${questionario.fichaMedica.rodape}</p>
 		</#if>
-
 	</div>
-	
