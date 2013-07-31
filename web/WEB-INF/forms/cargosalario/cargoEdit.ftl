@@ -104,7 +104,7 @@
 
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
-	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:180px;" maxLength="24"/>
+	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:500px;" maxLength="100"/>
 	
 	<@ww.textfield label="Cód. CBO" name="cargo.cboCodigo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft"/>
 	<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
