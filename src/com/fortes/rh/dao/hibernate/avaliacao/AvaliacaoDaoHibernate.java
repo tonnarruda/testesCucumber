@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.avaliacao;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
@@ -69,35 +70,37 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 	
 	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId)
 	{
-		StringBuilder consulta = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		
 		// Pontuações máximas de: Notas , Objetivas , Multipla Escolha
 		
-		consulta.append("select sum(p.notaMaxima * p.peso)   ");
-		consulta.append("									, (select sum(r5.peso * p5.peso) ");
-		consulta.append("										from Pergunta p5 ");
-		consulta.append(" 										join p5.respostas r5 ");		 
-		consulta.append(" 										where p5.avaliacao.id = :avaliacaoId ");
-		consulta.append(" 										and p5.tipo = :tipoPerguntaObjetiva ");
-		consulta.append(" 										and r5.peso = (select max(r2.peso) ");
-		consulta.append(" 														from Resposta r2 ");
-		consulta.append(" 														where r2.pergunta.id=p5.id) ");
-		consulta.append(" 										)");
-		consulta.append(" 									, (select sum(r6.peso * p6.peso) ");
-		consulta.append("  	 									from Pergunta p6 	");
-		consulta.append("  	 									join p6.respostas r6  	");
-		consulta.append("  							 			where p6.avaliacao.id = :avaliacaoId ");
-		consulta.append("  	 									and p6.tipo = :tipoPerguntaMultiplaEscolha) ");
+		sql.append("select sum(p.notaMaxima * p.peso) as nota   ");
 		
-		consulta.append(" 	from Pergunta p ");
-		consulta.append(" 	left join p.respostas r ");
-		consulta.append(" 	where p.avaliacao.id = :avaliacaoId ");
-		consulta.append(" 	and p.tipo = :tipoPerguntaNota ");
-		consulta.append(" 	and r.id = null ");
-		consulta.append(" 	 ");
-
+		sql.append("									, (select sum(perguntaDistinct.pesoResp * perguntaDistinct.pesoPerg) " );
+		sql.append("											 from ( " );
+		sql.append("									 				select distinct(p5.id), r5.peso as pesoResp, p5.peso as pesoPerg ");
+		sql.append("													from resposta r5 ");
+		sql.append(" 													join pergunta p5 on p5.id = r5.pergunta_id ");		 
+		sql.append(" 													where p5.avaliacao_id = :avaliacaoId ");
+		sql.append(" 													and p5.tipo = :tipoPerguntaObjetiva ");
+		sql.append(" 													and r5.peso = (select max(r2.peso) ");
+		sql.append(" 																	from Resposta r2 ");
+		sql.append(" 																	where r2.pergunta_id=p5.id) ");
+		sql.append(" 													group by p5.id, r5.peso, p5.peso");
+		sql.append(" 												) as perguntaDistinct ");
+		sql.append(" 										) as objetiva");
 		
-		Query q = getSession().createQuery(consulta.toString());
+		sql.append(" 									, (select sum(r6.peso * p6.peso) ");
+		sql.append("  	 									from resposta r6 ");
+		sql.append("  	 									join pergunta p6 on p6.id = r6.pergunta_id 	");
+		sql.append("  							 			where p6.avaliacao_id = :avaliacaoId ");
+		sql.append("  	 									and p6.tipo = :tipoPerguntaMultiplaEscolha) as multiplaescolha");
+		
+		sql.append(" 	from pergunta p ");
+		sql.append(" 	where p.avaliacao_id = :avaliacaoId ");
+		sql.append(" 	and p.tipo = :tipoPerguntaNota ");
+		
+		Query q = getSession().createSQLQuery(sql.toString());
 		
 		q.setLong("avaliacaoId", avaliacaoId);
 		q.setInteger("tipoPerguntaNota", TipoPergunta.NOTA);
@@ -106,9 +109,9 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 	
 		Object[] somas = (Object[]) q.uniqueResult();
 		
-		Integer pontuacaoMaximaPorNota = somas[0] == null ? 0 : (Integer)somas[0];
-		Integer pontuacaoMaximaPorObjetiva = somas[1] == null ? 0 : (Integer)somas[1];
-		Integer pontuacaoMaximaPorMultiplaEscolha = somas[2] == null ? 0 : (Integer)somas[2];
+		Integer pontuacaoMaximaPorNota = somas[0] == null ? 0 :   Integer.parseInt(((BigInteger)somas[0]).toString());
+		Integer pontuacaoMaximaPorObjetiva = somas[1] == null ? 0 : Integer.parseInt(((BigInteger)somas[1]).toString());
+		Integer pontuacaoMaximaPorMultiplaEscolha = somas[2] == null ? 0 : Integer.parseInt(((BigInteger)somas[2]).toString());
 		
 		Integer pontuacaoMaxima = pontuacaoMaximaPorNota + pontuacaoMaximaPorObjetiva + pontuacaoMaximaPorMultiplaEscolha;
 		
