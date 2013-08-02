@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.geral;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
@@ -50,12 +51,21 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		return (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
 	}
 
-	public void updateServidorRemprot(String servidorRemprot) {
-
+	public void updateServidorRemprot(String servidorRemprot) 
+	{
 		String hql = "update ParametrosDoSistema p set p.servidorRemprot = :servidorRemprot";
 		Query query = getSession().createQuery(hql);
 		query.setString("servidorRemprot", servidorRemprot);
 		query.executeUpdate();
-		
+	}
+
+	public String getContexto() 
+	{
+		StringBuilder hql = new StringBuilder("select appContext ");
+		hql.append("from ParametrosDoSistema ");
+		hql.append("where id = 1 ");
+		Query query = getSession().createQuery(hql.toString());
+				
+		return query.uniqueResult().toString();
 	}
 }

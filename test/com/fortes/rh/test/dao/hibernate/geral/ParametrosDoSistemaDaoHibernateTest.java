@@ -50,4 +50,13 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		parametrosDoSistemaDao.updateServidorRemprot("9.9.9.8");
 		assertEquals("9.9.9.8", parametrosDoSistemaDao.findByIdProjection(ps.getId()).getServidorRemprot());
 	}
+
+	public void getContexto()
+	{
+		ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
+		ps.setAppContext("/fortesrhteste");
+		parametrosDoSistemaDao.save(ps);
+		
+		assertEquals("/fortesrhteste", parametrosDoSistemaDao.getContexto());
+	}
 }

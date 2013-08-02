@@ -49,6 +49,11 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	{
 		return acPessoalClientSistema.getVersaoWebServiceAC(empresa);
 	}
+	
+	public String getContexto()
+	{
+		return getDao().getContexto();
+	}
 
 	public void setAcPessoalClientSistema(AcPessoalClientSistema acPessoalClientSistema)
 	{

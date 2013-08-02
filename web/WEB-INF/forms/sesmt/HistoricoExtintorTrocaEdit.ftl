@@ -51,7 +51,7 @@
 	        	
 	        	$('#listCheckBoxextintorsCheck').empty();
 	            addChecks('extintorsCheck', map, "remove($(this).val())");
-	         	checkJaSelecionados();
+	         	checkJaMarcados();
     		});
     		
 		});
@@ -72,19 +72,7 @@
 			}
 		}
 		
-		function validarCamposAndInsertMarcadosExtintors()
-		{
-			var map = {};
-			extintores.each(function(){
-	            map[$(this).val()] = $(this).parent("label").text();  
-        	});
-            addChecks('extintorsCheck', map);
-			checkJaSelecionados();
-			
-			return validaFormulario('form', new Array('@extintorsCheck','dataHist','estabelecimento','localizacao','hora'), new Array('dataHist','hora'));
-		}
-
-		function checkJaSelecionados()
+		function checkJaMarcados()
 		{
 			for(i = 0; i < marcados.length; i++)
 	           $('#checkGroupextintorsCheck' + marcados[i]).attr('checked',true);
@@ -96,6 +84,17 @@
  				marcados.splice(marcados.indexOf(id), 1);
 		}
 		
+		function validarCamposAndInsertMarcadosExtintors()
+		{
+			var map = {};
+			extintores.each(function(){
+	            map[$(this).val()] = $(this).parent("label").text();  
+        	});
+            addChecks('extintorsCheck', map);
+			checkJaMarcados();
+			
+			return validaFormulario('form', new Array('@extintorsCheck','dataHist','estabelecimento','localizacao','hora'), new Array('dataHist','hora'));
+		}
 	</script>
 </head>
 <body>

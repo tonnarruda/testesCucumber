@@ -7,4 +7,5 @@ public interface ParametrosDoSistemaDao extends GenericDao<ParametrosDoSistema>
 {
 	ParametrosDoSistema findByIdProjection(Long id);
 	void updateServidorRemprot(String servidorRemprot);
+	String getContexto();
 }

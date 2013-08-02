@@ -95,6 +95,7 @@ public class Index extends MyActionSupport
 	private Character tipo;
 	
 	private String modulo;
+	private String contexto;
 	
 	public String index()
 	{
@@ -168,6 +169,7 @@ public class Index extends MyActionSupport
 		pgInicial = false;
 		
 		try {
+			contexto = parametrosDoSistemaManager.getContexto();
 			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 			usuarioId = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId();
 			empresaId = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()).getId();
@@ -505,5 +507,9 @@ public class Index extends MyActionSupport
 
 	public void setModulo(String modulo) {
 		this.modulo = modulo;
+	}
+
+	public String getContexto() {
+		return contexto;
 	}
 }

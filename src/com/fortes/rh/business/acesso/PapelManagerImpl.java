@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.util.Autenticador;
@@ -12,6 +13,7 @@ import com.fortes.rh.util.StringUtil;
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
 	private static Long ROLE_CX_MENSAGEM = 495L;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp)
 	{
@@ -116,8 +118,8 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 				
 				if(papel.getHelp() != null && !StringUtil.isBlank(papel.getHelp()))
 				{
-					filhos.append("<img id=help_" + papel.getIdExibir() + " src=\"/fortesrh/imgs/help.gif?perfil.id=1\" width=\"16\" height=\"16\" style=\"margin-left:2px;margin-bottom:-4px\"/>");
 					papeisComHelp.add(papel);
+					filhos.append("<img id=help_" + papel.getIdExibir() + " src=\"" + parametrosDoSistemaManager.getContexto() + "/imgs/help.gif\" width=\"16\" height=\"16\" style=\"margin-left:2px;margin-bottom:-4px\"/>");
 				}
 
 				filhoNumero++;
@@ -183,5 +185,10 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	public Collection<Papel> findByPerfil(Long perfilId) 
 	{
 		return getDao().findByPerfil(perfilId);
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
