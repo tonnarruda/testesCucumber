@@ -331,12 +331,21 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		
 		String mensagemFormatada = pppRelatorioException.getMensagemDeInformacao();
 		
-		assertEquals("Existem pendências para a geração desse relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
-				"01/09/2005 - Situação do colaborador não possui ambiente definido.<br />" +
-				"27/09/2005 - Situação do colaborador não possui ambiente definido.<br />" +
-				"27/09/2005 - Situação do colaborador não possui função definida.<br />" +
-				"30/01/2006 - Ambiente do colaborador não possui histórico nesta data.<br />" +
-				"01/09/2005 - Função do colaborador não possui histórico nesta data.<br />", mensagemFormatada);
+		
+		String result = "Existem pendências para a geração desse relatório. Verifique as informações abaixo antes de prosseguir: <br>" +
+		"<a href='../../cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action?colaborador.id=1000'>" +
+		"01/09/2005 - Situação do colaborador não possui ambiente definido.</a><br />" +
+		"<a href='../../cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action?colaborador.id=1000'>" +
+		"27/09/2005 - Situação do colaborador não possui ambiente definido.</a><br />" +
+		"<a href='../../cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action?colaborador.id=1000'>" +
+		"27/09/2005 - Situação do colaborador não possui função definida.</a><br />" +
+		"<a href='../ambiente/prepareUpdate.action?ambiente.id=10'>" +
+		"30/01/2006 - Ambiente do colaborador não possui histórico nesta data.</a><br />" +
+		"<a href='../funcao/prepareUpdate.action?funcao.id=3&cargoTmp.id=1&veioDoSESMT=false'>" +
+		"01/09/2005 - Função do colaborador não possui histórico nesta data.</a><br />";
+
+		assertEquals(result, mensagemFormatada);
+		
 	}
 	
 	public void testRemoveFuncao() throws Exception

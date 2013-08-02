@@ -71,8 +71,51 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Collection<UsuarioMensagem> usuarioMensagems = new ArrayList<UsuarioMensagem>();
 		usuarioMensagems.add(usuarioMensagem);
 
-		Collection<UsuarioMensagem> retorno = usuarioMensagemDao.listaUsuarioMensagem(usuario.getId(), empresa.getId());
+		Collection<UsuarioMensagem> retorno = usuarioMensagemDao.listaUsuarioMensagem(usuario.getId(), empresa.getId(), new Character[]{TipoMensagem.INFO_FUNCIONAIS});
 
+		assertEquals(usuarioMensagems.size(), retorno.size());
+	}
+	
+	public void testListaUsuarioMensagemComTipo()
+	{
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colab);
+		
+		Mensagem mensagem = MensagemFactory.getEntity();
+		mensagem.setColaborador(colab);
+		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
+		mensagem = mensagemDao.save(mensagem);
+
+		Mensagem mensagem2 = MensagemFactory.getEntity();
+		mensagem2.setColaborador(colab);
+		mensagem2.setTipo(TipoMensagem.TED);
+		mensagem2 = mensagemDao.save(mensagem2);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario = usuarioDao.save(usuario);
+		
+		UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
+		usuarioMensagem.setUsuario(usuario);
+		usuarioMensagem.setMensagem(mensagem);
+		usuarioMensagem.setEmpresa(empresa);
+		usuarioMensagem.setLida(false);
+		usuarioMensagemDao.save(usuarioMensagem);
+
+		UsuarioMensagem usuarioMensagem2 = new UsuarioMensagem();
+		usuarioMensagem2.setUsuario(usuario);
+		usuarioMensagem2.setMensagem(mensagem2);
+		usuarioMensagem2.setEmpresa(empresa);
+		usuarioMensagem2.setLida(false);
+		usuarioMensagemDao.save(usuarioMensagem2);
+		
+		Collection<UsuarioMensagem> usuarioMensagems = new ArrayList<UsuarioMensagem>();
+		usuarioMensagems.add(usuarioMensagem);
+		
+		Collection<UsuarioMensagem> retorno = usuarioMensagemDao.listaUsuarioMensagem(usuario.getId(), empresa.getId(), new Character[]{TipoMensagem.TED});
+		
 		assertEquals(usuarioMensagems.size(), retorno.size());
 	}
 

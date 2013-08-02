@@ -11,7 +11,9 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManagerImpl;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -21,6 +23,8 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
@@ -54,6 +58,8 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 	private Mock colaboradorQuestionarioManager = null;
 	private Mock colaboradorManager = null;
 	private Mock avaliacaoDesempenhoManager = null;
+	private Mock solicitacaoManager = null;
+	private Mock gerenciadorComunicacaoManager = null;
 
     protected void setUp() throws Exception
     {
@@ -72,6 +78,8 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
         avaliacaoDesempenhoManager = new Mock(AvaliacaoDesempenhoManager.class);
+        solicitacaoManager = new Mock(SolicitacaoManager.class);
+        gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
         
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
@@ -111,11 +119,16 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
 		MockSpringUtil.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
+		MockSpringUtil.mocks.put("solicitacaoManager", solicitacaoManager);
+		MockSpringUtil.mocks.put("gerenciadorComunicacaoManager", gerenciadorComunicacaoManager);
+		MockSecurityUtil.verifyRole = true;
 		
-		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
+		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
 		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<Questionario>()));
 		avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		solicitacaoManager.expects(once()).method("findSolicitacaoList").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
+		gerenciadorComunicacaoManager.expects(once()).method("existeConfiguracaoParaCandidatosModuloExterno").withAnyArguments().will(returnValue(false));
 
 		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), 1L);
 

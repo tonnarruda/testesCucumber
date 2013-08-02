@@ -17,7 +17,7 @@ import com.fortes.rh.model.geral.UsuarioMensagem;
 public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMensagem> implements UsuarioMensagemDao
 {
 	@SuppressWarnings("unchecked")
-	public Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId)
+	public Collection<UsuarioMensagem> listaUsuarioMensagem(Long usuarioId, Long empresaId, Character[] arrayTipos)
 	{
 		Criteria criteria = getSession().createCriteria(UsuarioMensagem.class, "um");
 		criteria.createCriteria("um.mensagem", "m", Criteria.LEFT_JOIN);
@@ -35,6 +35,7 @@ public class UsuarioMensagemDaoHibernate extends GenericDaoHibernate<UsuarioMens
 
 		criteria.add(Expression.eq("um.usuario.id", usuarioId));
 		criteria.add(Expression.eq("um.empresa.id", empresaId));
+		criteria.add(Expression.in("m.tipo", arrayTipos));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioMensagem.class));

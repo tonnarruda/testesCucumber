@@ -201,7 +201,7 @@ public class Index extends MyActionSupport
 	
 	public String getDescricaoTipo(char tipoMensagem)
 	{
-		return new TipoMensagem().get(tipoMensagem);
+		return new TipoMensagem(true).get(tipoMensagem);
 	}
 
 	public String videoteca() throws Exception
@@ -418,6 +418,11 @@ public class Index extends MyActionSupport
 	public boolean isPrimeiraExecucao()
 	{
 		return primeiraExecucao;
+	}
+	
+	public void setPrimeiraExecucao(boolean primeiraExecucao) 
+	{
+		this.primeiraExecucao = primeiraExecucao;
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)

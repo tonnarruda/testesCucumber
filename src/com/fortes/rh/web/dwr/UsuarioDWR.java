@@ -4,8 +4,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.ArrayUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -15,6 +17,30 @@ public class UsuarioDWR
 	
 	public void gravarLayoutCaixasMensagens(Long usuarioId, Character[] caixasEsquerda, Character[] caixasDireita, Character[] caixasMinimizadas) throws Exception 
 	{
+		TipoMensagem tipoMensagem = new TipoMensagem();
+		Character[] caixas = (Character[]) ArrayUtil.addAll(caixasEsquerda, caixasDireita);
+
+		if(tipoMensagem.size() != caixas.length)
+		{
+			for (Character tipo : tipoMensagem.keySet()) 
+			{
+				boolean contem = false;
+				for (Character tipoCaixa : caixas) 
+				{
+					if(tipo.equals(tipoCaixa))
+						contem = true;
+				}
+				
+				if(!contem)
+				{
+					if(caixasEsquerda.length < 4)
+						caixasEsquerda = (Character[]) ArrayUtil.add(caixasEsquerda, tipo);
+					else
+						caixasDireita = (Character[]) ArrayUtil.add(caixasDireita, tipo);
+				}
+			}
+		}
+		
 		ConfiguracaoCaixasMensagens config = new ConfiguracaoCaixasMensagens();
 		config.setCaixasEsquerda(caixasEsquerda);
 		config.setCaixasDireita(caixasDireita);

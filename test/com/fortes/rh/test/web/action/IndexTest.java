@@ -2,6 +2,9 @@ package com.fortes.rh.test.web.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import mockit.Mockit;
 
@@ -14,6 +17,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Mensagem;
@@ -78,8 +82,8 @@ public class IndexTest extends MockObjectTestCase
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
-	public void testIndex(){
-
+	public void testIndex()
+	{
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setId(1L);
 
@@ -107,11 +111,11 @@ public class IndexTest extends MockObjectTestCase
 		pesquisas.add(pesquisa2);
 		
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setProximaVersao(new Date());
 		parametrosDoSistema.setSessionTimeout(90);
 
-		colaboradorManager.expects(once()).method("avisoQtdCadastros").withNoArguments().will(returnValue(""));
-		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
+		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 
 		Mensagem mensagem = MensagemFactory.getEntity(1L);
 
@@ -126,8 +130,13 @@ public class IndexTest extends MockObjectTestCase
 		usuarioMensagems.add(usuarioMensagem);
 
 		index.setActionMsg("Teste");
+		MockSecurityUtil.roles = new String[]{"ROLE_VISUALIZAR_MSG"};
+		
+		Map<Character, CaixaMensagem> caixasMensagens = new HashMap<Character, CaixaMensagem>();
+		caixasMensagens.put('R', new CaixaMensagem());
 
 		parametrosDoSistemaManager.expects(once()).method("isIdiomaCorreto").will(returnValue(false));
+		usuarioMensagemManager.expects(once()).method("listaMensagens").withAnyArguments().will(returnValue(caixasMensagens));
 
 		assertEquals("success", index.index());
 	}

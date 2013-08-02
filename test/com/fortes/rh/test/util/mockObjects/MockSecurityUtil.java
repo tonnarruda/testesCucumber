@@ -12,6 +12,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 public class MockSecurityUtil
 {
 	public static boolean verifyRole = false;
+	public static String[] roles = new String[]{};
 
 	public static Empresa getEmpresaSession(Map session)
 	{
@@ -37,6 +38,11 @@ public class MockSecurityUtil
 
 	public static boolean verifyRole(Map session, String[] rolesVerify)
 	{
+		for (String roleVerify : rolesVerify)
+			for (String role : roles)
+				if(roleVerify.equals(role))
+					return true;
+		
 		return verifyRole;
 	}
 
@@ -44,5 +50,4 @@ public class MockSecurityUtil
 	{
 		return "UsuarioTeste";
 	}
-
 }

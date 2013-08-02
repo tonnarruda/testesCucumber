@@ -11,6 +11,8 @@ import com.fortes.rh.util.StringUtil;
 
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
+	private static Long ROLE_CX_MENSAGEM = 495L;
+	
 	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp)
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
@@ -143,6 +145,8 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 				modulosConfigurados.add(modulo);
 		}
 		
+		modulosConfigurados.add(ROLE_CX_MENSAGEM);//Para inserir roles filhas
+
 		Collection<Long> papeisPermitidos = new ArrayList<Long>(modulosConfigurados);
 		papeisPermitidos.addAll(addFilhos(modulosConfigurados));
 		
