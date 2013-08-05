@@ -59,11 +59,7 @@
 					</#list>
 
 					<#if avaliacaoCurso.tipo == 'a'>
-<<<<<<< HEAD
 						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turmaId=${turma.id}&cursoId=${curso.id}&avaliacaoCursoId=${avaliacaoCurso.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
-=======
-						<a href="../../avaliacao/modelo/prepareResponder.action?avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
->>>>>>> 7dadc21160f519f29161368ea4a2cf77556765c6
 					<#else>
 						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
 					</#if>

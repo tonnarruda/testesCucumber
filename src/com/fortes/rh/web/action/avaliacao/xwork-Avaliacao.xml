@@ -51,7 +51,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/questionarioAplicar.ftl</result>
 		</action>
 		
-		<action name="prepareResponder" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="prepareResponder">
+		<action name="prepareResponderAvaliacaoAluno" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="prepareResponderAvaliacaoAluno">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
 		</action>
 		

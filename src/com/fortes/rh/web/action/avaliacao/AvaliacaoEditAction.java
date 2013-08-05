@@ -116,19 +116,11 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-<<<<<<< HEAD
 	public String prepareResponderAvaliacaoAluno() throws Exception
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
 		urlVoltar = "../turma/prepareAproveitamento.action?turma.id=" + turmaId + "&curso.id=" + cursoId + "&avaliacaoCurso.id=" + avaliacaoCursoId;
-=======
-	public String prepareResponder() throws Exception
-	{
-		avaliacao = avaliacaoManager.findById(avaliacao.getId());
-		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
-		urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
->>>>>>> 7dadc21160f519f29161368ea4a2cf77556765c6
 		
 		return Action.SUCCESS;
 	}
