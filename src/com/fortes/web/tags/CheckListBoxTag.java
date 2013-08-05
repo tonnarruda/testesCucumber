@@ -20,6 +20,7 @@ public class CheckListBoxTag extends TagSupport
 	private String height = "";
 	private boolean valueString = false;
 	private boolean readonly = false;
+	private boolean pesquisa = false;
 
 	public CheckListBoxTag()
 	{
@@ -87,6 +88,8 @@ public class CheckListBoxTag extends TagSupport
 					value = cb.getNome();
 
 				String disabled = "";
+				if(pesquisa)
+					disabled = "onclick=\"inserirMarcados($(this));\"" + onClick;
 				if(readonly)
 					disabled = "onclick=\"return false;\"";
 
@@ -186,5 +189,9 @@ public class CheckListBoxTag extends TagSupport
 	public void setForm(String form)
 	{
 		this.form = form;
+	}
+
+	public void setPesquisa(boolean pesquisa) {
+		this.pesquisa = pesquisa;
 	}
 }

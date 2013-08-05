@@ -4922,7 +4922,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 580, false);
+SELECT pg_catalog.setval('papel_sequence', 588, false);
 
 
 --
@@ -28041,6 +28041,9 @@ INSERT INTO migrations (name) VALUES ('20130708140856');
 INSERT INTO migrations (name) VALUES ('20130716140948');
 INSERT INTO migrations (name) VALUES ('20130723171019');
 INSERT INTO migrations (name) VALUES ('20130729092659');
+INSERT INTO migrations (name) VALUES ('20130729151910');
+INSERT INTO migrations (name) VALUES ('20130730094259');
+INSERT INTO migrations (name) VALUES ('20130731151646');
 
 
 --
@@ -28264,7 +28267,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (558, 'ROLE_COLAB_LIST_CRIARUSUARIO', 'Criar acesso ao sistema', '#', 11, false, NULL, 8, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (554, 'ROLE_COLAB_LIST_VISUALIZARCURRICULO', 'Visualizar currículo', '#', 12, false, NULL, 8, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (555, 'ROLE_CAD_COLABORADOR', 'Cadastrar', '#', 1, false, NULL, 8, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções com Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (396, 'ROLE_REL_AREAORGANIZACIONAL', 'Colaboradores por Área Organizacional', '/geral/areaOrganizacionalRelatorio/formFiltro.action', 3, true, NULL, 364, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (561, 'ROLE_REL_COLAB_GRUPOOCUPACIONAL', 'Colaboradores por Grupo Ocupacional', '/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action', 4, true, NULL, 364, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (43, 'ROLE_REL_DESENVOLVIMENTO_LISTA_PRESENCA', 'Lista de Presença', '/desenvolvimento/relatorioPresenca/prepareRelatorio.action', 4, true, NULL, 368, NULL);
@@ -28333,19 +28335,28 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (579, 'ROLE_CAD_LIST_HISTORICOEXTINTOR', 'Troca de Localização', '/sesmt/historicoExtintor/list.action', 3, true, NULL, 457, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (45, 'ROLE_MOV_SOLICITACAO_SELECAO', 'Ver todas', '#', 1, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Aprovar/Reprovar', '#', 2, false, NULL, 21, 'Com essa opção o usuário verá, na listagem de solicitação de pessoal, apenas as solicitações criadas por ele e as solicitações que tiverem a área organizacional no qual seja responsável ou coresponsável. Isso só ocorre se a opção “Ver todas” não estiver selecionada.');
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (496, 'ROLE_VISUALIZAR_SOLICITACAO_PESSOAL', 'Visualizar pendências na caixa de mensagem', '#', 3, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (22, 'ROLE_MOV_SOLICITACAO_CANDIDATO', 'Ver Candidatos da Solicitação', '#', 5, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (544, 'EXIBIR_COMPETENCIA_SOLICITACAO', 'Visualizar competência dos candidatos da solicitação', '#', 1, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (523, 'ROLE_INFORM_CANDIDATO_CURRICULO', 'Visualizar Currículo', '--', 1, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (524, 'ROLE_INFORM_CANDIDATO_HISTORICO', 'Visualizar Histórico', '--', 2, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, NULL, 2, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções por Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 10, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (496, 'ROLE_CX_MENSAGEM_RES', 'R&S', '#', 1, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (581, 'ROLE_CX_MENSAGEM_CES', 'C&S', '', 1, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (582, 'ROLE_CX_MENSAGEM_PESQUISAS', 'Pesquisas', '', 2, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (583, 'ROLE_CX_MENSAGEM_AV_DESMPENHO', 'Aval. Desempenho', '', 3, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (584, 'ROLE_CX_MENSAGEM_TED', 'T&D', '', 4, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (585, 'ROLE_CX_MENSAGEM_INFO_FUNCIONAIS', 'Info. Funcionais', '', 5, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (586, 'ROLE_CX_MENSAGEM_SESMT', 'SESMT', '', 6, false, NULL, 495, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (587, 'ROLE_CX_MENSAGEM_UTILITARIOS', 'Utilitários', '', 7, false, NULL, 495, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.113.123', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-09-22', true, false, 600, NULL, NULL, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.113.124', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-09-22', true, false, 600, NULL, NULL, false);
 
 
 --
@@ -28578,6 +28589,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 576);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 577);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 578);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 579);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 580);
 
 
 --

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.113.124" data="05/08/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Relatórios > Formação Escolar: Novo relatório com a listagem da formação escolar dos colaboradores.
+			:: Utilitários > Cadastros > Perfis: Novos perfis para exibir caixa de mensagens por módulos.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.113.123" data="29/07/2013">
 		<Modulo nome=" "><![CDATA[
 			:: T&D > Relatórios > Colaboradores com Treinamento: Novo relatório por xls.

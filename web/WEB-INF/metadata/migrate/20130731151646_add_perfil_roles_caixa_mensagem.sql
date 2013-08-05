@@ -9,10 +9,10 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (586,
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (587, 'ROLE_CX_MENSAGEM_UTILITARIOS', 'Utilitários', '', 7, false, 495); --.go
 alter sequence papel_sequence restart with 588;--.go
 
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 581 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 582 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 583 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 584 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 585 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 586 from perfil_papel where papeis_id in (495);
-insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 587 from perfil_papel where papeis_id in (495);
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 581 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 582 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 583 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 584 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 585 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 586 from perfil_papel where papeis_id in (495);--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 587 from perfil_papel where papeis_id in (495);--.go

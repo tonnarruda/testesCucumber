@@ -35,7 +35,7 @@
 			
 		    $("#txtBusca").keyup(function(){
 		        var map = {};
-
+			    
 			    $("input[name='extintorsCheck']").each(function(){
 			         if($(this).is(':checked') && (marcados.indexOf($(this).val()) == -1))
 			          	marcados.push($(this).val());
@@ -78,9 +78,15 @@
 	           $('#checkGroupextintorsCheck' + marcados[i]).attr('checked',true);
 		}
 
+		function inserirMarcados(identificador)
+		{
+			 if(identificador.is(':checked') && (marcados.indexOf(identificador.val()) == -1))
+			      marcados.push(identificador.val());
+		}
+
 		function remove(id)
 		{
-			while (marcados.indexOf(id) !== -1) 
+			while (marcados.indexOf(id) != -1) 
  				marcados.splice(marcados.indexOf(id), 1);
 		}
 		
@@ -101,7 +107,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="troca.action" onsubmit="validarCamposAndInsertMarcadosExtintors();" validate="true" method="POST">
 		
-		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600"/>
+		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" pesquisa=true/>
 		
 		<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
 		<legend>Nova Localização</legend>

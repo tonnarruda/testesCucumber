@@ -35,7 +35,7 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-		exibirPerfil = papelManager.getPerfilOrganizado(null, null);
+		exibirPerfil = papelManager.getPerfilOrganizado(null, papeisComHelp);
 		return Action.SUCCESS;
 	}
 
