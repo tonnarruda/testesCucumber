@@ -29,5 +29,9 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/avaliacaoCursoEdit.ftl</result>
 		</action>
+		
+		<action name="prepareResponderAvaliacaoAluno" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="prepareResponderAvaliacaoAluno">
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
+		</action>
 	</package>
 </xwork>

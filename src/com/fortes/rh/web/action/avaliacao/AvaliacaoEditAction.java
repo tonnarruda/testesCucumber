@@ -54,6 +54,10 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private String titulo;
 	private char ativos = 'T';
 	
+	private Long cursoId;
+	private Long turmaId;
+	private Long avaliacaoCursoId;
+	
 	private void prepare() throws Exception
 	{
 		if(avaliacao != null && avaliacao.getId() != null)
@@ -112,11 +116,19 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+<<<<<<< HEAD
+	public String prepareResponderAvaliacaoAluno() throws Exception
+	{
+		avaliacao = avaliacaoManager.findById(avaliacao.getId());
+		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
+		urlVoltar = "../turma/prepareAproveitamento.action?turma.id=" + turmaId + "&curso.id=" + cursoId + "&avaliacaoCurso.id=" + avaliacaoCursoId;
+=======
 	public String prepareResponder() throws Exception
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
 		urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
+>>>>>>> 7dadc21160f519f29161368ea4a2cf77556765c6
 		
 		return Action.SUCCESS;
 	}
@@ -278,5 +290,17 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setAtivos(char ativos) {
 		this.ativos = ativos;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
+	}
+
+	public void setTurmaId(Long turmaId) {
+		this.turmaId = turmaId;
+	}
+
+	public void setAvaliacaoCursoId(Long avaliacaoCursoId) {
+		this.avaliacaoCursoId = avaliacaoCursoId;
 	}
 }
