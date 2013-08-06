@@ -33,12 +33,12 @@ function validaRespostas(camposObrigatorios, camposValidos, submete, validaObj, 
 	
 	// indicando quais nao foram marcadas
 	
-	jQuery("[class^=pergunta]").css("backgroundColor", "#FFF");
+	jQuery("[class^=pergunta]").css("backgroundColor", "#FFF").css("padding", "0");
 	
 	if (perguntasSemResposta.length > 0)
 	{
 		jQuery(perguntasSemResposta).each( function() {
-			jQuery(".pergunta" + this).css("backgroundColor", "#FFEEC2");
+			jQuery(".pergunta" + this).css("backgroundColor", "#FFEEC2").css("padding", "3px");
 		});
 		
 		jAlert('Responda as perguntas indicadas.');

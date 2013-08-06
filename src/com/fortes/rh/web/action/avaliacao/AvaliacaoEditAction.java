@@ -3,17 +3,25 @@ package com.fortes.rh.web.action.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.util.BooleanUtil;
@@ -31,6 +39,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private PerguntaManager perguntaManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private EmpresaManager empresaManager;
+	private ColaboradorManager colaboradorManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	
 	private Avaliacao avaliacao;
 	
@@ -46,17 +57,23 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	private Map<String, Object> parametros;
 	private Collection<QuestionarioRelatorio> dataSource;
+	private Collection<ColaboradorResposta> colaboradorRespostas;
+	private Collection<PeriodoExperiencia> periodoExperiencias;
+
 	private boolean imprimirFormaEconomica = false;
 	private char modeloAvaliacao = 'D'; 
 	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
-	private Collection<PeriodoExperiencia> periodoExperiencias;
-	private boolean telaInicial;
-	private String titulo;
-	private char ativos = 'T';
+	
+	private Colaborador colaborador;
+	private ColaboradorQuestionario colaboradorQuestionario; 
 	
 	private Long cursoId;
 	private Long turmaId;
 	private Long avaliacaoCursoId;
+
+	private boolean telaInicial;
+	private String titulo;
+	private char ativos = 'T';
 	
 	private void prepare() throws Exception
 	{
@@ -120,9 +137,91 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
+		
+		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
+		
+		colaboradorQuestionario = colaboradorQuestionarioManager.findByColaboradorAvaliacao(colaborador, avaliacao);
+		
+		if (colaboradorQuestionario != null && colaboradorQuestionario.getRespondida())
+			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
+		else
+			colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(avaliacao);
+
+		for (Pergunta pergunta : perguntas)
+		{
+			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+			{
+				if (colaboradorResposta.getPergunta().equals(pergunta))
+				{
+					pergunta.addColaboradorResposta(colaboradorResposta);
+					if (! colaboradorResposta.getPergunta().getTipo().equals(TipoPergunta.MULTIPLA_ESCOLHA))
+						break;
+				}
+			}
+		}
+		
 		urlVoltar = "../turma/prepareAproveitamento.action?turma.id=" + turmaId + "&curso.id=" + cursoId + "&avaliacaoCurso.id=" + avaliacaoCursoId;
 		
 		return Action.SUCCESS;
+	}
+	
+	public String responderAvaliacaoAluno() throws Exception
+	{
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setProjectionTurmaId(turmaId);
+		if (colaboradorQuestionario.getRespondidaEm() == null)
+			colaboradorQuestionario.setRespondidaEm(new Date());
+		
+		try
+		{
+			colaboradorQuestionarioManager.save(colaboradorQuestionario);
+			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+			
+			return Action.SUCCESS;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			prepareResponderAvaliacaoAluno();
+			addActionError("Ocorreu um erro ao gravar as respostas da avaliação");
+			return Action.INPUT;
+		}
+	}
+	
+	private Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas() 
+	{
+		Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+		for (Pergunta pergunta : perguntas)
+		{
+			// desagrupando os colaboradorRespostas que vieram agrupados por pergunta
+			if (pergunta.getColaboradorRespostas() != null)
+			{
+				colaboradorRespostas.addAll(pergunta.getColaboradorRespostas());
+			
+				setComentariosDasRespostasMultiplaEscolha(pergunta.getColaboradorRespostas());
+			}
+		}
+		return colaboradorRespostas;
+	}
+	
+	// O comentário de resposta multipla só vem na primeira e precisa ser replicado para todas (problema no modelo)
+	private void setComentariosDasRespostasMultiplaEscolha(Collection<ColaboradorResposta> colabRespostas) {
+		
+		String comentario = null;
+		
+		if (!colabRespostas.isEmpty()) {
+			
+			ColaboradorResposta primeiroColabResposta = ((ColaboradorResposta)colabRespostas.toArray()[0]);
+			
+			if (primeiroColabResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA 
+					&& primeiroColabResposta.getPergunta().isComentario())
+			{
+				comentario = primeiroColabResposta.getComentario();
+			
+				for (ColaboradorResposta colabResposta : colabRespostas)
+						colabResposta.setComentario(comentario);
+			}
+		}
 	}
 
 	public String list() throws Exception
@@ -294,5 +393,49 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setAvaliacaoCursoId(Long avaliacaoCursoId) {
 		this.avaliacaoCursoId = avaliacaoCursoId;
+	}
+
+	public void setColaboradorQuestionarioManager(
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public Collection<ColaboradorResposta> getColaboradorRespostas() {
+		return colaboradorRespostas;
+	}
+
+	public void setColaboradorRespostas(
+			Collection<ColaboradorResposta> colaboradorRespostas) {
+		this.colaboradorRespostas = colaboradorRespostas;
+	}
+
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setColaboradorRespostaManager(
+			ColaboradorRespostaManager colaboradorRespostaManager) {
+		this.colaboradorRespostaManager = colaboradorRespostaManager;
+	}
+
+	public ColaboradorQuestionario getColaboradorQuestionario() {
+		return colaboradorQuestionario;
+	}
+
+	public void setColaboradorQuestionario(
+			ColaboradorQuestionario colaboradorQuestionario) {
+		this.colaboradorQuestionario = colaboradorQuestionario;
+	}
+
+	public void setPerguntas(Collection<Pergunta> perguntas) {
+		this.perguntas = perguntas;
 	}
 }

@@ -528,6 +528,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.turma = turma;
 	}
 
+	public void setProjectionTurmaId(Long turmaId)
+	{
+		if (this.turma == null)
+			this.turma = new Turma();
+		
+		this.turma.setId(turmaId);
+	}
+	
 	public Candidato getCandidato()
 	{
 		return candidato;

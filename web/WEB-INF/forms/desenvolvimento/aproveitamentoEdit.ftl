@@ -15,9 +15,7 @@
 		function verificaEdicao()
 		{
 			if (alterouCampo)
-			{
 				newConfirm('Você alterou alguns campos, deseja mudar de avaliação sem gravar?', function(){document.formFiltro.submit();});
-			}
 			else
 				document.formFiltro.submit();
 		}
@@ -59,7 +57,7 @@
 					</#list>
 
 					<#if avaliacaoCurso.tipo == 'a'>
-						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turmaId=${turma.id}&cursoId=${curso.id}&avaliacaoCursoId=${avaliacaoCurso.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
+						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turmaId=${turma.id}&cursoId=${curso.id}&avaliacaoCursoId=${avaliacaoCurso.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
 					<#else>
 						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
 					</#if>
@@ -74,7 +72,7 @@
 	</#if>
 
 	<div class="buttonGroup">
-		<#if colaboradoresTurma?exists && 0 < colaboradoresTurma?size>
+		<#if colaboradoresTurma?exists && 0 < colaboradoresTurma?size && avaliacaoCurso?exists && avaliacaoCurso.tipo != 'a'>
 			<button class="btnGravar" onclick="document.form.submit();"></button>
 		</#if>
 		<button class="btnVoltar" onclick="window.location='list.action?curso.id=${curso.id}'"></button>
