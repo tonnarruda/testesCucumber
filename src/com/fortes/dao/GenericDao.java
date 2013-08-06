@@ -42,6 +42,13 @@ public interface GenericDao<T>
 
 	/**
 	 * <p>
+	 * Updates the entity in the persistent store.
+	 * </p>
+	 */
+	public void saveOrUpdate(T entity);
+	
+	/**
+	 * <p>
 	 * Updates the entities in the persistent store.
 	 * </p>
 	 */

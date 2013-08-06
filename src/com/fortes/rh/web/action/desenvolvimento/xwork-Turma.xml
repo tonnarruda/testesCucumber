@@ -48,6 +48,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/presencaEdit.ftl</result>
 		</action>
 		<action name="prepareAproveitamento" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="prepareAproveitamento">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/aproveitamentoEdit.ftl</result>
 		</action>
 		<action name="saveAproveitamentoCurso" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="saveAproveitamentoCurso">

@@ -34,7 +34,8 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
 		</action>
 		<action name="responderAvaliacaoAluno" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="responderAvaliacaoAluno">
-			<result name="success" type="redirect"><![CDATA[../turma/prepareAproveitamento.action?turma.id=${turmaId}&curso.id=${cursoId}&avaliacaoCurso.id=${avaliacaoCursoId}]]></result>
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect"><![CDATA[../turma/prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
 		</action>
 	</package>

@@ -27,11 +27,10 @@
 		<@ww.form name="form" action="responderAvaliacaoAluno.action" method="POST">
 			<#include "../avaliacao/includePerguntasAvaliacao.ftl" />
 			<@ww.hidden name="avaliacao.id" />
-			<@ww.hidden name="colaboradorQuestionario.avaliacao.id" />
-			<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
-			<@ww.hidden name="turmaId" />
-			<@ww.hidden name="cursoId" />
-			<@ww.hidden name="avaliacaoCursoId" />
+			<@ww.hidden name="colaborador.id" />
+			<@ww.hidden name="turma.id" />
+			<@ww.hidden name="curso.id" />
+			<@ww.hidden name="avaliacaoCurso.id" />
 			<@ww.token/>
 		</@ww.form>
 

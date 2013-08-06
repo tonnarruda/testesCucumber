@@ -98,6 +98,11 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		//NonUniqueObjectException - a different object with the same identifier value was already associated with the session
 		getHibernateTemplate().merge(entity);
 	}
+	
+	public void saveOrUpdate(T entity)
+	{
+		getHibernateTemplate().saveOrUpdate(entity);
+	}
 
 	public void saveOrUpdate(Collection<T> entities)
 	{

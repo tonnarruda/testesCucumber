@@ -57,7 +57,9 @@
 					</#list>
 
 					<#if avaliacaoCurso.tipo == 'a'>
-						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turmaId=${turma.id}&cursoId=${curso.id}&avaliacaoCursoId=${avaliacaoCurso.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>"></a>
+						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}">
+							<img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>">
+						</a>
 					<#else>
 						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
 					</#if>

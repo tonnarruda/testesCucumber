@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.avaliacao;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -15,6 +16,9 @@ import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -66,10 +70,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	private Colaborador colaborador;
 	private ColaboradorQuestionario colaboradorQuestionario; 
-	
-	private Long cursoId;
-	private Long turmaId;
-	private Long avaliacaoCursoId;
+	private Curso curso;
+	private Turma turma;
+	private AvaliacaoCurso avaliacaoCurso;
 
 	private boolean telaInicial;
 	private String titulo;
@@ -160,7 +163,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 			}
 		}
 		
-		urlVoltar = "../turma/prepareAproveitamento.action?turma.id=" + turmaId + "&curso.id=" + cursoId + "&avaliacaoCurso.id=" + avaliacaoCursoId;
+		urlVoltar = "../turma/prepareAproveitamento.action?turma.id=" + turma.getId() + "&curso.id=" + curso.getId() + "&avaliacaoCurso.id=" + avaliacaoCurso.getId();
 		
 		return Action.SUCCESS;
 	}
@@ -168,14 +171,18 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String responderAvaliacaoAluno() throws Exception
 	{
 		colaboradorQuestionario.setRespondida(true);
-		colaboradorQuestionario.setProjectionTurmaId(turmaId);
+		colaboradorQuestionario.setTurma(turma);
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
 		if (colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
 		try
 		{
-			colaboradorQuestionarioManager.save(colaboradorQuestionario);
+			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionario);
 			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+			
+			addActionSuccess("Respostas gravadas com sucesso");
 			
 			return Action.SUCCESS;
 		}
@@ -383,20 +390,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		this.ativos = ativos;
 	}
 
-	public void setCursoId(Long cursoId) {
-		this.cursoId = cursoId;
-	}
-
-	public void setTurmaId(Long turmaId) {
-		this.turmaId = turmaId;
-	}
-
-	public void setAvaliacaoCursoId(Long avaliacaoCursoId) {
-		this.avaliacaoCursoId = avaliacaoCursoId;
-	}
-
-	public void setColaboradorQuestionarioManager(
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
@@ -437,5 +431,29 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setPerguntas(Collection<Pergunta> perguntas) {
 		this.perguntas = perguntas;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
+	}
+
+	public AvaliacaoCurso getAvaliacaoCurso() {
+		return avaliacaoCurso;
+	}
+
+	public void setAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso) {
+		this.avaliacaoCurso = avaliacaoCurso;
 	}
 }

@@ -29,6 +29,11 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 	{
 		dao.update(entity);
 	}
+	
+	public void saveOrUpdate(T entity)
+	{
+		dao.saveOrUpdate(entity);
+	}
 
 	public void saveOrUpdate(Collection<T> entities)
 	{

@@ -29,6 +29,13 @@ public interface GenericManager<T>
 	 */
 	@Audita(operacao="Atualização")
 	public void update(T entity);
+	
+	/**
+	 * <p>
+	 * Updates the entity in the persistent store.
+	 * </p>
+	 */
+	public void saveOrUpdate(T entity);
 
 	/**
 	 * <p>
