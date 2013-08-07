@@ -6,6 +6,7 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoEditAction;
 
@@ -19,6 +20,7 @@ public class AvaliacaoCursoEditActionTest extends MockObjectTestCase
     {
         super.setUp();
         action = new AvaliacaoCursoEditAction();
+        action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         avaliacaoCursoManager = new Mock(AvaliacaoCursoManager.class);
         action.setAvaliacaoCursoManager((AvaliacaoCursoManager) avaliacaoCursoManager.proxy());
         avaliacaoManager = new Mock(AvaliacaoManager.class);

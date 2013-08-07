@@ -311,7 +311,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			
 			exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
-			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
+			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
 			
 			if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 			{
@@ -484,7 +485,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		Long usuarioId = (getUsuarioLogado() != null) ? getUsuarioLogado().getId() : null;
 		Long candidatoId = (candidato != null) ? candidatoId = candidato.getId() : null;
 		
-		colaboradorRespostaManager.save(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, usuarioId, candidatoId);
+		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
+		colaboradorRespostaManager.save(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuarioId, candidatoId);
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
@@ -514,48 +516,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		//TODO: Este metodo tambem atualiza o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" atualizasse as respostas e nao o contrario. 		
 		ajustaSolicitacao();
-		colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
+		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
 		else
 			return Action.SUCCESS;
-	}
-	
-	private Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas() 
-	{
-		Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
-		for (Pergunta pergunta : perguntas)
-		{
-			// desagrupando os colaboradorRespostas que vieram agrupados por pergunta
-			if (pergunta.getColaboradorRespostas() != null)
-			{
-				colaboradorRespostas.addAll(pergunta.getColaboradorRespostas());
-			
-				setComentariosDasRespostasMultiplaEscolha(pergunta.getColaboradorRespostas());
-			}
-		}
-		return colaboradorRespostas;
-	}
-	
-	// O comentário de resposta multipla só vem na primeira e precisa ser replicado para todas (problema no modelo)
-	private void setComentariosDasRespostasMultiplaEscolha(Collection<ColaboradorResposta> colabRespostas) {
-		
-		String comentario = null;
-		
-		if (!colabRespostas.isEmpty()) {
-			
-			ColaboradorResposta primeiroColabResposta = ((ColaboradorResposta)colabRespostas.toArray()[0]);
-			
-			if (primeiroColabResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA 
-					&& primeiroColabResposta.getPergunta().isComentario())
-			{
-				comentario = primeiroColabResposta.getComentario();
-			
-				for (ColaboradorResposta colabResposta : colabRespostas)
-						colabResposta.setComentario(comentario);
-			}
-		}
 	}
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)

@@ -44,4 +44,5 @@ public interface PerguntaManager extends GenericManager<Pergunta>
 	Collection<Pergunta> getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(Long questionarioId, boolean ordenarPorAspecto);
 	Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds);
 	void removerPerguntasAspectosDaAvaliacao(Long avaliacaoId);
+	Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas(Collection<Pergunta> perguntas);
 }

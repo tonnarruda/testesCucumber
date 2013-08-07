@@ -2,10 +2,14 @@ package com.fortes.rh.web.action.avaliacao;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
@@ -46,6 +50,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private PlatformTransactionManager transactionManager;
 	
 	private Avaliacao avaliacao;
 	
@@ -177,10 +182,17 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		if (colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		
 		try
 		{
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionario);
-			colaboradorRespostaManager.update(getColaboradorRespostasDasPerguntas(), colaboradorQuestionario, getUsuarioLogado().getId());
+			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);			
+			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
+			
+			transactionManager.commit(status);
 			
 			addActionSuccess("Respostas gravadas com sucesso");
 			
@@ -188,46 +200,11 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
+			transactionManager.rollback(status);
 			e.printStackTrace();
 			prepareResponderAvaliacaoAluno();
 			addActionError("Ocorreu um erro ao gravar as respostas da avaliação");
 			return Action.INPUT;
-		}
-	}
-	
-	private Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas() 
-	{
-		Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
-		for (Pergunta pergunta : perguntas)
-		{
-			// desagrupando os colaboradorRespostas que vieram agrupados por pergunta
-			if (pergunta.getColaboradorRespostas() != null)
-			{
-				colaboradorRespostas.addAll(pergunta.getColaboradorRespostas());
-			
-				setComentariosDasRespostasMultiplaEscolha(pergunta.getColaboradorRespostas());
-			}
-		}
-		return colaboradorRespostas;
-	}
-	
-	// O comentário de resposta multipla só vem na primeira e precisa ser replicado para todas (problema no modelo)
-	private void setComentariosDasRespostasMultiplaEscolha(Collection<ColaboradorResposta> colabRespostas) {
-		
-		String comentario = null;
-		
-		if (!colabRespostas.isEmpty()) {
-			
-			ColaboradorResposta primeiroColabResposta = ((ColaboradorResposta)colabRespostas.toArray()[0]);
-			
-			if (primeiroColabResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA 
-					&& primeiroColabResposta.getPergunta().isComentario())
-			{
-				comentario = primeiroColabResposta.getComentario();
-			
-				for (ColaboradorResposta colabResposta : colabRespostas)
-						colabResposta.setComentario(comentario);
-			}
 		}
 	}
 
@@ -455,5 +432,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso) {
 		this.avaliacaoCurso = avaliacaoCurso;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 }

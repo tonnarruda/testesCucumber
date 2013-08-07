@@ -673,6 +673,40 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 	public Map<Long, Integer> getPontuacoesMaximas(Long[] perguntasIds) {
 		return getDao().getPontuacoesMaximas(perguntasIds);
 	}
-
-
+	
+	public Collection<ColaboradorResposta> getColaboradorRespostasDasPerguntas(Collection<Pergunta> perguntas) 
+	{
+		Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+		for (Pergunta pergunta : perguntas)
+		{
+			// desagrupando os colaboradorRespostas que vieram agrupados por pergunta
+			if (pergunta.getColaboradorRespostas() != null)
+			{
+				colaboradorRespostas.addAll(pergunta.getColaboradorRespostas());
+			
+				setComentariosDasRespostasMultiplaEscolha(pergunta.getColaboradorRespostas());
+			}
+		}
+		return colaboradorRespostas;
+	}
+	
+	// O comentário de resposta multipla só vem na primeira e precisa ser replicado para todas (problema no modelo)
+	private void setComentariosDasRespostasMultiplaEscolha(Collection<ColaboradorResposta> colabRespostas) {
+		
+		String comentario = null;
+		
+		if (!colabRespostas.isEmpty()) {
+			
+			ColaboradorResposta primeiroColabResposta = ((ColaboradorResposta)colabRespostas.toArray()[0]);
+			
+			if (primeiroColabResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA 
+					&& primeiroColabResposta.getPergunta().isComentario())
+			{
+				comentario = primeiroColabResposta.getComentario();
+			
+				for (ColaboradorResposta colabResposta : colabRespostas)
+						colabResposta.setComentario(comentario);
+			}
+		}
+	}
 }

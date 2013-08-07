@@ -65,7 +65,7 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 			getDao().remove(aproveitamento);
 	}
 
-	private void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento)
+	public void saveOrUpdate(AproveitamentoAvaliacaoCurso aproveitamento)
 	{
 		AproveitamentoAvaliacaoCurso resultado = getDao().findByColaboradorTurmaAvaliacaoId(aproveitamento.getColaboradorTurma().getId(), aproveitamento.getAvaliacaoCurso().getId());
 		if (resultado == null)

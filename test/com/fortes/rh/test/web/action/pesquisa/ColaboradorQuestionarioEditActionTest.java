@@ -398,6 +398,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		action.setColaboradorQuestionario(new ColaboradorQuestionario());
 		action.setSolicitacao(new Solicitacao());
 		
+		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas");
 		colaboradorRespostaManager.expects(once()).method("save");
 		assertEquals("success", action.insertAvaliacaoExperiencia());
 	}
@@ -408,6 +409,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		action.setColaboradorQuestionario(new ColaboradorQuestionario());
 		action.setSolicitacao(new Solicitacao());
 		
+		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas");
 		colaboradorRespostaManager.expects(once()).method("update");
 		assertEquals("success", action.updateAvaliacaoExperiencia());
 	}
@@ -455,6 +457,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		
 		action.setSolicitacao(new Solicitacao());
 		
+		perguntaManager.expects(once()).method("getColaboradorRespostasDasPerguntas");
 		colaboradorRespostaManager.expects(once()).method("update");
 		assertEquals("success", action.updateAvaliacaoExperiencia());
 	}
