@@ -17,7 +17,7 @@
 		
 		function createListFaixas(data)
 		{
-			addOptionsByCollection('faixaSalarialId', data);
+			addOptionsByCollection('faixaSalarialId', data, 'Selecione...');
 		}
 	</script>
 	

@@ -27,7 +27,7 @@
 		
 		function createListIndices(data)
 		{
-			addOptionsByCollection('indiceId', data);
+			addOptionsByCollection('indiceId', data, 'Selecione...');
 		}
 	</script>
 </head>

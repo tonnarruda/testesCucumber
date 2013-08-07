@@ -166,6 +166,9 @@
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
+		<convert converter="bean" match="com.fortes.rh.model.geral.AreaOrganizacional">
+			<param name="include" value="id, nome, descricao"/>
+		</convert>
 		
 		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>

@@ -297,6 +297,24 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		preparaResponsavel();
 		return responsavel.getNome();
 	}
+
+	@NaoAudita
+	public String getResponsavelNomeComercial() {
+		preparaResponsavel();
+		return responsavel.getNomeComercial();
+	}
+
+	@NaoAudita
+	public String getCoResponsavelNome() {
+		preparaCoResponsavel();
+		return coResponsavel.getNome();
+	}
+	
+	@NaoAudita
+	public String getCoResponsavelNomeComercial() {
+		preparaCoResponsavel();
+		return coResponsavel.getNomeComercial();
+	}
 	
 	@NaoAudita
 	public String getResponsavelEmailNomeComercial() {

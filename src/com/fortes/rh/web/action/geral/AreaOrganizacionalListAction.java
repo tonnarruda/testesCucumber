@@ -50,12 +50,6 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 	
 	public String organograma() throws Exception
 	{
-		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(getEmpresaSistema().getId());
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		
-		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
-		
 		return Action.SUCCESS;
 	}
 	

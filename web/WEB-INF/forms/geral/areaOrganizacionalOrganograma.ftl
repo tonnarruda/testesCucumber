@@ -29,15 +29,26 @@
 	
     <script type='text/javascript'>
 		$(function() {
+			$('#ativa').change(function() {
+				AreaOrganizacionalDWR.findByEmpresa(montaAreas, <@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : $(this).val()));
+			});
+		
+			$('#ativa').change();
+		
 			$('#areaOrganizacional').change(function() {
 				$('#organogramaAreas').empty();
 			
 				DWRUtil.useLoadingMessage('Carregando...');
-				AreaOrganizacionalDWR.getOrganogramaByEmpresaJson(montaOrganograma, <@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : new Number($(this).val())));
+				AreaOrganizacionalDWR.getOrganogramaByEmpresaJson(montaOrganograma, <@authz.authentication operation="empresaId"/>, ($(this).val() == "" ? null : new Number($(this).val())), ($('#ativa').val() == "" ? null : $('#ativa').val()));
 			});
 		});
 		
 		var oc_data, oc_style, OC_DEBUG;
+		
+		function montaAreas(dados)
+		{
+			addOptionsByCollection('areaOrganizacional', dados, ($('#ativa').val() == "" ? "Todas" : null), 'descricao');
+		}
 		
 		function montaOrganograma(dados)
 		{
@@ -61,7 +72,7 @@
 					box_border_color   : '#7e9db9',              // stroke color of boxes
 					line_color         : '#7e9db9',              // color of connectors
 					title_color        : '#333333',              // color of titles
-					subtitle_color     : '#707',                 // color of subtitles
+					subtitle_color     : '#006600',                 // color of subtitles
 					title_font_size    : 12,                     // size of font used for displaying titles inside boxes
 					subtitle_font_size : 10,                     // size of font used for displaying subtitles inside boxes
 					title_char_size    : [ 6, 12 ],              // size (x, y) of a char of the font used for displaying titles
@@ -132,6 +143,8 @@
 
 <body>
 	<label for="areaOrganizacional">Área Organizacional:</label><br />
+
+	<@ww.select theme="simple" id="ativa" name="ativa" list=r"#{true:'Somente ativas'}" cssStyle="width: 500px;" headerKey="" headerValue="Ativas e inativas"/><br />
 	<@ww.select theme="simple" id="areaOrganizacional" name="areaOrganizacional" list="areaOrganizacionals" listKey="id" listValue="descricao" headerKey="" headerValue="Todas" multiple="false" size="10" cssStyle="width: 500px;"/>
 
 	<div id="organogramaAreas"></div>

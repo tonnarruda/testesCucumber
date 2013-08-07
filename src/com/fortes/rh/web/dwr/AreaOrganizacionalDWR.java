@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
@@ -92,13 +94,24 @@ public class AreaOrganizacionalDWR
 		return emailsResponsaveis;
 	}
 	
-	public String getOrganogramaByEmpresaJson(Long empresaId, Long areaId) throws Exception
+	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId, Boolean ativo) throws Exception
+	{
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, ativo);
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		
+		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoStatusAtivo");
+		
+		return areaOrganizacionals;
+	}
+	
+	public String getOrganogramaByEmpresaJson(Long empresaId, Long areaId, Boolean ativa) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals 	= new ArrayList<AreaOrganizacional>();
 		Collection<AreaOrganizacional> areasAncestrais 		= new ArrayList<AreaOrganizacional>();
 		Collection<AreaOrganizacional> areasDescendentes 	= new ArrayList<AreaOrganizacional>();
 		
-		areaOrganizacionals = areaOrganizacionalManager.findByEmpresa(empresaId);
+		areaOrganizacionals = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, ativa);
 		
 		if (areaId != null)
 		{
@@ -125,7 +138,7 @@ public class AreaOrganizacionalDWR
 		{
 			if (area.getAreaMae() == null || area.getAreaMae().getId() == null)
 			{
-				areaOrganograma = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), " ", "subordinate");
+				areaOrganograma = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), area.getResponsavelNomeComercial(), "subordinate");
 				setFilhas(areaOrganizacionals, areaOrganograma);
 				
 				dados.add(areaOrganograma);

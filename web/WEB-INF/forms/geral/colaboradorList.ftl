@@ -32,7 +32,7 @@
 		
 		function createListFaixas(data)
 		{
-			addOptionsByCollection('faixaSalarial', data);
+			addOptionsByCollection('faixaSalarial', data, 'Selecione...');
 			
 			<#if faixaSalarial.id?exists>
 				$('#faixaSalarial').val(${faixaSalarial.id});

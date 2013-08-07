@@ -237,12 +237,13 @@ function addChecksByCollection(divName, dados, onClick)
 	$('#listCheckBox'+ divName).html(result);
 }
 
-function addOptionsByCollection(selectId, dados)
+function addOptionsByCollection(selectId, dados, prompt, label)
 {
-	var result = "<option value=''>Selecione...</option>";
+	var result = prompt ? "<option value=''>" + prompt + "</option>" : "";
 	var selecionado = '';
 	var desabilitado = '';
 	var titulo = '';
+	var label = label ? label : 'nome';
 
 	for (var prop in dados)
 	{
@@ -250,7 +251,7 @@ function addOptionsByCollection(selectId, dados)
 		desabilitado = dados[prop]['desabilitado'] ? 'disabled=\"disabled\" style=\"color:#cccccc\"' : '';
 		titulo = dados[prop]['titulo'] ? 'title=\"' + dados[prop]['titulo'] + '\"' : '';
 		
-		result += "<option value='" + dados[prop]['id'] + "' " + titulo + " " + selecionado + " " + desabilitado + ">" + dados[prop]['nome'] + "</option>\n";
+		result += "<option value='" + dados[prop]['id'] + "' " + titulo + " " + selecionado + " " + desabilitado + ">" + dados[prop][label] + "</option>\n";
 	}
 
 	$('#' + selectId).html(result);
