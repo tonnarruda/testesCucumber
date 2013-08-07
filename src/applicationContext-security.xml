@@ -296,7 +296,6 @@
 				/geral/colaborador/prepareColaboradorSolicitacao*/**=ROLE_COLAB_LIST_SOLICITACAO
 				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
 				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
-				/geral/documentoAnexo/*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO				
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 								
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
@@ -307,7 +306,7 @@
 				/geral/areaOrganizacional/*/**=ROLE_CAD_AREA
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
-				/geral/documentoAnexo/list*/**=ROLE_CAD_COLABORADOR,ROLE_CAD_CANDIDATO
+
 				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR
 				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR
 				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR
@@ -318,6 +317,9 @@
 				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
+				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/listColaborador.action*=ROLE_COLAB_LIST_DOCUMENTOANEXO
+
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
 				/geral/grupoAC/*/**=ROLE_CAD_GRUPOAC
