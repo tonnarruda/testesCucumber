@@ -56,7 +56,6 @@
 		{
 			document.getElementById('areaOrganizacional').style.display = "none";
 			document.getElementById('grupoOcupacional').style.display = "";
-
 		}
 	}
 
@@ -67,8 +66,6 @@
 
 	function imprimir()
 	{
-		
-		
 		var qtdSelectE = qtdeChecksSelected(document.forms[0], 'estabelecimentosCheck');
 		if(qtdSelectE == 0)
 		{
@@ -109,6 +106,14 @@
 			selecionaTipoReajuste();
 		}
 	}
+	
+	function desablitaBotaoXls(valor)
+	{
+		if(valor=="true")
+			$('.btnRelatorioExportar').attr('disabled', true).css('opacity', '0.2');
+		else
+			$('.btnRelatorioExportar').removeAttr('disabled').css('opacity', '1');
+	}
 
 </script>
 
@@ -140,7 +145,7 @@
 					<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" />
 			</@ww.div>
 			
-			<@ww.select label="Imprimir somente totais" name="total" list=r"#{'false':'Não', 'true':'Sim'}" />
+			<@ww.select label="Imprimir somente totais" name="total" list=r"#{'false':'Não', 'true':'Sim'}" onchange="desablitaBotaoXls($(this).val());"/>
 		
 			<@ww.checkbox label="Exibir estabelecimento e área organizacional" id="exibirAreaEstabelecimento" name="exibirAreaEstabelecimento" labelPosition="left"/>
 			<@ww.checkbox label="Exibir observação" id="exibirObservacao" name="exibirObservacao" labelPosition="left"/>
@@ -159,8 +164,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="return validarCampos();" accesskey="${accessKey}">
-		</button>
+		<button class="btnRelatorio"  onclick="$('form[name=form]').attr('action', '${formAction}');validarCampos();"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'gerarRelatorioXls.action');validarCampos();"></button>
 	
 		<#if visualizarBotaoCancelar>
 			<button onclick="window.location='<@ww.url includeParams="none" value="/cargosalario/tabelaReajusteColaborador/list.action"/>'" class="btnCancelar" accesskey="V">

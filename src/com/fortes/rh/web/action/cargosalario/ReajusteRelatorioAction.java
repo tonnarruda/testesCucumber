@@ -81,6 +81,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	private Collection<CheckBox> grupoOcupacionalsCheckList = new ArrayList<CheckBox>();
 	private Double valorTotalFolha;
 
+	private String reportTitle;
 	private boolean verTodasAreas;
 	
 	public String execute() throws Exception
@@ -123,6 +124,32 @@ public class ReajusteRelatorioAction extends MyActionSupport
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
 
 		return Action.SUCCESS;
+	}
+	public String gerarRelatorioXls() throws Exception
+	{
+		String retorno = gerarRelatorio();
+		
+		if(retorno.equals(Action.SUCCESS))
+		{
+			if(filtro.equals("2"))
+				retorno = "succesGrupoOcupacional";
+			else
+				retorno = Action.SUCCESS;
+			
+			if(exibirObservacao)
+				retorno += "Obs";
+		}else if (retorno.equals("successExibirAreaEstabelecimento"))
+		{
+			retorno = "successExibirAreaEstabelecimento";
+			
+			if(filtro.equals("2"))
+				retorno += "GrupoOcupacional";
+			
+			if(exibirObservacao)
+				retorno += "Obs";
+		}
+		
+		return retorno;
 	}
 
 	@SuppressWarnings("finally")
@@ -178,13 +205,15 @@ public class ReajusteRelatorioAction extends MyActionSupport
 				
 				if (exibirAreaEstabelecimento && total.equals("false"))
 					retorno = "successExibirAreaEstabelecimento";
-				else
+				else 
 					retorno = Action.SUCCESS;
 			}
 
 			valorTotalFolha = historicoColaboradorManager.getValorTotalFolha(getEmpresaSistema().getId(), tabelaReajusteColaboradorAux.getData());
 
-			parametros = reajusteColaboradorManager.getParametrosRelatorio("Relatório de Simulação de Promoções e Reajustes de Salários", getEmpresaSistema(), tabelaReajusteColaboradorAux.getNome());
+			reportTitle= "Relatório de Simulação de Promoções e Reajustes de Salários"; 
+			
+			parametros = reajusteColaboradorManager.getParametrosRelatorio(reportTitle, getEmpresaSistema(), tabelaReajusteColaboradorAux.getNome());
 			parametros.put("EXIBIR_TOTAL",total);
 			parametros.put("EXIBIR_OBS",exibirObservacao);
 			parametros.put("FILTRAR_POR", filtro);
@@ -457,5 +486,9 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	public void setExibirAreaEstabelecimento(Boolean exibirAreaEstabelecimento)
 	{
 		this.exibirAreaEstabelecimento = exibirAreaEstabelecimento;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 }

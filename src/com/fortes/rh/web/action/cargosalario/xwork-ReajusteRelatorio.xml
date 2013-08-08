@@ -33,5 +33,96 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteRelatorioFiltro.ftl</result>
 		</action>
+		<action name="gerarRelatorioXls" class="com.fortes.rh.web.action.cargosalario.ReajusteRelatorioAction" method="gerarRelatorioXls">
+			<result name="success" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Colaborador,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">descricaoEstabelecimentoAreaOrganizacionalPropostos</param>
+				<param name="properties">descricaoEstabelecimentoAreaOrganizacionalPropostos,colaborador.nome,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="succesGrupoOcupacional" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Grupo Ocupacional,Colaborador,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">faixaSalarialProposta.cargo.grupoOcupacional.nome</param>
+				<param name="properties">faixaSalarialProposta.cargo.grupoOcupacional.nome,colaborador.nome,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successObs" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Colaborador,Observação,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">descricaoEstabelecimentoAreaOrganizacionalPropostos</param>
+				<param name="properties">descricaoEstabelecimentoAreaOrganizacionalPropostos,colaborador.nome,observacao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="succesGrupoOcupacionalObs" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Grupo Ocupacional,Colaborador,Observação,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">faixaSalarialProposta.cargo.grupoOcupacional.nome</param>
+				<param name="properties">faixaSalarialProposta.cargo.grupoOcupacional.nome,colaborador.nome,observacao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successExibirAreaEstabelecimento" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Colaborador,Estabelecimento Atual,Área Organizacional Atual,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Estabelecimento Proposto,Área Organizacional Proposto,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">descricaoEstabelecimentoAreaOrganizacionalPropostos</param>
+				<param name="properties">descricaoEstabelecimentoAreaOrganizacionalPropostos,colaborador.nome,estabelecimentoAtual.nome,areaOrganizacionalAtual.descricao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,estabelecimentoProposto.nome,areaOrganizacionalProposta.descricao,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successExibirAreaEstabelecimentoGrupoOcupacional" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Grupo Ocupacional,Colaborador,Estabelecimento Atual,Área Organizacional Atual,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Estabelecimento Proposto,Área Organizacional Proposto,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">faixaSalarialProposta.cargo.grupoOcupacional.nome</param>
+				<param name="properties">faixaSalarialProposta.cargo.grupoOcupacional.nome,colaborador.nome,estabelecimentoAtual.nome,areaOrganizacionalAtual.descricao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,estabelecimentoProposto.nome,areaOrganizacionalProposta.descricao,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successExibirAreaEstabelecimentoObs" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Observação,Estabelecimento Atual,Área Organizacional Atual,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Estabelecimento Proposto,Área Organizacional Proposto,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="properties">colaborador.nome,observacao,estabelecimentoAtual.nome,areaOrganizacionalAtual.descricao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,estabelecimentoProposto.nome,areaOrganizacionalProposta.descricao,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successExibirAreaEstabelecimentoGrupoOcupacionalObs" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">simula_reajuste.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Grupo Ocupacional,Colaborador,Observação,Estabelecimento Atual,Área Organizacional Atual,Cargo/Faixa Atual,Tipo Salário Atual,Salário Atual,Estabelecimento Proposto,Área Organizacional Proposto,Cargo/Faixa Proposto,Tipo Salário Proposto,Salário Proposto,Diferença(R$),Diferença(%)</param>
+				<param name="propertiesGroup">faixaSalarialProposta.cargo.grupoOcupacional.nome</param>
+				<param name="properties">faixaSalarialProposta.cargo.grupoOcupacional.nome,colaborador.nome,observacao,estabelecimentoAtual.nome,areaOrganizacionalAtual.descricao,faixaSalarialAtual.descricao,descricaoTipoSalarioAtual,salarioAtualFormatado,estabelecimentoProposto.nome,areaOrganizacionalProposta.descricao,faixaSalarialProposta.descricao,descricaoTipoSalarioProposto,salarioPropostoFormatado,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successFaixaSalarial" type="xls">
+				<param name="dataSource">dataSourceFaixaSalarial</param>
+				<param name="documentName">simula_reajuste_faixaSalarial.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo/Faixa Salarial,Valor Atual (R$),Valor Proposto (R$),Diferença(R$),Diferença(%)</param>
+				<param name="properties">faixaSalarial.nomeDeCargoEFaixa,valorAtual,valorProposto,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successIndice" type="xls">
+				<param name="dataSource">dataSourceIndice</param>
+				<param name="documentName">simula_reajuste_indice.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Indice,Valor Atual (R$),Valor Proposto (R$),Diferença(R$),Diferença(%)</param>
+				<param name="properties">indice.nome,valorAtual,valorProposto,diferencaSalarial,porcentagemDiferencaSalarial</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/reajusteRelatorioFiltro.ftl</result>
+		</action>
+		
 	</package>
 </xwork>

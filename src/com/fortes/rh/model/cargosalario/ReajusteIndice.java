@@ -74,7 +74,24 @@ public class ReajusteIndice extends AbstractModel implements Serializable
 			return "100%";
 
 		return formata.format(valor) + "%";
-
+	}
+	
+	@NaoAudita
+	public String getDiferencaSalarial()
+	{
+		Double valProposto = this.getValorProposto();
+		if (valProposto == null)
+			valProposto =  new Double(0);
+		
+		Double valAtual = this.getValorAtual();
+		if (valAtual == null)
+			valAtual =  new Double(0);
+		
+		Double valor = (valProposto - valAtual);
+		
+		NumberFormat formata = new DecimalFormat("#0.00");
+		
+		return formata.format(valor);
 	}
 	
 	public Indice getIndice() 

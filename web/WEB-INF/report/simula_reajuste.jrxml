@@ -460,7 +460,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{colaborador.dataDesligamento} != null && $F{colaborador.dataDesligamento}.before( $F{tabelaReajusteColaborador.data} ) ? $F{colaborador.nome} + " (Desligado)*" : $F{colaborador.nome}) + ($P{EXIBIR_OBS}.booleanValue() ? "\nObs: " + $F{observacao} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{colaborador.dataDesligamento} != null && $F{colaborador.dataDesligamento}.before( $F{tabelaReajusteColaborador.data} ) ? $F{colaborador.nome} + " (Desligado)*" : $F{colaborador.nome}) + ($P{EXIBIR_OBS}.booleanValue() ? "\nObs: " + ($F{observacao}==null?"":$F{observacao}) : "")]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="7275a236-ba5c-4835-8d36-194b6bbbe79c" key="textField" x="391" y="2" width="64" height="12">

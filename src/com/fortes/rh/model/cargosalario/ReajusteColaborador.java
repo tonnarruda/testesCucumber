@@ -995,10 +995,28 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 	{
 		return SalarioUtil.getValor(this.getTipoSalarioAtual(), this.getFaixaSalarialAtual(), this.getIndiceAtual(), this.getQuantidadeIndiceAtual(),this.salarioAtual);
 	}
+
+	public String getSalarioAtualFormatado()
+	{
+		Double valor = SalarioUtil.getValor(this.getTipoSalarioAtual(), this.getFaixaSalarialAtual(), this.getIndiceAtual(), this.getQuantidadeIndiceAtual(),this.salarioAtual);
+		NumberFormat formata = new DecimalFormat("#0.00");
+		
+		return formata.format(valor);
+	}
+	
 	@NaoAudita
 	public Double getSalarioProposto()
 	{
 		return SalarioUtil.getValor(this.getTipoSalarioProposto(), this.getFaixaSalarialProposta(), this.getIndiceProposto(), this.getQuantidadeIndiceProposto(), this.salarioProposto);
+	}
+
+	@NaoAudita
+	public String getSalarioPropostoFormatado()
+	{
+		Double valor = SalarioUtil.getValor(this.getTipoSalarioProposto(), this.getFaixaSalarialProposta(), this.getIndiceProposto(), this.getQuantidadeIndiceProposto(), this.salarioProposto);
+		NumberFormat formata = new DecimalFormat("#0.00");
+		
+		return formata.format(valor);
 	}
 
 	public void setSalarioAtual(Double salarioAtual)
@@ -1069,7 +1087,23 @@ public class ReajusteColaborador extends AbstractModel implements Serializable
 			return "100%";
 
 		return formata.format(valor) + "%";
+	}
 
+	@NaoAudita
+	public String getDiferencaSalarial()
+	{
+		Double salarioProposto = this.getSalarioProposto();
+		if (salarioProposto == null)
+			salarioProposto =  new Double(0);
+		
+		Double salarioAtual = this.getSalarioAtual();
+		if (salarioAtual == null)
+			salarioAtual =  new Double(0);
+		
+		Double valor = (salarioProposto - salarioAtual);
+		NumberFormat formata = new DecimalFormat("#0.00");
+		
+		return formata.format(valor);
 	}
 
 	public FaixaSalarial getFaixaSalarialAtual()

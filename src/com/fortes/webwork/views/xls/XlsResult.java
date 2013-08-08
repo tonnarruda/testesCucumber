@@ -54,7 +54,7 @@ public class XlsResult extends WebWorkResultSupport {
 		Collection<Object> dataSourceRef = (Collection<Object>) stack.findValue(dataSource);
 		Collection<Object> columnsNameDinamicRef = (Collection<Object>) stack.findValue(columnsNameDinamic);
 		
-		if(dataSourceRef.size() > 65535)
+		if(dataSourceRef!=null && dataSourceRef.size() > 65535)
 		{
 			MyActionSupport action = (MyActionSupport) invocation.getInvocationContext().getActionInvocation().getAction();
 			action.addActionWarning("Não foi possível gerar o relatório XLS, pois o número de linhas excede a <strong>65535</strong>, que é o máximo suportado por esse formato.<br /> Tente reduzir o número de linhas do seu relatório refinando sua busca através dos filtros.");
