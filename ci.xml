@@ -151,17 +151,17 @@
                     <include name="**/test/**/AllUnitTests.java" />
                 </fileset>
             </batchtest>
-
-			<delete dir="${junit.xml.dir}" />
-			<mkdir dir="${junit.xml.dir}" />
-			
-			<junitreport todir="${junit.xml.dir}">
-				<fileset dir="${junit.xml.dir}">
-					<include name="TEST-*.xml"/>
-				</fileset>
-				<report format="frames" todir="${junit.xml.dir}/html"/>
-			</junitreport>
 		</junit>
+			
+		<delete dir="${junit.xml.dir}" />
+		<mkdir dir="${junit.xml.dir}" />
+		
+		<junitreport todir="${junit.xml.dir}">
+			<fileset dir="${junit.xml.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${junit.xml.dir}/html"/>
+		</junitreport>
 	</target>
 
 	<target name="coverage" depends="test-coverage">

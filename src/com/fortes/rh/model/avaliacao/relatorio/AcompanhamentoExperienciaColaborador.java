@@ -90,6 +90,10 @@ public class AcompanhamentoExperienciaColaborador implements Comparable<Acompanh
 	public Date getDataAdmissao() {
 		return dataAdmissao;
 	}
+	
+	public String getDataAdmissaoString() {
+		return DateUtil.formataDiaMesAno(dataAdmissao);
+	}
 
 	public List<String> getPeriodoExperiencias() {
 		return periodoExperiencias;
