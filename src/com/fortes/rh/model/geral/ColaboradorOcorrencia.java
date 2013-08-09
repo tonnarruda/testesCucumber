@@ -209,6 +209,10 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	{
 		return dataFim;
 	}
+	public String getDataFimString()
+	{
+		return DateUtil.formataDiaMesAno(dataFim);
+	}
 	public void setDataFim(Date dataFim)
 	{
 		this.dataFim = dataFim;
@@ -216,6 +220,10 @@ public class ColaboradorOcorrencia extends AbstractModel implements Serializable
 	public Date getDataIni()
 	{
 		return dataIni;
+	}
+	public String getDataIniString()
+	{
+		return DateUtil.formataDiaMesAno(dataIni);
 	}
 	public void setDataIni(Date dataIni)
 	{
