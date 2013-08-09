@@ -155,7 +155,10 @@
                 </fileset>
             </batchtest>
 		</junit>
-			
+		
+		<delete dir="${junit.xml.dir}" />
+		<mkdir dir="${junit.xml.dir}" />
+
 		<junitreport todir="${junit.xml.dir}">
 			<fileset dir="${junit.xml.dir}">
 				<include name="TEST-*.xml"/>
