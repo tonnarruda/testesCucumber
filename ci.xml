@@ -127,6 +127,9 @@
 
 		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
 
+		<delete dir="${junit.xml.dir}" />
+		<mkdir dir="${junit.xml.dir}" />
+		
 		<dirname file="ci.xml" property="current.dir" />
 		<junit haltonfailure="true" haltonerror="true"
 			fork="yes" dir="${current.dir}" maxmemory="512m">
@@ -146,16 +149,13 @@
 
             <classpath refid="cobertura.classpath"/>
 
-            <batchtest todir="." >
+            <batchtest todir="${junit.xml.dir}" >
                 <fileset dir="${srcTeste.dir}">
                     <include name="**/test/**/AllUnitTests.java" />
                 </fileset>
             </batchtest>
 		</junit>
 			
-		<delete dir="${junit.xml.dir}" />
-		<mkdir dir="${junit.xml.dir}" />
-		
 		<junitreport todir="${junit.xml.dir}">
 			<fileset dir="${junit.xml.dir}">
 				<include name="TEST-*.xml"/>
