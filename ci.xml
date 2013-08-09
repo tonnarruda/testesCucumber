@@ -177,8 +177,14 @@
 			<formatter type="plain" usefile="false" />
 
             <test name="${allTests.class}" />
-
 		</junit>
+		
+		<junitreport todir="./junit-report">
+			<fileset dir="./junit-report">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="./junit-report/html"/>
+		</junitreport>
 	</target>
 
 	<target name="integrate-server" depends="coverage">

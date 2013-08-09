@@ -1,4 +1,5 @@
 relatorio_cobertura.tar.gz
+junit-report/*
 cobertura-report/*
 extras/json/*.json
 web/WEB-INF/classes/
