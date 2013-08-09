@@ -252,7 +252,7 @@
 					adicionarCampoColaboradorSubstituto();
 		
 				$('#tooltipHelp').qtip({
-					content: 'Selecione um colaborador na lista exibida ao digitar o nome para validar se o mesmo possui estabilidade'
+					content: 'Digite ao lado o nome do colaborador que será substituído, para que o sistema valide se o mesmo tem estabilidade ou não na CIPA.'
 				});
 			</#if>
 		});
