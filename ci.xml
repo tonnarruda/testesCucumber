@@ -174,9 +174,9 @@
 				<path refid="project.classpath" />
 				<pathelement path="${build.dir}" />
 			</classpath>
-			<formatter type="plain" usefile="false" />
+			<formatter type="xml"/>
 
-            <test name="${allTests.class}" />
+            <test name="${allTests.class}" todir="./junit-report"/>
 		</junit>
 		
 		<junitreport todir="./junit-report">
