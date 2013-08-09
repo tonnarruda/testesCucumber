@@ -152,6 +152,15 @@
                 </fileset>
             </batchtest>
 
+			<delete dir="${junit.xml.dir}" />
+			<mkdir dir="${junit.xml.dir}" />
+			
+			<junitreport todir="${junit.xml.dir}">
+				<fileset dir="${junit.xml.dir}">
+					<include name="TEST-*.xml"/>
+				</fileset>
+				<report format="frames" todir="${junit.xml.dir}/html"/>
+			</junitreport>
 		</junit>
 	</target>
 
@@ -163,9 +172,6 @@
 		<property name="allTests.class" value="com.fortes.rh.test.AllUnitTests" />
 
 		<dirname file="ci.xml" property="current.dir" />
-		
-		<delete dir="${junit.xml.dir}" />
-		<mkdir dir="${junit.xml.dir}" />
 		
 		<junit haltonfailure="true" haltonerror="true"
 			fork="true" dir="${current.dir}" maxmemory="512m"
@@ -182,13 +188,6 @@
 
             <test name="${allTests.class}" todir="${junit.xml.dir}"/>
 		</junit>
-		
-		<junitreport todir="${junit.xml.dir}">
-			<fileset dir="${junit.xml.dir}">
-				<include name="TEST-*.xml"/>
-			</fileset>
-			<report format="frames" todir="${junit.xml.dir}/html"/>
-		</junitreport>
 	</target>
 
 	<target name="integrate-server" depends="coverage">
