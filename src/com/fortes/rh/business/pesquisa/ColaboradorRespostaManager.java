@@ -40,4 +40,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Usuario findUsuarioParaAuditoria(Long usuarioId);
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
+	void savePerformance(ColaboradorQuestionario colaboradorQuestionario);
 }

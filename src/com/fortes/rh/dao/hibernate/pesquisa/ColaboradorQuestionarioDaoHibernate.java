@@ -919,4 +919,32 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.observacao = null where cq.id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 	}
+	
+	public Collection<ColaboradorQuestionario> findTodos()
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.avaliacao.id"), "projectionAvaliacaoId");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.isNotNull("cq.avaliacao.id"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public void updatePerformance(Long colaboradorQuestionarioId, double performance)
+	{
+		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.performance = :performance where cq.id = :colaboradorQuestionarioId";
+
+		Query query = getSession().createQuery(queryUpdateHQL);
+		query.setLong("colaboradorQuestionarioId",colaboradorQuestionarioId);
+		query.setDouble("performance",performance);
+		
+		query.executeUpdate();
+	}
+
 }

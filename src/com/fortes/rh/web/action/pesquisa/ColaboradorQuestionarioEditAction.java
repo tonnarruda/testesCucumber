@@ -290,6 +290,16 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
+	public String atualizaPerformance()
+	{
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findTodos();
+		
+		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
+			colaboradorRespostaManager.savePerformance(colaboradorQuestionario);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String responderAvaliacaoDesempenho()
 	{
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;

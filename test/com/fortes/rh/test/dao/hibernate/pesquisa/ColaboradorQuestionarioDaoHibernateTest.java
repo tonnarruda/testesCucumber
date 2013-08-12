@@ -1078,6 +1078,11 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 	}
 	
+	public void testFindTodos()
+	{
+		assertTrue(colaboradorQuestionarioDao.findTodos().size() > 0);
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

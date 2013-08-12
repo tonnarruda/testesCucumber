@@ -462,4 +462,14 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public void deleteRespostaAvaliacaoDesempenho(Long colaboradorQuestionarioId) {
 		getDao().deleteRespostaAvaliacaoDesempenho(colaboradorQuestionarioId);
 	}
+
+	public Collection<ColaboradorQuestionario> findTodos()
+	{
+		return getDao().findTodos();
+	}
+
+	public void updatePerformance(Long colaboradorQuestionarioId, double performance)
+	{
+		getDao().updatePerformance(colaboradorQuestionarioId, performance);
+	}
 }

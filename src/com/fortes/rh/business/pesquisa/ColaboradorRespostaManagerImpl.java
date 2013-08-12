@@ -464,17 +464,32 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 	}
 	
+	public void savePerformance(ColaboradorQuestionario colaboradorQuestionario)
+	{
+		double performance = calculaPerformance(colaboradorQuestionario.getId(), colaboradorQuestionario.getAvaliacao().getId());
+		
+		colaboradorQuestionarioManager.updatePerformance(colaboradorQuestionario.getId(), performance);
+	}
+	
 	// TODO esse método não deveria estar aqui, assim como o save e update 
 	public void savePerformanceDaAvaliacaoExperiencia(ColaboradorQuestionario colaboradorQuestionario)
 	{
-		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId());
+		double performance = calculaPerformance(colaboradorQuestionario.getId(), colaboradorQuestionario.getAvaliacao().getId());
+		
+		colaboradorQuestionario.setPerformance(performance);
+		colaboradorQuestionarioManager.update(colaboradorQuestionario);
+	}
+
+	private double calculaPerformance(Long colaboradorQuestionarioId, Long avaliacaoId)
+	{
+		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId);
 		double performance = 0;
 		
 		if(pontuacaoMaxima != 0)//caso contrario não posso dividir por zero, ai a performance vai ter que ficar zero
 		{
 			int pontuacaoObtida = 0;
 			
-			Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionario.getId());
+			Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
 			
 			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) 
 			{
@@ -499,8 +514,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			performance = (double)pontuacaoObtida / (double)pontuacaoMaxima;
 		}
 		
-		colaboradorQuestionario.setPerformance(performance);
-		colaboradorQuestionarioManager.update(colaboradorQuestionario);
+		return performance;
 	}
 
 	/**
