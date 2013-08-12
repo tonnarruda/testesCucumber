@@ -504,9 +504,9 @@
 					<br clear="all"/>
 				</#if>
 			
-				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato();" liClass="liLeft" />
-				<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
+				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato();" />
 			</#if>
+			<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
 			
 			<@ww.textfield label="Regime de Revezamento (PPP)" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="50"/>
 
