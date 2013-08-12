@@ -318,7 +318,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
 			}
 			
-			addActionMessage("Avaliação respondida com sucesso.");
+			addActionSuccess("Avaliação respondida com sucesso.");
 		
 		} catch (Exception e) 
 		{
