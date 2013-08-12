@@ -394,7 +394,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		prepare();
 
-		if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()).size() > 1 || (getEmpresaSistema().isAcIntegra() && !colaborador.getCodigoAC().equals("")))
+		if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
 			editarHistorico = false;
 
 		Map session = ActionContext.getContext().getSession();
@@ -696,7 +696,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				return Action.INPUT;
 			}
 
-			if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()).size() > 1 || (getEmpresaSistema().isAcIntegra() && !colaborador.getCodigoAC().equals("")))
+			if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
 				editarHistorico = false;
 
 			if(editarHistorico)
