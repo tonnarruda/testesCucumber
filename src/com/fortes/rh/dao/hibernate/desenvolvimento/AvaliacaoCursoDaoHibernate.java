@@ -21,7 +21,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCurso> implements AvaliacaoCursoDao
 {
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoCurso> findByCurso(Long cursoId)
+	public Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds)
 	{
 		Criteria criteria = getSession().createCriteria(AvaliacaoCurso.class, "a");
 		criteria.createCriteria("a.cursos", "c");
@@ -33,7 +33,7 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 		p.add(Projections.property("a.avaliacao"), "avaliacao");
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.eq("c.id", cursoId));
+		criteria.add(Expression.in("c.id", cursosIds));
 		criteria.addOrder(Order.asc("a.titulo"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

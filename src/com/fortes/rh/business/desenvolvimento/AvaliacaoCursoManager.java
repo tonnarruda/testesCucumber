@@ -15,5 +15,7 @@ public interface AvaliacaoCursoManager extends GenericManager<AvaliacaoCurso>
 	Integer countAvaliacoes(Long[] cursoIds);
 	
 	public Collection<AvaliacaoCurso> buscaFiltro(String titulo);
+
+	Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds);
 	
 }

@@ -53,6 +53,9 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 			avaliacaoCurso.setAvaliacao(null);
 			
 		avaliacaoCursoManager.save(avaliacaoCurso);
+		
+		addActionSuccess("Avaliação de aluno gravada com sucesso");
+		
 		return Action.SUCCESS;
 	}
 
@@ -62,6 +65,9 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 			avaliacaoCurso.setAvaliacao(null);
 		
 		avaliacaoCursoManager.update(avaliacaoCurso);
+		
+		addActionSuccess("Avaliação de aluno alterada com sucesso");
+		
 		return Action.SUCCESS;
 	}
 

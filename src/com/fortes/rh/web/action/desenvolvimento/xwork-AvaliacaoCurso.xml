@@ -20,12 +20,12 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/avaliacaoCursoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/avaliacaoCursoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/avaliacaoCursoEdit.ftl</result>
 		</action>
@@ -37,6 +37,19 @@
 			<interceptor-ref name="defaultUpdateStack" />
 			<result name="success" type="redirect"><![CDATA[../turma/prepareAproveitamento.action?turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/pesquisa/prepareResponderAvaliacaoAluno.ftl</result>
+		</action>
+		
+		<action name="prepareRelatorioRankingAvaliacaoAluno" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoListAction" method="prepareRelatorioRankingAvaliacaoAluno">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioRankingAvaliacaoAluno.ftl</result>
+		</action>
+		<action name="relatorioRankingAvaliacaoAluno" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoListAction" method="relatorioRankingAvaliacaoAluno">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/rankingAvaliacaoAluno.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">rankingAvaliacoesAlunos.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioRankingAvaliacaoAluno.ftl</result>
 		</action>
 	</package>
 </xwork>

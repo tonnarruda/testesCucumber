@@ -11,7 +11,12 @@ public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso
 
 	public Collection<AvaliacaoCurso> findByCurso(Long cursoId)
 	{
-		return getDao().findByCurso(cursoId);
+		return getDao().findByCursos(new Long[]{cursoId});
+	}
+
+	public Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds)
+	{
+		return getDao().findByCursos(cursosIds);
 	}
 
 	public Integer countAvaliacoes(Long turmaId, String wherePor)

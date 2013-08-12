@@ -66,7 +66,7 @@ public class AvaliacaoCursoDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		curso.setAvaliacaoCursos(avaliacaoCursos);
 		cursoDao.save(curso);
 		
-		assertEquals(2, avaliacaoCursoDao.findByCurso(curso.getId()).size());
+		assertEquals(2, avaliacaoCursoDao.findByCursos(new Long[]{curso.getId()}).size());
 	}
 	
 	public void testCountAvaliacaoCursos()

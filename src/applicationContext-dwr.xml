@@ -67,6 +67,7 @@
 	</bean>
 	<bean id="cursoDWR" class="com.fortes.rh.web.dwr.CursoDWR">
 		<property name="cursoManager" ref="cursoManager"/>
+		<property name="avaliacaoCursoManager" ref="avaliacaoCursoManager"/>
 	</bean>
 	<bean id="pessoaDWR" class="com.fortes.rh.web.dwr.PessoaDWR">
 		<property name="candidatoManager" ref="candidatoManager"/>

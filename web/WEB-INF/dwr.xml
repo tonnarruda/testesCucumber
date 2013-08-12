@@ -190,6 +190,7 @@
 		
 		<!-- DESENVOLVIMENTO -->
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.AvaliacaoCurso"/>
 		
 		<!-- AVALIACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.avaliacao.Avaliacao"/>

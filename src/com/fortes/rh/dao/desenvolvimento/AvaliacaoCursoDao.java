@@ -8,7 +8,7 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 public interface AvaliacaoCursoDao extends GenericDao<AvaliacaoCurso> 
 {
 
-	Collection<AvaliacaoCurso> findByCurso(Long cursoId);
+	Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds);
 
 	Integer countAvaliacoes(Long turmaId, String wherePor);
 
