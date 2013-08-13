@@ -459,13 +459,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		if(avaliacaoCurso != null && !avaliacaoCurso.getId().equals(-1L))
 		{
-			colaboradoresTurma = colaboradorTurmaManager.findColaboradorByTurma(turma.getId());
+			colaboradoresTurma = colaboradorTurmaManager.findColaboradorByTurma(turma.getId(), avaliacaoCurso.getId());
+
 			if(colaboradoresTurma.isEmpty())
 				addActionMessage("Não existe colaborador inscrito nesta turma.");
 			else
 			{
 				avaliacaoCurso = avaliacaoCursoManager.findById(avaliacaoCurso.getId());
-
 				CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();
 				aproveitamentos = aproveitamentoAvaliacaoCursoManager.findNotas(avaliacaoCurso.getId(), util.convertCollectionToArrayIds(colaboradoresTurma));
 			}

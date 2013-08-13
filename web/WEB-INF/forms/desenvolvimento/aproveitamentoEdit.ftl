@@ -50,17 +50,21 @@
 				<@display.column title="${avaliacaoCurso.titulo}" style="width: 300px;text-align: center;">
 					<#assign valorNota = "" />
 
-					<#list aproveitamentos as aproveitamento>
-						<#if aproveitamento.colaboradorTurma.id == colaboradorTurma.id>
-							<#assign valorNota = aproveitamento.valor />
-						</#if>
-					</#list>
-
 					<#if avaliacaoCurso.tipo == 'a'>
-						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}">
-							<img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>">
+						<a href="../avaliacaoCurso/prepareResponderAvaliacaoAluno.action?colaborador.id=${colaboradorTurma.colaborador.id}&avaliacaoCurso.avaliacao.id=${avaliacaoCurso.avaliacao.id}&modeloAvaliacao=L&turma.id=${turma.id}&curso.id=${curso.id}&avaliacaoCurso.id=${avaliacaoCurso.id}">
+							<#if colaboradorTurma.respondeuAvaliacaoTurma>
+								<img border="0" title="Editar respostas" src="<@ww.url value="/imgs/page_edit.gif"/>">
+							<#else>
+								<img border="0" title="Responder" src="<@ww.url value="/imgs/page_new.gif"/>">
+							</#if>
 						</a>
 					<#else>
+						<#list aproveitamentos as aproveitamento>
+							<#if aproveitamento.colaboradorTurma.id == colaboradorTurma.id>
+								<#assign valorNota = aproveitamento.valor />
+							</#if>
+						</#list>
+					
 						<@ww.textfield id="" name="notas" value="${valorNota}" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress = "return(somenteNumeros(event,'.,,'));" onfocus="setValor(this.value);" onchange="verificaValor(this.value);"/>
 					</#if>
 					<@ww.hidden name="colaboradorTurmaIds" value="${colaboradorTurma.id}"/>

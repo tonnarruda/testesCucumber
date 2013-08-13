@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -44,6 +45,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	private AvaliacaoManager avaliacaoManager;
+	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private PerguntaManager perguntaManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private EmpresaManager empresaManager;
@@ -143,12 +145,12 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	public String prepareResponderAvaliacaoAluno() throws Exception
 	{
-		avaliacao = avaliacaoManager.findById(avaliacao.getId());
-		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
+		avaliacao = avaliacaoManager.findById(avaliacaoCurso.getAvaliacao().getId());
+		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacaoCurso.getAvaliacao().getId(), false);
 		
 		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
 		
-		colaboradorQuestionario = colaboradorQuestionarioManager.findByColaboradorAvaliacao(colaborador, avaliacao);
+		colaboradorQuestionario = colaboradorQuestionarioManager.findByColaboradorAvaliacaoCurso(colaborador.getId(), avaliacaoCurso.getId(), turma.getId());
 		
 		if (colaboradorQuestionario != null && colaboradorQuestionario.getRespondida())
 			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
@@ -178,7 +180,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionario.setTurma(turma);
 		colaboradorQuestionario.setColaborador(colaborador);
-		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionario.setAvaliacao(null);
+		colaboradorQuestionario.setAvaliacaoCurso(avaliacaoCurso);
+		
 		if (colaboradorQuestionario.getRespondidaEm() == null)
 			colaboradorQuestionario.setRespondidaEm(new Date());
 		
@@ -436,5 +440,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+
+	public void setAvaliacaoCursoManager(AvaliacaoCursoManager avaliacaoCursoManager) {
+		this.avaliacaoCursoManager = avaliacaoCursoManager;
 	}
 }

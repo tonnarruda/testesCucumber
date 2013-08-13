@@ -968,9 +968,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurma, notas, avaliacaoCursoIds);
 	}
 
-	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId)
+	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId)
 	{
-		return getDao().findColaboradorByTurma(turmaId);
+		return getDao().findColaboradorByTurma(turmaId, avaliacaoCursoId);
 	}
 	
 	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds) 

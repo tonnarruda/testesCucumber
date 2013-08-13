@@ -88,7 +88,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		setId(id);
 	}
 	
-	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula)
+	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, Long colaboradorQuestionarioId)
 	{
 		this.setId(id);
 		
@@ -97,6 +97,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.colaborador.setNome(colaboradorNome);
 		this.colaborador.setNomeComercial(colaboradorNomeComercial);
 		this.colaborador.setMatricula(colaboradorMatricula);
+		this.respondeuAvaliacaoTurma = colaboradorQuestionarioId != null;
 	}
 
 	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, String empresaNome)

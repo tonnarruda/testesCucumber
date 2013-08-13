@@ -1039,18 +1039,19 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (ColaboradorTurma) criteria.uniqueResult();
 	}
 
-	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId)
+	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.id, co.nome, co.nomeComercial, co.matricula ) ");
+		hql.append("select new ColaboradorTurma(ct.id, co.id, co.nome, co.nomeComercial, co.matricula, cq.id) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
-		hql.append("left join ct.turma as t ");
-		hql.append("where t.id = :turmaId ");
+		hql.append("left join co.colaboradorQuestionarios as cq with cq.turma.id = ct.turma.id and cq.avaliacaoCurso.id = :avaliacaoCursoId ");
+		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("order by co.nome asc");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("turmaId", turmaId);
+		query.setLong("avaliacaoCursoId", avaliacaoCursoId);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
 

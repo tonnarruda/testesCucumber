@@ -31,7 +31,9 @@
 		{
 			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
+			
 			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
+			
 			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
 			CursoDWR.getAvaliacaoCursos(populaAvaliacaoCursos, cursoIds);
 		}

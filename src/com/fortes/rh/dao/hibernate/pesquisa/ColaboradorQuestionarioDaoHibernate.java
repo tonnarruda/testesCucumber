@@ -879,6 +879,32 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
 
+	public ColaboradorQuestionario findByColaboradorAvaliacaoCurso(Long colaboradorId, Long avaliacaoCursoId, Long turmaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.property("cq.avaliacaoCurso.id"), "projectionAvaliacaoCursoId");
+		p.add(Projections.property("cq.turma.id"), "projectionTurmaId");
+		p.add(Projections.property("cq.respondida"), "respondida");
+		p.add(Projections.property("cq.observacao"), "observacao");
+		
+		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("cq.avaliacaoCurso.id", avaliacaoCursoId));
+		criteria.add(Expression.eq("cq.turma.id", turmaId));
+		
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.addOrder(Order.desc("cq.id"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (ColaboradorQuestionario) criteria.uniqueResult();
+	}
+	
 	public Collection<ColaboradorQuestionario> findQuestionarioByTurmaLiberadaPorUsuario(Long usuarioId) 
 	{
 		StringBuilder hql = new StringBuilder();

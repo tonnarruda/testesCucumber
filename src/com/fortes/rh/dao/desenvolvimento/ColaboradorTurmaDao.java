@@ -40,7 +40,7 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds);
 	Collection<ColaboradorTurma> findAprovadosReprovados(Long[] colaboradorTurmaIds);
 	ColaboradorTurma findByColaboradorAndTurma(Long turmaId, Long colaboradorId);
-	Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId);
+	Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId);
 	Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean turmaRealizada);
 	Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes);
 	Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds);

@@ -23,6 +23,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -53,6 +54,8 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private Avaliacao avaliacao;
     @ManyToOne(fetch=FetchType.LAZY)
     private Solicitacao solicitacao;
+    @ManyToOne(fetch=FetchType.LAZY)
+    private AvaliacaoCurso avaliacaoCurso;
     
     private Double performance; // desempenho de Avaliações
     @Lob
@@ -161,6 +164,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.avaliacao.setId(projectionAvaliacaoId); 	
     }
     
+    public void setProjectionAvaliacaoCursoId(Long projectionAvaliacaoCursoId)
+    {
+    	newAvaliacaoCurso();
+    	this.avaliacaoCurso.setId(projectionAvaliacaoCursoId); 	
+    }
+    
     public void setProjectionAvaliacaoTitulo(String projectionAvaliacaoTitulo)
     {
     	newAvaliacao();
@@ -256,6 +265,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     		this.avaliacao = new Avaliacao();
 	}
 
+    private void newAvaliacaoCurso()
+    {
+    	if(this.avaliacaoCurso == null)
+    		this.avaliacaoCurso = new AvaliacaoCurso();
+    }
+    
 	public void setProjectionCandidatoNome(String projectionCandidatoNome)
     {
     	newCandidato();
@@ -683,5 +698,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public String getNomeCursoTurmaAvaliacao()
 	{
 		return nomeCursoTurmaAvaliacao;
+	}
+
+	public AvaliacaoCurso getAvaliacaoCurso() {
+		return avaliacaoCurso;
+	}
+
+	public void setAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso) {
+		this.avaliacaoCurso = avaliacaoCurso;
 	}
 }

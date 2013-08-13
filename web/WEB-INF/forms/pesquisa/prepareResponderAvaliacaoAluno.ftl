@@ -26,7 +26,6 @@
 	<#if perguntas?exists && 0 < perguntas?size>
 		<@ww.form name="form" action="responderAvaliacaoAluno.action" method="POST">
 			<#include "../avaliacao/includePerguntasAvaliacao.ftl" />
-			<@ww.hidden name="avaliacao.id" />
 			<@ww.hidden name="colaborador.id" />
 			<@ww.hidden name="turma.id" />
 			<@ww.hidden name="curso.id" />

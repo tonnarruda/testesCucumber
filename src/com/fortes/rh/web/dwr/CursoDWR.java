@@ -23,6 +23,9 @@ public class CursoDWR
 	
 	public Collection<AvaliacaoCurso> getAvaliacaoCursos(Long[] cursosIds)
 	{
+		if (cursosIds.length == 0)
+			return null;
+		
 		return avaliacaoCursoManager.findByCursos(cursosIds);
 	}
 	

@@ -1,0 +1,2 @@
+alter table colaboradorquestionario add column avaliacaocurso_id bigint;--.go
+ALTER TABLE colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_avaliacaocurso_fk FOREIGN KEY (avaliacaocurso_id) REFERENCES avaliacaocurso(id);--.go
