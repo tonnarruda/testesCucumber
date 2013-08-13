@@ -66,7 +66,7 @@ public class RespostaQuestionarioVO
 				return this.respostaTexto;
 				
 			case TipoPergunta.SUBJETIVA:
-				return this.colaboradorRespostaComentario;
+				return "Resp.: " + this.colaboradorRespostaComentario;
 		}
 		
 		return "";
