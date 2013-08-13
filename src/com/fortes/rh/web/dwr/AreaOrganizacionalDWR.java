@@ -138,7 +138,7 @@ public class AreaOrganizacionalDWR
 		{
 			if (area.getAreaMae() == null || area.getAreaMae().getId() == null)
 			{
-				areaOrganograma = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), area.getResponsavelNomeComercial(), "subordinate");
+				areaOrganograma = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), area.getResponsavelNomeComercial(), area.getCoResponsavelNomeComercial(), "subordinate");
 				setFilhas(areaOrganizacionals, areaOrganograma);
 				
 				dados.add(areaOrganograma);
@@ -156,7 +156,7 @@ public class AreaOrganizacionalDWR
 		{
 			if (area.getAreaMae() != null && area.getAreaMae().getId() != null && areaOrg.getId().equals(area.getAreaMae().getId().toString()))
 			{
-				areaOrgFilha = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(), " ", "subordinate");
+				areaOrgFilha = new AreaOrganizacionalOrganograma(area.getId().toString(), area.getNome(),  area.getResponsavelNomeComercial(), area.getCoResponsavelNomeComercial(), "subordinate");
 				setFilhas(areas, areaOrgFilha);
 				
 				if (areaOrg.getChildren() == null)

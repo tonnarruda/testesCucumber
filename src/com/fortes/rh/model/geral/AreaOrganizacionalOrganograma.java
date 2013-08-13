@@ -8,6 +8,7 @@ public class AreaOrganizacionalOrganograma
 	private String id;
 	private String title;
 	private String subtitle;
+	private String subtitle2;
 	private String type; // staff, collateral or subordinate
 	private Collection<AreaOrganizacionalOrganograma> children;
 	
@@ -16,11 +17,12 @@ public class AreaOrganizacionalOrganograma
 		
 	}
 
-	public AreaOrganizacionalOrganograma(String id, String title, String subtitle, String type) 
+	public AreaOrganizacionalOrganograma(String id, String title, String subtitle,String subtitle2, String type) 
 	{
 		this.id = id;
 		this.title = title;
 		this.subtitle = subtitle;
+		this.subtitle2 = subtitle2;
 		this.type = type;
 	}
 
@@ -63,5 +65,13 @@ public class AreaOrganizacionalOrganograma
 	
 	public void setChildren(Collection<AreaOrganizacionalOrganograma> children) {
 		this.children = children;
+	}
+
+	public String getSubtitle2() {
+		return subtitle2;
+	}
+
+	public void setSubtitle2(String subtitle2) {
+		this.subtitle2 = subtitle2;
 	}
 }

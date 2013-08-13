@@ -54,6 +54,7 @@ var oc_max_text_width = 0;
 var oc_max_text_height = 0;
 var oc_max_title_lines = 0;
 var oc_max_subtitle_lines = 0;
+var oc_max_subtitle2_lines = 0;
 var oc_paper = null;
 
 
@@ -108,6 +109,7 @@ function oc_text_limit (node) {
 		return;
 	node.title = oc_text_limit_obj(node.title);
 	node.subtitle = oc_text_limit_obj(node.subtitle);
+	node.subtitle2 = oc_text_limit_obj(node.subtitle2);
 	if (node.children === undefined)
 		return;
 	for (var i = 0; i < node.children.length - (oc_IE); i++)
@@ -145,6 +147,7 @@ function oc_delete_special_chars (node) {
 
 	node.title = oc_delete_special_chars_obj(node.title);
 	node.subtitle = oc_delete_special_chars_obj(node.subtitle);
+	node.subtitle2 = oc_delete_special_chars_obj(node.subtitle2);
 	if (node.children === undefined)
 		return;
 	for (var i = 0; i < node.children.length - (oc_IE); i++)
@@ -180,7 +183,8 @@ function oc_text_dimensions (node) {
 
 	var dimensions_title    = [ 0, 0 ];
 	var dimensions_subtitle = [ 0, 0 ];
-	node.title_lines = node.subtitle_lines = 0;
+	var dimensions_subtitle2 = [ 0, 0 ];
+	node.title_lines = node.subtitle_lines = node.subtitle2_lines = 0;
 
 	// check title dimensions
 	dimensions_title = oc_text_dimensions_obj (node.title, oc_style.title_char_size);
@@ -196,6 +200,14 @@ function oc_text_dimensions (node) {
 			oc_max_subtitle_lines = node.subtitle_lines;
 	}
 
+	// check subtitle2 dimensions
+	if (node.subtitle2 !== undefined) {
+		dimensions_subtitle2 = oc_text_dimensions_obj (node.subtitle2, oc_style.subtitle2_char_size);
+		node.subtitle2_lines =  dimensions_subtitle2[2] - dimensions_subtitle[2] - 2;
+		if (node.subtitle2_lines > (oc_max_subtitle2_lines + oc_max_subtitle2_lines) )
+			oc_max_subtitle2_lines = node.subtitle2_lines;
+	}
+
 	// check node dimensions vs stored dimensions
 	if (dimensions_title[0] > oc_max_text_width)
 		oc_max_text_width = dimensions_title[0];
@@ -203,8 +215,10 @@ function oc_text_dimensions (node) {
 		oc_max_text_width = oc_style.images_size[0];
 	if (dimensions_subtitle[0] > oc_max_text_width)
 		oc_max_text_width = dimensions_subtitle[0];
-	if (dimensions_title[1] + dimensions_subtitle[1] > oc_max_text_height)
-		oc_max_text_height = dimensions_title[1] + dimensions_subtitle[1];
+	if (dimensions_subtitle2[0] > oc_max_text_width)
+		oc_max_text_width = dimensions_subtitle2[0];
+	if (dimensions_title[1] + dimensions_subtitle[1] + dimensions_subtitle2[1] > oc_max_text_height)
+		oc_max_text_height = dimensions_title[1] + dimensions_subtitle[1] + dimensions_subtitle2[1];
 
 	// traverse children
 	if (node.children === undefined)
@@ -257,7 +271,7 @@ function oc_boundboxes_dimensions (node) {
 	// now calc this node boundbox and deltacenter
 	node.boundbox = [
 		oc_max_text_width  + 2 * oc_style.inner_padding,
-		oc_max_text_height + 2 * oc_style.inner_padding
+		oc_max_text_height + 3 * oc_style.inner_padding
 	];
 
 	// GG 110712 add vertical space for images within boxes
@@ -470,7 +484,7 @@ function oc_update_fullbbox(node, child) {
 	if (OC_DEBUG)
 		console.log('updatefullbbox ' + node.title + ' <-- ' + child.title + ' x0=' + x0 + ' x1=' + x1 + ' y0=' + y0 + ' y1=' + y1);
 
-	node.fullbbox = [ x1 - x0, y1 - y0 ];
+	node.fullbbox = [ x1 - x0, y1 - y0 + 10 ];
 }
 
 
@@ -512,7 +526,12 @@ function oc_draw_obj (node, parent, xoffset, yoffset) {
 		var y0 = yc - oc_max_text_height / 2 - oc_style.inner_padding;
 		var y1 = yc + oc_max_text_height / 2 + oc_style.inner_padding;
 	}
-	var box = oc_paper.rect(x0, y0, x1 - x0, y1 - y0);
+	
+	var y2 = 0;
+	if (node.subtitle2 != undefined)
+		y2 = 10;
+	
+	var box = oc_paper.rect(x0, y0, x1 - x0, y1 - y0 + y2);
 	box.attr('fill'  , oc_style.box_color       );
 	box.attr('stroke', oc_style.box_border_color);
 	if (node.id !== undefined)
@@ -537,15 +556,20 @@ function oc_draw_obj (node, parent, xoffset, yoffset) {
 	title.attr('font-size', oc_style.title_font_size);
 	title.attr('fill', oc_style.title_color);
 	if (node.subtitle !== undefined) {
-		var subtitle_ypos = y1 - oc_style.inner_padding
-							- node.subtitle_lines * oc_style.subtitle_char_size[1] / 2;
-
-
-
+		var subtitle_ypos = title_ypos + node.title_lines * oc_style.title_char_size[1]  + node.subtitle_lines * oc_style.subtitle_char_size[1] / 2 - node.title_lines * oc_style.title_char_size[1] / 2 + 7;
 		var subtitle = oc_paper.text(xc, subtitle_ypos, node.subtitle);
 		subtitle.attr('font-family', oc_style.text_font);
 		subtitle.attr('font-size', oc_style.subtitle_font_size);
 		subtitle.attr('fill', oc_style.subtitle_color);
+	}
+
+	if (node.subtitle2 !== undefined) {
+		var subtitle2_ypos = y1 - oc_style.inner_padding
+		- node.subtitle2_lines * oc_style.subtitle2_char_size[1] / 2 - 7;
+		var subtitle2 = oc_paper.text(xc, subtitle2_ypos, node.subtitle2);
+		subtitle2.attr('font-family', oc_style.text_font);
+		subtitle2.attr('font-size', oc_style.subtitle2_font_size);
+		subtitle2.attr('fill', oc_style.subtitle2_color);
 	}
 
 	// GG 110712 draw optional images
@@ -621,7 +645,6 @@ function oc_draw_obj (node, parent, xoffset, yoffset) {
 			"stroke-width" : 0.4
 		});
 	}
-
 }
 
 // END OF LIBRARY

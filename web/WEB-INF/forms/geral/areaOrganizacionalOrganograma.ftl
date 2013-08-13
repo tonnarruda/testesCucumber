@@ -73,10 +73,13 @@
 					line_color         : '#7e9db9',              // color of connectors
 					title_color        : '#333333',              // color of titles
 					subtitle_color     : '#006600',                 // color of subtitles
+					subtitle2_color     : '#006600',                 // color of subtitles
 					title_font_size    : 12,                     // size of font used for displaying titles inside boxes
 					subtitle_font_size : 10,                     // size of font used for displaying subtitles inside boxes
+					subtitle2_font_size : 10,                     // size of font used for displaying subtitles inside boxes
 					title_char_size    : [ 6, 12 ],              // size (x, y) of a char of the font used for displaying titles
 					subtitle_char_size : [ 5, 10 ],              // size (x, y) of a char of the font used for displaying subtitles
+					subtitle2_char_size : [ 5, 10 ],              // size (x, y) of a char of the font used for displaying subtitles
 					max_text_width     : 20,                     // max width (in chars) of each line of text ('0' for no limit) 
 					text_font          : 'Arial'            	 // font family to use (should be monospaced)
 				};
@@ -142,9 +145,9 @@
 </head>
 
 <body>
+	<label for="areaOrganizacional">Listar áreas organizacionais </label>
+	<@ww.select theme="simple" id="ativa" name="ativa" list=r"#{true:'ativas'}" cssStyle="width: 315px;" headerKey="" headerValue="ativas e inativas"/><br />
 	<label for="areaOrganizacional">Área Organizacional:</label><br />
-
-	<@ww.select theme="simple" id="ativa" name="ativa" list=r"#{true:'Somente ativas'}" cssStyle="width: 500px;" headerKey="" headerValue="Ativas e inativas"/><br />
 	<@ww.select theme="simple" id="areaOrganizacional" name="areaOrganizacional" list="areaOrganizacionals" listKey="id" listValue="descricao" headerKey="" headerValue="Todas" multiple="false" size="10" cssStyle="width: 500px;"/>
 
 	<div id="organogramaAreas"></div>
