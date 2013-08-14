@@ -193,7 +193,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		try
 		{
 			colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionario);
+			
 			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);			
+			colaboradorQuestionario.setAvaliacao(avaliacaoCurso.getAvaliacao());
 			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
 			
 			transactionManager.commit(status);

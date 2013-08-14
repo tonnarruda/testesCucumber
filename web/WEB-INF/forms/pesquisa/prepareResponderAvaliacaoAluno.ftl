@@ -30,6 +30,7 @@
 			<@ww.hidden name="turma.id" />
 			<@ww.hidden name="curso.id" />
 			<@ww.hidden name="avaliacaoCurso.id" />
+			<@ww.hidden name="avaliacaoCurso.avaliacao.id" />
 			<@ww.token/>
 		</@ww.form>
 
