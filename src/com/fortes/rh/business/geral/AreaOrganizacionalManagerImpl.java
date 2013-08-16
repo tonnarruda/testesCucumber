@@ -623,7 +623,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		areaOrganizacional.setCodigoAC(lotacao.getCodigo());
 		areaOrganizacional.setNome(lotacao.getNome());
 
-		if(lotacao.getAreaMaeCodigo().equals(""))
+		if("".equals(lotacao.getAreaMaeCodigo()))
 			areaOrganizacional.setAreaMae(null);
 		else
 			areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo(), lotacao.getGrupoAC()));
