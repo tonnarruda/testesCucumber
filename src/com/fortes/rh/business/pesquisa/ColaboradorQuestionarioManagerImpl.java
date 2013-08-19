@@ -477,4 +477,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		getDao().updatePerformance(colaboradorQuestionarioId, performance);
 	}
+
+	public Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds) 
+	{
+		return getDao().findForRankingPerformanceAvaliacaoCurso(cursosIds, turmasIds, avaliacaoCursosIds);
+	}
 }

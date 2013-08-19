@@ -87,6 +87,18 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.questionario.setTitulo(questionarioTitulo);
     	this.nomeCursoTurmaAvaliacao = "Curso: "+cursoNome + " - Turma: " + turma.getDescricao() + " - Avaliação: " + questionarioTitulo;
     }
+    
+    // findForRankingPerformanceAvaliacaoCurso
+    public ColaboradorQuestionario(Long cursoId, String cursoNome, Long turmaId, String turmaDescricao, Long colaboradorId, String colaboradorNome, Long avaliacaoCursoId, String avaliacaoCursoTitulo, Character avaliacaoCursoTipo, Double performance)
+    {
+    	this.setTurma(new Turma(cursoId, cursoNome, turmaId, turmaDescricao));
+    	this.setProjectionColaboradorId(colaboradorId);
+    	this.setProjectionColaboradorNome(colaboradorNome);
+    	this.setProjectionAvaliacaoCursoId(avaliacaoCursoId);
+    	this.getAvaliacaoCurso().setTitulo(avaliacaoCursoTitulo);
+    	this.getAvaliacaoCurso().setTipo(avaliacaoCursoTipo);
+		this.setPerformance(performance);
+    }
 
     public ColaboradorQuestionario(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long avaliadorId) 
     {

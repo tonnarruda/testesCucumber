@@ -976,4 +976,42 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		query.executeUpdate();
 	}
 
+	public Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds) 
+	{
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select new ColaboradorQuestionario(c.id, c.nome, t.id, t.descricao, co.id, co.nome, ac.id, ac.titulo, ac.tipo, (case when ac.tipo = 'a' then cq.performance when ac.tipo = 'n' then (aac.valor / 10) when ac.tipo = 'p' then (aac.valor / 100) end)) "); 
+		hql.append("from Curso c ");
+		hql.append("inner join c.avaliacaoCursos ac ");
+		hql.append("inner join c.turmas t "); 
+		hql.append("inner join t.colaboradorTurmas ct ");
+		hql.append("inner join ct.colaborador co ");
+		hql.append("left join ct.aproveitamentoAvaliacaoCursos aac with aac.avaliacaoCurso.id = ac.id ");
+		hql.append("left join co.colaboradorQuestionarios cq with cq.turma.id = t.id and cq.avaliacaoCurso.id = ac.id ");
+		hql.append("where (cq.id is not null or aac.id is not null)  ");
+		
+		if (cursosIds != null && cursosIds.length > 0)
+			hql.append("and c.id in (:cursosIds) ");
+		
+		if (turmasIds != null && turmasIds.length > 0)
+			hql.append("and t.id in (:turmasIds) ");
+		
+		if (avaliacaoCursosIds != null && avaliacaoCursosIds.length > 0)
+			hql.append("and ac.id in (:avaliacaoCursosIds) ");
+		
+		hql.append("order by c.nome, ac.titulo, (case when ac.tipo = 'a' then cq.performance when ac.tipo = 'n' then (aac.valor / 10) when ac.tipo = 'p' then (aac.valor / 100) end) desc, co.nome, t.descricao ");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		if (cursosIds != null && cursosIds.length > 0)
+			query.setParameterList("cursosIds", cursosIds, Hibernate.LONG);
+		
+		if (turmasIds != null && turmasIds.length > 0)
+			query.setParameterList("turmasIds", turmasIds, Hibernate.LONG);
+		
+		if (avaliacaoCursosIds != null && avaliacaoCursosIds.length > 0)
+			query.setParameterList("avaliacaoCursosIds", avaliacaoCursosIds, Hibernate.LONG);
+
+		return query.list();
+	}
 }

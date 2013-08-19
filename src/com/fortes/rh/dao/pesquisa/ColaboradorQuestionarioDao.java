@@ -82,4 +82,6 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	void updatePerformance(Long colaboradorQuestionarioId, double performance);
 	
 	ColaboradorQuestionario findByColaboradorAvaliacaoCurso(Long colaboradorId, Long avaliacaoCursoId, Long turmaId);
+
+	Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds);
 }

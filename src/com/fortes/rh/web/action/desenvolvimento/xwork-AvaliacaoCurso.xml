@@ -45,7 +45,7 @@
 		<action name="relatorioRankingAvaliacaoAluno" class="com.fortes.rh.web.action.desenvolvimento.AvaliacaoCursoListAction" method="relatorioRankingAvaliacaoAluno">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/rankingAvaliacaoAluno.jasper</param>
-				<param name="dataSource">dataSource</param>
+				<param name="dataSource">colaboradorQuestionarios</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">rankingAvaliacoesAlunos.pdf</param>
 			</result>

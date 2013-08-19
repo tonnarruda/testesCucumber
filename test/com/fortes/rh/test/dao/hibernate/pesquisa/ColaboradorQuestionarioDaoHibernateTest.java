@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
@@ -35,12 +37,14 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -100,6 +104,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 	private ColaboradorPresencaDao colaboradorPresencaDao;
 	private CursoDao cursoDao;
 	private AvaliacaoCursoDao avaliacaoCursoDao;
+	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
 
 	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
 	{
@@ -1120,12 +1125,117 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		
 		assertNull(colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario.getId()));
 		assertEquals(colaboradorQuestionario2.getId(), ( (ColaboradorQuestionario) colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario2.getId())).getId());
-		
 	}
 	
 	public void testFindTodos()
 	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
 		assertTrue(colaboradorQuestionarioDao.findTodos().size() > 0);
+	}
+	
+	public void testFindForRankingPerformanceAvaliacaoCurso()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		colaboradorDao.save(maria);
+
+		AvaliacaoCurso avaliacaoCursoAvaliacao = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoAvaliacao.setTipo(TipoAvaliacaoCurso.AVALIACAO);
+		avaliacaoCursoDao.save(avaliacaoCursoAvaliacao);
+		
+		AvaliacaoCurso avaliacaoCursoNota = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoNota.setTipo(TipoAvaliacaoCurso.NOTA);
+		avaliacaoCursoDao.save(avaliacaoCursoNota);
+		
+		AvaliacaoCurso avaliacaoCursoPorcentagem = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoPorcentagem.setTipo(TipoAvaliacaoCurso.PORCENTAGEM);
+		avaliacaoCursoDao.save(avaliacaoCursoPorcentagem);
+		
+		Curso c1 = CursoFactory.getEntity();
+		c1.setAvaliacaoCursos(Arrays.asList(avaliacaoCursoAvaliacao, avaliacaoCursoNota, avaliacaoCursoPorcentagem));
+		cursoDao.save(c1);
+		
+		Turma t1 = TurmaFactory.getEntity();
+		t1.setCurso(c1);
+		turmaDao.save(t1);
+
+		Turma t2 = TurmaFactory.getEntity();
+		t2.setCurso(c1);
+		turmaDao.save(t2);
+		
+		ColaboradorTurma ct1 = new ColaboradorTurma();
+		ct1.setColaborador(joao);
+		ct1.setTurma(t1);
+		colaboradorTurmaDao.save(ct1);
+		
+		ColaboradorTurma ct2 = new ColaboradorTurma();
+		ct2.setColaborador(joao);
+		ct2.setTurma(t2);
+		colaboradorTurmaDao.save(ct2);
+		
+		ColaboradorTurma ct3 = new ColaboradorTurma();
+		ct3.setColaborador(maria);
+		ct3.setTurma(t1);
+		colaboradorTurmaDao.save(ct3);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(joao);
+		colaboradorQuestionario.setAvaliacaoCurso(avaliacaoCursoAvaliacao);
+		colaboradorQuestionario.setTurma(t1);
+		colaboradorQuestionario.setPerformance(0.5);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(joao);
+		colaboradorQuestionario2.setAvaliacaoCurso(avaliacaoCursoAvaliacao);
+		colaboradorQuestionario2.setTurma(t2);
+		colaboradorQuestionario2.setPerformance(0.6);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(maria);
+		colaboradorQuestionario3.setAvaliacaoCurso(avaliacaoCursoAvaliacao);
+		colaboradorQuestionario3.setTurma(t1);
+		colaboradorQuestionario3.setPerformance(0.7);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		AproveitamentoAvaliacaoCurso aac1 = new AproveitamentoAvaliacaoCurso();
+		aac1.setColaboradorTurma(ct1);
+		aac1.setAvaliacaoCurso(avaliacaoCursoNota);
+		aac1.setValor(7.0);
+		aproveitamentoAvaliacaoCursoDao.save(aac1);
+		
+		AproveitamentoAvaliacaoCurso aac2 = new AproveitamentoAvaliacaoCurso();
+		aac2.setColaboradorTurma(ct1);
+		aac2.setAvaliacaoCurso(avaliacaoCursoPorcentagem);
+		aac2.setValor(80.0);
+		aproveitamentoAvaliacaoCursoDao.save(aac2);
+		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoAvaliacao.getId(), avaliacaoCursoNota.getId(), avaliacaoCursoPorcentagem.getId()}); 
+		assertEquals(5, colaboradorQuestionarios.size());
+		ColaboradorQuestionario colaboradorQuestionarioRetorno = (ColaboradorQuestionario) colaboradorQuestionarios.toArray()[0];
+		assertEquals(joao, colaboradorQuestionarioRetorno.getColaborador());
+		assertEquals(t1, colaboradorQuestionarioRetorno.getTurma());
+		assertEquals(avaliacaoCursoPorcentagem.getId(), colaboradorQuestionarioRetorno.getAvaliacaoCurso().getId());
+		assertEquals(0.8, colaboradorQuestionarioRetorno.getPerformance());
+		
+		assertEquals(3, colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoAvaliacao.getId()}).size());
+		assertEquals(1, colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoNota.getId()}).size());
+		assertEquals(1, colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoPorcentagem.getId()}).size());
 	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)
@@ -1209,5 +1319,10 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 
 	public void setAvaliacaoCursoDao(AvaliacaoCursoDao avaliacaoCursoDao) {
 		this.avaliacaoCursoDao = avaliacaoCursoDao;
+	}
+
+	public void setAproveitamentoAvaliacaoCursoDao(
+			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
+		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
 	}
 }

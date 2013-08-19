@@ -66,6 +66,11 @@ public class AvaliacaoCurso extends AbstractModel implements Serializable
 	{
 		return tipo;
 	}
+	
+	public String getDescricaoTipo()
+	{
+		return TipoAvaliacaoCurso.getDescricao(tipo);
+	}
 
 	public void setTipo(char tipo)
 	{

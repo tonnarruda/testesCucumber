@@ -13,19 +13,6 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<#if periodoIni?exists>
-		<#assign periodoIniFormatado = periodoIni?date/>
-	<#else>
-		<#assign periodoIniFormatado = ""/>
-	</#if>
-	<#if periodoFim?exists>
-		<#assign periodoFimFormatado = periodoFim?date/>
-	<#else>
-		<#assign periodoFimFormatado = ""/>
-	</#if>
-	
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('periodoIni','periodoFim'), new Array('periodoIni','periodoFim'))"/>
-	
 	<script type="text/javascript">
 		function getTurmas()
 		{
@@ -53,17 +40,14 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<@ww.form name="form" action="" method="POST" onsubmit="${validarCampos}">
-		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
-		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-		
+	<@ww.form name="form" action="relatorioRankingAvaliacaoAluno.action" method="POST">
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmas();" />
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" />
 		<@frt.checkListBox name="avaliacaoCursosCheck" id="avaliacaoCursosCheck" label="Avaliações" list="avaliacaoCursosCheckList" />
+	
+		<div class="buttonGroup">
+			<button type="submit" class="btnRelatorio"></button>
+		</div>
 	</@ww.form>
-
-	<div class="buttonGroup">
-		<button class="btnRelatorio"  onclick="${validarCampos}"></button>
-	</div>
 </body>
 </html>

@@ -2,15 +2,18 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -20,6 +23,7 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 {
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CursoManager cursoManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	private Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
 	private AvaliacaoCurso avaliacaoCurso;
@@ -27,17 +31,17 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 	
 	private Collection<Curso> cursos;
 	private Collection<Turma> turmas;
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
 	
-	private String[] cursosCheck;
-	private String[] turmasCheck;
-	private String[] avaliacaoCursosCheck;
+	private Long[] cursosCheck;
+	private Long[] turmasCheck;
+	private Long[] avaliacaoCursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> turmasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> avaliacaoCursosCheckList = new ArrayList<CheckBox>();
 	
-	private Date periodoIni;
-	private Date periodoFim;
-
+	private Map<String,Object> parametros = new HashMap<String, Object>();
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -67,6 +71,10 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 	
 	public String relatorioRankingAvaliacaoAluno()
 	{
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findForRankingPerformanceAvaliacaoCurso(cursosCheck, turmasCheck, avaliacaoCursosCheck);
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Ranking das Avaliações dos Alunos", getEmpresaSistema(), "");
+		
 		return Action.SUCCESS;
 	}
 
@@ -99,22 +107,6 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 		return tipos;
 	}
 
-	public Date getPeriodoIni() {
-		return periodoIni;
-	}
-
-	public void setPeriodoIni(Date periodoIni) {
-		this.periodoIni = periodoIni;
-	}
-
-	public Date getPeriodoFim() {
-		return periodoFim;
-	}
-
-	public void setPeriodoFim(Date periodoFim) {
-		this.periodoFim = periodoFim;
-	}
-
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}
@@ -127,11 +119,11 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 		return turmas;
 	}
 
-	public String[] getCursosCheck() {
+	public Long[] getCursosCheck() {
 		return cursosCheck;
 	}
 
-	public void setCursosCheck(String[] cursosCheck) {
+	public void setCursosCheck(Long[] cursosCheck) {
 		this.cursosCheck = cursosCheck;
 	}
 
@@ -139,19 +131,19 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 		return cursosCheckList;
 	}
 
-	public String[] getTurmasCheck() {
+	public Long[] getTurmasCheck() {
 		return turmasCheck;
 	}
 
-	public void setTurmasCheck(String[] turmasCheck) {
+	public void setTurmasCheck(Long[] turmasCheck) {
 		this.turmasCheck = turmasCheck;
 	}
 
-	public String[] getAvaliacaoCursosCheck() {
+	public Long[] getAvaliacaoCursosCheck() {
 		return avaliacaoCursosCheck;
 	}
 
-	public void setAvaliacaoCursosCheck(String[] avaliacaoCursosCheck) {
+	public void setAvaliacaoCursosCheck(Long[] avaliacaoCursosCheck) {
 		this.avaliacaoCursosCheck = avaliacaoCursosCheck;
 	}
 
@@ -161,5 +153,17 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 
 	public Collection<CheckBox> getAvaliacaoCursosCheckList() {
 		return avaliacaoCursosCheckList;
+	}
+
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+		return colaboradorQuestionarios;
+	}
+
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }
