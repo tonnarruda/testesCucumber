@@ -213,6 +213,7 @@
 				/concurrentSessionError.jsp*=ROLE_ANONYMOUS
 				/codigoOperacional.action*=ROLE_ANONYMOUS,ROLE_USER
 				/geraTicket.action*=ROLE_ANONYMOUS,ROLE_USER
+				/validaTicket.action*=ROLE_ANONYMOUS,ROLE_USER
 				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
 				/browsersCompativeis.action*=ROLE_ANONYMOUS,ROLE_USER
 				/videoteca.action*=ROLE_USER
