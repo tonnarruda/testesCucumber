@@ -911,6 +911,9 @@
     <property name="cidManager">
       <ref bean="cidManager" />
     </property>
+    <property name="motivoSolicitacaoManager">
+      <ref bean="motivoSolicitacaoManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

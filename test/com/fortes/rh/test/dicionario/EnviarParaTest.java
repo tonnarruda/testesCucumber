@@ -9,7 +9,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(16, EnviarPara.values().length);
+		assertEquals(17, EnviarPara.values().length);
 		
 		assertEquals(new Integer(0), EnviarPara.SELECIONAR_ENVIAR_PARA.getId());
 		assertEquals(new Integer(1), EnviarPara.USUARIOS.getId());
@@ -26,6 +26,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals(new Integer(15), EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId());
 		assertEquals(new Integer(17), EnviarPara.COLABORADOR_AVALIADO.getId());
 		assertEquals(new Integer(18), EnviarPara.COGESTOR_AREA.getId());
+		assertEquals(new Integer(19), EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 
@@ -46,6 +47,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Usuários com permissão de visualizar solicitação pessoal", EnviarPara.PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL.getDescricao());
 		assertEquals("Responsável pelo limite de colaboradores por cargo", EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getDescricao());
 		assertEquals("Colaborador (Avaliado)", EnviarPara.COLABORADOR_AVALIADO.getDescricao());
+		assertEquals("Usuários com perfil de aprovar/reprovar solicitação de pessoal", EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getDescricao());
 		assertEquals("Avulso", EnviarPara.AVULSO.getDescricao());
 	}
 
@@ -66,6 +68,8 @@ public class EnviarParaTest extends TestCase
 		assertEquals("Usuários com permissão de visualizar solicitação pessoal", EnviarPara.getDescricaoById(14));
 		assertEquals("Responsável pelo limite de colaboradores por cargo", EnviarPara.getDescricaoById(15));
 		assertEquals("Colaborador (Avaliado)", EnviarPara.getDescricaoById(17));
+		assertEquals("Cogestor da área organizacional", EnviarPara.getDescricaoById(18));
+		assertEquals("Usuários com perfil de aprovar/reprovar solicitação de pessoal", EnviarPara.getDescricaoById(19));
 		assertEquals("Avulso", EnviarPara.getDescricaoById(99));
 	}
 

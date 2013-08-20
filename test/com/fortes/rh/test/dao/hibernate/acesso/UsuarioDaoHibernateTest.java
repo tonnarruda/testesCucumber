@@ -1,13 +1,18 @@
 package com.fortes.rh.test.dao.hibernate.acesso;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.PapelDao;
+import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.Colaborador;
@@ -25,6 +30,8 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	private EmpresaDao empresaDao;
 	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private ColaboradorDao colaboradorDao;
+	private PerfilDao perfilDao;
+	private PapelDao papelDao;
 
 	public Usuario getEntity()
 	{
@@ -323,6 +330,46 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(DateUtil.formataAnoMes(new Date()),DateUtil.formataAnoMes(usuarioDoBanco.getUltimoLogin()));
 		
 	}
+	
+	public void testFindEmailsByPerfil()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNome("Empresa");
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("usuario");
+		usuarioDao.save(usuario);
+		
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setEmailColaborador("colab@gmail.com");
+		colab.setUsuario(usuario);
+		colaboradorDao.save(colab);
+		
+		Papel papel = new Papel();
+		papel.setCodigo("ROLE");
+		papel.setNome("role");
+		papel.setUrl("#");
+		papel.setMenu(false);
+		papel.setOrdem(1);
+		papelDao.save(papel);
+		Collection<Papel> papeis = Arrays.asList(papel);
+		
+		Perfil perfil = new Perfil();
+		perfil.setNome("perfil");
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		String[] retorno = usuarioDao.findEmailsByPerfil("ROLE", empresa.getId()); 
+		assertEquals("colab@gmail.com", ((String) retorno[0]));
+	}
 
 	public GenericDao<Usuario> getGenericDao()
 	{
@@ -347,6 +394,14 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)
 	{
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setPerfilDao(PerfilDao perfilDao) {
+		this.perfilDao = perfilDao;
+	}
+
+	public void setPapelDao(PapelDao papelDao) {
+		this.papelDao = papelDao;
 	}
 
 }

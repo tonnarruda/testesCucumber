@@ -282,4 +282,26 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		
 		return criteria.list();
 	}
+
+	public String[] findEmailsByPerfil(String role, Long EmpresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.usuario", "u");
+		criteria.createCriteria("u.usuarioEmpresas", "ue");
+		criteria.createCriteria("ue.perfil", "p");
+		criteria.createCriteria("p.papeis", "pp");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.eq("pp.codigo", role));
+		criteria.add(Expression.eq("u.acessoSistema", true));
+		criteria.add(Expression.eq("ue.empresa.id", EmpresaId));
+		
+		criteria.addOrder(Order.asc("c.contato.email"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
+	}
 }

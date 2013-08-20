@@ -120,7 +120,7 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		try
 		{
 			gerenciadorComunicacaoManager.remove(gerenciadorComunicacao.getId());
-			addActionMessage("Configuração excluída com sucesso.");
+			addActionSuccess("Configuração excluída com sucesso.");
 		}
 		catch (Exception e)
 		{

@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(29, Operacao.values().length);
+		assertEquals(30, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -53,6 +53,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Houver aniversariantes no dia para envio automático de cartão de aniversário", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar situação no AC Pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Houver carteira de habilitação a vencer (Notificação periódica)", Operacao.getDescricaoById(++i));
+		assertEquals("Inserir solicitação de pessoal", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -98,6 +99,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 27 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 28 
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 29 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 30 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -135,6 +137,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.ENVIAR_CARTAO_ANIVERSARIANTES.getId());					// 27
 		assertEquals(++i, Operacao.CADASTRAR_SITUACAO_AC.getId());							// 28
 		assertEquals(++i, Operacao.HABILITACAO_A_VENCER.getId());							// 29
+		assertEquals(++i, Operacao.INSERIR_SOLICITACAO.getId());							// 30
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -453,6 +456,17 @@ public class OperacaoTest extends TestCase
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(4,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
 		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testInserirSolicitacaoPessoal()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.INSERIR_SOLICITACAO;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(3,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testQtdDeOperacoesTestadas() 

@@ -25,7 +25,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
-	void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body);
 	void encerraSolicitacao(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
