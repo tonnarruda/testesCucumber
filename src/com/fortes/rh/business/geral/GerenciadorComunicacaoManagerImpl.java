@@ -22,7 +22,7 @@ import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
-import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -44,6 +44,7 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -76,19 +77,20 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 {
 	private static Logger logger = Logger.getLogger(GerenciadorComunicacaoManagerImpl.class);
 	
-	Mail mail; 
-	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	ParametrosDoSistemaManager parametrosDoSistemaManager;
+	AreaOrganizacionalManager areaOrganizacionalManager;
+	PeriodoExperienciaManager periodoExperienciaManager;
+	MotivoSolicitacaoManager motivoSolicitacaoManager;
+	UsuarioMensagemManager usuarioMensagemManager;
+	UsuarioEmpresaManager usuarioEmpresaManager;
+	ProvidenciaManager providenciaManager;
+	MensagemManager mensagemManager;
 	EmpresaManager empresaManager;
 	PerfilManager perfilManager;
-	PeriodoExperienciaManager periodoExperienciaManager;
-	UsuarioEmpresaManager usuarioEmpresaManager;
-	UsuarioMensagemManager usuarioMensagemManager;
-	MensagemManager mensagemManager;
-	AreaOrganizacionalManager areaOrganizacionalManager;
 	CargoManager cargoManager;
-	ProvidenciaManager providenciaManager;
 	CidManager cidManager;
+	Mail mail; 
 	
 	public void insereGerenciadorComunicacaoDefault(Empresa empresa) 
 	{
@@ -113,6 +115,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.TERMINO_CONTRATO_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_CONTRATACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
+		save(new GerenciadorComunicacao(Operacao.INSERIR_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
 		// Criar novo gerenciador default no importador(EmpresaJDBC.java : insereGerenciadorComunicacaoDefault) quando for criado um novo gerenciador default aqui (gambi)
 	}
 	
@@ -155,8 +158,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String subject = "Status da solicitação de pessoal";
 			StringBuilder body = new StringBuilder("<span style='font-weight:bold'>O usuário "+ nomeLiberador + " alterou o status da solicitação " + solicitacao.getDescricao() + " da empresa " + empresa.getNome() + " para " + solicitacao.getStatusFormatado().toLowerCase()  +".</span><br>");
 			
-			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
-			solicitacaoManager.montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
+			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
 			
 			String emailSolicitante = null;
 			if(colaboradorSolicitante != null && colaboradorSolicitante.getContato() != null)
@@ -1514,6 +1516,79 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		mail.send(empresa, subject, null, mensagem, emails);
 	}
 
+	public void enviarEmailParaResponsaveisSolicitacaoPessoal(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception
+	{
+		try	{
+			ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
+			String link = parametrosDoSistema.getAppUrl();
+
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
+
+			String nomeSolicitante = "";
+			if(solicitante != null)
+				nomeSolicitante = solicitante.getNomeMaisNomeComercial();
+
+			solicitacao.setMotivoSolicitacao(motivoSolicitacaoManager.findById(solicitacao.getMotivoSolicitacao().getId()));
+
+			EstabelecimentoManager estabelecimentoManager = (EstabelecimentoManager) SpringUtil.getBean("estabelecimentoManager");
+			solicitacao.setEstabelecimento(estabelecimentoManager.findById(solicitacao.getEstabelecimento().getId()));
+
+			String nomeLiberador = "";
+			if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
+				nomeLiberador = nomeSolicitante;
+
+			String subject = "Liberação de Solicitação de Pessoal";
+			StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
+
+			if (solicitacao.getDescricao() != null)
+				body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
+
+			montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
+			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.INSERIR_SOLICITACAO.getId(), empresa.getId());
+
+			//sem gerenciador de comunicação
+			if(emailsMarcados !=null && emailsMarcados.length > 0)
+			{
+				Collection<String> emailsMarcadosNoCadastroDeSolicitacaoPessoal = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
+				mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emailsMarcadosNoCadastroDeSolicitacaoPessoal));
+			}
+
+			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+			{
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId()))
+				{
+					Collection<String> emailsRH = new CollectionUtil<String>().convertArrayToCollection(empresa.getEmailRespRH().split(";"));
+					if (emailsRH != null && emailsRH.size() > 0) 
+						mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emailsRH));
+				}
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId()))
+				{
+					UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+					String[] emailsByUsuario = usuarioManager.findEmailsByPerfil("ROLE_LIBERA_SOLICITACAO", empresa.getId()); 
+					mail.send(empresa, parametrosDoSistema, subject, body.toString(), emailsByUsuario);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
+	{
+		body.append("<br>Descrição: " + solicitacao.getDescricao());
+		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
+		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
+		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+		body.append("<br>Solicitante: " + nomeSolicitante);
+		body.append("<br>Status: " + solicitacao.getStatusFormatado());
+		body.append("<br>Liberador: " + nomeLiberador);
+		body.append("<br>Observação do Liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
+
+		body.append("<br><br>Acesse o RH para mais detalhes:<br>");
+		body.append("<a href='" + link + "'>RH</a>");
+	}
+
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
@@ -1565,5 +1640,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setCidManager(CidManager cidManager) {
 		this.cidManager = cidManager;
+	}
+
+	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager) {
+		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
 	}
 }

@@ -1,8 +1,3 @@
-/* Autor: Robertson Freitas
- * Data: 23/06/2006
- * Requisito: RFA015
- */
-
 package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
@@ -10,30 +5,20 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.Mail;
-import com.fortes.rh.util.SpringUtil;
-import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.ActionContext;
 
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
@@ -41,8 +26,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
-	private Mail mail;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
@@ -217,9 +200,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	{
 		super.save(solicitacao);
 		solicitacaoAvaliacaoManager.saveAvaliacoesSolicitacao(solicitacao.getId(), avaliacaoIds);
-		
 		try {
-			enviarEmailParaResponsaveis(solicitacao, solicitacao.getEmpresa(), emailsMarcados);
+			gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, solicitacao.getEmpresa(), emailsMarcados);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -227,56 +209,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return solicitacao;
 	}
 
-	private void enviarEmailParaResponsaveis(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception
-	{
-		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
-		String link = parametrosDoSistema.getAppUrl();
-
-		Collection<String> emails = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
-		Collection<String> emailsRH = new CollectionUtil<String>().convertArrayToCollection(empresa.getEmailRespRH().split(";"));
-
-		if (emails != null && !emails.isEmpty())
-			emails.addAll(emailsRH);
-		else
-			emails = emailsRH;
-
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-		Colaborador solicitante = colaboradorManager.findByUsuarioProjection(solicitacao.getSolicitante().getId());
-
-		String nomeSolicitante = "";
-		if(solicitante != null)
-			nomeSolicitante = solicitante.getNomeMaisNomeComercial();
-
-		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
-
-		String nomeLiberador = "";
-		if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE)
-			nomeLiberador = nomeSolicitante;
-
-		String subject = "Liberação de Solicitação de Pessoal";
-		StringBuilder body = new StringBuilder("Existe uma Solicitação de Pessoal na empresa " + empresa.getNome() + " aguardando liberação.<br>");
-
-		if (solicitacao.getDescricao() != null)
-			body.append("<p style=\"font-weight:bold;\">" + solicitacao.getDescricao() + "</p>");
-
-		montaCorpoEmailSolicitacao(solicitacao, link, nomeSolicitante, nomeLiberador, body);
-
-		mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emails));
-	}
-	public void montaCorpoEmailSolicitacao(Solicitacao solicitacao, String link, String nomeSolicitante, String nomeLiberador, StringBuilder body)
-	{
-		body.append("<br>Descrição: " + solicitacao.getDescricao());
-		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
-		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
-		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
-		body.append("<br>Solicitante: " + nomeSolicitante);
-		body.append("<br>Status: " + solicitacao.getStatusFormatado());
-		body.append("<br>Liberador: " + nomeLiberador);
-		body.append("<br>Observação do Liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
-		
-		body.append("<br><br>Acesse o RH para mais detalhes:<br>");
-		body.append("<a href='" + link + "'>RH</a>");
-	}
 	public void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario)
 	{
 		solicitacao = getDao().findByIdProjectionForUpdate(solicitacao.getId());
@@ -288,14 +220,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao, indicadorResumido);
 	}
 	
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-	}
-
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds) {
 		return getDao().getIndicadorQtdVagas(dataDe, dataAte, areasOrganizacionais, estabelecimentos, solicitacaoIds);
 	}

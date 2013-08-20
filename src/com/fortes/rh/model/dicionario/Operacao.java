@@ -45,6 +45,16 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
+	INSERIR_SOLICITACAO(30, "Inserir solicitação de pessoal", "R&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
 	CURRICULO_AGUARDANDO_APROVACAO_MODULO_EXTERNO(3, "Existir currículo aguardando aprovação para participar de seleção (triagem do módulo externo)", "R&S") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);

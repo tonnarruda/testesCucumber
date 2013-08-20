@@ -190,14 +190,14 @@
 		</table>
 		<@ww.hidden name="turma.id" />
 	</@ww.form>
-</div>
 
 	<div class="buttonGroup">
-		<button onclick="window.location='${retorno}?curso.id=${turma.curso.id}'" class="btnVoltarListaFrequencia" accesskey="V"></button>
+		<button onclick="window.location='${retorno}?curso.id=${turma.curso.id}'" class="btnVoltar" accesskey="V"></button>
 	</div>
 
 	<script type="text/javascript">
 		calculaFrequenciaOnLoad();
 	</script>
+</div>
 </body>
 </html>

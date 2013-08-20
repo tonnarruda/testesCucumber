@@ -14,6 +14,7 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -21,6 +22,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -111,8 +113,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock parametrosDoSistemaManager;
 	private Mock periodoExperienciaManager;
 	private Mock areaOrganizacionalManager;
+	private Mock motivoSolicitacaoManager;
 	private Mock colaboradorTurmaManager;
 	private Mock usuarioMensagemManager;
+	private Mock estabelecimentoManager;
 	private Mock usuarioEmpresaManager;
 	private Mock questionarioManager;
 	private Mock colaboradorManager;
@@ -154,6 +158,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
         
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         gerenciadorComunicacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+
+        motivoSolicitacaoManager = new Mock(MotivoSolicitacaoManager.class);
+        gerenciadorComunicacaoManager.setMotivoSolicitacaoManager((MotivoSolicitacaoManager) motivoSolicitacaoManager.proxy());
         
         colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
         MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
@@ -184,7 +191,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		exameManager = new Mock(ExameManager.class);
 		MockSpringUtil.mocks.put("exameManager", exameManager);
-        
+		
+		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+		MockSpringUtil.mocks.put("estabelecimentoManager", estabelecimentoManager);
+		
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
@@ -193,6 +203,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
@@ -304,7 +315,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(solicitante));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId())).will(returnValue(liberador));
-		solicitacaoManager.expects(atLeastOnce()).method("montaCorpoEmailSolicitacao").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTERAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
@@ -1559,6 +1569,66 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
 		
 		gerenciadorComunicacaoManager.enviaMensagemHabilitacaoAVencer();
+	}
+	
+	public void testEnviarEmailParaResponsaveis() throws Exception
+	{
+		ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		parametroSistema.setAppUrl("url");
+		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		Usuario solicitante = UsuarioFactory.getEntity(1L);
+		
+		Colaborador colabSolicitante = ColaboradorFactory.getEntity(1L);
+		colabSolicitante.setNome("nome");
+		colabSolicitante.setNomeComercial("nomeComercial");
+		colabSolicitante.setUsuario(solicitante);
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacao.setId(1L);
+		motivoSolicitacao.setDescricao("Motivo");
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		estabelecimento.setNome("Estabelecimento");
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setDescricao("descricao");
+		solicitacao.setSolicitante(solicitante);
+		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacao.setData(DateUtil.criarDataMesAno(20, 8, 2013));
+		solicitacao.setObservacaoLiberador("observacaoLiberador");
+		solicitacao.setEstabelecimento(estabelecimento);
+		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao2.setEnviarPara(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2);
+		
+		String[] emailsByUsuario = new String[]{empresa.getEmailRespRH()};
+		String[] emailsmMrcados = new String[]{"marcado@gmail.com"};
+
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
+		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(colabSolicitante));
+		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
+		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.INSERIR_SOLICITACAO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+		usuarioManager.expects(once()).method("findEmailsByPerfil").with(eq("ROLE_LIBERA_SOLICITACAO"),eq(empresa.getId())).will(returnValue(emailsByUsuario));
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+			
+		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
 	}
 	
 }

@@ -269,4 +269,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
+	public String[] findEmailsByPerfil(String role, Long empresaId) 
+	{
+		return getDao().findEmailsByPerfil(role, empresaId);
+	}
+
 }
