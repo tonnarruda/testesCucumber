@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ocorrencia_com_providencia" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="6b9c7294-5c3c-4eaf-b8ae-199b801e79f6">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -40,10 +40,12 @@
 					<textElement>
 						<font size="8" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{colaborador.nome} +
-($F{colaborador.matricula}!=null?" - "+$F{colaborador.matricula}:"") +
-($F{colaborador.estabelecimento.nome}!=null?" - "+$F{colaborador.estabelecimento.nome}:"") +
-($F{colaborador.areaOrganizacional.nome}!=null?" - "+$F{colaborador.areaOrganizacional.nome}:"")]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.nome} + " / " +
+(($F{colaborador.matricula}!=null && !$F{colaborador.matricula}.equals(""))?$F{colaborador.matricula}:"-") +
+" / "+
+($F{colaborador.estabelecimento.nome}!=null?$F{colaborador.estabelecimento.nome}:"-") +
+" / "+
+($F{colaborador.areaOrganizacional.nome}!=null?$F{colaborador.areaOrganizacional.nome}:"-")]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -175,7 +177,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Colaborador]]></text>
+				<text><![CDATA[Colaborador / Matrícula / Estabelecimento / Área Organizacional]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="ed119b26-a2af-4846-ae66-92d19bf3704e" key="staticText-13" positionType="Float" mode="Transparent" x="522" y="69" width="220" height="11" isPrintInFirstWholeBand="true" backcolor="#FFFFFF"/>
