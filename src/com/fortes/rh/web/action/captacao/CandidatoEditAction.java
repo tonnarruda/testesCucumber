@@ -394,6 +394,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		session.put("SESSION_FORMACAO", null);
 		session.put("SESSION_IDIOMA", null);
 		session.put("SESSION_EXPERIENCIA", null);
+		
+		if (moduloExterno && solicitacao != null && solicitacao.getId() != null)
+			return "enviarCurriculo";
 
 		return Action.SUCCESS;
 	}

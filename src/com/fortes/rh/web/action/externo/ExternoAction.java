@@ -25,6 +25,7 @@ public class ExternoAction extends MyActionSupport
 	private static final String MSG_COD_CAD_SUCCESS = "0";
 	private static final String MSG_COD_ATU_SUCCESS = "1";
 	private static final String MSG_COD_ATU_SENHA_SUCCESS = "2";
+	private static final String MSG_COD_CAD_ENVIO_CURRICULO_SUCCESS = "3";
 	private static final String MSG_CAD_SUCCESS = "Dados cadastrados com sucesso.";
 	private static final String MSG_ATU_SUCCESS = "Dados atualizados com sucesso.";
 	private static final String MSG_CPF_BRANCO = "CPF não pode ser em branco.";
@@ -35,7 +36,8 @@ public class ExternoAction extends MyActionSupport
 	private static final String MSG_SENHA_ALT_SUCCESS = "Sua senha foi alterada com sucesso.";
 	private static final String MSG_SENHA_VAZIA = "Campo \"Nova Senha\" vazio.";
 	private static final String MSG_SENHA_VAZIA_CPF = "Não existe senha para seu cadastro. Favor, entrar em contato com a Empresa.";
-	private static final String MSG_INF_LOGIN = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para ver as vagas disponívies.";
+	private static final String MSG_INF_LOGIN = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para ver as vagas disponíveis.";
+	private static final String MSG_INF_LOGIN_ENVIO_CURRICULO = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para efetivar sua candidatura à vaga.";
 
 	private String cpf;
 	private String senha;
@@ -61,6 +63,23 @@ public class ExternoAction extends MyActionSupport
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
 	private boolean sucessoRespostaAvaliacao; // flag de alerta ftl
 	
+	public String prepareLogin() throws Exception
+	{
+		mensagemLogin = empresaManager.findByIdProjection(empresaId).getMensagemModuloExterno();
+		if (msg != null && msg.equals(MSG_COD_CAD_SUCCESS))
+			msg = MSG_INF_LOGIN;
+		else if (msg != null && msg.equals(MSG_COD_CAD_ENVIO_CURRICULO_SUCCESS))
+			msg = MSG_INF_LOGIN_ENVIO_CURRICULO;
+
+		if (!verificarArquivosExterno())
+		{
+			addActionError("Não foi possível localizar os arquivos de layout(Fortes\\RH) do módulo externo.");
+			return "erro";
+		}
+
+		return Action.SUCCESS;
+	}
+	
 	public String checaLogin() throws Exception
 	{
 		if (cpf.equals(""))
@@ -69,7 +88,7 @@ public class ExternoAction extends MyActionSupport
 			return Action.INPUT;
 		}
 
-		Map session = ActionContext.getContext().getSession();
+		Map<String, Object> session = ActionContext.getContext().getSession();
 		candidato = candidatoManager.findByCPF(cpf, empresaId, false);
 
 		if (candidato == null)
@@ -97,24 +116,29 @@ public class ExternoAction extends MyActionSupport
 		session.put("SESSION_CANDIDATO_CPF", candidato.getPessoal().getCpfFormatado());
 		session.put("SESSION_EMPRESA", empresaId);
 
+		if (solicitacao != null && solicitacao.getId() != null)
+			return "enviarCurriculo";
+		
 		return Action.SUCCESS;
 	}
 
 	public String logoutExterno() throws Exception
 	{
-		Map session = ActionContext.getContext().getSession();
+		Map<String, Object> session = ActionContext.getContext().getSession();
 		session.put("SESSION_CANDIDATO_ID", null);
 		session.put("SESSION_CANDIDATO_SENHA", null);
 		session.put("SESSION_CANDIDATO_NOME", null);
 		session.put("SESSION_CANDIDATO_CPF", null);
 		session.put("SESSION_EMPRESA", null);
 
+		prepareLogin();
+		
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdateSenha() throws Exception
 	{
-		Map session = ActionContext.getContext().getSession();
+		Map<String, Object> session = ActionContext.getContext().getSession();
 		if(session.get("SESSION_CANDIDATO_ID") == null)
 			return Action.INPUT;
 
@@ -140,7 +164,7 @@ public class ExternoAction extends MyActionSupport
 
 	public String updateExternoSenha() throws Exception
 	{
-		Map session = ActionContext.getContext().getSession();
+		Map<String, Object> session = ActionContext.getContext().getSession();
 		Long id = (Long) session.get("SESSION_CANDIDATO_ID");
 		String senhaSessao = (String) session.get("SESSION_CANDIDATO_SENHA");
 
@@ -176,14 +200,18 @@ public class ExternoAction extends MyActionSupport
 
 	public String prepareListAnuncio() throws Exception
 	{
-		Map session = ActionContext.getContext().getSession();
-		if(session.get("SESSION_CANDIDATO_ID") == null)
-			return Action.INPUT;
-
-		Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
-		Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
-		
-		anuncios = anuncioManager.findAnunciosModuloExterno(sessionEmpresaId, sessionCandidatoId);
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		if (session.get("SESSION_CANDIDATO_ID") != null)
+		{
+			Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
+			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
+			
+			anuncios = anuncioManager.findAnunciosModuloExterno(sessionEmpresaId, sessionCandidatoId);
+		}
+		else
+		{
+			anuncios = anuncioManager.findAnunciosSolicitacaoAberta(empresaId);
+		}
 
 		if (msg != null)
 		{
@@ -197,12 +225,22 @@ public class ExternoAction extends MyActionSupport
 
 		return Action.SUCCESS;
 	}
+	
+	public String verAnuncio() throws Exception
+	{
+		anuncio = anuncioManager.findById(anuncio.getId());
+		
+		if(!anuncio.isExibirModuloExterno())
+			return Action.INPUT;
+
+		return Action.SUCCESS;
+	}
 
 	public String enviarCurriculo() throws Exception
 	{
 		boolean estaNaSolicitacao = false;
 
-		Map session = ActionContext.getContext().getSession();
+		Map<String, Object> session = ActionContext.getContext().getSession();
 
 		Collection<CandidatoSolicitacao> candidatosTmp = candidatoSolicitacaoManager.find(new String[] { "candidato.id" }, new Object[] { session.get("SESSION_CANDIDATO_ID") });
 
@@ -234,16 +272,6 @@ public class ExternoAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
-	public String verAnuncio() throws Exception
-	{
-		Map session = ActionContext.getContext().getSession();
-		if(session.get("SESSION_CANDIDATO_ID") == null)
-			return Action.INPUT;
-
-		anuncio = anuncioManager.findById(anuncio.getId());
-		return Action.SUCCESS;
-	}
-
 	private boolean verificarArquivosExterno()
 	{
 		boolean retorno = false;
@@ -267,21 +295,6 @@ public class ExternoAction extends MyActionSupport
 		return retorno;
 	}
 
-	public String prepareLogin() throws Exception
-	{
-		mensagemLogin = empresaManager.findByIdProjection(empresaId).getMensagemModuloExterno();
-		if (msg != null && msg.equals(MSG_COD_CAD_SUCCESS))
-			msg = MSG_INF_LOGIN;
-
-		if (!verificarArquivosExterno())
-		{
-			addActionError("Não foi possível localizar os arquivos de layout(Fortes\\RH) do módulo externo.");
-			return "erro";
-		}
-
-		return Action.SUCCESS;
-	}
-	
 	public Candidato getCandidato()
 	{
 		return candidato;
@@ -322,7 +335,7 @@ public class ExternoAction extends MyActionSupport
 		this.senha = senha;
 	}
 
-	public Collection getAnuncios()
+	public Collection<Anuncio> getAnuncios()
 	{
 		return anuncios;
 	}

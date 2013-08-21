@@ -8,8 +8,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
-		.dados a, 
-		#popup a { color: blue; }
+		a { color: blue; }
 		#popup ul li { margin: 5px 0px; list-style: disc; }
 	</style>
 	
@@ -17,52 +16,63 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
-	<script type='text/javascript'>
-		function menuAvaliacoesSolicitacao(anuncioId, anuncioTitulo, solicitacaoId) 
-		{
-			$('#popup h5').text(anuncioTitulo);
-			
-			SolicitacaoDWR.findAvaliacoesNaoRespondidas(solicitacaoId, ${SESSION_CANDIDATO_ID}, 
-														function(dados) {
-															var lista = "";
-															$(dados).each(  function(item, solicitacaoAvaliacao) {
-																				lista += "<li><a href='prepareInsertAvaliacaoSolicitacao.action?anuncioId=" + anuncioId + "&solicitacao.id=" + solicitacaoAvaliacao.solicitacaoId + "&colaboradorQuestionario.avaliacao.id=" + solicitacaoAvaliacao.avaliacaoId + "&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true'>" + solicitacaoAvaliacao.avaliacaoTitulo + "</a></li>\n";
-																			});
-														
-															$('#popup ul').html(lista);
-														
-															$('#popup').dialog({
-																modal: true
-															});
-														});	
-	    }
-	</script>
+	<#if SESSION_CANDIDATO_ID?exists>
+		<script type='text/javascript'>
+			function menuAvaliacoesSolicitacao(anuncioId, anuncioTitulo, solicitacaoId) 
+			{
+				$('#popup h5').text(anuncioTitulo);
+				
+				SolicitacaoDWR.findAvaliacoesNaoRespondidas(solicitacaoId, ${SESSION_CANDIDATO_ID}, 
+															function(dados) {
+																var lista = "";
+																$(dados).each(  function(item, solicitacaoAvaliacao) {
+																					lista += "<li><a href='prepareInsertAvaliacaoSolicitacao.action?anuncioId=" + anuncioId + "&solicitacao.id=" + solicitacaoAvaliacao.solicitacaoId + "&colaboradorQuestionario.avaliacao.id=" + solicitacaoAvaliacao.avaliacaoId + "&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true'>" + solicitacaoAvaliacao.avaliacaoTitulo + "</a></li>\n";
+																				});
+															
+																$('#popup ul').html(lista);
+															
+																$('#popup').dialog({
+																	modal: true
+																});
+															});	
+		    }
+		</script>
+	</#if>
 </head>
 <body>
 
-<#if !SESSION_CANDIDATO_NOME?exists >
-	<script>window.location='prepareLogin.action';</script>
-</#if>
-
 <table width="100%">
-	<tr>
-		<td width="75%">
-			<#if SESSION_CANDIDATO_NOME?exists >
+	<#if SESSION_CANDIDATO_ID?exists>
+		<tr>
+			<td width="75%">
 				<b>Bem vindo ${SESSION_CANDIDATO_NOME}!<br>
 				CPF: ${SESSION_CANDIDATO_CPF}</b>
+			</td>
+			<td width="1%">&nbsp;</td>
+			<td width="24%" align='right'>
+				<#assign areaId = 0>
+				<#assign primeira = true>
+				<#-- pega o id do candidato na sessao para iniciar o update-->
+				<a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a><br>
+				<a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a><br>
+				<a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a>
+			</td>
+		</tr>
+		<tr><td colspan="3"><hr /></td></tr>
+	</#if>
+	
+	<tr>
+		<td colspan="3">
+			<strong>Vagas Abertas:</strong> 
+			
+			<#if !SESSION_CANDIDATO_ID?exists>
+			<div style="float:right">
+				<a href="logoutExterno.action?empresaId=${empresaId}">Voltar à página inicial</a>
+			</div>
 			</#if>
 		</td>
-		<td width="1%">&nbsp;</td>
-		<td width="24%" align='right'>
-			<#assign areaId = 0>
-			<#assign primeira = true>
-			<#-- pega o id do candidato na sessao para iniciar o update-->
-			<a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a><br>
-			<a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a><br>
-			<a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a>
-		</td>
 	</tr>
-	<tr><td colspan="3"><hr><b>Vagas Abertas:</b><br></td></tr>
+	
 	<#if (anuncios?exists && anuncios?size > 0)>
 		<tr>
 			<td colspan="3" width="400px">

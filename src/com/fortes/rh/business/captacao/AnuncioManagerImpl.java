@@ -82,4 +82,8 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 		return getDao().findAnunciosModuloExterno(empresaId, candidatoId);
 	}
 
+	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaId) 
+	{
+		return getDao().findAnunciosSolicitacaoAberta(empresaId);
+	}
 }
