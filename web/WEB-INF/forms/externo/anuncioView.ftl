@@ -3,41 +3,54 @@
 <@ww.head/>
 	<title>Informações sobre o Anúncio</title>
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>" media="screen" type="text/css">
 
-	<#if moduloExterno?exists && moduloExterno>
-		<style type="text/css">
-			.btnEnviar{
-				background-image:url(../imgs/btnEnviarExterno.gif) !important;
-				width: 81px !important;
-			}
-			.btnVoltar
-			{
-				background-image:url(../imgs/btnVoltarExterno.gif) !important;
-				width: 69px !important;
-			}
-			input,textarea,select,fieldset {
-				border: 1px solid #BFB6B3 !important;
-			}
-		</style>
-	</#if>
-
+	<style type="text/css">
+		a { color: blue !important; }
+		<#if moduloExterno?exists && moduloExterno>
+			.btnEnviar { background-image:url(../imgs/btnEnviarExterno.gif) !important; width: 81px !important; }
+			.btnVoltar { background-image:url(../imgs/btnVoltarExterno.gif) !important; width: 69px !important; }
+			#loginCadastro p { text-align: justify; }
+		</#if>
+	</style>
+	
+	<script type="text/javascript" src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
+	<script type="text/javascript">
+		function abrirMenuCandidatarse() {
+			$('#loginCadastro').dialog({
+				title: "Identificação",
+				modal: true,
+				width: 325,
+				buttons: [
+				    { text: "Criar meu cadastro", click: function() { window.location="prepareInsert.action?moduloExterno=true&empresaId=${anuncio.solicitacao.empresa.id}&solicitacao.id=${anuncio.solicitacao.id}"; } },
+				    { text: "Efetuar o login", click: function() { window.location="prepareLogin.action?empresaId=${anuncio.solicitacao.empresa.id}&solicitacao.id=${anuncio.solicitacao.id}" } }
+				]
+			});
+		}
+	</script>
 </head>
 <body>
-
 	<@ww.actionerror />
+	<@ww.actionmessage />
+	
 	<h3>${anuncio.titulo}</h3>
-	<span class="item"><b>Descrição:</b></span><br>
-	<pre>${anuncio.cabecalhoFormatado}</pre><br><br>
+	
+	<div class="item"><b>Descrição:</b></div>
+	<pre>${anuncio.cabecalhoFormatado}</pre>
+	
+	<br /><br />
 
 	<div class="buttonGroup">
-		<#-- 
-		<#if anuncio.responderAvaliacaoModuloExterno && anuncio.solicitacao.avaliacao?exists && anuncio.solicitacao.avaliacao.id?exists>			
-			<button onclick="window.location='prepareInsertAvaliacaoSolicitacao.action?anuncioId=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}&colaboradorQuestionario.avaliacao.id=${anuncio.solicitacao.avaliacao.id}&candidato.id=${SESSION_CANDIDATO_ID}&moduloExterno=true'" class="btnQueroMeCandidatar" accesskey="E"></button>
+		<#if SESSION_CANDIDATO_ID?exists>
+			<button onclick="window.location='enviarCurriculo.action?anuncio.id=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}'" class="btnQueroMeCandidatar" accesskey="E"></button>
 		<#else>
-		-->
-
-		<button onclick="window.location='enviarCurriculo.action?anuncio.id=${anuncio.id}&solicitacao.id=${anuncio.solicitacao.id}'" class="btnQueroMeCandidatar" accesskey="E"></button>
-		<button onclick="window.location='prepareListAnuncio.action'" class="btnVoltar" accesskey="V"></button>
+			<button onclick="abrirMenuCandidatarse();" class="btnQueroMeCandidatar" accesskey="E"></button>
+		</#if>
+		<button onclick="window.location='prepareListAnuncio.action?empresaId=${anuncio.solicitacao.empresa.id}'" class="btnVoltar" accesskey="V"></button>
+	</div>
+	
+	<div id="loginCadastro" style="display:none">
+		<p>Crie seu cadastro ou efetue o login no nosso sistema para efetivar a sua candidatura à essa vaga.</p>
 	</div>
 </body>
 </html>

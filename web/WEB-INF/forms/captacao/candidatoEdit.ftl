@@ -26,7 +26,6 @@
 		#parentesDialog .xz { background-color:#fbfa99; color:red; }
 		#parentesDialog table { width: 100%; }
 		#parentesDialog td { width: 50%; vertical-align: top; }
-
 </style>
 
   <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
@@ -800,6 +799,8 @@
       <@ww.hidden name="candidato.observacao" id="candidato.observacao" />
       <@ww.hidden name="candidato.observacaoRH" id="candidato.observacaoRH" />
       <@ww.hidden name="candidato.id" />
+      
+      <@ww.hidden name="solicitacao.id" />
 
 	  <@ww.token/>
     </@ww.form>

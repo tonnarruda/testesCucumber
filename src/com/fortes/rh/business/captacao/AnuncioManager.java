@@ -19,4 +19,6 @@ public interface AnuncioManager extends GenericManager<Anuncio>
 	Anuncio findBySolicitacao(Long solicitacaoId);
 
 	Collection<Anuncio> findAnunciosModuloExterno(Long empresaId, Long candidatoId);
+
+	Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaId);
 }
