@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -71,10 +72,25 @@ public class AvaliacaoCursoListAction extends MyActionSupportList
 	
 	public String relatorioRankingAvaliacaoAluno()
 	{
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findForRankingPerformanceAvaliacaoCurso(cursosCheck, turmasCheck, avaliacaoCursosCheck);
-		
-		parametros = RelatorioUtil.getParametrosRelatorio("Ranking das Avaliações dos Alunos", getEmpresaSistema(), "");
-		
+		try{
+			colaboradorQuestionarios = colaboradorQuestionarioManager.findForRankingPerformanceAvaliacaoCurso(cursosCheck, turmasCheck, avaliacaoCursosCheck);
+
+			if(colaboradorQuestionarios.isEmpty())
+				throw new FortesException("Não existe dados para o filtro selecionado.");
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Ranking das Avaliações dos Alunos", getEmpresaSistema(), "");
+		}
+		catch (Exception e)
+		{
+			if (e instanceof FortesException)
+				addActionMessage(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
+			e.printStackTrace();
+			prepareRelatorioRankingAvaliacaoAluno();
+			return Action.INPUT;
+		}
 		return Action.SUCCESS;
 	}
 
