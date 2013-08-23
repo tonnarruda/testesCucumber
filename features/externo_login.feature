@@ -5,7 +5,7 @@ Funcionalidade: Login no modulo externo
   @dev
   Cenário: logar
     Quando eu acesso "externo/prepareLogin.action?empresaId=1"
-    E eu clico "Clique aqui para se cadastrar"
+    E eu clico "Quero me cadastrar"
     Então eu devo ver "Prezado Candidato"
     
     Quando eu clico na aba "CURRÍCULO"

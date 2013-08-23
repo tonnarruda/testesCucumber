@@ -6,4 +6,4 @@ insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (590,
 insert into perfil_papel(perfil_id, papeis_id) values(1, 589);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 590);--.go
 
-alter sequence papel_sequence restart with 581;--.go
+alter sequence papel_sequence restart with 591;--.go

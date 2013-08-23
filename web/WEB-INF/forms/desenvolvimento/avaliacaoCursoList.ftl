@@ -9,7 +9,7 @@
 	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
-	<title>Avaliacões dos Alunos</title>
+	<title>Avaliações dos Alunos</title>
 </head>
 <body>
 	<@ww.actionerror />

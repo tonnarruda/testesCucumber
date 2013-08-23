@@ -52,4 +52,4 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Solicitação
     Então eu devo ver "Prova Java"
     Então eu clico em excluir "Prova Java"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Modelo de Avaliação excluído com sucesso."
+    Então eu devo ver "Modelo de avaliação excluído com sucesso."
