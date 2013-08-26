@@ -93,8 +93,8 @@ public class CheckListBoxTag extends TagSupport
 				if(readonly)
 					disabled = "onclick=\"return false;\"";
 
-				checkGroup += "<label for=\"checkGroup" + name + value + "\" ><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+""
-						+ " id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\" >" + cb.getNome() + "</label>\n<br>";
+				checkGroup += "<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+""
+						+ " id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\" >" + cb.getNome() + "</label>\n";
 			}
 
 			checkGroup += "</div></div></li>";

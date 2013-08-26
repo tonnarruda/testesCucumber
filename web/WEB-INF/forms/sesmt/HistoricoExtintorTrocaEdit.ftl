@@ -24,88 +24,30 @@
 	<script type="text/javascript">
 		
 		var localizacoes = [${localizacoes}];
-		var marcados = [];
-		var extintores;
 		
 		$(function() {
 			$("#localizacao").autocomplete(localizacoes);
 			
-			extintores = $("input[name='extintorsCheck']");
-			$('.listCheckBoxBarra').append(" | <span><input type=\"text\" id=\"txtBusca\" placeholder=\"Digite aqui para filtrar\" style=\"width: 180px;\"/></span>");
+			$('.listCheckBoxBarra').append(" | <span><input type=\"text\" class=\"listCheckBoxFinder\" placeholder=\"Digite aqui para filtrar\" style=\"width: 180px;\"/></span>");
 			
-		    $("#txtBusca").keyup(function(){
-		        var map = {};
-			    
-			    $("input[name='extintorsCheck']").each(function(){
-			         if($(this).is(':checked') && (marcados.indexOf($(this).val()) == -1))
-			          	marcados.push($(this).val());
+		    $('.listCheckBoxFinder').keyup(function() {
+		        var texto = removerAcento( $( this ).val().toUpperCase() );
+			    $( this ).parents( '.listCheckBoxContainer' ).find( ':checkbox' ).each( function() {
+			    	 nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
+					 $( this ).parent().toggle( nomeTeste.indexOf( texto ) >= 0 );
 	        	});
-	        	
-		        var texto = removerAcento($(this).val().toUpperCase());
-			    extintores.each(function(){
-			    	 nomeTeste = removerAcento($(this).parent("label").text().toUpperCase());
-			         if(nomeTeste.indexOf(texto) >= 0){
-			            map[$(this).val()] = $(this).parent("label").text();  
-			         }
-	        	});
-	        	
-	        	$('#listCheckBoxextintorsCheck').empty();
-	            addChecks('extintorsCheck', map, "remove($(this).val())");
-	         	checkJaMarcados();
     		});
-    		
 		});
 		
-		function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
+		function validarCampos()
 		{
-			with(frm)
-			{
-				for(i = 0; i < elements.length; i++)
-				{
-					if(elements[i].name == nameCheck && elements[i].type == 'checkbox' && !elements[i].disabled)
-					{
-						elements[i].checked = vMarcar;
-						if(!vMarcar)
-							remove(elements[i].value);
-		 			}
-				}
-			}
-		}
-		
-		function checkJaMarcados()
-		{
-			for(i = 0; i < marcados.length; i++)
-	           $('#checkGroupextintorsCheck' + marcados[i]).attr('checked',true);
-		}
-
-		function inserirMarcados(identificador)
-		{
-			 if(identificador.is(':checked') && (marcados.indexOf(identificador.val()) == -1))
-			      marcados.push(identificador.val());
-		}
-
-		function remove(id)
-		{
-			while (marcados.indexOf(id) != -1) 
- 				marcados.splice(marcados.indexOf(id), 1);
-		}
-		
-		function validarCamposAndInsertMarcadosExtintors()
-		{
-			var map = {};
-			extintores.each(function(){
-	            map[$(this).val()] = $(this).parent("label").text();  
-        	});
-            addChecks('extintorsCheck', map);
-			checkJaMarcados();
-			
 			return validaFormulario('form', new Array('@extintorsCheck','dataHist','estabelecimento','localizacao','hora'), new Array('dataHist','hora'));
 		}
 	</script>
 </head>
 <body>
 	<@ww.actionerror />
-	<@ww.form name="form" action="troca.action" onsubmit="validarCamposAndInsertMarcadosExtintors();" validate="true" method="POST">
+	<@ww.form name="form" action="troca.action" onsubmit="validarCampos();" validate="true" method="POST">
 		
 		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" pesquisa=true/>
 		
@@ -123,7 +65,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="validarCamposAndInsertMarcadosExtintors();" class="btnGravar" accesskey="${accessKey}"></button>
+		<button onclick="validarCampos();" class="btnGravar" accesskey="${accessKey}"></button>
 		<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>

@@ -85,6 +85,10 @@ table.its tr.even {
 	border:1px solid #BFB6B3 !important;
 }
 
+.listCheckBox label {
+	display: block;
+}
+
 <#-- sobrescrevendo os botões para o externo -->
 .btnInserir
 {
