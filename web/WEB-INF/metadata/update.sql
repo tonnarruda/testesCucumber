@@ -21897,4 +21897,6 @@ insert into migrations values('20130820090046');--.go
 alter table avaliacaocurso add column avaliacao_id bigint;--.go
 ALTER TABLE ONLY avaliacaocurso ADD CONSTRAINT avaliacaocurso_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);--.go 
 insert into migrations values('20130822084617');--.go
+update parametrosdosistema set proximaVersao = '29/12/2013';--.go
+insert into migrations values('20130826093320');--.go
 update parametrosdosistema set appversao = '1.1.114.125';--.go
