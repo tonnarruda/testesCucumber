@@ -268,6 +268,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(true)).will(returnValue(asosPadraos));
 		exameSolicitacaoExameManager.expects(once()).method("findBySolicitacaoExame").with(eq(solicitacaoExame.getId()), eq(false)).will(returnValue(asosComums));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(null));
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").will(returnValue(null));
 		
 		SolicitacaoExame solicitacaoExameParametro = SolicitacaoExameFactory.getEntity(2L);
 		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExameParametro);

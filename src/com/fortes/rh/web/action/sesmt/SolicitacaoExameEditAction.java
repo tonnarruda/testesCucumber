@@ -233,12 +233,12 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao gravar solicitação/atendimento.");
+			addActionError("Erro ao gravar solicitação/atendimento médico.");
 			e.printStackTrace();
 			return INPUT;
 		}
 
-		addActionMessage("Solicitação/Atendimento gravado com sucesso.");
+		addActionMessage("Solicitação/Atendimento Médico gravado com sucesso.");
 		return SUCCESS;
 	}
 	
@@ -262,12 +262,12 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao gravar Solicitação/Atendimento.");
+			addActionError("Erro ao gravar solicitação/atendimento médico.");
 			e.printStackTrace();
 			return INPUT;
 		}
 
-		addActionMessage("Solicitação/Atendimento gravado com sucesso.");
+		addActionMessage("Solicitação/Atendimento Médico gravado com sucesso.");
 		return SUCCESS;
 	}
 
@@ -360,7 +360,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		}
 		else
 		{
-			addActionError("Solicitação/Atendimento inválido.");
+			addActionError("Solicitação/Atendimento Médico inválido.");
 			return INPUT;
 		}
 
