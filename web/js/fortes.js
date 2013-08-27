@@ -183,7 +183,7 @@ function addChecks(divName, dados, onClick)
 	{
 		result += "<label for=\"checkGroup"+ divName + prop +"\" >";
 		result += "<input name=\""+ divName +"\" value=\""+ prop +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + prop +"\">" + dados[prop];
-    	result += "</label><br>";
+    	result += "</label>";
 	}
 
 	var obj = document.getElementById('listCheckBox'+ divName);
@@ -204,7 +204,7 @@ function addChecksArray(divName, dados, onClick)
 		{
 			result += "<label for=\"checkGroup"+ divName + i +"\" >";
 			result += "<input name=\""+ divName +"\" value=\""+ i +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + i +"\">" + dados[i];
-			result += "</label><br>";
+			result += "</label>";
 		}
 	}
 	
@@ -232,7 +232,7 @@ function addChecksByCollection(divName, dados, label, onClick)
 		
 		result += "<label for=\"checkGroup"+ divName + dados[prop]['id'] +"\" >";
 		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\" " + titulo + " " + selecionado + " " + desabilitado + " />" + dados[prop][label];
-    	result += "</label><br>";
+    	result += "</label>";
 	}
 
 	$('#listCheckBox'+ divName).html(result);
