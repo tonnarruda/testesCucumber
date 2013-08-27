@@ -786,19 +786,22 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("	)as cp on cp.colaboradorturma_id = ct.id ");
 		
 		sql.append("left join ( ");
-		sql.append("	select  ");
-		sql.append("		aac.colaboradorturma_id,  ");
-		sql.append("		count(aac.colaboradorturma_id) as qtdavaliacoescurso,  ");
-		sql.append("		sum(  cast(((aac.valor >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, ");
-		sql.append("		sum(aac.valor) as nota ");
-		sql.append("	from  ");
-		sql.append("	aproveitamentoavaliacaocurso aac ");
-		
-		sql.append("left join avaliacaocurso ac on ac.id = aac.avaliacaocurso_id ");
-		
-		sql.append("group by ");
-		sql.append("	aac.colaboradorturma_id ");
-		sql.append("order by aac.colaboradorturma_id ");
+		sql.append("	select ");
+		sql.append("    	ct.id as colaboradorturma_id, ");
+		sql.append("    	count(ct.id) as qtdavaliacoescurso, ");
+		sql.append("    	sum( cast((( (case when ac.tipo = 'a' then (cq.performance * 100) else aac.valor end) >= ac.minimoaprovacao) or ac.minimoaprovacao is null) as int)  ) as qtdavaliacoesaprovadaspornota, ");
+		sql.append("    	sum( case when ac.tipo = 'a' then (cq.performance * 100) else aac.valor end ) as nota ");
+		sql.append("	from ");
+		sql.append("    	avaliacaocurso ac ");
+		sql.append("	cross join ");
+		sql.append("    	colaboradorturma ct ");
+		sql.append("	left join ");
+		sql.append("    	aproveitamentoavaliacaocurso aac on ac.id = aac.avaliacaocurso_id and ct.id = aac.colaboradorturma_id ");
+		sql.append("	left join ");
+		sql.append("    	colaboradorquestionario cq on ac.id = cq.avaliacaocurso_id and ac.avaliacao_id = cq.avaliacao_id and ct.colaborador_id = cq.colaborador_id ");
+		sql.append("	where (ct.id = aac.colaboradorturma_id or (ct.colaborador_id = cq.colaborador_id and ct.turma_id = cq.turma_id)) ");
+		sql.append("	group by ct.id ");
+		sql.append("	order by ct.id ");
 		sql.append(") as rct on rct.colaboradorturma_id = ct.id ");
 		
 		sql.append("where hc.data = ( ");

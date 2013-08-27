@@ -719,7 +719,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos)
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, " co.id ", true, false, null);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, " co.id ", true, false);
 		
 		Collection<Colaborador> aprovados = new ArrayList<Colaborador>();
 		Collection<Colaborador> reprovados = new ArrayList<Colaborador>();
