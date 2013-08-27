@@ -25,7 +25,6 @@
     <property name="usuarioManager" ref="usuarioManager" />
     <property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager" />
   </bean>
-
   <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">
     <property name="serviceFactory">
       <ref bean="xfire.serviceFactory"/>
@@ -38,6 +37,24 @@
     </property>
     <property name="serviceClass">
       <value>com.fortes.rh.business.ws.RHService</value>
+    </property>
+  </bean>
+
+  <bean id="rhServiceIntranet" class="com.fortes.rh.business.ws.RHServiceIntranetImpl">
+    <property name="colaboradorManager" ref="colaboradorManager" />
+  </bean>
+  <bean id="rhWebServiceIntranet" class="org.codehaus.xfire.spring.remoting.XFireExporter">
+    <property name="serviceFactory">
+      <ref bean="xfire.serviceFactory"/>
+    </property>
+    <property name="xfire">
+      <ref bean="xfire"/>
+    </property>
+    <property name="serviceBean">
+      <ref bean="rhServiceIntranet"/>
+    </property>
+    <property name="serviceClass">
+      <value>com.fortes.rh.business.ws.RHServiceIntranet</value>
     </property>
   </bean>
 </beans>
