@@ -12,7 +12,7 @@
 	<@ww.actionmessage/>
 	<@display.table name="historicoColaboradors" id="historicoColaborador" class="dados" defaultsort=2 >
 		<@display.column title="Ações" style="text-align:center;width:40px">
-			<#if historicoColaboradors?size == 1 && colaborador.codigoAC == "" && !colaborador.naoIntegraAc>
+			<#if historicoColaboradors?size == 1 && colaborador.codigoAC?exists && colaborador.codigoAC == "" && !colaborador.naoIntegraAc>
 				<img border="0" title="Edição da primeira situação pode ser realizada no cadastro de colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">			
 			<#else>
 				<a href="prepareUpdate.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>

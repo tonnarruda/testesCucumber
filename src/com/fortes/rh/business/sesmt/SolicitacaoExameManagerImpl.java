@@ -165,16 +165,19 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		{
 			Collection<Risco> riscos = null;
 			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(solicitacaoExame.getColaborador().getId());
+			if (historicoColaborador == null) {
+				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(solicitacaoExame.getColaborador().getId());
+			}
 
 			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null)
 				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
 
-			if (empresa.getControlaRiscoPor() == 'A' && empresa.isExibirDadosAmbiente() && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+			if (empresa.getControlaRiscoPor() == 'A' && empresa.isExibirDadosAmbiente() && historicoColaborador != null && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
 			{
 				riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
 				asoRelatorio.formataRiscos(riscos);
 			}
-			else if (empresa.getControlaRiscoPor() == 'F' && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
+			else if (empresa.getControlaRiscoPor() == 'F' && historicoColaborador != null && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
 			{
 				riscos = riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData());
 				asoRelatorio.formataRiscos(riscos);

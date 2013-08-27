@@ -392,6 +392,15 @@ Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"
    end
 end
 
+Dado /^que exista um modelo avaliacao aluno "([^"]*)"$/ do |avaliacao_titulo|
+   insert :avaliacao do
+     titulo avaliacao_titulo
+     tipomodeloavaliacao 'L'
+     ativo true
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista um modelo avaliacao desempenho "([^"]*)"$/ do |avaliacao_titulo|
    insert :avaliacao do
      titulo avaliacao_titulo

@@ -83,7 +83,7 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 
 		if (solicitacaoExames == null || solicitacaoExames.isEmpty())
 		{
-			addActionMessage("Não há Solicitação/Atendimento Médico a ser listado.");
+			addActionMessage("Não há solicitação/atendimento médico a ser listado.");
 			return SUCCESS;
 		}
 
@@ -114,7 +114,7 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	{
 		solicitacaoExameManager.ajustaOrdemDoList(solicitacaoExame.getData(),solicitacaoExame.getOrdem());
 		solicitacaoExameManager.remove(solicitacaoExame.getId());
-		addActionMessage("Solicitação/Atendimento Médico excluído com sucesso.");
+		addActionSuccess("Solicitação/Atendimento Médico excluído com sucesso.");
 
 		return SUCCESS;
 	}
