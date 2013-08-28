@@ -274,6 +274,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		if (empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
+		criteria.add(Expression.isNull("cq.avaliacaoCurso.id"));
 		criteria.add(Expression.eq("cq.turma.id", turmaId));
 		criteria.add(Expression.eq("cq.respondida", true));
 
