@@ -33,7 +33,9 @@
 			${tipos.getDescricao(avaliacaoCurso.tipo)}
 		</@display.column>
 		<@display.column title="Mínimo para Aprovação" style="width: 200px;text-align:right;">
-			${avaliacaoCurso.minimoAprovacao?string(",##0.00")}
+			<#if avaliacaoCurso.minimoAprovacao?exists>
+				${avaliacaoCurso.minimoAprovacao?string(",##0.00")}
+			</#if>
 		</@display.column>
 	</@display.table>
 	
