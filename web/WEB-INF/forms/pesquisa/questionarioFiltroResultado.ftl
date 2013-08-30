@@ -30,9 +30,10 @@
 		$(function() {
 			DWREngine.setAsync(true);
 			
-		<#if 1 < empresas?size >
-			$('#empresa').val('');
-		</#if>
+			<#if empresas?exists && 1 < empresas?size >
+				$('#empresa').val('');
+			</#if>
+			
 			var empresa = $('#empresa').val();
 	
 			populaCargosByArea(empresa);
