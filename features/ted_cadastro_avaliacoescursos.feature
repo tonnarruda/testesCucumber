@@ -44,10 +44,7 @@ Funcionalidade: Cadastrar Avaliações dos Cursos
     E eu seleciono "Avaliação" de "Tipo"
     E eu preencho "Mínimo para Aprovação" com "7"
     E eu clico no botão "Gravar"
+    Então eu devo ver o alert do valida campos e clico no ok
+    E eu seleciono "Avaliacao de Aluno" de "Modelo da Avaliação"
     E eu devo ver o título "Avaliações dos Alunos"
-    E eu devo ver "_avaliacao"
-
-    Então eu clico em excluir "_testes"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Avaliação excluída com sucesso."
-    E eu não devo ver "_testes"
+    E eu devo ver "_avaliacao II"
