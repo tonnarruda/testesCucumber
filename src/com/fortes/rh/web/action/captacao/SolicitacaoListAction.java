@@ -97,9 +97,6 @@ public class SolicitacaoListAction extends MyActionSupportList
         Map session = ActionContext.getContext().getSession();
 
 		boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(session, new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
-
-		
-		
 		
 		if(roleMovSolicitacaoSelecao)
 		{
