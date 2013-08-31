@@ -186,8 +186,8 @@ function addChecks(divName, dados, onClick)
     	result += "</label>";
 	}
 
-	var obj = document.getElementById('listCheckBox'+ divName);
-	obj.innerHTML = result;
+	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBoxFilter'+ divName).val('');
 }
 
 function addChecksArray(divName, dados, onClick)
@@ -208,8 +208,8 @@ function addChecksArray(divName, dados, onClick)
 		}
 	}
 	
-	var obj = document.getElementById('listCheckBox'+ divName);
-	obj.innerHTML = result;
+	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBoxFilter'+ divName).val('');
 }
 
 function addChecksByCollection(divName, dados, label, onClick)
@@ -236,6 +236,7 @@ function addChecksByCollection(divName, dados, label, onClick)
 	}
 
 	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBoxFilter'+ divName).val('');
 }
 
 function addOptionsByCollection(selectId, dados, prompt, label)

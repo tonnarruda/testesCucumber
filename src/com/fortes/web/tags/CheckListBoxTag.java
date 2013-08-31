@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
 
+@SuppressWarnings("serial")
 public class CheckListBoxTag extends TagSupport
 {
 	private String name = ""; // nome do componente
@@ -20,7 +21,7 @@ public class CheckListBoxTag extends TagSupport
 	private String height = "";
 	private boolean valueString = false;
 	private boolean readonly = false;
-	private boolean pesquisa = false;
+	private boolean filtro = false;
 
 	public CheckListBoxTag()
 	{
@@ -35,7 +36,7 @@ public class CheckListBoxTag extends TagSupport
 			ServletRequest request = pageContext.getRequest();
 			Collection<CheckBox> checks = (Collection<CheckBox>) request.getAttribute(list);
 
-			String checkGroup = "";
+			StringBuilder checkGroup = new StringBuilder();
 			String dimension = "";
 			String dimensionList = "";
 
@@ -57,21 +58,28 @@ public class CheckListBoxTag extends TagSupport
 
 			String labelFormatado = label + (StringUtils.isBlank(label)?"":":"); 
 					
-			checkGroup += "<li id=\"wwgrp_"+ name +"\" class=\"wwgrp\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> " +
-				"<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n";
+			checkGroup.append("<li id=\"wwgrp_"+ name +"\" class=\"wwgrp\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> ");
+			checkGroup.append("<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n");
 
-			checkGroup += "<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>";
+			checkGroup.append("<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>");
 
+			if (filtro)
+				checkGroup.append("<input type=\"text\" id=\"listCheckBoxFilter" + name + "\" class=\"listCheckBoxFilter\" title=\"Digite para filtrar\"/>\n");
+			
 			if(!readonly)
-				checkGroup += "&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">" +
-						"Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">" +
-						"Desmarcar todos</span></div>";
+			{
+				checkGroup.append("&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">");
+				checkGroup.append("Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">");
+				checkGroup.append("Desmarcar todos</span>");
+			}
 			else
-				checkGroup += "&nbsp;<span class='linkCheckDisabled'>" +
-						"Marcar todos</span> | <span class='linkCheckDisabled'>" +
-						"Desmarcar todos</span></div>";
-
-			checkGroup += "<div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">";
+			{
+				checkGroup.append("&nbsp;<span class='linkCheckDisabled'>");
+				checkGroup.append("Marcar todos</span> | <span class='linkCheckDisabled'>");
+				checkGroup.append("Desmarcar todos</span>");
+			}
+			
+			checkGroup.append("</div><div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">");
 
 			for (CheckBox cb : checks)
 			{
@@ -88,16 +96,14 @@ public class CheckListBoxTag extends TagSupport
 					value = cb.getNome();
 
 				String disabled = "";
-				if(pesquisa)
-					disabled = "onclick=\"inserirMarcados($(this));\"" + onClick;
 				if(readonly)
 					disabled = "onclick=\"return false;\"";
 
-				checkGroup += "<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+""
-						+ " id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\" >" + cb.getNome() + "</label>\n";
+				checkGroup.append("<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+"");
+				checkGroup.append(" id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\" >" + cb.getNome() + "</label>\n");
 			}
 
-			checkGroup += "</div></div></li>";
+			checkGroup.append("</div></div></li>");
 
 			pageContext.getOut().print(checkGroup);
 		}
@@ -109,43 +115,35 @@ public class CheckListBoxTag extends TagSupport
 		return SKIP_BODY;
 	}
 
-	public String getList()
-	{
+	public String getList() {
 		return list;
 	}
 
-	public void setList(String list)
-	{
+	public void setList(String list) {
 		this.list = list;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getLabel()
-	{
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabel(String label)
-	{
+	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	public String getOnClick()
-	{
+	public String getOnClick() {
 		return onClick;
 	}
 
-	public void setOnClick(String onClick)
-	{
+	public void setOnClick(String onClick) {
 		this.onClick = onClick;
 	}
 
@@ -181,17 +179,19 @@ public class CheckListBoxTag extends TagSupport
 		this.readonly = readonly;
 	}
 
-	public String getForm()
-	{
+	public String getForm() {
 		return form;
 	}
 
-	public void setForm(String form)
-	{
+	public void setForm(String form) {
 		this.form = form;
 	}
 
-	public void setPesquisa(boolean pesquisa) {
-		this.pesquisa = pesquisa;
+	public void setFiltro(boolean filtro) {
+		this.filtro = filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = Boolean.parseBoolean(filtro);
 	}
 }

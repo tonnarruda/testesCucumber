@@ -22,21 +22,10 @@
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type="text/javascript">
-		
 		var localizacoes = [${localizacoes}];
 		
 		$(function() {
 			$("#localizacao").autocomplete(localizacoes);
-			
-			$('.listCheckBoxBarra').append(" | <span><input type=\"text\" class=\"listCheckBoxFinder\" placeholder=\"Digite aqui para filtrar\" style=\"width: 180px;\"/></span>");
-			
-		    $('.listCheckBoxFinder').keyup(function() {
-		        var texto = removerAcento( $( this ).val().toUpperCase() );
-			    $( this ).parents( '.listCheckBoxContainer' ).find( ':checkbox' ).each( function() {
-			    	 nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
-					 $( this ).parent().toggle( nomeTeste.indexOf( texto ) >= 0 );
-	        	});
-    		});
 		});
 		
 		function validarCampos()
@@ -49,7 +38,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="troca.action" onsubmit="validarCampos();" validate="true" method="POST">
 		
-		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" pesquisa=true/>
+		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" filtro="true"/>
 		
 		<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
 		<legend>Nova Localização</legend>
