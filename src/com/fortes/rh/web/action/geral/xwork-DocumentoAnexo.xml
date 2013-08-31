@@ -28,19 +28,19 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="insertCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="insertCandidato">
-			<result name="success" type="redirect"><![CDATA[list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
+			<result name="success" type="redirect"><![CDATA[listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="insertColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="insertColaborador">
-			<result name="success" type="redirect"><![CDATA[list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
+			<result name="success" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="updateCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateCandidato">
-			<result name="success" type="redirect"><![CDATA[list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
+			<result name="success" type="redirect"><![CDATA[listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="updateColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateColaborador">
-			<result name="success" type="redirect"><![CDATA[list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
+			<result name="success" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="showDocumento" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="showDocumento" />

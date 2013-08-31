@@ -10,15 +10,15 @@
 			<title>Editar Documento do Candidato - ${nome}</title>
 			<#assign formAction="updateCandidato.action"/>
 			<#if solicitacaoId?exists>
-				<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&solicitacaoId=${solicitacaoId}"/>
+				<#assign voltar="listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&solicitacaoId=${solicitacaoId}"/>
 			<#else>
-				<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+				<#assign voltar="lisCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
 			</#if>
 		</#if>
 		<#if documentoAnexo.origem?string == "D">
 			<title>Editar Documento do Colaborador - ${nome}</title>
 			<#assign formAction="updateColaborador.action"/>
-			<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+			<#assign voltar="listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
 		</#if>
 		
 		<#assign buttonLabel="<u>A</u>tualizar"/>
@@ -29,15 +29,15 @@
 			<title>Novo Documento do Candidato - ${nome}</title>
 			<#assign formAction="insertCandidato.action"/>
 			<#if solicitacaoId?exists>
-				<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&solicitacaoId=${solicitacaoId}"/>
+				<#assign voltar="listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&solicitacaoId=${solicitacaoId}"/>
 			<#else>
-				<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+				<#assign voltar="listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
 			</#if>
 		</#if>
 		<#if documentoAnexo.origem?string == "D">
 			<title>Novo Documento do Colaborador - ${nome}</title>
 			<#assign formAction="insertColaborador.action"/>
-			<#assign voltar="list.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+			<#assign voltar="listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
 		</#if>
 		
 		<#assign buttonLabel="<u>I</u>nserir"/>
@@ -92,10 +92,8 @@
 </@ww.form>
 
 <div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar">
-		</button>
-		<button onclick="window.location='${voltar}'" class="btnCancelar">
-		</button>
+	<button onclick="${validarCampos};" class="btnGravar"></button>
+	<button onclick="window.location='${voltar}'" class="btnCancelar"></button>
 </button>
 </div>
 </body>
