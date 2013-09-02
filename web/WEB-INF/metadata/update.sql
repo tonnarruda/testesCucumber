@@ -19697,12 +19697,12 @@ insert into migrations values('20130528170035');--.go
 update parametrosdosistema set appversao = '1.1.109.117';--.go
 -- versao 1.1.109.118
 
-update parametrosdosistema set proximaVersao = '28/07/2013';--.go
+update parametrosdosistema set proximaVersao = '2013-07-28';--.go
 insert into migrations values('20130611134745');--.go
 update parametrosdosistema set appversao = '1.1.109.118';--.go
 -- versao 1.1.109.119
 
-update parametrosdosistema set proximaVersao = '21/08/2013';--.go
+update parametrosdosistema set proximaVersao = '2013-08-21';--.go
 insert into migrations values('20130701095239');--.go
 update parametrosdosistema set appversao = '1.1.109.119';--.go
 -- versao 1.1.110.120
@@ -19775,7 +19775,7 @@ update papel set papelmae_id = 2 where papelmae_id = 522;--.go
 delete from perfil_papel  where papeis_id = 522;--go
 delete from papel  where id = 522;--go
 insert into migrations values('20130723171019');--.go
-update parametrosdosistema set proximaVersao = '22/09/2013';--.go
+update parametrosdosistema set proximaVersao = '2013-09-22';--.go
 insert into migrations values('20130729092659');--.go
 update parametrosdosistema set appversao = '1.1.113.123';--.go
 -- versao 1.1.113.124
@@ -21897,6 +21897,9 @@ insert into migrations values('20130820090046');--.go
 alter table avaliacaocurso add column avaliacao_id bigint;--.go
 ALTER TABLE ONLY avaliacaocurso ADD CONSTRAINT avaliacaocurso_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);--.go 
 insert into migrations values('20130822084617');--.go
-update parametrosdosistema set proximaVersao = '29/12/2013';--.go
+update parametrosdosistema set proximaVersao = '2013-12-29';--.go
 insert into migrations values('20130826093320');--.go
 update parametrosdosistema set appversao = '1.1.114.125';--.go
+-- versao 1.1.114.126
+
+update parametrosdosistema set appversao = '1.1.114.126';--.go

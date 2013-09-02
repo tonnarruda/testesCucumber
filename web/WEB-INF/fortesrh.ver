@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.114.126" data="02/09/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Aval. Desempenho > Cadastros > Avaliação de Desempenho/Acompanham. do Período de Experiência > imprimir modelo da avaliação: Impressão dos aspectos na avaliação. 
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.114.125" data="26/08/2013">
 		<Modulo nome=" "><![CDATA[
-			:: Modulo externo: Possibilidade de visualização das vagas antes de cadastrar o currículo.
+			:: Módulo externo: Visualização das vagas em aberto antes de realizar o cadastro.
 			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Novo filtro para exibir somente áreas ativas.
-			:: C&S > Relatórios > Realinhamentos: Novo relatório por xls.
+			:: C&S > Relatórios > Realinhamentos: Nova opção de formato "planilha".
 			:: C&S > Cadastros > Áreas Organizacionais > Organograma de Áreas Organizacionais: Exibir responsável e coresponsável no diagrama.
-			:: T&D > Cadastros > Modelos de Avaliação de Aluno: Nova opção para criar uma avaliação para a turma.
-			:: T&D > Cadastros > Avaliações dos Alunos > Inserir: Novo opção para selecionar “Avaliação”  no tipo de avaliação do aluno e selecionar o modelo da avaliação.
-			:: T&D > Relatório > Ranking de Performance das Avaliações dos Alunos: Novo relatório para estabelecer o ranking da performance da avaliação que o aluno respondeu.
-			:: Info. Funcionais > Relatórios > Ocorrências: Exibir matricula ao gerar relatório.
+			:: T&D > Cadastros > Modelos de Avaliação de Aluno: Criação de modelos para avaliações dos alunos.
+			:: T&D > Cadastros > Avaliações dos Alunos > Inserir: Nova forma de avaliação usando modelos de questionário, além dos tradicionais "nota" e "porcentagem".
+			:: T&D > Relatório > Ranking de Performance das Avaliações dos Alunos: Novo relatório para estabelecer o ranking da performance das avaliações de aluno.
+			:: Info. Funcionais > Relatórios > Ocorrências: Inclusão da coluna "matrícula" no relatório.
 			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Inserir solicitação de pessoal" enviando email para o responsável do RH e usuários com perfil de "aprovar/reprovar" solicitação de pessoal.
     	]]></Modulo>
     </Versao>
