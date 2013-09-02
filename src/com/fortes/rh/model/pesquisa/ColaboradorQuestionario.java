@@ -680,6 +680,19 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public void setAvaliador(Colaborador avaliador) {
 		this.avaliador = avaliador;
 	}
+	
+	public String getNomeComercialAvaliadoOuAvalidor()
+	{
+		String nomeComercialAvaliadoOuAvalidor = "Sem Nome Comercial";
+		
+		if(getAvaliador() != null && getAvaliador().getNomeComercial() != null)
+			nomeComercialAvaliadoOuAvalidor = getAvaliador().getNomeComercial();
+
+		if(getColaborador() != null && getColaborador().getNomeComercial() != null)
+			nomeComercialAvaliadoOuAvalidor = getColaborador().getNomeComercial();
+		
+		return nomeComercialAvaliadoOuAvalidor;
+	}
 
 	public AvaliacaoDesempenho getAvaliacaoDesempenho() {
 		return avaliacaoDesempenho;

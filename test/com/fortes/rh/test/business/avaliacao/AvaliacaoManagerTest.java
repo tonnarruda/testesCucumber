@@ -175,19 +175,21 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Rubinha");
+		colaborador.setNomeComercial("Rubinha");
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setNome("Escocia");
+		colaborador2.setNomeComercial("Escocia");
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setId(1L);
 		colaboradorQuestionario.setObservacao("obs avaliado1");
-		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliador(colaborador);
 
 		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario2.setId(2L);
 		colaboradorQuestionario2.setObservacao("obs avaliado1");
-		colaboradorQuestionario2.setColaborador(colaborador2);
+		colaboradorQuestionario2.setAvaliador(colaborador2);
 		
 		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
 		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
