@@ -10,7 +10,7 @@
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="QUESTIONARIO_ANONIMO" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="comentario" class="java.lang.String"/>
-	<field name="colaboradorQuestionario.colaborador.nomeComercial" class="java.lang.String"/>
+	<field name="colaboradorQuestionario.nomeComercialAvaliadoOuAvalidor" class="java.lang.String"/>
 	<variable name="RESPOSTA_COUNT" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{comentario}]]></variableExpression>
 	</variable>
@@ -32,7 +32,7 @@
 					<textElement>
 						<font size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{colaboradorQuestionario.colaborador.nomeComercial} + ": "]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaboradorQuestionario.nomeComercialAvaliadoOuAvalidor} + ": "]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement uuid="01adc5fc-c18c-4c02-815b-58c87a42c1a2" key="textField-1" x="25" y="13" width="504" height="12" isRemoveLineWhenBlank="true">

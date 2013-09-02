@@ -80,7 +80,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 				if(!obsAvaliadoresMap.containsKey(colaboradorResposta.getColaboradorQuestionario().getId()))
 				{
 					obsAvaliadoresMap.put(colaboradorResposta.getColaboradorQuestionario().getId(), colaboradorResposta.getColaboradorQuestionario().getObservacao());
-					obs += colaboradorResposta.getColaboradorQuestionario().getColaborador().getNome() + ": " + colaboradorResposta.getColaboradorQuestionario().getObservacao() + "\n\n";
+					obs += colaboradorResposta.getColaboradorQuestionario().getNomeComercialAvaliadoOuAvalidor() + ": " + colaboradorResposta.getColaboradorQuestionario().getObservacao() + "\n\n";
 				}
 			}
 		}

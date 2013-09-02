@@ -314,6 +314,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliador", "av", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.estabelecimento", "e", Criteria.LEFT_JOIN);
@@ -331,6 +332,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		p.add(Projections.property("p.id"), "projectionPerguntaId");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("av.nome"), "projectionAvaliadorNomeComercial");
 		p.add(Projections.property("cand.nome"), "projectionColaboradorNomeComercial");
 
 		criteria.setProjection(p);
