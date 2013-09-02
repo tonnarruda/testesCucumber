@@ -15,6 +15,8 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
+import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
@@ -45,10 +47,12 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 {
 	TabelaReajusteColaboradorManagerImpl tabelaReajusteColaboradorManager = new TabelaReajusteColaboradorManagerImpl();
 
-	Mock tabelaReajusteColaboradorDao = null;
-	Mock reajusteColaboradorManager   = null;
-	Mock historicoColaboradorManager  = null;
-	Mock acPessoalClientTabelaReajuste = null;
+	Mock tabelaReajusteColaboradorDao;
+	Mock reajusteColaboradorManager;
+	Mock historicoColaboradorManager;
+	Mock acPessoalClientTabelaReajuste;
+	Mock reajusteFaixaSalarialManager;
+	Mock reajusteIndiceManager;
 	Mock colaboradorManager;
 	Mock quantidadeLimiteColaboradoresPorCargoManager;
 
@@ -58,6 +62,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
 		acPessoalClientTabelaReajuste = new Mock(AcPessoalClientTabelaReajusteInterface.class);
 		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
+		reajusteIndiceManager = new Mock(ReajusteIndiceManager.class);
+		reajusteFaixaSalarialManager = new Mock(ReajusteFaixaSalarialManager.class);
 
 		tabelaReajusteColaboradorDao = new Mock(TabelaReajusteColaboradorDao.class);
 		tabelaReajusteColaboradorManager.setDao((TabelaReajusteColaboradorDao) tabelaReajusteColaboradorDao.proxy());
@@ -65,6 +71,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		tabelaReajusteColaboradorManager.setHistoricoColaboradorManager((HistoricoColaboradorManager)historicoColaboradorManager.proxy());
 		tabelaReajusteColaboradorManager.setAcPessoalClientTabelaReajuste((AcPessoalClientTabelaReajusteInterface)acPessoalClientTabelaReajuste.proxy());
 		tabelaReajusteColaboradorManager.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
+		tabelaReajusteColaboradorManager.setReajusteIndiceManager((ReajusteIndiceManager) reajusteIndiceManager.proxy());
+		tabelaReajusteColaboradorManager.setReajusteFaixaSalarialManager((ReajusteFaixaSalarialManager) reajusteFaixaSalarialManager.proxy());
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		tabelaReajusteColaboradorManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -83,6 +91,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador.setId(1L);
 
+		reajusteFaixaSalarialManager.expects(once()).method("removeByTabelaReajusteColaborador").with(eq(tabelaReajusteColaborador.getId()));
+		reajusteIndiceManager.expects(once()).method("removeByTabelaReajusteColaborador").with(eq(tabelaReajusteColaborador.getId()));
 		reajusteColaboradorManager.expects(once()).method("deleteByColaboradoresTabelaReajuste").with(ANYTHING,ANYTHING);
 		tabelaReajusteColaboradorDao.expects(once()).method("remove").with(ANYTHING);
 

@@ -10,11 +10,14 @@ import com.fortes.rh.dao.cargosalario.ReajusteFaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 
 public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<ReajusteFaixaSalarial>
@@ -152,6 +155,36 @@ public class ReajusteFaixaSalarialDaoHibernateTest extends GenericDaoHibernateTe
     	indiceIds.add(faixa.getId());
     	
     	assertEquals(1, reajusteFaixaSalarialDao.findByTabelaReajusteCargoFaixa(tabela.getId(), null, indiceIds).size());
+    }
+    
+    public void testRemoveByTabelaReajusteColaborador()
+    {
+    	Cargo cargo = CargoFactory.getEntity();
+    	cargoDao.save(cargo);
+    	
+    	FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+    	faixa.setCargo(cargo);
+    	faixa.setNome("Desv 1");
+    	faixaSalarialDao.save(faixa);
+    	
+    	TabelaReajusteColaborador tabela = TabelaReajusteColaboradorFactory.getEntity();
+    	tabelaReajusteColaboradorDao.save(tabela);
+    	
+    	ReajusteFaixaSalarial reajuste = getEntity();
+    	reajuste.setTabelaReajusteColaborador(tabela);
+    	reajuste.setFaixaSalarial(faixa);
+    	reajuste.setValorAtual(10.0);
+    	reajuste.setValorProposto(11.00);
+    	reajusteFaixaSalarialDao.save(reajuste);
+    	
+    	Exception exception = null;
+    	try {
+    		reajusteFaixaSalarialDao.removeByTabelaReajusteColaborador(tabela.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+    	
+    	assertNull(exception);
     }
     
 	public void setReajusteFaixaSalarialDao(ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) 

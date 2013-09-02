@@ -16,4 +16,5 @@ public interface ReajusteIndiceManager extends GenericManager<ReajusteIndice>
 	ReajusteIndice findByIdProjection(Long reajusteIndiceId);
 	void updateValorProposto(Long reajusteIndiceId, Double valorAtual, char dissidioPor, Double valorDissidio) throws Exception;
 	Collection<ReajusteIndice> findByFiltros(HashMap<Object, Object> parametros);
+	void removeByTabelaReajusteColaborador(Long TabelaReajusteColaboradorId);
 }

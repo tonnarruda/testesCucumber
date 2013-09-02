@@ -54,6 +54,8 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador)
 	{
+		reajusteFaixaSalarialManager.removeByTabelaReajusteColaborador(tabelaReajusteColaborador.getId());
+		reajusteIndiceManager.removeByTabelaReajusteColaborador(tabelaReajusteColaborador.getId());
 		reajusteColaboradorManager.deleteByColaboradoresTabelaReajuste(null, tabelaReajusteColaborador.getId());
 		getDao().remove(tabelaReajusteColaborador.getId());
 	}

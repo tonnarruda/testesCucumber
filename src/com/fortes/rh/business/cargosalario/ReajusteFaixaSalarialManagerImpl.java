@@ -31,6 +31,11 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 		}
 	}
 	
+	public void removeByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) 
+	{
+		getDao().removeByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+	}
+	
 	public Collection<ReajusteFaixaSalarial> findByFiltros(HashMap<Object, Object> parametros) 
 	{
 		return  getDao().findByTabelaReajusteCargoFaixa((Long) parametros.get("tabela"), (Collection<Long>) parametros.get("cargos"), (Collection<Long>) parametros.get("faixaSalarials"));
@@ -60,6 +65,8 @@ public class ReajusteFaixaSalarialManagerImpl extends GenericManagerImpl<Reajust
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
+
+	
 
 
 }

@@ -128,4 +128,12 @@ public class ReajusteFaixaSalarialDaoHibernate extends GenericDaoHibernate<Reaju
 		
 		return criteria.list();
 	}
+
+	public void removeByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) 
+	{
+		String hql = "delete from ReajusteFaixaSalarial where tabelaReajusteColaborador.id = :tabelaReajusteColaboradorId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("tabelaReajusteColaboradorId", tabelaReajusteColaboradorId);
+		query.executeUpdate();
+	}
 }

@@ -125,4 +125,12 @@ public class ReajusteIndiceDaoHibernate extends GenericDaoHibernate<ReajusteIndi
 		
 		return criteria.list();
 	}
+
+	public void removeByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) 
+	{
+		String hql = "delete from ReajusteIndice where tabelaReajusteColaborador.id = :tabelaReajusteColaboradorId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("tabelaReajusteColaboradorId", tabelaReajusteColaboradorId);
+		query.executeUpdate();
+	}
 }

@@ -176,6 +176,32 @@ public class ReajusteIndiceDaoHibernateTest extends GenericDaoHibernateTest<Reaj
     	assertEquals(1, reajusteIndiceDao.findByTabelaReajusteIndice(tabela.getId(), indiceIds).size());
     }
     
+    public void testRemoveByTabelaReajusteColaborador()
+    {
+    	Indice indice = IndiceFactory.getEntity();
+    	indice.setNome("salario minimo");
+    	indiceDao.save(indice);
+    	
+    	TabelaReajusteColaborador tabela = TabelaReajusteColaboradorFactory.getEntity();
+    	tabelaReajusteColaboradorDao.save(tabela);
+    	
+    	ReajusteIndice reajuste = getEntity();
+    	reajuste.setTabelaReajusteColaborador(tabela);
+    	reajuste.setIndice(indice);
+    	reajuste.setValorAtual(10.0);
+    	reajuste.setValorProposto(11.00);
+    	reajusteIndiceDao.save(reajuste);
+    	
+    	Exception exception = null;
+    	try {
+    		reajusteIndiceDao.removeByTabelaReajusteColaborador(tabela.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+    	
+    	assertNull(exception);
+    }
+    
 	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) {
 		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
 	}

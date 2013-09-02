@@ -30,6 +30,11 @@ public class ReajusteIndiceManagerImpl extends GenericManagerImpl<ReajusteIndice
 			getDao().save(reajuste);
 		}
 	}
+
+	public void removeByTabelaReajusteColaborador(Long TabelaReajusteColaboradorId) 
+	{
+		getDao().removeByTabelaReajusteColaborador(TabelaReajusteColaboradorId);
+	}
 	
 	public Collection<ReajusteIndice> findByFiltros(HashMap<Object, Object> parametros) 
 	{

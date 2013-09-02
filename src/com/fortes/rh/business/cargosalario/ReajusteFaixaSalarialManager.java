@@ -14,4 +14,5 @@ public interface ReajusteFaixaSalarialManager extends GenericManager<ReajusteFai
 	ReajusteFaixaSalarial findByIdProjection(Long id);
 	boolean verificaPendenciasPorFaixa(Long faixaSalarialId);
 	Collection<ReajusteFaixaSalarial> findByFiltros(HashMap<Object, Object> parametros);
+	void removeByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
 }

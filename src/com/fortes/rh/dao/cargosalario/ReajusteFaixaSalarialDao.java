@@ -12,4 +12,5 @@ public interface ReajusteFaixaSalarialDao extends GenericDao<ReajusteFaixaSalari
 	ReajusteFaixaSalarial findByIdProjection(Long id);
 	boolean verificaPendenciasPorFaixa(Long faixaSalarialId);
 	Collection<ReajusteFaixaSalarial> findByTabelaReajusteCargoFaixa(Long tabelaReajusteId, Collection<Long> cargosIds, Collection<Long> faixaSalariaisIds);
+	void removeByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
 }
