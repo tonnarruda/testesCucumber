@@ -6,7 +6,8 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	<#assign validarCampos="return validaFormularioEPeriodo('form', null, new Array('inicio','fim'))"/>
+	
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('inicio','fim'), new Array('inicio','fim'))"/>
 
 	<#if colaboradorAfastamento.inicio?exists >
 		<#assign inicio = colaboradorAfastamento.inicio?date/>
@@ -25,7 +26,7 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" id="form" action="relatorioResumoAfastamentos.action" method="POST">
-		Período:<br>
+		Período:*<br>
 		<@ww.datepicker name="colaboradorAfastamento.inicio" id="inicio" value="${inicio}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />
