@@ -3,10 +3,14 @@ package com.fortes.rh.business.sesmt;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
@@ -23,6 +27,9 @@ import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.ColaboradorAfastamentoComparator;
+import com.fortes.rh.model.sesmt.relatorio.ColaboradorAfastamentoMatriz;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
@@ -296,10 +303,12 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		this.cidManager = cidManager;
 	}
 
-	public Collection<ColaboradorAfastamento> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException 
+	public Collection<ColaboradorAfastamentoMatriz> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento, char ordenarPor, boolean agruparPorArea) throws Exception 
 	{
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findRelatorioResumoAfastamentos(empresaId, estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
 		Map<Colaborador, Collection<Date>> datasColaboradores = new HashMap<Colaborador, Collection<Date>>();
+		Map<Long, Integer> totalDiasColaboradores = new HashMap<Long, Integer>();
+		Collection<ColaboradorAfastamentoMatriz> colaboradorAfastamentoMatrizes = new ArrayList<ColaboradorAfastamentoMatriz>();
 		
 		// agrupa meses onde houveram afastamentos para o colaborador
 		for (ColaboradorAfastamento colabAfastamento : colaboradorAfastamentos) 
@@ -308,11 +317,15 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 				datasColaboradores.put(colabAfastamento.getColaborador(), new ArrayList<Date>());
 			
 			datasColaboradores.get(colabAfastamento.getColaborador()).add(colabAfastamento.getInicio());
+			
+			int totalDiasAcumulados = totalDiasColaboradores.containsKey( colabAfastamento.getColaborador().getId() ) ? totalDiasColaboradores.get(colabAfastamento.getColaborador().getId()) : 0;
+			totalDiasColaboradores.put(colabAfastamento.getColaborador().getId(),  totalDiasAcumulados + colabAfastamento.getQtdDias());
 		}
 		
 		// preenche o registro do colaborador com os meses que nao possuem afastamentos
 		Date dataAtual = null;
 		Colaborador colab = null;
+		ColaboradorAfastamento ca = null;
 		for (Map.Entry<Colaborador, Collection<Date>> datasColaborador : datasColaboradores.entrySet())
 		{
 			dataAtual = DateUtil.getInicioMesData(colaboradorAfastamento.getInicio());
@@ -322,13 +335,56 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 				if (!datasColaborador.getValue().contains(dataAtual))
 				{
 					colab = datasColaborador.getKey();
-					colaboradorAfastamentos.add(new ColaboradorAfastamento(colab.getId(), colab.getMatricula(), colab.getNome(), colab.getDataAdmissao(), dataAtual, null, null));
+					ca = new ColaboradorAfastamento(colab.getId(), colab.getMatricula(), colab.getNome(), colab.getDataAdmissao(), colab.getAreaOrganizacional().getId(), dataAtual, null, null);
+					ca.setQtdTotalDias( totalDiasColaboradores.get(colab.getId()) );
+					colaboradorAfastamentos.add(ca);
 				}
 				dataAtual = DateUtil.incrementaMes(dataAtual, 1);
 			}
 		}
 		
-		return colaboradorAfastamentos;
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		for (ColaboradorAfastamento colabAfastamento: colaboradorAfastamentos)
+		{
+			// monta a familia da area organizacional na descricao
+			if (colabAfastamento.getColaborador().getAreaOrganizacional() != null && colabAfastamento.getColaborador().getAreaOrganizacional().getId() != null)
+				colabAfastamento.getColaborador().setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, colabAfastamento.getColaborador().getAreaOrganizacional().getId()));
+			
+			// configura a quantidade total de dias
+			colabAfastamento.setQtdTotalDias( totalDiasColaboradores.get(colabAfastamento.getColaborador().getId()) );
+		}
+		
+		// ordenacao
+		Collections.sort((List<ColaboradorAfastamento>) colaboradorAfastamentos, new ColaboradorAfastamentoComparator(ordenarPor, agruparPorArea));
+		
+		for (ColaboradorAfastamento colabAfastamento: colaboradorAfastamentos)
+			System.out.println(colabAfastamento.getAreaDescricao() + " - " + colabAfastamento.getColaborador().getNome() + " - " + colabAfastamento.getQtdDias() + " - " + colabAfastamento.getQtdTotalDias());
+		
+		// agrupamento por area organizacional
+		if (agruparPorArea)
+		{
+			AreaOrganizacional area = null;
+			
+			ColaboradorAfastamentoMatriz colaboradorAfastamentoMatriz = null;
+			for (ColaboradorAfastamento colabAfast : colaboradorAfastamentos) 
+			{
+				if (!colabAfast.getColaborador().getAreaOrganizacional().equals(area))
+				{
+					area = colabAfast.getColaborador().getAreaOrganizacional();
+					
+					colaboradorAfastamentoMatriz = new ColaboradorAfastamentoMatriz();
+					colaboradorAfastamentoMatriz.setAreaOrganizacionalDescricao(area.getDescricao());
+					colaboradorAfastamentoMatriz.setColaboradorAfastamentos(new ArrayList<ColaboradorAfastamento>());
+					
+					colaboradorAfastamentoMatrizes.add(colaboradorAfastamentoMatriz);
+				}
+				
+				colaboradorAfastamentoMatriz.getColaboradorAfastamentos().add(colabAfast);
+			}
+		}
+		
+		return colaboradorAfastamentoMatrizes;
 	}
 
 	public Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> afastamentosIds) 
@@ -340,6 +396,4 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 	{
 			return getDao().findByColaboradorAfastamentoId(colaboradorAfastamentoId);
 	}
-
-	
 }

@@ -40,14 +40,16 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = null;
 	private Collection<Afastamento> afastamentos;
 	private ColaboradorAfastamento colaboradorAfastamento;
-	private ColaboradorAfastamentoMatriz colaboradorAfastamentoMatriz;
+	private Collection<ColaboradorAfastamentoMatriz> colaboradorAfastamentoMatrizes;
 	private String nomeBusca;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	private boolean ordenaColaboradorPorNome;
 	private boolean agruparPorCid;
+	private boolean agruparPorArea;
 	private char afastadoPeloINSS = 'T';
 	private char agruparPor;
+	private char ordenarPor;
 	
 	public String list() throws Exception
 	{
@@ -153,20 +155,23 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if(DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12)//imundo, tem que ser maior igual
 			{
 				prepareRelatorioResumoAfastamentos();
-				addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
+				addActionWarning("Não é permitido um período maior que 12 meses para a geração deste relatório");
 				return Action.INPUT;
 			}
 			
-			colaboradorAfastamentos = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento);
-			
-			colaboradorAfastamentoMatriz = new ColaboradorAfastamentoMatriz();
-			colaboradorAfastamentoMatriz.setColaboradorAfastamentos(colaboradorAfastamentos);
+			colaboradorAfastamentoMatrizes = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento, ordenarPor, agruparPorArea);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 		}
 		catch (ColecaoVaziaException e)
 		{
 			addActionMessage(e.getMessage());
+			prepareRelatorioResumoAfastamentos();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError(e.getMessage());
 			prepareRelatorioResumoAfastamentos();
 			return INPUT;
 		}
@@ -306,8 +311,16 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		this.motivosCheck = motivosCheck;
 	}
 
-	public ColaboradorAfastamentoMatriz getColaboradorAfastamentoMatriz() {
-		return colaboradorAfastamentoMatriz;
+	public void setOrdenarPor(char ordenarPor) {
+		this.ordenarPor = ordenarPor;
+	}
+
+	public void setAgruparPorArea(boolean agruparPorArea) {
+		this.agruparPorArea = agruparPorArea;
+	}
+
+	public Collection<ColaboradorAfastamentoMatriz> getColaboradorAfastamentoMatrizes() {
+		return colaboradorAfastamentoMatrizes;
 	}
 
 

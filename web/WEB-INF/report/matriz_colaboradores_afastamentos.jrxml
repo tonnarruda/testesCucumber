@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="matriz_colaboradores_afastamentos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a0312473-1484-406c-9f53-fad16e463a3c">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.6105100000000008"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -12,7 +12,7 @@
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="ENTIDADE" class="java.lang.String" isForPrompting="false"/>
 	<field name="colaboradorAfastamentos" class="java.lang.Object"/>
-	<field name="datas" class="java.lang.Object"/>
+	<field name="areaOrganizacionalDescricao" class="java.lang.String"/>
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
@@ -34,12 +34,12 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="5" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="50" splitType="Stretch">
+		<band height="78" splitType="Stretch">
 			<subreport isUsingCache="false">
-				<reportElement uuid="5c809e58-2e59-4356-bff0-ba63e4cfb368" key="colabPorSetor" positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="782" height="50" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="5c809e58-2e59-4356-bff0-ba63e4cfb368" key="colabPorSetor" positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="0" y="28" width="782" height="50" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{colaboradorAfastamentos}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -48,6 +48,13 @@
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "matriz_colaboradores_afastamentos_sub.jasper"]]></subreportExpression>
 			</subreport>
+			<textField>
+				<reportElement uuid="fa268d08-2f06-44ed-87ba-d86f189fa652" x="0" y="4" width="782" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{areaOrganizacionalDescricao}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

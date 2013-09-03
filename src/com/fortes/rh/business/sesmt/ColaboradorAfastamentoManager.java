@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.relatorio.ColaboradorAfastamentoMatriz;
 import com.fortes.security.auditoria.Modulo;
 
 @Modulo("Afastamento do Colaborador")
@@ -27,7 +28,7 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
 	Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss);
-	Collection<ColaboradorAfastamento> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento)throws ColecaoVaziaException;
+	Collection<ColaboradorAfastamentoMatriz> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento, char ordenarPor, boolean agruparPorArea) throws Exception;
 	Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> afastamentosIds);
 	ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId);
 	boolean possuiAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate);

@@ -35,6 +35,9 @@
 		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
 		<@frt.checkListBox name="motivosCheck" label="Motivo de Afastamento" list="motivosCheckList"/>
 		
+		<@ww.select label="Ordenar Por" name="ordenarPor" id="ordenarPor" list=r"#{'N':'Nome do colaborador','D':'Qtde de dias de afastamento (decrescente)'}"/>
+		<@ww.checkbox label="Agrupar por área organizacional" id="agruparPorArea" name="agruparPorArea" labelPosition="left"/>
+		
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos}"></button>
 		</div>
