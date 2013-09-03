@@ -307,9 +307,6 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		Map<Long, Integer> totalDiasColaboradores = new HashMap<Long, Integer>();
 		Collection<ColaboradorAfastamentoMatriz> colaboradorAfastamentoMatrizes = new ArrayList<ColaboradorAfastamentoMatriz>();
 		
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		
 		// agrupa meses onde houveram afastamentos para o colaborador
 		for (ColaboradorAfastamento colabAfastamento : colaboradorAfastamentos) 
 		{
@@ -320,10 +317,6 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 			
 			int totalDiasAcumulados = totalDiasColaboradores.containsKey( colabAfastamento.getColaborador().getId() ) ? totalDiasColaboradores.get(colabAfastamento.getColaborador().getId()) : 0;
 			totalDiasColaboradores.put(colabAfastamento.getColaborador().getId(),  totalDiasAcumulados + colabAfastamento.getQtdDias());
-			
-			// monta a familia da area organizacional na descricao
-			if (colabAfastamento.getColaborador().getAreaOrganizacional() != null && colabAfastamento.getColaborador().getAreaOrganizacional().getId() != null)
-				colabAfastamento.getColaborador().setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, colabAfastamento.getColaborador().getAreaOrganizacional().getId()));
 		}
 		
 		// preenche o registro do colaborador com os meses que nao possuem afastamentos
@@ -345,9 +338,18 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 			}
 		}
 
-		// configura a quantidade total de dias
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		
 		for (ColaboradorAfastamento colabAfastamento: colaboradorAfastamentos)
+		{
+			// monta a familia da area organizacional na descricao
+			if (colabAfastamento.getColaborador().getAreaOrganizacional() != null && colabAfastamento.getColaborador().getAreaOrganizacional().getId() != null)
+				colabAfastamento.getColaborador().setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, colabAfastamento.getColaborador().getAreaOrganizacional().getId()));
+			
+			// configura a quantidade total de dias
 			colabAfastamento.setQtdTotalDias( totalDiasColaboradores.get(colabAfastamento.getColaborador().getId()) );
+		}
 		
 		// ordenacao
 		Collections.sort((List<ColaboradorAfastamento>) colaboradorAfastamentos, new ColaboradorAfastamentoComparator(ordenarPor, agruparPorArea));
