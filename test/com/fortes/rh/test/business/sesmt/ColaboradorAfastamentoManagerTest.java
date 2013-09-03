@@ -21,6 +21,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.relatorio.ColaboradorAfastamentoMatriz;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -98,6 +99,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		
 		Colaborador colaborador = new Colaborador();
 		colaborador.setId(1L);
+		colaborador.setNome("Joao");
 		colaborador.setAreaOrganizacional(areaOrganizacional );
 		
 		colaboradorAfastamentoMock.setColaborador(colaborador);
@@ -105,20 +107,25 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		afastamentos.add(colaboradorAfastamentoMock);
 		
 		colaboradorAfastamentoDao.expects(once()).method("findRelatorioResumoAfastamentos").will(returnValue(afastamentos));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
 
 		ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
 		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(01, 01, 2000));
 		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(01, 05, 2000));
 
-		Collection<ColaboradorAfastamento> retorno = colaboradorAfastamentoManager.montaMatrizResumo(null, null, null, null, colaboradorAfastamento, 'N', false);
-		assertEquals(5, retorno.size());
+		Collection<ColaboradorAfastamentoMatriz> retorno = colaboradorAfastamentoManager.montaMatrizResumo(null, null, null, null, colaboradorAfastamento, 'N', false);
+		Collection<ColaboradorAfastamento> retornoAfastamentos = ((ColaboradorAfastamentoMatriz) retorno.toArray()[0]).getColaboradorAfastamentos();
 		
-		ColaboradorAfastamento afastamento01 = (ColaboradorAfastamento) retorno.toArray()[0];
+		assertEquals(5, retornoAfastamentos.size());
+		
+		ColaboradorAfastamento afastamento01 = (ColaboradorAfastamento) retornoAfastamentos.toArray()[0];
 		assertEquals(colaborador.getId(), afastamento01.getColaborador().getId());
 		assertEquals(null, afastamento01.getAfastamento());
 		assertEquals(new Integer(0), afastamento01.getQtdDias());
 		
-		ColaboradorAfastamento afastamento02 = (ColaboradorAfastamento) retorno.toArray()[1];
+		ColaboradorAfastamento afastamento02 = (ColaboradorAfastamento) retornoAfastamentos.toArray()[1];
 		assertEquals(colaborador.getId(), afastamento02.getColaborador().getId());
 	}
 	

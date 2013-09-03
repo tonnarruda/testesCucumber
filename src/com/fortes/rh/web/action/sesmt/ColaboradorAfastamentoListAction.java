@@ -162,6 +162,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			colaboradorAfastamentoMatrizes = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento, ordenarPor, agruparPorArea);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
+			parametros.put("AGRUPAR_POR_AREA", agruparPorArea);
 		}
 		catch (ColecaoVaziaException e)
 		{

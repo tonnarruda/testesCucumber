@@ -29,7 +29,10 @@ public class ColaboradorAfastamentoComparator implements Comparator<ColaboradorA
 			if (i != 0) return i;
 		}
 		
-	    return c1.getColaborador().getNome().compareTo(c2.getColaborador().getNome());
+		i = c1.getColaborador().getNome().compareTo(c2.getColaborador().getNome());
+	    if (i != 0) return i;
+		
+	    return c1.getInicio().compareTo(c2.getInicio());
 	}
 
 	public char getOrdenarPor() {

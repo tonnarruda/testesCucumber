@@ -40,6 +40,7 @@
 		<band height="49" splitType="Stretch">
 			<crosstab>
 				<reportElement uuid="e659dc27-85ec-479c-898f-b397bb73e0fa" key="crosstab-1" x="0" y="6" width="781" height="37"/>
+				<crosstabDataset isDataPreSorted="true"/>
 				<crosstabHeaderCell>
 					<cellContents mode="Transparent">
 						<box>
