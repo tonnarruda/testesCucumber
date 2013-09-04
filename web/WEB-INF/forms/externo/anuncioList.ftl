@@ -67,7 +67,7 @@
 			
 			<#if !SESSION_CANDIDATO_ID?exists>
 			<div style="float:right">
-				<a href="logoutExterno.action?empresaId=${empresaId}">Voltar à página inicial</a>
+				<a href="logoutExterno.action?empresaId=${empresaId}">Tela de login</a>
 			</div>
 			</#if>
 		</td>
