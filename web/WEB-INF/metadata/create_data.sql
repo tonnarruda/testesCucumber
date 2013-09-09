@@ -14615,7 +14615,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('S363', 'Traumatismo do estômago');
 INSERT INTO cid (codigo, descricao) VALUES ('S364', 'Traumatismo do intestino delgado');
 INSERT INTO cid (codigo, descricao) VALUES ('S365', 'Traumatismo do cólon');
 INSERT INTO cid (codigo, descricao) VALUES ('S366', 'Traumatismo do reto');
-INSERT INTO cid (codigo, descricao) VALUES ('N43', 'Hidrocele e espermatocele');
 INSERT INTO cid (codigo, descricao) VALUES ('S367', 'Traumatismo de múltiplos órgãos intra-abdominais');
 INSERT INTO cid (codigo, descricao) VALUES ('S368', 'Traumatismo de outros órgãos intra-abdominais');
 INSERT INTO cid (codigo, descricao) VALUES ('S369', 'Traumatismo de órgão intra-abdominal não especificado');
@@ -14805,7 +14804,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('S670', 'Lesão por esmagamento do p
 INSERT INTO cid (codigo, descricao) VALUES ('S678', 'Lesão por esmagamento de outras partes e das não especificadas do punho e da mão');
 INSERT INTO cid (codigo, descricao) VALUES ('S680', 'Amputação traumática do polegar (completa) (parcial)');
 INSERT INTO cid (codigo, descricao) VALUES ('S681', 'Amputação traumática de um outro dedo apenas (completa) (parcial)');
-INSERT INTO cid (codigo, descricao) VALUES ('A41', 'Outras septicemias');
 INSERT INTO cid (codigo, descricao) VALUES ('S682', 'Amputação traumática de dois ou mais dedos somente (completa) (parcial)');
 INSERT INTO cid (codigo, descricao) VALUES ('S683', 'Amputação traumática combinada de (partes de) dedo(s) associada a outras partes do punho e da mão');
 INSERT INTO cid (codigo, descricao) VALUES ('S684', 'Amputação traumática da mão ao nível do punho');
@@ -14901,7 +14899,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('S854', 'Traumatismo da veia safena 
 INSERT INTO cid (codigo, descricao) VALUES ('S855', 'Traumatismo da veia poplítea');
 INSERT INTO cid (codigo, descricao) VALUES ('S857', 'Traumatismo de múltiplos vasos sangüíneos ao nível da perna');
 INSERT INTO cid (codigo, descricao) VALUES ('S858', 'Traumatismo de outros vasos sangüíneos ao nível da perna');
-INSERT INTO cid (codigo, descricao) VALUES ('A42', 'Actinomicose');
 INSERT INTO cid (codigo, descricao) VALUES ('S859', 'Traumatismo de vasos sangüíneos não especificados ao nível da perna');
 INSERT INTO cid (codigo, descricao) VALUES ('S860', 'Traumatismo do tendão de Aquiles');
 INSERT INTO cid (codigo, descricao) VALUES ('S861', 'Traumatismo de outro(s) músculo(s) e tendão(ões) do grupo muscular posterior ao nível da perna');
@@ -15061,7 +15058,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('T140', 'Traumatismo superficial de 
 INSERT INTO cid (codigo, descricao) VALUES ('T141', 'Ferimento de região não especificada do corpo');
 INSERT INTO cid (codigo, descricao) VALUES ('T142', 'Fratura de região não especificada do corpo');
 INSERT INTO cid (codigo, descricao) VALUES ('T143', 'Luxação, entorse e distensão de região não especificada do corpo');
-INSERT INTO cid (codigo, descricao) VALUES ('A43', 'Nocardiose');
 INSERT INTO cid (codigo, descricao) VALUES ('T144', 'Traumatismo de nervo(s) de região não especificada do corpo');
 INSERT INTO cid (codigo, descricao) VALUES ('T145', 'Traumatismo de vaso(s) sangüíneo(s) de região não especificada do corpo');
 INSERT INTO cid (codigo, descricao) VALUES ('T146', 'Traumatismo de músculos e tendões de região não especificada do corpo');
@@ -15571,7 +15567,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('T854', 'Complicação mecânica de 
 INSERT INTO cid (codigo, descricao) VALUES ('T855', 'Complicação mecânica de dispositivos protéticos, implante e enxerto gastrointestinais');
 INSERT INTO cid (codigo, descricao) VALUES ('T856', 'Complicação mecânica de outros dispositivos protéticos, implantes e enxertos internos especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('T857', 'Infecção e reação inflamatória devida a outros dispositivos protéticos, implantes e enxertos internos');
-INSERT INTO cid (codigo, descricao) VALUES ('N44', 'Torção do testículo');
 INSERT INTO cid (codigo, descricao) VALUES ('T858', 'Outras complicações de dispositivos protéticos, implantes e enxertos internos não classificados em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('T859', 'Complicação não especificada de outros dispositivos protéticos, implantes e enxertos internos');
 INSERT INTO cid (codigo, descricao) VALUES ('T860', 'Rejeição a transplante de medula óssea');
@@ -15752,7 +15747,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V205', 'Motociclista traumatizado e
 INSERT INTO cid (codigo, descricao) VALUES ('V209', 'Motociclista traumatizado em colisão com um pedestre ou um animal - motociclista não especificado traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V210', 'Motociclista traumatizado em colisão com um veículo a pedal - condutor traumatizado em acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V211', 'Motociclista traumatizado em colisão com um veículo a pedal - passageiro traumatizado em acidente não-de-trânsito');
-INSERT INTO cid (codigo, descricao) VALUES ('N45', 'Orquite e epididimite');
 INSERT INTO cid (codigo, descricao) VALUES ('V212', 'Motociclista traumatizado em colisão com um veículo a pedal - motociclista não especificado traumatizado em acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V213', 'Motociclista traumatizado em colisão com um veículo a pedal - pessoa traumatizado ao subir ou descer do veículo');
 INSERT INTO cid (codigo, descricao) VALUES ('V214', 'Motociclista traumatizado em colisão com um veículo a pedal - condutor traumatizado em um acidente de trânsito');
@@ -15798,7 +15792,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V271', 'Motociclista traumatizado e
 INSERT INTO cid (codigo, descricao) VALUES ('V272', 'Motociclista traumatizado em colisão com um objeto fixo ou parado - motociclista não especificado traumatizado em acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V273', 'Motociclista traumatizado em colisão com um objeto fixo ou parado - pessoa traumatizado ao subir ou descer do veículo');
 INSERT INTO cid (codigo, descricao) VALUES ('V274', 'Motociclista traumatizado em colisão com um objeto fixo ou parado - condutor traumatizado em um acidente de trânsito');
-INSERT INTO cid (codigo, descricao) VALUES ('N46', 'Infertilidade masculina');
 INSERT INTO cid (codigo, descricao) VALUES ('V275', 'Motociclista traumatizado em colisão com um objeto fixo ou parado - passageiro traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V279', 'Motociclista traumatizado em colisão com um objeto fixo ou parado - motociclista não especificado traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V280', 'Motociclista traumatizado em um acidente de transporte sem colisão - condutor traumatizado em acidente não-de-trânsito');
@@ -15808,7 +15801,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V283', 'Motociclista traumatizado e
 INSERT INTO cid (codigo, descricao) VALUES ('V284', 'Motociclista traumatizado em um acidente de transporte sem colisão - condutor traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V285', 'Motociclista traumatizado em um acidente de transporte sem colisão - passageiro traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V289', 'Motociclista traumatizado em um acidente de transporte sem colisão - motociclista não especificado traumatizado em um acidente de trânsito');
-INSERT INTO cid (codigo, descricao) VALUES ('A44', 'Bartonelose');
 INSERT INTO cid (codigo, descricao) VALUES ('V290', 'Condutor traumatizado em colisão com outros veículos e com veículos não especificados, a motor, em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V291', 'Passageiro traumatizado em colisão com outros veículos com veículos não especificados, a motor, em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V292', 'Motociclista não especificado traumatizado em colisão com outros veículos e com veículos não especificados, a motor, em um acidente não-de-trânsito');
@@ -15925,7 +15917,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V410', 'Ocupante de um automóvel [
 INSERT INTO cid (codigo, descricao) VALUES ('V411', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - passageiro traumatizado em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V412', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - pessoa viajando no exterior do veículo traumatizada em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V413', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - ocupante não especificado de um automóvel [carro] traumatizado em um acidente não-de-trânsito');
-INSERT INTO cid (codigo, descricao) VALUES ('R23', 'Outras alterações cutâneas');
 INSERT INTO cid (codigo, descricao) VALUES ('V414', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - pessoa traumatizada ao subir ou descer do veículo');
 INSERT INTO cid (codigo, descricao) VALUES ('V415', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - condutor [motorista] traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V416', 'Ocupante de um automóvel [carro] traumatizado em colisão com um veículo a pedal - passageiro traumatizado em um acidente de trânsito');
@@ -16090,7 +16081,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V586', 'Ocupante de uma caminhonete
 INSERT INTO cid (codigo, descricao) VALUES ('V587', 'Ocupante de uma caminhonete traumatizado em um acidente de transporte sem colisão - pessoa viajando no exterior do veículo traumatizada em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V589', 'Ocupante de uma caminhonete traumatizado em um acidente de transporte sem colisão - ocupante não especificado de uma caminhonete traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V590', 'Condutor [motorista] traumatizado em colisão com outros veículos e com veículos não especificados, a motor, em um acidente não-de-trânsito');
-INSERT INTO cid (codigo, descricao) VALUES ('A46', 'Erisipela');
 INSERT INTO cid (codigo, descricao) VALUES ('V591', 'Passageiro traumatizado em colisão com outros veículos e com veículos não especificados, a motor, em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V592', 'Ocupante não especificado de uma caminhonete traumatizado em colisão com outros veículos e com veículos não especificados, a motor, em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V593', 'Ocupante [qualquer] de uma caminhonete traumatizado em um acidente não especificado e não-de-trânsito');
@@ -16242,7 +16232,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V751', 'Ocupante de um ônibus trau
 INSERT INTO cid (codigo, descricao) VALUES ('V752', 'Ocupante de um ônibus traumatizado em colisão com um trem [comboio] ou um veículo ferroviário - pessoa viajando no exterior do veículo traumatizada em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V753', 'Ocupante de um ônibus traumatizado em colisão com um trem [comboio] ou um veículo ferroviário - ocupante não especificado de um ônibus traumatizado em um acidente não-de-trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V754', 'Ocupante de um ônibus traumatizado em colisão com um trem [comboio] ou um veículo ferroviário - pessoa traumatizado ao subir ou descer do veículo');
-INSERT INTO cid (codigo, descricao) VALUES ('R25', 'Movimentos involuntários anormais');
 INSERT INTO cid (codigo, descricao) VALUES ('V755', 'Ocupante de um ônibus traumatizado em colisão com um trem [comboio] ou um veículo ferroviário - condutor [motorista] traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V756', 'Ocupante de um ônibus traumatizado em colisão com um trem [comboio] ou um veículo ferroviário - passageiro traumatizado em um acidente de trânsito');
 INSERT INTO cid (codigo, descricao) VALUES ('V923', 'Afogamento e submersão relacionados com transporte por água sem acidente com a embarcação - outras embarcações a motor');
@@ -16287,7 +16276,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('V799', 'Ocupante [qualquer] de um �
 INSERT INTO cid (codigo, descricao) VALUES ('V800', 'Queda ou ejeção de uma pessoa montada em animal ou ocupante de um veículo a tração animal em um acidente sem colisão');
 INSERT INTO cid (codigo, descricao) VALUES ('V801', 'Pessoa montada em animal ou ocupante de um veículo a tração animal traumatizado em colisão com um pedestre ou um animal');
 INSERT INTO cid (codigo, descricao) VALUES ('V802', 'Pessoa montada em animal ou ocupante de um veículo a tração animal traumatizado em colisão com um veículo a pedal');
-INSERT INTO cid (codigo, descricao) VALUES ('W67', 'Afogamento e submersão em piscina');
 INSERT INTO cid (codigo, descricao) VALUES ('V803', 'Pessoa montada em animal ou ocupante de um veículo a tração animal traumatizado em colisão com um veículo a motor de duas ou três rodas');
 INSERT INTO cid (codigo, descricao) VALUES ('V804', 'Pessoa montada em animal ou ocupante de um veículo a tração animal traumatizado em colisão com um automóvel [carro], uma caminhonete, um veículo de transporte pesado ou um ônibus');
 INSERT INTO cid (codigo, descricao) VALUES ('V805', 'Pessoa montada em animal ou ocupante de um veículo a tração animal traumatizado em colisão com um outro veículo a motor especificado');
@@ -16525,7 +16513,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('W087', 'Queda de outro tipo de mob�
 INSERT INTO cid (codigo, descricao) VALUES ('W088', 'Queda de outro tipo de mobília - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('W089', 'Queda de outro tipo de mobília - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('W090', 'Queda envolvendo equipamento de "playground" - residência');
-INSERT INTO cid (codigo, descricao) VALUES ('F42', 'Transtorno obsessivo-compulsivo');
 INSERT INTO cid (codigo, descricao) VALUES ('W092', 'Queda envolvendo equipamento de "playground" - escolas, outras instituições e áreas de administração pública');
 INSERT INTO cid (codigo, descricao) VALUES ('W093', 'Queda envolvendo equipamento de "playground" - área para a prática de esportes e atletismo');
 INSERT INTO cid (codigo, descricao) VALUES ('W094', 'Queda envolvendo equipamento de "playground" - rua e estrada');
@@ -16602,7 +16589,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('W164', 'Mergulho ou pulo na água c
 INSERT INTO cid (codigo, descricao) VALUES ('W165', 'Mergulho ou pulo na água causando outro traumatismo que não afogamento ou submersão - áreas de comércio e de serviços');
 INSERT INTO cid (codigo, descricao) VALUES ('W166', 'Mergulho ou pulo na água causando outro traumatismo que não afogamento ou submersão - áreas industriais e em construção');
 INSERT INTO cid (codigo, descricao) VALUES ('W167', 'Mergulho ou pulo na água causando outro traumatismo que não afogamento ou submersão - fazenda');
-INSERT INTO cid (codigo, descricao) VALUES ('I26', 'Embolia pulmonar');
 INSERT INTO cid (codigo, descricao) VALUES ('W168', 'Mergulho ou pulo na água causando outro traumatismo que não afogamento ou submersão - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('W169', 'Mergulho ou pulo na água causando outro traumatismo que não afogamento ou submersão - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('W170', 'Outras quedas de um nível a outro - residência');
@@ -16947,7 +16933,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('W528', 'Esmagado, empurrado ou piso
 INSERT INTO cid (codigo, descricao) VALUES ('W529', 'Esmagado, empurrado ou pisoteado por multidão ou debandada em massa de pessoas - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('W530', 'Mordedura de rato - residência');
 INSERT INTO cid (codigo, descricao) VALUES ('W531', 'Mordedura de rato - habitação coletiva');
-INSERT INTO cid (codigo, descricao) VALUES ('R81', 'Glicosúria');
 INSERT INTO cid (codigo, descricao) VALUES ('W538', 'Mordedura de rato - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('W539', 'Mordedura de rato - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('W540', 'Mordedura ou golpe provocado por cão - residência');
@@ -17148,7 +17133,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('W784', 'Inalação do conteúdo gá
 INSERT INTO cid (codigo, descricao) VALUES ('W785', 'Inalação do conteúdo gástrico - áreas de comércio e de serviços');
 INSERT INTO cid (codigo, descricao) VALUES ('W786', 'Inalação do conteúdo gástrico - áreas industriais e em construção');
 INSERT INTO cid (codigo, descricao) VALUES ('W787', 'Inalação do conteúdo gástrico - fazenda');
-INSERT INTO cid (codigo, descricao) VALUES ('R82', 'Outros achados anormais na urina');
 INSERT INTO cid (codigo, descricao) VALUES ('W788', 'Inalação do conteúdo gástrico - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('W789', 'Inalação do conteúdo gástrico - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('W790', 'Inalação e ingestão de alimentos causando obstrução do trato respiratório - residência');
@@ -17399,7 +17383,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('X092', 'Exposição a tipo não esp
 INSERT INTO cid (codigo, descricao) VALUES ('X093', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - área para a prática de esportes e atletismo');
 INSERT INTO cid (codigo, descricao) VALUES ('X094', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - rua e estrada');
 INSERT INTO cid (codigo, descricao) VALUES ('X095', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - áreas de comércio e de serviços');
-INSERT INTO cid (codigo, descricao) VALUES ('W10', 'Queda em ou de escadas ou degraus');
 INSERT INTO cid (codigo, descricao) VALUES ('X096', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - áreas industriais e em construção');
 INSERT INTO cid (codigo, descricao) VALUES ('X097', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - fazenda');
 INSERT INTO cid (codigo, descricao) VALUES ('X098', 'Exposição a tipo não especificado de fumaça, fogo ou chamas - outros locais especificados');
@@ -17995,7 +17978,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('X715', 'Lesão autoprovocada intenc
 INSERT INTO cid (codigo, descricao) VALUES ('X716', 'Lesão autoprovocada intencionalmente por afogamento e submersão - áreas industriais e em construção');
 INSERT INTO cid (codigo, descricao) VALUES ('X717', 'Lesão autoprovocada intencionalmente por afogamento e submersão - fazenda');
 INSERT INTO cid (codigo, descricao) VALUES ('X718', 'Lesão autoprovocada intencionalmente por afogamento e submersão - outros locais especificados');
-INSERT INTO cid (codigo, descricao) VALUES ('W11', 'Queda em ou de escadas de mão');
 INSERT INTO cid (codigo, descricao) VALUES ('X719', 'Lesão autoprovocada intencionalmente por afogamento e submersão - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('X720', 'Lesão autoprovocada intencionalmente por disparo de arma de fogo de mão - residência');
 INSERT INTO cid (codigo, descricao) VALUES ('X721', 'Lesão autoprovocada intencionalmente por disparo de arma de fogo de mão - habitação coletiva');
@@ -18365,7 +18347,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('Y093', 'Agressão por meios não es
 INSERT INTO cid (codigo, descricao) VALUES ('Y094', 'Agressão por meios não especificados - rua e estrada');
 INSERT INTO cid (codigo, descricao) VALUES ('Y095', 'Agressão por meios não especificados - áreas de comércio e de serviços');
 INSERT INTO cid (codigo, descricao) VALUES ('Y096', 'Agressão por meios não especificados - áreas industriais e em construção');
-INSERT INTO cid (codigo, descricao) VALUES ('W12', 'Queda em ou de um andaime');
 INSERT INTO cid (codigo, descricao) VALUES ('Y098', 'Agressão por meios não especificados - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('Y099', 'Agressão por meios não especificados - local não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('Y100', 'Envenenamento [intoxicação] por e exposição a analgésicos, antipiréticos e anti-reumáticos não-opiáceos, intenção não determinada - residência');
@@ -18440,6 +18421,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('Y166', 'Envenenamento [intoxicaçã
 INSERT INTO cid (codigo, descricao) VALUES ('Y167', 'Envenenamento [intoxicação] por e exposição a solventes orgânicos e hidrocarbonetos halogenados e seus vapores, intenção não determinada - fazenda');
 INSERT INTO cid (codigo, descricao) VALUES ('Y168', 'Envenenamento [intoxicação] por e exposição a solventes orgânicos e hidrocarbonetos halogenados e seus vapores, intenção não determinada - outros locais especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('Y169', 'Envenenamento [intoxicação] por e exposição a solventes orgânicos e hidrocarbonetos halogenados e seus vapores, intenção não determinada - local não especificado');
+INSERT INTO cid (codigo, descricao) VALUES ('E60', 'Deficiência de zinco da dieta');
 INSERT INTO cid (codigo, descricao) VALUES ('Y170', 'Envenenamento [intoxicação] por e exposição a outros gases e vapores, intenção não determinada - residência');
 INSERT INTO cid (codigo, descricao) VALUES ('Y171', 'Envenenamento [intoxicação] por e exposição a outros gases e vapores, intenção não determinada - habitação coletiva');
 INSERT INTO cid (codigo, descricao) VALUES ('Y172', 'Envenenamento [intoxicação] por e exposição a outros gases e vapores, intenção não determinada - escolas, outras instituições e áreas de administração pública');
@@ -19167,6 +19149,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('Z373', 'Nascimento gemelar, um dos 
 INSERT INTO cid (codigo, descricao) VALUES ('Z374', 'Nascimento gemelar, gêmeos natimortos [feto-mortos]');
 INSERT INTO cid (codigo, descricao) VALUES ('Z375', 'Outros nascimentos múltiplos, todos nativivos [nado-vivos]');
 INSERT INTO cid (codigo, descricao) VALUES ('Z376', 'Outros nascimentos múltiplos, alguns nativivos [nado-vivos]');
+INSERT INTO cid (codigo, descricao) VALUES ('K21', 'Doença de refluxo gastroesofágico');
 INSERT INTO cid (codigo, descricao) VALUES ('Z377', 'Outros nascimentos múltiplos, todos natimortos [feto-mortos]');
 INSERT INTO cid (codigo, descricao) VALUES ('Z379', 'Nascimento não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('Z380', 'Criança única, nascida em hospital');
@@ -19604,6 +19587,9 @@ INSERT INTO cid (codigo, descricao) VALUES ('U810', 'Agente resistente à vancom
 INSERT INTO cid (codigo, descricao) VALUES ('U818', 'Agente resistente a outros antibióticos relacionado à vancomicina');
 INSERT INTO cid (codigo, descricao) VALUES ('U898', 'Agente resistente a outro antibiótico especificado único');
 INSERT INTO cid (codigo, descricao) VALUES ('U899', 'Agente resistente a antibiótico não especificado');
+INSERT INTO cid (codigo, descricao) VALUES ('K22', 'Outras doenças do esôfago');
+INSERT INTO cid (codigo, descricao) VALUES ('A89', 'Infecções virais não especificadas do sistema nervoso central');
+INSERT INTO cid (codigo, descricao) VALUES ('A90', 'Dengue [dengue clássico]');
 INSERT INTO cid (codigo, descricao) VALUES ('A00', 'Cólera');
 INSERT INTO cid (codigo, descricao) VALUES ('A01', 'Febres tifóide e paratifóide');
 INSERT INTO cid (codigo, descricao) VALUES ('A02', 'Outras infecções por Salmonella');
@@ -19639,6 +19625,11 @@ INSERT INTO cid (codigo, descricao) VALUES ('A37', 'Coqueluche');
 INSERT INTO cid (codigo, descricao) VALUES ('A38', 'Escarlatina');
 INSERT INTO cid (codigo, descricao) VALUES ('A39', 'Infecção meningogócica');
 INSERT INTO cid (codigo, descricao) VALUES ('A40', 'Septicemia estreptocócica');
+INSERT INTO cid (codigo, descricao) VALUES ('A41', 'Outras septicemias');
+INSERT INTO cid (codigo, descricao) VALUES ('A42', 'Actinomicose');
+INSERT INTO cid (codigo, descricao) VALUES ('A43', 'Nocardiose');
+INSERT INTO cid (codigo, descricao) VALUES ('A44', 'Bartonelose');
+INSERT INTO cid (codigo, descricao) VALUES ('A46', 'Erisipela');
 INSERT INTO cid (codigo, descricao) VALUES ('A48', 'Outras doenças bacterianas não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('A49', 'Infecção bacteriana de localização não especificada');
 INSERT INTO cid (codigo, descricao) VALUES ('A50', 'Sífilis congênita');
@@ -19675,8 +19666,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('A85', 'Outras encefalites virais, n
 INSERT INTO cid (codigo, descricao) VALUES ('A86', 'Encefalite viral, não especificada');
 INSERT INTO cid (codigo, descricao) VALUES ('A87', 'Meningite viral');
 INSERT INTO cid (codigo, descricao) VALUES ('A88', 'Outras infecções virais do sistema nervoso central não classificadas em outra parte');
-INSERT INTO cid (codigo, descricao) VALUES ('A89', 'Infecções virais não especificadas do sistema nervoso central');
-INSERT INTO cid (codigo, descricao) VALUES ('A90', 'Dengue [dengue clássico]');
 INSERT INTO cid (codigo, descricao) VALUES ('A91', 'Febre hemorrágica devida ao vírus do dengue');
 INSERT INTO cid (codigo, descricao) VALUES ('A92', 'Outras febres virais transmitidas por mosquitos');
 INSERT INTO cid (codigo, descricao) VALUES ('A93', 'Outras febres por vírus transmitidas por artrópodes não classificadas em outra parte');
@@ -19885,6 +19874,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('D24', 'Neoplasia benigna da mama');
 INSERT INTO cid (codigo, descricao) VALUES ('D25', 'Leiomioma do útero');
 INSERT INTO cid (codigo, descricao) VALUES ('D26', 'Outras neoplasias benignas do útero');
 INSERT INTO cid (codigo, descricao) VALUES ('D27', 'Neoplasia benigna do ovário');
+INSERT INTO cid (codigo, descricao) VALUES ('E59', 'Deficiência de selênio da dieta');
 INSERT INTO cid (codigo, descricao) VALUES ('D28', 'Neoplasia benigna de outros órgãos genitais femininos e de órgãos não especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('D29', 'Neoplasia benigna dos órgãos genitais masculinos');
 INSERT INTO cid (codigo, descricao) VALUES ('D30', 'Neoplasia benigna dos órgãos urinários');
@@ -19985,8 +19975,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('E54', 'Deficiência de ácido ascó
 INSERT INTO cid (codigo, descricao) VALUES ('E55', 'Deficiência de vitamina D');
 INSERT INTO cid (codigo, descricao) VALUES ('E56', 'Outras deficiências vitamínicas');
 INSERT INTO cid (codigo, descricao) VALUES ('E58', 'Deficiência de cálcio da dieta');
-INSERT INTO cid (codigo, descricao) VALUES ('E59', 'Deficiência de selênio da dieta');
-INSERT INTO cid (codigo, descricao) VALUES ('E60', 'Deficiência de zinco da dieta');
 INSERT INTO cid (codigo, descricao) VALUES ('E61', 'Deficiência de outros elementos nutrientes');
 INSERT INTO cid (codigo, descricao) VALUES ('E63', 'Outras deficiências nutricionais');
 INSERT INTO cid (codigo, descricao) VALUES ('E64', 'Seqüelas de desnutrição e de outras deficiências nutricionais');
@@ -20049,6 +20037,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('F38', 'Outros transtornos do humor 
 INSERT INTO cid (codigo, descricao) VALUES ('F39', 'Transtorno do humor [afetivo] não especificado');
 INSERT INTO cid (codigo, descricao) VALUES ('F40', 'Transtornos fóbico-ansiosos');
 INSERT INTO cid (codigo, descricao) VALUES ('F41', 'Outros transtornos ansiosos');
+INSERT INTO cid (codigo, descricao) VALUES ('F42', 'Transtorno obsessivo-compulsivo');
 INSERT INTO cid (codigo, descricao) VALUES ('F43', 'Reações ao "stress" grave e transtornos de adaptação');
 INSERT INTO cid (codigo, descricao) VALUES ('F44', 'Transtornos dissociativos [de conversão]');
 INSERT INTO cid (codigo, descricao) VALUES ('F45', 'Transtornos somatoformes');
@@ -20142,7 +20131,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('G64', 'Outros transtornos do sistem
 INSERT INTO cid (codigo, descricao) VALUES ('G70', 'Miastenia gravis e outros transtornos neuromusculares');
 INSERT INTO cid (codigo, descricao) VALUES ('G71', 'Transtornos primários dos músculos');
 INSERT INTO cid (codigo, descricao) VALUES ('G72', 'Outras miopatias');
-INSERT INTO cid (codigo, descricao) VALUES ('I25', 'Doença isquêmica crônica do coração');
 INSERT INTO cid (codigo, descricao) VALUES ('G73', 'Transtornos da junção mioneural e dos músculos em doenças classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('G80', 'Paralisia cerebral');
 INSERT INTO cid (codigo, descricao) VALUES ('G81', 'Hemiplegia');
@@ -20179,6 +20167,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('H22', 'Transtornos da íris e do co
 INSERT INTO cid (codigo, descricao) VALUES ('H25', 'Catarata senil');
 INSERT INTO cid (codigo, descricao) VALUES ('H26', 'Outras cataratas');
 INSERT INTO cid (codigo, descricao) VALUES ('H27', 'Outros transtornos do cristalino');
+INSERT INTO cid (codigo, descricao) VALUES ('K23', 'Transtornos do esôfago em doenças classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('H28', 'Catarata e outros transtornos do cristalino em doenças classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('H30', 'Inflamação coriorretiniana');
 INSERT INTO cid (codigo, descricao) VALUES ('H31', 'Outros transtornos da coróide');
@@ -20247,6 +20236,8 @@ INSERT INTO cid (codigo, descricao) VALUES ('I21', 'Infarto agudo do miocárdio'
 INSERT INTO cid (codigo, descricao) VALUES ('I22', 'Infarto do miocárdio recorrente');
 INSERT INTO cid (codigo, descricao) VALUES ('I23', 'Algumas complicações atuais subseqüentes ao infarto agudo do miocárdio');
 INSERT INTO cid (codigo, descricao) VALUES ('I24', 'Outras doenças isquêmicas agudas do coração');
+INSERT INTO cid (codigo, descricao) VALUES ('I25', 'Doença isquêmica crônica do coração');
+INSERT INTO cid (codigo, descricao) VALUES ('I26', 'Embolia pulmonar');
 INSERT INTO cid (codigo, descricao) VALUES ('I27', 'Outras formas de doença cardíaca pulmonar');
 INSERT INTO cid (codigo, descricao) VALUES ('I28', 'Outras doenças dos vasos pulmonares');
 INSERT INTO cid (codigo, descricao) VALUES ('I30', 'Pericardite aguda');
@@ -20384,9 +20375,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('K12', 'Estomatite e lesões correla
 INSERT INTO cid (codigo, descricao) VALUES ('K13', 'Outras doenças do lábio e da mucosa oral');
 INSERT INTO cid (codigo, descricao) VALUES ('K14', 'Doenças da língua');
 INSERT INTO cid (codigo, descricao) VALUES ('K20', 'Esofagite');
-INSERT INTO cid (codigo, descricao) VALUES ('K21', 'Doença de refluxo gastroesofágico');
-INSERT INTO cid (codigo, descricao) VALUES ('K22', 'Outras doenças do esôfago');
-INSERT INTO cid (codigo, descricao) VALUES ('K23', 'Transtornos do esôfago em doenças classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('K25', 'Úlcera gástrica');
 INSERT INTO cid (codigo, descricao) VALUES ('K26', 'Úlcera duodenal');
 INSERT INTO cid (codigo, descricao) VALUES ('K27', 'Úlcera péptica de localização não especificada');
@@ -20630,6 +20618,10 @@ INSERT INTO cid (codigo, descricao) VALUES ('N39', 'Outros transtornos do trato 
 INSERT INTO cid (codigo, descricao) VALUES ('N40', 'Hiperplasia da próstata');
 INSERT INTO cid (codigo, descricao) VALUES ('N41', 'Doenças inflamatórias da próstata');
 INSERT INTO cid (codigo, descricao) VALUES ('N42', 'Outras afecções da próstata');
+INSERT INTO cid (codigo, descricao) VALUES ('N43', 'Hidrocele e espermatocele');
+INSERT INTO cid (codigo, descricao) VALUES ('N44', 'Torção do testículo');
+INSERT INTO cid (codigo, descricao) VALUES ('N45', 'Orquite e epididimite');
+INSERT INTO cid (codigo, descricao) VALUES ('N46', 'Infertilidade masculina');
 INSERT INTO cid (codigo, descricao) VALUES ('N47', 'Hipertrofia do prepúcio, fimose e parafimose');
 INSERT INTO cid (codigo, descricao) VALUES ('N48', 'Outros transtornos do pênis');
 INSERT INTO cid (codigo, descricao) VALUES ('N49', 'Transtornos inflamatórios de órgãos genitais masculinos, não classificados em outra parte');
@@ -20887,6 +20879,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('Q92', 'Outras trissomias e trissomi
 INSERT INTO cid (codigo, descricao) VALUES ('Q93', 'Monossomias e deleções dos autossomos, não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('Q95', 'Rearranjos equilibrados e marcadores estruturais, não classificados em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('Q96', 'Síndrome de Turner');
+INSERT INTO cid (codigo, descricao) VALUES ('W35', 'Explosão ou ruptura de caldeira');
 INSERT INTO cid (codigo, descricao) VALUES ('Q97', 'Outras anomalias dos cromossomos sexuais, fenótipo feminino, não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('Q98', 'Outras anomalias dos cromossomos sexuais, fenótipo masculino, não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('Q99', 'Outras anomalias dos cromossomos, não classificadas em outra parte');
@@ -20912,6 +20905,8 @@ INSERT INTO cid (codigo, descricao) VALUES ('R19', 'Outros sintomas e sinais rel
 INSERT INTO cid (codigo, descricao) VALUES ('R20', 'Distúrbios da sensibilidade cutânea');
 INSERT INTO cid (codigo, descricao) VALUES ('R21', 'Eritema e outras erupções cutâneas não especificadas');
 INSERT INTO cid (codigo, descricao) VALUES ('R22', 'Tumefação, massa ou tumoração localizadas da pele e do tecido subcutâneo');
+INSERT INTO cid (codigo, descricao) VALUES ('R23', 'Outras alterações cutâneas');
+INSERT INTO cid (codigo, descricao) VALUES ('R25', 'Movimentos involuntários anormais');
 INSERT INTO cid (codigo, descricao) VALUES ('R26', 'Anormalidades da marcha e da mobilidade');
 INSERT INTO cid (codigo, descricao) VALUES ('R27', 'Outros distúrbios da coordenação');
 INSERT INTO cid (codigo, descricao) VALUES ('R29', 'Outros sintomas e sinais relativos aos sistemas nervoso e osteomuscular');
@@ -20961,6 +20956,8 @@ INSERT INTO cid (codigo, descricao) VALUES ('R77', 'Outras anormalidades das pro
 INSERT INTO cid (codigo, descricao) VALUES ('R78', 'Presença de drogas e de outras substâncias normalmente não encontradas no sangue');
 INSERT INTO cid (codigo, descricao) VALUES ('R79', 'Outros achados anormais de exames químicos do sangue');
 INSERT INTO cid (codigo, descricao) VALUES ('R80', 'Proteinúria isolada');
+INSERT INTO cid (codigo, descricao) VALUES ('R81', 'Glicosúria');
+INSERT INTO cid (codigo, descricao) VALUES ('R82', 'Outros achados anormais na urina');
 INSERT INTO cid (codigo, descricao) VALUES ('R83', 'Achados anormais no líquido cefalorraquidiano');
 INSERT INTO cid (codigo, descricao) VALUES ('R84', 'Achados anormais de material proveniente dos órgãos respiratórios e do tórax');
 INSERT INTO cid (codigo, descricao) VALUES ('R85', 'Achados anormais de material proveniente dos órgãos digestivos e da cavidade abdominal');
@@ -21009,7 +21006,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('S29', 'Outros traumatismos do tóra
 INSERT INTO cid (codigo, descricao) VALUES ('S30', 'Traumatismo superficial do abdome, do dorso e da pelve');
 INSERT INTO cid (codigo, descricao) VALUES ('S31', 'Ferimento do abdome, do dorso e da pelve');
 INSERT INTO cid (codigo, descricao) VALUES ('S32', 'Fratura da coluna lombar e da pelve');
-INSERT INTO cid (codigo, descricao) VALUES ('W66', 'Afogamento e submersão consecutiva a queda dentro de uma banheira');
 INSERT INTO cid (codigo, descricao) VALUES ('S33', 'Luxação, entorse ou distensão das articulações e dos ligamentos da coluna lombar e da pelve');
 INSERT INTO cid (codigo, descricao) VALUES ('S34', 'Traumatismo dos nervos e da medula lombar ao nível do abdome, do dorso e da pelve');
 INSERT INTO cid (codigo, descricao) VALUES ('S35', 'Traumatismo de vasos sangüíneos ao nível do abdome, do dorso e da pelve');
@@ -21162,6 +21158,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('T84', 'Complicações de dispositiv
 INSERT INTO cid (codigo, descricao) VALUES ('T85', 'Complicações de outros dispositivos protéticos, implantes e enxertos internos');
 INSERT INTO cid (codigo, descricao) VALUES ('T86', 'Falha e rejeição de órgãos e tecidos transplantados');
 INSERT INTO cid (codigo, descricao) VALUES ('T87', 'Complicações próprias de reimplante e amputação');
+INSERT INTO cid (codigo, descricao) VALUES ('W36', 'Explosão ou ruptura de cilindro de gás');
 INSERT INTO cid (codigo, descricao) VALUES ('T88', 'Outras complicações de cuidados médicos e cirúrgicos não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('T90', 'Seqüelas de traumatismo da cabeça');
 INSERT INTO cid (codigo, descricao) VALUES ('T91', 'Seqüelas de traumatismos do pescoço e do tronco');
@@ -21279,6 +21276,9 @@ INSERT INTO cid (codigo, descricao) VALUES ('W06', 'Queda de um leito');
 INSERT INTO cid (codigo, descricao) VALUES ('W07', 'Queda de uma cadeira');
 INSERT INTO cid (codigo, descricao) VALUES ('W08', 'Queda de outro tipo de mobília');
 INSERT INTO cid (codigo, descricao) VALUES ('W09', 'Queda envolvendo equipamento de "playground"');
+INSERT INTO cid (codigo, descricao) VALUES ('W10', 'Queda em ou de escadas ou degraus');
+INSERT INTO cid (codigo, descricao) VALUES ('W11', 'Queda em ou de escadas de mão');
+INSERT INTO cid (codigo, descricao) VALUES ('W12', 'Queda em ou de um andaime');
 INSERT INTO cid (codigo, descricao) VALUES ('W13', 'Queda de ou para fora de edifícios ou outras estruturas');
 INSERT INTO cid (codigo, descricao) VALUES ('W14', 'Queda de árvore');
 INSERT INTO cid (codigo, descricao) VALUES ('W15', 'Queda de penhasco');
@@ -21301,8 +21301,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('W31', 'Contato com outras máquinas
 INSERT INTO cid (codigo, descricao) VALUES ('W32', 'Projétil de revólver');
 INSERT INTO cid (codigo, descricao) VALUES ('W33', 'Rifle, espingarda e armas de fogo de maior tamanho');
 INSERT INTO cid (codigo, descricao) VALUES ('W34', 'Projéteis de outras armas de fogo e das não especificadas');
-INSERT INTO cid (codigo, descricao) VALUES ('W35', 'Explosão ou ruptura de caldeira');
-INSERT INTO cid (codigo, descricao) VALUES ('W36', 'Explosão ou ruptura de cilindro de gás');
 INSERT INTO cid (codigo, descricao) VALUES ('W37', 'Explosão ou ruptura de pneumático, tubulação ou mangueira, pressurizados');
 INSERT INTO cid (codigo, descricao) VALUES ('W38', 'Explosão ou ruptura de outros aparelhos pressurizados especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('W39', 'Queima de fogos de artifício');
@@ -21327,6 +21325,8 @@ INSERT INTO cid (codigo, descricao) VALUES ('W59', 'Mordedura ou esmagamento pro
 INSERT INTO cid (codigo, descricao) VALUES ('W60', 'Contato com espinhos de plantas ou com folhas aguçadas');
 INSERT INTO cid (codigo, descricao) VALUES ('W64', 'Exposição a outras forças mecânicas animadas e às não especificadas');
 INSERT INTO cid (codigo, descricao) VALUES ('W65', 'Afogamento e submersão durante banho em banheira');
+INSERT INTO cid (codigo, descricao) VALUES ('W66', 'Afogamento e submersão consecutiva a queda dentro de uma banheira');
+INSERT INTO cid (codigo, descricao) VALUES ('W67', 'Afogamento e submersão em piscina');
 INSERT INTO cid (codigo, descricao) VALUES ('W68', 'Afogamento e submersão conseqüente a queda dentro de uma piscina');
 INSERT INTO cid (codigo, descricao) VALUES ('W69', 'Afogamento e submersão em águas naturais');
 INSERT INTO cid (codigo, descricao) VALUES ('W70', 'Afogamento e submersão conseqüentes a queda dentro de águas naturais');
@@ -21370,7 +21370,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('X15', 'Contato com aparelhos domés
 INSERT INTO cid (codigo, descricao) VALUES ('X16', 'Contato com aquecedores, radiadores e tubulação');
 INSERT INTO cid (codigo, descricao) VALUES ('X17', 'Contato com motores, máquinas e ferramentas quentes');
 INSERT INTO cid (codigo, descricao) VALUES ('X18', 'Contato com outros metais quentes');
-INSERT INTO cid (codigo, descricao) VALUES ('X97', 'Agressão por meio de fumaça, fogo e chamas');
 INSERT INTO cid (codigo, descricao) VALUES ('X19', 'Contato com outras fontes de calor ou com substâncias quentes não especificados');
 INSERT INTO cid (codigo, descricao) VALUES ('X20', 'Contato com serpentes e lagartos venenosos');
 INSERT INTO cid (codigo, descricao) VALUES ('X21', 'Contato com aranhas venenosas');
@@ -21393,6 +21392,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('X37', 'Vítima de tempestade catacl
 INSERT INTO cid (codigo, descricao) VALUES ('X38', 'Vítima de inundação');
 INSERT INTO cid (codigo, descricao) VALUES ('X39', 'Exposição a outras forças da natureza e às não especificadas');
 INSERT INTO cid (codigo, descricao) VALUES ('X40', 'Envenenamento [intoxicação] acidental por e exposição a analgésicos, antipiréticos e anti-reumáticos, não-opiáceos');
+INSERT INTO cid (codigo, descricao) VALUES ('Z92', 'História pessoal de tratamento médico');
 INSERT INTO cid (codigo, descricao) VALUES ('X41', 'Envenenamento [intoxicação] acidental por e exposição a anticonvulsivantes [antiepilépticos], sedativos, hipnóticos, antiparkinsonianos e psicotrópicos não classificadas em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('X42', 'Envenenamento [intoxicação] acidental por e exposição a narcóticos e psicodislépticos [alucinógenos] não classificados em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('X43', 'Envenenamento [intoxicação] acidental por e exposição a outras substâncias farmacológicas de ação sobre o sistema nervoso autônomo');
@@ -21447,6 +21447,7 @@ INSERT INTO cid (codigo, descricao) VALUES ('X93', 'Agressão por meio de dispar
 INSERT INTO cid (codigo, descricao) VALUES ('X94', 'Agressão por meio de disparo de espingarda, carabina ou arma de fogo de maior calibre');
 INSERT INTO cid (codigo, descricao) VALUES ('X95', 'Agressão por meio de disparo de outra arma de fogo ou de arma não especificada');
 INSERT INTO cid (codigo, descricao) VALUES ('X96', 'Agressão por meio de material explosivo');
+INSERT INTO cid (codigo, descricao) VALUES ('X97', 'Agressão por meio de fumaça, fogo e chamas');
 INSERT INTO cid (codigo, descricao) VALUES ('X98', 'Agressão por meio de vapor de água, gases ou objetos quentes');
 INSERT INTO cid (codigo, descricao) VALUES ('X99', 'Agressão por meio de objeto cortante ou penetrante');
 INSERT INTO cid (codigo, descricao) VALUES ('Y00', 'Agressão por meio de um objeto contundente');
@@ -21462,6 +21463,8 @@ INSERT INTO cid (codigo, descricao) VALUES ('Y09', 'Agressão por meios não esp
 INSERT INTO cid (codigo, descricao) VALUES ('Y10', 'Envenenamento [intoxicação] por e exposição a analgésicos, antipiréticos e anti-reumáticos não-opiáceos, intenção não determinada');
 INSERT INTO cid (codigo, descricao) VALUES ('Y11', 'Envenenamento [intoxicação] por e exposição a anticonvulsivantes [antiepilépticos], sedativos, hipnóticos, antiparkinsonianos e psicotrópicos não classificados em outra parte, intenção não determinada');
 INSERT INTO cid (codigo, descricao) VALUES ('Y12', 'Envenenamento [intoxicação] por e exposição a narcóticos e a psicodislépticos [alucinógenos] não classificados em outra parte, intenção não determinada');
+INSERT INTO cid (codigo, descricao) VALUES ('Z93', 'Orifícios artificiais');
+INSERT INTO cid (codigo, descricao) VALUES ('Z94', 'Órgãos e tecidos transplantados');
 INSERT INTO cid (codigo, descricao) VALUES ('Y13', 'Envenenamento [intoxicação] por e exposição a outras substâncias farmacológicas de ação sobre o sistema nervoso autônomo, intenção não determinada');
 INSERT INTO cid (codigo, descricao) VALUES ('Y14', 'Envenenamento [intoxicação] por e exposição a outras drogas, medicamentos e substâncias biológicas e as não especificadas, intenção não determinada');
 INSERT INTO cid (codigo, descricao) VALUES ('Y15', 'Envenenamento [intoxicação] por e exposição ao álcool, intenção não determinada');
@@ -21616,9 +21619,6 @@ INSERT INTO cid (codigo, descricao) VALUES ('Z88', 'História pessoal de alergia
 INSERT INTO cid (codigo, descricao) VALUES ('Z89', 'Ausência adquirida de membros');
 INSERT INTO cid (codigo, descricao) VALUES ('Z90', 'Ausência adquirida de órgãos não classificados em outra parte');
 INSERT INTO cid (codigo, descricao) VALUES ('Z91', 'História pessoal de fatores de risco, não classificados em outra parte');
-INSERT INTO cid (codigo, descricao) VALUES ('Z92', 'História pessoal de tratamento médico');
-INSERT INTO cid (codigo, descricao) VALUES ('Z93', 'Orifícios artificiais');
-INSERT INTO cid (codigo, descricao) VALUES ('Z94', 'Órgãos e tecidos transplantados');
 INSERT INTO cid (codigo, descricao) VALUES ('Z95', 'Presença de implantes e enxertos cardíacos e vasculares');
 INSERT INTO cid (codigo, descricao) VALUES ('Z96', 'Presença de outros implantes funcionais');
 INSERT INTO cid (codigo, descricao) VALUES ('Z97', 'Presença de outros dispositivos protéticos');
@@ -25299,6 +25299,8 @@ INSERT INTO migrations (name) VALUES ('20130819113310');
 INSERT INTO migrations (name) VALUES ('20130819171015');
 INSERT INTO migrations (name) VALUES ('20130820090046');
 INSERT INTO migrations (name) VALUES ('20130822084617');
+INSERT INTO migrations (name) VALUES ('20130904140759');
+INSERT INTO migrations (name) VALUES ('20130904153557');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25604,7 +25606,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.114.126', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-09-22', true, false, 600, NULL, NULL, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.115.127', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-09-22', true, false, 600, NULL, NULL, false, 'L');
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;

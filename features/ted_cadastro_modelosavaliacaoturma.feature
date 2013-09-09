@@ -62,10 +62,10 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
 
     Então eu clico em excluir "contabilidade (Clone)"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Modelo de Avaliação de Curso excluído com sucesso."
+    Então eu devo ver "Modelo de avaliação de curso excluído com sucesso."
     E eu não devo ver "contabilidade (Clone)"
 
     Então eu clico em excluir "contabilidade"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Modelo de Avaliação de Curso excluído com sucesso."
+    Então eu devo ver "Modelo de avaliação de curso excluído com sucesso."
     E eu não devo ver "contabilidade"

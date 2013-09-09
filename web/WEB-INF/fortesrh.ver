@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.115.127" data="09/09/2013">
+		<Modulo nome=" "><![CDATA[
+			:: SESMT > Relatórios > Resumo de Afastamentos: Novas opções de ordenação por "Nome do colaborador" ou "Quantidade de dias de afastamento (decrescente)" e agrupamento por área organizacional.
+			:: Utilitários > Configurações > Sistema: Nova opção para configurar a tela inicial do módulo externo. 
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.114.126" data="02/09/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Aval. Desempenho > Cadastros > Avaliação de Desempenho/Acompanham. do Período de Experiência > imprimir modelo da avaliação: Impressão dos aspectos na avaliação. 
@@ -10,7 +16,7 @@
 			:: Módulo externo: Visualização das vagas em aberto antes de realizar o cadastro.
 			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Novo filtro para exibir somente áreas ativas.
 			:: C&S > Relatórios > Realinhamentos: Nova opção de formato "planilha".
-			:: C&S > Cadastros > Áreas Organizacionais > Organograma de Áreas Organizacionais: Exibir responsável e coresponsável no diagrama.
+			:: C&S > Cadastros > Áreas Organizacionais > Organograma de Áreas Organizacionais: Exibir responsável e corresponsável no diagrama.
 			:: T&D > Cadastros > Modelos de Avaliação de Aluno: Criação de modelos para avaliações dos alunos.
 			:: T&D > Cadastros > Avaliações dos Alunos > Inserir: Nova forma de avaliação usando modelos de questionário, além dos tradicionais "nota" e "porcentagem".
 			:: T&D > Relatório > Ranking de Performance das Avaliações dos Alunos: Novo relatório para estabelecer o ranking da performance das avaliações de aluno.

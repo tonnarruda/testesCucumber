@@ -67,7 +67,7 @@ Funcionalidade: Cadastrar Curso
     E eu clico no botão "Gravar"
     E eu devo ver o título "Incluir Colaboradores na Turma - _testes automatizados"
     E eu clico no botão "Voltar"
-    E eu devo ver o título "Colaboradores Inscritos no curso de _testes, Turma - _testes automatizados"
+    E eu devo ver o título "Colaboradores Inscritos no Curso de _testes, Turma - _testes automatizados"
     E eu clico no botão "Voltar"
     E eu devo ver o título "Turmas do curso _testes"
 
@@ -81,7 +81,7 @@ Funcionalidade: Cadastrar Curso
 
     Então eu clico na linha "_testes auto" da imagem "Lista de Frequência"
     E eu devo ver "Período: 13/06/2012 a 17/06/2012"
-    E eu clico no botão "VoltarListaFrequencia"
+    E eu clico no botão "Voltar"
     E eu devo ver o título "Turmas do curso _testes"
     E eu clico no botão "Voltar"
     E eu devo ver o título "Cursos"
@@ -90,6 +90,8 @@ Funcionalidade: Cadastrar Curso
     E eu devo ver o alert do confirmar exclusão e clico no ok
     E eu devo ver "possui dependências em"
 
+    Então eu clico "Exibir Filtro"
+    E eu clico no botão "Pesquisar"
     Então eu clico na linha "_testes" da imagem "Turmas"
     E eu devo ver o título "Turmas do curso _testes"
     E eu clico em excluir "_testes auto"

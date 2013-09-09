@@ -109,7 +109,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		colaboradorAfastamentoDao.expects(once()).method("findRelatorioResumoAfastamentos").will(returnValue(afastamentos));
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
 
 		ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
 		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(01, 01, 2000));
