@@ -22,7 +22,7 @@
 	
 	<fieldset class="fieldsetPadrao" style="width:860px;">
 		<legend>Formato válido do Arquivo de Importação</legend>
-		<span style="font-size:12px;">Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;Descrição do Tipo</span>
+		<span style="font-size:12px;">Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;CRM;CID;Observação</span>
 	</fieldset>
 	<br/>
 

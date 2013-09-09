@@ -2,14 +2,13 @@ package com.fortes.rh.model.sesmt.relatorio;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 
 public class ColaboradorAfastamentoMatriz
 {
+	private String AreaOrganizacionalDescricao;
 	private Collection<ColaboradorAfastamento> colaboradorAfastamentos = new ArrayList<ColaboradorAfastamento>();
-	private Collection<Date> datas;
 	
 	public Collection<ColaboradorAfastamento> getColaboradorAfastamentos() {
 		return colaboradorAfastamentos;
@@ -18,12 +17,12 @@ public class ColaboradorAfastamentoMatriz
 	public void setColaboradorAfastamentos(Collection<ColaboradorAfastamento> colaboradorAfastamentos) {
 		this.colaboradorAfastamentos = colaboradorAfastamentos;
 	}
-	
-	public Collection<Date> getDatas() {
-		return datas;
+
+	public String getAreaOrganizacionalDescricao() {
+		return AreaOrganizacionalDescricao;
 	}
-	
-	public void setDatas(Collection<Date> datas) {
-		this.datas = datas;
+
+	public void setAreaOrganizacionalDescricao(String areaOrganizacionalDescricao) {
+		AreaOrganizacionalDescricao = areaOrganizacionalDescricao;
 	}
 }

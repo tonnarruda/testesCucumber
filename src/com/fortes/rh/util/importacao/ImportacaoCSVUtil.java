@@ -59,7 +59,7 @@ public class ImportacaoCSVUtil
 		}
 	}
 	
-	//Cód. Empregado;Nome Completo;Nome de Escala;Doença;Data Inicial;Data Final;Médico;Descrição do Tipo;
+	//Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;CRM;CID;Observação
 	private void setAfastamento(String[] campos) throws Exception
 	{	
 		boolean naoAchouLinhaComAfastamento = true;

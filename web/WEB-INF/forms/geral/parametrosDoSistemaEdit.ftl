@@ -113,7 +113,8 @@
 	<@ww.textfield label="Réplica do backup do banco de dados" name="parametrosDoSistema.caminhoBackup" id="caminhoBackup" size="80" maxLength="200" />
 	<br/>
 	
-	<@ww.select label="Perfil padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil"/>
+	<@ww.select label="Perfil padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil" />
+	<@ww.select label="Tela inicial do módulo externo" id="telainicialmoduloexterno" name="parametrosDoSistema.telaInicialModuloExterno" list=r"#{'L':'Tela de login','V':'Tela de vagas disponíveis'}" required="true" cssStyle="width: 300px;" />
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>

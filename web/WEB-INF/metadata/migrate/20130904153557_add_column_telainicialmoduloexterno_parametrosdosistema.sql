@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column telainicialmoduloexterno character(1) not null default 'L';--.go

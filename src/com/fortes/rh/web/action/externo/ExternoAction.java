@@ -8,11 +8,13 @@ import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -49,6 +51,7 @@ public class ExternoAction extends MyActionSupport
 	private Collection<Anuncio> anuncios = null;
 	private AnuncioManager anuncioManager;
 	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Candidato candidato;
 	private CandidatoManager candidatoManager;
@@ -59,12 +62,19 @@ public class ExternoAction extends MyActionSupport
 
 	private CandidatoSolicitacao candidatoSolicitacao;
 
-	private boolean moduloExterno=true; // flag para regra em recuperaSenhaLogin
+	private boolean moduloExterno = true; // flag para regra em recuperaSenhaLogin
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
 	private boolean sucessoRespostaAvaliacao; // flag de alerta ftl
 	
+//	private final char TELA_LOGIN = 'L'; // Default
+	private final char TELA_VAGAS_DISPONIVEIS = 'V';
+	
 	public String prepareLogin() throws Exception
 	{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		if (parametrosDoSistema.getTelaInicialModuloExterno() == TELA_VAGAS_DISPONIVEIS) 
+			return "tela_vagas_disponiveis";
+			
 		mensagemLogin = empresaManager.findByIdProjection(empresaId).getMensagemModuloExterno();
 		if (msg != null && msg.equals(MSG_COD_CAD_SUCCESS))
 			msg = MSG_INF_LOGIN;
@@ -438,5 +448,10 @@ public class ExternoAction extends MyActionSupport
 
 	public void setSucessoRespostaAvaliacao(boolean sucessoRespostaAvaliacao) {
 		this.sucessoRespostaAvaliacao = sucessoRespostaAvaliacao;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
+	{
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

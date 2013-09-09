@@ -29,6 +29,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.atualizadoSucesso"), "atualizadoSucesso");
 		p.add(Projections.property("ps.acVersaoWebServiceCompativel"), "acVersaoWebServiceCompativel");
 		p.add(Projections.property("ps.upperCase"), "upperCase");
+		p.add(Projections.property("ps.telaInicialModuloExterno"), "telaInicialModuloExterno");
 		p.add(Projections.property("ps.codEmpresaSuporte"), "codEmpresaSuporte");
 		p.add(Projections.property("ps.codClienteSuporte"), "codClienteSuporte");
 		p.add(Projections.property("ps.camposCandidatoVisivel"), "camposCandidatoVisivel");

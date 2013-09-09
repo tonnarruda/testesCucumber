@@ -264,7 +264,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 
 	public Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] motivosIds, ColaboradorAfastamento colaboradorAfastamento) 
 	{
-		StringBuilder hql = new StringBuilder("select new ColaboradorAfastamento(co.id, co.matricula, co.nome, co.dataAdmissao, cast('01/'||to_char(ca.inicio,'MM/yyyy') as date), cast(sum(coalesce((ca.fim - ca.inicio + 1), 1)) as integer), cast(count(ca.id) as integer) ) ");
+		StringBuilder hql = new StringBuilder("select new ColaboradorAfastamento(co.id, co.matricula, co.nome, co.dataAdmissao, ao.id, cast('01/'||to_char(ca.inicio,'MM/yyyy') as date), cast(sum(coalesce((ca.fim - ca.inicio + 1), 1)) as integer), cast(count(ca.id) as integer) ) ");
 		hql.append("from ColaboradorAfastamento ca ");
 		hql.append("join ca.colaborador co ");
 		hql.append("join co.historicoColaboradors hc ");
@@ -292,7 +292,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 				+ "(ca.inicio between :dataInicio and :dataFim) " +
 			" ) ");
 
-		hql.append("GROUP BY co.id, co.matricula, co.nome, co.dataAdmissao, cast('01/'||to_char(ca.inicio,'MM/yyyy') as date) ");
+		hql.append("GROUP BY co.id, co.matricula, co.nome, co.dataAdmissao, ao.id, cast('01/'||to_char(ca.inicio,'MM/yyyy') as date) ");
 		hql.append("ORDER BY co.nome, cast('01/'||to_char(ca.inicio,'MM/yyyy') as date) ");
 		
 		Query query = getSession().createQuery(hql.toString());

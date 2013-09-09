@@ -16,6 +16,7 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 
 		parametrosDoSistema.setId(null);
 		parametrosDoSistema.setAppUrl("url");
+		parametrosDoSistema.setTelaInicialModuloExterno('L');
 
 		return parametrosDoSistema;
 	}

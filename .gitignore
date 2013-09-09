@@ -1,3 +1,4 @@
+.ruby-version
 relatorio_cobertura.tar.gz
 junit-report/*
 cobertura-report/*

@@ -65,6 +65,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
+    private char telaInicialModuloExterno;
     
 	@ManyToOne
     private Perfil perfilPadrao;
@@ -319,11 +320,25 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	{
 		this.caminhoBackup = caminhoBackup;
 	}
-	public Boolean getCompartilharCursos() {
+
+	public Boolean getCompartilharCursos()
+	{
 		return compartilharCursos;
 	}
-	public void setCompartilharCursos(Boolean compartilharCursos) {
+
+	public void setCompartilharCursos(Boolean compartilharCursos)
+	{
 		this.compartilharCursos = compartilharCursos;
+	}
+	
+	public char getTelaInicialModuloExterno()
+	{
+		return telaInicialModuloExterno;
+	}
+	
+	public void setTelaInicialModuloExterno(char telaInicialModuloExterno)
+	{
+		this.telaInicialModuloExterno = telaInicialModuloExterno;
 	}
 	
 }

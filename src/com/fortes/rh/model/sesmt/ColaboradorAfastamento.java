@@ -48,6 +48,9 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	
 	@Transient
 	private Integer qtdDias = 0;
+
+	@Transient
+	private Integer qtdTotalDias = 0;
 	
 	@Transient
 	private Integer qtdAfastamentos;
@@ -73,7 +76,7 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	}
 	
 	// usado em findRelatorioResumoAfastamentos
-	public ColaboradorAfastamento(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Date inicio, Integer qtdDias, Integer qtdAfastamentos)
+	public ColaboradorAfastamento(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Long areaId, Date inicio, Integer qtdDias, Integer qtdAfastamentos)
 	{
 		this.inicio = inicio;
 		this.qtdDias = qtdDias;
@@ -83,6 +86,7 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		colaborador.setId(colaboradorId);
 		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setNome(colaboradorNome);
+		colaborador.setAreaOrganizacionalId(areaId);
 		colaborador.setDataAdmissao(dataAdmissao);
 	}
 
@@ -164,6 +168,14 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		return colaborador;
 	}
 
+	public String getAreaDescricao()
+	{
+		if (colaborador == null || colaborador.getAreaOrganizacional() == null || colaborador.getAreaOrganizacional().getDescricao() == null)
+			return "";
+		
+		return colaborador.getAreaOrganizacional().getDescricao();
+	}
+
 	public void setColaborador(Colaborador colaborador)
 	{
 		this.colaborador = colaborador;
@@ -236,7 +248,7 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 
 	public Integer getQtdDias() 
 	{
-		return qtdDias;
+		return qtdDias == null ? 0 : qtdDias;
 	}
 
 	public void setQtdDias(Integer qtdDias) 
@@ -252,5 +264,13 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	public void setQtdAfastamentos(Integer qtdAfastamentos) 
 	{
 		this.qtdAfastamentos = qtdAfastamentos;
+	}
+
+	public Integer getQtdTotalDias() {
+		return qtdTotalDias;
+	}
+
+	public void setQtdTotalDias(Integer qtdTotalDias) {
+		this.qtdTotalDias = qtdTotalDias;
 	}
 }

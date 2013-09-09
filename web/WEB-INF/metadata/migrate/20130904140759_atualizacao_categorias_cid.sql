@@ -1,4 +1,4 @@
-delete from cid where char_length(codigo) < 4;--go
+delete from cid where char_length(codigo) < 4;--.go
 
 insert into cid values
 ('A00','Cólera'),
@@ -2045,4 +2045,4 @@ insert into cid values
 ('U81','Agente resistente à vancomicina e antibióticos relacionados'),
 ('U88','Agente resistente a múltiplos antibióticos'),
 ('U89','Agente resistente a outros antibióticos e a antibióticos não especificados'),
-('U99','CID 10ª Revisão não disponível');--go
+('U99','CID 10ª Revisão não disponível');--.go
