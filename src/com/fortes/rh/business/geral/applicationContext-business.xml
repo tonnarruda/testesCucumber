@@ -923,7 +923,20 @@
       <ref bean="gerenciadorComunicacaoManagerTarget" />
     </property>
   </bean>
-  <bean id="morroManagerTarget" class="com.fortes.rh.business.geral.MorroManagerImpl" />
+  <bean id="fileBoxManagerTarget" class="com.fortes.rh.business.geral.FileBoxManagerImpl" />
+  <bean id="fileBoxManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.FileBoxManager</value>
+    </property>
+    <property name="target">
+      <ref bean="fileBoxManagerTarget" />
+    </property>
+  </bean>
+  <bean id="morroManagerTarget" class="com.fortes.rh.business.geral.MorroManagerImpl">
+    <property name="fileBoxManager">
+      <ref bean="fileBoxManager" />
+    </property>
+  </bean>
   <bean id="morroManager" parent="parentManager">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.business.geral.MorroManager</value>

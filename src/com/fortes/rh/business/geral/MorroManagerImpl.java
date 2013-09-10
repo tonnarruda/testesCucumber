@@ -3,33 +3,27 @@ package com.fortes.rh.business.geral;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
-import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.log4j.Logger;
 
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
-import com.fortes.rh.util.Zip;
 
 
-@SuppressWarnings("deprecation")
 public class MorroManagerImpl implements MorroManager
 {
 	private static Logger logger = Logger.getLogger(MorroManagerImpl.class);
 	private final String PATH = ArquivoUtil.getRhHome() + File.separatorChar;
 	
+	private FileBoxManager fileBoxManager;
+	
 	public void enviar(String mensagem, String classeExcecao, String stackTrace, String url, String browser, String versao, String clienteCnpj, String clienteNome, String usuario) throws Exception
 	{
 		Date hoje = new Date();
-		String nomeZip = PATH + hoje.getTime();
 		String msgStatus = "";
 		
 		File logErro = new File(PATH + "Erro.txt");
-		File zip = null;
 		
 		try {
 			FileOutputStream fos = new FileOutputStream(logErro);  
@@ -37,28 +31,11 @@ public class MorroManagerImpl implements MorroManager
 			
 			fos.write(textoErro.getBytes());  
 			fos.close();
-			HttpClient client = new HttpClient( );
 	        
-	        String weblintURL = "http://www.fortesinformatica.com.br/cgi-bin/filebox/send";
-	        
-	        MultipartPostMethod method = new MultipartPostMethod( weblintURL );
 	        String dataFormatada = DateUtil.formataDate(hoje, "yyyyMMdd_HHmm");
 	        String fileName = "ERRO_RH_RH_" + dataFormatada + "_" + StringUtil.retiraAcento(clienteNome).replace(" ", "_") + ".zip";
 	        
-			ZipOutputStream zipOS = new Zip().compress(new File[] { logErro }, nomeZip, ".zip", false);
-			zipOS.close();
-			zip = new File(nomeZip + ".zip");
-	        
-	        method.addParameter("FileName", fileName );
-	        method.addParameter("Description", clienteCnpj + " " + clienteNome + " - " + usuario );
-	        method.addParameter("Att", "suporte.rh@grupofortes.com.br" );
-	        method.addParameter("ReplyTo", "" );
-	        method.addParameter("File", "zip", zip);
-	        
-	        int status = client.executeMethod( method );
-	        String response = method.getResponseBodyAsString( );
-	        method.releaseConnection();
-	        msgStatus = (status == HttpStatus.SC_OK) ? response : "Falha no envio:\n" + status + " - " + HttpStatus.getStatusText(status);
+	        fileBoxManager.enviar(fileName, clienteCnpj + " " + clienteNome + " - " + usuario, logErro);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +43,6 @@ public class MorroManagerImpl implements MorroManager
 		} finally {
 			if (logErro != null && logErro.exists())
 				logErro.delete();
-			if (zip != null && zip.exists())
-				zip.delete();
 		}
 	}
 
@@ -123,6 +98,11 @@ public class MorroManagerImpl implements MorroManager
 		texto.append("</MadExcept>\n");
 		
 		return texto.toString();
+	}
+	
+	public void setFileBoxManager(FileBoxManager fileBoxManager)
+	{
+		this.fileBoxManager = fileBoxManager;
 	}
 	
 }

@@ -17,7 +17,12 @@
 		
 			<#if arquivos?exists && 0 < arquivos?size>
 				<@display.table name="arquivos" id="arquivo" class="dados">
-					<@display.column title="Nome do Arquivo / Tamanho / Data de modificação">${arquivo}</@display.column>					
+					<@display.column title="Ações" class="acao">
+						<a href="enviarFileBox.action?filename=${arquivo.nome}"><img border="0" title="Enviar arquivo para Ente Tecnologia." src="<@ww.url value="/imgs/upload.png"/>"></a>
+					</@display.column>
+					<@display.column property="nome" title="Nome do Arquivo" />					
+					<@display.column property="tamanho" title="Tamanho" style="text-align: right;" />					
+					<@display.column property="data" title="Data de modificação" format="{0,date,dd/MM/yyyy}" style="text-align: center;"/>					
 				</@display.table>
 			</#if>
 			

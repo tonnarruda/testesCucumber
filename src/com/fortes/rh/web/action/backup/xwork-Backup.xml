@@ -20,6 +20,9 @@
 		<action name="list" class="com.fortes.rh.web.action.backup.BackupAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
 		</action>
+		<action name="enviarFileBox" class="com.fortes.rh.web.action.backup.BackupAction" method="enviarFileBox">
+			<result name="success" type="freemarker">/WEB-INF/forms/backup/success.ftl</result>
+		</action>
 	</package>
 	
 </xwork>

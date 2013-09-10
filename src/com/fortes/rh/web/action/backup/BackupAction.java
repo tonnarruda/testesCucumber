@@ -6,15 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
+import com.fortes.rh.business.geral.FileBoxManager;
 import com.fortes.rh.config.backup.BackupService;
+import com.fortes.rh.model.geral.Arquivo;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 
@@ -27,9 +28,10 @@ public class BackupAction extends MyActionSupport {
 	private BackupService backupService;
 	private String urlVoltar = "";
 	private String backupPath = "";
-	private Collection<String> arquivos;
+	private Collection<Arquivo> arquivos = new ArrayList<Arquivo>();
 	private boolean permiteDeleteSemCodigoAC;
-	
+
+	private FileBoxManager fileBoxManager;
 	String dbBackupDir = ArquivoUtil.getDbBackupPath();
 
 	/**
@@ -48,11 +50,7 @@ public class BackupAction extends MyActionSupport {
 			File[] bkps = ArquivoUtil.listBackupFiles(dbBackupDir);
 			
 			CollectionUtil<File> cUtil = new CollectionUtil<File>();
-			Collection<File> files = cUtil.sortCollectionStringIgnoreCase(Arrays.asList(bkps), "name");
-			arquivos = new ArrayList<String>();
-			String espacoHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";//sabemos que foi imundo
-			for (File file : files)
-				arquivos.add(file.getName() + espacoHTML + file.length() + espacoHTML + DateUtil.formataDiaMesAnoTime(new Date(file.lastModified())));
+			montaColecaoArquivos(cUtil.sortCollectionStringIgnoreCase(Arrays.asList(bkps), "name"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,6 +58,13 @@ public class BackupAction extends MyActionSupport {
 		}
 		
 		return Action.SUCCESS;
+	}
+
+	private void montaColecaoArquivos(Collection<File> arquivos)
+	{
+		for (File file : arquivos) {
+			this.arquivos.add(new Arquivo(file));
+		}
 	}
 
 	public String gerar() {
@@ -91,6 +96,28 @@ public class BackupAction extends MyActionSupport {
 		return Action.SUCCESS;
 	}
 
+	public String enviarFileBox() {
+		
+		File arquivoBackup = new File(ArquivoUtil.getDbBackupPath() + File.separatorChar + filename);
+		
+		try {
+			
+//	        Descomentar quando remprot estiver funcionando
+//	        fileBoxManager.enviar(filename, Autenticador.getRemprot().getCustomerId() + " " + Autenticador.getRemprot().getCustomerName() + " " +  getUsuarioLogado().getNome(), arquivoBackup);
+	        fileBoxManager.enviar(filename, getEmpresaSistema().getCnpj() + "000000 " + getEmpresaSistema().getRazaoSocial() + " " +  getUsuarioLogado().getNome(), arquivoBackup);
+	        
+	        addActionSuccess("Arquivo enviado com sucesso.");
+	        list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (arquivoBackup != null && arquivoBackup.exists())
+				arquivoBackup.delete();
+		}
+		
+		return Action.SUCCESS;
+	}
+
 	private void carrega() {
 		String fullpath = (dbBackupDir + File.separator + filename);
 		try {
@@ -115,10 +142,6 @@ public class BackupAction extends MyActionSupport {
 		this.backupService = backupService;
 	}
 
-	public Collection<String> getArquivos() {
-		return arquivos;
-	}
-
 	public String getUrlVoltar() {
 		return urlVoltar;
 	}
@@ -139,4 +162,13 @@ public class BackupAction extends MyActionSupport {
 		this.permiteDeleteSemCodigoAC = permiteDeleteSemCodigoAC;
 	}
 	
+	public Collection<Arquivo> getArquivos()
+	{
+		return arquivos;
+	}
+	
+	public void setFileBoxManager(FileBoxManager fileBoxManager)
+	{
+		this.fileBoxManager = fileBoxManager;
+	}
 }
