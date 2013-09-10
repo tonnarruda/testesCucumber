@@ -518,10 +518,11 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
     	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId(), pergunta2.getId() } )).will(returnValue(false));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
 
-    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, null, null, null, null, null, null, null, questionario);
+    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId(), pergunta2.getId() }, null, null, null, null, null, null, questionario);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());

@@ -102,6 +102,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
 		Questionario questionario = QuestionarioFactory.getEntity();
 		questionario = questionarioDao.save(questionario);
 
@@ -126,9 +129,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		respostaB.setPergunta(pergunta);
 		respostaB = respostaDao.save(respostaB);
 
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, null, turma);
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, null, turma);
-		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, null, turma);
 
 		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, turma.getId(), null);
 
@@ -224,6 +227,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
 		Questionario questionario = QuestionarioFactory.getEntity();
 		questionario = questionarioDao.save(questionario);
 		
@@ -249,9 +255,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		respostaB.setPergunta(pergunta);
 		respostaB = respostaDao.save(respostaB);
 		
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, null, turma);
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, null, turma);
-		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma);
+		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, null, turma);
 		
 		List<Object[]> retornos = colaboradorRespostaDao.countRespostasMultiplas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, turma.getId(), null);
 		
@@ -271,6 +277,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
 		
 		Questionario questionario = QuestionarioFactory.getEntity();
 		questionario = questionarioDao.save(questionario);
@@ -297,9 +306,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		respostaB.setPergunta(pergunta);
 		respostaB = respostaDao.save(respostaB);
 		
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, DateUtil.criarAnoMesDia(2008, 10, 10), null);
-		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, DateUtil.criarAnoMesDia(2008, 11, 10), null);
-		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, DateUtil.criarAnoMesDia(2008, 11, 10), null);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 10, 10), null);
+		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null);
+		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null);
 		
 		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, DateUtil.criarAnoMesDia(2008, 11, 10), DateUtil.criarAnoMesDia(2008, 11, 10), null, null);
 		
@@ -321,27 +330,64 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
 		Questionario questionario = QuestionarioFactory.getEntity();
-		questionario = questionarioDao.save(questionario);
+		questionario.setAnonimo(false);
+		questionarioDao.save(questionario);
 
 		Pergunta pergunta1 = PerguntaFactory.getEntity();
 		pergunta1.setTexto("Voce foi criado com a avo?");
 		pergunta1.setQuestionario(questionario);
-		pergunta1 = perguntaDao.save(pergunta1);
+		perguntaDao.save(pergunta1);
 
 		Pergunta pergunta2 = PerguntaFactory.getEntity();
 		pergunta2.setTexto("Qual a nota do seu trabalho");
 		pergunta2.setQuestionario(questionario);
-		pergunta2 = perguntaDao.save(pergunta2);
+		perguntaDao.save(pergunta2);
 
 		Date data = new Date();
-		montaColaboradorResposta(questionario, pergunta1, null, null, areaOrganizacional, data, null);
-		montaColaboradorResposta(questionario, pergunta2, null, null, areaOrganizacional, data, null);
+		montaColaboradorResposta(questionario, pergunta1, null, null, areaOrganizacional, cargo, data, null);
+		montaColaboradorResposta(questionario, pergunta2, null, null, areaOrganizacional, cargo, data, null);
 
 		Long[] perguntasIds = new Long[]{pergunta1.getId(), pergunta2.getId()};
 		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
 
-		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findInPerguntaIds(perguntasIds, null, areasIds, null, null, data, null, questionario, null);
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findInPerguntaIds(perguntasIds, null, areasIds, new Long[] { cargo.getId() }, null, data, null, questionario, null);
+		assertEquals(2, colaboradorRespostas.size());
+	}
+	
+	public void testFindInPerguntaIdsAnonima()
+	{
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setAnonimo(true);
+		questionarioDao.save(questionario);
+
+		Pergunta pergunta1 = PerguntaFactory.getEntity();
+		pergunta1.setTexto("Voce foi criado com a avo?");
+		pergunta1.setQuestionario(questionario);
+		perguntaDao.save(pergunta1);
+
+		Pergunta pergunta2 = PerguntaFactory.getEntity();
+		pergunta2.setTexto("Qual a nota do seu trabalho");
+		pergunta2.setQuestionario(questionario);
+		perguntaDao.save(pergunta2);
+
+		Date data = new Date();
+		montaColaboradorResposta(questionario, pergunta1, null, null, areaOrganizacional, cargo, data, null);
+		montaColaboradorResposta(questionario, pergunta2, null, null, areaOrganizacional, cargo, data, null);
+
+		Long[] perguntasIds = new Long[]{pergunta1.getId(), pergunta2.getId()};
+		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
+
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findInPerguntaIds(perguntasIds, null, areasIds, new Long[] { cargo.getId() }, null, data, null, questionario, null);
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
@@ -350,6 +396,9 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
 		Questionario questionario = QuestionarioFactory.getEntity();
 		questionario = questionarioDao.save(questionario);
 		
@@ -363,8 +412,8 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		pergunta2.setQuestionario(questionario);
 		pergunta2 = perguntaDao.save(pergunta2);
 		
-		montaColaboradorResposta(questionario, pergunta1, null, null, areaOrganizacional, DateUtil.criarAnoMesDia(2008, 9, 10), null);
-		montaColaboradorResposta(questionario, pergunta2, null, null, areaOrganizacional, DateUtil.criarAnoMesDia(2008, 11, 10), null);
+		montaColaboradorResposta(questionario, pergunta1, null, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 9, 10), null);
+		montaColaboradorResposta(questionario, pergunta2, null, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null);
 		
 		Long[] perguntasIds = new Long[]{pergunta1.getId(), pergunta2.getId()};
 		Long[] areasIds = new Long[]{areaOrganizacional.getId()};
@@ -553,14 +602,11 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(0, colaboradorRespostaDao.findRespostasColaborador(colaboradorQuestionario.getId(), null).size());
 	}
 
-	private ColaboradorResposta montaColaboradorResposta(Questionario questionario, Pergunta pergunta, Resposta resposta, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Date respondidaEm, Turma turma)
+	private ColaboradorResposta montaColaboradorResposta(Questionario questionario, Pergunta pergunta, Resposta resposta, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Cargo cargo, Date respondidaEm, Turma turma)
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 
-		Cargo cargo = CargoFactory.getEntity();
-		cargoDao.save(cargo);
-		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
@@ -583,6 +629,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta.setPergunta(pergunta);
 		colaboradorResposta.setResposta(resposta);
 		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta.setCargo(cargo);
 		colaboradorRespostaDao.save(colaboradorResposta);
 		
 		return colaboradorResposta;
@@ -803,6 +850,31 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 		assertEquals(new Integer(1), colaboradorRespostaDao.countColaboradorAvaliacaoRespondida(avaliacao1.getId()));
 		assertEquals(new Integer(0), colaboradorRespostaDao.countColaboradorAvaliacaoRespondida(avaliacao2.getId()));
+	}
+	
+	public void testExisteRespostaSemCargo() 
+	{
+		Pergunta p1 = PerguntaFactory.getEntity();
+		perguntaDao.save(p1);
+		
+		Pergunta p2 = PerguntaFactory.getEntity();
+		perguntaDao.save(p2);
+		
+		Cargo c = CargoFactory.getEntity();
+		cargoDao.save(c);
+		
+		ColaboradorResposta cr1 = ColaboradorRespostaFactory.getEntity();
+		cr1.setPergunta(p1);
+		cr1.setCargo(c);
+		colaboradorRespostaDao.save(cr1);
+		
+		assertFalse(colaboradorRespostaDao.existeRespostaSemCargo(new Long[] { p1.getId(), p2.getId() }));
+
+		ColaboradorResposta cr2 = ColaboradorRespostaFactory.getEntity();
+		cr2.setPergunta(p1);
+		colaboradorRespostaDao.save(cr2);
+		
+		assertTrue(colaboradorRespostaDao.existeRespostaSemCargo(new Long[] { p1.getId(), p2.getId() }));
 	}
 	
 	public GenericDao<ColaboradorResposta> getGenericDao()

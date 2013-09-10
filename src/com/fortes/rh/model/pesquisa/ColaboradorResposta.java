@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -37,6 +38,8 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     private ColaboradorQuestionario colaboradorQuestionario;
     @ManyToOne
     private AreaOrganizacional areaOrganizacional;
+    @ManyToOne
+    private Cargo cargo;
     @ManyToOne
     private Estabelecimento estabelecimento;
 
@@ -368,5 +371,13 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
 	public void setEstabelecimento(Estabelecimento estabelecimento)
 	{
 		this.estabelecimento = estabelecimento;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
 	}
 }

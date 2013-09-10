@@ -26,6 +26,8 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -43,6 +45,8 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.AspectoFactory;
@@ -127,6 +131,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     public void testSalvaQuestionarioRespondidaPesquisa() throws Exception
     {
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+    	Cargo cargo = CargoFactory.getEntity(1L);
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	faixaSalarial.setCargo(cargo);
 
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	colaborador.setAreaOrganizacional(areaOrganizacional);
@@ -138,6 +145,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
     	historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+    	historicoColaborador.setFaixaSalarial(faixaSalarial);
 
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
 
@@ -210,6 +218,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     public void testSalvaQuestionarioRespondidaEntrevista() throws Exception
     {
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+    	Cargo cargo = CargoFactory.getEntity(1L);
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	faixaSalarial.setCargo(cargo);
 
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	colaborador.setAreaOrganizacional(areaOrganizacional);
@@ -221,6 +232,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
     	historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+    	historicoColaborador.setFaixaSalarial(faixaSalarial);
 
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
 
@@ -256,6 +268,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     public void testSalvaQuestionarioRespondidaComExcecao() throws Exception
     {
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+    	Cargo cargo = CargoFactory.getEntity(1L);
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	faixaSalarial.setCargo(cargo);
 
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	colaborador.setAreaOrganizacional(areaOrganizacional);
@@ -267,6 +282,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
     	historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+    	historicoColaborador.setFaixaSalarial(faixaSalarial);
 
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
     	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId()), eq(colaborador.getId()), ANYTHING).will(returnValue(colaboradorQuestionario));

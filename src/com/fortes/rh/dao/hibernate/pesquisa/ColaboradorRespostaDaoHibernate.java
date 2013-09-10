@@ -62,7 +62,10 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		}
 		
 		if(cargosIds != null && cargosIds.length > 0)
-			whereCargos = "and ca.id in (:cargosIds) ";
+		{
+			whereCargos = "and cr.cargo.id in (:cargosIds) ";
+			whereCargosSub = "and crsub.cargo.id in (:cargosIds) ";
+		}
 
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 		{
@@ -86,17 +89,18 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		}
 
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id, " +
-							"(select count(crsub.pergunta.id) from ColaboradorResposta as crsub " +
-							"left join crsub.colaboradorQuestionario as cqsub " +
-							"left join cqsub.colaborador as csub " +
-							"where crsub.pergunta.id = p.id " +
-							"and crsub.resposta.id is not null " +
-							whereAreasSub +
-							whereEstabelecimentosSub +
-							wherePeriodoIniSub +
-							wherePeriodoFimSub +
-							whereTurmaSub +
-							"group by crsub.pergunta.id) " +
+							"   (select count(crsub.pergunta.id) from ColaboradorResposta as crsub " +
+							"   left join crsub.colaboradorQuestionario as cqsub " +
+							"   left join cqsub.colaborador as csub " +
+							"   where crsub.pergunta.id = p.id " +
+							"   and crsub.resposta.id is not null " +
+								whereAreasSub +
+								whereCargosSub +
+								whereEstabelecimentosSub +
+								wherePeriodoIniSub +
+								wherePeriodoFimSub +
+								whereTurmaSub +
+							"   group by crsub.pergunta.id) " +
 							"from ColaboradorResposta cr " +
 							"left join cr.areaOrganizacional as a "	+
 							"left join cr.estabelecimento as e "	+
@@ -104,12 +108,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"left join cr.pergunta as p "	+
 							"left join cr.colaboradorQuestionario as cq "	+
 							"left join cq.colaborador as c " +
-							"left join c.historicoColaboradors as hc " +
-							"left join hc.faixaSalarial as fs " +
-							"left join fs.cargo as ca " +
 							"where p.tipo = :tipoPergunta "+
-							"and (hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
-							"or hc.data is null) " +
 							"and cr.resposta.id is not null " +
 							wherePerguntas +
 							whereAreas +
@@ -124,7 +123,6 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.OBJETIVA);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(perguntasIds != null && perguntasIds.length > 0)
 			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
@@ -171,7 +169,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			whereAreas = "and a.id in (:areasIds) ";
 		if(cargosIds != null && cargosIds.length > 0)
-			whereCargos = "and ca.id in (:cargosIds) ";
+			whereCargos = "and cr.cargo.id in (:cargosIds) ";
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
 		if(periodoIni != null)
@@ -189,13 +187,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		"left join cr.pergunta as p "	+
 		"left join cr.colaboradorQuestionario as cq "	+
 		"left join cq.colaborador as c "	+
-		"left join c.historicoColaboradors as hc " +
-		"left join hc.faixaSalarial as fs " +
-		"left join fs.cargo as ca " +
 		"where p.tipo = :tipoPergunta "+
 		"and cr.resposta.id is not null " +
-		"and (hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.status = :status) " +
-		"or hc.data is null)  " +
 		wherePerguntas +
 		whereAreas +
 		whereCargos +
@@ -209,7 +202,6 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.MULTIPLA_ESCOLHA);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
@@ -247,6 +239,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
@@ -284,7 +277,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			criteria.add(Expression.in("a.id", areasIds));
 
 		if(cargosIds != null && cargosIds.length > 0)
-			criteria.add(Expression.in("ca.id", cargosIds));
+			criteria.add(Expression.in("cr.cargo.id", cargosIds));
 		
 		if(empresaId != null && empresaId != -1)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -684,4 +677,18 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list().size();
 	}
 
+	public boolean existeRespostaSemCargo(Long[] perguntasIds) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cr");
+
+		ProjectionList cr = Projections.projectionList().create();
+		cr.add(Projections.property("cr.id"), "id");
+
+		criteria.setProjection(cr);
+
+		criteria.add(Expression.in("cr.pergunta.id", perguntasIds));
+		criteria.add(Expression.isNull("cr.cargo.id"));
+
+		return criteria.list().size() > 0;  
+	}
 }

@@ -20,6 +20,7 @@ import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -67,6 +68,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     {
     	Long candidatoId = null;
     	AreaOrganizacional areaOrganizacional = null;
+    	Cargo cargo = null;
     	Estabelecimento estabelecimento = null;
 
     	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && vinculo == 'A')
@@ -75,6 +77,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     	{
     		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaboradorId);
     		areaOrganizacional = historicoColaborador.getAreaOrganizacional();
+    		cargo = historicoColaborador.getFaixaSalarial().getCargo();
     		estabelecimento = historicoColaborador.getEstabelecimento();
     	}
     	
@@ -141,7 +144,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         	else if(questionario.verificaTipo(TipoQuestionario.PESQUISA))
         		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 
-            salvaRespostas(questionario, perguntasRespostas, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario);
+            salvaRespostas(questionario, perguntasRespostas, estabelecimento, areaOrganizacional, cargo, colaboradorResposta, colaboradorQuestionario);
 
             transactionManager.commit(status);
         }
@@ -153,7 +156,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         }
     }
 
-	private void salvaRespostas(Questionario questionario, String[] perguntasRespostas, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
+	private void salvaRespostas(Questionario questionario, String[] perguntasRespostas, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Cargo cargo, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
 	{
 		Collection<Long> respostaMultiplaEscolhaIds = new ArrayList<Long>();
 		boolean multiplaEscolha = false;
@@ -206,7 +209,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		    	{
 		    		for (Long multiplaEscolhaId : respostaMultiplaEscolhaIds)
 					{
-			            salvaColaboradorRespostaMultiplaEscolha(questionario, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario, multiplaEscolhaId);		    		
+			            salvaColaboradorRespostaMultiplaEscolha(questionario, estabelecimento, areaOrganizacional, cargo, colaboradorResposta, colaboradorQuestionario, multiplaEscolhaId);		    		
 					}
 		    		
 		    		respostaMultiplaEscolhaIds = new ArrayList<Long>();
@@ -214,15 +217,14 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		    	}
 		    	else
 		    	{
-		    		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, colaboradorResposta, colaboradorQuestionario);		    		
+		    		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, cargo, colaboradorResposta, colaboradorQuestionario);		    		
 		    	}
-		    	
 		    }
 		}
 	}
 
-	private void salvaColaboradorRespostaMultiplaEscolha(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta,
-			ColaboradorQuestionario colaboradorQuestionario, Long multiplaEscolhaId)
+	private void salvaColaboradorRespostaMultiplaEscolha(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Cargo cargo,
+			ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario, Long multiplaEscolhaId)
 	{
 		Resposta resposta = new Resposta();
 		resposta.setId(multiplaEscolhaId);
@@ -232,12 +234,13 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		colaboradorRespostaMultipla.setPergunta(colaboradorResposta.getPergunta());
 		colaboradorRespostaMultipla.setResposta(resposta);
 		
-		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, colaboradorRespostaMultipla, colaboradorQuestionario);
+		saveColaboradorResposta(questionario, estabelecimento, areaOrganizacional, cargo, colaboradorRespostaMultipla, colaboradorQuestionario);
 	}
 
-	private void saveColaboradorResposta(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
+	private void saveColaboradorResposta(Questionario questionario, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Cargo cargo, ColaboradorResposta colaboradorResposta, ColaboradorQuestionario colaboradorQuestionario)
 	{
 		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta.setCargo(cargo);
 		colaboradorResposta.setEstabelecimento(estabelecimento);
 
 		if( !questionario.isAnonimo())
@@ -616,6 +619,10 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId) 
 	{
 		return getDao().countColaboradorAvaliacaoRespondida(avaliacaoId);
+	}
+	
+	public boolean existeRespostaSemCargo(Long[] perguntasIds) {
+		return getDao().existeRespostaSemCargo(perguntasIds);
 	}
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {

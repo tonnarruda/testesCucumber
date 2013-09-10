@@ -260,7 +260,12 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     //TODO Refatorar consultas grandes como banco da vega esta exibindo "could not execute query" quando marcamos áreas organizacionais 
     public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario) throws Exception
     {
-        ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
+    	ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
+
+    	boolean existeRespostaSemCargo = colaboradorRespostaManager.existeRespostaSemCargo(perguntasIds);
+    	if (cargosIds != null && cargosIds.length > 0 && existeRespostaSemCargo)
+    		throw new Exception("Existem respostas sem a informação dos cargos dos colaboradores que a responderam. Provavelmente, elas foram realizadas em versões anteriores à versão 1.1.116.128, que passa a fazer esse registro. Nesse caso, o filtro por cargos não é recomendado.");
+    	
         Collection<ResultadoQuestionario> resultadoQuestionarios = null;
         Collection<Resposta> respostas = respostaManager.findInPerguntaIds(perguntasIds);
         Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findInPerguntaIds(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, turmaId, questionario, null);
