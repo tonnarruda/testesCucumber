@@ -15,5 +15,5 @@ Funcionalidade: Cadastrar Frequência do Curso
     E eu devo ver "a1"
     E eu clico na linha "a1" da imagem "Lista de Freqüência"
     E eu devo ver o título "Lista de Frequência"
-    E eu clico no botão "VoltarListaFrequencia"
+    E eu clico no botão "Voltar"
     Então eu devo ver o título "Controle de Freqüência"
