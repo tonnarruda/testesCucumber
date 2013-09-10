@@ -285,15 +285,11 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			criteria.add(Expression.in("e.id", estabelecimentosIds));
 
-		String periodo = "cq.respondidaEm";
-		if (questionario != null && questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
-			periodo = "c.dataDesligamento";
-			
 		if(periodoIni != null)
-			criteria.add(Expression.ge(periodo, periodoIni));
+			criteria.add(Expression.ge("cq.respondidaEm", periodoIni));
 
 		if(periodoFim != null)
-			criteria.add(Expression.le(periodo, periodoFim));
+			criteria.add(Expression.le("cq.respondidaEm", periodoFim));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorResposta.class));
