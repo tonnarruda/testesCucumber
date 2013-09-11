@@ -4,7 +4,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Gerar Resultado da ${tipoQuestionario.getDescricaoMaisc(questionario.tipo)}</title>
+	<title>Resultado da ${tipoQuestionario.getDescricaoMaisc(questionario.tipo)}</title>
 
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');

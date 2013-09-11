@@ -461,7 +461,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setQuestionario(questionario);
-		colaboradorQuestionario.setRespondidaEm(DateUtil.criarAnoMesDia(2009, 9, 10));
+		colaboradorQuestionario.setRespondidaEm(DateUtil.criarAnoMesDia(2008, 10, 10));
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 
 		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
