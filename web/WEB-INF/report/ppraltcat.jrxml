@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.7715610000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="461"/>
+	<property name="ireport.y" value="571"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -146,6 +146,7 @@ DO AMBIENTE DE TRABALHO]]></text>
 				</textField>
 			</band>
 			<band height="35">
+				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
 				<staticText>
 					<reportElement uuid="4a7bfabc-c1dd-42aa-b37e-af75d08271fa" key="staticText-17" positionType="Float" x="0" y="0" width="535" height="16"/>
 					<box>
@@ -157,7 +158,7 @@ DO AMBIENTE DE TRABALHO]]></text>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<text><![CDATA[FUNÇÃO E ATIVIDADES DESEMPENHADAS]]></text>
+					<text><![CDATA[FUNÇÕES E ATIVIDADES DESEMPENHADAS]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement uuid="adf370ce-efef-4821-8ce4-7df9cd67247a" key="textField-19" positionType="Float" x="0" y="16" width="535" height="15">
@@ -176,6 +177,7 @@ DO AMBIENTE DE TRABALHO]]></text>
 				</textField>
 			</band>
 			<band height="53">
+				<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
 				<subreport isUsingCache="false">
 					<reportElement uuid="507cb466-39ac-4288-a56b-aa5a8f31b235" key="ltcat" isPrintRepeatedValues="false" x="0" y="0" width="535" height="53" isRemoveLineWhenBlank="true">
 						<printWhenExpression><![CDATA[new Boolean($F{ltcat} != null)]]></printWhenExpression>
