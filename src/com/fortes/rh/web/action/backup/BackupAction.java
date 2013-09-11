@@ -14,7 +14,6 @@ import com.fortes.rh.business.geral.FileBoxManager;
 import com.fortes.rh.config.backup.BackupService;
 import com.fortes.rh.model.geral.Arquivo;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -108,11 +107,9 @@ public class BackupAction extends MyActionSupport {
 	        
 	        addActionSuccess("Arquivo enviado com sucesso.");
 	        list();
+		
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			if (arquivoBackup != null && arquivoBackup.exists())
-				arquivoBackup.delete();
 		}
 		
 		return Action.SUCCESS;

@@ -3,12 +3,14 @@ package com.fortes.rh.business.geral;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.Zip;
 
 
 public class MorroManagerImpl implements MorroManager
@@ -24,6 +26,7 @@ public class MorroManagerImpl implements MorroManager
 		String msgStatus = "";
 		
 		File logErro = new File(PATH + "Erro.txt");
+		File zip = null;
 		
 		try {
 			FileOutputStream fos = new FileOutputStream(logErro);  
@@ -31,11 +34,16 @@ public class MorroManagerImpl implements MorroManager
 			
 			fos.write(textoErro.getBytes());  
 			fos.close();
+			
+			String nomeZip = PATH + hoje.getTime();
+			ZipOutputStream zipOS = new Zip().compress(new File[] { logErro }, nomeZip, ".zip", false);
+			zipOS.close();
+			zip = new File(nomeZip + ".zip");
 	        
 	        String dataFormatada = DateUtil.formataDate(hoje, "yyyyMMdd_HHmm");
 	        String fileName = "ERRO_RH_RH_" + dataFormatada + "_" + StringUtil.retiraAcento(clienteNome).replace(" ", "_") + ".zip";
 	        
-	        fileBoxManager.enviar(fileName, clienteCnpj + " " + clienteNome + " - " + usuario, logErro);
+	        fileBoxManager.enviar(fileName, clienteCnpj + " " + clienteNome + " - " + usuario, zip);
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,6 +51,8 @@ public class MorroManagerImpl implements MorroManager
 		} finally {
 			if (logErro != null && logErro.exists())
 				logErro.delete();
+			if (zip != null && zip.exists())
+				zip.delete();
 		}
 	}
 
