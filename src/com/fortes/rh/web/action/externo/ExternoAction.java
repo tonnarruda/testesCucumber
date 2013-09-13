@@ -7,12 +7,14 @@ import java.util.Map;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.ArquivoUtil;
@@ -48,14 +50,16 @@ public class ExternoAction extends MyActionSupport
 	private Long empresaId;
 	private String mensagemLogin;
 	
-	private Collection<Anuncio> anuncios = null;
 	private AnuncioManager anuncioManager;
 	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-
-	private Candidato candidato;
 	private CandidatoManager candidatoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private DocumentoAnexoManager documentoAnexoManager;
 
+	private Collection<Anuncio> anuncios = null;
+	private Collection<DocumentoAnexo> documentosAnexos;
+	
+	private Candidato candidato;
 	private Solicitacao solicitacao;
 	private Anuncio anuncio;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -305,6 +309,25 @@ public class ExternoAction extends MyActionSupport
 		return retorno;
 	}
 
+	public String listDocumentosAnexos() throws Exception
+	{
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		if (session.get("SESSION_CANDIDATO_ID") != null)
+		{
+			Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
+			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
+			
+			documentosAnexos = null;
+
+			return Action.SUCCESS;
+		}
+		else
+		{
+			prepareLogin();
+			return Action.INPUT;
+		}
+	}	
+	
 	public Candidato getCandidato()
 	{
 		return candidato;
@@ -453,5 +476,13 @@ public class ExternoAction extends MyActionSupport
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Collection<DocumentoAnexo> getDocumentosAnexos() {
+		return documentosAnexos;
+	}
+
+	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
+		this.documentoAnexoManager = documentoAnexoManager;
 	}
 }
