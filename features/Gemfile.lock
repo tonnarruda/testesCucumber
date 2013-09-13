@@ -24,13 +24,8 @@ GEM
       term-ansicolor (>= 1.0.5)
     culerity (0.2.15)
     diff-lcs (1.1.2)
-    ffi (1.0.7)
-      rake (>= 0.8.7)
-    ffi (1.0.7-x86-mingw32)
-      rake (>= 0.8.7)
+    ffi (1.0.9)
     gherkin (2.3.6)
-      json (>= 1.4.6)
-    gherkin (2.3.6-x86-mingw32)
       json (>= 1.4.6)
     json (1.5.1)
     json_pure (1.5.1)
@@ -42,7 +37,6 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.1.4)
     nokogiri (1.5.5)
-    nokogiri (1.5.5-x86-mingw32)
     pg (0.11.0)
     rack (1.2.2)
     rack-test (0.5.7)
@@ -79,7 +73,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86-mingw32
 
 DEPENDENCIES
   archive-tar-minitar (= 0.5.2)
@@ -91,7 +84,7 @@ DEPENDENCIES
   cucumber (= 0.10.2)
   culerity (= 0.2.15)
   diff-lcs (= 1.1.2)
-  ffi (= 1.0.7)
+  ffi (= 1.0.9)
   gherkin (= 2.3.6)
   json (= 1.5.1)
   json_pure (= 1.5.1)
