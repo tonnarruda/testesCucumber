@@ -1,0 +1,1 @@
+alter table documentoanexo add column moduloexterno boolean not null default false;--.go
