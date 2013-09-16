@@ -149,7 +149,7 @@
 			</table>
 			
 			<@ww.hidden id="pagina" name="page"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
+			<input type="submit" value="" id="btnPesquisar" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>

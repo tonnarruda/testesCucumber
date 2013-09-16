@@ -676,6 +676,19 @@ Dado /^que exista um modelo de ficha medica "([^"]*)" com a pergunta "([^"]*)"$/
   end
 end
 
+Dado /^que exista uma solicitacao "([^"]*)" para área "([^"]*)" na faixa "([^"]*)"$/ do |solicitacao_nome, area_nome, faixa_nome|
+  insert :solicitacao do
+    quantidade 1
+    encerrada false
+    suspensa false
+    empresa :id => 1
+    descricao solicitacao_nome
+    status 'A'
+    areaorganizacional :areaorganizacional, :nome => area_nome
+    faixasalarial :faixasalarial, :nome => faixa_nome
+  end
+end
+
 Dado /^que exista um afastamento "([^"]*)"$/ do |afastamento_descricao|
   insert :afastamento do
     descricao afastamento_descricao
@@ -727,6 +740,13 @@ Dado /^que exista um papel "([^"]*)"$/ do |papel_nome|
      ordem 1
      menu false
    end
+end
+
+Dado /^que exista um motivo de desligamento "([^"]*)"$/ do |motivo_nome|
+   insert :motivodemissao do
+     motivo motivo_nome
+     empresa :id => 1
+    end
 end
  
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|

@@ -17,6 +17,9 @@ Funcionalidade: Cadastrar Colaborador
     Dado que exista um nivel de competencia "ruim" com a ordem 1
     Dado que exista um nivel de competencia "regular" com a ordem 2
     Dado que exista um nivel de competencia "bom" com a ordem 3
+    Dado que exista uma solicitacao "Solicitacao1" para área "Compras" na faixa "I"
+    Dado que exista uma solicitacao "Solicitacao2" para área "Compras" na faixa "I"
+    Dado que exista um motivo de desligamento "Porque eu quero"
 
     Dado que eu esteja logado
 
@@ -84,7 +87,95 @@ Funcionalidade: Cadastrar Colaborador
     Quando eu clico no botão "Gravar"
     Então eu devo ver "alterado com sucesso."
     E eu devo ver "Silva Barbosa"
-    
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Visualizar Progressão"
+    E eu devo ver "Estabelecimento Padrão"
+    E eu devo ver "Financeiro > Compras > Almoxarifado"
+    E eu devo ver "100,00"
+    E eu clico no botão "EditarHistoricos"
+
+    Entao eu devo ver "Editar Situações do Colaborador - Silva Barbosa"
+    E eu devo ver "Estabelecimento Padrão"
+    E eu devo ver "Financeiro > Compras > Almoxarifado"
+    E eu devo ver "100,00"
+
+    E eu clico em editar "21/12/2010"
+    E eu preencho "Valor:" com "200,00"
+    E eu clico no botão "Gravar"
+
+    Então eu devo ver "Editar Situações do Colaborador - Silva Barbosa"
+    E eu devo ver "Estabelecimento Padrão"
+    E eu devo ver "Financeiro > Compras > Almoxarifado"
+    E eu devo ver "200,00"
+
+    E eu clico em editar "21/12/2010"
+    E o campo "Valor:" deve conter "200,00"
+    E eu clico no botão "Cancelar"
+
+    Então eu devo ver "Editar Situações do Colaborador - Silva Barbosa"
+    E eu devo ver "Estabelecimento Padrão"
+    E eu devo ver "Financeiro > Compras > Almoxarifado"
+    E eu devo ver "200,00"
+    E eu clico no botão "Voltar"
+
+    Entao eu devo ver "Estabelecimento Padrão"
+    E eu devo ver "Financeiro > Compras > Almoxarifado"
+    E eu devo ver "200,00"
+    E eu clico no botão "Voltar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Performance Profissional"
+    E eu devo ver "Nome: Silva Barbosa"
+    E eu devo ver "Admissão: 21/12/2010"
+    E eu devo ver "Cargo Atual: Contador"
+    E eu devo ver "Email: f@fortes.com.br"
+    E eu devo ver "Estado Civil: Casado - Comunhão Parcial"
+    E eu devo ver "Escolaridade: Sem escolaridade"
+    E eu devo ver "Bairro: São Gerardo"
+    E eu devo ver "Endereço: Rua Haroldo Torres - de 501/502 a 1149/1, 11 - apto"
+    E eu devo ver "Cidade/Estado: Fortaleza / CE"
+    E eu devo ver "CEP: 60.320-104"
+    E eu devo ver "Telefone: (85) 8843-8383"
+    E eu devo ver "Celular: (85) 8843-8309"
+    E eu devo ver "Deficiência: Sem Deficiência"
+    E eu devo ver "Vínculo: Emprego"
+
+    Entao eu clico no botão "ImprimirPdf"
+    E eu espero 1 segundos
+    Entao eu clico no botão "Voltar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Incluir em Solicitação"
+    E eu marco "1 - Solicitacao1 - Contador - - Compras"
+    E eu marco "2 - Solicitacao2 - Contador - - Compras"
+    E eu clico no botão "Inserir"
+    Entao eu devo ver "Candidato incluído com sucesso"
+    E eu clico no botão "Voltar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Documentos do Colaborador"
+    Entao eu devo ver "Documentos do Colaborador - Silva Barbosa"
+
+    Entao eu clico no botão "Inserir"
+    E eu devo ver "Novo Documento do Colaborador - Silva Barbosa"
+    E eu preencho "Descrição" com "Novo documento"
+    E eu preencho "Data" com "13/09/2013"
+    E eu preencho "Observação" com "Currículo Atualizado"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert do confirmar e clico no ok
+    E eu clico no botão "Cancelar"
+    Entao eu devo ver "Documentos do Colaborador - Silva Barbosa"
+    E eu clico no botão "Cancelar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Criar Acesso ao Sistema"
+    E eu preencho "Nome" com "Silva Barbosa"
+    E eu preencho "Login" com "Silva"
+    E eu preencho "Senha" com "1234"
+    E eu preencho "Confirmar Senha" com "1234"
+    E eu clico no botão "Gravar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Editar Acesso ao Sistema"
+    E o campo "Nome" deve conter "Silva Barbosa"
+    E o campo "Login" deve conter "Silva"
+    E eu clico no botão "Cancelar"
+
     Então eu clico na linha "Silva Barbosa" da imagem "Competências"
     E eu devo ver "Competências do Colaborador"
     E eu clico no botão "Inserir"
@@ -102,6 +193,29 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver "Competências do Colaborador"
     E eu clico no botão "Voltar"
     E eu devo ver "Colaboradores"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Desligar colaborador"
+    E eu clico no botão "Voltar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Desligar colaborador"
+    E eu devo ver o título "Desligar Colaborador"
+    E eu preencho "Data de Desligamento" com "13/09/2013"
+    E eu seleciono "Porque eu quero" de "Motivo do Desligamento"
+    E eu preencho "Observações" com "massa"
+    E eu clico no botão "DesligarColaborador" 
+    E eu devo ver o alert "Confirma desligamento" e clico no ok
+    E eu devo ver "Colaborador desligado com sucesso"
+
+    Entao eu clico "linkFiltro"
+    E eu seleciono "Todos" de "Situação"
+    E eu clico no botão "Pesquisar"
+
+    Então eu clico na linha "Silva Barbosa" da imagem "Colaborador já desligado"
+    E eu clico no botão "ImprimirPdf"
+    E eu espero 1 segundos
+    E eu clico no botão "CancelarDesligamento"
+    E eu devo ver o alert "Tem certeza que deseja cancelar o desligamento" e clico no ok
+    E eu devo ver "Colaborador religado com sucesso"
 
     Quando eu clico em excluir "Silva Barbosa"
     Então eu devo ver "Confirma exclusão?"
@@ -139,5 +253,3 @@ Funcionalidade: Cadastrar Colaborador
 
     Então eu clico na imagem com o título "Salvar campo do relatório"
     E eu devo ver o alert "Layout do relatório salvo com sucesso." e clico no ok
-
-
