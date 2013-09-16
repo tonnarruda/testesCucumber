@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.116.128" data="16/09/2013">
+		<Modulo nome=" "><![CDATA[
+			:: SESMT > Relatórios > Resumo de Afastamentos > Relatório: Apresentação da paginação da listagem.
+			:: Utilitários > Backup do Banco de Dados: Nova ação para enviar arquivo de backup para a Ente Tecnologia. 
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.115.127" data="09/09/2013">
 		<Modulo nome=" "><![CDATA[
 			:: SESMT > Relatórios > Resumo de Afastamentos: Novas opções de ordenação por "Nome do colaborador" ou "Quantidade de dias de afastamento (decrescente)" e agrupamento por área organizacional.
@@ -8,7 +14,7 @@
     </Versao>
 	<Versao id="1.1.114.126" data="02/09/2013">
 		<Modulo nome=" "><![CDATA[
-			:: Aval. Desempenho > Cadastros > Avaliação de Desempenho/Acompanham. do Período de Experiência > imprimir modelo da avaliação: Impressão dos aspectos na avaliação. 
+			:: Aval. Desempenho > Cadastros > Avaliação de Desempenho/Acompanham. do Período de Experiência > Imprimir modelo da avaliação: Impressão dos aspectos na avaliação. 
     	]]></Modulo>
     </Versao>
 	<Versao id="1.1.114.125" data="26/08/2013">
