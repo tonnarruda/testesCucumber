@@ -26,12 +26,15 @@
 </head>
 <body>
 <@ww.actionerror />
+
+<strong>Alterar senha:</strong>
+<br /><br />
 <@ww.form name="form" action="updateExternoSenha.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	<@ww.password label="Senha atual" name="candidato.senha" id="senha" required="true"/>
 	<@ww.password label="Nova senha" name="candidato.novaSenha" id="novaSenha"  required="true"/>
 	<@ww.password label="Confirmação nova senha" name="candidato.confNovaSenha" id="confSenha"  required="true"/>
 	<@ww.hidden name="${SESSION_CANDIDATO_ID}"/>
-<@ww.token/>
+	<@ww.token/>
 </@ww.form>
 
 
