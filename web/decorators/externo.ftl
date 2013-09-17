@@ -59,6 +59,33 @@
 			background-image: url(${userDivImg});
 			background-repeat: repeat-x;
 		}
+		
+		#topContent {
+			width: 800px;
+			margin: 0 auto;
+		}
+		
+		#topContent .saudacao {
+			font-size: 11px;
+			margin: 3px 0;
+			color: #ffF;
+		}
+		
+		#topContent ul {
+			float: right;
+			margin: 12px 0;
+		}
+		
+		#topContent ul li {
+			display: inline;
+			padding: 5px 7px;
+			background-color: #069;
+		}
+		
+		#topContent ul li a {
+			text-decoration: none;
+			color: #fff;
+		}
 	</style>
 
 	<!--[if IE]>
@@ -88,18 +115,20 @@
 	</head>
 	<body>
 		<div id="topDiv">
-			<div id="userDiv">
-				<span class="saudacao">
-					<#if SESSION_CANDIDATO_NOME?exists && SESSION_EMPRESA?exists>
-						Bem-vindo(a)&nbsp;
-						${SESSION_CANDIDATO_NOME}&nbsp;
-					<#else>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-					</#if>
-				</span>
-			</div>
-			<div id="userDiv1">
-				<img src='${urlServlet}menu3' border='0' align='absMiddle' />
+			<div id="topContent">
+				<#if SESSION_CANDIDATO_ID?exists>
+					<ul>
+						<li><a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a></li>
+						<li><a href="listDocumentosAnexos.action?moduloExterno=true">Anexar Documentos</a></li>
+						<li><a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a></li>
+						<li><a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a></li>
+					</ul>
+					<div class="saudacao">
+						Bem vindo(a)<br />
+						${SESSION_CANDIDATO_NOME}<br />
+						CPF ${SESSION_CANDIDATO_CPF}
+					</div>
+				</#if>
 			</div>
 		</div>
 		<br/><br/>

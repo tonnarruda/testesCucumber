@@ -70,8 +70,27 @@
 			<result name="success" type="redirect"><![CDATA[prepareListAnuncio.action?sucessoRespostaAvaliacao=true]]></result>
 		</action>
 		<action name="listDocumentosAnexos" class="com.fortes.rh.web.action.externo.ExternoAction" method="listDocumentosAnexos">
-			<result name="success" type="freemarker">/WEB-INF/forms/externo/anuncioList.ftl</result>
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="showDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="showDocumentoAnexo">
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="deleteDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="deleteDocumentoAnexo">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoList.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+		</action>
+		<action name="prepareInsertDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareInsertDocumentoAnexo">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
+		</action>
+		<action name="insertDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="insertDocumentoAnexo">
+			<result name="success" type="redirect">listDocumentosAnexos.action</result>
+		</action>
+		<action name="prepareUpdateDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareUpdateDocumentoAnexo">
+			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
+		</action>
+		<action name="updateDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="updateDocumentoAnexo">
+			<result name="success" type="redirect">listDocumentosAnexos.action</result>
 		</action>
 	</package>
 </xwork>

@@ -14,9 +14,9 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	private ColaboradorManager colaboradorManager;
 	private CandidatoManager candidatoManager;
 	
-	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, long origemId)
+	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, long origemId, Boolean moduloExterno)
 	{
-		return getDao().getDocumentoAnexoByOrigemId(origem, origemId);
+		return getDao().getDocumentoAnexoByOrigemId(origem, origemId, moduloExterno);
 	}
 
 	public void atualizarDocumentoAnexo(String diretorio,DocumentoAnexo documentoAnexo, com.fortes.model.type.File documento) throws Exception

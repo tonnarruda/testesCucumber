@@ -29,7 +29,7 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	{
 		setVideoAjuda(764L);
 		
-		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
+		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId(), null);
 		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(),documentoAnexo.getOrigemId());
 		return Action.SUCCESS;
 	}

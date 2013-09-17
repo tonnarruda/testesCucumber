@@ -42,33 +42,14 @@
 <body>
 
 <table width="100%">
-	<#if SESSION_CANDIDATO_ID?exists>
-		<tr>
-			<td width="75%">
-				<b>Bem vindo ${SESSION_CANDIDATO_NOME}!<br>
-				CPF: ${SESSION_CANDIDATO_CPF}</b>
-			</td>
-			<td width="1%">&nbsp;</td>
-			<td width="24%" align='right'>
-				<#assign areaId = 0>
-				<#assign primeira = true>
-				<#-- pega o id do candidato na sessao para iniciar o update-->
-				<a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a><br>
-				<a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a><br>
-				<a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a>
-			</td>
-		</tr>
-		<tr><td colspan="3"><hr /></td></tr>
-	</#if>
-	
 	<tr>
 		<td colspan="3">
 			<strong>Vagas Abertas:</strong> 
 			
 			<#if !SESSION_CANDIDATO_ID?exists>
-			<div style="float:right">
-				<a href="logoutExterno.action?empresaId=${empresaId}">Tela de login</a>
-			</div>
+				<div style="float:right">
+					<a href="logoutExterno.action?empresaId=${empresaId}">Efetuar login</a>
+				</div>
 			</#if>
 		</td>
 	</tr>
@@ -89,8 +70,6 @@
 							<strong>${anuncio.titulo}</strong> <br />
 							<a href="verAnuncio.action?anuncio.id=${anuncio.id}">Visualizar</a>
 						</#if>
-						
-						<#assign primeira=false/>
 					</@display.column>
 					
 					<@display.column property="solicitacao.quantidade" title="Vagas" style="text-align:center; width: 40px;"/>
@@ -110,11 +89,8 @@
 	</#if>
 
 	<div id="popup" title="Responder Avaliações da Vaga" style="display:none;">
-		<h5>Técnico de SESMT</h5>
-		<ul>
-			<li><a href="#">Avaliação A</a></li>
-			<li><a href="#">Avaliação B</a></li>
-		<ul>
+		<h5></h5>
+		<ul></ul>
 	</div>
 
 	<script language='javascript'>

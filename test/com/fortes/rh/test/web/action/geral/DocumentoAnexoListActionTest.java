@@ -47,7 +47,7 @@ public class DocumentoAnexoListActionTest extends MockObjectTestCase
     	documentoAnexo.setOrigemId(1L);
     	action.setDocumentoAnexo(documentoAnexo);
 
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('C'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
+    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('C'), eq(1L), eq(null)).will(returnValue(new ArrayList<DocumentoAnexo>()));
     	manager.expects(once()).method("getNome").with(eq('C'), eq(1L)).will(returnValue("bruno"));
 
     	assertEquals("success", action.list());
@@ -65,7 +65,7 @@ public class DocumentoAnexoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
     	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosCandidatos"), eq(documentoAnexo));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
+    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L), eq(null)).will(returnValue(new ArrayList<DocumentoAnexo>()));
     	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
     	
     	assertEquals("success", action.deleteCandidato());
@@ -83,7 +83,7 @@ public class DocumentoAnexoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
     	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosCandidatos"),eq(documentoAnexo)).will(throwException(new Exception()));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
+    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L), eq(null)).will(returnValue(new ArrayList<DocumentoAnexo>()));
     	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
 
     	assertEquals("success", action.deleteCandidato());
@@ -101,7 +101,7 @@ public class DocumentoAnexoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
     	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosColaboradores"),eq(documentoAnexo));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
+    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq('Y'), eq(1L), eq(null)).will(returnValue(new ArrayList<DocumentoAnexo>()));
     	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
 
     	assertEquals("success", action.deleteColaborador());

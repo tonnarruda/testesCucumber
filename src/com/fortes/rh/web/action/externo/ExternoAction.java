@@ -2,24 +2,31 @@ package com.fortes.rh.web.action.externo;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
@@ -55,6 +62,7 @@ public class ExternoAction extends MyActionSupport
 	private CandidatoManager candidatoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private DocumentoAnexoManager documentoAnexoManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private Collection<Anuncio> anuncios = null;
 	private Collection<DocumentoAnexo> documentosAnexos;
@@ -62,9 +70,9 @@ public class ExternoAction extends MyActionSupport
 	private Candidato candidato;
 	private Solicitacao solicitacao;
 	private Anuncio anuncio;
-	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-
 	private CandidatoSolicitacao candidatoSolicitacao;
+	private DocumentoAnexo documentoAnexo;
+	private com.fortes.model.type.File documento;
 
 	private boolean moduloExterno = true; // flag para regra em recuperaSenhaLogin
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
@@ -314,10 +322,9 @@ public class ExternoAction extends MyActionSupport
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		if (session.get("SESSION_CANDIDATO_ID") != null)
 		{
-			Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
 			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
 			
-			documentosAnexos = null;
+			documentosAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, sessionCandidatoId, true);
 
 			return Action.SUCCESS;
 		}
@@ -326,7 +333,133 @@ public class ExternoAction extends MyActionSupport
 			prepareLogin();
 			return Action.INPUT;
 		}
-	}	
+	}
+	
+	public String showDocumentoAnexo() throws Exception
+	{
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		if (session.get("SESSION_CANDIDATO_ID") != null)
+		{
+			documentoAnexo = documentoAnexoManager.findById(documentoAnexo.getId());
+			java.io.File file = null;
+			if (documentoAnexo.getUrl() != null && !documentoAnexo.getUrl().equals(""))
+			{
+				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"documentosCandidatos");
+				
+				if(file != null)
+				{
+					com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
+					arquivo.setBytes(FileUtil.getFileBytes(file));
+					arquivo.setName(file.getName());
+					arquivo.setSize(file.length());
+					int pos = arquivo.getName().indexOf(".");
+					if(pos > 0)
+						arquivo.setContentType(arquivo.getName().substring(pos));
+					
+					if (arquivo != null && arquivo.getBytes() != null)
+					{
+						HttpServletResponse response = ServletActionContext.getResponse();
+	
+						response.addHeader("Expires", "0");
+						response.addHeader("Pragma", "no-cache");
+						response.addHeader("Content-type", arquivo.getContentType());
+						response.addHeader("Content-Disposition", "filename=" + documentoAnexo.getDescricao() + arquivo.getContentType());
+						response.addHeader("Content-Transfer-Encoding", "binary");
+	
+						response.getOutputStream().write(arquivo.getBytes());
+					}
+				}
+			}
+		}
+		else
+		{
+			prepareLogin();
+			return Action.INPUT;
+		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String deleteDocumentoAnexo() throws Exception
+	{
+		try
+		{
+			documentoAnexo = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
+			if (!ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID").equals(documentoAnexo.getOrigemId()))
+				throw new FortesException("O documento selecionado não consta na sua lista.");
+			
+			documentoAnexoManager.deletarDocumentoAnexo("documentosCandidatos", documentoAnexo);
+			addActionSuccess("Documento excluído com sucesso.");
+		}
+		catch (FortesException e)
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			addActionError("Não foi possível excluir o documento.");
+		}
+
+		return listDocumentosAnexos();
+	}
+	
+	private void prepareDocumentoAnexo() throws Exception
+	{
+		if(documentoAnexo != null && documentoAnexo.getId() != null)
+		{	
+			documentoAnexo = (DocumentoAnexo) documentoAnexoManager.findById(documentoAnexo.getId());
+		}
+		else
+		{
+			documentoAnexo = new DocumentoAnexo();
+			documentoAnexo.setData(new Date());
+			documentoAnexo.setOrigem(OrigemAnexo.AnexoCandidato);
+			documentoAnexo.setOrigemId((Long) ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID"));
+			documentoAnexo.setModuloExterno(true);
+		}
+	}
+	
+	public String prepareInsertDocumentoAnexo() throws Exception
+	{
+		prepareDocumentoAnexo();
+		return Action.SUCCESS;
+	}
+	
+	public String insertDocumentoAnexo() throws Exception
+	{
+		try
+		{
+			documentoAnexoManager.inserirDocumentoAnexo("documentosCandidatos", documentoAnexo, documento);
+			return Action.SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionError("Não foi possível inserir o documento.");
+			return Action.INPUT;
+		}
+	}
+	
+	public String prepareUpdateDocumentoAnexo() throws Exception
+	{
+		prepareDocumentoAnexo();
+		return Action.SUCCESS;
+	}
+	
+	public String updateDocumentoAnexo() throws Exception
+	{
+		try
+		{
+			documentoAnexoManager.atualizarDocumentoAnexo("documentosCandidatos", documentoAnexo, documento);
+			return Action.SUCCESS;
+		}
+		catch (Exception e)
+		{
+			addActionError("Não foi possível inserir o documento.");
+			return Action.INPUT;
+		}
+	}
 	
 	public Candidato getCandidato()
 	{
@@ -484,5 +617,21 @@ public class ExternoAction extends MyActionSupport
 
 	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
 		this.documentoAnexoManager = documentoAnexoManager;
+	}
+
+	public DocumentoAnexo getDocumentoAnexo() {
+		return documentoAnexo;
+	}
+
+	public void setDocumentoAnexo(DocumentoAnexo documentoAnexo) {
+		this.documentoAnexo = documentoAnexo;
+	}
+
+	public com.fortes.model.type.File getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(com.fortes.model.type.File documento) {
+		this.documento = documento;
 	}
 }

@@ -892,11 +892,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
 			
-			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId());
+			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId(), null);
 
 			if(colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
 			{
-				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId());
+				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId(), null);
 				historicosCandidatoByColaborador = historicoCandidatoManager.findByCandidato(colaborador.getCandidato());
 			}
 			

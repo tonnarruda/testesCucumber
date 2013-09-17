@@ -17,7 +17,7 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 {
 
 	@SuppressWarnings("unchecked")
-	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId)
+	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId, Boolean moduloExterno)
 	{
 		Criteria criteria = getSession().createCriteria(DocumentoAnexo.class, "da");
 		criteria.createCriteria("da.etapaSeletiva","es",Criteria.LEFT_JOIN);
@@ -35,6 +35,9 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		p.add(Projections.property("es.nome"), "projectionEtapaSeletivaNome");
 		criteria.setProjection(p);
 
+		if (moduloExterno != null)
+			criteria.add(Expression.eq("da.moduloExterno", moduloExterno));
+		
 		criteria.add(Expression.eq("da.origem", origem));
 		criteria.add(Expression.eq("da.origemId", origemId));
 		criteria.addOrder(Order.asc("da.data"));
