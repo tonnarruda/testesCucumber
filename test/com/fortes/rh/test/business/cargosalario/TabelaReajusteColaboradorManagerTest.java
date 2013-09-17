@@ -13,7 +13,9 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.ReajusteFaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.ReajusteIndiceManager;
@@ -22,7 +24,9 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -35,7 +39,9 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
@@ -55,6 +61,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	Mock reajusteIndiceManager;
 	Mock colaboradorManager;
 	Mock quantidadeLimiteColaboradoresPorCargoManager;
+	Mock faixaSalarialHistoricoManager;
+	Mock indiceHistoricoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -64,6 +72,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 		reajusteIndiceManager = new Mock(ReajusteIndiceManager.class);
 		reajusteFaixaSalarialManager = new Mock(ReajusteFaixaSalarialManager.class);
+		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
+		indiceHistoricoManager = new Mock(IndiceHistoricoManager.class);
 
 		tabelaReajusteColaboradorDao = new Mock(TabelaReajusteColaboradorDao.class);
 		tabelaReajusteColaboradorManager.setDao((TabelaReajusteColaboradorDao) tabelaReajusteColaboradorDao.proxy());
@@ -73,6 +83,8 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		tabelaReajusteColaboradorManager.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
 		tabelaReajusteColaboradorManager.setReajusteIndiceManager((ReajusteIndiceManager) reajusteIndiceManager.proxy());
 		tabelaReajusteColaboradorManager.setReajusteFaixaSalarialManager((ReajusteFaixaSalarialManager) reajusteFaixaSalarialManager.proxy());
+		tabelaReajusteColaboradorManager.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager) faixaSalarialHistoricoManager.proxy());
+		tabelaReajusteColaboradorManager.setIndiceHistoricoManager((IndiceHistoricoManager) indiceHistoricoManager.proxy());
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		tabelaReajusteColaboradorManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -412,7 +424,94 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		
 		assertNull(exception);
 	}
+
+	public void testVerificaDataHistoricoFaixaSalarial() throws Exception	
+	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
+		faixaSalarialHistoricos.add(faixaSalarialHistorico);
+		
+		faixaSalarialHistoricoManager.expects(once()).method("findByTabelaReajusteIdData").with(eq(tabelaReajusteColaborador.getId()), eq(tabelaReajusteColaborador.getData())).will(returnValue(faixaSalarialHistoricos));
+		
+		Exception exception = null;
+		try
+		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoFaixaSalarial(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNotNull(exception);
+	}
 	
+	public void testVerificaDataHistoricoFaixaSalarialVazio() throws Exception	
+	{		
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
+		faixaSalarialHistoricoManager.expects(once()).method("findByTabelaReajusteIdData").with(eq(tabelaReajusteColaborador.getId()), eq(tabelaReajusteColaborador.getData())).will(returnValue(faixaSalarialHistoricos));
+		
+		Exception exception = null;
+		try
+		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoFaixaSalarial(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
+	public void testVerificaDataHistoricoIndice() throws Exception	
+	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(indiceHistorico);
+		
+		indiceHistoricoManager.expects(once()).method("findByTabelaReajusteIdData").with(eq(tabelaReajusteColaborador.getId()), eq(tabelaReajusteColaborador.getData())).will(returnValue(indiceHistoricos));
+		
+		Exception exception = null;
+		try
+		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoIndice(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNotNull(exception);
+	}
+	
+	public void testVerificaDataHistoricoIndiceVazio() throws Exception	
+	{		
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		
+		indiceHistoricoManager.expects(once()).method("findByTabelaReajusteIdData").with(eq(tabelaReajusteColaborador.getId()), eq(tabelaReajusteColaborador.getData())).will(returnValue(indiceHistoricos));
+		
+		Exception exception = null;
+		try
+		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoIndice(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+
 	public void testCancelar() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

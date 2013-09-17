@@ -454,8 +454,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-	public HistoricoColaborador ajustaTipoSalario(HistoricoColaborador historico, int salarioPropostoPor, Indice indice, Double quantidadeIndice,
-			Double salarioColaborador)
+	public HistoricoColaborador ajustaTipoSalario(HistoricoColaborador historico, int salarioPropostoPor, Indice indice, Double quantidadeIndice, Double salarioColaborador)
 	{
 		switch (salarioPropostoPor)
 		{

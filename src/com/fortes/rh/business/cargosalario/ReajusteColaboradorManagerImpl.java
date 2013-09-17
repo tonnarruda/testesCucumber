@@ -14,6 +14,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
@@ -52,18 +53,18 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	public void validaSolicitacaoReajuste(ReajusteColaborador reajusteColaborador) throws Exception 
 	{
 		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId()))
-			throw new Exception("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
+			throw new FortesException("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
 		
 		tabelaReajusteColaboradorManager = (TabelaReajusteColaboradorManager) SpringUtil.getBean("tabelaReajusteColaboradorManager");
 		historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
 		
 		TabelaReajusteColaborador tabelaReajusteColaboradorTemp = tabelaReajusteColaboradorManager.findByIdProjection(reajusteColaborador.getTabelaReajusteColaborador().getId());
 		if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{tabelaReajusteColaboradorTemp.getData(), reajusteColaborador.getColaborador().getId()}))
-			throw new Exception("Colaborador já possui um histórico na data do Planejamento de Realinhamento.");
+			throw new FortesException(reajusteColaborador.getColaborador().getNome()+" já possui um histórico na mesma data do planejamento de realinhamento.");
 		
 		boolean existeColaboradorAndTabela = getDao().verifyExists(new String[]{"colaborador.id", "tabelaReajusteColaborador.id"}, new Object[]{reajusteColaborador.getColaborador().getId(), reajusteColaborador.getTabelaReajusteColaborador().getId()});
 		if(existeColaboradorAndTabela)
-			throw new Exception("ERRO : Já existe uma solicitação de reajuste para este colaborador nesta tabela.");
+			throw new FortesException("Já existe uma solicitação de reajuste para " + reajusteColaborador.getColaborador().getNome() + " nesta tabela.");
 		
 	}
 	
@@ -95,7 +96,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 				reajusteColaborador.setIndiceProposto(null);
 				reajusteColaborador.setQuantidadeIndiceProposto(0.0);
 				if(reajusteColaborador.getSalarioProposto() == null || reajusteColaborador.getSalarioProposto() == 0)
-					throw new Exception("Valor do Salário não informado.");
+					throw new Exception("Valor do salário não informado.");
 			break;
 			case TipoAplicacaoIndice.INDICE:
 				reajusteColaborador.setSalarioProposto(0d);
@@ -103,7 +104,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 					throw new Exception("Índice não informado.");
 			break;
 			default:
-				throw new Exception("Tipo de Salário não identificado.");
+				throw new Exception("Tipo de salário não identificado.");
 		}
 	}
 

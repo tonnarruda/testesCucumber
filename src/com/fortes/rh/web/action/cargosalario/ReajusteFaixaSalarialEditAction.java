@@ -53,12 +53,12 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		try
 		{
 			reajusteFaixaSalarialManager.insertReajustes(tabelaReajusteColaborador.getId(), new Long[] { faixaSalarial.getId() }, dissidioPor, valorDissidio);
-			addActionMessage("Proposta de reajuste gravada com sucesso");
+			addActionSuccess("Proposta de reajuste gravada com sucesso.");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Ocorreu um erro ao gravar a proposta de reajuste");
+			addActionError("Ocorreu um erro ao gravar a proposta de reajuste.");
 		}
 		finally
 		{
@@ -109,7 +109,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 		try
 		{
 			reajusteFaixaSalarialManager.insertReajustes(tabelaReajusteColaborador.getId(), LongUtil.arrayStringToArrayLong(faixasCheck), dissidioPor, valorDissidio);
-			addActionMessage("Propostas de reajuste gravadas com sucesso");
+			addActionSuccess("Propostas de reajuste gravadas com sucesso");
 		}
 		catch (Exception e)
 		{

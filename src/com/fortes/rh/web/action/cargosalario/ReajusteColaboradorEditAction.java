@@ -18,6 +18,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -218,8 +219,12 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			
 			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador);
 			
-			addActionMessage("Solicitação de Realinhamento incluída com sucesso");
+			addActionSuccess("Solicitação de realinhamento incluída com sucesso");
 		} 
+		catch(FortesException fe)
+		{
+			addActionWarning(fe.getMessage());
+		}
 		catch(Exception e)
 		{
 			addActionError(e.getMessage());
@@ -340,28 +345,26 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	public String aplicarDissidio() throws Exception
 	{
-		String msg = "";
 		try
 		{
 			TabelaReajusteColaborador tabelaReajusteColaboradorTmp = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
 			Collection<HistoricoColaborador> historicoColaboradores = historicoColaboradorManager.getHistoricosAtuaisByEstabelecimentoAreaGrupo(StringUtil.stringToLong(estabelecimentosCheck), filtrarPor, StringUtil.stringToLong(areasCheck) , StringUtil.stringToLong(gruposCheck), getEmpresaSistema().getId(), tabelaReajusteColaboradorTmp.getData());
 			if(historicoColaboradores.isEmpty())
 			{
-				msg = "Não existe Colaborador para o filtro informado.";
+				addActionMessage("Não existe colaborador para o filtro informado.");
 			}
 			else
 			{
 				reajusteColaboradorManager.aplicarDissidio(historicoColaboradores, tabelaReajusteColaborador, dissidioPor, valorDissidio);
-				msg = "Realinhamento inserido com sucesso.";
+				addActionSuccess("Reajuste de realinhamento inserido com sucesso.");
 			}
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			msg = "ERRO: Não foi possível inserir o Reajuste";
+			addActionError("Não foi possível inserir o reajuste de realinhamento");
 		}
 
-		addActionMessage(msg);
 		prepareDissidio();
 
 		return Action.SUCCESS;

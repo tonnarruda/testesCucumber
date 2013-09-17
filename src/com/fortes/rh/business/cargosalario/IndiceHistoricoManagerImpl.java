@@ -57,4 +57,9 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 	{
 		return getDao().findByTabelaReajusteId(tabelaReajusteColaboradorId);
 	}
+
+	public Collection<IndiceHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data)
+	{
+		return getDao().findByTabelaReajusteIdData(tabelaReajusteColaboradorId, data);
+	}
 }

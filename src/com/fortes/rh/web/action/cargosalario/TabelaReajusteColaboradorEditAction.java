@@ -204,59 +204,38 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 			reajustes = reajusteColaboradorManager.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), null, null, null, 0);
 			tabelaReajusteColaboradorManager.verificaDataHistoricoColaborador(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
 			tabelaReajusteColaboradorManager.aplicarPorColaborador(tabelaReajusteColaborador, getEmpresaSistema(), reajustes);
-			
-			addActionMessage("Reajuste aplicado com sucesso");
-			
+
+			addActionSuccess("Reajuste aplicado com sucesso.");
+
 			return Action.SUCCESS;
 		}
-		catch (ColecaoVaziaException e)
+		catch (Exception exception)
 		{
-			e.printStackTrace();
+			exception.printStackTrace();
 			visualizar();
-			addActionMessage(e.getMessage());
-			return Action.INPUT;
-		}
-		catch (LimiteColaboradorExceditoException e)
-		{
-			e.printStackTrace();
-			visualizar();
-			addActionMessage(e.getMessage());
-			return Action.INPUT;
-		}
-		catch (IntegraACException e)
-		{
-			e.printStackTrace();
-			visualizar();
-			addActionError(e.getMensagemDetalhada());
-			return Action.INPUT;
-		}
-		catch (InvocationTargetException e)
-		{
-			String msg = "Inserção do Planejamento de Realinhamento falhou.";
-			
-			if (e.getCause() != null)
+
+			if (exception instanceof FortesException)
+				addActionWarning(exception.getMessage());
+			else if (exception instanceof ColecaoVaziaException)
+				addActionMessage(exception.getMessage());
+			else if (exception instanceof LimiteColaboradorExceditoException)
+				addActionMessage(exception.getMessage());
+			else if (exception instanceof IntegraACException)
+				addActionError(((IntegraACException)exception).getMensagemDetalhada());
+			else if (exception instanceof InvocationTargetException)
 			{
-				e.getCause().printStackTrace();
-				msg += "<br />" + e.getCause().getMessage();
+				String msg = "Inserção do planejamento de realinhamento falhou.";
+
+				if (exception.getCause() != null)
+				{
+					exception.getCause().printStackTrace();
+					msg += "<br />" + exception.getCause().getMessage();
+				}
+				addActionError(msg);
+
 			}
-			addActionError(msg);
-
-			visualizar();
-				
-			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-
-			String msg = "Inserção do Planejamento de Realinhamento falhou.";
-			
-			if (e.getMessage() != null)
-				msg += "<br />" + e.getMessage();
-	
-			addActionError(msg);
-			
-			visualizar();
+			else
+				addActionError("Não foi possível aplicar o reajuste.");
 
 			return Action.INPUT;
 		}
@@ -266,27 +245,26 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	{
 		try 
 		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoFaixaSalarial(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
 			tabelaReajusteColaboradorManager.aplicarPorFaixaSalarial(tabelaReajusteColaborador.getId(), getEmpresaSistema());
 			
-			addActionMessage("Reajuste aplicado com sucesso");
+			addActionSuccess("Reajuste aplicado com sucesso.");
 			
 			return Action.SUCCESS;
 		} 
-		catch (ColecaoVaziaException e) 
+		catch (Exception exception)
 		{
-			addActionError(e.getMessage());
-			e.printStackTrace();
-			
+			exception.printStackTrace();
 			visualizar();
-			
-			return Action.INPUT;
-		}
-		catch (Exception e) 
-		{
-			addActionError("Ocorreu um erro ao aplicar os reajustes");
-			e.printStackTrace();
-			
-			visualizar();
+
+			if (exception instanceof FortesException)
+				addActionWarning(exception.getMessage());
+			else if (exception instanceof ColecaoVaziaException)
+				addActionMessage(exception.getMessage());
+			else if (exception instanceof IntegraACException)
+				addActionError(((IntegraACException)exception).getMensagemDetalhada());
+			else
+				addActionError("Não foi possível aplicar o reajuste.");
 
 			return Action.INPUT;
 		}
@@ -296,28 +274,25 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 	{
 		try 
 		{
+			tabelaReajusteColaboradorManager.verificaDataHistoricoIndice(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getData());
 			tabelaReajusteColaboradorManager.aplicarPorIndice(tabelaReajusteColaborador.getId(), getEmpresaSistema());
 			
-			addActionMessage("Reajuste aplicado com sucesso");
+			addActionSuccess("Reajuste aplicado com sucesso");
 			
 			return Action.SUCCESS;
 		} 
-		catch (FortesException e) 
+		catch (Exception exception)
 		{
-			addActionError(e.getMessage());
-			e.printStackTrace();
-			
+			exception.printStackTrace();
 			visualizar();
-			
-			return Action.INPUT;
-		}
-		catch (Exception e) 
-		{
-			addActionError("Ocorreu um erro ao aplicar os reajustes");
-			e.printStackTrace();
-			
-			visualizar();
-			
+
+			if (exception instanceof FortesException)
+				addActionWarning(exception.getMessage());
+			else if (exception instanceof ColecaoVaziaException)
+				addActionMessage(exception.getMessage());
+			else
+				addActionError("Não foi possível aplicar o reajuste.");
+
 			return Action.INPUT;
 		}
 	}
