@@ -7,15 +7,18 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.cargosalario.ReajusteIndice;
 
 @SuppressWarnings("unchecked")
 public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHistorico> implements IndiceHistoricoDao
@@ -190,6 +193,37 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("trs.id", tabelaReajusteColaboradorId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	public Collection<IndiceHistorico> findByTabelaReajusteIdData(Long tabelaReajusteId, Date data)
+	{
+        DetachedCriteria subQuery = DetachedCriteria.forClass(ReajusteIndice.class, "ri");
+        ProjectionList pSub = Projections.projectionList().create();
+
+        pSub.add(Projections.property("ri.indice.id"), "indiceId");
+        subQuery.setProjection(pSub);
+
+        subQuery.add(Expression.eq("ri.tabelaReajusteColaborador.id", tabelaReajusteId));
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
+		criteria.createCriteria("ih.indice", "i", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ih.id"), "id");
+		p.add(Projections.property("ih.data"), "data");
+		p.add(Projections.property("i.nome"), "projectionIndiceNome");
+
+		criteria.setProjection(p);
+
+		criteria.add(Subqueries.propertyIn("i.id", subQuery));
+		criteria.add(Expression.eq("ih.data", data));
+		
+		criteria.addOrder(Order.asc("i.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

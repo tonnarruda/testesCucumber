@@ -9,10 +9,12 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -455,5 +457,39 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return (FaixaSalarialHistorico) query.uniqueResult();
+	}
+
+	public Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteId, Date data)
+	{
+        DetachedCriteria subQuery = DetachedCriteria.forClass(ReajusteFaixaSalarial.class, "rf");
+        ProjectionList pSub = Projections.projectionList().create();
+
+        pSub.add(Projections.property("rf.faixaSalarial.id"), "faixaSalarialId");
+        subQuery.setProjection(pSub);
+
+        subQuery.add(Expression.eq("rf.tabelaReajusteColaborador.id", tabelaReajusteId));
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hfs");
+		criteria.createCriteria("hfs.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "c", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hfs.id"), "id");
+		p.add(Projections.property("hfs.data"), "data");
+		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+
+		criteria.setProjection(p);
+
+		criteria.add(Subqueries.propertyIn("fs.id", subQuery));
+		criteria.add(Expression.eq("hfs.data", data));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("fs.nome"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }

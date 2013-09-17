@@ -384,4 +384,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	{
 		return getDao().findByTabelaReajusteId(tabelaReajusteColaboradorId);
 	}
+
+	public Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data)
+	{
+		return getDao().findByTabelaReajusteIdData(tabelaReajusteColaboradorId, data);
+	}
 }

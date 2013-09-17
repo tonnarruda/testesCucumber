@@ -18,4 +18,5 @@ public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
 	void updateValor(Date data, Long indiceId, Double valor);
 	void deleteByIndice(Long[] indiceIds) throws Exception;
 	Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
+	Collection<IndiceHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data);
 }

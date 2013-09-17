@@ -10,6 +10,7 @@ import org.apache.axis.client.Call;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -205,7 +206,7 @@ public class AcPessoalClientCargo
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	boolean retorno = result.getSucesso("SetRhCargos", param, this.getClass()); 
             if(!retorno)
-            	throw new Exception("Erro ao cadastrar historico da faixa salarial no AC Pessoal");
+            	throw new IntegraACException("Erro ao cadastrar histórico da faixa salarial no AC Pessoal.");
             
             return true;
         }

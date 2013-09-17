@@ -261,6 +261,67 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		assertEquals(2, indiceHistoricoDao.findByTabelaReajusteId(tabela2.getId()).size());
 	}
 	
+	public void testFindByTabelaReajusteIdData()
+	{
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela1);
+		
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela2);
+		
+		Indice indice1 = IndiceFactory.getEntity();
+		indiceDao.save(indice1);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indiceDao.save(indice2);
+		
+		Indice indice3 = IndiceFactory.getEntity();
+		indiceDao.save(indice3);
+		
+		ReajusteIndice reajuste1 = new ReajusteIndice();
+		reajuste1.setIndice(indice1);
+		reajuste1.setTabelaReajusteColaborador(tabela1);
+		reajuste1.setValorAtual(100.00);
+		reajuste1.setValorProposto(200.00);
+		reajusteIndiceDao.save(reajuste1);
+		
+		ReajusteIndice reajuste2 = new ReajusteIndice();
+		reajuste2.setIndice(indice2);
+		reajuste2.setTabelaReajusteColaborador(tabela2);
+		reajuste2.setValorAtual(100.00);
+		reajuste2.setValorProposto(200.00);
+		reajusteIndiceDao.save(reajuste2);
+		
+		ReajusteIndice reajuste3 = new ReajusteIndice();
+		reajuste3.setIndice(indice3);
+		reajuste3.setTabelaReajusteColaborador(tabela2);
+		reajuste3.setValorAtual(100.00);
+		reajuste3.setValorProposto(200.00);
+		reajusteIndiceDao.save(reajuste3);
+		
+		Date data = DateUtil.criarDataMesAno(01, 01, 2010);
+		
+		IndiceHistorico historico1 = IndiceHistoricoFactory.getEntity();
+		historico1.setIndice(indice1);
+		historico1.setReajusteIndice(reajuste1);
+		historico1.setData(data);
+		indiceHistoricoDao.save(historico1);
+		
+		IndiceHistorico historico2 = IndiceHistoricoFactory.getEntity();
+		historico2.setIndice(indice2);
+		historico2.setReajusteIndice(reajuste2);
+		historico2.setData(data);
+		indiceHistoricoDao.save(historico2);
+		
+		IndiceHistorico historico3 = IndiceHistoricoFactory.getEntity();
+		historico3.setIndice(indice3);
+		historico3.setReajusteIndice(reajuste3);
+		historico3.setData(data);
+		indiceHistoricoDao.save(historico3);
+		
+		assertEquals("Tabela Reajuste 1", 1, indiceHistoricoDao.findByTabelaReajusteIdData(tabela1.getId(), data).size());
+		assertEquals("Tabela Reajuste 2", 2, indiceHistoricoDao.findByTabelaReajusteIdData(tabela2.getId(), data).size());
+	}
 	public void setIndiceHistoricoDao(IndiceHistoricoDao indiceHistoricoDao)
 	{
 		this.indiceHistoricoDao = indiceHistoricoDao;

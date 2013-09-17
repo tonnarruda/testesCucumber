@@ -6,8 +6,6 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -22,7 +20,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void remove(TabelaReajusteColaborador tabelaReajusteColaborador);
 
 	@Audita(operacao="Aplicar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception;
+	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws Exception;
 	
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception;
@@ -49,4 +47,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 
 	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException;
 
+	public void verificaDataHistoricoFaixaSalarial(Long tabelaReajusteColaboradorId, Date data) throws Exception;
+	
+	public void verificaDataHistoricoIndice(Long tabelaReajusteColaboradorId, Date data) throws Exception;
 }

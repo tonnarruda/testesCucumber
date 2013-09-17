@@ -1,0 +1,2 @@
+create unique index faixasalarialhistorico_data_faixasalarial_uk on faixasalarialhistorico(data,faixasalarial_id); --.go
+create unique index indicehistorico_data_indice_uk on indicehistorico(data,indice_id); --.go

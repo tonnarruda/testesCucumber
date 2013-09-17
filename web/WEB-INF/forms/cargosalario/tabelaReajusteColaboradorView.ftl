@@ -46,12 +46,12 @@
 		
 		function aplicarPorFaixaSalarial()
 		{
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}' });
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorFaixaSalarial.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}' });
 		}
 		
 		function aplicarPorIndice()
 		{
-			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorIndice.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}' });
+			newConfirm('Deseja realmente aplicar o reajuste?', function(){ window.location='aplicarPorIndice.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.data=${tabelaReajusteColaborador.data}' });
 		}
 	</script>
 

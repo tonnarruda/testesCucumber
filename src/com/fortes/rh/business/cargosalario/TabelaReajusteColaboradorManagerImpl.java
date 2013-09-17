@@ -10,8 +10,6 @@ import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
@@ -102,10 +100,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		}
 	}
 
-	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws IntegraACException, ColecaoVaziaException, LimiteColaboradorExceditoException, Exception
+	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws Exception
 	{
 		if(tabelaReajusteColaborador != null && (reajustes == null || reajustes.size() == 0))
-			throw new ColecaoVaziaException("Nenhum Colaborador no Reajuste");
+			throw new ColecaoVaziaException("Nenhum colaborador na tabela de realinhamento.");
 		
 		//Verifica se existem colaboradores desligados antes da data de aplicação do reajuste
 		colaboradorManager.verificaColaboradoresDesligados(reajustes);
@@ -152,9 +150,6 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 				historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
 			else
 				historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-
-			if(historicoColaboradorManager.verifyExists(new String[]{"data", "colaborador.id"}, new Object[]{historicoColaborador.getData(), historicoColaborador.getColaborador().getId()}))
-				throw new Exception("Colaborador já possui um histórico na data do Planejamento de Realinhamento.");
 
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), empresa.getId(), reajuste.getColaborador().getId());
 			
@@ -309,10 +304,42 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			StringBuilder colaboradoresComHistoricoNaData = new StringBuilder();
 			for (HistoricoColaborador historicoColaborador : historicoColaboradors)
 			{
-				colaboradoresComHistoricoNaData.append(historicoColaborador.getColaborador().getNome() + "<br>");
+				colaboradoresComHistoricoNaData.append("- "+historicoColaborador.getColaborador().getNome() + "<br>");
 			}
 			
-			throw new Exception("Já existe(m) Histórico(s) na data " + DateUtil.formataDiaMesAno(data) + " para esse(s) colaborador(es): <br>" + colaboradoresComHistoricoNaData.toString());
+			throw new FortesException("Já existe(m) histórico(s) na data " + DateUtil.formataDiaMesAno(data) + " para o(s) colaborador(es) abaixo: <br>" + colaboradoresComHistoricoNaData.toString());
+		}
+	}
+
+	public void verificaDataHistoricoFaixaSalarial(Long tabelaReajusteColaboradorId, Date data) throws Exception
+	{
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByTabelaReajusteIdData(tabelaReajusteColaboradorId, data);
+		
+		if(faixaSalarialHistoricos != null && !faixaSalarialHistoricos.isEmpty())
+		{
+			StringBuilder faixasSalariaisComHistoricoNaData = new StringBuilder();
+			for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos)
+			{
+				faixasSalariaisComHistoricoNaData.append("- "+faixaSalarialHistorico.getDescricao() + "<br>");
+			}
+			
+			throw new FortesException("Já existe(m) histórico(s) na data " + DateUtil.formataDiaMesAno(data) + " para a(s) faixa(s) salarial(is) abaixo: <br>" + faixasSalariaisComHistoricoNaData.toString());
+		}
+	}
+	
+	public void verificaDataHistoricoIndice(Long tabelaReajusteColaboradorId, Date data) throws Exception
+	{
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByTabelaReajusteIdData(tabelaReajusteColaboradorId, data);
+		
+		if(indiceHistoricos != null && !indiceHistoricos.isEmpty())
+		{
+			StringBuilder indicesComHistoricoNaData = new StringBuilder();
+			for (IndiceHistorico indiceHistorico : indiceHistoricos)
+			{
+				indicesComHistoricoNaData.append("- "+indiceHistorico.getIndice().getNome() + "<br>");
+			}
+			
+			throw new FortesException("Já existe(m) histórico(s) na data " + DateUtil.formataDiaMesAno(data) + " para o(s) índice(s) abaixo: <br>" + indicesComHistoricoNaData.toString());
 		}
 	}
 
@@ -366,12 +393,13 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		this.faixaSalarialHistoricoManager = faixaSalarialHistoricoManager;
 	}
 
-	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager) {
+	public void setReajusteIndiceManager(ReajusteIndiceManager reajusteIndiceManager)
+	{
 		this.reajusteIndiceManager = reajusteIndiceManager;
 	}
 
-	public void setIndiceHistoricoManager(
-			IndiceHistoricoManager indiceHistoricoManager) {
+	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
+	{
 		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 }

@@ -575,6 +575,74 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 
 		assertTrue(retorno.size() >= 1);
 	}
+	
+	public void testFindByTabelaReajusteIdData()
+	{
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela1);
+		
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaboradorDao.save(tabela2);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixa1.setCargo(cargo);
+		faixaSalarialDao.save(faixa1);
+		
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixa2.setCargo(cargo);
+		faixaSalarialDao.save(faixa2);
+		
+		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity();
+		faixa3.setCargo(cargo);
+		faixaSalarialDao.save(faixa3);
+		
+		ReajusteFaixaSalarial reajuste1 = new ReajusteFaixaSalarial();
+		reajuste1.setFaixaSalarial(faixa1);
+		reajuste1.setTabelaReajusteColaborador(tabela1);
+		reajuste1.setValorAtual(100.00);
+		reajuste1.setValorProposto(200.00);
+		reajusteFaixaSalarialDao.save(reajuste1);
+		
+		ReajusteFaixaSalarial reajuste2 = new ReajusteFaixaSalarial();
+		reajuste2.setFaixaSalarial(faixa2);
+		reajuste2.setTabelaReajusteColaborador(tabela1);
+		reajuste2.setValorAtual(100.00);
+		reajuste2.setValorProposto(200.00);
+		reajusteFaixaSalarialDao.save(reajuste2);
+		
+		ReajusteFaixaSalarial reajuste3 = new ReajusteFaixaSalarial();
+		reajuste3.setFaixaSalarial(faixa3);
+		reajuste3.setTabelaReajusteColaborador(tabela2);
+		reajuste3.setValorAtual(100.00);
+		reajuste3.setValorProposto(200.00);
+		reajusteFaixaSalarialDao.save(reajuste3);
+		
+		Date data = DateUtil.criarDataMesAno(01, 01, 2010);
+		
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
+		historico1.setFaixaSalarial(faixa1);
+		historico1.setReajusteFaixaSalarial(reajuste1);
+		historico1.setData(data);
+		faixaSalarialHistoricoDao.save(historico1);
+		
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
+		historico2.setFaixaSalarial(faixa2);
+		historico2.setReajusteFaixaSalarial(reajuste2);
+		historico2.setData(data);
+		faixaSalarialHistoricoDao.save(historico2);
+		
+		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity();
+		historico3.setFaixaSalarial(faixa3);
+		historico3.setReajusteFaixaSalarial(reajuste3);
+		historico3.setData(data);
+		faixaSalarialHistoricoDao.save(historico3);
+		
+		assertEquals("Tabela Reajuste 1", 2, faixaSalarialHistoricoDao.findByTabelaReajusteIdData(tabela1.getId(), data).size());
+		assertEquals("Tabela Reajuste 2", 1, faixaSalarialHistoricoDao.findByTabelaReajusteIdData(tabela2.getId(), data).size());
+	}
 
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()
 	{
@@ -606,17 +674,18 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		this.empresaDao = empresaDao;
 	}
 
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
-	public void setTabelaReajusteColaboradorDao(
-			TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao) {
+	public void setTabelaReajusteColaboradorDao(TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao)
+	{
 		this.tabelaReajusteColaboradorDao = tabelaReajusteColaboradorDao;
 	}
 
-	public void setReajusteFaixaSalarialDao(
-			ReajusteFaixaSalarialDao reajusteFaixaSalarialDao) {
+	public void setReajusteFaixaSalarialDao(ReajusteFaixaSalarialDao reajusteFaixaSalarialDao)
+	{
 		this.reajusteFaixaSalarialDao = reajusteFaixaSalarialDao;
 	}
 }
