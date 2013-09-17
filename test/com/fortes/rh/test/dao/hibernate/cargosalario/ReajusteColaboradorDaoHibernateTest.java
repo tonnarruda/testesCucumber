@@ -150,19 +150,20 @@ public class ReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest
         Collection<Long> grupoIds = new ArrayList<Long>();
         grupoIds.add(grupoOcupacionalProposto.getId());
 
-        ReajusteColaborador reajusteColaboradorRetorno;
+        ReajusteColaborador reajusteColaboradorRetorno1, reajusteColaboradorRetorno2;
         
         Collection<ReajusteColaborador> reajusteColaboradors = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, FILTRAR_POR_GRUPO);
-        reajusteColaboradorRetorno =  (ReajusteColaborador) reajusteColaboradors.toArray()[0];
+        reajusteColaboradorRetorno1 =  (ReajusteColaborador) reajusteColaboradors.toArray()[0];
+        reajusteColaboradorRetorno2 =  (ReajusteColaborador) reajusteColaboradors.toArray()[1];
         
         assertEquals(2, reajusteColaboradors.size());
-        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno.getId());
+        assertTrue(reajusteColaborador.getId().equals(reajusteColaboradorRetorno1.getId()) || reajusteColaborador.getId().equals(reajusteColaboradorRetorno2.getId()));
 
         Collection<ReajusteColaborador> reajusteColaboradorsAreas = reajusteColaboradorDao.findByIdEstabelecimentoAreaGrupo(tabelaReajusteColaborador.getId(), estabelecimentosIds, areasIds, grupoIds, FILTRAR_POR_AREA);
-        reajusteColaboradorRetorno =  (ReajusteColaborador) reajusteColaboradorsAreas.toArray()[0];
+        reajusteColaboradorRetorno1 =  (ReajusteColaborador) reajusteColaboradorsAreas.toArray()[0];
         
         assertEquals(1, reajusteColaboradorsAreas.size());
-        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno.getId());
+        assertEquals(reajusteColaborador.getId(), reajusteColaboradorRetorno1.getId());
     }
 
     public void testDeleteByColaboradoresTabelaReajuste()
