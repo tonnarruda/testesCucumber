@@ -4493,7 +4493,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (!StringUtil.isBlank(escolaridade))
 			hql.append("and cast(co.pessoal.escolaridade as integer) >= :escolaridade "); 
 		if (areasIds.length > 0)
-			hql.append("and hc.areaorganizacional.id in (:areasIds) ");
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		if (cargosIds.length > 0)
 			hql.append("and fs.cargo.id in (:cargosIds) ");
 		if (dataNascIni != null)
