@@ -35,6 +35,10 @@
 		<@ww.hidden name="candidato.id"/>
 		<@ww.hidden name="statusCandSol"/>
 		<@ww.hidden name="voltarPara"/>
+		<#if !compartilharCandidatos>
+			<@ww.hidden name="empresa.id"/>
+		</#if>
+
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" disabled="!compartilharCandidatos" onchange="populaSolicitacoes(this.value)";/>
 		<@frt.checkListBox label="Solicitações disponíveis" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
 	
