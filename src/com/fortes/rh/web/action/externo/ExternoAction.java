@@ -135,6 +135,7 @@ public class ExternoAction extends MyActionSupport
 		session.put("SESSION_CANDIDATO_ID", candidato.getId());
 		session.put("SESSION_CANDIDATO_SENHA", candidato.getSenha());
 		session.put("SESSION_CANDIDATO_NOME", candidato.getNome());
+		session.put("SESSION_CANDIDATO_NOME_RESUMIDO", StringUtil.subStr(candidato.getNome(), 40, "..."));
 		session.put("SESSION_CANDIDATO_CPF", candidato.getPessoal().getCpfFormatado());
 		session.put("SESSION_EMPRESA", empresaId);
 
@@ -150,6 +151,7 @@ public class ExternoAction extends MyActionSupport
 		session.put("SESSION_CANDIDATO_ID", null);
 		session.put("SESSION_CANDIDATO_SENHA", null);
 		session.put("SESSION_CANDIDATO_NOME", null);
+		session.put("SESSION_CANDIDATO_NOME_RESUMIDO", null);
 		session.put("SESSION_CANDIDATO_CPF", null);
 		session.put("SESSION_EMPRESA", null);
 

@@ -118,6 +118,7 @@
 			<div id="topContent">
 				<#if SESSION_CANDIDATO_ID?exists>
 					<ul>
+						<li><a href="prepareListAnuncio.action">Vagas Abertas</a></li>
 						<li><a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a></li>
 						<li><a href="listDocumentosAnexos.action?moduloExterno=true">Anexar Documentos</a></li>
 						<li><a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a></li>
@@ -125,13 +126,13 @@
 					</ul>
 					<div class="saudacao">
 						Bem vindo(a)<br />
-						${SESSION_CANDIDATO_NOME}<br />
+						${SESSION_CANDIDATO_NOME_RESUMIDO}<br />
 						CPF ${SESSION_CANDIDATO_CPF}
 					</div>
 				</#if>
 			</div>
 		</div>
-		<br/><br/>
+		<br clear="all"/><br/>
 		<div id="mainDiv">
 			${body}
 		</div>

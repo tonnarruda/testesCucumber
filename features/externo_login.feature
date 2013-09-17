@@ -47,6 +47,16 @@ Funcionalidade: Login no modulo externo
     E eu preencho o campo (JS) "cpfRH" com "881.028.771-11"
     E eu preencho "senhaRH" com "123"
     E eu clico no botão "Entrar"
-    Então eu devo ver "Bem vindo pedro!"
+    Então eu devo ver "Bem vindo(a)"
+    
+    Quando eu clico "Anexar Documentos"
+    E eu devo ver "Documentos Anexos"
+    E eu clico no botão "Inserir"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert do valida campos e clico no ok
+    E eu clico no botão "Cancelar"
+    E eu devo ver "Documentos Anexos"
+	Então eu clico "Vagas Abertas"
+	E eu devo ver "Vagas Abertas"
 
     E eu clico "Sair"
