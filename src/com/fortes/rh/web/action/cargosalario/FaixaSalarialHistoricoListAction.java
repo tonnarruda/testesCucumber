@@ -29,15 +29,14 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 		catch(IntegraACException e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir o Historico da Faixa Salarial no AC Pessoal.");
+			addActionError("Não foi possível excluir o histórico da faixa salarial no AC Pessoal.");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir Historico Faixa Salarial.");
+			addActionError("Não foi possível excluir o histórico faixa salarial.");
 		}
 		
-
 		return Action.SUCCESS;
 	}
 
