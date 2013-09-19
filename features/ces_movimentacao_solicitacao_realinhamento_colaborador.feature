@@ -47,9 +47,9 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu preencho o campo (JS) "teste" com "observacao"
 
     E eu clico no botão "Gravar"
-    Então eu devo ver "Solicitação de Realinhamento incluída com sucesso"
+    Então eu devo ver "Solicitação de realinhamento incluída com sucesso"
 
-    Dado que exista um indice "Indice I" com historico
+    Dado que exista um indice "Indice I" com historico na data "01/01/2013" e valor "5000.00"
 
     E eu seleciono "bento aliamento" de "Planejamento de Realinhamento"
     E eu seleciono "suporte" de "Áreas Organizacionais"
@@ -63,7 +63,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu preencho o campo (JS) "3" com "quantidade"
 
     E eu clico no botão "Gravar"
-    Então eu devo ver "Solicitação de Realinhamento incluída com sucesso"
+    Então eu devo ver "Solicitação de realinhamento incluída com sucesso"
 
 
 
