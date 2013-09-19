@@ -52,6 +52,10 @@ Quando /^eu clico em editar "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
 end
 
+Quando /^eu clico em visualizar realinhamentos "([^"]*)"$/ do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Visualizar Realinhamentos']").click
+end
+
 Quando /^eu clico na linha "([^"]*)" da imagem "([^"]*)"$/ do |desc, img|
   find(:xpath, "//td[contains(text(), '#{desc}')]/../td/a/img[@title='#{img}']").click
 end
@@ -341,14 +345,14 @@ Dado /^que exista o cargo "([^"]*)"$/ do |nome_cargo|
    end
 end
 
-Dado /^que exista um indice "([^"]*)" com historico$/ do |nome_indice|
+Dado /^que exista um indice "([^"]*)" com historico na data "([^"]*)" e valor "([^"]*)"$/ do |nome_indice, data_historico, valor_historico|
    insert :indice do
      nome nome_indice
    end
     insert :indicehistorico do
-      data '01/01/2013'
+      data data_historico
       indice :nome => nome_indice
-      valor 5000.00
+      valor valor_historico
    end
 end
 
@@ -372,6 +376,34 @@ Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^
      aprovada aprovada
      tiporeajuste tiporeajuste
      empresa :id => 1
+   end
+end
+
+Dado /^que exista um reajuste para o colaborador "([^"]*)" com a tabela de reajuste "([^"]*)" com valor atual "([^"]*)" e valor proposto "([^"]*)"$/ do |nome_colaborador, nome_tabela_reajuste, valor_atual, valor_proposto|
+   insert :reajustecolaborador do
+     colaborador :nome => nome_colaborador
+     tabelareajustecolaborador :nome => nome_tabela_reajuste
+     tiposalarioatual 1 
+     salarioatual valor_atual 
+     salarioproposto valor_proposto 
+   end
+end
+
+Dado /^que exista um reajuste para a faixa salarial "([^"]*)" com a tabela de reajuste "([^"]*)" com valor atual "([^"]*)" e valor proposto "([^"]*)"$/ do |nome_faixa, nome_tabela_reajuste, valor_atual, valor_proposto|
+   insert :reajustefaixasalarial do
+     faixasalarial :nome => nome_faixa
+     tabelareajustecolaborador :nome => nome_tabela_reajuste
+     valoratual valor_atual 
+     valorproposto valor_proposto 
+   end
+end
+
+Dado /^que exista um reajuste para o indice "([^"]*)" com a tabela de reajuste "([^"]*)" com valor atual "([^"]*)" e valor proposto "([^"]*)"$/ do |nome_indice, nome_tabela_reajuste, valor_atual, valor_proposto|
+   insert :reajusteindice do
+     indice :nome => nome_indice
+     tabelareajustecolaborador :nome => nome_tabela_reajuste
+     valoratual valor_atual 
+     valorproposto valor_proposto 
    end
 end
 
