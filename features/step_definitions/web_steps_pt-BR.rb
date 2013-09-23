@@ -867,6 +867,10 @@ Dado /^que exista o motivo da solicitacao "([^"]*)"$/ do |motivosolicitacao_desc
    exec_sql "insert into motivosolicitacao (id,descricao) values(nextval('motivosolicitacao_sequence'),'#{motivosolicitacao_descricao}');"
 end
 
+Dado /^que exista um[a]? "([^"]*)" com ((?:"[^"]*"|[^=,])*),[\s]*((?:"[^"]*"|[^=,])*)$/ do |entidade, *atributos|
+  create entidade, atributos
+end
+
 def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?

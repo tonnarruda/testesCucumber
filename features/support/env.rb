@@ -5,6 +5,7 @@ require 'capybara/dsl'
 require 'capybara/session'
 require 'ruby-debug'
 require 'pg'
+require 'active_record'
 require './features/support/reload_db.rb'
 
 ######################################################################################################################
@@ -101,6 +102,16 @@ def insert(table, options={}, &block)
 	ins = Insert.new(table, options)
 	ins.instance_eval(&block)
   exec_sql ins.to_sql
+end
+
+ActiveRecord::Base.configurations = YAML::load(IO.read('features/database.yml'))
+ActiveRecord::Base.establish_connection('production')
+
+def create(table, options)
+  Class.new(ActiveRecord::Base) do
+    self.table_name = table.gsub('"', '')
+    self.create(:id => 999, :empresa_id => 4)
+  end
 end
 
 class Object
