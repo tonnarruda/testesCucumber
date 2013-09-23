@@ -1,5 +1,6 @@
 package com.fortes.rh.business.ws;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,6 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.ws.UsuarioIntranet;
-import com.fortes.rh.util.CollectionUtil;
 
 
 public class RHServiceIntranetImpl implements RHServiceIntranet
@@ -18,20 +18,13 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 
-	public UsuarioIntranet getUsuario(Long colaboradorId)
+	public Boolean usuarioIsDesligado(Long colaboradorId)
 	{
-		UsuarioIntranet usuarioIntranet = null;
-		
 		Colaborador colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorId, StatusRetornoAC.CONFIRMADO);
 		if (colaborador != null)
-		{
-			usuarioIntranet = new UsuarioIntranet();
-			usuarioIntranet.setCargoNome(colaborador.getHistoricoColaborador().getFaixaSalarial().getCargo().getNome());
-			usuarioIntranet.setAreaNome(colaborador.getHistoricoColaborador().getAreaOrganizacional().getNome());
-			usuarioIntranet.setDesligado(colaborador.isDesligado());
-		}
+			return colaborador.isDesligado();
 
-		return usuarioIntranet;
+		return null;
 	}
 	
 	public Map<Long, String> getListaSetor(Long[] empresaIds) 
@@ -45,14 +38,6 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 		return areas;
 	}
 	
-	public Long[] getUsuarioPorSetor(Long areaId)
-	{
-		Collection<Colaborador> colaboradors = colaboradorManager.findByAreasOrganizacionalIds(new Long[]{areaId});
-		Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradors);
-		
-		return colaboradoresIds;
-	}
-
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) 
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -61,5 +46,30 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) 
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public Collection<UsuarioIntranet> atualizaUsuarios(Long empresaId)
+	{
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresa(empresaId);
+		
+		Collection<UsuarioIntranet> usuarioIntranets = new ArrayList<UsuarioIntranet>();
+		
+		for (Colaborador colaborador : colaboradores) {
+			UsuarioIntranet usuarioIntranet = new UsuarioIntranet();
+			
+			usuarioIntranet.setDesligado(colaborador.isDesligado());
+			usuarioIntranet.setNomeComercialParaRH(colaborador.getNome(), colaborador.getNomeComercial());
+			usuarioIntranet.setEmail(colaborador.getContato().getEmail());
+			usuarioIntranet.setCelular(colaborador.getContato().getFoneCelular());
+			usuarioIntranet.setDataNascimento(colaborador.getPessoal().getDataNascimento());
+			usuarioIntranet.setAreaId(colaborador.getAreaOrganizacional().getId());
+			usuarioIntranet.setAreaNome(colaborador.getAreaOrganizacional().getNome());
+			usuarioIntranet.setCargoId(colaborador.getFaixaSalarial().getCargo().getId());
+			usuarioIntranet.setAreaNome(colaborador.getFaixaSalarial().getCargo().getNome());
+			
+			usuarioIntranets.add(usuarioIntranet);
+		}
+		
+		return usuarioIntranets;
 	}
 }

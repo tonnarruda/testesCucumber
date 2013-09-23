@@ -1187,7 +1187,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getFaixaSalarial().getCargo().getGrupoOcupacional().setNome(grupoNome);
 	}
 
-	private void setCargoIdProjection(Long cargoId)
+	public void setCargoIdProjection(Long cargoId)
 	{
 		if(this.faixaSalarial == null)
 			this.setFaixaSalarial(new FaixaSalarial());

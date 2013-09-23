@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.ws;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 import org.jmock.Mock;
@@ -10,8 +11,6 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.ws.RHServiceIntranetImpl;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -21,8 +20,6 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
-import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 
 public class RHServiceIntranetTest extends MockObjectTestCase
 {
@@ -43,28 +40,15 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 	
 	public void testGetUsuario() throws Exception
 	{
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setNome("Cargo");
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setNome("Área Organizacional");
-		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setHistoricoColaborador(historicoColaborador);
+		colaborador.setDesligado(true);
 		
 		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(colaborador));
 		
-		UsuarioIntranet usuarioIntranet =  rHServiceIntranetImpl.getUsuario(colaborador.getId());
+		Boolean usuarioDesligado =  rHServiceIntranetImpl.usuarioIsDesligado(colaborador.getId());
 		
-		assertEquals("Área Organizacional",usuarioIntranet.getAreaNome());
-		assertEquals("Cargo",usuarioIntranet.getCargoNome());
+		assertTrue(usuarioDesligado);
 	}
 	
 	public void testGetListaSetor() throws Exception
@@ -93,27 +77,31 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		assertEquals(empresa2.getNome()+" - "+areaOrganizacional2.getNome(),areasOrganizacionais.get(areaOrganizacional2.getId()));
 	}
 
-	public void testGetUsuarioPorSetor() throws Exception
+	public void testAtualizaUsuarios() throws Exception
 	{
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
-		areaOrganizacional1.setNome("Área Organizacional 1");
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador1.setAreaOrganizacional(areaOrganizacional1);
+		Cargo cargo = CargoFactory.getEntity(1L);
+		cargo.setNome("Cargo I");
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
-		colaborador1.setHistoricoColaborador(historicoColaborador1);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
-		historicoColaborador2.setAreaOrganizacional(areaOrganizacional1);
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setAreaOrganizacional(areaOrganizacional);
+		colaborador1.setCargoIdProjection(cargo.getId());
+		colaborador1.setCargoNomeProjection(cargo.getNome());
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
-		colaborador2.setHistoricoColaborador(historicoColaborador2);
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setAreaOrganizacional(areaOrganizacional);
+		colaborador2.setCargoIdProjection(cargo.getId());
+		colaborador2.setCargoNomeProjection(cargo.getNome());
 		
-		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(eq(new Long[]{areaOrganizacional1.getId()})).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
+		colaboradorManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId())).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		
-		Long[] colaboradoresIds =  rHServiceIntranetImpl.getUsuarioPorSetor(areaOrganizacional1.getId());
+		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.atualizaUsuarios(empresa.getId());
 		
-		assertEquals(2 ,colaboradoresIds.length);
+		assertEquals(2 ,usuarioIntranets.size());
 	}
 }
