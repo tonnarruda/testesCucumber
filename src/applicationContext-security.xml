@@ -297,7 +297,6 @@
 				/geral/colaborador/prepareColaboradorSolicitacao*/**=ROLE_COLAB_LIST_SOLICITACAO
 				/captacao/solicitacao/verSolicitacoes*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
 				/captacao/solicitacao/gravarSolicitacoesCandidato*/**=ROLE_COLAB_LIST_SOLICITACAO,ROLE_MOV_SOLICITACAO
-				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 								
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
 				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
@@ -318,7 +317,7 @@
 				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
-				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
 				/geral/documentoAnexo/listColaborador.action*=ROLE_COLAB_LIST_DOCUMENTOANEXO
 
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
@@ -332,7 +331,6 @@
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
 				/captacao/areaInteresse/*/**=ROLE_CAD_AREA
-				/captacao/historicoCandidato/*/**=ROLE_MOV_SOLICITACAO
 				/captacao/solicitacao/prepareRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
 				/captacao/solicitacao/imprimirRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
 				/captacao/solicitacao/prepareRelatorio*/**=ROLE_REL_SOLICITACAO
@@ -346,10 +344,22 @@
 				/captacao/formacao/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
 				/captacao/idioma/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
 				/captacao/experiencia/*/**=ROLE_CAD_CANDIDATO,ROLE_CAD_COLABORADOR,ROLE_ANONYMOUS,ROLE_CAD_INFO_PESSOAL
+				
+				/captacao/candidatoSolicitacao/list.action*=ROLE_CAND_SOLICITACAO_LISTA
+				/captacao/historicoCandidato/list.action*=ROLE_CAND_SOLICITACAO_HISTORICO
+				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS
+				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/geral/colaborador/prepareContrata.action.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/captacao/candidatoSolicitacao/delete.action*=ROLE_CAND_SOLICITACAO_EXCLUIR
+				/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES
+				/captacao/candidatoSolicitacao/prepareInsertAvaliacaoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES
+				
+				/captacao/historicoCandidato/*/**=ROLE_MOV_SOLICITACAO
 				/captacao/candidatoSolicitacao/*/**=ROLE_MOV_SOLICITACAO_CANDIDATO,ROLE_INFORM_CANDIDATO_CURRICULO
+				
 				/captacao/candidato/prepareRelatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
 				/captacao/candidato/relatorioAvaliacaoCandidatos*/** = ROLE_REL_AVALIACAO_CANDIDATOS 
-				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO, ROLE_INFORM_CANDIDATO_HISTORICO, ROLE_INFORM_CANDIDATO_COMPETENCIA,ROLE_COLAB_LIST_VISUALIZARCURRICULO
+				/captacao/candidato/infoCandidato*/**=ROLE_CAD_CANDIDATO,ROLE_MOV_SOLICITACAO,ROLE_INFORM_CANDIDATO_CURRICULO, ROLE_INFORM_CANDIDATO_HISTORICO, ROLE_INFORM_CANDIDATO_COMPETENCIA,ROLE_COLAB_LIST_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO
 				/captacao/candidato/verCurriculo*/**=ROLE_INFORM_CANDIDATO_CURRICULO,ROLE_COLAB_LIST_VISUALIZARCURRICULO
 				/captacao/candidato/verHistoricoCandidato*/**=ROLE_INFORM_CANDIDATO_HISTORICO
 				/captacao/candidato/visualizarCandidato*/**=ROLE_INFORM_CANDIDATO_COMPETENCIA

@@ -169,53 +169,51 @@
 		</#if>
 		
 		<@display.column title="Ações" media="html" class="acao" style="width: 140px;">
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-			<#if !solicitacao.encerrada>
-				<a href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}"><img border="0" title="Histórico" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>"></a>
-			<#else>
-				<img border="0" title="Esta Solicitação já foi encerrada" src="<@ww.url includeParams="none" value="/imgs/page_user.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-			</#if>
-		</@authz.authorize>
-
-		<@authz.authorize ifAllGranted="EXIBIR_COMPETENCIA_SOLICITACAO">
-			<a href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}"><img border="0" title="Competências" src="<@ww.url value="/imgs/competencias.gif"/>"></a>
-		</@authz.authorize>
-
-        <a href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&origemList=CA', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
-
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-			<#if !solicitacao.encerrada>
-				<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
-				
-				<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
-					<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
-				<#else>
-					<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>
-						<a href="javascript:contrataCandOutraEmpresa(${candidatoSolicitacao.candidato.id}, ${candidatoSolicitacao.id}, '${nomeFormatado}');">
-							<img border="0" title="Contratar candidato de outra empresa?" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
-						</a>
+		
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_HISTORICO" href="../historicoCandidato/list.action?candidatoSolicitacao.id=${candidatoSolicitacao.id}" imgTitle="Histórico" imgName="page_user.gif" disabled=solicitacao.encerrada imgTitleDisabled="Esta solicitação já foi encerrada." />
+	
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_COMPETENCIAS" href="../nivelCompetencia/prepareCompetenciasByCandidato.action?&candidato.id=${candidatoSolicitacao.candidato.id}&faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}" imgTitle="Competências" imgName="competencias.gif" />
+	
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO" href="javascript:popup('../candidato/infoCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&origemList=CA', 580, 750)" imgTitle="Visualizar Currículo" imgName="page_curriculo.gif" />
+	
+			<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_CONTRATAR">
+				<#if !solicitacao.encerrada>
+					<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
+					
+					<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
+						<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 					<#else>
-						<a href="javascript:contrataCandidato('${nomeFormatado}', '${titleContrata}', '${actionContrata}');">
-							<img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
-						</a>
+						<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>
+							<a href="javascript:contrataCandOutraEmpresa(${candidatoSolicitacao.candidato.id}, ${candidatoSolicitacao.id}, '${nomeFormatado}');">
+								<img border="0" title="Contratar candidato de outra empresa?" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+							</a>
+						<#else>
+							<a href="javascript:contrataCandidato('${nomeFormatado}', '${titleContrata}', '${actionContrata}');">
+								<img border="0" title="${titleContrata}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+							</a>
+						</#if>
 					</#if>
 				</#if>
-				
-				<#if (!candidatoSolicitacao.etapaSeletiva?exists || !candidatoSolicitacao.etapaSeletiva.id?exists) && (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && !candidatoSolicitacao.candidato.contratado)>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-				<#else>
-					<img border="0" style="opacity:0.2;filter:alpha(opacity=20)" title="Este candidato já possui históricos. Não é possível removê-lo da seleção." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>">
+			</@authz.authorize>
+			
+			<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists || candidatoSolicitacao.etapaSeletiva.id?exists) && (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado))/>
+			
+			<#assign msgDisabledExcluir = ""/>
+			<#if disabledExcluir>
+				<#if solicitacao.encerrada>
+					<#assign msgDisabledExcluir="Esta solicitação já foi encerrada."/>
+				<#elseif (candidatoSolicitacao.etapaSeletiva?exists || candidatoSolicitacao.etapaSeletiva.id?exists)> 
+					<#assign msgDisabledExcluir="Este candidato já possui históricos. Não é possível removê-lo da seleção."/>
+				<#else> 
+					<#assign msgDisabledExcluir="Este candidato foi contratado. Não é possível removê-lo da seleção."/>
 				</#if>
-				
-				<a href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" title="Documentos Anexos"><img border="0"  src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			
-			<#if solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)>
-				<a href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})"><img border="0" title="Avaliações da Solicitação" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>"></a>
-			<#else>
-				<a href="javascript:;"><img border="0" title="Não há avaliações definidas para essa solicitação" src="<@ww.url includeParams="none" value="/imgs/form.gif"/>" style="opacity:0.3;filter:alpha(opacity=40);"></a>
-			</#if>
-		</@authz.authorize>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});" imgTitle="Excluir" imgName="delete.gif" disabled=disabledExcluir imgTitleDisabled=msgDisabledExcluir/>
+			
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" disabled=solicitacao.encerrada imgTitleDisabled="Esta solicitação já foi encerrada."/>
+			
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_AVALIACOES" href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})" imgTitle="Avaliações da Solicitação" imgName="form.gif" disabled=!(solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)) imgTitleDisabled="Não há avaliações definidas para essa solicitação"/>
 		</@display.column>
 
 		<@display.column title="Nome" class="${classe}">
