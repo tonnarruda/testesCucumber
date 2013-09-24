@@ -14,6 +14,7 @@ public class LinkTag extends TagSupport
 	private String href = "";
 	private String onclick = "";
 	private String imgTitle = "";
+	private String imgTitleDisabled = "";
 	private String imgName = "";
 	private String verifyRole = "";
 	private boolean opacity = false;
@@ -60,7 +61,9 @@ public class LinkTag extends TagSupport
 			{
 				link.append("<img border=\"0\" ");
 				
-				if(!imgTitle.equals(""))
+				if(disabled && !imgTitleDisabled.equals(""))
+					link.append(" title=\"" + imgTitleDisabled + "\" ");
+				else if(!imgTitle.equals(""))
 					link.append(" title=\"" + imgTitle + "\" ");
 				
 				link.append(" src=\"/" +ArquivoUtil.getContextName()+"/imgs/" + imgName + "\"");	
@@ -77,59 +80,83 @@ public class LinkTag extends TagSupport
 		return link;
 	}
 
-	public String getHref() {
+	public String getHref()
+	{
 		return href;
 	}
 
-	public void setHref(String href) {
+	public void setHref(String href)
+	{
 		this.href = href;
 	}
 
-	public String getImgTitle() {
+	public String getImgTitle()
+	{
 		return imgTitle;
 	}
 
-	public void setImgTitle(String imgTitle) {
+	public void setImgTitle(String imgTitle)
+	{
 		this.imgTitle = imgTitle;
 	}
 
-	public String getImgName() {
+	public String getImgName()
+	{
 		return imgName;
 	}
 
-	public void setImgName(String imgName) {
+	public void setImgName(String imgName)
+	{
 		this.imgName = imgName;
 	}
 
-	public String getOnclick() {
+	public String getOnclick()
+	{
 		return onclick;
 	}
 
-	public void setOnclick(String onclick) {
+	public void setOnclick(String onclick)
+	{
 		this.onclick = onclick;
 	}
 
-	public String getVerifyRole() {
+	public String getVerifyRole()
+	{
 		return verifyRole;
 	}
 
-	public void setVerifyRole(String verifyRole) {
+	public void setVerifyRole(String verifyRole)
+	{
 		this.verifyRole = verifyRole;
 	}
 
-	public boolean isOpacity() {
+	public boolean isOpacity()
+	{
 		return opacity;
 	}
 
-	public void setOpacity(boolean opacity) {
+	public void setOpacity(boolean opacity)
+	{
 		this.opacity = opacity;
 	}
 
-	public boolean isDisabled() {
+	public boolean isDisabled()
+	{
 		return disabled;
 	}
 
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(boolean disabled)
+	{
 		this.disabled = disabled;
+	}
+	
+	public String getImgTitleDisabled()
+	{
+		return imgTitleDisabled;
+	}
+
+	public void setImgTitleDisabled(String imgTitleDisabled)
+	{
+		this.imgTitleDisabled = imgTitleDisabled;
 	}
 }
