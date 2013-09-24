@@ -331,8 +331,6 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("ajustaTipoSalario").with(new Constraint[]{ANYTHING, eq(TipoAplicacaoIndice.VALOR), ANYTHING, ANYTHING, eq(1000d)}).will(returnValue(historicoAtualDoAbreu));
 		historicoColaboradorManager.expects(once()).method("ajustaTipoSalario").with(new Constraint[]{ANYTHING, eq(TipoAplicacaoIndice.VALOR), ANYTHING, ANYTHING, eq(2000d)}).will(returnValue(historicoAtualDoMario));
 		
-		historicoColaboradorManager.expects(atLeastOnce()).method("verifyExists").will(returnValue(false));
-		
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
 		
 		historicoColaboradorManager.expects(atLeastOnce()).method("save").withAnyArguments();

@@ -365,20 +365,20 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 
 		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico1.setData(new Date());
+		faixaSalarialHistorico1.setData(DateUtil.criarDataMesAno(01, 01, 2100));
 		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
 
 		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico2.setData(new Date());
+		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 02, 2100));
 		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
 
 		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
 		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico3.setData(DateUtil.criarDataMesAno(01, 02, 2100));
+		faixaSalarialHistorico3.setData(DateUtil.criarDataMesAno(01, 03, 2100));
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), new Date());
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 02, 2100));
 
 		assertEquals(2, retorno.size());
 	}

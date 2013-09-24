@@ -137,7 +137,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		mocksPrepareSolicitacaoReajuste();
 		
 		assertEquals("success", action.insertSolicitacaoReajuste());
-		assertEquals("Solicitação de Realinhamento incluída com sucesso", action.getActionMessages().toArray()[0]);
+		assertEquals("Solicitação de realinhamento incluída com sucesso", action.getActionSuccess().toArray()[0]);
 	}
 	
 	private void mocksPrepareSolicitacaoReajuste()
