@@ -42,4 +42,5 @@ Funcionalidade: Cadastrar Estabelecimento
     E eu devo ver o alert "Confirma exclusão?" e clico no ok
     E eu devo ver "Estabelecimento excluído com sucesso."
     Então eu não devo ver na listagem "Ente"
+    Então eu acesso o menu "Sair"
     

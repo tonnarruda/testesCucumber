@@ -21925,3 +21925,17 @@ where hc.data = ( select max(hc2.data) from historicocolaborador hc2 where hc2.c
 ) as sub where colaboradorquestionario_id = cqid;--.go
 insert into migrations values('20130909094815');--.go
 update parametrosdosistema set appversao = '1.1.116.128';--.go
+-- versao 1.1.117.129
+
+alter table documentoanexo add column moduloexterno boolean not null default false;--.go
+insert into migrations values('20130911170027');--.go
+create unique index faixasalarialhistorico_data_faixasalarial_uk on faixasalarialhistorico(data,faixasalarial_id); --.go
+create unique index indicehistorico_data_indice_uk on indicehistorico(data,indice_id); --.go
+insert into migrations values('20130917171115');--.go
+delete from atitude_areaorganizacional where areaorganizacionals_id not in (select id from areaorganizacional);--.go
+delete from conhecimento_areaorganizacional where areaorganizacionals_id not in (select id from areaorganizacional);--.go
+delete from habilidade_areaorganizacional where areaorganizacionals_id not in (select id from areaorganizacional);--.go
+insert into migrations values('20130918141529');--.go
+update parametrosdosistema set proximaversao = '2013-11-01';--.go
+insert into migrations values('20130923180602');--.go
+update parametrosdosistema set appversao = '1.1.117.129';--.go

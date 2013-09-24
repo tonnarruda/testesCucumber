@@ -25302,6 +25302,10 @@ INSERT INTO migrations (name) VALUES ('20130822084617');
 INSERT INTO migrations (name) VALUES ('20130904140759');
 INSERT INTO migrations (name) VALUES ('20130904153557');
 INSERT INTO migrations (name) VALUES ('20130909094815');
+INSERT INTO migrations (name) VALUES ('20130911170027');
+INSERT INTO migrations (name) VALUES ('20130917171115');
+INSERT INTO migrations (name) VALUES ('20130918141529');
+INSERT INTO migrations (name) VALUES ('20130923180602');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25607,7 +25611,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.116.128', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-09-22', true, false, 600, NULL, NULL, false, 'L');
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.117.129', NULL, 25, NULL, NULL, NULL, '', false, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2013-11-01', true, false, 600, NULL, NULL, false, 'L');
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;

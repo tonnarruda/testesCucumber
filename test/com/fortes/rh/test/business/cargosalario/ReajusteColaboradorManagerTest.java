@@ -200,7 +200,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		}
 		
 		assertNotNull(exception);
-		assertEquals("Colaborador já possui um histórico na data do Planejamento de Realinhamento.",exception.getMessage());
+		assertEquals("nome colaborador já possui um histórico na mesma data do planejamento de realinhamento.",exception.getMessage());
 	}
 	
 	public void testInsertSolicitacaoReajusteComSalarioTipoValorSemInformarSalarioProposto()

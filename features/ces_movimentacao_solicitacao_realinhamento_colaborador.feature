@@ -47,7 +47,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu preencho o campo (JS) "teste" com "observacao"
 
     E eu clico no botão "Gravar"
-    Então eu devo ver "Solicitação de Realinhamento incluída com sucesso"
+    Então eu devo ver "Solicitação de realinhamento incluída com sucesso"
 
     Dado que exista um indice "Indice I" com historico
 
@@ -63,7 +63,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu preencho o campo (JS) "3" com "quantidade"
 
     E eu clico no botão "Gravar"
-    Então eu devo ver "Solicitação de Realinhamento incluída com sucesso"
+    Então eu devo ver "Solicitação de realinhamento incluída com sucesso"
 
 
 
