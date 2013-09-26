@@ -105,22 +105,6 @@
 			document.getElementById("remuneracao").value = data;
 		}
 	
-		function compl()
-		{
-			var compl = document.getElementById("complementares");
-			var img = document.getElementById("imgCompl");
-			if(compl.style.display == "none")
-			{
-				compl.style.display = "";
-				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_up.gif"/>"
-			}
-			else
-			{
-				compl.style.display = "none";
-				img.src = "<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"
-			}
-		}
-		
 		function validacaoFormulario()
 		{
 			var camposObg = new Array('descricao','horarioComercial','estabelecimento','area','dataSol','faixa','quantidade','motivoSolicitacaoId');
@@ -348,10 +332,7 @@
 		<br/>
 		
 		<li>
-			<a href="javascript:compl();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> Dados complementares</a>
-		</li>
-		<li>
-			<@ww.div id="complementares" cssStyle="display:none;" cssClass="divInfo">
+			<@ww.div id="complementares" cssClass="divInfo">
 				<ul>
 					<@ww.select label="Vínculo" name="solicitacao.vinculo" list=r"vinculos" cssStyle="width: 85px;"/>
 					<#if exibeSalario>
