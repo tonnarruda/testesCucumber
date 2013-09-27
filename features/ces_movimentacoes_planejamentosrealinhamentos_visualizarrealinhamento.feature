@@ -1,7 +1,25 @@
 # language: pt
 
 Funcionalidade: Cadastrar Planejamentos de Realinhamentos
+    
+  Cenário: Cadastro de Planejamentos de Realinhamentos para Colaborador
+    
+    Dado que eu esteja logado
 
+    Dado que exista a tabela de reajuste "Reajuste colaborador" na data "01/07/2011" aprovada "false" com o tipo de reajuste "C"
+	Dado que exista um colaborador "Chico", da area "Geral", com o cargo "Desenvolvedor" e a faixa salarial "I"
+    Dado que exista um reajuste para o colaborador "Chico" com a tabela de reajuste "Reajuste colaborador" com valor atual "100" e valor proposto "200"
+
+    Quando eu acesso o menu "C&S > Movimentações > Planejamentos de Realinhamentos"
+    Então eu devo ver o título "Planejamentos de Realinhamentos"
+    E eu clico em visualizar realinhamentos "Reajuste colaborador"
+    Então eu devo ver o título "Planejamento de Realinhamento por Colaborador"
+    Então eu devo ver "Reajuste colaborador"
+	E eu clico no botão "Aplicar"
+    Então eu devo ver o alert do confirmar e clico no ok
+    Então eu devo ver "Já existe(m) histórico(s) na data 01/07/2011 para o(s) colaborador(es) abaixo:"
+    Então eu devo ver "- Chico"
+    
   Cenário: Cadastro de Planejamentos de Realinhamentos para Faixa Salarial
     Dado que eu esteja logado
     
