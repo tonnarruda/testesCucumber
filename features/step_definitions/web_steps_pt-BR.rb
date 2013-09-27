@@ -867,8 +867,14 @@ Dado /^que exista o motivo da solicitacao "([^"]*)"$/ do |motivosolicitacao_desc
    exec_sql "insert into motivosolicitacao (id,descricao) values(nextval('motivosolicitacao_sequence'),'#{motivosolicitacao_descricao}');"
 end
 
-Dado /^que exista um[a]? "([^"]*)" com ((?:"[^"]*"|[^=,])*),[\s]*((?:"[^"]*"|[^=,])*)$/ do |entidade, *atributos|
-  create entidade, atributos
+Dado /^que exista um[a]? "([^"]*)" com ((?:"[^"]*"|[^=,])*)[,]?[\s]*((?:"[^"]*"|[^=,])*)$/ do |entidade, *atributos|
+  propriedades = Hash.new
+  atributos.each do |s|
+    key, value = s.gsub('"','').split(' ', 2)
+    propriedades[key] = value.to_sql_param
+  end
+  print propriedades
+  #create entidade, propriedades
 end
 
 def get_field field
