@@ -20,8 +20,8 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     E eu seleciono "Colaborador" de "Tipo do Reajuste"
     E eu preencho "Observação" com "Testando..."
     E eu clico no botão "Gravar"
-
     E eu devo ver o título "Planejamentos de Realinhamentos"
+
     E eu clico em editar "_Aumento Geral"
     E eu devo ver o título "Editar Planejamento de Realinhamentos"
     E o campo "Título" deve conter "_Aumento Geral"
@@ -29,8 +29,12 @@ Funcionalidade: Cadastrar Planejamentos de Realinhamentos
     E eu preencho o campo (JS) "Data de Aplicação" com "01/06/2011"
     E eu preencho "Observação" com "Testando alteração..."
     E eu clico no botão "Gravar"
+    E eu devo ver o título "Planejamentos de Realinhamentos"
 
-    Então eu devo ver o título "Planejamentos de Realinhamentos"
+    E eu clico em imprimir "_Dissídio 2011"
+    E eu devo ver o título "Relatório de Planejamento de Realinhamentos"
+    Então eu clico no botão "Cancelar"
+    
     E eu clico em excluir "_Dissídio 2011"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Planejamento de Realinhamento excluído com sucesso."

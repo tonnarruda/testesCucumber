@@ -52,6 +52,10 @@ Quando /^eu clico em editar "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
 end
 
+Quando /^eu clico em imprimir "([^"]*)"$/ do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Imprimir']").click
+end
+
 Quando /^eu clico em visualizar realinhamentos "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Visualizar Realinhamentos']").click
 end
@@ -384,6 +388,7 @@ Dado /^que exista um reajuste para o colaborador "([^"]*)" com a tabela de reaju
      colaborador :nome => nome_colaborador
      tabelareajustecolaborador :nome => nome_tabela_reajuste
      tiposalarioatual 1 
+     tiposalarioproposto 1 
      salarioatual valor_atual 
      salarioproposto valor_proposto 
    end
