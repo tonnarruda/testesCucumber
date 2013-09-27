@@ -26,7 +26,7 @@
 		<Modulo nome=" "><![CDATA[
 			:: Módulo externo: Visualização das vagas em aberto antes de realizar o cadastro.
 			:: C&S > Cadastros > Áreas Organizacionais > Organograma: Novo filtro para exibir somente áreas ativas.
-			:: C&S > Relatórios > Realinhamentos: Nova opção de formato "planilha".
+			:: C&S > Relatórios > Realinhamentos: Nova opção de formato xls.
 			:: C&S > Cadastros > Áreas Organizacionais > Organograma de Áreas Organizacionais: Exibir responsável e corresponsável no diagrama.
 			:: T&D > Cadastros > Modelos de Avaliação de Aluno: Criação de modelos para avaliações dos alunos.
 			:: T&D > Cadastros > Avaliações dos Alunos > Inserir: Nova forma de avaliação usando modelos de questionário, além dos tradicionais "nota" e "porcentagem".
