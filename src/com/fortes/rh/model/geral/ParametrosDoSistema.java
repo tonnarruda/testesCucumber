@@ -55,7 +55,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
     
-    private Boolean enviarEmail = false;
+    private Boolean enviarEmail = true;
     private Boolean atualizadoSucesso;
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
