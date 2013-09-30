@@ -9,6 +9,8 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista um historico para a faixa salarial "I" na data "2011-06-01"
     Dado que exista o motivo da solicitacao "Aumento de quadro"
 
+    Dado que exista um canidato "Nikita"
+
     Dado que eu esteja logado
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitação de Pessoal"
@@ -32,12 +34,133 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Solicitação de Pessoal"
     E eu devo ver "Vaga java"
 
+    Então eu clico na linha "1" da imagem "Anunciar"
+    E eu devo ver o título "Inserir Anúncio de Solicitação de Pessoal"
+    E eu preencho "Título" com "Vaga java Externo"
+    E eu preencho "Descrição" com "Vaga java Externo"
+    E eu seleciono "Sim" de "Exibir no módulo externo"
+    E eu clico no botão "EnviarPorEmail"
+    E eu devo ver o título "Enviar Anúncio por E-mail"
+    E eu preencho "Assunto" com "Vaga java Externo"
+    E eu clico no botão "Enviar"
+    E eu devo ver o alert "Nenhum Destinatário Informado." e clico no ok
+    E eu preencho "Destinatário(s) Avulso(s) (Separe com ponto-e-vírgula)" com "samuelpinheiro@entetecnologia.com.br"
+    E eu clico no botão "Enviar"
+    E eu devo ver o título "Solicitação de Pessoal"
+    Então eu clico na linha "1" da imagem "Anunciado"
+    E eu devo ver o título "Editar Anúncio de Solicitação de Pessoal"
+    E eu clico no botão "Voltar"
+    E eu devo ver o título "Solicitação de Pessoal"
+    Então eu clico na linha "1" da imagem "Anunciado"
+    E eu devo ver o título "Editar Anúncio de Solicitação de Pessoal"
+    E eu clico no botão "EnviarPorEmail"
+    E o campo "Assunto" deve conter "Vaga java Externo"
+    E eu clico no botão "Voltar"
+    E eu devo ver o título "Editar Anúncio de Solicitação de Pessoal"
+    E eu clico no botão "Gravar"
+
+    Então eu clico na linha "1" da imagem "Suspender solicitação"
+    E eu clico no botão "SuspenderSolicitacao"
+    E eu devo ver o alert "Preencha os campos indicados." e clico no ok
+    E eu preencho "Observações sobre a suspensão" com "Observações sobre a suspensão"
+    E eu clico no botão "SuspenderSolicitacao"
+
+    Entao eu clico "linkFiltro"
+    E eu seleciono "Todas" de "Visualizar"
+    E eu clico no botão "Pesquisar"
+
+    Então eu clico na linha "1" da imagem "Alterar status (Em análise)"
+    E eu espero 1 segundos
+    E eu seleciono (JS) "A" de "statusSolicitcao"
+    E eu preencho "Observações" com "Alterando status apar aprovada +++**** /// ///"
+    E eu clico no botão "Gravar"
+
+    Então eu clico na linha "1" da imagem "Alterar status (Aprovada)"
+    E eu espero 1 segundos
+    E eu seleciono (JS) "R" de "statusSolicitcao"
+    E eu preencho "Observações" com "Alterando status para reprovada +++**** /// ///"
+    E eu clico no botão "Gravar"
+
+    Então eu clico na linha "1" da imagem "Alterar status (Reprovada)"
+    E eu espero 1 segundos
+    E eu seleciono (JS) "I" de "statusSolicitcao"
+    E eu preencho "Observações" com "Alterando status para em análise +++**** /// ///"
+    E eu clico no botão "Gravar"
+
+    Então eu clico na linha "1" da imagem "Clonar"
+    E eu devo ver o título "Inserir Solicitação de Pessoal"
+    E eu preencho o campo (JS) "Data" com "11/06/2011"
+    E eu preencho "Descrição" com "JavaScript"
+    E eu preencho "Horário comercial" com "8h às 18h"
+    E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
+    E eu seleciono "Financeiro" de "Área Organizacional"
+    E eu seleciono "Contador I" de "Cargo/Faixa"
+    E eu seleciono "Aumento de quadro" de "Motivo da Solicitação"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Solicitação de Pessoal"
+    E eu devo ver "Vaga java"
+    E eu devo ver "JavaScript"
+    E eu devo ver "11/06/2011"
+
+    Então eu clico na linha "1" da imagem "Liberar solicitação. Observação: Observações sobre a suspensão"
+    E eu clico na linha "1" da imagem "Suspender solicitação"
+    E eu clico no botão de Id "btnCancelarSuspenderSolicitacao"
+
+    Então eu clico na linha "1" da imagem "Candidatos da Seleção"
+    E eu devo ver o título "Candidatos da Seleção"
+
+    Então eu clico no botão "Triagem"
+    E eu devo ver o título "Inserir Candidatos na Solicitação"
+    E eu clico no botão "Pesquisar"
+    E eu devo ver "Nikita"
+    E eu clico no botão "InserirSelecionados"
+    E eu devo ver o alert "Nenhum candidato selecionado" e clico no ok
+    E eu marco "md"
+    E eu clico no botão "InserirSelecionados"
+    E eu devo ver o título "Candidatos da Seleção"
+    E eu devo ver "Área: Financeiro"
+    E eu devo ver "Cargo: Contador"
+    E eu devo ver "Solicitante: Fortes"
+    E eu devo ver "Vagas: 1"
+    E eu devo ver "Nikita"
+    
+    Entao eu clico no botão "TriagemModuloExterno"
+    E eu devo ver o título "Candidatos da Seleção - Triagem"
+    E eu devo ver "Área: Financeiro"
+    E eu devo ver "Cargo: Contador"
+    E eu devo ver "Solicitante: Fortes"
+    E eu devo ver "Vagas: 1"
+    E eu clico no botão "InserirSelecionados"
+    E eu clico no botão "Voltar"
+
+    Entao eu clico no botão "TransferirCandidatos"
+    E eu clico no botão "Voltar"
+
+    Entao eu clico no botão "TransferirCandidatos"
+    E eu marco "md"
+    E eu marco o checkbox com name "solicitacaoDestino.id"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Candidatos da Seleção"
+
+    Entao eu clico no botão "Voltar"
+    E eu devo ver o título "Solicitação de Pessoal"
+
+    Então eu clico na linha "1" da imagem "Encerrar Solicitação"
+    E eu preencho "Data de Encerramento" com "20/09/2013"
+    E eu preencho "Observação" com "Solicitação"
+    E eu clico no botão "EncerrarSolicitacao"
+
     Entao eu clico em editar "Vaga java"
     E eu devo ver o título "Editar Solicitação de Pessoal"
     E o campo "Descrição" deve conter "Vaga java"
     E eu preencho "Descrição" com "Vaga java EE"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Solicitação de Pessoal"
+
+    Então eu clico na linha "Vaga java EE" da imagem "Candidatos da Seleção"
+    Então eu clico na linha "Nikita" da imagem "Excluir"
+    E eu devo ver o alert "Confirma exclusão?" e clico no ok
+    E eu clico no botão "Voltar"
 
     Então eu clico em excluir "Vaga java EE"
     E eu devo ver o alert do confirmar exclusão e clico no ok
