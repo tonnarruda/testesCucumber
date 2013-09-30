@@ -10,6 +10,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista o motivo da solicitacao "Aumento de quadro"
     Dado que exista um canidato "Nikita"
     Dado que eu esteja logado
+    Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
 
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitação de Pessoal"

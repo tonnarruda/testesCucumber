@@ -21939,3 +21939,50 @@ insert into migrations values('20130918141529');--.go
 update parametrosdosistema set proximaversao = '2013-11-01';--.go
 insert into migrations values('20130923180602');--.go
 update parametrosdosistema set appversao = '1.1.117.129';--.go
+-- versao 1.1.118.130
+
+update papel set nome = 'Candidatos da Seleção' where id = 22;--.go
+update papel set ordem = 3, nome = 'Competências', codigo = 'ROLE_CAND_SOLICITACAO_COMPETENCIAS' where id = 544;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (591, 'ROLE_CAND_SOLICITACAO_LISTA', 'Ver Listagem dos Candidatos', '#', 1, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (592, 'ROLE_CAND_SOLICITACAO_HISTORICO', 'Histórico', '#', 2, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (593, 'ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO', 'Visualizar Currículo', '#', 4, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (594, 'ROLE_CAND_SOLICITACAO_CONTRATAR', 'Contratar/Promover', '#', 5, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (595, 'ROLE_CAND_SOLICITACAO_EXCLUIR', 'Excluir', '#', 6, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (596, 'ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO', 'Documentos Anexos', '#', 7, false, 22);--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (597, 'ROLE_CAND_SOLICITACAO_AVALIACOES', 'Avaliações da Solicitação', '#', 8, false, 22);--.go 
+
+alter sequence papel_sequence restart with 598;--.go
+
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 591 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 592 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 593 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 594 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 595 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 596 from perfil_papel where papeis_id = 22;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 597 from perfil_papel where papeis_id = 22;--.go
+
+insert into migrations values('20130926085211');--.go
+update parametrosdosistema set proximaversao = '2014-01-01';--.go
+insert into migrations values('20130930095154');--.go
+update parametrosdosistema set enviarEmail = true;--.go
+insert into migrations values('20130930102533');--.go
+alter table empresa rename column exibirColaboradorSubstituido to solPessoalExibirColabSubstituido;--.go
+alter table empresa add column solPessoalExibirSalario boolean default false not null; --.go
+alter table empresa add column solPessoalObrigarDadosComplementares boolean default false not null; --.go
+
+CREATE FUNCTION ajusta_solPessoalExibirSalario() RETURNS integer AS $$
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select id as empresaId, exibirSalario from empresa
+		LOOP
+			update empresa set solPessoalExibirSalario = mviews.exibirSalario where id = mviews.empresaId;
+		END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select ajusta_solPessoalExibirSalario();--.go
+drop function ajusta_solPessoalExibirSalario();--.go 
+insert into migrations values('20130930113630');--.go
+update parametrosdosistema set appversao = '1.1.118.130';--.go

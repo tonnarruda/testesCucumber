@@ -437,6 +437,13 @@ Dado /^que exista um historico para a faixa salarial "([^"]*)" na data "([^"]*)"
    end
 end
 
+Dado /^que exista um bairro "([^"]*)" na cidade de "([^"]*)"$/ do |bairro_nome, cidade_nome|
+   insert :bairro do
+     nome bairro_nome
+     cidade :nome => cidade_nome
+   end
+end
+
 Dado /^que exista um modelo avaliacao aluno "([^"]*)"$/ do |avaliacao_titulo|
    insert :avaliacao do
      titulo avaliacao_titulo
