@@ -57,8 +57,11 @@ public class Empresa extends AbstractModel implements Serializable
 	@Column(length=100)
     private String endereco;
 
+	private boolean solPessoalExibirSalario;
+	private boolean solPessoalExibirColabSubstituido;
+	private boolean solPessoalObrigarDadosComplementares;
+
 	private boolean exibirSalario;
-	private boolean exibirColaboradorSubstituido;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncao;
@@ -462,14 +465,6 @@ public class Empresa extends AbstractModel implements Serializable
 		this.controlaRiscoPor = controlaRiscoPor;
 	}
 
-	public boolean isExibirColaboradorSubstituido() {
-		return exibirColaboradorSubstituido;
-	}
-
-	public void setExibirColaboradorSubstituido(boolean exibirColaboradorSubstituido) {
-		this.exibirColaboradorSubstituido = exibirColaboradorSubstituido;
-	}
-
 	public boolean isCodigoTruCurso() {
 		return codigoTruCurso;
 	}
@@ -502,5 +497,31 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCursos(Collection<Curso> cursos) {
 		this.cursos = cursos;
+	}
+
+	public boolean isSolPessoalExibirSalario() {
+		return solPessoalExibirSalario;
+	}
+
+	public void setSolPessoalExibirSalario(boolean solPessoalExibirSalario) {
+		this.solPessoalExibirSalario = solPessoalExibirSalario;
+	}
+
+	public boolean isSolPessoalExibirColabSubstituido() {
+		return solPessoalExibirColabSubstituido;
+	}
+
+	public void setSolPessoalExibirColabSubstituido(
+			boolean solPessoalExibirColabSubstituido) {
+		this.solPessoalExibirColabSubstituido = solPessoalExibirColabSubstituido;
+	}
+
+	public boolean isSolPessoalObrigarDadosComplementares() {
+		return solPessoalObrigarDadosComplementares;
+	}
+
+	public void setSolPessoalObrigarDadosComplementares(
+			boolean solPessoalObrigarDadosComplementares) {
+		this.solPessoalObrigarDadosComplementares = solPessoalObrigarDadosComplementares;
 	}
 }

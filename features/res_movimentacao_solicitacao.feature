@@ -8,10 +8,9 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista a faixa salarial "I" no cargo "Contador"
     Dado que exista um historico para a faixa salarial "I" na data "2011-06-01"
     Dado que exista o motivo da solicitacao "Aumento de quadro"
-
     Dado que exista um canidato "Nikita"
-
     Dado que eu esteja logado
+
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitação de Pessoal"
     E eu clico no botão "Inserir"
@@ -31,6 +30,20 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Aumento de quadro" de "Motivo da Solicitação"
     E eu clico no botão "Gravar"
+
+    Então eu devo ver o alert "Preencha os campos indicados." e clico no ok
+    E eu preencho "Remuneração (R$)" com "1000"
+    E eu seleciono "Mestrado" de "Escolaridade mínima"
+    E eu preencho o campo (JS) "dataPrevIni" com "18"
+    E eu preencho o campo (JS) "dataPrevFim" com "50"
+    E eu seleciono "CE" de "Estado"
+    E eu seleciono "Selecione..." de "Cidade"
+    E eu seleciono "Fortaleza" de "Cidade"
+    E eu saio do campo "Cidade"
+    E eu marco "Aldeota"
+    E eu preencho "Informações Complementares" com "Informações Complementares"
+    E eu clico no botão "Gravar"
+
     E eu devo ver o título "Solicitação de Pessoal"
     E eu devo ver "Vaga java"
 
@@ -111,6 +124,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu clico no botão "Triagem"
     E eu devo ver o título "Inserir Candidatos na Solicitação"
+    E eu clico no botão "LimparFiltro"
     E eu clico no botão "Pesquisar"
     E eu devo ver "Nikita"
     E eu clico no botão "InserirSelecionados"

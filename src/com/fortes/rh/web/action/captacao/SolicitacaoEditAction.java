@@ -143,6 +143,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	private boolean exibeColaboradorSubstituido;
 	private boolean exibeSalario;
+	private boolean obrigaDadosComplementares;
 	private boolean clone;
 	private boolean somenteLeitura;
 	private boolean imprimirObservacao;
@@ -161,8 +162,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
     	obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 
-    	exibeSalario = empresa.isExibirSalario();
-    	exibeColaboradorSubstituido = empresa.isExibirColaboradorSubstituido();
+    	exibeSalario = empresa.isSolPessoalExibirSalario();
+    	exibeColaboradorSubstituido = empresa.isSolPessoalExibirColabSubstituido();
+    	obrigaDadosComplementares = empresa.isSolPessoalObrigarDadosComplementares();
     	
     	this.estados = estadoManager.findAll(new String[]{"sigla"});
 		Long faixaInativaId = null;
@@ -385,7 +387,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	
         solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
     	parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Solicitação Pessoal", getEmpresaSistema(), "");
-    	parametros.put("EXIBIR_COLABORADOR_SUBSTITUIDO", empresa.isExibirColaboradorSubstituido());
+    	parametros.put("EXIBIR_COLABORADOR_SUBSTITUIDO", empresa.isSolPessoalExibirColabSubstituido());
 
 		SolicitacaoPessoalRelatorio solicitacaoPessoal = new SolicitacaoPessoalRelatorio(solicitacao);
 
@@ -891,5 +893,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public void setColaboradoresSusbstituidos(String[] colaboradoresSusbstituidos) {
 		this.colaboradoresSusbstituidos = colaboradoresSusbstituidos;
+	}
+
+	public boolean isObrigaDadosComplementares() {
+		return obrigaDadosComplementares;
 	}
 }
