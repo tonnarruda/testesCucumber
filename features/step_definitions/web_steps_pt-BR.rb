@@ -43,6 +43,10 @@ Quando /^eu clico no botão "([^"]*)"$/ do |text|
     find('.btn' + text).click
 end
 
+Quando /^eu clico no botão de Id "([^"]*)"$/ do |text|
+    find('#' + text).click
+end
+
 Quando /^eu clico em excluir "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Excluir']").click
   #find(:xpath, "//td[text()='#{text}']/../td")
@@ -184,6 +188,10 @@ end
 
 Quando /^eu marco "([^"]*)"$/ do |field|
   When %{I check "#{field}"}
+end
+
+Quando /^eu marco o checkbox com name "([^"]*)"$/ do |field|
+  page.execute_script("$(\"input[name='#{field}']\").attr('checked',true)")
 end
 
 Quando /^eu desmarco "([^"]*)"$/ do |field|
@@ -578,6 +586,26 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
     ca 'a0a1a2a3'
     validadeUso 30
     epi :nome => epi_nome
+  end
+end
+
+Dado /^que exista um canidato "([^"]*)"$/ do |candidato_nome|
+  insert :candidato do
+    nome candidato_nome
+    conjugetrabalha true
+    sexo 'M'
+    blacklist false
+    colocacao 'E'
+    contratado false
+    deficiencia 0
+    disponivel true
+    origem 'C'
+    pagapensao false
+    possuiveiculo true
+    qtdfilhos 1
+    quantidade 0
+    escolaridade '10'
+    empresa :nome => 'Empresa Padrão'
   end
 end
 
