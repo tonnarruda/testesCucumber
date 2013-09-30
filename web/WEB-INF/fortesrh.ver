@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.118.130" data="30/09/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Utilitários > Cadastros > Empresas > Inserir/Editar: Possibilidade de tornar obrigatório os dados complementares da solicitação de pessoal.
+			:: Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de acesso em "Candidatos da Seleção".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.117.129" data="23/09/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Módulo externo: Nova funcionalidade de envio de documentos pelo candidato

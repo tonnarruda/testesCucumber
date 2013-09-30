@@ -94,11 +94,6 @@
 		
 	</script>
 	
-	<#if parametrosDoSistema?exists && parametrosDoSistema.proximaVersao?exists>
-		<#assign dataVersao = parametrosDoSistema.proximaVersao?date/>
-	<#else>
-		<#assign dataVersao = ""/>
-	</#if>
 	<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
@@ -140,7 +135,6 @@
 
 	<@ww.hidden name="parametrosDoSistema.id" />
 	<@ww.hidden name="parametrosDoSistema.appVersao" />
-	<@ww.hidden name="parametrosDoSistema.enviarEmail" />
 	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
 	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
@@ -165,12 +159,26 @@
 			</ul>
 		</@ww.div>
 	</li>
-
 	
-	<#assign usuarioId><@authz.authentication operation="id"/></#assign>
+	<#assign usuarioId>
+		<@authz.authentication operation="id"/>
+	</#assign>
+	
 	<#if usuarioId?exists && usuarioId?string == "1">
-		<@ww.datepicker label="Data da versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />	
+		<#if parametrosDoSistema?exists && parametrosDoSistema.proximaVersao?exists>
+			<#assign dataVersao = parametrosDoSistema.proximaVersao?date/>
+		<#else>
+			<#assign dataVersao = ""/>
+		</#if>
+		
+		&nbsp;&nbsp;&nbsp;		
+		<@ww.checkbox label="Enviar email" id="enviarEmail" name="parametrosDoSistema.enviarEmail" labelPosition="left"/>	
+		<@ww.datepicker label="Data da versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />
+	<#else>
+		<@ww.hidden name="parametrosDoSistema.proximaVersao" />
+		<@ww.hidden name="parametrosDoSistema.enviarEmail" />
 	</#if>
+	
 </@ww.form>
 
 	<div class="buttonGroup">
