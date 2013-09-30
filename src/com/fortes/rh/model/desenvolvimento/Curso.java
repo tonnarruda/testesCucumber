@@ -96,6 +96,19 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 		}
 	}
 
+	public String getCargaHorariaEmHora() 
+	{
+		if (cargaHoraria != null && !cargaHoraria.equals("")) {
+			int hora = cargaHoraria / 60;   
+		    int minutos = cargaHoraria % 60;  
+		           
+		    return (String.valueOf(hora) + ":" +StringUtils.leftPad(String.valueOf(minutos), 2, "0")).trim();	
+		}
+		
+		return "";
+	}
+	
+	
 	public Object clone()
 	{
 	   try

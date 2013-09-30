@@ -107,7 +107,7 @@
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado,Cargo,Carga Horária</param>
 				<param name="propertiesGroup">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,colaborador.cargoFaixa,curso.cargaHoraria</param>
+				<param name="properties">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,colaborador.cargoFaixa,curso.CargaHorariaEmHora</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
