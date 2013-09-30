@@ -174,9 +174,7 @@
 			</@authz.authorize>
 			<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			
-			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_CANDIDATO">		
-				<a href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Candidatos da Seleção" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
-			</@authz.authorize>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_LISTA" href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
 		
 			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
 				<#if solicitacao.status == 'A'>
@@ -230,9 +228,9 @@
 			<@ww.textarea label="Observações sobre a suspensão" name="solicitacao.obsSuspensao" id="obsSuspensao" />
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdSuspender" value="${solicitacaoId}"/>
 		</@ww.form>
-		<button onclick="${validarCamposSuspende};" class="btnSuspenderSolicitacao grayBG">
+		<button onclick="${validarCamposSuspende};" class="btnSuspenderSolicitacao grayBG" >
 		</button>
-		<button onclick="window.location='list.action'" class="btnCancelar grayBG">
+		<button onclick="window.location='list.action'" class="btnCancelar grayBG" id = "btnCancelarSuspenderSolicitacao">
 		</button>
 	</div>
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
