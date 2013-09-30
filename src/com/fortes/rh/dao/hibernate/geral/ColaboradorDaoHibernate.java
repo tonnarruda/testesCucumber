@@ -4625,7 +4625,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
-		criteria.add(Expression.eq("c.desligado", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 
 		criteria.addOrder(Order.asc("c.nome"));

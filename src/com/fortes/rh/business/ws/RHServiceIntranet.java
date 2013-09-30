@@ -8,7 +8,7 @@ import com.fortes.rh.model.ws.UsuarioIntranet;
 
 public interface RHServiceIntranet
 {
-	Boolean usuarioIsDesligado(Long colaboradorId);
-	Map<Long, String> getListaSetor(Long[] empresaIds);
-	Collection<UsuarioIntranet> atualizaUsuarios(Long empresaId);
+	Boolean usuarioIsDesligado(String colaboradorId);
+	Map<String, String> getListaSetor(String[] empresaIds);
+	Collection<UsuarioIntranet> atualizaUsuarios(String empresaId);
 }

@@ -46,7 +46,7 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(colaborador));
 		
-		Boolean usuarioDesligado =  rHServiceIntranetImpl.usuarioIsDesligado(colaborador.getId());
+		Boolean usuarioDesligado =  rHServiceIntranetImpl.usuarioIsDesligado(colaborador.getId().toString());
 		
 		assertTrue(usuarioDesligado);
 	}
@@ -70,7 +70,7 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager.expects(once()).method("findByEmpresasIds").with(eq(new Long[]{empresa1.getId(),empresa2.getId()}), eq(true)).will(returnValue(Arrays.asList(areaOrganizacional1,areaOrganizacional2)));
 		
-		Map<Long, String> areasOrganizacionais =  rHServiceIntranetImpl.getListaSetor(new Long[]{empresa1.getId(),empresa2.getId()});
+		Map<String, String> areasOrganizacionais =  rHServiceIntranetImpl.getListaSetor(new String[]{empresa1.getId().toString(),empresa2.getId().toString()});
 		
 		assertEquals(2 ,areasOrganizacionais.size());
 		assertEquals(empresa1.getNome()+" - "+areaOrganizacional1.getNome(),areasOrganizacionais.get(areaOrganizacional1.getId()));
@@ -100,7 +100,7 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId())).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		
-		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.atualizaUsuarios(empresa.getId());
+		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.atualizaUsuarios(empresa.getId().toString());
 		
 		assertEquals(2 ,usuarioIntranets.size());
 	}
