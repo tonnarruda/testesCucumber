@@ -537,6 +537,8 @@ Dado /^que exista uma empresa "([^"]*)"$/ do |empresa_nome|
       acintegra false
       maxcandidatacargo 10
       exibirsalario true
+      solPessoalExibirSalario true
+	    solPessoalObrigarDadosComplementares true
    end
 end
 

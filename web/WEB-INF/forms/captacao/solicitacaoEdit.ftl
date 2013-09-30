@@ -114,6 +114,14 @@
 					camposObg.push('ambiente','funcao');
 				</#if>
 			</@authz.authorize>
+
+			<#if obrigaDadosComplementares>
+				camposObg.push('vinculo', 'escolaridade', 'sexo', 'dataPrevIni', 'dataPrevFim', 'estado', 'cidade', '@bairrosCheck', 'infoComplementares');
+				
+				<#if exibeSalario>
+					camposObg.push('remuneracao');
+				</#if>
+			</#if>
 		
 			if(validaFormulario('form', camposObg, new Array ('dataSol')))
 			{
@@ -334,27 +342,33 @@
 		<li>
 			<@ww.div id="complementares" cssClass="divInfo">
 				<ul>
-					<@ww.select label="Vínculo" name="solicitacao.vinculo" list=r"vinculos" cssStyle="width: 85px;"/>
+					<#if obrigaDadosComplementares>
+						<#assign asterisco="*"/>
+					<#else>
+						<#assign asterisco=""/>
+					</#if>
+				
+					<@ww.select label="Vínculo" name="solicitacao.vinculo" id="vinculo" list=r"vinculos" cssStyle="width: 85px;" required=obrigaDadosComplementares/>
 					<#if exibeSalario>
-						<@ww.textfield label="Remuneração (R$)" id="remuneracao" name="solicitacao.remuneracao" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" />
+						<@ww.textfield label="Remuneração (R$)" id="remuneracao" name="solicitacao.remuneracao" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" required=obrigaDadosComplementares/>
 					<#else>
 						<@ww.hidden name="solicitacao.remuneracao"  id="remuneracao"/>
 					</#if>
-					<@ww.select label="Escolaridade mínima" name="solicitacao.escolaridade" list="escolaridades" cssStyle="width: 256px;"  headerKey="" headerValue=""/>
-					<@ww.select label="Sexo" name="solicitacao.sexo" list="sexos" liClass="liLeft"/>
+					<@ww.select label="Escolaridade mínima" id="escolaridade" name="solicitacao.escolaridade" list="escolaridades" cssStyle="width: 256px;"  headerKey="" headerValue="" required=obrigaDadosComplementares/>
+					<@ww.select label="Sexo" id="sexo" name="solicitacao.sexo" list="sexos" liClass="liLeft" required=obrigaDadosComplementares/>
 					
 					<li>
-					<span>Idade Preferencial:</span>
+					<span>Idade Preferencial:${asterisco}</span>
 					</li>
-					<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
+					<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" required=obrigaDadosComplementares/>
 					<@ww.label value="a" liClass="liLeft"/>
-					<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft"/>
+					<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" required=obrigaDadosComplementares/>
 					<@ww.label value="anos"/><div style="clear: both"></div>
 					
-					<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
-					<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />
-					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" width="695"/>
-					<@ww.textarea label="Informações Complementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;"/>
+					<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()" required=obrigaDadosComplementares/>
+					<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" required=obrigaDadosComplementares/>
+					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695"/>
+					<@ww.textarea label="Informações Complementares" id = "infoComplementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;" required=obrigaDadosComplementares/>
 					
 					<@ww.hidden name="solicitacao.liberador.id"  />
 					<@ww.div id="divcomplementar"/>

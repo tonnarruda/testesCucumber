@@ -161,8 +161,7 @@
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
-		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento e na Solicitação de Pessoal" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
-		<@ww.checkbox label="Exibir o campo Colaborador Substituído na Solicitação de Pessoal" name="empresa.exibirColaboradorSubstituido" id="exibirColaboradorSubstituido" labelPosition="right" /><br>
+		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
 		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
 		<li>
@@ -183,6 +182,20 @@
 		
 		<li>&nbsp;</li>
 		
+		<li>
+			<@ww.div cssClass="divInfo">
+				Solicitação de Pessoal
+				<br><br>
+				<ul>
+					<@ww.checkbox label="Exibir valor do salário" name="empresa.solPessoalExibirSalario" labelPosition="right" />
+					<@ww.checkbox label="Exibir o campo Colaborador Substituído" name="empresa.solPessoalExibirColabSubstituido" labelPosition="right" />
+					<@ww.checkbox label="Tornar obrigatório os dados complementares" name="empresa.solPessoalObrigarDadosComplementares" labelPosition="right" />
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
+
 		<li>
 			<@ww.div cssClass="divInfo">
 				SESMT
