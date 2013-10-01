@@ -96,12 +96,13 @@ public class Empresa extends AbstractModel implements Serializable
     private String mailNaoAptos;
     
     private boolean turnoverPorSolicitacao;
+    private int formulaTurnover;
     
     private char controlaRiscoPor = 'A'; // A - Ambiente ; F - Função
 
     @ManyToMany(mappedBy="empresasParticipantes")
     private Collection<Curso> cursos;
-	
+    
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
 	{
@@ -523,5 +524,13 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setSolPessoalObrigarDadosComplementares(
 			boolean solPessoalObrigarDadosComplementares) {
 		this.solPessoalObrigarDadosComplementares = solPessoalObrigarDadosComplementares;
+	}
+
+	public int getFormulaTurnover() {
+		return formulaTurnover;
+	}
+
+	public void setFormulaTurnover(int formulaTurnover) {
+		this.formulaTurnover = formulaTurnover;
 	}
 }

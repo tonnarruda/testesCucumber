@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +25,7 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -68,7 +71,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<Colaborador> colaboradores;
-
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -438,5 +441,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setOcorrenciaCheck(String ocorrenciaCheck) {
 		this.ocorrenciaCheck = ocorrenciaCheck;
+	}
+	
+	public Set<Entry<Integer, String>> getOpcoesFormulaTurnover() {
+		return new FormulaTurnover().entrySet();
 	}
 }
