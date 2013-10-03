@@ -5,6 +5,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;

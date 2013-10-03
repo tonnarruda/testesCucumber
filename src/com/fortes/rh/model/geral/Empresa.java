@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
@@ -532,5 +533,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setFormulaTurnover(int formulaTurnover) {
 		this.formulaTurnover = formulaTurnover;
+	}
+	
+	public String getFormulaTurnoverDescricao() {
+		FormulaTurnover formula = new FormulaTurnover();
+		if (!formula.containsKey(formulaTurnover))
+			return "";
+		
+		return formula.get(formulaTurnover);
 	}
 }

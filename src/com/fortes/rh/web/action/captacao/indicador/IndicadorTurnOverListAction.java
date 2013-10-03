@@ -62,14 +62,18 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private boolean agruparPorTempoServico;
 	private Integer[] tempoServicoIni;
 	private Integer[] tempoServicoFim;
+	
+	private Map<Long, String> empresasFormulas;
 
+	@SuppressWarnings("unchecked")
 	public String prepare() throws Exception
 	{
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 		
 		empresas = empresaManager.findEmpresasPermitidas(parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores(), empresa.getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_TURNOVER");
-
+		empresasFormulas = new CollectionUtil<Empresa>().convertCollectionToMap(empresaManager.findToList(new String[]{"id", "formulaTurnover"}, new String[]{"id", "formulaTurnover"}, new String[]{"nome"}), "getId", "getFormulaTurnoverDescricao"); 
+		
 		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
 		
 		return Action.SUCCESS;
@@ -336,5 +340,9 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public void setColaboradores(Collection<Colaborador> colaboradores) {
 		this.colaboradores = colaboradores;
+	}
+
+	public Map<Long, String> getEmpresasFormulas() {
+		return empresasFormulas;
 	}
 }
