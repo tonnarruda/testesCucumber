@@ -477,6 +477,14 @@ Dado /^que exista uma avaliacao de curso "([^"]*)"$/ do |avaliacaocurso_titulo|
    end
 end
 
+Dado /^que exista uma etapa seletiva "([^"]*)"$/ do |nome_etapa|
+   insert :etapaseletiva do
+     nome nome_etapa
+     ordem 1
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista um tipo de despesa "([^"]*)"$/ do |tipodespesa_descricao|
    insert :tipodespesa do
      descricao tipodespesa_descricao

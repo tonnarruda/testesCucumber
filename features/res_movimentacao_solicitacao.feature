@@ -11,6 +11,19 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista um canidato "Nikita"
     Dado que eu esteja logado
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
+    Dado que exista uma etapa seletiva "Entrevista"
+    Dado que exista um conhecimento "Java"
+
+    Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
+    E  eu clico em editar "Java"
+    E eu marco "Financeiro (Ativa)"
+    E eu clico no botão "Gravar"
+
+    Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
+    E  eu clico em editar "Contador"
+    E eu marco "Financeiro (Ativa)"
+    E eu marco "Java"
+    E eu clico no botão "Gravar"
 
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitação de Pessoal"
@@ -173,8 +186,81 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o título "Solicitação de Pessoal"
 
     Então eu clico na linha "Vaga java EE" da imagem "Candidatos da Seleção"
+
+    Então eu clico na linha "Nikita" da imagem "Competências"
+    E eu devo ver o título "Competências do Candidato"
+    E eu devo ver "Candidato: Nikita"
+    E eu marco "Java"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Não existem níveis de competência cadastrados" e clico no ok
+
+    Dado que exista um nivel de competencia "Ruim" com a ordem 1
+    Dado que exista um nivel de competencia "Bom" com a ordem 2
+    Dado que exista um nivel de competencia "Otimo" com a ordem 3
+
+    E eu clico no botão "Voltar"
+
+    Então eu clico na linha "Nikita" da imagem "Competências"
+    E eu marco "Java"
+    E eu marco o checkbox com name "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Níveis de competência do candidato salvos com sucesso"
+    E eu clico no botão "Voltar"
+
+    Então eu devo ver o título "Candidatos da Seleção"
+    E eu clico na linha "Nikita" da imagem "Visualizar Currículo"
+
+    Então eu devo ver o título "Candidatos da Seleção"
+    E eu clico na linha "Nikita" da imagem "Documentos Anexos"
+    E eu devo ver o título "Documentos do Candidato - Nikita"
+    E eu clico no botão "Inserir"
+
+    Então eu devo ver o título "Novo Documento do Candidato - Nikita"
+    E eu preencho "Descrição" com "Documento"
+    E eu preencho "Observação" com "Documento para fazer amor"
+    E eu preencho o campo (JS) "data" com "01/10/2013"
+    E eu seleciono (JS) "fase" de "Entrevista"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Preencha os campos indicados" e clico no ok
+    E eu clico no botão "Cancelar"
+    E eu devo ver o título "Documentos do Candidato - Nikita"
+    E eu clico no botão "Cancelar"
+    E eu devo ver o título "Candidatos da Seleção"
+
+    Então eu clico na linha "Nikita" da imagem "Histórico"
+    E eu devo ver "Histórico do Candidato"
+    E eu devo ver "Área: Financeiro"
+    E eu devo ver "Cargo: Contador"
+    E eu devo ver "Nikita"
+
+    Então eu clico no botão "Inserir"
+    E eu seleciono (JS) "fase" de "Entrevista"
+    E eu preencho o campo (JS) "data" com "01/10/2013"
+    E eu preencho o campo (JS) "horaIni" com "08:00"
+    E eu preencho o campo (JS) "horaFim" com "10:00"
+    E eu preencho "Responsável" com "Samuel"
+    E eu seleciono (JS) "apto" de "Sim"
+    E eu seleciono (JS) "indisp" de "Não"
+    E eu preencho "Observação" com "Candidato ápto"
+    E eu clico no botão "Gravar"
+
+    Então eu devo ver "Histórico do Candidato"
+    E eu devo ver "Entrevista"
+    E eu devo ver "01/10/2013"
+
+    Então eu clico na linha "Entrevista" da imagem "Editar"
+    E o campo "Responsável" deve conter "Samuel"
+    E o campo "Data" deve conter "01/10/2013"
+    E eu clico no botão "Cancelar"
+    E eu clico no botão "ImprimirPdf"
+    E eu espero 2 segundos
+    E eu devo ver "Histórico do Candidato"
+    E eu clico no botão "Voltar"
+
     Então eu clico na linha "Nikita" da imagem "Excluir"
     E eu devo ver o alert "Confirma exclusão?" e clico no ok
+    E eu devo ver "Não existem candidatos para o filtro informado"
+    E eu não devo ver "Nikita"
     E eu clico no botão "Voltar"
 
     Então eu clico em excluir "Vaga java EE"

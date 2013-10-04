@@ -278,4 +278,9 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 	{
 		return getDao().findQtdEtapasRealizadas(empresaId, estabelecimentoIds, areaIds, solicitacoesIds, dataIni, dataFim);
 	}
+
+	public void removeByCandidatoSolicitacao(Long candidatoSolicitcaoid) 
+	{
+		getDao().removeByCandidatoSolicitacao(candidatoSolicitcaoid);
+	}
 }
