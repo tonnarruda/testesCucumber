@@ -60,8 +60,8 @@ Quando /^eu clico em imprimir "([^"]*)"$/ do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Imprimir']").click
 end
 
-Quando /^eu clico em visualizar realinhamentos "([^"]*)"$/ do |text|
-  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Visualizar Realinhamentos']").click
+Quando /^eu clico na ação "([^"]*)" de "([^"]*)"$/ do |acao, text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='#{acao}']").click
 end
 
 Quando /^eu clico na linha "([^"]*)" da imagem "([^"]*)"$/ do |desc, img|
@@ -391,12 +391,36 @@ Dado /^que exista a tabela de reajuste "([^"]*)" na data "([^"]*)" aprovada "([^
    end
 end
 
-Dado /^que exista um reajuste para o colaborador "([^"]*)" com a tabela de reajuste "([^"]*)" com valor atual "([^"]*)" e valor proposto "([^"]*)"$/ do |nome_colaborador, nome_tabela_reajuste, valor_atual, valor_proposto|
+Dado /^que exista um reajuste para o colaborador "([^"]*)" com a tabela de reajuste "([^"]*)" com estabelecimento, area e faixa de id "([^"]*)" com valor atual "([^"]*)" e valor proposto "([^"]*)"$/ do |nome_colaborador, nome_tabela_reajuste, id, valor_atual, valor_proposto|
+
+    insert :estabelecimento do
+      nome 'Matriz'
+      empresa :nome => 'Empresa Padrão'
+    end
+
+   insert :areaorganizacional do
+     id id
+     nome "Desenvolvimento"
+     empresa :nome => 'Empresa Padrão'
+     ativo true
+   end
+
+   insert :faixasalarial do
+     id id
+     cargo :nome => "Desenvolvedor"
+   end
+
    insert :reajustecolaborador do
      colaborador :nome => nome_colaborador
      tabelareajustecolaborador :nome => nome_tabela_reajuste
-     tiposalarioatual 1 
-     tiposalarioproposto 1 
+     estabelecimentoatual_id id
+     estabelecimentoproposto_id id
+     areaorganizacionalatual_id id
+     areaorganizacionalproposta_id id
+     faixasalarialatual_id id
+     faixasalarialproposta_id id
+     tiposalarioatual 3 
+     tiposalarioproposto 3 
      salarioatual valor_atual 
      salarioproposto valor_proposto 
    end
