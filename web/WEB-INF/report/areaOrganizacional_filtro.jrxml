@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="areaOrganizacional_filtro" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a0132c91-3ef2-400e-8679-2ecd475a3212">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -25,7 +25,7 @@
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<group name="gruposAreas">
-		<groupExpression><![CDATA[$F{areaOrganizacional.nome}]]></groupExpression>
+		<groupExpression><![CDATA[$F{descricaoEmpresaEstabelecimentoAreaOrganizacional}]]></groupExpression>
 		<groupHeader>
 			<band height="13" splitType="Stretch">
 				<textField isBlankWhenNull="false">
