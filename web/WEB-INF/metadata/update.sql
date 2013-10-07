@@ -21986,3 +21986,6 @@ select ajusta_solPessoalExibirSalario();--.go
 drop function ajusta_solPessoalExibirSalario();--.go 
 insert into migrations values('20130930113630');--.go
 update parametrosdosistema set appversao = '1.1.118.130';--.go
+-- versao 1.1.118.131
+
+update parametrosdosistema set appversao = '1.1.118.131';--.go
