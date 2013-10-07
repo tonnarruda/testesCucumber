@@ -122,6 +122,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			}
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
+			parametros.put("FORMULA", empresa.getFormulaTurnover());
+			parametros.put("FORMULA_DESCRICAO", empresa.getFormulaTurnoverDescricao());
 			
 
 			if ( agruparPorTempoServico )
@@ -132,7 +134,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			else
 			{
 				TurnOverCollection turnOverCollection = new TurnOverCollection();
-				turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, Arrays.asList(empresa.getId()), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
+				turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
 				dataSource = Arrays.asList(turnOverCollection);
 				return Action.SUCCESS;
 			}

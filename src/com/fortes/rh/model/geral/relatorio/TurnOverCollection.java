@@ -5,7 +5,23 @@ import java.util.Collection;
 
 public class TurnOverCollection
 {
+	private Long empresaId;
 	private Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
+	
+	public TurnOverCollection() 
+	{
+	}
+
+	public TurnOverCollection(Collection<TurnOver> turnOvers) 
+	{
+		this.turnOvers = turnOvers;
+	}
+	
+	public TurnOverCollection(Long empresaId, Collection<TurnOver> turnOvers) 
+	{
+		this.empresaId = empresaId;
+		this.turnOvers = turnOvers;
+	}
 
 	public Double getMedia()
 	{
@@ -28,5 +44,11 @@ public class TurnOverCollection
 		this.turnOvers = turnOvers;
 	}
 
+	public Long getEmpresaId() {
+		return empresaId;
+	}
 
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
 }

@@ -83,6 +83,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     {
     	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
 
     	assertEquals("success", action.prepare());
@@ -114,6 +115,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
@@ -130,6 +132,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
     	assertEquals("input", action.list());
     }

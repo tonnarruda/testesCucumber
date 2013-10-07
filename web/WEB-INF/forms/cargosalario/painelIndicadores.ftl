@@ -90,7 +90,7 @@
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
-				montaGraficoLinha(absenteismo, "#evolucaoAbsenteismo", "Absenteismo");
+				montaGraficoLinha([absenteismo], "#evolucaoAbsenteismo", "Absenteismo");
 				montaGraficoLinha(turnover, "#evolucaoTurnover", "Turnover");
 				
 				populaAreas();
@@ -517,10 +517,6 @@
 					    	<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
 					    </div>
 						<div id="evolucaoTurnoverInfo">
-							<div class="formula">Fórmula: [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100</div>
-					    
-							<div style="clear: both"></div>
-							
 							<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
 								<div>Admitidos: ${countAdmitidos}</div>
 								<div>Demitidos: ${countDemitidos}</div>

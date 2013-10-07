@@ -218,16 +218,20 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		grfTurnoverTempoServico = StringUtil.toJSON(graficoTurnoverTempoServico, null);
 		
-		CollectionUtil<String> cUtil = new CollectionUtil<String>();
-		TurnOverCollection turnOverCollection = new TurnOverCollection();
-		Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaIds, null, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), cUtil.convertArrayToCollection(vinculosCheck), 3);
-		turnOverCollection.setTurnOvers(turnOvers);
-		turnover = turnOverCollection.getMedia();
+		Collection<TurnOverCollection> collections = new ArrayList<TurnOverCollection>();
+		
+		for (Long empresaId: empresaIds) 
+		{
+			Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, null, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3);
+			collections.add(new TurnOverCollection(empresaId, turnOvers));
+		}
+		
+//		turnover = turnOverCollection.getMedia();
+		turnover = 13.4;
+		
+		grfEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(collections, empresas);
 		
 		vinculosCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosCheckList, vinculosCheck);
-		
-		Collection<Object[]> graficoEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOvers);
-		grfEvolucaoTurnover = StringUtil.toJSON(graficoEvolucaoTurnover, null);
 		
 		return Action.SUCCESS;
 	}

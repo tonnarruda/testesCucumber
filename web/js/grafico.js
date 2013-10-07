@@ -17,7 +17,7 @@ function montaLine(data, idGrafico, options) {
     
     if (options){$.extend(config, options);}
     
-    var plot = $.plot($(idGrafico), [data], config);
+    var plot = $.plot($(idGrafico), data, config);
 
 	var previousPoint = null;				
 	$(idGrafico).bind("plothover", function (event, pos, item) {
