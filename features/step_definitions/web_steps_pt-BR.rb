@@ -21,6 +21,10 @@ Dado /^que eu esteja logado$/ do
   end
 end
 
+Dado /^que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "([^"]*)"$/ do |obrig_dadoscomp|
+  exec_sql "update empresa set solPessoalObrigarDadosComplementares = #{obrig_dadoscomp};"
+end
+
 Quando /^eu acesso "([^"]*)"$/ do |path|
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
 end

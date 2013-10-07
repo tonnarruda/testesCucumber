@@ -13,6 +13,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
     Dado que exista uma etapa seletiva "Entrevista"
     Dado que exista um conhecimento "Java"
+	Dado que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "true"
 
     Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
     E  eu clico em editar "Java"
@@ -267,3 +268,19 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o alert do confirmar exclusão e clico no ok
     Então eu devo ver "Solicitação excluída com sucesso."
     E eu não devo ver "Vaga java EE"
+
+    Dado que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "false"
+    
+    Então eu clico no botão "Inserir"
+    E eu devo ver o título "Inserir Solicitação de Pessoal"
+    E eu preencho o campo (JS) "Data" com "10/06/2011"
+    E eu preencho "Descrição" com "Vaga java II"
+    E eu preencho "Horário comercial" com "8h às 18h"
+    E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
+    E eu seleciono "Financeiro" de "Área Organizacional"
+    E eu seleciono "Contador I" de "Cargo/Faixa"
+    E eu seleciono "Aumento de quadro" de "Motivo da Solicitação"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Solicitação de Pessoal"
+    E eu devo ver "Vaga java II"
+    
