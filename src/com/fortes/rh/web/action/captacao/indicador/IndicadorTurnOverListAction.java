@@ -133,8 +133,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			}
 			else
 			{
-				TurnOverCollection turnOverCollection = new TurnOverCollection();
-				turnOverCollection.setTurnOvers(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
+				TurnOverCollection turnOverCollection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor);
 				dataSource = Arrays.asList(turnOverCollection);
 				return Action.SUCCESS;
 			}

@@ -36,7 +36,6 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
@@ -99,6 +98,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private Collection<RelatorioPromocoes> dataSource = new ArrayList<RelatorioPromocoes>();
 	private Collection<SituacaoColaborador> dataSourceSituacoesColaborador = new ArrayList<SituacaoColaborador>();
+	private Collection<TurnOverCollection> turnOverCollections = new ArrayList<TurnOverCollection>();
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private StatusRetornoAC statusRetornoAC = new StatusRetornoAC();
 	private boolean integradoAC;
@@ -149,6 +149,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), getUsuarioLogado().getId(), "ROLE_INFO_PAINEL_IND");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
+		
+		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
+		vinculosCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosCheckList, vinculosCheck);
    		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
@@ -169,8 +172,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 
-		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
-		
 		if (tempoServicoIni == null || tempoServicoIni.length == 0)
 		{
 			tempoServicoIni = new Integer[] { 0, 3, 5, 7, 9, 11 };
@@ -218,20 +219,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		grfTurnoverTempoServico = StringUtil.toJSON(graficoTurnoverTempoServico, null);
 		
-		Collection<TurnOverCollection> collections = new ArrayList<TurnOverCollection>();
-		
+		turnOverCollections = new ArrayList<TurnOverCollection>();
 		for (Long empresaId: empresaIds) 
-		{
-			Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, null, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3);
-			collections.add(new TurnOverCollection(empresaId, turnOvers));
-		}
+			turnOverCollections.add(colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, null, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3));
 		
-//		turnover = turnOverCollection.getMedia();
-		turnover = 13.4;
-		
-		grfEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(collections, empresas);
-		
-		vinculosCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosCheckList, vinculosCheck);
+		grfEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOverCollections, empresas);
 		
 		return Action.SUCCESS;
 	}
@@ -1011,5 +1003,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfTurnoverTempoServico() {
 		return grfTurnoverTempoServico;
+	}
+
+	public Collection<TurnOverCollection> getTurnOverCollections() {
+		return turnOverCollections;
 	}
 }

@@ -23,6 +23,9 @@
 		.conteudo { background-color: #F6F6F6; padding: 10px; border: 1px solid #CCC; }
 		
 		.fieldDados { width: 923px !important; }
+		.fieldDadosTurnover { border: none; border-top: 1px solid #7E9DB9; height: inherit; }
+		.fieldDadosTurnover th { font-weight: normal; border-bottom: 1px solid #000; }
+		.fieldDadosTurnover td.val { text-align: right; } 
 		.grid-cell { background-color: #FFF; }
 		
 		.filtro-esquerda, .filtro-direita { width: 465px; }
@@ -517,10 +520,25 @@
 					    	<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
 					    </div>
 						<div id="evolucaoTurnoverInfo">
-							<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-								<div>Admitidos: ${countAdmitidos}</div>
-								<div>Demitidos: ${countDemitidos}</div>
-								<div>Turnover: ${turnover}</div>
+							<div class="fieldDados fieldDadosTurnover">
+								<table cellspacing="10">
+									<tr>
+										<th></th>
+										<th>Admitidos</th>
+										<th>Demitidos</th>
+										<th>Turnover</th>
+										<th>Fórmula</th>
+									</tr>
+									<#list turnOverCollections as col>
+										<tr>
+											<td>${col.empresaNome}</td>
+											<td class="val">${col.qtdAdmitidos}</td>
+											<td class="val">${col.qtdDemitidos}</td>
+											<td class="val">${col.media}</td>
+											<td align="center"><span href=# style="cursor: help;" onmouseout="$('#tooltip').remove();" onmouseover="$('#tooltip').remove();showTooltip(event.pageX, event.pageY+20, '${col.formula?j_string}')">...</span></td>
+										</tr>
+									</#list>
+								</table>
 							</div>
 					 	</div>
 					</td>
