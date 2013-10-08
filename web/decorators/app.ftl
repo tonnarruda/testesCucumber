@@ -11,7 +11,10 @@
 	<meta http-equiv="Expires" content="0" />
 	<title>${title}</title>
 
-	<script>var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000}</script>
+	<script>
+		var baseUrl = '<@ww.url includeParams="none" value="/"/>';
+		var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000};
+	</script>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
