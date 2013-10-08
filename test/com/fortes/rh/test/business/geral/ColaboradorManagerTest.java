@@ -69,6 +69,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
@@ -719,8 +720,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(973));
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, null, 1);
-  
+    	TurnOverCollection collection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), null, null, null, null, 1);
+    	Collection<TurnOver> turnOvers = collection.getTurnOvers();
+    	
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	
     	TurnOver mes1 = turnOverArray[0];
@@ -771,7 +773,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(atLeastOnce()).method("countAdmitidosDemitidosPeriodoTurnover").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false)}).will(returnValue(demitidos));
     	colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(200));
     	
-    	Collection<TurnOver> turnOvers = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa1.getId(), null, null, null, null, 1);
+    	TurnOverCollection collection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa1.getId(), null, null, null, null, 1);
+    	Collection<TurnOver> turnOvers = collection.getTurnOvers();
+    	
     	assertEquals(12, turnOvers.size());
     	TurnOver[] turnOverArray = (TurnOver[]) turnOvers.toArray(new TurnOver[12]);
     	

@@ -1,7 +1,7 @@
 package com.fortes.rh.test.web.action.captacao.indicador;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import mockit.Mockit;
@@ -98,9 +98,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(empresa);
     	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
-    	Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
-    	turnOvers.add(new TurnOver());
-    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(turnOvers));
+    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(new TurnOverCollection(Arrays.asList(new TurnOver()))));
     	
     	assertEquals("success", action.list());
     }
