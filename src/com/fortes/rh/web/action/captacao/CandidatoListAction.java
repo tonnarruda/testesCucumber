@@ -540,7 +540,7 @@ public class CandidatoListAction extends MyActionSupportList
 					candidatoSolicitacaoManager.insertCandidatos(candidatosParaSolicitacaoIds, solicitacao, StatusCandidatoSolicitacao.INDIFERENTE);
 			}
 		} catch (Exception e) {
-			addActionError("Não foi possível importar os Candidatos.");
+			addActionError("Não foi possível importar os candidatos.");
 		}
 		
 		return Action.SUCCESS;

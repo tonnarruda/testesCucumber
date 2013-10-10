@@ -1273,11 +1273,11 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   		Estado estado = estadoManager.findBySigla(curriculo.getEstado()); 
 	   		endereco.setUf(estado);
 
-	   		try {
-	   			if(StringUtils.isNotBlank(curriculo.getCidade_rh()))
-	   				endereco.setCidade(cidadeManager.findByNome(curriculo.getCidade_rh(), estado.getId()));
-	   		} catch (Exception e) {}
-		} catch (Exception e) {}
+	   		if(StringUtils.isNotBlank(curriculo.getCidade_rh()))
+	   			endereco.setCidade(cidadeManager.findByNome(curriculo.getCidade_rh(), estado.getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		candidato.setPessoal(pessoal);
 		candidato.setContato(contato);
