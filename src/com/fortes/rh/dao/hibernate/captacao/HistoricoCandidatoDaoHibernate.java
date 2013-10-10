@@ -317,4 +317,11 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		
 		return (Integer) criteria.uniqueResult();
 	}
+
+	public void removeByCandidatoSolicitacao(Long candidatoSolicitcaoid) 
+	{
+		Query query = getSession().createQuery("delete HistoricoCandidato hc where hc.candidatoSolicitacao.id = :candidatoSolicitcaoid");
+		query.setLong("candidatoSolicitcaoid", candidatoSolicitcaoid);
+		query.executeUpdate();
+	}
 }

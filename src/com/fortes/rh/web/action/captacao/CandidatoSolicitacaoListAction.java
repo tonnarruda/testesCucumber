@@ -124,6 +124,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		candidatoSolicitacao = candidatoSolicitacaoManager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
 		
 		historicoColaboradorManager.removeCandidatoSolicitacao(candidatoSolicitacao.getId());
+		historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
 		
 		candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
 		solicitacao = candidatoSolicitacao.getSolicitacao();

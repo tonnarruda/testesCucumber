@@ -52,7 +52,7 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		try
 		{
 			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getTipoReajuste(), tabelaReajusteColaborador.getId(), getEmpresaSistema());
-			addActionMessage("Cancelamento efetuado com sucesso.");
+			addActionSuccess("Cancelamento efetuado com sucesso.");
 		}
 		catch (IntegraACException e)
 		{

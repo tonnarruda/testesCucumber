@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.118.131" data="07/10/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Melhorias internas.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.118.130" data="30/09/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Utilitários > Cadastros > Empresas > Inserir/Editar: Possibilidade de tornar obrigatório os dados complementares da solicitação de pessoal.

@@ -34,4 +34,6 @@ public interface HistoricoCandidatoDao extends GenericDao<HistoricoCandidato>
 	int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataDe, Date dataAte);
 
 	int findQtdEtapasRealizadas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacoesIds, Date dataIni, Date dataFim);
+
+	void removeByCandidatoSolicitacao(Long candidatoSolicitcaoid);
 }

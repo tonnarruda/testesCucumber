@@ -31,4 +31,5 @@ public interface HistoricoCandidatoManager extends GenericManager<HistoricoCandi
 	Collection<HistoricoCandidato> getEventos(Long empresaId, Date dataIni, Date dataFim);
 	int findQtdAtendidos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	int findQtdEtapasRealizadas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacoesIds, Date dataIni, Date dataFim);
+	void removeByCandidatoSolicitacao(Long candidatoSolicitcaoid);
 }
