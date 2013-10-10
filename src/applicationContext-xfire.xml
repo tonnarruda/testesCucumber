@@ -43,6 +43,7 @@
   <bean id="rhServiceIntranet" class="com.fortes.rh.business.ws.RHServiceIntranetImpl">
     <property name="colaboradorManager" ref="colaboradorManager" />
     <property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
+    <property name="cargoManager" ref="cargoManager" />
   </bean>
   <bean id="rhWebServiceIntranet" class="org.codehaus.xfire.spring.remoting.XFireExporter">
     <property name="serviceFactory">

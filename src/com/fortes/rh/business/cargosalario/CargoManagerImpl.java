@@ -497,6 +497,11 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		}
 		
 	}
+	
+	public Collection<Cargo> findByEmpresa(Long empresaId) 
+	{
+		return getDao().findByEmpresa(empresaId);
+	}
 
 	public void updateCBO(Long id, TCargo tCargo)
 	{
@@ -581,6 +586,4 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
-
-	
 }

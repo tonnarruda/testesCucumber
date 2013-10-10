@@ -4615,6 +4615,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.pessoal.dataNascimento"), "projectionDataNascimento");
+		p.add(Projections.property("c.pessoal.cpf"), "colaboradorCPF");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
 		p.add(Projections.property("c.desligado"), "desligado");
@@ -4626,6 +4627,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("c.desligado", false));
 
 		criteria.addOrder(Order.asc("c.nome"));
 

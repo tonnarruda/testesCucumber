@@ -1,14 +1,15 @@
 package com.fortes.rh.business.ws;
 
 import java.util.Collection;
-import java.util.Map;
 
+import com.fortes.rh.model.ws.CargoIntranet;
+import com.fortes.rh.model.ws.SetorIntranet;
 import com.fortes.rh.model.ws.UsuarioIntranet;
 
 
 public interface RHServiceIntranet
 {
-	Boolean usuarioIsDesligado(String colaboradorId);
-	Map<String, String> getListaSetor(String[] empresaIds);
-	Collection<UsuarioIntranet> atualizaUsuarios(String empresaId);
+	Collection<SetorIntranet> setoresIntranetList(String empresaId);
+	Collection<CargoIntranet> cargosIntranetList(String empresaId);
+	Collection<UsuarioIntranet> usuariosIntranetList(String empresaId);
 }

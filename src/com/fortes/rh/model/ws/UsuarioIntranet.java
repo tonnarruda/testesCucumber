@@ -11,9 +11,8 @@ public class UsuarioIntranet implements Serializable
 	private String celular;
 	private String dataNascimento;
 	private String areaId;
-	private String areaNome;
 	private String cargoId;
-	private String cargoNome;
+	private String cpf;
 	private boolean desligado;
 	
 	public void setNomeComercialParaRH(String colaboradorNome, String colaboradorNomeComercial)
@@ -82,14 +81,6 @@ public class UsuarioIntranet implements Serializable
 		this.areaId = areaId;
 	}
 
-	public String getAreaNome() {
-		return areaNome;
-	}
-
-	public void setAreaNome(String areaNome) {
-		this.areaNome = areaNome;
-	}
-
 	public String getCargoId() {
 		return cargoId;
 	}
@@ -98,19 +89,19 @@ public class UsuarioIntranet implements Serializable
 		this.cargoId = cargoId;
 	}
 
-	public String getCargoNome() {
-		return cargoNome;
-	}
-
-	public void setCargoNome(String cargoNome) {
-		this.cargoNome = cargoNome;
-	}
-
 	public boolean isDesligado() {
 		return desligado;
 	}
 
 	public void setDesligado(boolean desligado) {
 		this.desligado = desligado;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 }
