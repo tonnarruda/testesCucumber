@@ -21989,3 +21989,8 @@ update parametrosdosistema set appversao = '1.1.118.130';--.go
 -- versao 1.1.118.131
 
 update parametrosdosistema set appversao = '1.1.118.131';--.go
+-- versao 1.1.119.132
+
+alter table empresa add column formulaturnover integer not null default 1;--.go
+insert into migrations values('20131001161641');--.go
+update parametrosdosistema set appversao = '1.1.119.132';--.go
