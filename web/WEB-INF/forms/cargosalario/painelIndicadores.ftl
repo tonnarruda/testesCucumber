@@ -32,9 +32,9 @@
 		.filtro-esquerda { float: left; }
 		.filtro-direita { float: right; }
 		
-		fieldset { margin-bottom: 10px; background: inherit; }
+		fieldset { padding: 10px; margin-bottom: 10px; background: inherit; }
 		
-		.subForm { width: 925px; padding: 10px; }
+		.subForm { width: 100%; }
 	</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -100,7 +100,7 @@
 				
 				populaAreas();
 
-				$('.conteudo').hide();
+				$('.conteudo-aba').hide();
 				
 				$('.aba a').click(function() {
 					var aba = $(this).parent();
@@ -109,9 +109,9 @@
 					$('.aba').removeClass('ativa');
 					aba.addClass('ativa');
 
-					$('.conteudo').hide();
+					$('.conteudo-aba').hide();
 					$('#abaMarcada').val(idAba);
-					$('#conteudo' + idAba).show();
+					$('.conteudo-' + idAba).show();
 				});
 				
 				$('#aba${abaMarcada} a').click();
@@ -309,280 +309,288 @@
 	</head>
 	<body>
 		<@ww.form name="formBusca" id="formBusca" action="painelIndicadores.action" method="POST">
-			<#include "../util/topFiltro.ftl" />
-	
-				<@ww.hidden name="abaMarcada" id="abaMarcada" value="1"/>
-				<@ww.hidden name="empresa.turnoverPorSolicitacao"/>
-				<table>
-					<tr>
-						<td colspan="3" align="right">
-							<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais marcadas" id="cargosVinculadosAreas" name="" labelPosition="left"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();" width="280"/>
-						</td>
-						<td>
-							<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();" width="360"/>
-						</td>
-						<td>
-							<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="280"/>
-						</td>
-					</tr>
-				</table>
-			<#include "../util/bottomFiltro.ftl" />
-	
+			
 			<div class="legendTotal">Total de Colaboradores: ${qtdColaborador}</div>
-		
+			
 			<div id="abas">
 				<div id="aba1" class="aba"><a href="javascript:;">Informações Sociais</a></div>
 				<div id="aba2" class="aba"><a href="javascript:;">Ocorrências/Absenteísmo</a></div>
 				<div id="aba3" class="aba"><a href="javascript:;">Turnover</a></div>
 			</div>
 			
-			<div id="conteudo1" class="conteudo">
-				<div class="subForm">
-					<fieldset>
-						<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
-					</fieldset>
-					<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
-				</div>
-			
-				<table class="grid" cellspacing="5">
-					<tr>
-						<td class="grid-cell">
-							<div class="cell-title">
-								Faixa Etária 
-								<img id="faixaEtariaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-						    <div id="faixaEtaria" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="faixaEtariaLegenda"></div>
-						</td>
-						<td class="grid-cell" colspan="2">
-							<div class="cell-title">
-								Estado Civil 
-								<img id="estadoCivilImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-					    	<div id="estadoCivil" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="estadoCivilLegenda"></div>
-						</td>
-					</tr>
-					<tr>
-						<td class="grid-cell">
-							<div class="cell-title">
-								Deficiência 
-								<img id="deficienciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="deficiencia" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="deficienciaLegenda"></div>
-						</td>
-						<td class="grid-cell" colspan="2">
-							<div class="cell-title">
-								Colocação 
-								<img id="colocacaoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="colocacao" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="colocacaoLegenda"></div>
-						</td>
-					</tr>
-					<tr>
-						<td class="grid-cell medium" colspan="2">
-							<div class="cell-title">
-								Formação Escolar 
-								<img id="formacaoEscolarImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="formacaoEscolar" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="formacaoEscolarLegenda"></div>
-						</td>
-						<td class="grid-cell small">
-							<div class="cell-title">
-								Sexo 
-								<img id="sexoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="sexo" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="sexoLegenda"></div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			
-			<div id="conteudo2" class="conteudo">
-				<div class="subForm">
-					<fieldset style="float:left;width:200px;margin-right:10px;">
-						<legend>Absenteísmo</legend>
-
-						<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
-						<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
-					</fieldset>
+			<div class="conteudo">
+				<#include "../util/topFiltro.ftl" />
+		
+					<@ww.hidden name="abaMarcada" id="abaMarcada" value="1"/>
+					<@ww.hidden name="empresa.turnoverPorSolicitacao"/>
 					
-					<fieldset>
-						<legend>Ocorrências e Providêcias</legend>
-						<table>
-							<tr>
-								<td>
-									<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-									<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
-								</td>
-								<td valign="bottom">
-									Exibir os
-									<@ww.textfield theme="simple" name="qtdItensOcorrencia" value="${qtdItensOcorrencia}" id="qtdItensOcorrencia" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress="return(somenteNumeros(event,''));"/> 
-									itens de maior percentual.
-								</td>
-							</tr>
-						</table>
-					</fieldset>
-					
-					<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
-				</div>
-			
-				<table class="grid" cellspacing="5">
-					<tr>
-						<td class="grid-cell">
-							<div class="cell-title">
-								Ocorrências 
-								<img id="ocorrenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="ocorrencia" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="ocorrenciaLegenda"></div>
-						</td>
-						<td class="grid-cell" colspan="2">
-							<div class="cell-title">
-								Providências 
-								<img id="providenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div id="providencia" class="graph"></div>
-					    	<div style="clear:both"></div>
-			    			<div id="providenciaLegenda"></div>
-						</td>
-					</tr>
-					<tr>
-						<td class="grid-cell" colspan="3">
-							<div class="cell-title">
-								Absenteísmo
-								<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div class="graphWrapper" style="height: 360px !important;">
-						    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
-						    </div>
-							<div id="evolucaoAbsenteismoInfo">
-								<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
-								
-								<div style="clear: both"></div>
-								
-								<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
-									<div id="mediaAbsenteismo"></div>
+					<table class="filtros">
+						<tr>
+							<td colspan="3" align="right">
+								<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais marcadas" id="cargosVinculadosAreas" name="" labelPosition="left"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();" width="280"/>
+							</td>
+							<td>
+								<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();" width="340" />
+							</td>
+							<td>
+								<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="280"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<div class="conteudo-1 conteudo-aba">
+									<fieldset>
+										<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
+									</fieldset>
 								</div>
-						 	</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			
-			<div id="conteudo3" class="conteudo">
-				<div class="subForm">
-					<fieldset style="float:left;width:300px;height:192px;margin-right:10px;">
-						<legend>Motivo de Desligamento</legend>
-						
-						<@ww.datepicker label="Data Início" name="dataIniDeslig" id="dataIniDeslig" value="${dateIniDeslig}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-						<@ww.datepicker label="Data Fim" name="dataFimDeslig" id="dataFimDeslig" value="${dateFimDeslig}" cssClass="mascaraData validaDataFim"/>
-						Exibir os
-						<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
-						itens de maior percentual.
-					</fieldset>
-					
-					<fieldset>
-						<legend>Turnover</legend>
-						<table>
-							<tr>
-								<td>
-									<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-									<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim"/>
-									<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="300"/>
-								</td>
-								<td>
-									Períodos de tempo de serviço:
-									<div id="periodosServico" style="margin-left:20px">
-										<ul id="periodos"></ul>
-										<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();">
-											<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
-											Adicionar período
-										</a>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</fieldset>
-					
-					<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
-				</div>
-			
-				<table class="grid" cellspacing="5">
-					<tr>
-						<td class="grid-cell" colspan="3">
-							<div class="cell-title">
-								Motivos de Desligamento
-								<img id="desligamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div class="graphWrapper" style="height: 390px !important;">
-						    	<div id="desligamento" class="graph2"></div>
-				    			<div id="desligamentoLegenda"></div>
-						    </div>
-						</td>
-					</tr>
-					<tr>
-						<td class="grid-cell" colspan="3">
-							<div class="cell-title">
-								Turnover
-								<img id="evolucaoTurnoverImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div class="graphWrapper" style="height: 350px !important;">
-						    	<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
-						    </div>
-							<div id="evolucaoTurnoverInfo">
-								<div class="fieldDados fieldDadosTurnover">
-									<table cellspacing="10">
-										<tr>
-											<th></th>
-											<th>Admitidos</th>
-											<th>Demitidos</th>
-											<th>Turnover</th>
-											<th>Fórmula</th>
-										</tr>
-										<#list turnOverCollections as col>
+								
+								<div class="conteudo-2 conteudo-aba">
+									<fieldset style="float:left;width:200px;margin-right:10px;">
+										<legend>Absenteísmo</legend>
+				
+										<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
+										<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
+									</fieldset>
+									
+									<fieldset>
+										<legend>Ocorrências e Providêcias</legend>
+										<table>
 											<tr>
-												<td>${col.empresaNome}</td>
-												<td class="val">${col.qtdAdmitidos}</td>
-												<td class="val">${col.qtdDemitidos}</td>
-												<td class="val">${col.media}</td>
-												<td align="center"><span href=# style="cursor: help;" onmouseout="$('#tooltip').remove();" onmouseover="$('#tooltip').remove();showTooltip(event.pageX, event.pageY+20, '${col.formula?j_string}')">...</span></td>
+												<td>
+													<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+													<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+												</td>
+												<td valign="bottom">
+													Exibir os
+													<@ww.textfield theme="simple" name="qtdItensOcorrencia" value="${qtdItensOcorrencia}" id="qtdItensOcorrencia" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress="return(somenteNumeros(event,''));"/> 
+													itens de maior percentual.
+												</td>
 											</tr>
-										</#list>
-									</table>
+										</table>
+									</fieldset>
 								</div>
-						 	</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="grid-cell" colspan="3">
-							<div class="cell-title">
-								Turnover por tempo de serviço
-								<img id="turnoverTempoServicoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
-							</div>
-							<div class="graphWrapper" style="height: 390px !important;">
-						    	<div id="turnoverTempoServico" class="graph2"></div>
-				    			<div id="turnoverTempoServicoLegenda"></div>
-						    </div>
-						</td>
-					</tr>
-				</table>
+								
+								<div class="conteudo-3 conteudo-aba">
+									<fieldset style="float:left;width:300px;height:192px;margin-right:10px;">
+										<legend>Motivo de Desligamento</legend>
+										
+										<@ww.datepicker label="Data Início" name="dataIniDeslig" id="dataIniDeslig" value="${dateIniDeslig}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+										<@ww.datepicker label="Data Fim" name="dataFimDeslig" id="dataFimDeslig" value="${dateFimDeslig}" cssClass="mascaraData validaDataFim"/>
+										Exibir os
+										<@ww.textfield theme="simple" name="qtdItensDesligamento" value="${qtdItensDesligamento}" id="qtdItensDesligamento" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress = "return(somenteNumeros(event,''));"/> 
+										itens de maior percentual.
+									</fieldset>
+									
+									<fieldset>
+										<legend>Turnover</legend>
+										<table>
+											<tr>
+												<td>
+													<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+													<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim"/>
+													<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="300"/>
+												</td>
+												<td>
+													Períodos de tempo de serviço:
+													<div id="periodosServico" style="margin-left:20px">
+														<ul id="periodos"></ul>
+														<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();">
+															<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+															Adicionar período
+														</a>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
+							</td>
+						</tr>
+					</table>
+				<#include "../util/bottomFiltro.ftl" />
+		
+				<div class="conteudo-1 conteudo-aba">
+					<table class="grid" cellspacing="5">
+						<tr>
+							<td class="grid-cell">
+								<div class="cell-title">
+									Faixa Etária 
+									<img id="faixaEtariaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+							    <div id="faixaEtaria" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="faixaEtariaLegenda"></div>
+							</td>
+							<td class="grid-cell" colspan="2">
+								<div class="cell-title">
+									Estado Civil 
+									<img id="estadoCivilImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+						    	<div id="estadoCivil" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="estadoCivilLegenda"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="grid-cell">
+								<div class="cell-title">
+									Deficiência 
+									<img id="deficienciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="deficiencia" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="deficienciaLegenda"></div>
+							</td>
+							<td class="grid-cell" colspan="2">
+								<div class="cell-title">
+									Colocação 
+									<img id="colocacaoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="colocacao" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="colocacaoLegenda"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="grid-cell medium" colspan="2">
+								<div class="cell-title">
+									Formação Escolar 
+									<img id="formacaoEscolarImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="formacaoEscolar" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="formacaoEscolarLegenda"></div>
+							</td>
+							<td class="grid-cell small">
+								<div class="cell-title">
+									Sexo 
+									<img id="sexoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="sexo" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="sexoLegenda"></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="conteudo-2 conteudo-aba">
+					<table class="grid" cellspacing="5">
+						<tr>
+							<td class="grid-cell">
+								<div class="cell-title">
+									Ocorrências 
+									<img id="ocorrenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="ocorrencia" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="ocorrenciaLegenda"></div>
+							</td>
+							<td class="grid-cell" colspan="2">
+								<div class="cell-title">
+									Providências 
+									<img id="providenciaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div id="providencia" class="graph"></div>
+						    	<div style="clear:both"></div>
+				    			<div id="providenciaLegenda"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="grid-cell" colspan="3">
+								<div class="cell-title">
+									Absenteísmo
+									<img id="evolucaoAbsenteismoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div class="graphWrapper" style="height: 360px !important;">
+							    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
+							    </div>
+								<div id="evolucaoAbsenteismoInfo">
+									<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+									
+									<div style="clear: both"></div>
+									
+									<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+										<div id="mediaAbsenteismo"></div>
+									</div>
+							 	</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="conteudo-3 conteudo-aba">
+					<table class="grid" cellspacing="5">
+						<tr>
+							<td class="grid-cell" colspan="3">
+								<div class="cell-title">
+									Motivos de Desligamento
+									<img id="desligamentoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div class="graphWrapper" style="height: 390px !important;">
+							    	<div id="desligamento" class="graph2"></div>
+					    			<div id="desligamentoLegenda"></div>
+							    </div>
+							</td>
+						</tr>
+						<tr>
+							<td class="grid-cell" colspan="3">
+								<div class="cell-title">
+									Turnover
+									<img id="evolucaoTurnoverImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div class="graphWrapper" style="height: 350px !important;">
+							    	<div id="evolucaoTurnover" style="margin: 25px;height:300px;"></div>
+							    </div>
+								<div id="evolucaoTurnoverInfo">
+									<div class="fieldDados fieldDadosTurnover">
+										<table cellspacing="10">
+											<tr>
+												<th></th>
+												<th>Admitidos</th>
+												<th>Demitidos</th>
+												<th>Turnover</th>
+												<th>Fórmula</th>
+											</tr>
+											<#list turnOverCollections as col>
+												<tr>
+													<td>${col.empresaNome}</td>
+													<td class="val">${col.qtdAdmitidos}</td>
+													<td class="val">${col.qtdDemitidos}</td>
+													<td class="val">${col.media}</td>
+													<td align="center"><span href=# style="cursor: help;" onmouseout="$('#tooltip').remove();" onmouseover="$('#tooltip').remove();showTooltip(event.pageX, event.pageY+20, '${col.formula?j_string}')">...</span></td>
+												</tr>
+											</#list>
+										</table>
+									</div>
+							 	</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="grid-cell" colspan="3">
+								<div class="cell-title">
+									Turnover por tempo de serviço
+									<img id="turnoverTempoServicoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div class="graphWrapper" style="height: 390px !important;">
+							    	<div id="turnoverTempoServico" class="graph2"></div>
+					    			<div id="turnoverTempoServicoLegenda"></div>
+							    </div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
 			</div>
 		
 		</@ww.form>
