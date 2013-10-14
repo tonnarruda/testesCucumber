@@ -196,7 +196,7 @@
 				</#if>
 			</@authz.authorize>
 			
-			<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) || (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado))/>
+			<#assign disabledExcluir = solicitacao.encerrada || ((candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists) || (candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists && candidatoSolicitacao.candidato.contratado && candidatoSolicitacao.status != 'A'))/>
 			
 			<#assign msgDisabledExcluir = ""/>
 			<#if disabledExcluir>
@@ -204,8 +204,12 @@
 					<#assign msgDisabledExcluir="Esta solicitação já foi encerrada."/>
 				<#elseif (candidatoSolicitacao.etapaSeletiva?exists && candidatoSolicitacao.etapaSeletiva.id?exists)> 
 					<#assign msgDisabledExcluir="Este candidato já possui históricos. Não é possível removê-lo da seleção."/>
-				<#else> 
-					<#assign msgDisabledExcluir="Este candidato foi contratado. Não é possível removê-lo da seleção."/>
+				<#else>
+					<#if candidatoSolicitacao.status == 'C'>
+						<#assign msgDisabledExcluir="Este candidato foi contratado. Não é possível removê-lo da seleção."/>
+					<#else>
+						<#assign msgDisabledExcluir="Este candidato foi promovido. Não é possível removê-lo da seleção."/>
+					</#if>
 				</#if>
 			</#if>
 			
