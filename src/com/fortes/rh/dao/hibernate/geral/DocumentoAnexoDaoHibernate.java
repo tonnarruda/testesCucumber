@@ -11,13 +11,14 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 
 public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAnexo> implements DocumentoAnexoDao
 {
 
 	@SuppressWarnings("unchecked")
-	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId, Boolean moduloExterno)
+	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long... origemId)
 	{
 		Criteria criteria = getSession().createCriteria(DocumentoAnexo.class, "da");
 		criteria.createCriteria("da.etapaSeletiva","es",Criteria.LEFT_JOIN);
@@ -38,8 +39,12 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		if (moduloExterno != null)
 			criteria.add(Expression.eq("da.moduloExterno", moduloExterno));
 		
-		criteria.add(Expression.eq("da.origem", origem));
-		criteria.add(Expression.eq("da.origemId", origemId));
+		if(origem == OrigemAnexo.AnexoColaborador)
+			criteria.add(Expression.in("da.origem", new Character[]{OrigemAnexo.AnexoCandidato,OrigemAnexo.AnexoColaborador}));
+		else
+			criteria.add(Expression.eq("da.origem", origem));
+		
+		criteria.add(Expression.in("da.origemId", origemId));
 		criteria.addOrder(Order.asc("da.data"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

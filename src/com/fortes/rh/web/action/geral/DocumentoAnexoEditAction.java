@@ -9,6 +9,7 @@ import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.TipoDocumentoManager;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.TipoDocumento;
 import com.fortes.rh.util.ArquivoUtil;
@@ -33,7 +34,8 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	private Long origemIdTmp;
 	private String nome;
 	private Long solicitacaoId;
-
+	private Character origemDocumento;
+	private Long origemIdDocumento;
 
 	//	Usados pela listagem de Candidatos para manter dados do filtro
 	private int page;
@@ -134,7 +136,12 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	public String updateCandidato() throws Exception
 	{
 		diretorio = "documentosCandidatos";
-		return update();
+		String retorno = update();
+
+		if (origemDocumento != null && origemDocumento == OrigemAnexo.AnexoColaborador)
+			return "successColaborador"; 
+		
+		return retorno; 
 	}
 
 	public String updateColaborador() throws Exception
@@ -303,6 +310,22 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 
 	public void setTipoDocumentoManager(TipoDocumentoManager tipoDocumentoManager) {
 		this.tipoDocumentoManager = tipoDocumentoManager;
+	}
+
+	public void setOrigemDocumento(Character origemDocumento) {
+		this.origemDocumento = origemDocumento;
+	}
+
+	public Character getOrigemDocumento() {
+		return origemDocumento;
+	}
+
+	public Long getOrigemIdDocumento() {
+		return origemIdDocumento;
+	}
+
+	public void setOrigemIdDocumento(Long origemIdDocumento) {
+		this.origemIdDocumento = origemIdDocumento;
 	}
 
 	}

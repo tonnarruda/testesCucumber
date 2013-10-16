@@ -7,7 +7,7 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 
 public interface DocumentoAnexoDao extends GenericDao<DocumentoAnexo>
 {
-	Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId, Boolean moduloExterno);
+	Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long... origemId);
 
 	DocumentoAnexo findByIdProjection(Long documentoAnexoId);
 }

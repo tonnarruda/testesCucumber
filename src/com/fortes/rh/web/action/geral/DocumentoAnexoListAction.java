@@ -21,6 +21,8 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	//Usados pela listagem de Candidatos para manter dados do filtro
 	private Long etapaSeletivaId;
 	private char visualizar;
+	private Character origem;
+	private Long origemId;
 
 	//Usada apenas para armazenar quando os documentos são acessador através da tela de solicitação de pessoal.
 	private Long solicitacaoId;
@@ -29,8 +31,13 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	{
 		setVideoAjuda(764L);
 		
-		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId(), null);
-		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(),documentoAnexo.getOrigemId());
+		if(origem != null && origemId != null) {
+			documentoAnexo.setOrigem(origem);
+			documentoAnexo.setOrigemId(origemId);
+		} 
+		
+		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
+		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
 		return Action.SUCCESS;
 	}
 
@@ -40,7 +47,7 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 		{
 			documentoAnexo = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
 			documentoAnexoManager.deletarDocumentoAnexo(diretorio, documentoAnexo);
-			addActionMessage("Documento excluído com sucesso.");
+			addActionSuccess("Documento excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
@@ -54,6 +61,9 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public String deleteCandidato() throws Exception
 	{
 		diretorio = "documentosCandidatos";
+		origem = documentoAnexo.getOrigem();
+		origemId = documentoAnexo.getOrigemId();
+		
 		return delete();
 	}
 
@@ -130,5 +140,13 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public void setVisualizar(char visualizar)
 	{
 		this.visualizar = visualizar;
+	}
+
+	public void setOrigem(Character origem) {
+		this.origem = origem;
+	}
+
+	public void setOrigemId(Long origemId) {
+		this.origemId = origemId;
 	}
 }

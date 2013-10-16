@@ -41,7 +41,6 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -895,11 +894,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
 			
-			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId(), null);
+			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoColaborador, colaborador.getId());
 
 			if(colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
 			{
-				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId(), null);
+				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId());
 				historicosCandidatoByColaborador = historicoCandidatoManager.findByCandidato(colaborador.getCandidato());
 			}
 			
