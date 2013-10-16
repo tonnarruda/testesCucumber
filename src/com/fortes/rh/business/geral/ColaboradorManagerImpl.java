@@ -295,7 +295,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
 		return true;
-			}
+	}
 
 	private TEmpregado bindEmpregado(Colaborador colaborador, String empresaCodigoAC)
 	{

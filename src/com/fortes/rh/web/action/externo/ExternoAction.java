@@ -326,7 +326,7 @@ public class ExternoAction extends MyActionSupport
 		{
 			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
 			
-			documentosAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, sessionCandidatoId, true);
+			documentosAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(true, OrigemAnexo.AnexoCandidato, sessionCandidatoId);
 
 			return Action.SUCCESS;
 		}

@@ -6,6 +6,8 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.util.ArquivoUtil;
 
@@ -14,9 +16,16 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	private ColaboradorManager colaboradorManager;
 	private CandidatoManager candidatoManager;
 	
-	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, long origemId, Boolean moduloExterno)
+	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId)
 	{
-		return getDao().getDocumentoAnexoByOrigemId(origem, origemId, moduloExterno);
+		if(origem == OrigemAnexo.AnexoColaborador)
+		{
+			Colaborador colab = (Colaborador) colaboradorManager.findByIdProjectionEmpresa(origemId);
+			Long[] origemIds = new Long[]{origemId, colab.getCandidato().getId()};
+			return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemIds);
+		}
+		
+		return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemId);
 	}
 
 	public void atualizarDocumentoAnexo(String diretorio,DocumentoAnexo documentoAnexo, com.fortes.model.type.File documento) throws Exception
