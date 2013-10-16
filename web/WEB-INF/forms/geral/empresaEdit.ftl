@@ -15,7 +15,6 @@
 		<#assign somenteLeitura="true" />
 	</#if>
 
-
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -23,7 +22,6 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<script type="text/javascript">
-		
 		$(function() {
 			$('#verificaParentescoHelp').qtip({
 				content: '<div style="text-align:justify">Nos cadastros de candidato e colaborador, após preencher os campos Nome do Cônjuge, Nome do Pai ou Nome da Mãe, é realizada uma checagem se há colaboradores com os nomes informados, exibindo um popup com a lista caso seja encontrado.</div>',
@@ -108,12 +106,11 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH'), new Array('remetente','respSetorPessoal'));
+		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
 	</script>
-
 </head>
 <body>
 	<@ww.actionerror />
@@ -162,7 +159,6 @@
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>
 		<@ww.textfield label="Máximo de Cargos por Candidato" name="empresa.maxCandidataCargo"  maxLength="3" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;"/>
 		<@ww.checkbox label="Exibir valor do salário na Solicitação de Realinhamento" name="empresa.exibirSalario" id="exibirSalario" labelPosition="right" /><br>
-		<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja marcado como: Considerar para calculo de Turnover" id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/><br>
 		
 		<li>
 			<@ww.checkbox label="Exibir campo código TRU (Tráfego Urbano) ao cadastrar curso e exibir a opção de exportar curso/turma como ocorrência para o TRU em Utilitários." id="CodigoTruCurso" name="empresa.codigoTruCurso" liClass="liLeft" labelPosition="left"/>
@@ -184,8 +180,20 @@
 		
 		<li>
 			<@ww.div cssClass="divInfo">
-				Solicitação de Pessoal
-				<br><br>
+				<h2>Cálculo de Turnover</h2>
+				<ul>
+					<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja com a opção \"Considerar para cálculo de turnover\" marcada." id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/>
+					<li>&nbsp;</li>
+					<@ww.select label="Fórmula" name="empresa.formulaTurnover" id="formulaTurnover" list="opcoesFormulaTurnover" listKey="key" listValue="value" headerKey="" headerValue="Selecione"/>
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				<h2>Solicitação de Pessoal</h2>
 				<ul>
 					<@ww.checkbox label="Exibir valor do salário" name="empresa.solPessoalExibirSalario" labelPosition="right" />
 					<@ww.checkbox label="Exibir o campo Colaborador Substituído" name="empresa.solPessoalExibirColabSubstituido" labelPosition="right" />
@@ -198,8 +206,7 @@
 
 		<li>
 			<@ww.div cssClass="divInfo">
-				SESMT
-				<br><br>
+				<h2>SESMT</h2>
 				<ul>
 					<@ww.select label="Controlar risco por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 442px;"/>
 					<br><@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
@@ -213,10 +220,8 @@
 
 		<li>
 			<@ww.div cssClass="divInfo">
+				<h2>Texto para email de candidatos não aptos &nbsp;<img id="candidatoNaoAptoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" /></h2>
 				<ul>
-					Texto para email de candidatos não aptos:
-					<img id="candidatoNaoAptoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
-					<br />
 					<@ww.textarea name="empresa.mailNaoAptos" id="mailNaoAptos" size="40"/>
 				</ul>
 			</@ww.div>
@@ -226,8 +231,7 @@
 				
 		<li>
 			<@ww.div cssClass="divInfo">
-				Configurações do Cartão dos Aniversariantes
-				<br><br>
+				<h2>Cartões de Aniversário</h2>
 				<ul>
 					<@ww.file label="Imagem (400px x 570px)" name="imgCartaoAniversariante" id="imgCartaoAniversariante" liClass="liLeft"/>
 					<li>
@@ -246,6 +250,7 @@
 				
 		<li>
 			<@ww.div cssClass="divInfo">
+				<h2>Integração com AC Pessoal</h2>
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
 					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
@@ -253,7 +258,6 @@
 				</ul>
 			</@ww.div>
 		</li>
-		
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />

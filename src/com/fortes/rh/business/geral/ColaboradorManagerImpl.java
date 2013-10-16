@@ -64,6 +64,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -88,6 +89,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.util.ArquivoUtil;
@@ -293,7 +295,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
 		return true;
-			}
+	}
 
 	private TEmpregado bindEmpregado(Colaborador colaborador, String empresaCodigoAC)
 	{
@@ -1959,7 +1961,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return totalPorEmpresas;
 	}
 
-	public Collection<TurnOver> montaTurnOver(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception 
+	public TurnOverCollection montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception 
 	{
 		if(filtrarPor == 1)
 			cargosIds = null;
@@ -1971,52 +1973,77 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
 		Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
 		Collection<TurnOver> turnOvers = new LinkedList<TurnOver>();
-		double qtdAtivos;
+		double qtdAtivosInicioMes;
+		double qtdAtivosFinalMes;
 		double qtdAdmitidos;
 		double qtdDemitidos;
+		double totalAdmitidos = 0;
+		double totalDemitidos = 0;
 
-		if(empresaIds != null)
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		
+		for (int i = 0; i <= ate; i++)
 		{
-			for (int i = 0; i <= ate; i++)
+			qtdAtivosInicioMes = 0;
+			qtdAtivosFinalMes = 0;
+			qtdAdmitidos = 0;
+			qtdDemitidos = 0;
+			dataFim = DateUtil.getUltimoDiaMes(dataTmp);
+
+			admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
+			if(admitidos != null && admitidos.size() > 0)
 			{
-				qtdAtivos = 0;
-				qtdAdmitidos = 0;
-				qtdDemitidos = 0;
-				dataFim = DateUtil.getUltimoDiaMes(dataTmp);
-
-				for (Long empresaId : empresaIds) 
-				{
-					Empresa empresa = empresaManager.findByIdProjection(empresaId);
-
-					admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-					if(admitidos != null && admitidos.size() > 0)
-						qtdAdmitidos += ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
-
-					demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
-					if(demitidos != null && demitidos.size() > 0)
-						qtdDemitidos += ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
-
-					if (empresa.isTurnoverPorSolicitacao())
-						qtdAtivos += getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresa.getId(), estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-					else
-						qtdAtivos += getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresa.getId()), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
-				}
-
-				TurnOver turnOverTmp = new TurnOver();
-				turnOverTmp.setMesAno(dataTmp);
-				turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
-				turnOverTmp.setQtdDemitidos(qtdDemitidos);
-				turnOverTmp.setQtdAtivos(qtdAtivos);
-
-				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivos) * 100);
-				turnOvers.add(turnOverTmp);
-				dataTmp = DateUtil.setaMesPosterior(dataTmp);
+				qtdAdmitidos = ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
+				totalAdmitidos += qtdAdmitidos;
 			}
+
+			demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
+			if(demitidos != null && demitidos.size() > 0)
+			{
+				qtdDemitidos = ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
+				totalDemitidos += qtdDemitidos;
+			}
+
+			if (empresa.isTurnoverPorSolicitacao())
+			{
+				qtdAtivosInicioMes = getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
+				qtdAtivosFinalMes = getDao().countAtivosTurnover(DateUtil.getUltimoDiaMes(dataTmp), empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
+			}
+			else
+			{
+				qtdAtivosInicioMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
+				qtdAtivosFinalMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
+			}
+			
+			TurnOver turnOverTmp = new TurnOver();
+			turnOverTmp.setMesAno(dataTmp);
+			turnOverTmp.setQtdAdmitidos(qtdAdmitidos);
+			turnOverTmp.setQtdDemitidos(qtdDemitidos);
+			turnOverTmp.setQtdAtivosInicioMes(qtdAtivosInicioMes);
+			turnOverTmp.setQtdAtivosFinalMes(qtdAtivosFinalMes);
+
+			if (empresa.getFormulaTurnover() == FormulaTurnover.MEDIA_ATIVOS_MES)
+				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / ((qtdAtivosInicioMes + qtdAtivosFinalMes) / 2)) * 100);
+			else
+				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivosInicioMes) * 100);
+			
+			turnOvers.add(turnOverTmp);
+			
+			dataTmp = DateUtil.setaMesPosterior(dataTmp);
 		}
+		
 		if (turnOvers == null || turnOvers.isEmpty())
 			throw new ColecaoVaziaException();
+		
+		TurnOverCollection turnOverCollection = new TurnOverCollection();
+		turnOverCollection.setEmpresaId(empresa.getId());
+		turnOverCollection.setEmpresaNome(empresa.getNome());
+		turnOverCollection.setFormula(empresa.getFormulaTurnoverDescricao());
+		turnOverCollection.setTurnOvers(turnOvers);
+		turnOverCollection.setQtdAdmitidos(totalAdmitidos);
+		turnOverCollection.setQtdDemitidos(totalDemitidos);
 
-		return turnOvers;
+		return turnOverCollection;
 	}
 
 	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional areaOrganizacional) 
@@ -2095,13 +2122,25 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().countAtivosPeriodo(dataIni, empresaIds, estabelecimentosIds, areasIds, cargosIds, null, ocorrenciasId, considerarDataAdmissao, colaboradorId, isAbsenteismo);
 	}
 
-	public Collection<Object[]> montaGraficoTurnover(Collection<TurnOver> turnOvers) 
+	public String montaGraficoTurnover(Collection<TurnOverCollection> turnOverCollections, Collection<Empresa> empresas) 
 	{
-		Collection<Object[]>  graficoEvolucaoTurnover = new ArrayList<Object[]>();
-		for (TurnOver turnOver : turnOvers) 
-			graficoEvolucaoTurnover.add(new Object[]{DateUtil.getUltimoDiaMes(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
+		Collection<Map<String, Object>> retorno = new ArrayList<Map<String, Object>>();
+		Map<Long, String> empresasMap = new CollectionUtil<Empresa>().convertCollectionToMap(empresas, "getId", "getNome");
+		
+		for (TurnOverCollection turnOverCollection : turnOverCollections) 
+		{
+			Collection<Object[]>  graficoEvolucaoTurnover = new ArrayList<Object[]>();
+			for (TurnOver turnOver : turnOverCollection.getTurnOvers()) 
+				graficoEvolucaoTurnover.add(new Object[]{DateUtil.getUltimoDiaMes(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("label", empresasMap.get(turnOverCollection.getEmpresaId()));
+			map.put("data", graficoEvolucaoTurnover);
+			
+			retorno.add(map);
+		}
 
-		return graficoEvolucaoTurnover;
+		return StringUtil.toJSON(retorno, null);
 	}
 	
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 

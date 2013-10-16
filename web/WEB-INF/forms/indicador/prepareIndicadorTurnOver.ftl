@@ -12,17 +12,17 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 <script type='text/javascript'>
 	$(document).ready(function($)
 	{
-		var empresa = $('#empresa').val();
+		var empresasFormulas = [];
+		<#list empresasFormulas?keys as key>
+			empresasFormulas[${key}] = '${empresasFormulas.get(key)}';
+		</#list>
 	
 		DWREngine.setAsync(false);
-		
-		populaArea(empresa);
-		populaCargo(empresa);
-		populaEstabelecimento(empresa);
 		
 		$('#agruparPorTempoServico').change(function() {
 			var marcado = $(this).is(":checked");
@@ -33,6 +33,23 @@
 		});
 		
 		$('#agruparPorTempoServico').change();
+		
+		$('#empresa').change(function() {
+			var empresaId = $(this).val();
+			
+			populaArea(empresaId);
+			populaEstabelecimento(empresaId);
+			populaCargo(empresaId);
+			
+			$('#formula').text(empresasFormulas[empresaId]);
+		});
+		
+		$('#empresa').change();
+		
+		$('#formulaHelp').qtip({
+			content: '<div>A fórmula adotada pela empresa é configurada no cadastro de empresas.</div>',
+			style: { width: 280 }
+		});
 	});
 
 	function populaEstabelecimento(empresaId){
@@ -120,15 +137,10 @@
 <@ww.actionerror />
 <@ww.actionmessage />
 
-
-<@ww.div >
-O <i>turnover</i> é um indicador que representa a rotatividade de funcionários dentro da empresa. <br/>
-Ele é calculado pela fórmula [(Qtd. Admitidos + Qtd. Demitidos / 2) / Qtd. Colaboradores Ativos no início do mês] * 100
-</@ww.div>
-<br/>
-
 <@ww.form name="form" action="list.action" validate="true" method="POST">
-	<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" onchange="populaArea(this.value);populaEstabelecimento(this.value);populaCargo(this.value);" />
+	
+	<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" />
+	Fórmula adotada <img id="formulaHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />: <span id="formula"></span><br /><br />
 
 	<div>Período (Mês/Ano)*:</div>
 	<@ww.textfield name="dataDe" id="dataDe" required="true"  cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>

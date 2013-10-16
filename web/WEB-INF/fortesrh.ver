@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.119.132" data="14/10/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Painel de Indicadores: Organização dos filtros por aba e separação das informações por empresa no gráfico de turnover.
+			:: Utilitários > Cadastros > Empresas: Nova opção de seleção de fórmula para cálculo de turnover.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.118.131" data="07/10/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Melhorias internas.

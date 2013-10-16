@@ -112,7 +112,7 @@ public class CidadeDaoHibernate extends GenericDaoHibernate<Cidade> implements C
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.uf.id", estadoId));
-		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nome + "%", Hibernate.STRING));
+		criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", nome, Hibernate.STRING));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cidade.class));

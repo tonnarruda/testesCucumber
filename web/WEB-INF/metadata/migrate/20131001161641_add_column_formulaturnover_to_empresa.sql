@@ -1,0 +1,1 @@
+alter table empresa add column formulaturnover integer not null default 1;--.go

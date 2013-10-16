@@ -44,7 +44,7 @@ $(function(){
 			jConfirm(msg, 'Sessão Expirada!', function(r) {
 			    if(r)
 			    {
-				    location.href = '<@ww.url includeParams="none" value="/logout.action"/>';
+				    location.href = baseUrl + 'logout.action';
 			    }	
 			}, true);
 			

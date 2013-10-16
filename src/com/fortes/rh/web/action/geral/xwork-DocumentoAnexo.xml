@@ -37,6 +37,7 @@
 		</action>
 		<action name="updateCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateCandidato">
 			<result name="success" type="redirect"><![CDATA[listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
+			<result name="successColaborador" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&origem=${origemDocumento}&origemId=${origemIdDocumento}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="updateColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateColaborador">

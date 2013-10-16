@@ -12,7 +12,11 @@
 			<#if solicitacaoId?exists>
 				<#assign voltar="listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&solicitacaoId=${solicitacaoId}"/>
 			<#else>
-				<#assign voltar="lisCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+				<#if origemDocumento?exists && origemDocumento == 'D'>
+					<#assign voltar="listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&origem=${origemDocumento}&origemId=${origemIdDocumento}"/>
+				<#else>
+					<#assign voltar="listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}"/>
+				</#if>
 			</#if>
 		</#if>
 		<#if documentoAnexo.origem?string == "D">
@@ -88,6 +92,8 @@
 	<@ww.hidden name="origemTmp" />
 	<@ww.hidden name="origemIdTmp" />
 	<@ww.hidden name="solicitacaoId" />
+	<@ww.hidden name="origemDocumento" />
+	<@ww.hidden name="origemIdDocumento" />
 	
 </@ww.form>
 

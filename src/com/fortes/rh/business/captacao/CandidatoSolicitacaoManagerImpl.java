@@ -90,7 +90,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
     {
         Collection lista = getDao().findCandidatosAptosMover(candidatosSolicitacaoId, solicitacao);
         if(lista.isEmpty())
-        	throw new ColecaoVaziaException("Candidato selecionado ja esta na solicitacao");
+        	throw new ColecaoVaziaException("Candidato selecionado já está na solicitação.");
         
         getDao().updateSolicitacaoCandidatos(solicitacao, lista);
     }

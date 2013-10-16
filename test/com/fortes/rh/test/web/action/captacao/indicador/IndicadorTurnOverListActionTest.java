@@ -1,7 +1,7 @@
 package com.fortes.rh.test.web.action.captacao.indicador;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import mockit.Mockit;
@@ -83,6 +83,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     {
     	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
 
     	assertEquals("success", action.prepare());
@@ -97,9 +98,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(empresa);
     	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
-    	Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
-    	turnOvers.add(new TurnOver());
-    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(turnOvers));
+    	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(new TurnOverCollection(Arrays.asList(new TurnOver()))));
     	
     	assertEquals("success", action.list());
     }
@@ -114,6 +113,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
     	
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
@@ -130,6 +130,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
     	assertEquals("input", action.list());
     }

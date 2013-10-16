@@ -5,7 +5,27 @@ import java.util.Collection;
 
 public class TurnOverCollection
 {
+	private Long empresaId;
+	private String empresaNome;
+	private String formula;
+	private Double qtdAdmitidos;
+	private Double qtdDemitidos;
 	private Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
+	
+	public TurnOverCollection() 
+	{
+	}
+
+	public TurnOverCollection(Collection<TurnOver> turnOvers) 
+	{
+		this.turnOvers = turnOvers;
+	}
+	
+	public TurnOverCollection(Long empresaId, Collection<TurnOver> turnOvers) 
+	{
+		this.empresaId = empresaId;
+		this.turnOvers = turnOvers;
+	}
 
 	public Double getMedia()
 	{
@@ -18,15 +38,52 @@ public class TurnOverCollection
 		return soma / turnOvers.size();
 	}
 
-	public Collection<TurnOver> getTurnOvers()
-	{
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public void setEmpresaNome(String empresaNome) {
+		this.empresaNome = empresaNome;
+	}
+	
+	public String getEmpresaNome() {
+		return empresaNome;
+	}
+
+	public Double getQtdAdmitidos() {
+		return qtdAdmitidos;
+	}
+
+	public String getFormula() {
+		return formula;
+	}
+
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
+
+	public void setQtdAdmitidos(Double qtdAdmitidos) {
+		this.qtdAdmitidos = qtdAdmitidos;
+	}
+
+	public Double getQtdDemitidos() {
+		return qtdDemitidos;
+	}
+
+	public void setQtdDemitidos(Double qtdDemitidos) {
+		this.qtdDemitidos = qtdDemitidos;
+	}
+	
+
+	public Collection<TurnOver> getTurnOvers() {
 		return turnOvers;
 	}
 
-	public void setTurnOvers(Collection<TurnOver> turnOvers)
-	{
+	public void setTurnOvers(Collection<TurnOver> turnOvers) {
 		this.turnOvers = turnOvers;
 	}
-
-
 }

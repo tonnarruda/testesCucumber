@@ -256,6 +256,9 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu clico no botão "ImprimirPdf"
     E eu espero 2 segundos
     E eu devo ver "Histórico do Candidato"
+    E eu clico na linha "Entrevista" da imagem "Excluir"
+    E eu devo ver o alert "Confirma exclusão?" e clico no ok
+    E eu devo ver "Histórico do Candidato"
     E eu clico no botão "Voltar"
 
     Então eu clico na linha "Nikita" da imagem "Excluir"

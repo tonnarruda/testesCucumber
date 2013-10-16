@@ -1391,6 +1391,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.candidato.id"), "candidatoId");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nitRepresentanteLegal"), "projectionNitRepresentanteLegal");
 		p.add(Projections.property("e.representanteLegal"), "projectionRepresentanteLegal");

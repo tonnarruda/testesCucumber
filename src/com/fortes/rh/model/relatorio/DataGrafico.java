@@ -7,6 +7,12 @@ public class DataGrafico {
 	private double data;
 	private String descricao;
 	
+	public DataGrafico(String label, double data) {
+		super();
+		this.label = label;
+		this.data = data;
+	}
+	
 	public DataGrafico(Long id, String label, double data, String descricao) {
 		super();
 		this.id = id;

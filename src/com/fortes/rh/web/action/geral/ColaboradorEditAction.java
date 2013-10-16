@@ -41,7 +41,6 @@ import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
@@ -552,10 +551,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			if(colaborador.getDataAdmissao().after(historicoColaborador.getData()))
-				throw new Exception("Data do primeiro histórico não pode ser anterior à data de admissão.");
+				throw new FortesException("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
-				throw new Exception("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
+				throw new FortesException("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
 			
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
 
@@ -643,7 +642,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
 				message = e.getCause().getLocalizedMessage();
 			
-			addActionError(message);
+			if (e instanceof FortesException || e instanceof LimiteColaboradorExceditoException)
+				addActionWarning(message);
+			else
+				addActionError(message);
 
 			colaborador.setId(null);
 
@@ -892,11 +894,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			afastamentosColaborador = colaboradorAfastamentoManager.findByColaborador(colaborador.getId());
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
 			
-			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId(), null);
+			documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoColaborador, colaborador.getId());
 
 			if(colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
 			{
-				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId(), null);
+				documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId());
 				historicosCandidatoByColaborador = historicoCandidatoManager.findByCandidato(colaborador.getCandidato());
 			}
 			

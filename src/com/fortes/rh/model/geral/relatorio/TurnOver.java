@@ -11,7 +11,8 @@ public class TurnOver
 	private Double turnOver;
 	private Double qtdAdmitidos;
 	private Double qtdDemitidos;
-	private Double qtdAtivos;
+	private Double qtdAtivosInicioMes;
+	private Double qtdAtivosFinalMes;
 	
 	private Integer qtdColaboradores;
 	private Integer tempoServico;
@@ -40,10 +41,10 @@ public class TurnOver
 		this.setQtdAdmitidos(qtdAdmitidos);
 	}
 
-	public void setMesAnoQtdAtivos(Date dataMesAno, double qtdAtivos) 
+	public void setMesAnoQtdAtivos(Date dataMesAno, double qtdAtivosInicioMes) 
 	{
 		this.setMesAno(mesAno);
-		this.setQtdAtivos(qtdAtivos);
+		this.setQtdAtivosInicioMes(qtdAtivosInicioMes);
 	}
 
 	public String getMesAnoFormatado()
@@ -89,14 +90,6 @@ public class TurnOver
 		this.qtdDemitidos = qtdDemitidos;
 	}
 
-	public Double getQtdAtivos() {
-		return qtdAtivos;
-	}
-
-	public void setQtdAtivos(Double qtdAtivos) {
-		this.qtdAtivos = qtdAtivos;
-	}
-
 	public Integer getTempoServico() {
 		return tempoServico;
 	}
@@ -113,5 +106,19 @@ public class TurnOver
 		this.qtdColaboradores = qtdColaboradores;
 	}
 
-	
+	public Double getQtdAtivosInicioMes() {
+		return qtdAtivosInicioMes;
+	}
+
+	public void setQtdAtivosInicioMes(Double qtdAtivosInicioMes) {
+		this.qtdAtivosInicioMes = qtdAtivosInicioMes;
+	}
+
+	public Double getQtdAtivosFinalMes() {
+		return qtdAtivosFinalMes;
+	}
+
+	public void setQtdAtivosFinalMes(Double qtdAtivosFinalMes) {
+		this.qtdAtivosFinalMes = qtdAtivosFinalMes;
+	}
 }
