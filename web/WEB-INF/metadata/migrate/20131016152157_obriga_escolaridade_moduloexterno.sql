@@ -1,0 +1,2 @@
+update parametrosdosistema set camposcandidatovisivel = replace(replace(camposcandidatovisivel,'escolaridade,',''),'cpf,','cpf,escolaridade,');--.go
+update parametrosdosistema set camposcandidatoobrigatorio = replace(replace(camposcandidatoobrigatorio,'escolaridade,',''),'cpf,','cpf,escolaridade,');--.go

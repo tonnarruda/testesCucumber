@@ -40,6 +40,9 @@ public class Escolaridade extends LinkedHashMap<String, String> {
 
 	public static String bindF2rh(String chave) 
 	{
+		if(chave == null || chave.isEmpty())
+			return ANALFABETO;
+		
 		try {
 			HashMap<String, String> convert = new HashMap<String, String>();
 			convert.put("Não Alfabetizado", ANALFABETO);
