@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="matriz_colaboradores_afastamentos_sub" pageWidth="781" pageHeight="595" orientation="Landscape" columnWidth="781" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ce65839e-300d-441f-a050-833e51cfc10d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="matriz_colaboradores_afastamentos_sub" pageWidth="781" pageHeight="595" orientation="Landscape" columnWidth="781" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="ce65839e-300d-441f-a050-833e51cfc10d">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="AREA_ORGANIZACIONAL_DESCRICAO" class="java.lang.String"/>
+	<parameter name="AGRUPAR_POR_AREA" class="java.lang.Boolean"/>
 	<field name="colaborador.nomeMatricula" class="java.lang.String"/>
 	<field name="inicio" class="java.util.Date"/>
 	<field name="qtdDias" class="java.lang.Integer"/>
 	<field name="qtdAfastamentos" class="java.lang.Integer"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
+	<variable name="qtdTotalDias" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdDias}]]></variableExpression>
+	</variable>
+	<variable name="qtdTotalAfastamentos" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdAfastamentos}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -22,7 +30,16 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band splitType="Stretch"/>
+		<band height="28" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{AGRUPAR_POR_AREA}.booleanValue()]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="bd9d2925-2be3-43f6-b523-fc6f2b57ce7e" x="0" y="4" width="781" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{AREA_ORGANIZACIONAL_DESCRICAO}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
@@ -40,6 +57,7 @@
 		<band height="49" splitType="Stretch">
 			<crosstab>
 				<reportElement uuid="e659dc27-85ec-479c-898f-b397bb73e0fa" key="crosstab-1" x="0" y="6" width="781" height="37"/>
+				<crosstabParameter name="AREA_ORGANIZACIONAL_DESCRICAO"/>
 				<crosstabDataset isDataPreSorted="true"/>
 				<crosstabHeaderCell>
 					<cellContents mode="Transparent">
