@@ -3,13 +3,15 @@
 Funcionalidade: Movimentação Solicitações de Pessoal
 
   Cenário: Movimentação de Solicitações de Pessoal
-    Dado que exista a área organizacional "Financeiro"
-    Dado que exista o cargo "Contador"
-    Dado que exista a faixa salarial "I" no cargo "Contador"
-    Dado que exista um historico para a faixa salarial "I" na data "2011-06-01"
-    Dado que exista o motivo da solicitacao "Aumento de quadro"
-    Dado que exista um canidato "Nikita"
+    
+    Dado que haja uma area organizacional com id 1, nome "Financeiro", ativo "true", empresa_id 1
+    Dado que haja uma cargo com id 1, nome "Contador", nomemercado "Contador", empresa_id 1
+    Dado que haja uma faixa salarial com id 1, nome "I", cargo_id 1
+    Dado que haja uma faixa salarial historico com id 1, data "2011-06-01", faixasalarial_id 1, tipo 3, valor 500, status 1
+    Dado que haja um motivo da solicitacao com id 1 e descricao "Aumento de quadro"
+
     Dado que eu esteja logado
+    Dado que exista um candidato "Nikita"
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
     Dado que exista uma etapa seletiva "Entrevista"
     Dado que exista um conhecimento "Java"

@@ -634,7 +634,7 @@ Dado /^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/ do |epi_nome, tipoepi
   end
 end
 
-Dado /^que exista um canidato "([^"]*)"$/ do |candidato_nome|
+Dado /^que exista um candidato "([^"]*)"$/ do |candidato_nome|
   insert :candidato do
     nome candidato_nome
     conjugetrabalha true
@@ -867,10 +867,10 @@ Dado /^que exista o motivo da solicitacao "([^"]*)"$/ do |motivosolicitacao_desc
    exec_sql "insert into motivosolicitacao (id,descricao) values(nextval('motivosolicitacao_sequence'),'#{motivosolicitacao_descricao}');"
 end
 
-Dado /^que exista um[a]? "([^"]*)" com (.*)$/ do |entidade, atributos|
+Dado /^que haja um[a]? (.*) com (.*)$/ do |entidade, atributos|
   propriedades = Hash.new
-  atributos.scan(/(\w+)\s*("[^"]*"|'[^']*')(\s*[,|e]?\s*)/) {|campo,valor| propriedades[campo] = valor.gsub('"','').to_sql_param }
-  create entidade, propriedades
+  atributos.scan(/(\w+)\s*("[^"]*"|'[^']*'|\d*)(\s*[,|e]?\s*)/) {|campo,valor| propriedades[campo] = valor.gsub('"','').to_sql_param }
+  create entidade.gsub(/\b[a-z]{1,2}\b/, "").gsub(/\s+/, ""), propriedades
 end
 
 def get_field field
