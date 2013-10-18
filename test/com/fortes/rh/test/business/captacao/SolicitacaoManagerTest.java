@@ -18,6 +18,7 @@ import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
@@ -52,6 +53,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock solicitacaoAvaliacaoManager;
+	private Mock colaboradorQuestionarioManager;
 
 	protected void setUp() throws Exception
 	{
@@ -78,6 +80,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacaoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
 		
 		colaboradorManager = new Mock(ColaboradorManager.class);
+		colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -186,7 +189,11 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		candidatoSolicitacaoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(false));
 		anuncioManager.expects(once()).method("removeBySolicitacao").with(ANYTHING);
 		solicitacaoDao.expects(once()).method("remove").with(ANYTHING);
-
+		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+		colaboradorQuestionarioManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING).isVoid();
+		solicitacaoAvaliacaoManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING).isVoid();
+		
+		
 		solicitacaoManager.removeCascade(1L);
 
 		candidatoSolicitacaoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(true));

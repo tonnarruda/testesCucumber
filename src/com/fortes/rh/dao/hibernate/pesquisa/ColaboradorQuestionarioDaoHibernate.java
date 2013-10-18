@@ -1015,4 +1015,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return query.list();
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) 
+	{
+			String hql = "delete ColaboradorQuestionario where solicitacao.id = :solicitacaoId";
+
+			Query query = getSession().createQuery(hql);
+
+			query.setLong("solicitacaoId", solicitacaoId);
+			query.executeUpdate();
+	}
 }

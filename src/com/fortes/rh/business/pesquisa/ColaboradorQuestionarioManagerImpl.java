@@ -482,4 +482,10 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		return getDao().findForRankingPerformanceAvaliacaoCurso(cursosIds, turmasIds, avaliacaoCursosIds);
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) 
+	{
+		getDao().removeBySolicitacaoId(solicitacaoId);
+		
+	}
 }

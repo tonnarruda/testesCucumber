@@ -40,4 +40,9 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 	{
 		return getDao().findAvaliacaoesNaoRespondidas(solicitacaoId, candidatoId);
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) 
+	{
+		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
 }

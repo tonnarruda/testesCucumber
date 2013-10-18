@@ -17,6 +17,27 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que exista um conhecimento "Java"
 	Dado que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "true"
 
+    Quando eu acesso o menu "R&S > Cadastros > Modelos de Avaliação do Candidato"
+    E eu devo ver o título "Modelos de Avaliação do Candidato"
+    E eu clico no botão "Inserir"
+    E eu preencho "Título" com "Avaliação do Aluno"
+    E eu preencho "Observação" com "obs"
+    E eu preencho "Percentual mínimo para aprovação" com "70"
+    E eu clico no botão "Avancar"
+    E eu devo ver o título "Inserir Pergunta da Avaliação"
+    E eu preencho o campo (JS) "pergunta" com "Pergunta 1"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Pergunta gravada com sucesso"
+    E eu seleciono (JS) "tipo" de "4"
+    E eu saio do campo "tipo"
+    E eu preencho o campo (JS) "pergunta" com "Pergunta 2"
+    E eu clico no botão "Gravar"
+    E eu devo ver "Pergunta gravada com sucesso"
+    E eu clico no botão "Voltar"
+    E eu devo ver o título "Perguntas da Avaliação"
+    E eu clico no botão "Voltar"
+    E eu devo ver o título "Modelos de Avaliação do Candidato"
+
     Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
     E  eu clico em editar "Java"
     E eu marco "Financeiro (Ativa)"
@@ -46,6 +67,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu seleciono "Financeiro" de "Área Organizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Aumento de quadro" de "Motivo da Solicitação"
+    E eu marco "Avaliação do Aluno"
     E eu clico no botão "Gravar"
 
     Então eu devo ver o alert "Preencha os campos indicados." e clico no ok
@@ -183,6 +205,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Entao eu clico em editar "Vaga java"
     E eu devo ver o título "Editar Solicitação de Pessoal"
+    E eu marco "Avaliação do Aluno"
     E o campo "Descrição" deve conter "Vaga java"
     E eu preencho "Descrição" com "Vaga java EE"
     E eu clico no botão "Gravar"
@@ -262,6 +285,13 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu devo ver o alert "Confirma exclusão?" e clico no ok
     E eu devo ver "Histórico do Candidato"
     E eu clico no botão "Voltar"
+
+    Então eu clico na linha "Nikita" da imagem "Avaliações da Solicitação"
+    E eu clico na imagem com o título "Responder Avaliação"
+    E eu preencho campo pelo class "opcaoResposta1" com "Resposta 1"
+    E eu preencho campo pelo class "opcaoResposta2" com "Resposta 2"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Candidatos da Seleção"
 
     Então eu clico na linha "Nikita" da imagem "Excluir"
     E eu devo ver o alert "Confirma exclusão?" e clico no ok

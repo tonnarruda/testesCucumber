@@ -32,6 +32,7 @@ import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -1237,6 +1238,31 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(1, colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoNota.getId()}).size());
 		assertEquals(1, colaboradorQuestionarioDao.findForRankingPerformanceAvaliacaoCurso(new Long[] {c1.getId()}, new Long[] {t1.getId(),t2.getId()}, new Long[] {avaliacaoCursoPorcentagem.getId()}).size());
 	}
+	
+	public void testRemoveBySolicitacao()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacao.setEmpresa(empresa);
+		solicitacao = solicitacaoDao.save(solicitacao);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(joao);
+		colaboradorQuestionario.setPerformance(0.5);
+		colaboradorQuestionario.setSolicitacao(solicitacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+	
+		colaboradorQuestionarioDao.removeBySolicitacaoId(solicitacao.getId());
+		
+		assertNull(colaboradorQuestionarioDao.findById(colaboradorQuestionario.getId(), null));
+	}
+	
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

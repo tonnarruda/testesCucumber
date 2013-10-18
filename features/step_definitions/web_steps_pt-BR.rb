@@ -85,6 +85,10 @@ Quando /^eu preencho campo pelo id "([^"]*)" com "([^"]*)"$/ do |desc, value|
   field.set(value)
 end
 
+Quando /^eu preencho campo pelo class "([^"]*)" com "([^"]*)"$/ do |desc, value|
+   page.execute_script("$('.#{desc}').val('#{value}')")
+end
+
 Quando /^eu preencho o campo do item "([^"]*)" com "([^"]*)"$/ do |desc, value|
   field = find(:xpath, "//td[contains(text(), '#{desc}')]/../td/input[@type='text']")
   field.set(value)
@@ -336,7 +340,6 @@ Dado /^que exista a área organizacional "([^"]*)"$/ do |nome_area|
      empresa :id => 1
    end
 end
-
 
 Dado /^que exista o grupo ocupacional "([^"]*)"$/ do |nome_grupo_ocupacional|
    insert :grupoocupacional do
