@@ -1279,7 +1279,7 @@ public class RHServiceImpl implements RHService
 	{
 		return false;
 	}
-
+	
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{
 		this.cidadeManager = cidadeManager;

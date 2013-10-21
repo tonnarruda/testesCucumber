@@ -197,4 +197,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor);
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
+	public Collection<Colaborador> findByEmpresa(Long empresaId);
 }

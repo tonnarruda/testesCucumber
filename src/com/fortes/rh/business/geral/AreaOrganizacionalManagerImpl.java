@@ -711,7 +711,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return matriarca;
 	}
 
-	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) {
+	public Collection<AreaOrganizacional> findByEmpresa(Long empresaId) 
+	{
 		return getDao().findByEmpresa(empresaId);
 	}
 

@@ -53,4 +53,5 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> getCargosSemAreaRelacionada(Long empresaId);
 	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId);
 	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId);
+	public Collection<Cargo> findByEmpresa(Long empresaId);
 }
