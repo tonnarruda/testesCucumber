@@ -12,7 +12,7 @@
 	</style>
 
 	<#if modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
-		<title>Modelos de Avaliação de Solicitação</title>
+		<title>Modelos de Avaliação do Candidato</title>
 	<#elseif modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getAvaliacaoAluno()>
 		<title>Modelos de Avaliação de Aluno</title>
 	<#else>

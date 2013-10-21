@@ -1278,6 +1278,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 						|| (colaborador.getPessoal().getEscolaridade().equals("13") && !empregado.getEscolaridade().equals("10"))
 						|| (colaborador.getPessoal().getEscolaridade().equals("14") && !empregado.getEscolaridade().equals("11")))
 							populaEscolaridadePadrao(colaborador, empregado);
+		} else if(colaborador.getPessoal().getEscolaridade() == null){
+			colaborador.getPessoal().setEscolaridade("01");
 		}
 
 		colaborador.getPessoal().setEstadoCivil(empregado.getEstadoCivil());
@@ -1351,6 +1353,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getPessoal().setEscolaridade("13");// mestrado no rh
 		else if(empregado.getEscolaridade().equals("11"))//doutorrado no ac
 			colaborador.getPessoal().setEscolaridade("14");//doutorrado no rh
+		else if(colaborador.getPessoal().getEscolaridade() == null)
+			colaborador.getPessoal().setEscolaridade("01");//sem escolaridade no rh
 	}
 
 	public void setEstadoManager(EstadoManager estadoManager)

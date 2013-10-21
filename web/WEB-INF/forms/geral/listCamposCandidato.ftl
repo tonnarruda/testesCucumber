@@ -140,8 +140,10 @@
 			</tr>
 			<tr>
 				<td>Escolaridade</td>
-				<td><input type="checkbox" value="escolaridade" name="camposCandidatoVisivels" /></td>
-				<td><input type="checkbox" value="escolaridade" name="camposCandidatoObrigatorios" /></td>
+				<td><input type="checkbox" value="escolaridade" name="camposCandidatoVisivels" checked disabled  class="desabilitado"/></td>
+				<td><input type="checkbox" value="escolaridade" name="camposCandidatoObrigatorios" checked disabled  class="desabilitado"/></td>
+				<input type="hidden"  id="escolaridadeObr" value="escolaridade" name="camposCandidatoObrigatorios" />
+				<input type="hidden"  id="escolaridadeVis_" value="escolaridade" name="camposCandidatoVisivels" />
 			</tr>
 			
 			<tr>

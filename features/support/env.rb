@@ -103,6 +103,10 @@ def insert(table, options={}, &block)
   exec_sql ins.to_sql
 end
 
+def create(table, properties)
+  exec_sql "insert into #{table} (" + properties.keys.join(', ') + ") values (" + properties.values.join(', ') + ")"
+end
+
 class Object
 	def to_sql_param
 		to_s

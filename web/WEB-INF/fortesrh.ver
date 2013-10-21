@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.119.133" data="21/10/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Cadastros > Colaboradores > Anexos: Visualizar na listagem dos documentos anexos os documentos do candidato cujo é vinculado.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.119.132" data="14/10/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Painel de Indicadores: Organização dos filtros por aba e separação das informações por empresa no gráfico de turnover.

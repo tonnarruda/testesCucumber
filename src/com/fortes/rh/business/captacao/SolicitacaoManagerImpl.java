@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.transaction.PlatformTransactionManager;
-
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
@@ -19,6 +19,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
 public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, SolicitacaoDao> implements SolicitacaoManager
@@ -82,6 +83,9 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 			return false;
 		else
 		{
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+			colaboradorQuestionarioManager.removeBySolicitacaoId(solicitacaoId);
+			solicitacaoAvaliacaoManager.removeBySolicitacaoId(solicitacaoId);
 			anuncioManager.removeBySolicitacao(solicitacaoId);
 			getDao().remove(new Long[]{solicitacaoId});
 			return true;
