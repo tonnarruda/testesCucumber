@@ -27,9 +27,9 @@ public class FuncaoDWR
 		funcaoVazio.setId(-1L);
 		
 		if(funcaos.isEmpty())
-			funcaoVazio.setNome("Nenhuma");
+			funcaoVazio.setNome(" Nenhuma");
 		else
-			funcaoVazio.setNome("Selecione...");
+			funcaoVazio.setNome(" Selecione...");
 
 		funcaoLista.add(funcaoVazio);
 		funcaoLista.addAll(funcaos);

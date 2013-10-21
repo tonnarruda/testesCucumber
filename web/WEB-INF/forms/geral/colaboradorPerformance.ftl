@@ -309,7 +309,7 @@
 						<@display.column property="performanceFormatada" title="Performance" />
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if avaliacaoDesempenho.observacao?exists && avaliacaoDesempenho.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenho.observacao?j_string}');return false">...</span>
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenho.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 				</@display.table>
@@ -355,7 +355,7 @@
 						<@display.column property="performanceFormatada" title="Performance" />
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if avaliacaoExperiencia.observacao?exists && avaliacaoExperiencia.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoExperiencia.observacao?j_string}');return false">...</span>
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoExperiencia.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 				</@display.table>
@@ -536,7 +536,7 @@
 						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px; text-align: center;"/>
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if documentoAnexo.observacao?exists && documentoAnexo.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${documentoAnexo.observacao?j_string}');return false">...</span>
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${documentoAnexo.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 		
@@ -553,7 +553,7 @@
 						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:100px;"/>
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if documentoAnexo.observacao?exists && documentoAnexo.observacao?trim != "">
-								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${documentoAnexo.observacao?j_string}');return false">...</span>
+								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${documentoAnexo.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>
 							</#if>
 						</@display.column>
 					</@display.table>

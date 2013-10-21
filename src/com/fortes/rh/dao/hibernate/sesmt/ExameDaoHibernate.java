@@ -383,6 +383,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		montaQuery(empresaId, exame, criteria);
 		
+		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Exame.class));
 

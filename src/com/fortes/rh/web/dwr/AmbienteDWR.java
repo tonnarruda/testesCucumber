@@ -26,15 +26,13 @@ public class AmbienteDWR
 		
 		if(ambientesAux.size() < 1){
 		
-			ambienteVazio.setNome("Nenhum");
+			ambienteVazio.setNome(" Nenhum");
 		}
 		else{
-			ambienteVazio.setNome("Selecione...");
+			ambienteVazio.setNome(" Selecione...");
 		}
-		Map<Object, Object> a = new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
 		return  new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
 	}
-	
 	
 	public Map<Object, Object> getAmbienteChecks(Long estabelecimentoId, Date data)
 	{
