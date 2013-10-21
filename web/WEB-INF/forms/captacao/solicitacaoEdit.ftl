@@ -149,8 +149,7 @@
 
 		function createListFuncao(data)
 		{
-			DWRUtil.removeAllOptions("funcao");
-			DWRUtil.addOptions("funcao", data);
+			removeAndAddAllOptionsMapSorted("funcao", data);
 		}
 		
 		function populaAmbiente(estabelecimentoId)
@@ -164,10 +163,9 @@
 
 		function createListAmbiente(data)
 		{
-			DWRUtil.removeAllOptions("ambiente");
-			DWRUtil.addOptions("ambiente", data);
+			removeAndAddAllOptionsMapSorted('ambiente', data); 
 		}
-		
+			
 		var contador = 0;
 		function adicionarCampoColaboradorSubstituto(nome) 
 		{
