@@ -514,7 +514,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 			criteria.add(Expression.eq("hc.apto", situacaoCandidato));
 		
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
-		criteria.add(Expression.eq("ca.contratado", false));
 		
 		if(etapaIds.length > 0)
 			criteria.add(Expression.in("es.id", etapaIds));
