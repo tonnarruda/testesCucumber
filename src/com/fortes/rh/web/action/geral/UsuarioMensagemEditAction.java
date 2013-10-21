@@ -85,6 +85,8 @@ public class UsuarioMensagemEditAction extends MyActionSupportEdit implements Mo
 
 			usuarioMensagemManager.salvaMensagem(usuarioMensagem.getEmpresa(), mensagemNova, usuariosCheck);
 
+			addActionSuccess("Mensagem enviada com sucesso");
+			
 			return Action.SUCCESS;
 		}
 		catch (Exception e)

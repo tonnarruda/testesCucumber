@@ -35,6 +35,7 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("emp.id", empresaId));
+		criteria.add(Expression.eq("u.acessoSistema", true));
 		criteria.addOrder(Order.asc("u.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

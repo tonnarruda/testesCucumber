@@ -19,11 +19,7 @@
 
 <@ww.actionerror />
 <@ww.actionmessage />
-<#assign validarCampos="return validaFormulario('form', new Array('@usuariosCheck'))"/>
-
-<#if mensagemStatus?exists && mensagemStatus == 'ok'>
-	<div class="actionMessage">Mensagem enviada com sucesso!</div>
-</#if>
+<#assign validarCampos="return validaFormulario('form', new Array('@usuariosCheck', 'mensagem'))"/>
 
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 	<@frt.checkListBox name="usuariosCheck" id="usuariosCheck" label="Destinatários" list="usuariosCheckList"/>
