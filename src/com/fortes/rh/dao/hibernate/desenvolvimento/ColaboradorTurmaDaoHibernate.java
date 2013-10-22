@@ -719,7 +719,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, String orderBy, boolean comHistColaboradorFuturo, Boolean desligado, Long... turmaIds)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, Boolean desligado, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
@@ -831,6 +831,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			sql.append("and e.id in (:estabelecimentosId) ");
+		
+		if (dataIni != null && dataFim != null)
+			sql.append("and ((( t.dataPrevIni between :dataIni and :dataFim ) or ( t.dataPrevFim between :dataIni and :dataFim )) or ( t.dataPrevIni <= :dataIni and t.dataPrevFim >= :dataFim )) ");
 			
 		sql.append("	order by " + orderBy);
 
@@ -856,6 +859,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+		
+		if (dataIni != null && dataFim != null) {
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}
 
 		if(!comHistColaboradorFuturo)
 			query.setDate("hoje", new Date());

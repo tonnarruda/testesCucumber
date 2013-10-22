@@ -286,7 +286,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
@@ -305,7 +305,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	cursoManager.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("input", action.relatorioColaboradorComTreinamento());

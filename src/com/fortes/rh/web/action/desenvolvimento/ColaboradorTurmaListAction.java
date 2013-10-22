@@ -327,7 +327,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), aprovado);
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado);
 			curso = cursoManager.findByIdProjection(curso.getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), curso.getNome());
 			

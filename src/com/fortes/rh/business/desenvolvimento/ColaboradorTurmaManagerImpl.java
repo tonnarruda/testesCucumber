@@ -425,10 +425,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return validaRelatorioTreinamento(empresaId, curso, colaboradorTurmas);
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, char aprovadoFiltro) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro) throws Exception
 	{
 		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, curso.getId(), areaIds, estabelecimentoIds, " emp.nome, e.nome, a.nome, co.nome, c.nome ", true, false, null);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, curso.getId(), areaIds, estabelecimentoIds, dataIni, dataFim, " emp.nome, e.nome, a.nome, co.nome, c.nome ", true, false);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -624,7 +624,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
 	{
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, null, null, " co.nome ", true, false, turmaId);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, null, null, null, null, " co.nome ", true, false, turmaId);
 		
 		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
@@ -719,7 +719,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos)
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, " co.id ", true, false);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, null, null, " co.id ", true, false);
 		
 		Collection<Colaborador> aprovados = new ArrayList<Colaborador>();
 		Collection<Colaborador> reprovados = new ArrayList<Colaborador>();
@@ -773,7 +773,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, " e.nome, a.nome, co.nome, c.nome ", true, false, null);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, null, null, " e.nome, a.nome, co.nome, c.nome ", true, false, null);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -1004,7 +1004,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		Collection<Long> colaboradorIds = new ArrayList<Long>();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, " co.nome ", false, null, LongUtil.collectionStringToArrayLong(turmaIds));
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, null, null, " co.nome ", false, null, LongUtil.collectionStringToArrayLong(turmaIds));
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
 			if(verificaAprovacao(ct))
@@ -1021,7 +1021,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId) 
 	{
 		Collection<ColaboradorTurma> aprovados = new ArrayList<ColaboradorTurma>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, " co.nome ", false, null, turmaId);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, null, null, null, null, null, null, " co.nome ", false, null, turmaId);
 
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{

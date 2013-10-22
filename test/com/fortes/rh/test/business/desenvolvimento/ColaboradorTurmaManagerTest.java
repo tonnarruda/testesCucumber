@@ -945,9 +945,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		
-		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'T').size());		
-		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'S').size());		
-		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, 'N').size());		
+		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'T').size());		
+		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'S').size());		
+		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'N').size());		
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception
