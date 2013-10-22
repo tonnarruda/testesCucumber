@@ -24,7 +24,6 @@ import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPergunta;
-import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
@@ -32,7 +31,7 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
-	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
@@ -72,16 +71,22 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
 			whereEstabelecimentosSub = "and crsub.estabelecimento.id in (:estabelecimentosIds) ";
 		}
+		
+		String campo = desligamento ? "c.dataDesligamento" : "cq.respondidaEm";
+		String campoSub = desligamento ? "csub.dataDesligamento" : "cqsub.respondidaEm";
+		
 		if(periodoIni != null)
 		{
-			wherePeriodoIni = "and cq.respondidaEm >= :periodoIni ";
-			wherePeriodoIniSub = "and cqsub.respondidaEm >= :periodoIni ";
+			wherePeriodoIni = "and " + campo + " >= :periodoIni ";
+			wherePeriodoIniSub = "and " + campoSub + " >= :periodoIni ";
 		}
+		
 		if(periodoFim != null)
 		{
-			wherePeriodoFim = "and cq.respondidaEm <= :periodoFim ";
-			wherePeriodoFimSub = "and cqsub.respondidaEm <= :periodoFim ";
+			wherePeriodoFim = "and " + campo + " <= :periodoFim ";
+			wherePeriodoFimSub = "and " + campoSub + " <= :periodoFim ";
 		}
+		
 		if(turmaId != null)
 		{
 			whereTurmaSub = "and cqsub.turma.id = :turmaId ";
@@ -151,7 +156,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
-	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
@@ -164,18 +169,25 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		if(empresaId != null && empresaId != -1)
 			whereEmpresa = "and c.empresa.id = :empresaId ";
+		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
+		
 		if(areasIds != null && areasIds.length > 0)
 			whereAreas = "and a.id in (:areasIds) ";
+		
 		if(cargosIds != null && cargosIds.length > 0)
 			whereCargos = "and cr.cargo.id in (:cargosIds) ";
+		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
+		
 		if(periodoIni != null)
-			wherePeriodoIni = "and cq.respondidaEm >= :periodoIni ";
+			wherePeriodoIni = desligamento ? "and c.dataDesligamento >= :periodoIni " : "and cq.respondidaEm >= :periodoIni ";
+		
 		if(periodoFim != null)
-			wherePeriodoFim = "and cq.respondidaEm <= :periodoFim ";
+			wherePeriodoFim = desligamento ? "and c.dataDesligamento <= :periodoFim " : "and cq.respondidaEm <= :periodoFim ";
+		
 		if(turmaId != null)
 			whereTurma = "and cq.turma.id = :turmaId ";			
 		
@@ -229,7 +241,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 	
-	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, Long turmaId, Questionario questionario, Long empresaId)
+	public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Long empresaId)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.max("hc2.data"))
@@ -285,11 +297,13 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			criteria.add(Expression.in("e.id", estabelecimentosIds));
 
+		String periodo = desligamento ? "c.dataDesligamento" : "cq.respondidaEm";
+		
 		if(periodoIni != null)
-			criteria.add(Expression.ge("cq.respondidaEm", periodoIni));
+			criteria.add(Expression.ge(periodo, periodoIni));
 
 		if(periodoFim != null)
-			criteria.add(Expression.le("cq.respondidaEm", periodoFim));
+			criteria.add(Expression.le(periodo, periodoFim));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorResposta.class));

@@ -23,12 +23,12 @@
 	<#if periodoIni?exists>
 		<#assign periodoIniFormatado = periodoIni?date/>
 	<#else>
-		<#assign periodoIniFormatado = ""/>
+		<#assign periodoIniFormatado = "  /  /    "/>
 	</#if>
 	<#if periodoFim?exists>
 		<#assign periodoFimFormatado = periodoFim?date/>
 	<#else>
-		<#assign periodoFimFormatado = ""/>
+		<#assign periodoFimFormatado = "  /  /    "/>
 	</#if>
 	
 	<script type='text/javascript'>

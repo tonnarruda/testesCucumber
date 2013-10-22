@@ -366,7 +366,7 @@ public class QuestionarioListAction extends MyActionSupportList
 	    	areasIds = StringUtil.converteArrayToString(areasCheck);
 	    	estabelecimentosIds = StringUtil.converteArrayToString(estabelecimentosCheck);
 
-    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, turmaId, questionario);
+    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario);
 
     		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds);
     		String areas = areaOrganizacionalManager.nomeAreas(areaIds);

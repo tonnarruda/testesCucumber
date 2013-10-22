@@ -134,6 +134,9 @@
 			<#else>
 				<b>Colaborador: ${colaborador.nome}</b>
 			</#if>
+			<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondidaEm?exists>
+				<b> - Respondida em: ${colaboradorQuestionario.respondidaEm}</b>
+			</#if>
 		</#if>
 	</#if>
 
