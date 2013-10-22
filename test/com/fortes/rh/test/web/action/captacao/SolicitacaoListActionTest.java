@@ -15,6 +15,7 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
@@ -37,6 +38,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 	private SolicitacaoListAction action;
 	private Mock manager;
 	private Mock candidatoSolicitacaoManager;
+	private Mock areaorganizacionalManager;
 	private Mock candidatoManager;
 	private Mock cargoManager;
 	private Mock empresaManager;
@@ -49,6 +51,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         manager = new Mock(SolicitacaoManager.class);
         candidatoManager = new Mock(CandidatoManager.class);
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
+        areaorganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         cargoManager = new Mock(CargoManager.class);        
         empresaManager = new Mock(EmpresaManager.class);
         parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
@@ -57,6 +60,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         action.setSolicitacaoManager((SolicitacaoManager) manager.proxy());
         action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
+        action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaorganizacionalManager.proxy());
         action.setCargoManager((CargoManager)cargoManager.proxy());
         action.setEmpresaManager((EmpresaManager)empresaManager.proxy());
         action.setParametrosDoSistemaManager((ParametrosDoSistemaManager)parametrosDoSistemaManager.proxy());
@@ -87,6 +91,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	solicitacaos.add(s2);
     	
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(2));
+    	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
 
@@ -123,6 +128,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	action.setSolicitacao(ms);
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
+    	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(true));
@@ -144,12 +150,13 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	action.setSolicitacao(ms);
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
+    	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(false));
 
     	assertEquals("success", action.delete());
-    	assertFalse(action.getActionErrors().isEmpty());
+    	assertFalse(action.getActionWarnings().isEmpty());
     }
     
     public void testListRecebidas() throws Exception
@@ -216,11 +223,12 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	action.setDataEncerramento("");
     	
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(0));
+    	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	
     	assertEquals("input",action.encerrarSolicitacao());
-    	assertEquals("Data de Encerramento Inválida.", action.getActionErrors().toArray()[0]);
+    	assertEquals("Data de Encerramento Inválida.", action.getActionWarnings().toArray()[0]);
     }
     
     public void testReabrirSolicitacao() throws Exception

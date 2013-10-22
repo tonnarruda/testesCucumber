@@ -106,10 +106,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
-			Long[] areasIdsComFilhas = new Long[0];
-			
-			if(SecurityUtil.verifyRole(session, new String[]{"ROLE_LIBERA_SOLICITACAO"}))
-				areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
+			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
 			
 			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
 			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
@@ -218,9 +215,9 @@ public class SolicitacaoListAction extends MyActionSupportList
     public String delete() throws Exception
     {
         if(!solicitacaoManager.removeCascade(solicitacao.getId()))
-        	addActionError("Não é possível excluir a Solicitação, pois existem candidatos para esta.");
+        	addActionWarning("Não é possível excluir a Solicitação, pois existem candidatos para esta.");
         else
-        	addActionMessage("Solicitação excluída com sucesso.");
+        	addActionSuccess("Solicitação excluída com sucesso.");
         
         return list();
     }
@@ -236,7 +233,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			addActionError("Data de Encerramento Inválida.");
+			addActionWarning("Data de Encerramento Inválida.");
 			list();
 			return Action.INPUT;
 		}
