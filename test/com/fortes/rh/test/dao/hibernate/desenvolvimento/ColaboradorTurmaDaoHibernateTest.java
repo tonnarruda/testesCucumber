@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -1225,7 +1227,87 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
     	Long[] areaIds = new Long[]{areaOrganizacional2.getId()};
 
-    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds);
+    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, null);
+    	assertEquals(1, colaboradoresSemTreinamento.size());
+
+    	ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];
+    	assertEquals(colaboradorNaoInscritoCurso, colaboradorSemTreinamento.getColaborador());
+    	assertEquals(areaOrganizacional2, colaboradorSemTreinamento.getColaborador().getAreaOrganizacional());
+    }
+
+    public void testFindRelatorioSemTreinamentoComData()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+    	
+    	Colaborador colaboradorInscritoCurso = ColaboradorFactory.getEntity();
+    	colaboradorInscritoCurso.setEmpresa(empresa);
+    	colaboradorDao.save(colaboradorInscritoCurso);
+    	
+    	Colaborador colaboradorNaoInscritoCurso = ColaboradorFactory.getEntity();
+    	colaboradorNaoInscritoCurso.setNome("Colab 2");
+    	colaboradorNaoInscritoCurso.setEmpresa(empresa);
+    	colaboradorDao.save(colaboradorNaoInscritoCurso);
+    	
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+    	
+    	AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+    	areaOrganizacional1.setNome("Area 1");
+    	areaOrganizacionalDao.save(areaOrganizacional1);
+    	
+    	AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+    	areaOrganizacional2.setNome("Area 2");
+    	areaOrganizacionalDao.save(areaOrganizacional2);
+    	
+    	HistoricoColaborador historicoColaboradorAtualDoInscrito = HistoricoColaboradorFactory.getEntity();
+    	historicoColaboradorAtualDoInscrito.setColaborador(colaboradorInscritoCurso);
+    	historicoColaboradorAtualDoInscrito.setData(DateUtil.criarDataMesAno(1, 1, 1999));
+    	historicoColaboradorAtualDoInscrito.setAreaOrganizacional(areaOrganizacional1);
+    	historicoColaboradorDao.save(historicoColaboradorAtualDoInscrito);
+    	
+    	HistoricoColaborador historicoColaboradorPassadoNaoInscrito  = HistoricoColaboradorFactory.getEntity();
+    	historicoColaboradorPassadoNaoInscrito.setData(DateUtil.criarDataMesAno(1, 1, 1999));
+    	historicoColaboradorPassadoNaoInscrito.setColaborador(colaboradorNaoInscritoCurso);
+    	historicoColaboradorPassadoNaoInscrito.setAreaOrganizacional(areaOrganizacional1);
+    	historicoColaboradorDao.save(historicoColaboradorPassadoNaoInscrito);
+    	
+    	HistoricoColaborador historicoColaboradorAtualNaoInscrito = HistoricoColaboradorFactory.getEntity();
+    	historicoColaboradorAtualNaoInscrito.setData(new Date());
+    	historicoColaboradorAtualNaoInscrito.setColaborador(colaboradorNaoInscritoCurso);
+    	historicoColaboradorAtualNaoInscrito.setAreaOrganizacional(areaOrganizacional2);
+    	historicoColaboradorAtualNaoInscrito.setEstabelecimento(estabelecimento);
+    	historicoColaboradorDao.save(historicoColaboradorAtualNaoInscrito);
+    	
+    	HistoricoColaborador historicoColaboradorFuturoNaoInscrito = HistoricoColaboradorFactory.getEntity();
+    	historicoColaboradorFuturoNaoInscrito.setData(DateUtil.criarDataMesAno(1, 11, 2056));
+    	historicoColaboradorFuturoNaoInscrito.setColaborador(colaboradorNaoInscritoCurso);
+    	historicoColaboradorFuturoNaoInscrito.setAreaOrganizacional(areaOrganizacional2);
+    	historicoColaboradorDao.save(historicoColaboradorFuturoNaoInscrito);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setDataPrevIni(DateUtil.criarDataMesAno(01, 10, 2013));
+    	turma.setDataPrevFim(DateUtil.criarDataMesAno(20, 10, 2013));
+    	turmaDao.save(turma);
+    	
+    	Curso curso = CursoFactory.getEntity();
+    	curso.setTurmas(Arrays.asList(new Turma[]{turma}));
+    	cursoDao.save(curso);
+    	
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+    	colaboradorTurma.setColaborador(colaboradorInscritoCurso);
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setCurso(curso);
+    	colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	Long[] estabelecimentoIds = new Long[]{};
+    	Long[] areaIds = new Long[]{};
+    	
+    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(22, 10, 2013));
+    	assertEquals(2, colaboradoresSemTreinamento.size());
+
+    	//fora da data de realização do curso
+    	colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(19, 10, 2013));
     	assertEquals(1, colaboradoresSemTreinamento.size());
 
     	ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];

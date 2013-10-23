@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -115,9 +114,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> findRelatorioSemIndicacaoTreinamento(Long empresaId, Long[] areaIds, Long[] estabelecimentoIds, int qtdMeses) throws ColecaoVaziaException
 	{
-		Calendar data = Calendar.getInstance();
-		data.setTime(new Date());
-		data.add(Calendar.MONTH, -qtdMeses);
+		Calendar data = criaDataDiminuindoMeses(qtdMeses);
 
 		Collection<ColaboradorTurma>  colaboradorTurmas = getDao().findRelatorioSemIndicacaoDeTreinamento(empresaId, areaIds, estabelecimentoIds, data.getTime());
 
@@ -135,14 +132,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				}
 			}
 			if (!jaExiste)
-			{
-				if (colaboradorTurma.getTurma() != null)
-				{
-					String tempoSemCurso = calculaTempoSemCurso(colaboradorTurma.getTurma().getDataPrevFim());
-					colaboradorTurma.setTempoSemCurso(tempoSemCurso);
-				}
 				resultado.add(colaboradorTurma);
-			}
 		}
 
 		if (resultado.isEmpty())
@@ -151,66 +141,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return resultado;
 	}
 
-	@SuppressWarnings("deprecation")
-	private String calculaTempoSemCurso(Date dataPrevFim)
-	{
-		String anoMes = "";
-		if (dataPrevFim != null)
-		{
-			GregorianCalendar dataAtual = new GregorianCalendar();
-
-			int anoAtual = dataAtual.get(GregorianCalendar.YEAR);
-			int mesAtual = dataAtual.get(GregorianCalendar.MONTH);
-			int diaAtual = dataAtual.get(GregorianCalendar.DAY_OF_MONTH);
-
-			int anoUltimo = (dataPrevFim.getYear() + 1900);
-			int mesUltimo = dataPrevFim.getMonth();
-			int diaUltimo = dataPrevFim.getDate();
-
-			int anos = anoAtual - anoUltimo;
-			int meses;
-
-			if (anos > 0)
-			{
-				if (mesAtual < mesUltimo)
-					anos--;
-				else
-				{
-					if (mesAtual == mesUltimo)
-					{
-						if (diaAtual < diaUltimo)
-							anos--;
-					}
-				}
-			}
-
-			if (mesAtual > mesUltimo)
-				meses = mesAtual - mesUltimo;
-			else
-				meses = (12 - mesUltimo) + mesAtual;
-
-			if (diaAtual < diaUltimo)
-				meses--;
-
-			if (anos > 0)
-			{
-				if(anos == 1)
-					anoMes += anos + " ano";
-				else
-					anoMes += anos + " anos";
-			}
-
-			if (meses > 0)
-			{
-				if(meses == 1)
-					anoMes += meses + " mês";
-				else
-					anoMes += meses + " meses";
-			}
-		}
-
-		return anoMes;
-	}
 
 	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades) throws Exception
 	{
@@ -418,9 +348,13 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds);
+		Date data = null;
+		if(qtdMesesSemCurso != null && qtdMesesSemCurso > 0)
+			data = criaDataDiminuindoMeses(qtdMesesSemCurso).getTime();
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, data);
 
 		return validaRelatorioTreinamento(empresaId, curso, colaboradorTurmas);
 	}
@@ -1084,6 +1018,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		boolean aprovadoNota = verificaNota(ct);
 		
 		return aprovadoPresenca && aprovadoNota;
+	}
+	
+	private Calendar criaDataDiminuindoMeses(int qtdMeses) 
+	{
+		Calendar data = Calendar.getInstance();
+		data.setTime(new Date());
+		data.add(Calendar.MONTH, -qtdMeses);
+		return data;
 	}
 	
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada) 

@@ -3,6 +3,7 @@ package com.fortes.rh.model.desenvolvimento;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -100,7 +101,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.respondeuAvaliacaoTurma = colaboradorQuestionarioId != null;
 	}
 
-	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, String empresaNome)
+	//findRelatorioSemTreinamento
+	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String areaNome, String estabelecimentoNome, String empresaNome, Date dataPrevFim )
 	{
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
@@ -109,12 +111,16 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 		this.colaborador.setAreaOrganizacional(new AreaOrganizacional());
 		this.colaborador.getAreaOrganizacional().setId(areaId);
+		this.colaborador.getAreaOrganizacional().setNome(areaNome);
 
 		this.colaborador.setEstabelecimento(new Estabelecimento());
 		this.colaborador.getEstabelecimento().setNome(estabelecimentoNome);
 		
 		this.colaborador.setEmpresa(new Empresa());
 		this.colaborador.getEmpresa().setNome(empresaNome);
+		
+		this.setTurma(new Turma());
+		this.getTurma().setDataPrevFim(dataPrevFim);
 	}
 
 	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, Long id, Boolean aprovado)
@@ -600,7 +606,62 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public String getTempoSemCurso()
 	{
-		return tempoSemCurso;
+		String anoMes = "";
+		if (turma != null && turma.getDataPrevFim() != null)
+		{
+			GregorianCalendar dataAtual = new GregorianCalendar();
+
+			int anoAtual = dataAtual.get(GregorianCalendar.YEAR);
+			int mesAtual = dataAtual.get(GregorianCalendar.MONTH);
+			int diaAtual = dataAtual.get(GregorianCalendar.DAY_OF_MONTH);
+
+			int anoUltimo = (turma.getDataPrevFim().getYear() + 1900);
+			int mesUltimo = turma.getDataPrevFim().getMonth();
+			int diaUltimo = turma.getDataPrevFim().getDate();
+
+			int anos = anoAtual - anoUltimo;
+			int meses;
+
+			if (anos > 0)
+			{
+				if (mesAtual < mesUltimo)
+					anos--;
+				else
+				{
+					if (mesAtual == mesUltimo)
+					{
+						if (diaAtual < diaUltimo)
+							anos--;
+					}
+				}
+			}
+
+			if (mesAtual > mesUltimo)
+				meses = mesAtual - mesUltimo;
+			else
+				meses = (12 - mesUltimo) + mesAtual;
+
+			if (diaAtual < diaUltimo)
+				meses--;
+
+			if (anos > 0)
+			{
+				if(anos == 1)
+					anoMes += anos + " ano ";
+				else
+					anoMes += anos + " anos ";
+			}
+
+			if (meses > 0)
+			{
+				if(meses == 1)
+					anoMes += (anos > 0 ?"e ":"") + meses + " mês";
+				else
+					anoMes += (anos > 0 ?"e ":"") + meses + " meses";
+			}
+		}
+
+		return anoMes.trim();
 	}
 
 	public void setTempoSemCurso(String tempoSemCurso)

@@ -967,7 +967,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
 		mockValidaRelatorio(curso, empresaId);
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds);
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, null);
 		
 		assertEquals(1, resultado.size());
 	}
@@ -986,7 +986,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds);
+			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, null);
 		}
 		catch (Exception e) { exception = e; }
 		

@@ -590,15 +590,23 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (Integer)query.list().size();
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds)
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Date data)
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, es.nome, emp.nome) " );
+		hql.append("select distinct new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, ao.nome, es.nome, emp.nome, t.dataPrevFim) " );
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join hc.colaborador as c ");
+		hql.append("left join c.colaboradorTurmas as ct ");
+		hql.append("left join ct.turma as t with ( t.dataPrevFim = (select max(t1.dataPrevFim) from ColaboradorTurma ct2 ");
+		hql.append("												inner join ct2.turma t1 ");
+		hql.append("												inner join t1.curso c1 ");
+		hql.append("												where c1.id = :cursoId  ");
+		hql.append("												and ct2.colaborador.id = c.id) ");
+		hql.append("							 or t.dataPrevFim is null)");
+		
 		hql.append("left join c.empresa as emp ");
 		hql.append("where c.desligado = false  " );
 		
@@ -612,10 +620,19 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			hql.append("and es.id in (:estabelecimentosId) ");
 
 		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id=c.id and hc2.data <= :hoje and hc2.status = :status ) ");
-		hql.append("and c.id not in (select ct.colaborador.id from ColaboradorTurma as ct where ct.colaborador.id=c.id ");
-		hql.append("and ct.curso.id = :cursoId ");
-
-		hql.append(") order by emp.nome, es.nome, ao.nome, c.nome ");
+		
+		if(data != null){
+			hql.append("and c.id not in ( ");
+			hql.append("		select ct1.colaborador.id ");
+			hql.append("		from ColaboradorTurma ct1 join ct1.turma t2 ");
+			hql.append("		where t2.dataPrevFim >= :data and t2.dataPrevFim <= current_date ");
+			hql.append("		and ct1.curso.id = :cursoId) ");
+		} else {
+			hql.append("and not exists (select ct1.colaborador.id from ColaboradorTurma as ct1 where ct1.colaborador.id=c.id ");
+			hql.append("and ct1.curso.id = :cursoId) ");
+		}
+		
+		hql.append(" order by emp.nome, es.nome, ao.nome, c.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -632,6 +649,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		if (estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentosId", estabelecimentoIds, Hibernate.LONG);
+		
+		if(data != null)
+			query.setDate("data", data);
 
 		return query.list();
 	}
