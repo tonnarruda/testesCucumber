@@ -1288,22 +1288,3 @@ function removerAcento(texto){
 	texto = texto.toUpperCase();
 	return texto;
 }
-
-function removeAndAddAllOptionsMapSorted(id, data){
-   var tmpAry = new Array();
-   var i = 0;
-   
-   for (var key in data) {
-       tmpAry[i] = new Array();
-       tmpAry[i][0] = data[key];
-       tmpAry[i][1] = key;
-       i++;
-   }
-   
-   tmpAry.sort();
-     DWRUtil.removeAllOptions(id);
-    
-   for (var i=0;i<tmpAry.length;i++) {
-       $('#'+id).append(new Option(tmpAry[i][0], tmpAry[i][1]));
-   }
-}

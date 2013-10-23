@@ -239,6 +239,37 @@ function addChecksByCollection(divName, dados, label, onClick)
 	$('#listCheckBoxFilter'+ divName).val('');
 }
 
+function addChecksByMap(divName, data, onClick)
+{
+	var dados = new Array();
+	var i = 0;
+	
+	for (var key in data) {
+		dados[i] = new Array();
+		dados[i][0] = data[key];
+		dados[i][1] = key;
+		i++;
+	}
+	
+	dados.sort();
+	
+	var result = "";
+	var addOnClick = "";
+
+	if (onClick != null && onClick != "")
+		addOnClick = "onClick='"+ onClick +"'";
+
+	for (var i = 0 ;i < dados.length; i++)
+	{
+		result += "<label for=\"checkGroup"+ divName + dados[i][1] +"\" >";
+		result += "<input name=\""+ divName +"\" value=\""+ dados[i][1] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[i][1] +"\" title=\"" + dados[i][0] + "\" />" + dados[i][0];
+    	result += "</label>";
+	}
+
+	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBoxFilter'+ divName).val('');
+}
+
 function addOptionsByCollection(selectId, dados, prompt, label)
 {
 	var result = prompt ? "<option value=''>" + prompt + "</option>" : "";
@@ -254,6 +285,30 @@ function addOptionsByCollection(selectId, dados, prompt, label)
 		titulo = dados[prop]['titulo'] ? 'title=\"' + dados[prop]['titulo'] + '\"' : '';
 		
 		result += "<option value='" + dados[prop]['id'] + "' " + titulo + " " + selecionado + " " + desabilitado + ">" + dados[prop][label] + "</option>\n";
+	}
+
+	$('#' + selectId).html(result);
+}
+
+function addOptionsByMap(selectId, data, prompt)
+{
+	var dados = new Array();
+	var i = 0;
+	
+	for (var key in data) {
+		dados[i] = new Array();
+		dados[i][0] = data[key];
+		dados[i][1] = key;
+		i++;
+	}
+	
+	dados.sort();
+	
+	var result = prompt ? "<option value=''>" + prompt + "</option>" : "";
+
+	for (var i = 0 ;i < dados.length; i++)
+	{
+		result += "<option value='" + dados[i][1] + "' title='" + dados[i][0] + "'>" + dados[i][0] + "</option>\n";
 	}
 
 	$('#' + selectId).html(result);

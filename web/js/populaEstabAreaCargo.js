@@ -41,7 +41,7 @@ function populaCargosByAreaVinculados()
 
 function createListCargosByArea(data)
 {
-	addChecks('cargosCheck',data);
+	addChecksByMap('cargosCheck', data);
 }
 
 function verificaCargoSemAreaRelacionada(empresaId)

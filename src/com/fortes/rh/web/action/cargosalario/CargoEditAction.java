@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -193,7 +194,14 @@ public class CargoEditAction extends MyActionSupportEdit
 		else
 			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
 		
-		historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+		try {
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
 		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);

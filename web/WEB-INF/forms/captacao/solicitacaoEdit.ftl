@@ -149,7 +149,7 @@
 
 		function createListFuncao(data)
 		{
-			removeAndAddAllOptionsMapSorted("funcao", data);
+			addOptionsByMap("funcao", data);
 		}
 		
 		function populaAmbiente(estabelecimentoId)
@@ -163,7 +163,7 @@
 
 		function createListAmbiente(data)
 		{
-			removeAndAddAllOptionsMapSorted('ambiente', data); 
+			addOptionsByMap('ambiente', data);
 		}
 			
 		var contador = 0;
