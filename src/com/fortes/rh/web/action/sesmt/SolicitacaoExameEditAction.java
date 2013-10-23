@@ -381,7 +381,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			return INPUT;
 		}
 
-		addActionMessage("Resultados gravados com sucesso.");
+		addActionSuccess("Resultados gravados com sucesso.");
 		return SUCCESS;
 	}
 
