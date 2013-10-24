@@ -157,7 +157,10 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
 			{
 				areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), empresaId);
-				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, cUtil.convertCollectionToArrayIds(areas));
+				Long[] areasIds = cUtil.convertCollectionToArrayIds(areas);
+				if (areasIds.length == 0)
+					areasIds = new Long[]{-1L};
+				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, areasIds);
 			}
 			
 			if(colaborador.getId() != null)
