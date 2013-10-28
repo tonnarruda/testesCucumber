@@ -65,6 +65,8 @@
 		$(document).ready(function($)
 		{
 			var empresaValue = $('#empresaId').val();
+
+			DWREngine.setAsync(false);
 			
 			populaArea(empresaValue);
 			populaEstabelecimento(empresaValue);
