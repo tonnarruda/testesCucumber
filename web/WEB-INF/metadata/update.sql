@@ -22000,3 +22000,8 @@ update parametrosdosistema set camposcandidatovisivel = replace(replace(camposca
 update parametrosdosistema set camposcandidatoobrigatorio = replace(replace(camposcandidatoobrigatorio,'escolaridade,',''),'cpf,','cpf,escolaridade,');--.go
 insert into migrations values('20131016152157');--.go
 update parametrosdosistema set appversao = '1.1.119.133';--.go
+-- versao 1.1.119.134
+
+update papel set nome = 'Alterar status', help = null where id = 56;--.go
+insert into migrations values('20131022141015');--.go
+update parametrosdosistema set appversao = '1.1.119.134';--.go

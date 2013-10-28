@@ -11,7 +11,7 @@ Funcionalidade: Relatório de colaboradores que não fizeram um treinamento
     Dado que eu esteja logado
     
     Quando eu acesso o menu "T&D > Relatórios > Colaboradores sem Treinamentos"
-    Então eu devo ver o título "Relatório de colaboradores que não fizeram um treinamento"
+    Então eu devo ver o título "Colaboradores que não fizeram o treinamento"
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 

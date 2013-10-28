@@ -299,11 +299,6 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu não devo ver "Nikita"
     E eu clico no botão "Voltar"
 
-    Então eu clico em excluir "Vaga java EE"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Solicitação excluída com sucesso."
-    E eu não devo ver "Vaga java EE"
-
     Dado que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "false"
     
     Então eu clico no botão "Inserir"

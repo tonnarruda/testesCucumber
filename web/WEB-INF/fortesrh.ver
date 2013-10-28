@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.119.134" data="28/10/2013">
+		<Modulo nome=" "><![CDATA[
+			:: T&D > Relatórios > Colaboradores com Treinamentos: Novo filtro por período de realização da turma.
+			:: T&D > Relatórios > Colaboradores sem Treinamentos: Novo filtro pela quantidade de meses sem treinamento.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.119.133" data="21/10/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Cadastros > Colaboradores > Anexos: Visualizar na listagem dos documentos anexos os documentos do candidato cujo é vinculado.

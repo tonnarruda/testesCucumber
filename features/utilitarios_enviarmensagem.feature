@@ -14,5 +14,5 @@ Funcionalidade: Enviar Mensagem
     E eu preencho "Mensagem" com "aviso"
     E eu clico no botão "Enviar"
     
-    Então eu devo ver "Mensagem enviada com sucesso!"
+    Então eu devo ver "Mensagem enviada com sucesso"
     Então eu devo ver o título "Enviar Mensagem"
