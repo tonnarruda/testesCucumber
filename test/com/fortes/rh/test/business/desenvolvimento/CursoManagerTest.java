@@ -111,9 +111,9 @@ public class CursoManagerTest extends MockObjectTestCase
 		
 		Collection<IndicadorTreinamento> indicadoresPorCurso = Arrays.asList(indicador1, indicador2, indicador3);
 		
-		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(indicadoresPorCurso));
+		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indicadoresPorCurso));
 		
-		IndicadorTreinamento indicadorTreinamento = cursoManager.findIndicadorHorasTreinamentos(new Date(), new Date(), new Long[] { 1L }); 
+		IndicadorTreinamento indicadorTreinamento = cursoManager.findIndicadorHorasTreinamentos(new Date(), new Date(), new Long[] { 1L }, null); 
 		
 		assertEquals(106.81, indicadorTreinamento.getSomaHoras());
 	}

@@ -23,6 +23,7 @@ import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements CursoDao
@@ -113,7 +114,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return query.list();
 	}
 
-	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
 		Criteria criteria = getSession().createCriteria(Curso.class,"c");
 		criteria.createCriteria("c.turmas", "t");
@@ -125,11 +126,14 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.add(Expression.eq("t.realizada", true));
 		criteria.add(Expression.between("t.dataPrevIni", dataIni, dataFim));
 		criteria.add(Expression.in("c.empresa.id", empresaIds));
-
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			criteria.add(Expression.in("c.id", cursoIds));
+			
 		return (Double) criteria.uniqueResult();
 	}
 	
-	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(c.id, cast((c.cargaHoraria/60 * count(ct.id)) as double)) ");
 		hql.append("from Curso c ");
@@ -139,7 +143,11 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("where c.empresa.id in (:empresaIds) ");
 		hql.append("and co.empresa.id in (:empresaIds) ");
 		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
-		hql.append("and t.realizada = true "); 
+		hql.append("and t.realizada = true ");
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			hql.append("and c.id in (:cursoIds) ");
+		
 		hql.append("group by c.id, c.cargaHoraria ");
 		hql.append("order by c.id ");
 		
@@ -148,21 +156,30 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
 		
+		if (LongUtil.isNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+		
 		return query.list();
 	}
 
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
 		StringBuilder hql = new StringBuilder("select count(ct.id) ");
 		hql.append("from ColaboradorTurma ct ");
 		hql.append("join ct.turma t ");
 		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 		hql.append("and t.empresa.id in (:empresaIds) ");
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			hql.append("and t.curso.id in (:cursoIds) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 
 		return (Integer)query.uniqueResult();
 	}
@@ -183,7 +200,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Integer)query.uniqueResult();
 	}
 
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado)
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado)
 	{
 		Criteria criteria = getSession().createCriteria(Turma.class, "t");
 		criteria.createCriteria("t.curso", "c");
@@ -194,6 +211,9 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (realizado != null)
 			criteria.add(Expression.eq("realizada", realizado));
 		criteria.add(Expression.in("c.empresa.id", empresaIds));
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			criteria.add(Expression.in("c.id", cursoIds));
 
 		return (Integer)criteria.uniqueResult();
 	}
@@ -324,7 +344,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return query.list();
 	}
 
-	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId) 
+	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
 		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
@@ -334,7 +354,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		p.add(Projections.property("c.nome"), "nome");
 
 		criteria.setProjection(Projections.distinct(p));
-		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
+		criteria.add( Expression.or( Expression.in("c.empresa.id", empresasIds), Expression.in("e.id", empresasIds) ) );
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));

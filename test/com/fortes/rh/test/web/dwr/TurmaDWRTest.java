@@ -143,7 +143,7 @@ public class TurmaDWRTest extends MockObjectTestCase
 		Collection<Turma> turmas = new ArrayList<Turma>();
 		turmas.add(turma1);
 		
-		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(turmas));
+		turmaManager.expects(once()).method("findByFiltro").withAnyArguments().will(returnValue(turmas));
 		
 		Map retorno = turmaDWR.getTurmasByFiltro("01/01/2000", "02/02/2002", 'T', 1L);
 		
@@ -168,7 +168,7 @@ public class TurmaDWRTest extends MockObjectTestCase
 	public void testGetTurmasByFiltroVazio() throws Exception
 	{
 		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(turmas));
+		turmaManager.expects(once()).method("findByFiltro").withAnyArguments().will(returnValue(turmas));
 
 		Exception exc = null;
 		try

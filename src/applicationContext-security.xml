@@ -470,7 +470,7 @@
 				/desenvolvimento/certificacao/matrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
 				/desenvolvimento/certificacao/imprimirMatrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
 				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
-				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO
+				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND
 
 				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER
 				

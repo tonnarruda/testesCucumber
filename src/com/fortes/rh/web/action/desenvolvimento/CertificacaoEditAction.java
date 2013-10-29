@@ -34,7 +34,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		if (certificacao != null && certificacao.getId() != null)
 			certificacao = (Certificacao) certificacaoManager.findById(certificacao.getId());
 		
-		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 	}
 

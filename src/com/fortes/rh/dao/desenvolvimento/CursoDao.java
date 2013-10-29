@@ -14,11 +14,11 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findAllSelect(Long empresaId);
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
-	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
-	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Double somaCustosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
+	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado);
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
 	public Empresa findEmpresaByCurso(Long cursoId);
@@ -27,7 +27,7 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
 	public Collection<Curso> findByCompetencia(Long competenciaId, Character tipoCompetencia);
-	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId);
+	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds);
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 	public Collection<Empresa> findEmpresasParticipantes(Long cursoId);
 }

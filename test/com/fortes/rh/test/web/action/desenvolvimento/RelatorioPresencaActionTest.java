@@ -107,7 +107,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	Collection<Curso> cursos = new ArrayList<Curso>();
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
-    	cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(ANYTHING).will(returnValue(cursos));
+    	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(ANYTHING).will(returnValue(cursos));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(false));
     	
     	assertEquals("acessonegado", action.imprimirRelatorio());

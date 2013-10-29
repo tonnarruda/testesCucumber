@@ -57,10 +57,9 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas) throws Exception;
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds) throws Exception;
 	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId);
-	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas);
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds);
-	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds);
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaId);
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada);

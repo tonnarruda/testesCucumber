@@ -58,14 +58,14 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByCertificacao(certificacaoId);
 	}
 
-	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId) 
+	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds) 
 	{
-		return getDao().findAllByEmpresaParticipante(empresaId);
+		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
 	
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
-		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds);
+		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		
@@ -76,15 +76,14 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		Double percentualFrequencia = 0d;
 		Double percentualInvestimento = 0d;
 		
-		Double somaCustos = getDao().somaCustosTreinamentos(dataIni, dataFim, empresaIds);
+		Double somaCustos = getDao().somaCustosTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
 		somaCustos = somaCustos == null ? 0 : somaCustos;
 		indicadorTreinamento.setSomaCustos(somaCustos);
-		
 		
 		if (somaHoras != null && somaHoras > 0)
 			indicadorTreinamento.setCustoMedioHora( somaCustos / somaHoras );
 		
-		Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
+		Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
 
 		if (qtdInscritos != null && qtdInscritos > 0)
 			custoPerCapita = (somaCustos / qtdInscritos);
@@ -100,7 +99,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds);
+		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
 		
 		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
@@ -110,11 +109,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return indicadorTreinamento;
 	}
 	
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
 		double somaHoras = 0.0;
 		
-		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds);
+		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
 		
 		for (IndicadorTreinamento indicadorTreinamento : indicadoresPorCurso) {
 			somaHoras += indicadorTreinamento.getSomaHoras();
@@ -123,9 +122,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return new IndicadorTreinamento(null, somaHoras);
 	}
 	
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds)
 	{
-		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds);
+		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds, cursosIds);
 	}
 
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId)
@@ -134,9 +133,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return (resultado != null ? resultado : new Integer(0));
 	}
 
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado)
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado)
 	{
-		return getDao().countTreinamentos(dataIni, dataFim, empresaIds, realizado);
+		return getDao().countTreinamentos(dataIni, dataFim, empresaIds, cursoIds, realizado);
 	}
 
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim)

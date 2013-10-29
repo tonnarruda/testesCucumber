@@ -339,10 +339,10 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setEmpresa(empresa2);
 		turmaDao.save(turma3);
 		
-		assertEquals("Empresa 1", new Integer(5), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId()}));
-		assertEquals("Empresa 2", new Integer(3), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa2.getId()}));
-		assertEquals("Empresa 1 e 2", new Integer(8), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId(), empresa2.getId()}));
-		assertEquals("Empresa desconhecida", new Integer(0), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {1021L}));
+		assertEquals("Empresa 1", new Integer(5), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId()}, null));
+		assertEquals("Empresa 2", new Integer(3), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa2.getId()}, null));
+		assertEquals("Empresa 1 e 2", new Integer(8), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {empresa1.getId(), empresa2.getId()}, null));
+		assertEquals("Empresa desconhecida", new Integer(0), turmaDao.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[] {1021L}, null));
 	}
 	
 	public void testFindPlanosDeTreinamento()
@@ -507,10 +507,10 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaForaPeriodo.setCurso(curso);
 		turmaDao.save(turmaForaPeriodo);
 		
-		Collection<Turma> turmasRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, true, new Long[]{empresa1.getId()});
-		Collection<Turma> turmasNaoRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId()});
-		Collection<Turma> turmasNaoRealizadasE2 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa2.getId()});
-		Collection<Turma> turmasNaoRealizadasTotal = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId(), empresa2.getId()});
+		Collection<Turma> turmasRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, true, new Long[]{empresa1.getId()}, null);
+		Collection<Turma> turmasNaoRealizadasE1 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId()}, null);
+		Collection<Turma> turmasNaoRealizadasE2 = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa2.getId()}, null);
+		Collection<Turma> turmasNaoRealizadasTotal = turmaDao.findByFiltro(dataPrevIni, dataPrevFim, false, new Long[]{empresa1.getId(), empresa2.getId()}, null);
 		
 		assertEquals("Empresa 1", 1, turmasRealizadasE1.size());
 		assertEquals("Empresa 1", 1, turmasNaoRealizadasE1.size());
@@ -661,9 +661,9 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setQtdParticipantesPrevistos(new Integer(2));
 		turmaDao.save(turma3);
 		
-		assertEquals("Empresa 1", new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId()}));
-		assertEquals("Empresa 2", new Integer (2), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
-		assertEquals("Empresa 1 e 2", new Integer (6), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId(), empresa2.getId()}));
+		assertEquals("Empresa 1", new Integer (4), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId()}, null));
+		assertEquals("Empresa 2", new Integer (2), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}, null));
+		assertEquals("Empresa 1 e 2", new Integer (6), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId(), empresa2.getId()}, null));
 	}
 	
 	public void testQuantidadeParticipantesPresentes()
@@ -716,7 +716,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		ct3.setColaborador(c2);
 		colaboradorTurmaDao.save(ct3);
 		
-		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
 		
 		ColaboradorPresenca cp11 = new ColaboradorPresenca();
 		cp11.setColaboradorTurma(ct1);
@@ -728,21 +728,21 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		cp12.setPresenca(true);
 		colaboradorPresencaDao.save(cp12);
 
-		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
 		
 		ColaboradorPresenca cp13 = new ColaboradorPresenca();
 		cp13.setColaboradorTurma(ct2);
 		cp13.setPresenca(true);
 		colaboradorPresencaDao.save(cp13);
 		
-		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
 		
 		ColaboradorPresenca cp21 = new ColaboradorPresenca();
 		cp21.setColaboradorTurma(ct3);
 		cp21.setPresenca(true);
 		colaboradorPresencaDao.save(cp21);
 		
-		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
+		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
 	}
 	
 	public void testFindByEmpresa()
@@ -829,10 +829,10 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaOutraEmpresa.setCusto(10.15);
 		turmaDao.save(turmaOutraEmpresa);
 		
-		assertEquals("Empresa 1", 29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
-		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
-		assertEquals("Empresa 1 e 2",39.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}));
-		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}));
+		assertEquals("Empresa 1", 29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}, null));
+		assertEquals("Empresa 1 e 2",39.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}, null));
+		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}, null));
 
 //		assertEquals(29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, empresa.getId()));
 //		assertEquals(0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, 999934L));
@@ -877,10 +877,10 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma4.setCusto(10.15);
 		turmaDao.save(turma4);
 		
-		assertEquals("Empresa 1", 79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}));
-		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}));
-		assertEquals("Empresa 1 e 2",89.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}));
-		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}));
+		assertEquals("Empresa 1", 79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Empresa 2",10.15, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa2.getId()}, null));
+		assertEquals("Empresa 1 e 2",89.40, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId(), empresa2.getId()}, null));
+		assertEquals("Empresa desconhecida",0.0, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{999934L}, null));
 	}
 	
 	public void setColaboradorDao(ColaboradorDao colaboradorDao)

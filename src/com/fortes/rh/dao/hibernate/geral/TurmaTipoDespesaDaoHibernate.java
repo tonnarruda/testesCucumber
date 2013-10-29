@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoDespesa> implements TurmaTipoDespesaDao
@@ -46,7 +47,7 @@ public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoD
 		query.executeUpdate();
 	}
 
-	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
 	{
 		Criteria criteria = getSession().createCriteria(TurmaTipoDespesa.class,"ttd");
 		criteria.createCriteria("ttd.turma", "t");
@@ -63,6 +64,9 @@ public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoD
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("t.empresa.id", empresaIds));
+        
+        if (LongUtil.isNotEmpty(cursoIds))
+        	criteria.add(Expression.in("t.curso.id", cursoIds));
         
         criteria.addOrder(Order.desc("totalDespesas"));
         

@@ -27,6 +27,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements TurmaDao
@@ -375,7 +376,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long[] empresaIds)
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long[] empresaIds, Long[] cursoIds)
 	{
         Criteria criteria = getSession().createCriteria(Turma.class,"t");
         criteria.createCriteria("t.curso", "c");
@@ -400,6 +401,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 
 		if (realizada != null)
 			criteria.add(Expression.eq("t.realizada", realizada));
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			criteria.add(Expression.in("c.id", cursoIds));
 
 		criteria.addOrder(Order.desc("t.dataPrevIni"));
 		criteria.addOrder(Order.asc("c.nome"));
@@ -463,7 +467,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		return criteria.list();
 	}
 	
-	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds)
+	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds)
 	 {
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.empresa", "e");
@@ -472,6 +476,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("e.id", empresasIds));
+        
+        if (LongUtil.isNotEmpty(cursosIds))
+        	criteria.add(Expression.in("t.curso.id", cursosIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
         if(valor == null)
@@ -480,7 +487,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         	return valor;
 	}
 	 
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds) 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds) 
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorPresenca.class,"cp");
 		criteria.createCriteria("cp.colaboradorTurma", "ct");
@@ -491,6 +498,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("e.id", empresasIds));
+        
+        if (LongUtil.isNotEmpty(cursosIds))
+        	criteria.add(Expression.in("t.curso.id", cursosIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
         if(valor == null)
@@ -537,7 +547,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 	}
 
 
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(TurmaTipoDespesa.class, "ttd");
         
@@ -554,6 +564,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("t.empresa.id", empresaIds));
         criteria.add(Subqueries.propertyNotIn("t.id", subQuery));
+        
+        if (LongUtil.isNotEmpty(cursoIds))
+        	criteria.add(Expression.in("t.curso.id", cursoIds));
 
     	Double valor = (Double) criteria.uniqueResult();
         

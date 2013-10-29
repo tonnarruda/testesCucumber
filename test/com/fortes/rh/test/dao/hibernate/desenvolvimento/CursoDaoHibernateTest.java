@@ -235,7 +235,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaForaDaConsulta.setRealizada(true);
 		turmaDao.save(turmaForaDaConsulta);
 		
-		Double custoTotal = cursoDao.somaCustosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()});
+		Double custoTotal = cursoDao.somaCustosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
 		
 		assertEquals("Custo das turmas", 3712.69, custoTotal);
 	}
@@ -319,7 +319,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaForaDaConsulta.setRealizada(true);
 		turmaDao.save(turmaForaDaConsulta);
 
-		Collection<IndicadorTreinamento> result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()});
+		Collection<IndicadorTreinamento> result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
 		assertEquals(2, result.size());
 		
 		IndicadorTreinamento result1 = (IndicadorTreinamento)result.toArray()[0];
@@ -377,7 +377,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		colaboradorForaDoPeriodo.setTurma(turmaForaDaConsulta);
 		colaboradorTurmaDao.save(colaboradorForaDoPeriodo);
 
-		Integer qtd = cursoDao.findQtdColaboradoresInscritosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()});
+		Integer qtd = cursoDao.findQtdColaboradoresInscritosTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
 		assertNotNull(qtd);
 		assertEquals(new Integer(2), qtd);
 	}
@@ -483,7 +483,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaRealizadaForaDoPeriodo.setDataPrevFim(dataDoisMesesDepois.getTime());
 		turmaDao.save(turmaRealizadaForaDoPeriodo);
 
-		assertEquals(new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, true));
+		assertEquals(new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, true));
 
 	}
 
@@ -529,12 +529,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaNaoRealizada2.setDataPrevFim(dataDoisMesesAtras.getTime());
 		turmaDao.save(turmaNaoRealizada2);
 		
-		assertEquals("Treinamentos não realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, false));
-		assertEquals("Treinamentos realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, true));
-		assertEquals("Treinamentos não realizados da empresa2", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa2.getId()}, false));
-		assertEquals("Treinamentos realizados da empresa2", new Integer(0), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa2.getId()}, true));
-		assertEquals("Treinamentos não realizados das empresas", new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId(), empresa2.getId()}, false));
-		assertEquals("Treinamentos realizados das empresas", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId(), empresa2.getId()}, true));
+		assertEquals("Treinamentos não realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, null, false));
+		assertEquals("Treinamentos realizados da empresa1", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId()}, null, true));
+		assertEquals("Treinamentos não realizados da empresa2", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa2.getId()}, null, false));
+		assertEquals("Treinamentos realizados da empresa2", new Integer(0), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa2.getId()}, null, true));
+		assertEquals("Treinamentos não realizados das empresas", new Integer(2), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId(), empresa2.getId()}, null, false));
+		assertEquals("Treinamentos realizados das empresas", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId(), empresa2.getId()}, null, true));
 
 	}
 
@@ -700,8 +700,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		curso.setEmpresasParticipantes(empresasParticipantes);
 		cursoDao.save(curso);
 
-		assertEquals(1, cursoDao.findAllByEmpresaParticipante(emp1.getId()).size());
-		assertEquals(1, cursoDao.findAllByEmpresaParticipante(emp2.getId()).size());
+		assertEquals(1, cursoDao.findAllByEmpresasParticipantes(emp1.getId()).size());
+		assertEquals(1, cursoDao.findAllByEmpresasParticipantes(emp2.getId()).size());
 	}
 
 	public void testExisteEmpresasNoCurso()

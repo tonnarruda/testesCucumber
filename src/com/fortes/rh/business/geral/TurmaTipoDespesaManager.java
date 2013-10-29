@@ -14,5 +14,5 @@ public interface TurmaTipoDespesaManager extends GenericManager<TurmaTipoDespesa
 	public Collection<TurmaTipoDespesa> findTipoDespesaTurma(Long turmaId);
 	public void removeByTurma(Long turmaId);
 	public void save(String turmaTipoDespesasJSON, Long turmaId);
-	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Collection<TipoDespesa> somaDespesasPorTipo(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 }

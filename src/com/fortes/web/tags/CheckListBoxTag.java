@@ -19,6 +19,7 @@ public class CheckListBoxTag extends TagSupport
 	private String form = "document.forms[0]";
 	private String width = "";
 	private String height = "";
+	private String liClass = "";
 	private boolean valueString = false;
 	private boolean readonly = false;
 	private boolean filtro = false;
@@ -56,9 +57,13 @@ public class CheckListBoxTag extends TagSupport
 				dimension += "'";
 			}
 
-			String labelFormatado = label + (StringUtils.isBlank(label)?"":":"); 
+			String labelFormatado = label + (StringUtils.isBlank(label)?"":":");
+			
+			String clss = "wwgrp";
+			if (StringUtils.isNotEmpty(liClass))
+				clss += " " + liClass;
 					
-			checkGroup.append("<li id=\"wwgrp_"+ name +"\" class=\"wwgrp\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> ");
+			checkGroup.append("<li id=\"wwgrp_"+ name +"\" class=\"" + clss + "\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> ");
 			checkGroup.append("<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n");
 
 			checkGroup.append("<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>");
@@ -193,5 +198,13 @@ public class CheckListBoxTag extends TagSupport
 
 	public void setFiltro(String filtro) {
 		this.filtro = Boolean.parseBoolean(filtro);
+	}
+
+	public String getLiClass() {
+		return liClass;
+	}
+
+	public void setLiClass(String liClass) {
+		this.liClass = liClass;
 	}
 }
