@@ -174,7 +174,7 @@
 			</@authz.authorize>
 			<a href="prepareClonar.action?solicitacao.id=${solicitacao.id}"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_LISTA" href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CANDIDATO" href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
 		
 			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
 				<#if solicitacao.status == 'A'>
