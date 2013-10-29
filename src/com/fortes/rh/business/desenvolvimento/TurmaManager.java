@@ -33,7 +33,8 @@ public interface TurmaManager extends GenericManager<Turma>
 	public Collection<Turma> findByIdProjection(Long[] ids);
 	public boolean verificaAvaliacaoDeTurmaRespondida(Long turmaId);
 	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId);
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds);
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);

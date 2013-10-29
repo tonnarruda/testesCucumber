@@ -50,11 +50,13 @@
 		$(function () {
 	        var participantes = ${grfFrequenciaParticipantes};
 	        var inscritos = ${grfFrequenciaInscritos};
+	        var presentes = ${grfFrequenciaPresentes};
 		    
 		    $.plot($("#frequencia"), 
 		    		[
 				        {label: 'Qtd. Prev. de Participantes (' + participantes[0][1] + ')', data: participantes},
-				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos}
+				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos},
+				        {label: 'Presentes (' + presentes[0][1] + ')', data: presentes}
 				    ], 
 		    		{
 		    			series: {
@@ -65,6 +67,11 @@
 			                }
 				        },
 				        grid: { hoverable: true },
+				        legend: {
+		                    position: "nw", // position of default legend container within plot
+		                    backgroundColor: null, // null means auto-detect
+		                    backgroundOpacity: 0 // set to 0 to avoid background
+		                },
 				        xaxis: {
 				        	ticks: [],
 				        	autoscaleMargin: 0.6
