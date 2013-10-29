@@ -1288,3 +1288,31 @@ function removerAcento(texto){
 	texto = texto.toUpperCase();
 	return texto;
 }
+
+function numDias(mes,ano) {
+    if((mes<8 && mes%2==1) || (mes>7 && mes%2==0)) return 31;
+    if(mes!=2) return 30;
+    if(ano%4==0) return 29;
+    return 28;
+}
+
+function somaDias(data, dias) {
+   data=data.split('/');
+   diafuturo=parseInt(data[0])+parseInt(dias);
+   mes=parseInt(data[1]);
+   ano=parseInt(data[2]);
+   
+   while(diafuturo > numDias(mes,ano)) {
+       diafuturo -= numDias(mes,ano);
+       mes++;
+       if(mes>12) {
+           mes=1;
+           ano++;
+       }
+   }
+
+   if(diafuturo<10) diafuturo='0'+diafuturo;
+   if(mes<10) mes='0'+mes;
+
+   return diafuturo+"/"+mes+"/"+ano;
+}

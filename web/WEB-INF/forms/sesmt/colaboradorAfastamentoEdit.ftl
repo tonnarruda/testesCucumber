@@ -30,11 +30,33 @@
 				elemInss.style.display="none";
 		}
 		
-		
 		function limpar(data)
 		{
 			if(data == '' || data.length < 6)
 				$("#descricaoCid").val('');
+		}
+		
+		function calculaDias(event)
+		{
+			if(event != null && !somenteNumeros(event,','))
+				return false;
+				
+			var qtdDias = $('#qtdDias').val().replace(/\s/g, ''); 
+			if(qtdDias == '' || qtdDias <= 0)
+				return false;
+			
+			var dtInicio = document.getElementById('inicio');
+			if(dtInicio.value == '  /  /    ' || !validaDate(dtInicio))
+			{
+				jAlert('Data inicial inválida.');
+				$('#inicio').css('background','#FF6347');
+				
+				return false;
+			} 
+			
+			$('#fim').val(somaDias(dtInicio.value, qtdDias-1));
+		
+			return true;			
 		}
 		
 		$(document).ready(function() {
@@ -191,10 +213,11 @@
 			Motivo de afastamento pelo INSS
 			</@ww.div>
 
-			<br>Período:
+			<br>Período: 
 			<br>
-			<@ww.datepicker label="Inicio" id="inicio" name="colaboradorAfastamento.inicio" value="${inicio}" required="true" cssClass="mascaraData validaDataIni" theme="simple"/>*
-			a <@ww.datepicker label="Fim" id="fim"  name="colaboradorAfastamento.fim" value="${fim}" cssClass="mascaraData validaDataFim" theme="simple"/>
+			<@ww.datepicker label="Inicio" id="inicio" name="colaboradorAfastamento.inicio" value="${inicio}" onchange="calculaDias(null);" required="true" cssClass="mascaraData validaDataIni" theme="simple"/>*
+			a <@ww.datepicker label="Fim" id="fim"  name="colaboradorAfastamento.fim" value="${fim}" cssClass="mascaraData validaDataFim" theme="simple" />
+			<@ww.textfield label="Qtd. dias" name="qtdDias" id="qtdDias" maxLength="3" onkeyup="return calculaDias(event);" cssStyle="width: 22px;"/>
 			<br>
 			<br>
 			<@ww.textfield label="CID" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10" liClass="liLeft" />
