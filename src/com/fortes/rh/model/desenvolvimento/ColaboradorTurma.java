@@ -298,12 +298,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	//usado por findHistoricoTreinamentos
-	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, Long cursoId, String cursoNome, String cargoNome, Long faixaSalarialId, String faixaSalarialNome, Long turmaId, String turmaDescricao, Date turmaDataPrevIni, Date turmaDataPrevFim, String instrutor)
+	public ColaboradorTurma(Long id, Long colaboradorId, String colaboradorNome, Long cursoId, String cursoNome, Integer cursoCargaHoraria, String cargoNome, Long faixaSalarialId, String faixaSalarialNome, Long turmaId, String turmaDescricao, Date turmaDataPrevIni, Date turmaDataPrevFim, String instrutor)
 	{
 		this.setId(id);
 		setColaboradorId(colaboradorId);
 		setColaboradorNome(colaboradorNome);
 		setCursoNome(cursoNome);
+		setProjectionCursoCargaHoraria(cursoCargaHoraria);
 		setCursoId(cursoId);
 		this.colaborador.setCargoNomeProjection(cargoNome);
 		this.colaborador.setFaixaSalarialIdProjection(faixaSalarialId);

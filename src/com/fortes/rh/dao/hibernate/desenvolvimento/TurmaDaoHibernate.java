@@ -22,6 +22,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
@@ -462,7 +463,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		return criteria.list();
 	}
 	
-	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds)
+	 public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds)
 	 {
 		Criteria criteria = getSession().createCriteria(Turma.class,"t");
 		criteria.createCriteria("t.empresa", "e");
@@ -470,14 +471,33 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.setProjection(Projections.sum("t.qtdParticipantesPrevistos"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
-        criteria.add(Expression.in("e.id", empresaIds));
+        criteria.add(Expression.in("e.id", empresasIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
         if(valor == null)
         	return 0;
         else
         	return valor;
-	  }
+	}
+	 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorPresenca.class,"cp");
+		criteria.createCriteria("cp.colaboradorTurma", "ct");
+		criteria.createCriteria("ct.turma", "t");
+		criteria.createCriteria("t.empresa", "e");
+
+        criteria.setProjection(Projections.countDistinct("cp.colaboradorTurma.id"));
+        criteria.add(Expression.ge("t.dataPrevIni", dataIni));
+        criteria.add(Expression.le("t.dataPrevFim", dataFim));
+        criteria.add(Expression.in("e.id", empresasIds));
+
+        Integer valor = (Integer) criteria.uniqueResult();
+        if(valor == null)
+        	return 0;
+        else
+        	return valor;
+	}
 		
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId){
 		

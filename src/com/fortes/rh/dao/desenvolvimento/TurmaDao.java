@@ -22,7 +22,8 @@ public interface TurmaDao extends GenericDao<Turma>
 	public void updateCusto(Long turmaId, double totalCusto);
 	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, Boolean realizada, Long[] empresaIds);
 	public Collection<Turma> findByIdProjection(Long[] ids);
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds);
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds);
 	public Collection<Turma> findByEmpresaOrderByCurso(Long empresaId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmaIds, Date dataIni, Date dataFim, Boolean realizada);

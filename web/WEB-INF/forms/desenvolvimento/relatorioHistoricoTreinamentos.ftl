@@ -30,7 +30,7 @@
 	<@ww.form name="form" action="filtroHistoricoTreinamentos.action" method="POST" id="formBusca">
 
 		<li>
-			<@ww.div cssClass="divInfo" cssStyle="width: 800px;">
+			<@ww.div cssClass="divInfo" cssStyle="width:510px;padding:10px;">
 				<ul>
 					<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 					<@ww.textfield label="Nome Comercial" id="nomeComercial" name="colaborador.nomeComercial" maxLength="100" cssStyle="width: 500px;"/>
