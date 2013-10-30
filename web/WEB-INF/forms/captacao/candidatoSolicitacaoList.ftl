@@ -273,20 +273,29 @@
 			<#assign _observacaoRH= observacaoRH/>		
 		</#if>
 		
-		<button onclick="window.location='../candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action?solicitacao.id=${solicitacao.id}&etapaSeletivaId=${_etapaSeletivaId}&visualizar=${visualizar}&nomeBusca=${_nomeBusca}&indicadoPor=${_indicadoPor}&observacaoRH=${_observacaoRH}'" class="btnImprimir"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_IMPRIMIR">
+			<button onclick="window.location='../candidatoSolicitacao/imprimirListagemCandidatoSolicitacao.action?solicitacao.id=${solicitacao.id}&etapaSeletivaId=${_etapaSeletivaId}&visualizar=${visualizar}&nomeBusca=${_nomeBusca}&indicadoPor=${_indicadoPor}&observacaoRH=${_observacaoRH}'" class="btnImprimir"></button>
+		</@authz.authorize>
 		
-		<#if !solicitacao.encerrada>
-			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRIAGEM">
+			<#if !solicitacao.encerrada>
 				<button class="btnTriagem" onclick="window.location='../candidato/prepareBusca.action?solicitacao.id=${solicitacao.id}'"></button>
-			</@authz.authorize>
-		</#if>
+			</#if>
+		</@authz.authorize>
 		
-		<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO">
+			<button onclick="window.location='../historicoCandidato/prepareInsert.action?solicitacao.id=${solicitacao.id}'" class="btnInserirEtapasEmGrupo" accesskey="M"></button>
+		</@authz.authorize>
 		
-		<button onclick="$('#popupImpressao').dialog({ modal:true });" class="btnResultadoAvaliacao"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO">
+			<button onclick="$('#popupImpressao').dialog({ modal:true });" class="btnResultadoAvaliacao"></button>
+		</@authz.authorize>
 
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO">
 			<button onclick="window.location='prepareMover.action?solicitacao.id=${solicitacao.id}'" class="btnTransferirCandidatos" accesskey="M"></button>
+		</@authz.authorize>
+		
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO">
 			<#if !solicitacao.encerrada>
 				<button onclick="window.location='listTriagem.action?solicitacao.id=${solicitacao.id}'" class="btnTriagemModuloExterno" accesskey="T"></button>
 			</#if>
