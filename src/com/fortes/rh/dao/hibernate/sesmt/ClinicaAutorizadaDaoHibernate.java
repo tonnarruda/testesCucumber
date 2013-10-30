@@ -18,7 +18,7 @@ import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 @SuppressWarnings("unchecked")
 public class ClinicaAutorizadaDaoHibernate extends GenericDaoHibernate<ClinicaAutorizada> implements ClinicaAutorizadaDao
 {
-	public Collection<ClinicaAutorizada> findClinicasAtivasByDataEmpresa(Long empresaId, Date data)
+	public Collection<ClinicaAutorizada> findByDataEmpresa(Long empresaId, Date data, Boolean vigentes)
 	{
 		Criteria criteria = getSession().createCriteria(ClinicaAutorizada.class, "ca");
 
@@ -32,8 +32,16 @@ public class ClinicaAutorizadaDaoHibernate extends GenericDaoHibernate<ClinicaAu
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("ca.empresa.id", empresaId));
-		criteria.add(Expression.le("ca.data", data));
-		criteria.add(Expression.isNull("ca.dataInativa"));
+		
+		if (vigentes != null && vigentes)
+		{
+			criteria.add(Expression.le("ca.data", data));
+			criteria.add(Expression.or(Expression.isNull("ca.dataInativa"), Expression.ge("ca.dataInativa",data)));
+		}
+		else if (vigentes != null && !vigentes)
+		{
+			criteria.add(Expression.or(Expression.gt("ca.data",data), Expression.lt("ca.dataInativa",data)));
+		}
 
 		criteria.addOrder(Order.asc("ca.nome"));
 

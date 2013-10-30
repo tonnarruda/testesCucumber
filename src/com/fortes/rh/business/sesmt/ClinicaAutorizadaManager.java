@@ -8,7 +8,7 @@ import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 
 public interface ClinicaAutorizadaManager extends GenericManager<ClinicaAutorizada>
 {
-	Collection<ClinicaAutorizada> findClinicasAtivasByDataEmpresa(Long empresaId, Date data);
+	Collection<ClinicaAutorizada> findByDataEmpresa(Long empresaId, Date data, Boolean vigentes);
 
 	Collection<ClinicaAutorizada> selecionaPorTipo(Collection<ClinicaAutorizada> clinicasMedicosAutorizadas, String medico);
 

@@ -88,7 +88,7 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		action.setColaborador(ColaboradorFactory.getEntity(1L));
 		
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
-		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
+		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
 		exameManager.expects(once()).method("findPriorizandoExameRelacionado").will(returnValue(new ArrayList<Exame>()));
 		
 		assertEquals("success",action.prepareInsert());
@@ -101,7 +101,7 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		action.setCandidato(CandidatoFactory.getCandidato(1L));
 		
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
-		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
+		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
 		exameManager.expects(once()).method("findByEmpresaComAsoPadrao").will(returnValue(new ArrayList<Exame>()));
 		
 		assertEquals("success",action.prepareInsert());
