@@ -230,6 +230,7 @@ public class TurmaListAction extends MyActionSupportList
 		cursosColaboradores = new HashMap<Curso, Set<Colaborador>>();
 		String[] dados = null;
 		Curso curso = null;
+		Collection<Turma> turmas = null;
 		Colaborador colaborador = null;
 		
 		for (int i = 0; i < colaboradoresCursos.length; i++)
@@ -238,6 +239,9 @@ public class TurmaListAction extends MyActionSupportList
 			
 			colaborador = new Colaborador(dados[1], Long.parseLong(dados[0]));
 			curso = new Curso(Long.parseLong(dados[2]), dados[3]);
+			
+			turmas = turmaManager.findByFiltro(null, null, 'N', new Long[]{ getEmpresaSistema().getId() }, new Long[] { curso.getId() });
+			curso.setTurmas(turmas);
 			
 			if (!cursosColaboradores.containsKey(curso))
 				cursosColaboradores.put(curso, new HashSet<Colaborador>());

@@ -33,7 +33,46 @@
 				var valor = somaDespesas();
 				$('#totalCustos').text(float2moeda(valor));
 			});
+			
+			$('.turma').change(function() {
+				var id = $(this).val();
+				var fset = $(this).closest('fieldset');
+				
+				if (id)
+				{
+					fset.find('input,.listCheckBox').attr('disabled','disabled').css('background','#ececec');
+					TurmaDWR.getTurma(id, populaTurma);
+				}
+				else
+				{
+					fset.find('input,.listCheckBox').removeAttr('disabled').css('background','#fff');
+					fset.find('input').val('');
+					fset.find('.mascaraData').val('  /  /    ');
+					fset.find(':checkbox').removeAttr('checked');
+				}
+			});
 		});
+		
+		function populaTurma(turma)
+		{
+			console.log(turma);
+			
+			var i = $('.fset_' + turma.curso.id).attr('indice');
+			
+			$("#desc" + i).val(turma.descricao);
+			$("#horario" + i).val(turma.horario);
+			$("#inst" + i).val(turma.instrutor);
+			$("#instituicao" + i).val(turma.instituicao);
+			$("#custo" + i).val(turma.custoFormatado);
+			
+			var datas = turma.periodoFormatado.split(' a ');
+			$("#prevIni" + i).val(datas[0]);
+			$("#prevFim" + i).val(datas[1]);
+			
+			$(turma.avaliacaoTurmas).each(function(j, avaliacaoTurma) {
+				$("input[name='avaliacaoTurmasCheck[" + i + "]'][value='" + avaliacaoTurma.id + "']").attr("checked","checked");
+			});
+		}
 	
 		function abrirPopupDespesas(indice) 
 		{
@@ -172,7 +211,7 @@
 		<#assign i = 0/>
 		
 		<#list cursosColaboradores?keys as curso>
-			<fieldset id="fset_${i}">
+			<fieldset id="fset_${i}" class="fset_${curso.id}" indice="${i}">
 				<legend>
 					<a href="javascript:;" onclick="newConfirm('Deseja realmente cancelar a criação da turma para o curso<br /> ${curso.nome}?', function(){ $('#fset_${i}').remove(); });"><img border="0" title="Cancelar criação de turma para este curso" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					Curso: ${curso.nome}
@@ -204,30 +243,48 @@
 					</table>
 				</div>
 				
-				<@ww.hidden name="custos[${i}]" id="custos${i}"/>
-				<@ww.hidden name="turmas[${i}].curso.id" value="${curso.id}"/>
-				
-				<@ww.textfield required="true" label="Descrição" name="turmas[${i}].descricao" id="desc${i}" cssStyle="width: 500px;" maxLength="100"/>
-				<@ww.textfield label="Horário" maxLength="20" name="turmas[${i}].horario" id="horario${i}" liClass="liLeft" />
-				<@ww.textfield required="true" label="Instrutor" name="turmas[${i}].instrutor" id="inst${i}" cssStyle="width: 347px;" maxLength="100"/>
-				<@ww.textfield label="Instituição" maxLength="100" name="turmas[${i}].instituicao" id="instituicao${i}"  cssStyle="width: 385px;" liClass="liLeft"/>
-				<li id="wwgrp_custo">
-					<div class="wwlbl" id="wwlbl_custo${i}">
-						<label class="desc" for="custo${i}"> Custo (R$):<span class="req">* </span></label>
+				<li>
+					<div class="wwlbl">
+						<label class="desc" for="turma${i}"> Turma:<span class="req">* </span></label>
 					</div> 
-					<div class="wwctrl" id="wwctrl_custo${i}">
-						<@ww.textfield theme="simple" id="custo${i}" name="turmas[${i}].custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
-						<a href="javascript:;" id=detalharCusto  onclick="abrirPopupDespesas(${i});" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+					<div class="wwctrl">
+						<select name="turmas[${i}].id" id="turma${i}" class="turma" style="width: 500px;">
+							<option value="">Criar nova</option>
+							<#list curso.turmas as turma>
+								<option value="${turma.id}">${turma.descricao}</option>
+							</#list>
+						</select>
 					</div> 
 				</li>
 				
-				Período:* <br />
-				<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
-				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
-				<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" label="Dias Previstos *" list="diasTurmasCheckList"/>
-				
-				<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList"/>
+				<div class="form_turma">
+					<li>&nbsp;</li>
+					
+					<@ww.hidden name="custos[${i}]" id="custos${i}"/>
+					<@ww.hidden name="turmas[${i}].curso.id" value="${curso.id}"/>
+					
+					<@ww.textfield required="true" label="Descrição" name="turmas[${i}].descricao" id="desc${i}" cssStyle="width: 500px;" maxLength="100"/>
+					<@ww.textfield label="Horário" maxLength="20" name="turmas[${i}].horario" id="horario${i}" liClass="liLeft" />
+					<@ww.textfield required="true" label="Instrutor" name="turmas[${i}].instrutor" id="inst${i}" cssStyle="width: 347px;" maxLength="100"/>
+					<@ww.textfield label="Instituição" maxLength="100" name="turmas[${i}].instituicao" id="instituicao${i}"  cssStyle="width: 385px;" liClass="liLeft"/>
+					<li id="wwgrp_custo">
+						<div class="wwlbl" id="wwlbl_custo${i}">
+							<label class="desc" for="custo${i}"> Custo (R$):<span class="req">* </span></label>
+						</div> 
+						<div class="wwctrl" id="wwctrl_custo${i}">
+							<@ww.textfield theme="simple" id="custo${i}" name="turmas[${i}].custo" cssClass="moeda" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
+							<a href="javascript:;" id=detalharCusto  onclick="abrirPopupDespesas(${i});" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+						</div> 
+					</li>
+					
+					Período:* <br />
+					<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
+					<@ww.label value="a" liClass="liLeft" />
+					<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
+					<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" label="Dias Previstos *" list="diasTurmasCheckList"/>
+					
+					<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList"/>
+				</div>
 			</fieldset>
 
 			<#assign i = i + 1/>

@@ -18,8 +18,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
+import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 
@@ -72,6 +74,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private Double despesaPorTipo;
 	@Transient
 	private char status;
+	@Transient
+	private Collection<AvaliacaoTurma> avaliacaoTurmas;
 
 	public Turma()
 	{
@@ -423,5 +427,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setStatus(char status) {
 		this.status = status;
+	}
+
+	public Collection<AvaliacaoTurma> getAvaliacaoTurmas() {
+		return avaliacaoTurmas;
+	}
+
+	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas) {
+		this.avaliacaoTurmas = avaliacaoTurmas;
 	}
 }

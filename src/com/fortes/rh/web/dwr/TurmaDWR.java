@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CollectionUtil;
@@ -26,6 +27,15 @@ public class TurmaDWR
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
+	public Turma getTurma(Long turmaId)
+	{
+		Turma turma = turmaManager.findByIdProjection(turmaId);
+		Collection<AvaliacaoTurma> avaliacaoTurmas = avaliacaoTurmaManager.findByTurma(turmaId);
+		turma.setAvaliacaoTurmas(avaliacaoTurmas);
+		
+		return turma;
+	}
+	
 	public Map getTurmas(String cursoId)
 	{
 		if(cursoId == null || cursoId.trim().equals(""))
@@ -36,7 +46,6 @@ public class TurmaDWR
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
 	
-	
 	public String enviarAviso(Long turmaId, Long empresaId)
 	{
 		Turma turma = turmaManager.findByIdProjection(turmaId);
@@ -45,7 +54,7 @@ public class TurmaDWR
 		return "Email enviado com sucesso.";
 	}
 
-	public Map getTurmasByFiltro(String dataIni, String dataFim, char realizada, Long empresaId)throws Exception
+	public Map getTurmasByFiltro(String dataIni, String dataFim, char realizada, Long empresaId) throws Exception
 	{
 		Date dataPrevIni = null;
 		Date dataPrevFim = null;
