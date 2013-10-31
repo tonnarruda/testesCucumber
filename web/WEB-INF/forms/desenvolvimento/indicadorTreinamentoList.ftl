@@ -227,7 +227,7 @@
 					</div>
 				
 					<div class="gogDivEsq">
-						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos</div>
+						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos x Presentes</div>
 						<div class="gogDivFormularioX">
 							<div id="frequencia" class="graph" ></div>
 						</div>
