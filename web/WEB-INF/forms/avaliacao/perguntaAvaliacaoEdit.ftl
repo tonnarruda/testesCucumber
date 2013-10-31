@@ -71,9 +71,34 @@
 		{
 			$("#aspecto").val(nome);
 		}
+
+		function validaQtdAlternativasPerguntaObjetiva()
+		{
+			if($("#tipo").val() == ${tipoPerguntas.getObjetiva()})
+			{
+				var i = 1;
+				alertar = ($('#maisRespostas > div').size() == 0);
+
+				$('#maisRespostas > div').each(function(){
+					var id = 'ro_' + i++; 
+					alertar = ($('#' + id).val() == '');
+				});
+				
+				if(alertar)
+				{
+					jAlert('Perguntas objetivas têm que possuir no mínimo 2 alternativas.');
+					return false;
+				}
+				
+				return true;
+			}
+		}
 		
 		function validaForm()
 		{
+			if(!validaQtdAlternativasPerguntaObjetiva())
+				return false;
+					
 			if(document.getElementById("tipo").value == ${tipoPerguntas.getNota()})
 			{
 				return validaFormulario('form', new Array('pergunta','notaMaxima','notaMinima'), null);

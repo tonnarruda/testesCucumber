@@ -170,6 +170,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		try 
 		{
 			colaboradores = colaboradorQuestionarioManager.findRespondidasBySolicitacao(solicitacao.getId(), colaboradorQuestionario.getAvaliacao().getId());
+			
+			if(colaboradores != null && colaboradores.size() == 0)
+			{
+				setActionMsg("Não existe resultado para essa avaliação");
+				return Action.INPUT;
+			}
+			
 			Avaliacao modelo = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
 			
 			String filtro = "Modelo de Avaliação: " + modelo.getTitulo();
