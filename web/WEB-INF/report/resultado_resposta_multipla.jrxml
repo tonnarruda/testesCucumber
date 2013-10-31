@@ -56,7 +56,6 @@
 	</pageFooter>
 	<summary>
 		<band height="116" splitType="Stretch">
-			<printWhenExpression><![CDATA[new Boolean($P{TOTAL_COLAB_RESP}.intValue() > 1)]]></printWhenExpression>
 			<barChart>
 				<chart isShowLegend="false" evaluationTime="Report" customizerClass="com.fortes.report.BarChartCustomizer">
 					<reportElement uuid="36925ee4-c151-4d52-a0f2-a077c62f0a6d" key="element-4" isPrintRepeatedValues="false" x="6" y="5" width="512" height="105" isPrintWhenDetailOverflows="true"/>
