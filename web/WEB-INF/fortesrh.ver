@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.119.135" data="04/11/2013">
+		<Modulo nome=" "><![CDATA[
+			:: T&D > Relatórios > Histórico de Treinamentos: Inclusão de coluna no relatório com a carga horária do curso.
+			:: T&D > Painel de Indicadores: Novo indicador com a quantidade de pessoas presentes para o gráfico "Qtd. Prevista de Participantes x Inscritos X Presentes".
+			:: T&D > Painel de Indicadores: Novo filtro por curso.
+			:: SESMT > Movimentações > Afastamentos: Nova opção de cálculo de período pela quantidade de dias.
+			:: Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de acessos aos botões em "Candidatos da Seleção".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.119.134" data="28/10/2013">
 		<Modulo nome=" "><![CDATA[
 			:: T&D > Relatórios > Colaboradores com Treinamentos: Novo filtro por período de realização da turma.
