@@ -30,11 +30,35 @@
 				elemInss.style.display="none";
 		}
 		
-		
 		function limpar(data)
 		{
 			if(data == '' || data.length < 6)
 				$("#descricaoCid").val('');
+		}
+		
+		function calculaDias(event)
+		{
+			$('#inicio').css('background','#FFF');
+		
+			if(event != null && !somenteNumeros(event,','))
+				return false;
+				
+			var qtdDias = $('#qtdDias').val().replace(/\s/g, ''); 
+			if(qtdDias == '' || qtdDias <= 0)
+				return false;
+			
+			var dtInicio = document.getElementById('inicio');
+			if(dtInicio.value == '  /  /    ' || !validaDate(dtInicio))
+			{
+				jAlert('Data inicial inválida.');
+				$('#inicio').css('background','#FF6347');
+				
+				return false;
+			} 
+			
+			$('#fim').val(somaDias(dtInicio.value, qtdDias-1));
+		
+			return true;			
 		}
 		
 		$(document).ready(function() {
@@ -182,27 +206,34 @@
 			</#if>
 
 			<#if (colaboradors?exists && colaboradors?size > 0)>
-				<@ww.select label="Colaborador" name="colaboradorAfastamento.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula "/>
+				<@ww.select label="Colaborador" name="colaboradorAfastamento.colaborador.id" id="colaborador" required="true" list="colaboradors" listKey="id" listValue="nomeCpfMatricula" cssStyle="width:500px"/>
 			</#if>
 
-			<@ww.select label="Motivo" name="colaboradorAfastamento.afastamento.id" id="tipo" required="true" onchange="isInss(this.value);" list="afastamentos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..."/>
+			<@ww.select label="Motivo" name="colaboradorAfastamento.afastamento.id" id="tipo" required="true" onchange="isInss(this.value);" list="afastamentos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width:500px"/>
 
-			<@ww.div id="inss" delay="1" cssClass="divInfoSemBackground" cssStyle="width: 225px; ${displayDivInss}">
-			Motivo de afastamento pelo INSS
+			<@ww.div id="inss" delay="1" cssStyle="color:red;width:500px;${displayDivInss}">
+				Motivo de afastamento pelo INSS
 			</@ww.div>
 
-			<br>Período:
-			<br>
-			<@ww.datepicker label="Inicio" id="inicio" name="colaboradorAfastamento.inicio" value="${inicio}" required="true" cssClass="mascaraData validaDataIni" theme="simple"/>*
-			a <@ww.datepicker label="Fim" id="fim"  name="colaboradorAfastamento.fim" value="${fim}" cssClass="mascaraData validaDataFim" theme="simple"/>
-			<br>
-			<br>
-			<@ww.textfield label="CID" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10" liClass="liLeft" />
-			<@ww.textfield label="Descrição" name="descricao" id="descricaoCid" cssStyle="width: 418px;" maxLength="200"  />
+			<br clear="all"/>
 			
-			<@ww.textfield label="Médico" name="colaboradorAfastamento.medicoNome" cssClass="inputNome"/>
+			<li id="wwgrp_periodo" class="liLeft">
+				<div id="wwlbl_periodo" class="wwlbl">
+					<label class="desc" for="periodo">Período:</label>
+				</div>
+				<div id="wwctrl_periodo" class="wwctrl">
+					<@ww.datepicker label="Inicio" id="inicio" name="colaboradorAfastamento.inicio" value="${inicio}" onblur="calculaDias(null);" onchange="calculaDias(null);" required="true" cssClass="mascaraData validaDataIni" theme="simple"/>*
+					a <@ww.datepicker label="Fim" id="fim"  name="colaboradorAfastamento.fim" value="${fim}" cssClass="mascaraData validaDataFim" theme="simple" />
+				</div>
+			</li>
+			<@ww.textfield label="Qtd. dias" name="qtdDias" id="qtdDias" maxLength="3" onkeyup="return calculaDias(event);" cssStyle="width: 22px;"/>
+			
+			<@ww.textfield label="CID" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10" liClass="liLeft" />
+			<@ww.textfield label="Descrição" name="descricao" id="descricaoCid" cssStyle="width: 416px;" maxLength="200"  />
+			
+			<@ww.textfield label="Médico" name="colaboradorAfastamento.medicoNome" cssClass="inputNome" cssStyle="width: 350px;" liClass="liLeft"/>
 			<@ww.textfield label="CRM" name="colaboradorAfastamento.medicoCrm" maxLength="20"/>
-			<@ww.textarea label="Observações" name="colaboradorAfastamento.observacao" cssStyle="width: 505px;"/>
+			<@ww.textarea label="Observações" name="colaboradorAfastamento.observacao" cssStyle="width: 500px;"/>
 
 			<@ww.hidden name="colaboradorAfastamento.id" />
 			<@ww.token/>

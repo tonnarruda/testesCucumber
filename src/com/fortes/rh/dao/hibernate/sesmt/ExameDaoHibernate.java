@@ -234,7 +234,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= se.data  and hc2.status = :status ");
+		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 	
 		hql.append("ORDER BY e.nome ASC, clinica.id ASC, se.data ASC ");
@@ -263,7 +263,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			query.setString("motivo", solicitacaoMotivo);
 		
 		if (StringUtils.isNotBlank(exameResultado))
-		query.setString("resultado", exameResultado);
+			query.setString("resultado", exameResultado);
 		
 		return query.list();
 	}

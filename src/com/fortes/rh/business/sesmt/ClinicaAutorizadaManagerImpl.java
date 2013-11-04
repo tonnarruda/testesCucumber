@@ -11,9 +11,9 @@ import com.fortes.rh.util.StringUtil;
 
 public class ClinicaAutorizadaManagerImpl extends GenericManagerImpl<ClinicaAutorizada, ClinicaAutorizadaDao> implements ClinicaAutorizadaManager
 {
-	public Collection<ClinicaAutorizada> findClinicasAtivasByDataEmpresa(Long empresaId, Date data)
+	public Collection<ClinicaAutorizada> findByDataEmpresa(Long empresaId, Date data, Boolean vigentes)
 	{
-		return getDao().findClinicasAtivasByDataEmpresa(empresaId, data);
+		return getDao().findByDataEmpresa(empresaId, data, vigentes);
 	}
 
 	public Collection<ClinicaAutorizada> selecionaPorTipo(Collection<ClinicaAutorizada> clinicasMedicosAutorizadas, String tipo)

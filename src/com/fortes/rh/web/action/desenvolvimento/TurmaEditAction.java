@@ -202,7 +202,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (turma != null && turma.getId() != null)
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
 
-		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
@@ -341,7 +341,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public String prepareImprimirCertificado() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		certificacaos = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}

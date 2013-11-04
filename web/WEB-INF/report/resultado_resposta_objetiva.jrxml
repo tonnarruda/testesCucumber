@@ -58,10 +58,9 @@
 	</pageFooter>
 	<summary>
 		<band height="102" splitType="Stretch">
-			<printWhenExpression><![CDATA[new Boolean($P{TOTAL_COLAB_RESP}.intValue() > 1)]]></printWhenExpression>
 			<pie3DChart>
 				<chart isShowLegend="false">
-					<reportElement uuid="43f83135-dcb0-4ee4-9eb7-8bbc89896f77" key="element-2" mode="Opaque" x="51" y="-1" width="426" height="102" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+					<reportElement uuid="43f83135-dcb0-4ee4-9eb7-8bbc89896f77" key="element-2" mode="Opaque" x="51" y="-1" width="426" height="102" isPrintInFirstWholeBand="true"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>

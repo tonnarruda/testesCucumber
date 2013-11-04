@@ -8,6 +8,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
@@ -16,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
@@ -77,18 +79,20 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		action.setUsuarioLogado(usuarioLogado);
 		
 		empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(compartilharCandidato), eq(empresaId), eq(usuarioLogado.getId()), ANYTHING).will(returnValue(Arrays.asList(empresa)));
-		cursoManager.expects(once()).method("montaIndicadoresTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(indicadorTreinamento));
-		cursoManager.expects(once()).method("findQtdColaboradoresInscritosTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Integer(2)));
-		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Integer(2)));
-		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new Double(0.0)));
-		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(new ArrayList<TipoDespesa>()));
-		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), ANYTHING).will(returnValue(new Integer(3)));
-		cursoManager.expects(once()).method("countTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), ANYTHING).will(returnValue(new Integer(2)));
+		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
+		cursoManager.expects(once()).method("montaIndicadoresTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null)).will(returnValue(indicadorTreinamento));
+		cursoManager.expects(once()).method("findQtdColaboradoresInscritosTreinamentos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null)).will(returnValue(new Integer(2)));
+		turmaManager.expects(once()).method("quantidadeParticipantesPrevistos").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null)).will(returnValue(new Integer(2)));
+		turmaManager.expects(once()).method("quantidadeParticipantesPresentes").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}),eq(null)).will(returnValue(new Integer(2)));
+		turmaManager.expects(once()).method("somaCustosNaoDetalhados").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new Double(0.0)));
+		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new ArrayList<TipoDespesa>()));
+		cursoManager.expects(once()).method("countTreinamentos").with(new Constraint[] {ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null), ANYTHING}).will(returnValue(new Integer(3)));
+		cursoManager.expects(once()).method("countTreinamentos").with(new Constraint[] {ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null), ANYTHING}).will(returnValue(new Integer(2)));
 		
 		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
 		resultados.put("qtdAprovados", 5);
 		resultados.put("qtdReprovados", 1);
-		colaboradorTurmaManager.expects(once()).method("getResultado").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(resultados));
+		colaboradorTurmaManager.expects(once()).method("getResultado").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(resultados));
 		
 		assertEquals("success", action.list());
 		

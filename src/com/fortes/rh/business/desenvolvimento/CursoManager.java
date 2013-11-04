@@ -16,9 +16,9 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findAllSelect(Long empresaId);
 	public String getConteudoProgramatico(Long id);
 	public Collection<Curso> findByCertificacao(Long certificacaoId);
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Boolean realizado);
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds)throws Exception;
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
@@ -27,12 +27,12 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findCursosSemTurma(Long empresaId);
 	public String somaCargaHoraria(Collection<Turma> turmas);
 	public Collection<Curso> findByIdProjection(Long[] cursoIds);
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds);
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId);
 	public Collection<Curso> populaCursos(Long[] cursosCheckIds);
 	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia);
-	public Collection<Curso> findAllByEmpresaParticipante(Long empresaId);
+	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds);
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId);
 }

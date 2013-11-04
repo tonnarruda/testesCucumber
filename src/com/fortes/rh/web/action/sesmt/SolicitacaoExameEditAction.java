@@ -135,7 +135,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		}
 
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
-		clinicaAutorizadas = clinicaAutorizadaManager.findClinicasAtivasByDataEmpresa(getEmpresaSistema().getId(), hoje);
+		clinicaAutorizadas = clinicaAutorizadaManager.findByDataEmpresa(getEmpresaSistema().getId(), hoje, true);
 
 		if (colaborador != null && colaborador.getId() != null)
 			exames = exameManager.findPriorizandoExameRelacionado(getEmpresaSistema().getId(), colaborador.getId());

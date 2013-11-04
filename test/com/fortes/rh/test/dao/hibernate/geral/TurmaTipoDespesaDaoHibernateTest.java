@@ -146,8 +146,8 @@ public class TurmaTipoDespesaDaoHibernateTest extends GenericDaoHibernateTest<Tu
 		turmaTipoDespesa3.setDespesa(75.0);
 		turmaTipoDespesaDao.save(turmaTipoDespesa3);
 		
-		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()});
-		Collection<TipoDespesa> tipoDespesasOutraEmpresa = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{1111111111111L});
+		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()}, null);
+		Collection<TipoDespesa> tipoDespesasOutraEmpresa = turmaTipoDespesaDao.somaDespesasPorTipo(dataIni, dataFim, new Long[]{1111111111111L}, null);
 		
 		assertEquals(2, tipoDespesas.size());
 		assertEquals(350.0, ((TipoDespesa)tipoDespesas.toArray()[0]).getTotalDespesas());

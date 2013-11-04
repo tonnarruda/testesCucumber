@@ -223,8 +223,8 @@ public class TurmaManagerTest extends MockObjectTestCase
 
 	public void testFindByFiltro() throws Exception
 	{
-		turmaDao.expects(once()).method("findByFiltro").with(eq(null), eq(null), eq(null), eq(null)).will(returnValue(new ArrayList<Turma>()));
-		turmaManager.findByFiltro(null, null, 'T', null);
+		turmaDao.expects(once()).method("findByFiltro").withAnyArguments().will(returnValue(new ArrayList<Turma>()));
+		turmaManager.findByFiltro(null, null, 'T', null, null);
 	}
 
 	public void testFindByIdProjectionArray() throws Exception
@@ -499,9 +499,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Collection<Turma> turmas = new ArrayList<Turma>();
 		turmas.add(turma);
 		
-		turmaDao.expects(once()).method("quantidadeParticipantesPrevistos").with(eq(dataTresMesesAtras.getTime()), eq(dataDoisMesesAtras.getTime()),eq(new Long[]{empresa.getId()})).will(returnValue(new Integer (1)));
+		turmaDao.expects(once()).method("quantidadeParticipantesPrevistos").with(eq(dataTresMesesAtras.getTime()), eq(dataDoisMesesAtras.getTime()),eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new Integer (1)));
 
-		assertEquals(new Integer(1), turmaManager.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),new Long[]{empresa.getId()}));
+		assertEquals(new Integer(1), turmaManager.quantidadeParticipantesPrevistos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(),new Long[]{empresa.getId()}, null));
 	}
 	
 	public void testClonarTurmaAndCursoEntreEmpresas() 

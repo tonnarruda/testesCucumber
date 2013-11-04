@@ -84,7 +84,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		}
 
 
-		if(getActionMsg() != null && !getActionMsg().equals(""))
+		if(getActionMsg() != null && !getActionMsg().equals("") && (getActionMessages() != null && getActionMessages().toArray()[0].equals("")))
 		{
 			addActionError(getActionMsg());
 			getActionMessages().clear();

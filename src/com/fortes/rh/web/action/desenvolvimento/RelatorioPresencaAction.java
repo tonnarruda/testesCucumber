@@ -201,7 +201,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public String prepareRelatorio()
 	{
-		cursos = cursoManager.findAllByEmpresaParticipante(getEmpresaSistema().getId());
+		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		diasCheckList = new ArrayList<CheckBox>();
 		return Action.SUCCESS;
 	}

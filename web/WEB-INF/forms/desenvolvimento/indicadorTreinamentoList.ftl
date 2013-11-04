@@ -26,6 +26,9 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	
 	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
@@ -50,11 +53,13 @@
 		$(function () {
 	        var participantes = ${grfFrequenciaParticipantes};
 	        var inscritos = ${grfFrequenciaInscritos};
+	        var presentes = ${grfFrequenciaPresentes};
 		    
 		    $.plot($("#frequencia"), 
 		    		[
 				        {label: 'Qtd. Prev. de Participantes (' + participantes[0][1] + ')', data: participantes},
-				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos}
+				        {label: 'Inscritos (' + inscritos[0][1] + ')', data: inscritos},
+				        {label: 'Presentes (' + presentes[0][1] + ')', data: presentes}
 				    ], 
 		    		{
 		    			series: {
@@ -65,6 +70,11 @@
 			                }
 				        },
 				        grid: { hoverable: true },
+				        legend: {
+		                    position: "nw", // position of default legend container within plot
+		                    backgroundColor: null, // null means auto-detect
+		                    backgroundOpacity: 0 // set to 0 to avoid background
+		                },
 				        xaxis: {
 				        	ticks: [],
 				        	autoscaleMargin: 0.6
@@ -149,6 +159,17 @@
 		{
 			return '<span class="legend">' + label + ' &#x2013; '+ (isNaN(series.percent) ? 0 : series.percent.toFixed(2)) + '% (R$ '+ series.datapoints.points[1].toFixed(2).replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.') + ')</span>';
 		}
+		
+		function populaCursos()
+		{
+			var empresasIds = getArrayCheckeds(document.getElementById('formBusca'), 'empresasCheck');
+			CursoDWR.getCursosByEmpresasParticipantes(empresasIds, 'ROLE_TED_PAINEL_IND', createListCursos);
+		}
+		
+		function createListCursos(data)
+		{
+			addChecksByMap("cursosCheck", data);
+		}
 	</script>
 
 	<#if indicadorTreinamento?exists && indicadorTreinamento.dataIni?exists>
@@ -171,7 +192,8 @@
 			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')"/>
+			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaCursos()" width="470" liClass="liLeft"/>
+			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" width="470" liClass="liLeft"/>
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
@@ -205,7 +227,7 @@
 					</div>
 				
 					<div class="gogDivEsq">
-						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos</div>
+						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos x Presentes</div>
 						<div class="gogDivFormularioX">
 							<div id="frequencia" class="graph" ></div>
 						</div>

@@ -51,7 +51,7 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		action.setCertificacao(certificacao);
 		
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
-		cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(eq(empresa.getId())).will(returnValue(new ArrayList<Curso>()));
+		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
 		
 		assertEquals("success", action.prepareInsert());
 	}
@@ -78,7 +78,7 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		
 		certificacaoManager.expects(once()).method("verificaEmpresa").with(eq(certificacao.getId()), eq(empresa.getId())).will(returnValue(true));
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
-		cursoManager.expects(once()).method("findAllByEmpresaParticipante").with(eq(empresa.getId())).will(returnValue(new ArrayList<Curso>()));
+		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
 		
 		assertEquals("success", action.prepareUpdate());
 	}

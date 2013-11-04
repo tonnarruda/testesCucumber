@@ -36,7 +36,7 @@ public class ClinicaAutorizadaManagerTest extends MockObjectTestCase
         super.tearDown();
     }
 
-	public void testFindClinicasAtivasByDataEmpresa() throws Exception
+	public void testFindByDataEmpresa() throws Exception
 	{
 		ClinicaAutorizada clinica = new ClinicaAutorizada();
 		clinica.setId(1L);
@@ -50,9 +50,9 @@ public class ClinicaAutorizadaManagerTest extends MockObjectTestCase
 
 		Date data = new Date();
 
-		clinicaAutorizadaDao.expects(once()).method("findClinicasAtivasByDataEmpresa").with(eq(empresa.getId()), eq(data)).will(returnValue(clinicas));
+		clinicaAutorizadaDao.expects(once()).method("findByDataEmpresa").with(eq(empresa.getId()), eq(data), eq(true)).will(returnValue(clinicas));
 
-		Collection<ClinicaAutorizada> clinicasRetorno = clinicaAutorizadaManager.findClinicasAtivasByDataEmpresa(empresa.getId(), data);
+		Collection<ClinicaAutorizada> clinicasRetorno = clinicaAutorizadaManager.findByDataEmpresa(empresa.getId(), data, true);
 
 		assertEquals(1, clinicasRetorno.size());
 	}

@@ -982,7 +982,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.id, co.nome, c.id, c.nome, ca.nome, fs.id, fs.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.instrutor) ");
+		hql.append("select new ColaboradorTurma(ct.id, co.id, co.nome, c.id, c.nome, c.cargaHoraria, ca.nome, fs.id, fs.nome, t.id, t.descricao, t.dataPrevIni, t.dataPrevFim, t.instrutor) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("left join co.historicoColaboradors as hc ");
@@ -1089,7 +1089,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
 	{
 		StringBuilder sql = new StringBuilder();		
 		
@@ -1130,8 +1130,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("              on rct.colaboradorturma_id = ct.id ");
 		sql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim and t.realizada = :realizada and t.id is not null ");
 		
-		if(empresaIds != null)
+		if (LongUtil.isNotEmpty(empresaIds))
 			sql.append("and c.empresa_id in (:empresaIds) ");
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			sql.append("and c.id in (:cursoIds) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
@@ -1139,8 +1142,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setDate("dataFim", dataFim);
 		query.setBoolean("realizada", true);
 		
-		if(empresaIds != null)
+		if (LongUtil.isNotEmpty(empresaIds))
 			query.setParameterList("empresaIds", empresaIds);
+		
+		if (LongUtil.isNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		

@@ -1169,20 +1169,20 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("turmaManager", turmaManager);
 		MockSpringUtil.mocks.put("diaTurmaManager", diaTurmaManager);
 
-		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()})).will(returnValue(turmas));
+		turmaManager.expects(once()).method("findByFiltro").with(new Constraint[] {ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()}), eq(null)}).will(returnValue(turmas));
 		colaboradorManager.expects(atLeastOnce()).method("qtdColaboradoresByTurmas").with(eq(turmaIds)).will(returnValue(colaboradores.size()));
 		diaTurmaManager.expects(atLeastOnce()).method("qtdDiasDasTurmas").with(eq(turma.getId())).will(returnValue(new Integer(2)));
 		colaboradorPresencaManager.expects(once()).method("qtdDiaPresentesTurma").with(eq(turma.getId())).will(returnValue(new Integer(1)));
 		
-		assertEquals(50.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}));
+		assertEquals(50.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}, null));
 
 		// quando colaboradores retornar 0 ( divisão por zero)
-		turmaManager.expects(once()).method("findByFiltro").with(ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()})).will(returnValue(turmas));
+		turmaManager.expects(once()).method("findByFiltro").with(new Constraint[] {ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()}), eq(null)}).will(returnValue(turmas));
 		colaboradorManager.expects(atLeastOnce()).method("qtdColaboradoresByTurmas").with(eq(turmaIds)).will(returnValue(new Integer(0)));
 		diaTurmaManager.expects(atLeastOnce()).method("qtdDiasDasTurmas").with(eq(turma.getId())).will(returnValue(new Integer(2)));
 		colaboradorPresencaManager.expects(once()).method("qtdDiaPresentesTurma").with(eq(turma.getId())).will(returnValue(new Integer(1)));
 		
-		assertEquals(100.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}));
+		assertEquals(100.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}, null));
 	}
 	
 	public void testMontaCertificados() 

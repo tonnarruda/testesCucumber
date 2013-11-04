@@ -253,7 +253,7 @@ public class ExameListAction extends MyActionSupportList
 		
 		motivos = MotivoSolicitacaoExame.getInstance();
 		
-		clinicas = clinicaAutorizadaManager.findClinicasAtivasByDataEmpresa(getEmpresaSistema().getId(), hoje);
+		clinicas = clinicaAutorizadaManager.findByDataEmpresa(getEmpresaSistema().getId(), hoje, null);
 		
 		return SUCCESS;
 	}

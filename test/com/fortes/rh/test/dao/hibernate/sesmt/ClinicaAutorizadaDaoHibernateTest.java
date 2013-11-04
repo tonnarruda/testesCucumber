@@ -46,7 +46,7 @@ public class ClinicaAutorizadaDaoHibernateTest extends GenericDaoHibernateTest<C
 	}
 
 	@SuppressWarnings("deprecation")
-	public void testFindClinicasAtivasByDataEmpresa()
+	public void testFindByDataEmpresa()
 	{
 		Empresa empresa1 = new Empresa();
 		empresa1.setNome("fortes");
@@ -66,6 +66,8 @@ public class ClinicaAutorizadaDaoHibernateTest extends GenericDaoHibernateTest<C
 		clinica1.setData(new Date("2007/01/01"));
 
 		ClinicaAutorizada clinica2 = new ClinicaAutorizada();
+		clinica2.setEmpresa(empresa1);
+		clinica2.setData(new Date("2007/01/01"));
 		clinica2.setDataInativa(new Date("2007/10/01"));
 
 		ClinicaAutorizada clinica3 = new ClinicaAutorizada();
@@ -83,6 +85,7 @@ public class ClinicaAutorizadaDaoHibernateTest extends GenericDaoHibernateTest<C
 		ClinicaAutorizada clinica6 = new ClinicaAutorizada();
 		clinica6.setEmpresa(empresa2);
 		clinica6.setData(new Date("2007/01/01"));
+		clinica6.setDataInativa(new Date("2008/01/01"));
 
 		clinicaAutorizadaDao.save(clinica1);
 		clinicaAutorizadaDao.save(clinica2);
@@ -91,9 +94,9 @@ public class ClinicaAutorizadaDaoHibernateTest extends GenericDaoHibernateTest<C
 		clinicaAutorizadaDao.save(clinica5);
 		clinicaAutorizadaDao.save(clinica6);
 
-		Collection<ClinicaAutorizada> clinicaAutorizadas = clinicaAutorizadaDao.findClinicasAtivasByDataEmpresa(empresa1.getId(), new Date("2008/01/01"));
-
-		assertEquals(3, clinicaAutorizadas.size());
+		assertEquals("Vigentes e não vigentes", 5, clinicaAutorizadaDao.findByDataEmpresa(empresa1.getId(), new Date("2008/01/01"), null).size());
+		assertEquals("Somente vigentes", 3, clinicaAutorizadaDao.findByDataEmpresa(empresa1.getId(), new Date("2008/01/01"), true).size());
+		assertEquals("Somente não vigentes", 2, clinicaAutorizadaDao.findByDataEmpresa(empresa1.getId(), new Date("2008/01/01"), false).size());
 	}
 
 	public void testFindByExame()

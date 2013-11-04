@@ -342,7 +342,7 @@ public class ExameListActionTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").with(eq(empresaId), ANYTHING).will(returnValue(new ArrayList<ClinicaAutorizada>()));
+		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").with(eq(empresaId), ANYTHING, eq(null)).will(returnValue(new ArrayList<ClinicaAutorizada>()));
 		exameManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
 
 		assertEquals("success", action.prepareRelatorioExamesRealizados());
@@ -385,7 +385,7 @@ public class ExameListActionTest extends MockObjectTestCase
 
 		//prepare
 		estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
-		clinicaAutorizadaManager.expects(once()).method("findClinicasAtivasByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
+		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
 		exameManager.expects(once()).method("populaCheckBox").with(eq(empresaId)).will(returnValue(new ArrayList<CheckBox>()));
 
 		assertEquals("input", action.relatorioExamesRealizados());

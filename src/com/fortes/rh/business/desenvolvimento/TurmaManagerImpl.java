@@ -258,9 +258,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		getDao().updateRealizada(turmaId, realizada);
 	}
 
-	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long[] empresaIds)
+	public Collection<Turma> findByFiltro(Date dataPrevIni, Date dataPrevFim, char realizada, Long[] empresaIds, Long[] cursoIds)
 	{
-		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaIds);
+		return getDao().findByFiltro(dataPrevIni, dataPrevFim, realizadaValue(realizada), empresaIds, cursoIds);
 	}
 	
 	public Collection<Turma> findByCursos(Long[] cursoIds)
@@ -290,9 +290,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return (respondidas == null) ? false : (respondidas.size() > 0);
 	}
 	
-	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds) 
 	{
-		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresaIds);
+		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresasIds, cursosIds);
+	}
+	
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds) 
+	{
+		return getDao().quantidadeParticipantesPresentes(dataIni, dataFim, empresasIds, cursosIds);
 	}
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada) 
@@ -305,9 +310,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		getDao().updateCusto(turmaId, totalCusto);
 	}
 
-	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
 	{
-		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaIds);
+		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaIds, cursoIds);
 	}
 
 	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds) 
