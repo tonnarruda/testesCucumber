@@ -466,7 +466,6 @@ public class DateUtil
 
 	public static Date montaDataByString(String dataStr)
 	{
-		
 		boolean invalida = isDataInvalida(dataStr);
 		if (invalida)
 			return null;
@@ -476,11 +475,13 @@ public class DateUtil
 			throw new IllegalArgumentException("Data inválida.");
 		
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			sdf.setTimeZone(TimeZone.getTimeZone("America/Fortaleza")); // evita problemas com horário de verão
-			Date result = sdf.parse(dataStr);
-			return result;
-		} catch (ParseException e) {
+			String[] parteData = dataStr.split("/");
+			
+			Calendar c = Calendar.getInstance();
+			c.set(Integer.parseInt(parteData[2]), Integer.parseInt(parteData[1])-1, Integer.parseInt(parteData[0]), 0, 0, 0);
+
+			return c.getTime();
+		} catch (Exception e) {
 			throw new IllegalArgumentException("Data inválida.");
 		}
 		
