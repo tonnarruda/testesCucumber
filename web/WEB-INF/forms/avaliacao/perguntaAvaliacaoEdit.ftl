@@ -92,6 +92,8 @@
 				
 				return true;
 			}
+			
+			return true;
 		}
 		
 		function validaForm()
