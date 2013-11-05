@@ -50,7 +50,9 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private boolean realizada = false;
 	private Integer qtdParticipantesPrevistos;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
-	private Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas; 
+	private Collection<DiaTurma> diasTurma;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
+	private Collection<TurmaAvaliacaoTurma> turmaAvaliacaoTurmas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
@@ -435,5 +437,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas) {
 		this.avaliacaoTurmas = avaliacaoTurmas;
+	}
+
+	public Collection<DiaTurma> getDiasTurma() {
+		return diasTurma;
+	}
+
+	public void setDiasTurma(Collection<DiaTurma> diasTurma) {
+		this.diasTurma = diasTurma;
 	}
 }

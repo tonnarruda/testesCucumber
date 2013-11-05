@@ -60,6 +60,7 @@
 	</bean>
 	<bean id="turmaDWR" class="com.fortes.rh.web.dwr.TurmaDWR">
 		<property name="turmaManager" ref="turmaManager"/>
+		<property name="diaTurmaManager" ref="diaTurmaManager"/>
 		<property name="avaliacaoTurmaManager" ref="avaliacaoTurmaManager"/>
 		<property name="turmaAvaliacaoTurmaManager" ref="turmaAvaliacaoTurmaManager"/>
 		<property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager"/>

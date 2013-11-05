@@ -172,10 +172,11 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	// findByTurma
-	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj, Integer qtdRespostasAvaliacaoTurma)
+	public ColaboradorTurma(Long id, Long prioridadeTreinamentoId, Long turmaId, Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, String colaboradorCPF,Long areaOrganizacionalId, String areaOrganizacionalNome, boolean aprovado, Estabelecimento estabelecimento, String faixaSalarialNome, String cargoNome, Long empresaId, String empresaNome, String empresaRazaoSocial, String empresaCnpj, Integer qtdRespostasAvaliacaoTurma)
 	{
 		this.setId(id);
-
+		this.setTurmaId(turmaId);
+		
 		this.aprovado = aprovado;
 		this.qtdRespostasAvaliacaoTurma = qtdRespostasAvaliacaoTurma;
 

@@ -4,13 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CollectionUtil;
@@ -22,6 +23,7 @@ public class TurmaDWR
 	private final Boolean BLOQUEADA = false;
 	
 	private TurmaManager turmaManager;
+	private DiaTurmaManager diaTurmaManager;
 	private AvaliacaoTurmaManager avaliacaoTurmaManager;
 	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
@@ -30,6 +32,10 @@ public class TurmaDWR
 	public Turma getTurma(Long turmaId)
 	{
 		Turma turma = turmaManager.findByIdProjection(turmaId);
+		
+		Collection<DiaTurma> diasTurma = diaTurmaManager.findByTurma(turmaId);
+		turma.setDiasTurma(diasTurma);
+		
 		Collection<AvaliacaoTurma> avaliacaoTurmas = avaliacaoTurmaManager.findByTurma(turmaId);
 		turma.setAvaliacaoTurmas(avaliacaoTurmas);
 		
@@ -171,5 +177,9 @@ public class TurmaDWR
 
 	public void setTurmaAvaliacaoTurmaManager(TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager) {
 		this.turmaAvaliacaoTurmaManager = turmaAvaliacaoTurmaManager;
+	}
+
+	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) {
+		this.diaTurmaManager = diaTurmaManager;
 	}
 }

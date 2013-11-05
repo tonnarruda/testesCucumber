@@ -25,6 +25,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
@@ -260,18 +261,36 @@ public class TurmaListAction extends MyActionSupportList
 		
 		try 
 		{
+			if (turmas == null || turmas.isEmpty())
+				throw new ColecaoVaziaException("O PDI não foi concluído por não haver turmas configuradas.");
+			
 			for (Turma turma : turmas) 
 			{
-				if (turma != null) {
-					turma.setEmpresa(getEmpresaSistema());
-					diasCheck = (String[]) diasTurmasCheck.toArray()[i];
-					custosTurma = (String) custos.toArray()[i];
-
-					Long[] avaliacoesCheck = null;
-					if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
-						avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
-
-					turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck);
+				if (turma != null && turma.getColaboradorTurmas() != null) 
+				{
+					if (turma.getId() != null)
+					{
+						Long[] colaboradoresIds = new Long[ turma.getColaboradorTurmas().size() ];
+						int j = 0;
+						
+						for (ColaboradorTurma cTurma : turma.getColaboradorTurmas())
+							colaboradoresIds[j++] = cTurma.getColaborador().getId();
+						
+						Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, null, null);
+						colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresIds, colaboradoresTurmas, turma, null, 0, null);
+					}
+					else
+					{
+						turma.setEmpresa(getEmpresaSistema());
+						diasCheck = (String[]) diasTurmasCheck.toArray()[i];
+						custosTurma = (String) custos.toArray()[i];
+	
+						Long[] avaliacoesCheck = null;
+						if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
+							avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
+	
+						turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck);
+					}
 				}
 				
 				i++;
@@ -279,7 +298,13 @@ public class TurmaListAction extends MyActionSupportList
 			
 			addActionSuccess("Turmas criadas com sucesso");
 		
-		} catch (Exception e) 
+		} 
+		catch (ColecaoVaziaException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+		} 
+		catch (Exception e) 
 		{
 			e.printStackTrace();
 			addActionError("Ocorreu um erro ao criar as turmas");

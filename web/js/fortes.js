@@ -186,7 +186,7 @@ function addChecks(divName, dados, onClick)
     	result += "</label>";
 	}
 
-	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
 	$('#listCheckBoxFilter'+ divName).val('');
 }
 
@@ -203,12 +203,12 @@ function addChecksArray(divName, dados, onClick)
 		for (var i=0; i < dados.length; i++) 
 		{
 			result += "<label for=\"checkGroup"+ divName + i +"\" >";
-			result += "<input name=\""+ divName +"\" value=\""+ i +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + i +"\">" + dados[i];
+			result += "<input name=\""+ divName +"\" value=\""+ dados[i] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + i +"\">" + dados[i];
 			result += "</label>";
 		}
 	}
 	
-	$('#listCheckBox'+ divName).html(result);
+	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
 	$('#listCheckBoxFilter'+ divName).val('');
 }
 

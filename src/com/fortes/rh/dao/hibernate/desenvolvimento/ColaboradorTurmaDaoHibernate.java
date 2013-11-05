@@ -232,7 +232,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Long[] estabelecimentoIds, Integer page, Integer pagingSize)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, pt.id, co.id, co.nome, co.nomeComercial, co.matricula, co.pessoal.cpf, ao.id, ao.nome, ct.aprovado, e, fs.nome, ");
+		hql.append("select new ColaboradorTurma(ct.id, pt.id, t.id, co.id, co.nome, co.nomeComercial, co.matricula, co.pessoal.cpf, ao.id, ao.nome, ct.aprovado, e, fs.nome, ");
 		hql.append("  c.nome, emp.id, emp.nome, emp.razaoSocial, emp.cnpj, (select count(respondida) from ColaboradorQuestionario where colaborador.id = co.id and turma.id = t.id and respondida = true) ) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");

@@ -190,6 +190,7 @@
 		
 		<!-- DESENVOLVIMENTO -->
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Turma"/>
+		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.DiaTurma"/>
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Curso">
 			<param name="include" value="id, nome"/>
 		</convert>
