@@ -303,6 +303,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 			ocorrenciaManager.remove(ocorrenciaIds);
 		}
 	}
+	
+	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long empresaId) 
+	{
+		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, empresaId);
+	}
 
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, boolean agruparPorColaborador)
 	{
@@ -316,4 +321,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
+
+	
 }

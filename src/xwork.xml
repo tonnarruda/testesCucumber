@@ -364,23 +364,5 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-GerenciadorComunicacao.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-Issue.xml" />
   <include file="/com/fortes/rh/web/action/exportacao/xwork-Exportacao.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-OcorrenciaProvidencia.xml" />
 </xwork>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

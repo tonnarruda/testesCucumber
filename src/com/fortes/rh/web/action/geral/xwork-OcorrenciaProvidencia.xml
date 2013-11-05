@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="ocorrenciaProvidencia" extends="default" namespace="/geral/ocorrenciaProvidencia">
+		<action name="list" class="com.fortes.rh.web.action.geral.OcorrenciaProvidenciaEditAction" method="list">
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">colaboradorNome,ocorrenciaDescricao,comProvidencia</param>
+	    	</interceptor-ref>
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaProvidenciaList.ftl</result>
+		</action>
+		<action name="prepare" class="com.fortes.rh.web.action.geral.OcorrenciaProvidenciaEditAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/ocorrenciaProvidenciaEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaProvidenciaList.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.geral.OcorrenciaProvidenciaEditAction" method="update">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/ocorrenciaProvidenciaEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

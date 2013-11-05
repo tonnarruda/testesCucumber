@@ -358,6 +358,27 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		Collection<Absenteismo> absenteismo = colaboradorOcorrenciaDao.countFaltasByPeriodo(DateUtil.criarDataMesAno(27, 01, 2011), DateUtil.criarDataMesAno(28, 05, 2011), Arrays.asList(EmpresaFactory.getEmpresa(1L).getId()), estabelecimentoIds, areasIds, null, null);
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
+	
+	public void testFindByFiltros()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
+		ocorrencia.setEmpresa(empresa);
+		ocorrenciaDao.save(ocorrencia);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia.setColaborador(colaborador);
+		colaboradorOcorrencia.setOcorrencia(ocorrencia);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
+		
+		Collection<ColaboradorOcorrencia> retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, null, empresa.getId());
+		assertEquals(1, retorno.size());
+	}
 
 	public GenericDao<ColaboradorOcorrencia> getGenericDao()
 	{

@@ -264,6 +264,10 @@
 				/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
 				/geral/colaboradorOcorrencia/relatorioAbsenteismo.action*=ROLE_REL_ABSENTEISMO
 				/geral/colaboradorOcorrencia/*/**=ROLE_MOV_OCORRENCIA
+				
+				/geral/ocorrenciaProvidencia/list.action*=ROLE_MOV_PROVIDENCIA
+				/geral/ocorrenciaProvidencia/prepareUpdate.action*=ROLE_MOV_PROVIDENCIA
+				/geral/ocorrenciaProvidencia/update.action*=ROLE_MOV_PROVIDENCIA
 
 				/geral/gasto/*/**=ROLE_CAD_GASTO
 				/geral/conhecimento/*/**=ROLE_CAD_CONHECIMENTO

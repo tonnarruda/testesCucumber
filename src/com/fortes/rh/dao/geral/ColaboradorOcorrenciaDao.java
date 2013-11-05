@@ -19,4 +19,5 @@ public interface ColaboradorOcorrenciaDao extends GenericDao<ColaboradorOcorrenc
 	boolean verifyExistsMesmaData(Long colaboradorOcorrenciaId, Long colaboradorId, Long ocorrenciaId, Long empresaId, Date dataIni);
 	void deleteByOcorrencia(Long[] ocorrenciaIds) throws Exception;
 	Collection<ColaboradorOcorrencia> findColaboradorOcorrencia(Collection<Long> ocorrenciaIds, Collection<Long> colaboradorIds, Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, boolean detalhamento, boolean agruparPorColaborador);
+	Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaDescricao, Boolean comProvidencia, Long empresaId);
 }
