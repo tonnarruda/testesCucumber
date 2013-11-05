@@ -424,6 +424,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
         criteria.setProjection(p);
         criteria.add(Expression.eq("s.id", solicitacaoId));
+       	criteria.add(Expression.eq("cs.triagem", false));
 
         return criteria.list();
     }
