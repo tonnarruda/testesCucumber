@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
@@ -28,5 +30,6 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> areasIds, Collection<Long> cargosIds);
 	void deleteOcorrencias(Long[] ocorrenciaIds) throws Exception;
 	Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, boolean agruparPorColaborador);
-	Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long empresaId);
+	Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId);
+	Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas);
 }

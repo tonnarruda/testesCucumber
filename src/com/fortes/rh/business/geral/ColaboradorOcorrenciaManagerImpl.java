@@ -16,14 +16,17 @@ import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
+import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
@@ -33,6 +36,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	private OcorrenciaManager ocorrenciaManager;
 	private AcPessoalClientColaboradorOcorrencia acPessoalClientColaboradorOcorrencia;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	public Collection<ColaboradorOcorrencia> findByColaborador(Long id)
 	{
@@ -304,9 +308,23 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 	}
 	
-	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long empresaId) 
+	public Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas) 
 	{
-		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, empresaId);
+		Long[] areasIds = null;
+		if(usuarioLogado.getId() != 1L && !roleVerAreas)
+		{
+			areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, empresaId);
+			
+			if(areasIds.length == 0)
+				areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
+		}
+			
+		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, colaborador, null, null, empresaId, false);
+	}
+	
+	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId) 
+	{
+		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, colaboradoresIds, empresaId);
 	}
 
 	public Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, boolean agruparPorColaborador)
@@ -322,5 +340,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
 }

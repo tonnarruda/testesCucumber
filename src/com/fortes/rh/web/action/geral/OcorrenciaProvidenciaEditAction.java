@@ -4,11 +4,16 @@ import java.util.Collection;
 
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.ProvidenciaManager;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Providencia;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings({"serial"})
 public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
@@ -27,8 +32,13 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		setTotalSize(colaboradorOcorrenciaManager.findByFiltros(0, 0, colaboradorNome, ocorrenciaDescricao, comProvidencia(), getEmpresaSistema().getId()).size());
-		colaboradorOcorrencias = colaboradorOcorrenciaManager.findByFiltros(getPage(), getPagingSize(), colaboradorNome, ocorrenciaDescricao, comProvidencia(), getEmpresaSistema().getId());
+		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+		
+		Collection<Colaborador> colaboradores = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuarioLogado, null, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}));
+		Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
+		
+		setTotalSize(colaboradorOcorrenciaManager.findByFiltros(0, 0, colaboradorNome, ocorrenciaDescricao, comProvidencia(), colaboradoresIds, getEmpresaSistema().getId()).size());
+		colaboradorOcorrencias = colaboradorOcorrenciaManager.findByFiltros(getPage(), getPagingSize(), colaboradorNome, ocorrenciaDescricao, comProvidencia(), colaboradoresIds, getEmpresaSistema().getId());
 		
 		if(colaboradorOcorrencias.size() == 0)
 			addActionMessage("Não existem providências a serem listadas para o filtro informado");

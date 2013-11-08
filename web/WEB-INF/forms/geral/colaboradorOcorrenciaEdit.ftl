@@ -1,3 +1,4 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 	<@ww.head/>
@@ -39,7 +40,13 @@
 		<@ww.datepicker label="Data de Início" value="${dataIni}" name="colaboradorOcorrencia.dataIni" id="dataIni"  required="true" liClass="liLeft" cssClass="mascaraData" />
 		<@ww.datepicker label="Data de Término" value="${dataFim}" name="colaboradorOcorrencia.dataFim" id="dataFim" cssClass="mascaraData"/>
 	
-		<@ww.select label="Providência" name="colaboradorOcorrencia.providencia.id" id="providencia" list="providencias" cssStyle="width:530px;" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""/>
+		<@authz.authorize ifAllGranted="ROLE_MOV_PROVIDENCIA">
+			<@ww.select label="Providência" name="colaboradorOcorrencia.providencia.id" id="providencia" list="providencias" cssStyle="width:530px;" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""/>
+		</@authz.authorize>
+		<@authz.authorize ifNotGranted="ROLE_MOV_PROVIDENCIA">
+			<@ww.hidden name="colaboradorOcorrencia.providencia.id" />
+		</@authz.authorize>
+		
 		<@ww.textarea label="Observações" name="colaboradorOcorrencia.observacao" />
 
 		<@ww.hidden name="colaboradorOcorrencia.id" />

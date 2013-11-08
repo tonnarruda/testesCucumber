@@ -370,7 +370,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		return query.list();
 	}
 
-	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaDescricao, Boolean comProvidencia, Long empresaId) {
+	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaDescricao, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId) {
 		Criteria criteria = getSession().createCriteria(ColaboradorOcorrencia.class, "co");
 		criteria.createCriteria("co.colaborador","c");
 		criteria.createCriteria("co.ocorrencia","o");
@@ -378,22 +378,27 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("co.id"), "id");
-		p.add(Projections.property("c.nomeComercial"),"colaboradorNomeComercial");
-		p.add(Projections.property("c.nome"),"colaboradorNome");
-		p.add(Projections.property("o.descricao"), "ocorrenciaDescricao");
-		p.add(Projections.property("o.pontuacao"), "ocorrenciaPontuacao");
-		p.add(Projections.property("co.dataIni"), "dataIni");
-		p.add(Projections.property("co.dataFim"), "dataFim");
-		p.add(Projections.property("co.observacao"), "observacao");
-		p.add(Projections.property("p.descricao"), "providenciaDescricao");
-		criteria.setProjection(p);
-
+		
 		if(pagingSize > 0)
 		{
+			p.add(Projections.property("c.nomeComercial"),"colaboradorNomeComercial");
+			p.add(Projections.property("c.nome"),"colaboradorNome");
+			p.add(Projections.property("o.descricao"), "ocorrenciaDescricao");
+			p.add(Projections.property("o.pontuacao"), "ocorrenciaPontuacao");
+			p.add(Projections.property("co.dataIni"), "dataIni");
+			p.add(Projections.property("co.dataFim"), "dataFim");
+			p.add(Projections.property("co.observacao"), "observacao");
+			p.add(Projections.property("p.descricao"), "providenciaDescricao");
+
 			criteria.setFirstResult(((page - 1) * pagingSize));
 			criteria.setMaxResults(pagingSize);
 		}
 
+		criteria.setProjection(p);
+
+		if(colaboradoresIds != null && colaboradoresIds.length > 0)
+			criteria.add(Expression.in("c.id", colaboradoresIds));
+		
 		if(StringUtils.isNotBlank(colaboradorNome))
 			criteria.add(Expression.like("c.nome", "%"+ colaboradorNome +"%").ignoreCase() );
 
@@ -410,6 +415,7 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		
 		criteria.add(Expression.eq("o.empresa.id", empresaId));
 		criteria.addOrder(Order.desc("co.dataIni"));
+		criteria.addOrder(Order.asc("c.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));

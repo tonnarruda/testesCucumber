@@ -371,12 +371,33 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		ocorrencia.setEmpresa(empresa);
 		ocorrenciaDao.save(ocorrencia);
 		
+		Providencia providencia = ProvidenciaFactory.getEntity();
+		providencia.setDescricao("Providencia");
+		providenciaDao.save(providencia);
+		
 		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity();
 		colaboradorOcorrencia.setColaborador(colaborador);
 		colaboradorOcorrencia.setOcorrencia(ocorrencia);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
+
+		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
+		colaboradorOcorrencia2.setColaborador(colaborador);
+		colaboradorOcorrencia2.setOcorrencia(ocorrencia);
+		colaboradorOcorrencia2.setProvidencia(providencia);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
 		
-		Collection<ColaboradorOcorrencia> retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, null, empresa.getId());
+		//com e sem providencia
+		Collection<ColaboradorOcorrencia> retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, null, null, empresa.getId());
+		assertEquals(2, retorno.size());
+
+		//sem providencia
+		boolean comProvidencia = false;
+		retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, comProvidencia, null, empresa.getId());
+		assertEquals(1, retorno.size());
+		
+		//com providencia
+		comProvidencia = true;
+		retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, comProvidencia, null, empresa.getId());
 		assertEquals(1, retorno.size());
 	}
 

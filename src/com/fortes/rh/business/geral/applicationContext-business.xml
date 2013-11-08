@@ -496,6 +496,9 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="areaOrganizacionalManager">
+      <ref bean="areaOrganizacionalManager" />
+    </property>
   </bean>
   <bean id="colaboradorOcorrenciaManager" parent="parentManager">
     <property name="proxyInterfaces">

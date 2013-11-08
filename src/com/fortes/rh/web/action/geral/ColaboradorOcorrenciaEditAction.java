@@ -170,17 +170,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	{
 		if (colaborador != null)
 		{
-			Long[] areasIds = null;
-			Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
-			if(usuarioLogado.getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
-			{
-				areasIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuarioLogado, getEmpresaSistema().getId());
-				
-				if(areasIds.length == 0)
-					areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
-			}
-				
-			colaboradors = colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, colaborador, null, null, getEmpresaSistema().getId(), false);
+			colaboradors = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), colaborador, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}));
 			
 			if (colaborador.getId() != null)
 			{
