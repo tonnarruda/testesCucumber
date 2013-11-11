@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Epi_Entregues" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="757bc670-95a9-4746-b612-4247f4c3eace">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -23,6 +23,12 @@
 	</variable>
 	<variable name="somaQtde" class="java.lang.Integer" resetType="Group" resetGroup="grp_Epi" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtdEntregue}]]></variableExpression>
+	</variable>
+	<variable name="somaGeralQtde" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdEntregue}]]></variableExpression>
+	</variable>
+	<variable name="countEntregasColaborador" class="java.lang.Integer" resetType="Group" resetGroup="grpColaborador" calculation="Count">
+		<variableExpression><![CDATA[$F{dataEntrega}]]></variableExpression>
 	</variable>
 	<group name="grp_Epi">
 		<groupExpression><![CDATA[$F{solicitacaoEpiItem.epi.nomeInativo}]]></groupExpression>
@@ -59,7 +65,7 @@
 					<textFieldExpression><![CDATA[$V{somaQtde}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement uuid="bc7d908b-df5d-4904-8d96-a08b504a71fd" key="textField-7" x="277" y="2" width="119" height="12"/>
+					<reportElement uuid="bc7d908b-df5d-4904-8d96-a08b504a71fd" key="textField-7" x="216" y="2" width="180" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -141,7 +147,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="32" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="2de1242b-e9cb-465f-86c3-540668f60501" key="staticText-2" x="4" y="8" width="531" height="11"/>
 				<box>
@@ -238,8 +244,8 @@
 	<detail>
 		<band height="12" splitType="Prevent">
 			<rectangle>
-				<reportElement uuid="e929f0a3-60f9-4407-b020-e839b7f8ef4a" key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="12" y="1" width="523" height="11" backcolor="#EEEEEE">
-					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+				<reportElement uuid="e929f0a3-60f9-4407-b020-e839b7f8ef4a" key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="24" y="1" width="511" height="11" backcolor="#EEEEEE">
+					<printWhenExpression><![CDATA[new Boolean(($V{countEntregasColaborador}.intValue() % 2) != 0)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
@@ -316,6 +322,33 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="47656cdf-17ee-4092-a582-bc61933309ec" key="textField" x="399" y="4" width="80" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{somaGeralQtde}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="2221394f-1842-4240-8f91-a8d571cb2b1c" key="textField-7" x="216" y="4" width="180" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Geral de EPIs Entregues:"]]></textFieldExpression>
+			</textField>
+		</band>
 	</summary>
 </jasperReport>

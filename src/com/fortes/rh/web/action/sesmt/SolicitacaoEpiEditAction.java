@@ -201,7 +201,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		}
 		catch (FortesException fE)
 		{
-			addActionError(fE.getMessage());
+			addActionWarning(fE.getMessage());
 			fE.printStackTrace();
 			prepareInsertEntrega();
 			return INPUT;
@@ -228,7 +228,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		}
 		catch (FortesException fE)
 		{
-			addActionMessage(fE.getMessage());
+			addActionWarning(fE.getMessage());
 			fE.printStackTrace();
 			prepareInsertEntrega();
 			return INPUT;
@@ -262,7 +262,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		try
 		{
 			solicitacaoEpiItemEntregaManager.remove(solicitacaoEpiItemEntrega.getId());
-			addActionMessage("Entrega de EPI excluída com sucesso");
+			addActionSuccess("Entrega de EPI excluída com sucesso");
 		}
 		catch (Exception e)
 		{
