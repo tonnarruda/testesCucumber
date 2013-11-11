@@ -96,7 +96,6 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.Providencia;
-import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -141,6 +140,8 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
+import com.fortes.rh.test.util.mockObjects.MockCandidato;
+import com.fortes.rh.test.util.mockObjects.MockColaborador;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> 
@@ -983,109 +984,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId()).size());
 	}
 
-	private Candidato getCandidato() {
-		Candidato candidato = new Candidato();
-		candidato.setId(null);
-		candidato.setAreasInteresse(null);
-		candidato.setColocacao("1");
-		candidato.setConhecimentos(null);
-
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		candidato.setContato(contato);
-
-		candidato.setContratado(false);
-		candidato.setCursos(null);
-		candidato.setDisponivel(true);
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		candidato.setEndereco(endereco);
-
-		candidato.setExperiencias(null);
-		candidato.setFormacao(null);
-		candidato.setNome("colaborador teste");
-		candidato.setObservacao("obs");
-
-		Pessoal pessoal = new Pessoal();
-		pessoal.setDataNascimento(new Date());
-		pessoal.setEstadoCivil("e");
-		pessoal.setEscolaridade("e");
-		pessoal.setSexo('m');
-		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("00000000000");
-		pessoal.setConjuge("Maria");
-		pessoal.setNaturalidade("Palmácia");
-		pessoal.setMae("Joana");
-		pessoal.setPai("Roberto");
-		pessoal.setQtdFilhos(0);
-		candidato.setPessoal(pessoal);
-
-		SocioEconomica socioEconomica = new SocioEconomica();
-		socioEconomica.setPagaPensao(true);
-		socioEconomica.setPossuiVeiculo(true);
-		socioEconomica.setQuantidade(10);
-		socioEconomica.setValor(1500D);
-		candidato.setSocioEconomica(socioEconomica);
-
-		Habilitacao habilitacao = new Habilitacao();
-		habilitacao.setCategoria("ABC");
-		habilitacao.setEmissao(null);
-		habilitacao.setVencimento(null);
-		habilitacao.setRegistro("607583");
-		habilitacao.setNumeroHab("123324235");
-		candidato.setHabilitacao(habilitacao);
-
-		candidato.setPretencaoSalarial(1500.00);
-
-		return candidato;
+	private Candidato getCandidato() 
+	{
+		return MockCandidato.getCandidato();
 	}
 
-	private Colaborador getColaborador() {
-		Colaborador colaborador = new Colaborador();
-		colaborador.setId(null);
-		colaborador.setNome("nome colaborador");
-		colaborador.setNomeComercial("nome comercial colaborador");
-		colaborador.setDesligado(false);
-		colaborador.setDataDesligamento(new Date());
-		colaborador.setObservacao("observação");
-		colaborador.setDataAdmissao(new Date());
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		colaborador.setEndereco(endereco);
-
-		Contato contato = new Contato();
-		contato.setEmail("mail@mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		colaborador.setContato(contato);
-
-		Pessoal pessoal = new Pessoal();
-		pessoal.setDataNascimento(new Date());
-		pessoal.setEstadoCivil("e");
-		pessoal.setEscolaridade("e");
-		pessoal.setSexo('m');
-		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("000000");
-		colaborador.setPessoal(pessoal);
-
-		colaborador.setDependentes(null);
-		return colaborador;
+	private Colaborador getColaborador() 
+	{
+		return MockColaborador.getColaborador();
 	}
 
 	public void testCountSexo() {

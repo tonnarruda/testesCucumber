@@ -83,6 +83,7 @@ import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 @SuppressWarnings("unchecked")
@@ -374,40 +375,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 	private Candidato getCandidato()
 	{
-		Candidato candidato = new Candidato();
-		candidato.setId(null);
-		candidato.setNome("nome candidato");
-		candidato.setObservacao("observacao");
-
-		SocioEconomica socioEconomica = new SocioEconomica();
-		candidato.setSocioEconomica(socioEconomica);
-
-		Endereco endereco = new Endereco();
-		endereco.setLogradouro("logradouro");
-		endereco.setNumero("00");
-		endereco.setComplemento("complemento");
-		endereco.setBairro("bairro");
-		endereco.setCidade(null);
-		endereco.setUf(null);
-		endereco.setCep("0000000");
-		candidato.setEndereco(endereco);
-
-		Contato contato = new Contato();
-		contato.setEmail("mail.com");
-		contato.setFoneFixo("00000000");
-		contato.setFoneCelular("00000000");
-		candidato.setContato(contato);
-
-		Pessoal pessoal	= new Pessoal();
-		pessoal.setDataNascimento(new Date());
-		pessoal.setEstadoCivil("e");
-		pessoal.setEscolaridade("e");
-		pessoal.setSexo('m');
-		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("00000000000");
-		candidato.setPessoal(pessoal);
-
-		return candidato;
+		return MockCandidato.getCandidato();
 	}
 
 	public void testGetCount()

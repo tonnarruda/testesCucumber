@@ -42,10 +42,9 @@ public class MockColaborador
 		pessoal.setEscolaridade("e");
 		pessoal.setSexo('m');
 		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("000.000.000-00");
+		pessoal.setCpf("00000000000");
 		colaborador.setPessoal(pessoal);
 
-		colaborador.setAreaOrganizacional(null);
 		colaborador.setDependentes(null);
 
 		return colaborador;
