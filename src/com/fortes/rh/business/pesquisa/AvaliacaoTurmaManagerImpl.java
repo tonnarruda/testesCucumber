@@ -190,9 +190,9 @@ public class AvaliacaoTurmaManagerImpl extends GenericManagerImpl<AvaliacaoTurma
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 
-	public Collection<AvaliacaoTurma> findAllSelect(Long empresaId, Boolean ativa)
+	public Collection<AvaliacaoTurma> findAllSelect(Boolean ativa, Long... empresaId)
 	{
-		return getDao().findAllSelect(empresaId, ativa);
+		return getDao().findAllSelect(ativa, empresaId);
 	}
 
 	public Collection<AvaliacaoTurma> findByTurma(Long turmaId) {

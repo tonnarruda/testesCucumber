@@ -391,7 +391,9 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         p.add(Projections.property("c.nome"), "cursoNome");
 
         criteria.setProjection(Projections.distinct(p));
-        criteria.add(Expression.or(Expression.in("c.empresa.id", empresaIds),Expression.in("ep.id", empresaIds)));
+        
+        if(empresaIds != null && empresaIds.length > 0)
+        	criteria.add(Expression.or(Expression.in("c.empresa.id", empresaIds),Expression.in("ep.id", empresaIds)));
 
 		if (dataPrevIni != null)
 			criteria.add(Expression.ge("t.dataPrevIni", dataPrevIni));

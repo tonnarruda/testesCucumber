@@ -28,6 +28,7 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
+			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
 			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
 		}
@@ -39,6 +40,7 @@
 		
 		function populaArea(empresaId)
 		{
+			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
 			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
 		}
@@ -258,6 +260,7 @@
 					</tr>
 				</tbody>
 			</table>
+			<@ww.hidden name="empresaId" />
 		</form>
 
 		<div class="buttonGroup">

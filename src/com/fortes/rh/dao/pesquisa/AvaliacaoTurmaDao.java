@@ -13,6 +13,6 @@ public interface AvaliacaoTurmaDao extends GenericDao<AvaliacaoTurma>
 	Long getIdByQuestionario(Long questionarioId);
 	boolean verificaEmpresaDoQuestionario(Long entrevistaId, Long empresaId);
 	Integer getCount(Long empresaId);
-	Collection<AvaliacaoTurma> findAllSelect(Long empresaId, Boolean ativa);
+	Collection<AvaliacaoTurma> findAllSelect(Boolean ativa, Long... empresaId);
 	Collection<AvaliacaoTurma> findByTurma(Long turmaId);
 }

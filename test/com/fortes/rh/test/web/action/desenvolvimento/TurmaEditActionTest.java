@@ -151,7 +151,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>();
 
     	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(ANYTHING).will(returnValue(cursos));
-    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
+    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(true),ANYTHING).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("find");
 
     	assertEquals("success", action.prepareInsert());
@@ -183,7 +183,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[]{1L})).will(returnValue(cursos));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()),eq(curso.getId())).will(returnValue(true));
     	avaliacaoTurmaManager.expects(once()).method("findByTurma").with(ANYTHING).will(returnValue(avaliacaoTurmas));
-    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(true)).will(returnValue(avaliacaoTurmas));
+    	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(true), ANYTHING).will(returnValue(avaliacaoTurmas));
     	tipoDespesaManager.expects(once()).method("find");
     	turmaTipoDespesaManager.expects(once()).method("findTipoDespesaTurma").will(returnValue(new ArrayList<TurmaTipoDespesa>()));
 

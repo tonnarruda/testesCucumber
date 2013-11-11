@@ -145,7 +145,7 @@ public class AvaliacaoTurmaDaoHibernateTest extends GenericDaoHibernateTest<Aval
 		questionarioDao.save(questionario2);
 		criarAvaliacao(questionario2, 9999L);
 		
-		assertEquals(2, avaliacaoTurmaDao.findAllSelect(empresa.getId(), true).size());
+		assertEquals(2, avaliacaoTurmaDao.findAllSelect(true, empresa.getId()).size());
 	}
 	
 	public void testFindByTurma() throws Exception

@@ -17,6 +17,6 @@ public interface AvaliacaoTurmaManager extends GenericManager<AvaliacaoTurma>
 	void update(AvaliacaoTurma avaliacaoTurma, Questionario questionario, Long empresaId) throws Exception;
 	AvaliacaoTurma save(AvaliacaoTurma avaliacaoTurma, Questionario questionario, Empresa empresa) throws Exception;
 	Long getIdByQuestionario(Long questionarioId);
-	Collection<AvaliacaoTurma> findAllSelect(Long empresaId, Boolean ativa);
+	Collection<AvaliacaoTurma> findAllSelect(Boolean ativa, Long... empresaId);
 	Collection<AvaliacaoTurma> findByTurma(Long turmaId);
 }

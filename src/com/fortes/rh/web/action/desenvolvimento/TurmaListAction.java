@@ -223,9 +223,13 @@ public class TurmaListAction extends MyActionSupportList
 	
 	public String prepareAplicarPdi() throws Exception
 	{
-		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
+		if(getEmpresaByfiltro() != null)
+			empresaIds = new Long[]{ empresaId };
+		else
+			prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 
-		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(getEmpresaSistema().getId(), true);
+		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, empresaIds, new String[]{"descricao"});
+		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, empresaIds);
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
 		
 		cursosColaboradores = new HashMap<Curso, Set<Colaborador>>();
@@ -241,7 +245,7 @@ public class TurmaListAction extends MyActionSupportList
 			colaborador = new Colaborador(dados[1], Long.parseLong(dados[0]));
 			curso = new Curso(Long.parseLong(dados[2]), dados[3]);
 			
-			turmas = turmaManager.findByFiltro(null, null, 'N', new Long[]{ getEmpresaSistema().getId() }, new Long[] { curso.getId() });
+			turmas = turmaManager.findByFiltro(null, null, 'N', empresaIds, new Long[] { curso.getId() });
 			curso.setTurmas(turmas);
 			
 			if (!cursosColaboradores.containsKey(curso))
@@ -253,6 +257,14 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	private Long getEmpresaByfiltro() 
+	{
+		if(empresaId != null && empresaId <= 0L)
+			empresaId = null;
+		
+		return empresaId;
+	}
+
 	public String aplicarPdi() throws Exception
 	{
 		int i = 0;
@@ -320,8 +332,6 @@ public class TurmaListAction extends MyActionSupportList
 		empresas = empresaManager.findEmpresasPermitidas(false , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
-		
-//		empresa = getEmpresaSistema();
 	}
 
 	public String list() throws Exception

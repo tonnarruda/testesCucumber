@@ -132,7 +132,7 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 		return criteria.list().isEmpty() ? 0 : (Integer) criteria.list().get(0);
 	}
 
-	public Collection<AvaliacaoTurma> findAllSelect(Long empresaId, Boolean ativa)
+	public Collection<AvaliacaoTurma> findAllSelect(Boolean ativa, Long... empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
 		criteria.createCriteria("e.questionario", "q", Criteria.LEFT_JOIN);
@@ -147,7 +147,8 @@ public class AvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<AvaliacaoTur
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("ent.id", empresaId));
+		if(empresaId != null && empresaId.length > 0)
+			criteria.add(Expression.in("ent.id", empresaId));
 
 		if(ativa != null)
 			criteria.add(Expression.eq("e.ativa", ativa));

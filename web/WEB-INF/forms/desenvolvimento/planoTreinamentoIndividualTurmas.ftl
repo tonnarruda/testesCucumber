@@ -322,6 +322,7 @@
 	
 	<div class="buttonGroup">
 		<button type="button" onclick="aplicar()" class="btnAplicar"></button>
+		<button onclick="javascript:history.go(-1);" class="btnVoltar" />
 	</div>
 	
 	<div id="formDialog" title="Detalhamento dos custos">
