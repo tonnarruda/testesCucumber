@@ -269,7 +269,6 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		Collection<HistoricoColaborador> historicos = new ArrayList<HistoricoColaborador>();
 		historicos.add(historicoPorValor1);
 		
-		//TODO tem que terminar test quando for liberado o webservice 1.1.50.1
 		assertTrue(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa));
 	}
 	

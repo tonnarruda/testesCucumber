@@ -4929,7 +4929,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 604, false);
+SELECT pg_catalog.setval('papel_sequence', 605, false);
 
 
 --
@@ -29857,6 +29857,7 @@ INSERT INTO migrations (name) VALUES ('20131016152157');
 INSERT INTO migrations (name) VALUES ('20131022141015');
 INSERT INTO migrations (name) VALUES ('20131029110123');
 INSERT INTO migrations (name) VALUES ('20131029141338');
+INSERT INTO migrations (name) VALUES ('20131104141310');
 
 
 --
@@ -30137,7 +30138,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (573, 'ROLE_CAD_OCORRENCIA_INSERIR', 'Inserir', '#', 1, false, NULL, 62, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (574, 'ROLE_CAD_OCORRENCIA_EDITAR', 'Editar', '#', 2, false, NULL, 62, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (575, 'ROLE_CAD_OCORRENCIA_EXCLUIR', 'Excluir', '#', 3, false, NULL, 62, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (480, 'ROLE_MOV_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 2, true, NULL, 469, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (576, 'ROLE_MOV_OCORRENCIA_INSERIR', 'Inserir', '#', 1, false, NULL, 480, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (577, 'ROLE_MOV_OCORRENCIA_EDITAR', 'Editar', '#', 2, false, NULL, 480, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (578, 'ROLE_MOV_OCORRENCIA_EXCLUIR', 'Excluir', '#', 3, false, NULL, 480, NULL);
@@ -30179,13 +30179,15 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (601, 'ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO', 'Resultado da Avaliação', '#', 12, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (602, 'ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO', 'Transf. Candidatos', '#', 13, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (603, 'ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO', 'Triagem Módulo Externo', '#', 14, false, NULL, 22, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (480, 'ROLE_MOV_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 1, true, NULL, 469, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (604, 'ROLE_MOV_PROVIDENCIA', 'Providências', '/geral/ocorrenciaProvidencia/list.action', 2, true, NULL, 469, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.119.135', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L');
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.119.136', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L');
 
 
 --
@@ -30435,6 +30437,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 600);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 601);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 602);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 603);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 604);
 
 
 --

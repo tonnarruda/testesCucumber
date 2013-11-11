@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.119.136" data="11/11/2013">
+		<Modulo nome=" "><![CDATA[
+			:: T&D > Movimentações > Plano de Desenvolvimento Individual (PDI): Nova opção de seleção de turmas pré-existentes não realizadas para inclusão dos colaboradores.
+			:: Info. Funcionais > Movimentações > Previdências: Nova tela para inserir e/ou editar providências das ocorrências geradas.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.119.135" data="04/11/2013">
 		<Modulo nome=" "><![CDATA[
 			:: T&D > Relatórios > Histórico de Treinamentos: Inclusão de coluna no relatório com a carga horária do curso.
