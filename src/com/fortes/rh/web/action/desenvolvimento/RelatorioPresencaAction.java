@@ -35,7 +35,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	private ColaboradorTurma colaboradorTurma;
 
-	private Map parametros = new HashMap();
+	private Map<String,Object> parametros = new HashMap<String,Object>();
 
 	private String[] diasCheck;
 	private Collection<CheckBox> diasCheckList = new ArrayList<CheckBox>();
@@ -52,28 +52,28 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private boolean exibirNota;
 	private boolean exibirConteudoProgramatico;
 	private boolean exibirCriteriosAvaliacao;
+	private boolean exibirSituacaoAtualColaborador;
 	private boolean quebraPaginaEstabelecimento;
 
-	@SuppressWarnings("unchecked")
 	public String imprimirRelatorio()
 	{
 		Turma turma = turmaManager.findById(colaboradorTurma.getTurma().getId());
 		if (turma.getCurso() != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), turma.getCurso().getId()))
 		{
-			setActionMsg("O Curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+			setActionMsg("O curso solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			prepareRelatorio();
 			return "acessonegado";
 		}
 
 		try
 		{
-			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null, null, null);
+			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null, exibirSituacaoAtualColaborador, null, null);
 			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea, exibirCPF);
 
 			if(quebraPaginaEstabelecimento)
 				montaListaDePresencaPorEstabelecimento();
 			else
-				montaListaDePresenca(null, (ArrayList<ColaboradorTurma> )colaboradorTurmas);
+				montaListaDePresenca(null, (ArrayList<ColaboradorTurma>) colaboradorTurmas);
 
 			parametros = RelatorioUtil.getParametrosRelatorio("Lista de Presença", getEmpresaSistema(), "");
 			parametros = montaParametros(turma);
@@ -120,8 +120,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map montaParametros(Turma turma)
+	private Map<String,Object> montaParametros(Turma turma)
 	{
 		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/")+File.separator;
 
@@ -203,6 +202,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 	{
 		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		diasCheckList = new ArrayList<CheckBox>();
+		exibirSituacaoAtualColaborador = true;
 		return Action.SUCCESS;
 	}
 
@@ -257,7 +257,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-	public Map getParametros()
+	public Map<String,Object> getParametros()
 	{
 		return parametros;
 	}
@@ -272,7 +272,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		this.cursoManager = cursoManager;
 	}
 
-	public void setParametros(Map parametros)
+	public void setParametros(Map<String,Object> parametros)
 	{
 		this.parametros = parametros;
 	}
@@ -443,5 +443,14 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public void setQuebraPaginaEstabelecimento(boolean quebraPaginaEstabelecimento) {
 		this.quebraPaginaEstabelecimento = quebraPaginaEstabelecimento;
+	}
+
+	public boolean isExibirSituacaoAtualColaborador() {
+		return exibirSituacaoAtualColaborador;
+	}
+
+	public void setExibirSituacaoAtualColaborador(
+			boolean exibirSituacaoAtualColaborador) {
+		this.exibirSituacaoAtualColaborador = exibirSituacaoAtualColaborador;
 	}
 }

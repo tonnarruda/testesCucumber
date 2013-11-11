@@ -229,7 +229,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Long[] estabelecimentoIds, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, String colaboradorNome, Long empresaId, Long[] estabelecimentoIds, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, pt.id, t.id, co.id, co.nome, co.nomeComercial, co.matricula, co.pessoal.cpf, ao.id, ao.nome, ct.aprovado, e, fs.nome, ");
@@ -261,6 +261,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
 		hql.append("			and hc2.status = :status ");
+		
+		if (!exibirSituacaoAtualColaborador)
+			hql.append("		and hc2.data <= t.dataPrevIni ");
+		
 		hql.append("	) ");
 		
 		hql.append(" order by co.nome ");

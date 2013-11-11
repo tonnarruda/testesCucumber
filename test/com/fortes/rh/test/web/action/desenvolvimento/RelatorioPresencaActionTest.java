@@ -137,9 +137,10 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	
     	action.setDiasCheck(new String[]{"1"});
     	action.setQuebraPaginaEstabelecimento(false);
+    	action.setExibirSituacaoAtualColaborador(true);
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(colaboradorTurma.getTurma().getId()), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
@@ -186,9 +187,10 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	
     	action.setDiasCheck(new String[]{"1"});
     	action.setQuebraPaginaEstabelecimento(true);
+    	action.setExibirSituacaoAtualColaborador(true);
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(colaboradorTurma.getTurma().getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));    	
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(colaboradorTurma.getTurma().getId()), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("findIdEstabelecimentosByTurma").with(eq(colaboradorTurma.getTurma().getId()), eq(empresa.getId())).will(returnValue(Arrays.asList(new Long[]{1L})));    	
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));

@@ -226,7 +226,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	turmas.add(turma);
     	
     	diaTurmaManager.expects(once()).method("findByTurma").with(eq(10L)).will(returnValue(turmas));
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(10L),ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(10L)).will(returnValue(turma));
     	colaboradorPresencaManager.expects(once()).method("findPresencaByTurma").with(eq(10L)).will(returnValue(new ArrayList<ColaboradorPresenca>()));
     	
@@ -239,7 +239,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	
     	diaTurmaManager.expects(once()).method("findByTurma").with(eq(turma.getId())).will(returnValue(new ArrayList<Turma>()));
-    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(eq(10L), ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(10L), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(10L)).will(returnValue(turma));
     	colaboradorPresencaManager.expects(once()).method("findPresencaByTurma").with(eq(10L)).will(returnValue(new ArrayList<ColaboradorPresenca>()));
     	

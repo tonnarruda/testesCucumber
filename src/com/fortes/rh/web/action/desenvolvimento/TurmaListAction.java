@@ -288,7 +288,7 @@ public class TurmaListAction extends MyActionSupportList
 						for (ColaboradorTurma cTurma : turma.getColaboradorTurmas())
 							colaboradoresIds[j++] = cTurma.getColaborador().getId();
 						
-						Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, null, null);
+						Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null);
 						colaboradorTurmaManager.insereColaboradorTurmas(colaboradoresIds, colaboradoresTurmas, turma, null, 0, null);
 					}
 					else

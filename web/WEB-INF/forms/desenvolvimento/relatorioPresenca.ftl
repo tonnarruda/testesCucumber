@@ -25,7 +25,7 @@
 		{
 			if(dias != null)
 			{
-				document.getElementById('listCheckBoxdiasCheck').innerHTML = dias;;
+				document.getElementById('listCheckBoxdiasCheck').innerHTML = dias;
 			}
 			else
 				jAlert("Não existem datas a serem selecinadas.");
@@ -130,10 +130,13 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" action="imprimirRelatorio.action" validate="true" onsubmit="${validarCampos}" method="POST">
-		<@ww.select label="Curso" cssStyle="width:180px" name="colaboradorTurma.curso.id" id="cursos" list="cursos" listKey="id" listValue="nome" headerValue="" headerKey="" liClass="liLeft" onchange="listaTurma();"  required="true"/>
-	  	<@ww.select label="Turma" cssStyle="width:200px" name="colaboradorTurma.turma.id" id="turma"  list="turmas" listKey="id" listValue="descricao" headerValue="" headerKey="" liClass="liLeft"  onchange="populaDias(document.forms[0]);"  required="true"/>
+		<@ww.select label="Curso" name="colaboradorTurma.curso.id" id="cursos" list="cursos" listKey="id" listValue="nome" headerValue="" headerKey="" liClass="liLeft" onchange="listaTurma();" required="true" cssStyle="width:500px"/>
+	  	<@ww.select label="Turma" name="colaboradorTurma.turma.id" id="turma"  list="turmas" listKey="id" listValue="descricao" headerValue="" headerKey="" liClass="liLeft"  onchange="populaDias(document.forms[0]);" required="true" cssStyle="width:500px"/>
 		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos*" list="diasCheckList" readonly=false valueString=true/>
+		<@ww.select label="Situação do colaborador" name="exibirSituacaoAtualColaborador" list=r"#{true:'Atual',false:'De acordo com a data da turma'}" cssStyle="width:500px"/>
 		<@ww.checkbox label="Quebrar página por estabelecimento" id="quebraPaginaEstabelecimento" name="quebraPaginaEstabelecimento" labelPosition="left"/>
+
+		<li><br /></li>
 
 		<@ww.label value="Configuração" />
 		<li>
@@ -163,7 +166,7 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width:490px;">
 				<ul>
-					<li style="font-weight:bold;">Exibir colunas extras (selecione duas colunas):*</li>	<br />
+					<li style="font-weight:bold;">Selecione duas colunas extras:*</li><br />
 					<@ww.checkbox label="CPF" name="exibirCPF" id="exibirCPF" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Cargo" name="exibirCargo" id="exibirCargo" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Área Organizacional" name="exibirArea" id="exibirArea" labelPosition="left" onchange="validaQtdColunas(this, true);"/>

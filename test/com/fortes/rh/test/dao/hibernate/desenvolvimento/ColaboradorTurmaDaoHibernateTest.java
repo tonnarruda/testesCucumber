@@ -672,7 +672,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         colaboradorTurma.setColaborador(colaborador);
         colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
-        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, null, null);
+        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, true, null, null);
 
         ColaboradorTurma colaboradorTurmaRetorno = (ColaboradorTurma) retornos.toArray()[0];
 
@@ -735,7 +735,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setColaborador(colaborador2);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, null, null);
+    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, true, null, null);
     	assertEquals(1, retornosFiltroEstabelecimento.size());
     }
 

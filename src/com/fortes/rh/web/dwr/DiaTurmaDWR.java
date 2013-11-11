@@ -59,7 +59,7 @@ public class DiaTurmaDWR
 
 				result.append("<label for=\"checkGroup"+ divName + checkBox.getNome() +"\" >");
 				result.append("<input name=\""+ divName +"\" value=\""+ checkBox.getNome() +"\" type=\"checkbox\" id=\"checkGroup"+ divName + checkBox.getNome() + "\" " + check + "\">" + checkBox.getNome());
-		    	result.append("</label><br>");
+		    	result.append("</label>");
 			}
 		}
 		catch (Exception e)

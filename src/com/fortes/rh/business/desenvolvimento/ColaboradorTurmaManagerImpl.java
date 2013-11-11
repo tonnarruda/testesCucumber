@@ -295,14 +295,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findIdEstabelecimentosByTurma(turmaid, empresaId);
 	}
 	
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, Integer page, Integer pagingSize)
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize)
 	{
-		return getDao().findByTurma(turmaId, null, empresaId, null, page, pagingSize);
+		return getDao().findByTurma(turmaId, null, empresaId, null, exibirSituacaoAtualColaborador, page, pagingSize);
 	}
 
 	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Integer page, Integer pagingSize)
 	{
-		return getDao().findByTurma(turmaId, colaboradorNome, empresaId, estabelecimentoIds, page, pagingSize);
+		return getDao().findByTurma(turmaId, colaboradorNome, empresaId, estabelecimentoIds, true, page, pagingSize);
 	}
 	
 	public void saveUpdate(Collection<Long> colaboradoresTurmaId, boolean aprovado) throws Exception
