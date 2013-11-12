@@ -176,5 +176,7 @@
       <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega" />
       <mapping class="com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma" />
       <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
+      <mapping class="com.fortes.rh.model.sesmt.Pcmat" />
   </session-factory>
+
 </hibernate-configuration>

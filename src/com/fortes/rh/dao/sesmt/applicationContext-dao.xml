@@ -386,4 +386,13 @@
       <ref bean="obraDaoTarget" />
     </property>
   </bean>
+  <bean id="pcmatDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.PcmatDao</value>
+    </property>
+    <property name="target">
+      <ref bean="pcmatDaoTarget" />
+    </property>
+  </bean>
 </beans>
+

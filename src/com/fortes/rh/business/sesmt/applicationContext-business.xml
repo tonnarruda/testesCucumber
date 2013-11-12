@@ -897,7 +897,21 @@
       <ref bean="obraManagerTarget" />
     </property>
   </bean>
+  <bean id="pcmatManagerTarget" class="com.fortes.rh.business.sesmt.PcmatManagerImpl">
+    <property name="dao">
+      <ref bean="pcmatDao" />
+    </property>
+  </bean>
+  <bean id="pcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.PcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="pcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

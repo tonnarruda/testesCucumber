@@ -255,4 +255,10 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="pcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.PcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
