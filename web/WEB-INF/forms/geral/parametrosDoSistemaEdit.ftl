@@ -67,7 +67,6 @@
 					$("#emailPass").attr('disabled','disabled');
 				}
 			});
-			
 		});
 		
 		function validaSessionTimeout()
@@ -122,13 +121,30 @@
 	<br />
 	<@ww.textfield name="parametrosDoSistema.emailRemetente" id="emailRemetente" cssClass="mascaraEmail" size="100" maxLength="99"  theme="simple"/>
 	<br /><br />
-	<div id="suporte">
-		<div id="quadro">
+	
+	<#if usuarioLogado.id == 1>
+		<#assign div="suporte"/>
+	<#else>
+		<#assign div="suporte2"/>
+	</#if>
+	
+	<div id="${div}">
+		<div id="quadrado">
 			<h2>
 				<img src="<@ww.url includeParams="none" value="/imgs/ChatFortes.gif" theme="simple"/>">	
 				Configuração para suporte:
 			</h2>
-			<@ww.textfield label="Codigo do cliente" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false"/>
+			<#if usuarioLogado.id == 1>
+				<@ww.checkbox label="Suporte da Veica" id="suporteVeica" name="parametrosDoSistema.suporteVeica" labelPosition="left" liClass="liLeft"/>
+				<@ww.textfield label="Codigo do cliente" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false"/>
+			<#else>
+				<#if parametrosDoSistema.suporteVeica>
+					</br>Suporte da Veica
+					<@ww.hidden name="parametrosDoSistema.codClienteSuporte" />
+				<#else>
+					<@ww.textfield label="Codigo do cliente" name="parametrosDoSistema.codClienteSuporte" id="codClienteSuporte" size="18" maxLength="10" required="false"/>
+				</#if>
+			</#if>
 		</div>
 	</div>
 	<br/>

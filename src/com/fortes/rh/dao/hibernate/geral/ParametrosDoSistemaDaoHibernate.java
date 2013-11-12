@@ -45,6 +45,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
 		p.add(Projections.property("ps.proximaVersao"), "proximaVersao");
+		p.add(Projections.property("ps.suporteVeica"), "suporteVeica");
 		criteria.setProjection(p);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
