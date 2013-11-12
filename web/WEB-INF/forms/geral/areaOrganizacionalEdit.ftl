@@ -98,6 +98,7 @@
 
 </head>
 <body>
+	<@ww.actionmessage />
 	<@ww.actionerror />
 
 	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">

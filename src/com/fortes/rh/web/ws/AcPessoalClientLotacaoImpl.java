@@ -39,7 +39,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new IntegraACException("Erro ao remover Lotação no AC Pessoal.");
+			throw new IntegraACException("Erro ao remover lotação no AC Pessoal.");
 		}
 	}
 
@@ -77,8 +77,10 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         	//Retorna codigo caso insert ocorra (que será inserido no codigoAC)
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	
-        	result.getSucesso("SetLotacao", param, this.getClass());
-            return result.getCodigoretorno();
+        	if (result.getSucesso("SetLotacao", param, this.getClass()))
+        		return result.getCodigoretorno();
+        	else
+        		return result.getCodigoerro();
         }
         catch(Exception e)
         {

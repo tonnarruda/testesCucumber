@@ -30,6 +30,7 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.ErroFeedBackACPessoal;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -142,35 +143,33 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 						maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
 
 					if (!maeSemColaboradores)
-						throw new AreaColaboradorException("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
+						throw new AreaColaboradorException("Não é possível cadastrar área organizacional cuja área mãe tenha colaboradores vinculados.");
 
-					String codigoAc = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-					if (codigoAc == null)
-						throw new IntegraACException("Metodo: AcPessoalClientLotacao.criarLotacao, codigoAc retornou null");
+					String retorno = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
+					if (retorno == null)
+						throw new IntegraACException("Método: AcPessoalClientLotacao.criarLotacao, codigoAc retornou nulo.");
+					else if (retorno.equals(ErroFeedBackACPessoal.AREAORGANIZACIONAL_NIVEL_EXCEDIDO))
+						throw new AreaColaboradorException(ErroFeedBackACPessoal.getMensagem(retorno));
 					
-					areaOrganizacional.setCodigoAC(codigoAc);
+					areaOrganizacional.setCodigoAC(retorno);
 					getDao().save(areaOrganizacional);
 					// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 					getDao().getHibernateTemplateByGenericDao().flush();
 				}
-				catch (AreaColaboradorException e)
-				{
-					throw e;
-				}
-				catch (IntegraACException e)
-				{
-					throw e;
-				}
 				catch (Exception e)
 				{
-					acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
+					if (!(e instanceof AreaColaboradorException) && !(e instanceof IntegraACException)) 
+						acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
 					throw e;
 				}
 				
 			}
 			catch (Exception e)
 			{
-				throw new IntegraACException(e.getMessage());
+				if (e instanceof AreaColaboradorException) 
+					throw e;
+				else
+					throw new IntegraACException(e.getMessage());
 			}
 		}
 		else
@@ -218,7 +217,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		remove(new Long[]{areaTmp.getId()});
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterarmos o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
-
 		
 		if(empresa.isAcIntegra())
 			acPessoalClientLotacao.deleteLotacao(areaTmp, empresa);

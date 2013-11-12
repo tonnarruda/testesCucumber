@@ -79,5 +79,15 @@ public class ExceptionUtil
 
 		return palavrasEntreAspas.toArray();
 	}
+	
+	public static String getMensagem(Exception exception, String mensagemDefault) 
+	{
+		if(exception.getMessage() != null)
+			mensagemDefault = exception.getMessage();
+		else if(exception.getCause() != null && exception.getCause().getLocalizedMessage() != null)
+			mensagemDefault = exception.getCause().getLocalizedMessage();
+		
+		return mensagemDefault;
+	}
 
 }

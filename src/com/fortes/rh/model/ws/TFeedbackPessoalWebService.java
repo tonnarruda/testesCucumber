@@ -13,14 +13,16 @@ public class TFeedbackPessoalWebService implements Serializable
 	private String exception;
 	private String codigoretorno;
 	private String retorno;
+	private String codigoerro;
 	
-	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno, String retorno) {
+	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno, String retorno, String codigoerro) {
 		super();
 		this.sucesso = sucesso;
 		this.mensagem = mensagem;
 		this.exception = exception;
 		this.codigoretorno = codigoretorno;
 		this.retorno = retorno;
+		this.codigoerro = codigoerro;
 	}
 	
 	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno) 
@@ -59,7 +61,8 @@ public class TFeedbackPessoalWebService implements Serializable
 				logger.error("funcao: " + metodo);
 				logger.error("parametros: " + paramToJson);
 				logger.error("codigo retornado: " + codigoretorno);
-				logger.error("msg: " + mensagem);
+				logger.error("codigo erro: " + codigoerro);
+				logger.error("mensagem: " + mensagem);
 				logger.error("exception: " + exception);				
 			}
 		} catch (Exception e) {
@@ -103,5 +106,15 @@ public class TFeedbackPessoalWebService implements Serializable
 
 	public void setRetorno(String retorno) {
 		this.retorno = retorno;
+	}
+	
+	public String getCodigoerro()
+	{
+		return codigoerro;
+	}
+	
+	public void setCodigoerro(String codigoerro)
+	{
+		this.codigoerro = codigoerro;
 	}
 }
