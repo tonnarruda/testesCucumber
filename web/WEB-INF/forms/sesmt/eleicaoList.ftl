@@ -17,7 +17,7 @@
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?eleicao.id=${eleicao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			</@display.column>
 			<@display.column property="posse" title="Posse" format="{0,date,dd/MM/yyyy}" style="text-align:center;width: 90px;"/>
-			<@display.column property="votacaoPeriodoFormatado" title="Votacão" style="text-align:center;width: 180px;"/>
+			<@display.column property="votacaoPeriodoFormatado" title="Votação" style="text-align:center;width: 180px;"/>
 			<@display.column property="descricao" title="Descrição" style="width: 240px;"/>
 			<@display.column property="estabelecimento.nome" title="Estabelecimento" style="width: 240px;"/>
 		</@display.table>

@@ -309,6 +309,7 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Anexo.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Ppra.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Ppp.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-Pcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Epc.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Exame.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-EpiHistorico.xml" />
