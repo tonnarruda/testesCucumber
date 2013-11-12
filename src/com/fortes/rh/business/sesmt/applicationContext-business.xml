@@ -884,6 +884,19 @@
       <ref bean="solicitacaoEpiItemEntregaManagerTarget" />
     </property>
   </bean>
+  <bean id="obraManagerTarget" class="com.fortes.rh.business.sesmt.ObraManagerImpl">
+    <property name="dao">
+      <ref bean="obraDao" />
+    </property>
+  </bean>
+  <bean id="obraManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.ObraManager</value>
+    </property>
+    <property name="target">
+      <ref bean="obraManagerTarget" />
+    </property>
+  </bean>
 </beans>
 
 

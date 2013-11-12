@@ -73,7 +73,7 @@ public class Principal
 			System.out.println("Crie a regra de segurança no applicationContext-security.xml");
 			
 			System.out.println("------------------------------------------------------------------------");
-			System.out.println("Crie a tabela da entidade e coloque o script no update_dev.sql. EXEMPLO:\n");
+			System.out.println("Crie uma migration para criar a tabela da entidade e coloque o script. EXEMPLO:\n");
 			System.out.println("CREATE TABLE "+ NOME_CLASSE_MINUSCULO +" (");
 			System.out.println("id bigint NOT NULL,");
 			System.out.println("descricao character varying(100),");

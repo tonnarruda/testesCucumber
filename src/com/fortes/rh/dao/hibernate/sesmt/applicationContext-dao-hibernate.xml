@@ -250,9 +250,9 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="obraDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.ObraDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
-
-
-
-
-

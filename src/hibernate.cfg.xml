@@ -143,6 +143,7 @@
     <mapping class="com.fortes.rh.model.sesmt.RiscoMedicaoRisco" />
     <mapping class="com.fortes.rh.model.sesmt.Evento" />
     <mapping class="com.fortes.rh.model.sesmt.Agenda" />
+    <mapping class="com.fortes.rh.model.sesmt.Obra" />
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo" />
     <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
@@ -176,8 +177,4 @@
       <mapping class="com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma" />
       <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
   </session-factory>
-
-
-
 </hibernate-configuration>
-
