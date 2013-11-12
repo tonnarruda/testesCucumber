@@ -23,7 +23,6 @@ import com.fortes.rh.util.DateUtil;
 public class ParametrosDoSistema extends AbstractModel implements Serializable
 {
 	@Transient private static final long serialVersionUID = 7274995467895468424L;
-	
 
     @Column(length=150)
     private String appUrl;
@@ -60,6 +59,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
     private Boolean compartilharCursos;
+    private boolean suporteVeica;
 
     private Integer sessionTimeout;
     
@@ -340,5 +340,14 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	{
 		this.telaInicialModuloExterno = telaInicialModuloExterno;
 	}
+
+	public boolean isSuporteVeica() 
+	{
+		return suporteVeica;
+	}
 	
+	public void setSuporteVeica(boolean suporteVeica) 
+	{
+		this.suporteVeica = suporteVeica;
+	}
 }

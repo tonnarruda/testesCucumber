@@ -90,7 +90,11 @@ public abstract class Menu
 				"<a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'>" +
 				"<img src='"+ contexto + "/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
 		
-		if ( parametros != null && !StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
+		if (parametros.isSuporteVeica())
+			menu.append("<li style='float: right; line-height: 0.8em'>" 
+					+ "<a href='http://184.106.249.85' target='_blank' title='Suporte'>" 
+					+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
+		else if (!StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
 				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Suporte'>" 
 				+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");

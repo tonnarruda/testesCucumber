@@ -363,7 +363,7 @@ input,textarea,select,fieldset {
 	width: 100%;
 }
 
-#quadro h2 {
+#quadrado h2,#quadro h2 {
 	margin: -5px;
 	margin-bottom: 5px;
 	padding: 2px 5px;
@@ -371,6 +371,7 @@ input,textarea,select,fieldset {
 	color: #FFFFFF;
 	background: #999999;
 }
+
 .divInfo h2 {
 	margin: -5px;
 	margin-bottom: 5px;
@@ -382,6 +383,11 @@ input,textarea,select,fieldset {
 #quadro li {
 	height: 45px;
 }
+
+#quadrado li {
+	height: 25px;
+}
+
 #gogEsq {
 	float: left;
 	padding: 5px;
@@ -394,7 +400,15 @@ input,textarea,select,fieldset {
 #suporte{
 	padding: 5px;
 	width: 725px;
-	height: 80px;
+	height: 90px;
+	background-color: #E9E9E9;
+	border: 1px solid #7E9DB9;
+}
+
+#suporte2{
+	padding: 5px;
+	width: 725px;
+	height: 70px;
 	background-color: #E9E9E9;
 	border: 1px solid #7E9DB9;
 }
