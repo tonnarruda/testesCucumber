@@ -1,7 +1,6 @@
 CREATE TABLE pcmat (
 	id bigint NOT NULL,
 	apartirde date NOT NULL,
-	tipoobra character varying(100) NOT NULL,
 	datainiobra date NOT NULL,
 	datafimobra date NOT NULL,
 	obra_id bigint

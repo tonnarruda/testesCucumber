@@ -30,7 +30,6 @@ public class PcmatDaoHibernate extends GenericDaoHibernate<Pcmat> implements Pcm
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("p.id"), "id");
 		p.add(Projections.property("p.apartirDe"), "apartirDe");
-		p.add(Projections.property("p.tipoObra"), "tipoObra");
 		p.add(Projections.property("p.dataIniObra"), "dataIniObra");
 		p.add(Projections.property("p.dataFimObra"), "dataFimObra");
 		p.add(Projections.property("o.id"), "projectionIdObra");

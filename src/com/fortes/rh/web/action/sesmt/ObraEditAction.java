@@ -1,9 +1,14 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.sesmt.ObraManager;
+import com.fortes.rh.model.geral.Cidade;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -13,10 +18,14 @@ public class ObraEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private ObraManager obraManager;
-	
+	private EstadoManager estadoManager;
+	private CidadeManager cidadeManager;
+
 	private Obra obra;
 	
 	private Collection<Obra> obras;
+	private Collection<Cidade> cidades;
+	private Collection<Estado> estados;
 	
 	private String nome;
 
@@ -24,6 +33,13 @@ public class ObraEditAction extends MyActionSupportList
 	{
 		if (obra != null && obra.getId() != null)
 			obra = (Obra) obraManager.findById(obra.getId());
+
+		estados = estadoManager.findAll(new String[]{"sigla"});
+		if (obra != null && obra.getEndereco() != null && obra.getEndereco().getUf() != null)
+			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{obra.getEndereco().getUf().getId()}, new String[]{"nome"});
+		else
+			cidades = new ArrayList<Cidade>();
+		
 	}
 
 	public String prepareInsert() throws Exception
@@ -40,14 +56,24 @@ public class ObraEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		obra.setEmpresa(getEmpresaSistema());
-		obraManager.save(obra);
+		try {
+			obra.setEmpresa(getEmpresaSistema());
+			obraManager.save(obra);
+		} catch (Exception e) {
+			prepare();
+			return Action.INPUT;
+		}
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		obraManager.update(obra);
+		try {
+			obraManager.update(obra);
+		} catch (Exception e) {
+			prepare();
+			return Action.INPUT;
+		}
 		return Action.SUCCESS;
 	}
 
@@ -101,5 +127,21 @@ public class ObraEditAction extends MyActionSupportList
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager) {
+		this.estadoManager = estadoManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+
+	public Collection<Cidade> getCidades() {
+		return cidades;
+	}
+
+	public Collection<Estado> getEstados() {
+		return estados;
 	}
 }

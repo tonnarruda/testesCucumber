@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.sesmt.Obra;
 
 public class ObraFactory
@@ -12,7 +13,18 @@ public class ObraFactory
 		Obra obra = new Obra();
 		obra.setId(null);
 		obra.setNome("Obra");
-		obra.setEndereco("endereco");
+		obra.setTipoObra("tipoObra");
+		
+		Endereco endereco = new Endereco();
+		endereco.setLogradouro("logradouro");
+		endereco.setNumero("00");
+		endereco.setComplemento("complemento");
+		endereco.setBairro("bairro");
+		endereco.setCidade(null);
+		endereco.setUf(null);
+		endereco.setCep("0000000");
+		obra.setEndereco(endereco);
+		
 		return obra;
 	}
 

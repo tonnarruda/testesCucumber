@@ -29,7 +29,7 @@ public class ObraManagerTest extends MockObjectTestCase
 		
 		Collection<Obra> obras = ObraFactory.getCollection(1L);
 
-		obraDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(obras));
+		obraDao.expects(once()).method("findAllSelect").with(ANYTHING, eq(empresaId)).will(returnValue(obras));
 		
 		assertEquals(obras, obraManager.findAllSelect(nome, empresaId));
 	}

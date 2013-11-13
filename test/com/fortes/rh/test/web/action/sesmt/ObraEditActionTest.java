@@ -2,13 +2,18 @@ package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
 
+import org.apache.commons.digester.WithDefaultsRulesWrapper;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.sesmt.ObraManager;
+import com.fortes.rh.model.dicionario.Estado;
 import com.fortes.rh.model.sesmt.Obra;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.ObraFactory;
 import com.fortes.rh.web.action.sesmt.ObraEditAction;
 
@@ -16,14 +21,24 @@ public class ObraEditActionTest extends MockObjectTestCase
 {
 	private ObraEditAction action;
 	private Mock manager;
+	private Mock estadoManager;
+	private Mock cidadeManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 		manager = new Mock(ObraManager.class);
+		
 		action = new ObraEditAction();
 		action.setObraManager((ObraManager) manager.proxy());
-
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		estadoManager = new Mock(EstadoManager.class);
+		action.setEstadoManager((EstadoManager) estadoManager.proxy());
+		
+		cidadeManager = new Mock(CidadeManager.class);
+		action.setCidadeManager((CidadeManager) cidadeManager.proxy());
+		
 		action.setObra(new Obra());
 	}
 
@@ -36,7 +51,7 @@ public class ObraEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Obra>()));
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Obra>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getObras());
 	}
@@ -47,7 +62,7 @@ public class ObraEditActionTest extends MockObjectTestCase
 		action.setObra(obra);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Obra>()));
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Obra>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -56,6 +71,7 @@ public class ObraEditActionTest extends MockObjectTestCase
 		Obra obra = ObraFactory.getEntity(1L);
 		action.setObra(obra);
 		
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Obra>()));
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		assertEquals("success", action.delete());
 	}
@@ -73,6 +89,7 @@ public class ObraEditActionTest extends MockObjectTestCase
 	public void testInsertException() throws Exception
 	{
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		estadoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<Estado>()));
 		assertEquals("input", action.insert());
 	}
 
@@ -92,7 +109,8 @@ public class ObraEditActionTest extends MockObjectTestCase
 		action.setObra(obra);
 
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findById").with(eq(obra.getId())).will(returnValue(obra));
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(new Obra()));
+		estadoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<Estado>()));
 
 		assertEquals("input", action.update());
 	}
