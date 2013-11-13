@@ -3,7 +3,9 @@ package com.fortes.rh.test.factory.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.util.DateUtil;
 
 public class PcmatFactory
 {
@@ -11,6 +13,11 @@ public class PcmatFactory
 	{
 		Pcmat pcmat = new Pcmat();
 		pcmat.setId(null);
+		pcmat.setTipoObra("Edificação");
+		pcmat.setApartirDe(DateUtil.criarDataMesAno(1, 11, 2013));
+		pcmat.setDataIniObra(DateUtil.criarDataMesAno(1, 11, 2013));
+		pcmat.setDataFimObra(DateUtil.criarDataMesAno(1, 11, 2014));
+		
 		return pcmat;
 	}
 

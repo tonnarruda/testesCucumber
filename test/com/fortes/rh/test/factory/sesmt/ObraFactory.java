@@ -11,6 +11,8 @@ public class ObraFactory
 	{
 		Obra obra = new Obra();
 		obra.setId(null);
+		obra.setNome("Obra");
+		obra.setEndereco("endereco");
 		return obra;
 	}
 

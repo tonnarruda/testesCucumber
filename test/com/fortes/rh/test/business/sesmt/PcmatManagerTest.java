@@ -1,13 +1,19 @@
 package com.fortes.rh.test.business.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.sesmt.PcmatManagerImpl;
 import com.fortes.rh.dao.sesmt.PcmatDao;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.ObraFactory;
 import com.fortes.rh.test.factory.sesmt.PcmatFactory;
 
 public class PcmatManagerTest extends MockObjectTestCase
@@ -18,17 +24,25 @@ public class PcmatManagerTest extends MockObjectTestCase
 	protected void setUp() throws Exception
     {
         super.setUp();
+        
         pcmatDao = new Mock(PcmatDao.class);
         pcmatManager.setDao((PcmatDao) pcmatDao.proxy());
     }
 
 	public void testFindAllSelect()
 	{
-		Long empresaId = 1L;
+		Empresa empresa = EmpresaFactory.getEmpresa();
 		
-		Collection<Pcmat> pcmats = PcmatFactory.getCollection(1L);
+		Obra obra = ObraFactory.getEntity();
+		obra.setEmpresa(empresa);
+		
+		Pcmat pcmat = PcmatFactory.getEntity();
+		
+		Collection<Pcmat> pcmats = new ArrayList<Pcmat>();
+		pcmats.add(pcmat);
 
-		pcmatDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(pcmats));
-		assertEquals(pcmats, pcmatManager.findAllSelect(empresaId));
+		pcmatDao.expects(once()).method("findAllSelect").with(ANYTHING, eq(empresa.getId())).will(returnValue(pcmats));
+		
+		assertEquals(pcmats, pcmatManager.findAllSelect(null, empresa.getId()));
 	}
 }

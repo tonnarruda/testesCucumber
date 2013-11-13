@@ -48,7 +48,7 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		implementar
+		pcmats = pcmatManager.findAllSelect(null, getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
