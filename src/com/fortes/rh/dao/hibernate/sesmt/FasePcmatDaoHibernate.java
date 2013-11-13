@@ -1,0 +1,42 @@
+package com.fortes.rh.dao.hibernate.sesmt;
+
+import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+
+import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.dao.sesmt.FasePcmatDao;
+import com.fortes.rh.model.sesmt.FasePcmat;
+
+public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implements FasePcmatDao
+{
+	@SuppressWarnings("unchecked")
+	public Collection<FasePcmat> findAllSelect(String descricao, Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass());
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("id"), "id");
+		p.add(Projections.property("descricao"), "descricao");
+		criteria.setProjection(p);
+
+		if (StringUtils.isNotBlank(descricao))
+			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + descricao + "%", Hibernate.STRING));
+
+		criteria.add(Expression.eq("empresa.id", empresaId));
+
+		criteria.addOrder(Order.asc("descricao"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+}

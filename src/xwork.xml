@@ -371,8 +371,5 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-OcorrenciaProvidencia.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Obra.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Pcmat.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-FasePcmat.xml" />
 </xwork>
-
-
-
-

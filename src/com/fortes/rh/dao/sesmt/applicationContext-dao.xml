@@ -394,5 +394,14 @@
       <ref bean="pcmatDaoTarget" />
     </property>
   </bean>
+  <bean id="fasePcmatDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.FasePcmatDao</value>
+    </property>
+    <property name="target">
+      <ref bean="fasePcmatDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 

@@ -142,6 +142,7 @@ import com.fortes.rh.test.business.sesmt.ExameSolicitacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorInspecaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorManagerTest;
 import com.fortes.rh.test.business.sesmt.ExtintorManutencaoManagerTest;
+import com.fortes.rh.test.business.sesmt.FasePcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.FuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoAmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoExtintorManagerTest;
@@ -293,6 +294,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.ExameSolicitacaoExameDaoHibernateT
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorInspecaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorManutencaoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.FasePcmatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.FuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoAmbienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoExtintorDaoHibernateTest;
@@ -542,6 +544,7 @@ import com.fortes.rh.test.web.action.sesmt.ExameListActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExtintorEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExtintorInspecaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ExtintorManutencaoEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.FasePcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.FichaMedicaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.FuncaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.FuncaoListActionTest;
@@ -1170,6 +1173,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ObraDaoHibernateTest.class);
         suite.addTestSuite(ObraManagerTest.class);
         suite.addTestSuite(ObraEditActionTest.class);
+        
+        suite.addTestSuite(FasePcmatDaoHibernateTest.class);
+        suite.addTestSuite(FasePcmatManagerTest.class);
+        suite.addTestSuite(FasePcmatEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);
