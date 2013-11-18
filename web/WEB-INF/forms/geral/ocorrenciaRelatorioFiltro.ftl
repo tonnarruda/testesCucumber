@@ -65,7 +65,7 @@
 
 		function createListEstabelecimento(data, empresaId)
 		{
-			addChecks('estabelecimentoCheck',data, populaColaboradores);
+			addChecks('estabelecimentoCheck',data, 'populaColaboradores()');
 		}
 		
 		function populaOcorrencia(empresaId)
@@ -88,7 +88,7 @@
 
 		function createListArea(data, empresaId)
 		{
-			addChecks('areaCheck', data, populaColaboradores);
+			addChecks('areaCheck', data, 'populaColaboradores()');
 		}
 		
 		function populaChecks()
