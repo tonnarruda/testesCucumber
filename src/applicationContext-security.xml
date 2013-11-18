@@ -491,7 +491,7 @@
 				
 				/pesquisa/questionario/aplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA
 				/pesquisa/questionario/prepareAplicar*= ROLE_MOV_QUESTIONARIO,ROLE_CAD_FICHAMEDICA,ROLE_AVALIACAO_TURMA
-				/pesquisa/questionario/imprimir*= ROLE_AVALIACAO_TURMA
+				/pesquisa/questionario/imprimir*= ROLE_MOV_QUESTIONARIO,ROLE_AVALIACAO_TURMA
 				/pesquisa/questionario/*/**= ROLE_MOV_QUESTIONARIO,ROLE_MOV_CURSO
 				
 				/pesquisa/resposta/*/**= ROLE_MOV_QUESTIONARIO
