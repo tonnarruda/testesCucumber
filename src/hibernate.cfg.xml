@@ -178,7 +178,9 @@
       <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
       <mapping class="com.fortes.rh.model.sesmt.Pcmat" />
       <mapping class="com.fortes.rh.model.sesmt.FasePcmat" />
+      <mapping class="com.fortes.rh.model.sesmt.MedidaSeguranca" />
   </session-factory>
+
 
 
 </hibernate-configuration>

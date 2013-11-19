@@ -575,6 +575,7 @@
 				/sesmt/composicaoSesmt/*/**=ROLE_COMPOSICAO_SESMT
 				/sesmt/obra/*/**=ROLE_CAD_OBRA
 				/sesmt/fasepcmat/*/**=ROLE_CAD_FASEPCMAT
+				/sesmt/medidaseguranca/*/**=ROLE_CAD_MEDIDASEGURANCA
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA

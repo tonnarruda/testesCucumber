@@ -265,6 +265,12 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="medidaSegurancaDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.MedidaSegurancaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 

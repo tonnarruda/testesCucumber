@@ -13,13 +13,13 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
-import com.fortes.rh.dao.sesmt.FasePcmatDao;
-import com.fortes.rh.model.sesmt.FasePcmat;
+import com.fortes.rh.dao.sesmt.MedidaSegurancaDao;
+import com.fortes.rh.model.sesmt.MedidaSeguranca;
 
-public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implements FasePcmatDao
+public class MedidaSegurancaDaoHibernate extends GenericDaoHibernate<MedidaSeguranca> implements MedidaSegurancaDao
 {
 	@SuppressWarnings("unchecked")
-	public Collection<FasePcmat> findAllSelect(String descricao, Long empresaId) 
+	public Collection<MedidaSeguranca> findAllSelect(String descricao, Long empresaId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass());
 
