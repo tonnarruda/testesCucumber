@@ -6,17 +6,17 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Pcmat</title>
+	<title>PCMAT</title>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<@display.table name="pcmats" id="pcmat" class="dados">
+	<@display.table name="obras" id="obra" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?pcmat.id=${pcmat.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?pcmat.id=${pcmat.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="listPcmats.action?obra.id=${obra.id}"><img border="0" title="Listar PCMATs" src="<@ww.url value="/imgs/form2.gif"/>"></a>
 		</@display.column>
+		<@display.column title="Obra" property="nome"/>
 	</@display.table>
 	
 	<div class="buttonGroup">

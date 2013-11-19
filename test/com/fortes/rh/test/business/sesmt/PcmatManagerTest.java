@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.sesmt.PcmatManagerImpl;
 import com.fortes.rh.dao.sesmt.PcmatDao;
@@ -29,7 +28,7 @@ public class PcmatManagerTest extends MockObjectTestCase
         pcmatManager.setDao((PcmatDao) pcmatDao.proxy());
     }
 
-	public void testFindAllSelect()
+	public void testFindByObra()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		
@@ -41,8 +40,8 @@ public class PcmatManagerTest extends MockObjectTestCase
 		Collection<Pcmat> pcmats = new ArrayList<Pcmat>();
 		pcmats.add(pcmat);
 
-		pcmatDao.expects(once()).method("findAllSelect").with(ANYTHING, eq(empresa.getId())).will(returnValue(pcmats));
+		pcmatDao.expects(once()).method("findByObra").with(eq(obra.getId())).will(returnValue(pcmats));
 		
-		assertEquals(pcmats, pcmatManager.findAllSelect(null, empresa.getId()));
+		assertEquals(pcmats, pcmatManager.findByObra(obra.getId()));
 	}
 }

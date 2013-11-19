@@ -12,7 +12,7 @@ public class PcmatFactory
 	{
 		Pcmat pcmat = new Pcmat();
 		pcmat.setId(null);
-		pcmat.setApartirDe(DateUtil.criarDataMesAno(1, 11, 2013));
+		pcmat.setAPartirDe(DateUtil.criarDataMesAno(1, 11, 2013));
 		pcmat.setDataIniObra(DateUtil.criarDataMesAno(1, 11, 2013));
 		pcmat.setDataFimObra(DateUtil.criarDataMesAno(1, 11, 2014));
 		

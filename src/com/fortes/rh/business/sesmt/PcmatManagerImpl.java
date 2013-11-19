@@ -9,8 +9,8 @@ import com.fortes.rh.dao.sesmt.PcmatDao;
 
 public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implements PcmatManager
 {
-	public Collection<Pcmat> findAllSelect(String nomeObra, Long empresaId) 
+	public Collection<Pcmat> findByObra(Long obraId) 
 	{
-		return getDao().findAllSelect(nomeObra, empresaId);
+		return getDao().findByObra(obraId);
 	}
 }

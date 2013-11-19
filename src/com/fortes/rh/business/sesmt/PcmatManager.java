@@ -7,5 +7,5 @@ import com.fortes.rh.model.sesmt.Pcmat;
 
 public interface PcmatManager extends GenericManager<Pcmat>
 {
-	Collection<Pcmat> findAllSelect(String nomeObra, Long empresaId);
+	Collection<Pcmat> findByObra(Long obraId);
 }

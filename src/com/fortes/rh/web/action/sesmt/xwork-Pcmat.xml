@@ -6,8 +6,13 @@
 		<action name="list" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatList.ftl</result>
 		</action>
+		<action name="listPcmats" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="listPcmats">
+			<interceptor-ref name="defaultListStack" />
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatObraList.ftl</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="delete">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatList.ftl</result>
+			<interceptor-ref name="defaultDeleteStack" />
+			<result name="success" type="redirect">listPcmats.action?obra.id=${obra.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
@@ -17,14 +22,16 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="redirect">listPcmats.action?obra.id=${pcmat.obra.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="success" type="redirect">listPcmats.action?obra.id=${pcmat.obra.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 	</package>
