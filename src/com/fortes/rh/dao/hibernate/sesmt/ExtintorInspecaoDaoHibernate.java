@@ -61,7 +61,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		if (extintorId != null)
 			hql.append("AND e.id = :extintorId ");
 		
-		if (localizacao != null)
+		if (localizacao != null && !"".equals(localizacao))
 			hql.append("AND LOWER(he.localizacao) LIKE :localizacao ");
 		
 		if (inicio != null)
@@ -93,7 +93,7 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 		if (extintorId != null)
 			query.setLong("extintorId", extintorId);
 		
-		if (localizacao != null)
+		if (localizacao != null && !"".equals(localizacao))
 			query.setString("localizacao", "%" + localizacao.toLowerCase() + "%");
 		
 		if (inicio != null)

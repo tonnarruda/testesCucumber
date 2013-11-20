@@ -21,7 +21,7 @@
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.HistoricoExtintorEditAction" method="list">
 			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">data,estabelecimentoId,localizacao,tipo,page,showFilter</param>
+	    		<param name="scope.session">data,estabelecimentoId,localizacao,tipo,showFilter</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoExtintorAtualList.ftl</result>
 		</action>

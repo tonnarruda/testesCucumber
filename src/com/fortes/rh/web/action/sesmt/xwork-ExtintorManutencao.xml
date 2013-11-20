@@ -5,13 +5,13 @@
 	<package name="extintorManutencao" extends="default" namespace="/sesmt/extintorManutencao">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ExtintorManutencaoEditAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">estabelecimentoId,extintorId,inicio,fim</param>
+	    		<param name="scope.session">estabelecimentoId,extintorId,localizacao,somenteSemRetorno,inicio,fim,showFilter</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorManutencaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ExtintorManutencaoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">estabelecimentoId,extintorId,inicio,fim</param>
+				<param name="scope.session">estabelecimentoId,extintorId,localizacao,somenteSemRetorno,inicio,fim,showFilter,page</param>
 			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>

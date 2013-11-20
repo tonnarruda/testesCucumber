@@ -32,6 +32,7 @@
 	    function createListExtintores(data)
 	    {
 	      DWRUtil.removeAllOptions("extintor");
+	      document.getElementById("extintor").options[0] = new Option("Todos", "");
 	      DWRUtil.addOptions("extintor", data);
 	    }
 	    
@@ -89,6 +90,7 @@
 		<@ww.checkbox label="Exibir apenas extintores sem data de retorno" name="somenteSemRetorno" labelPosition="left"/>
 
 		<@ww.hidden id="pagina" name="page"/>
+		<@ww.hidden id="showFilter" name="showFilter"/>
 		<input type="submit" id="btnPesquisar" value="" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

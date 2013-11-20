@@ -16,7 +16,7 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	<#assign validarCampos="return validaFormulario('form', null, new Array('inicio','fim'), true)"/>
+	<#assign validarCampos="return validaFormulario('formBusca', null, new Array('inicio','fim'), true)"/>
 
 	<#include "../ftl/showFilterImports.ftl" />
 
@@ -51,13 +51,14 @@
 	    function createListExtintores(data)
 	    {
 	      DWRUtil.removeAllOptions("extintor");
+	      document.getElementById("extintor").options[0] = new Option("Todos", "");
 	      DWRUtil.addOptions("extintor", data);
 	      marcarExtintor();
 	    }
 	    
 		$(document).ready(function(){
 		
-		populaExtintores();
+			populaExtintores();
 		
 		    $("#btnListaDeInspecaoExtintores").click(function(){
 			    var estabelecimento = $("#estabelecimento").val();
@@ -77,7 +78,9 @@
 		});
 		
 		$(function() {
-						
+			
+			populaExtintores();		
+				
 			$('#relatorioTooltipHelp').qtip({
 				content: '<strong>Listagem de Inspeção de Extintores</strong><br />Será listado no relatório somente informações presentes no filtro.'
 				,
@@ -100,8 +103,6 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<#assign validarCampos="return validaFormulario('form', null, new Array('inicio','fim'), true)"/>
-	
 	<#if extintor?exists >
 			<#assign tipoRegularidade = "Irregular"/>
 		<#else>
@@ -115,7 +116,7 @@
 	
 	<#include "../util/topFiltro.ftl" />
 	
-	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
+	<@ww.form name="formBusca" id="formBusca" action="list.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimentoId" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="" onchange="javascript:populaExtintores();" cssStyle="width:240px;"/>
 		<@ww.select label="Extintor" id="extintor" name="extintorId" list="extintors" listKey="id" listValue="descricao" headerValue="Todos" headerKey="" cssStyle="width:240px;"/>
@@ -128,6 +129,7 @@
 		<@ww.datepicker name="fim" id="fim" value="${dateFim}" cssClass="mascaraData" />
 
 		<@ww.hidden id="pagina" name="page"/>
+		<@ww.hidden id="showFilter" name="showFilter"/>
 		<input type="submit" value="" onclick="document.getElementById('pagina').value = 1;" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
@@ -153,7 +155,7 @@
 			</#if>
 		</@display.column>
 	</@display.table>
-	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="form"/>
+	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 			
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="N"></button>

@@ -4,12 +4,14 @@
 <xwork>
 	<package name="extintorInspecao" extends="default" namespace="/sesmt/extintorInspecao">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="list">
-			<interceptor-ref name="defaultListStack"/>
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">estabelecimentoId,extintorId,localizacao,regularidade,inicio,fim,showFilter</param>
+	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/extintorInspecaoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ExtintorInspecaoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">estabelecimentoId,extintorId,inicio,fim</param>
+				<param name="scope.session">estabelecimentoId,extintorId,localizacao,regularidade,inicio,fim,showFilter,page</param>
 			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
