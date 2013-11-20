@@ -3,6 +3,9 @@
 
 <xwork>
 	<package name="fasepcmat" extends="default" namespace="/sesmt/fasepcmat">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="list">
 			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>

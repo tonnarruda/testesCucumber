@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<#include "../ftl/mascarasImports.ftl" />
+		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
@@ -21,7 +22,6 @@
 		<style type="text/css">
 			@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
 		</style>
-		
 		
 		<script type="text/javascript">
 			$(function() {

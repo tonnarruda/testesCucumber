@@ -11,12 +11,10 @@ import com.opensymphony.xwork.Action;
 public class MedidaSegurancaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	
 	private MedidaSegurancaManager medidaSegurancaManager;
-	
 	private MedidaSeguranca medidaSeguranca;
-	
 	private Collection<MedidaSeguranca> medidasSeguranca;
+	private String descricao;
 
 	private void prepare() throws Exception
 	{
@@ -73,7 +71,7 @@ public class MedidaSegurancaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		medidasSeguranca = medidaSegurancaManager.findAllSelect(null, getEmpresaSistema().getId());
+		medidasSeguranca = medidaSegurancaManager.findAllSelect(descricao, getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
@@ -112,5 +110,13 @@ public class MedidaSegurancaEditAction extends MyActionSupportList
 
 	public Collection<MedidaSeguranca> getMedidasSeguranca() {
 		return medidasSeguranca;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

@@ -6,11 +6,23 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+
 	<title>Fases</title>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
+	
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
+			<@ww.textfield label="Descrição" name="descricao" id="descricao" cssStyle="width: 350px;"/>
+			<button type="submit" class="btnPesquisar grayBGE"></button>
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	
+	<br />
 	
 	<@display.table name="fasePcmats" id="fasePcmat" class="dados">
 		<@display.column title="Ações" class="acao">

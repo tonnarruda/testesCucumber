@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.sesmt;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -91,6 +90,7 @@ public class ObraEditAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		obras = obraManager.findAllSelect(nome, getEmpresaSistema().getId());
+		System.out.println(getShowFilter());
 		return Action.SUCCESS;
 	}
 

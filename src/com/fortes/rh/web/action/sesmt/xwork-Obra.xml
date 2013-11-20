@@ -3,8 +3,11 @@
 
 <xwork>
 	<package name="obra" extends="default" namespace="/sesmt/obra">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.ObraEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.ObraEditAction" method="list">
-			<interceptor-ref name="defaultListStack" />
+			<interceptor-ref name="defaultListStack"/>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/obraList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.ObraEditAction" method="delete">

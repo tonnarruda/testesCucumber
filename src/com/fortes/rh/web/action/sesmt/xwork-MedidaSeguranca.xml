@@ -3,6 +3,9 @@
 
 <xwork>
 	<package name="medidaSeguranca" extends="default" namespace="/sesmt/medidaSeguranca">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.MedidaSegurancaEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.MedidaSegurancaEditAction" method="list">
 			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/medidaSegurancaList.ftl</result>
