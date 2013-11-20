@@ -7,26 +7,26 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.sesmt.FasePcmatManager;
-import com.fortes.rh.model.sesmt.FasePcmat;
+import com.fortes.rh.business.sesmt.FaseManager;
+import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.sesmt.FasePcmatFactory;
-import com.fortes.rh.web.action.sesmt.FasePcmatEditAction;
+import com.fortes.rh.test.factory.sesmt.FaseFactory;
+import com.fortes.rh.web.action.sesmt.FaseEditAction;
 
-public class FasePcmatEditActionTest extends MockObjectTestCase
+public class FaseEditActionTest extends MockObjectTestCase
 {
-	private FasePcmatEditAction action;
+	private FaseEditAction action;
 	private Mock manager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		manager = new Mock(FasePcmatManager.class);
-		action = new FasePcmatEditAction();
-		action.setFasePcmatManager((FasePcmatManager) manager.proxy());
+		manager = new Mock(FaseManager.class);
+		action = new FaseEditAction();
+		action.setFaseManager((FaseManager) manager.proxy());
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 
-		action.setFasePcmat(new FasePcmat());
+		action.setFase(new Fase());
 	}
 
 	protected void tearDown() throws Exception
@@ -38,37 +38,37 @@ public class FasePcmatEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<FasePcmat>()));
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Fase>()));
 		assertEquals("success", action.list());
-		assertNotNull(action.getFasePcmats());
+		assertNotNull(action.getFases());
 	}
 
 	public void testDelete() throws Exception
 	{
-		FasePcmat fasepcmat = FasePcmatFactory.getEntity(1L);
-		action.setFasePcmat(fasepcmat);
+		Fase fase = FaseFactory.getEntity(1L);
+		action.setFase(fase);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<FasePcmat>()));
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Fase>()));
 		assertEquals("success", action.delete());
 	}
 	
 	public void testDeleteException() throws Exception
 	{
-		FasePcmat fasepcmat = FasePcmatFactory.getEntity(1L);
-		action.setFasePcmat(fasepcmat);
+		Fase fase = FaseFactory.getEntity(1L);
+		action.setFase(fase);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<FasePcmat>()));
+		manager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Fase>()));
 		assertEquals("success", action.delete());
 	}
 
 	public void testInsert() throws Exception
 	{
-		FasePcmat fasepcmat = FasePcmatFactory.getEntity(1L);
-		action.setFasePcmat(fasepcmat);
+		Fase fase = FaseFactory.getEntity(1L);
+		action.setFase(fase);
 
-		manager.expects(once()).method("save").with(eq(fasepcmat)).will(returnValue(fasepcmat));
+		manager.expects(once()).method("save").with(eq(fase)).will(returnValue(fase));
 
 		assertEquals("success", action.insert());
 	}
@@ -81,30 +81,30 @@ public class FasePcmatEditActionTest extends MockObjectTestCase
 
 	public void testUpdate() throws Exception
 	{
-		FasePcmat fasepcmat = FasePcmatFactory.getEntity(1L);
-		action.setFasePcmat(fasepcmat);
+		Fase fase = FaseFactory.getEntity(1L);
+		action.setFase(fase);
 
-		manager.expects(once()).method("update").with(eq(fasepcmat)).isVoid();
+		manager.expects(once()).method("update").with(eq(fase)).isVoid();
 
 		assertEquals("success", action.update());
 	}
 
 	public void testUpdateException() throws Exception
 	{
-		FasePcmat fasepcmat = FasePcmatFactory.getEntity(1L);
-		action.setFasePcmat(fasepcmat);
+		Fase fase = FaseFactory.getEntity(1L);
+		action.setFase(fase);
 
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findById").with(eq(fasepcmat.getId())).will(returnValue(fasepcmat));
+		manager.expects(once()).method("findById").with(eq(fase.getId())).will(returnValue(fase));
 
 		assertEquals("input", action.update());
 	}
 
 	public void testGetSet() throws Exception
 	{
-		action.setFasePcmat(null);
+		action.setFase(null);
 
-		assertNotNull(action.getFasePcmat());
-		assertTrue(action.getFasePcmat() instanceof FasePcmat);
+		assertNotNull(action.getFase());
+		assertTrue(action.getFase() instanceof Fase);
 	}
 }

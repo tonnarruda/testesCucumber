@@ -3,7 +3,7 @@ package com.fortes.rh.model.sesmt;
 import java.io.Serializable;
 
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.FasePcmat;
+import com.fortes.rh.model.sesmt.Fase;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -12,8 +12,8 @@ import com.fortes.model.AbstractModel;
 
 @SuppressWarnings("serial")
 @Entity
-@SequenceGenerator(name="sequence", sequenceName="fasepcmat_sequence", allocationSize=1)
-public class FasePcmat extends AbstractModel implements Serializable
+@SequenceGenerator(name="sequence", sequenceName="fase_sequence", allocationSize=1)
+public class Fase extends AbstractModel implements Serializable
 {
 	private String descricao;
 	@ManyToOne

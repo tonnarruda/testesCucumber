@@ -6,6 +6,9 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		.col-data { text-align:center; width:100px; }
 	</style>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<title>PCMATs da Obra</title>
 </head>

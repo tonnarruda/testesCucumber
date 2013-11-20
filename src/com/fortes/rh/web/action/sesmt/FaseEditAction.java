@@ -3,23 +3,23 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.business.sesmt.FasePcmatManager;
-import com.fortes.rh.model.sesmt.FasePcmat;
+import com.fortes.rh.business.sesmt.FaseManager;
+import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
-public class FasePcmatEditAction extends MyActionSupportList
+public class FaseEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private FasePcmatManager fasePcmatManager;
-	private FasePcmat fasePcmat;
-	private Collection<FasePcmat> fasePcmats;
+	private FaseManager faseManager;
+	private Fase fase;
+	private Collection<Fase> fases;
 	private String descricao;
 
 	private void prepare() throws Exception
 	{
-		if(fasePcmat != null && fasePcmat.getId() != null)
-			fasePcmat = (FasePcmat) fasePcmatManager.findById(fasePcmat.getId());
+		if(fase != null && fase.getId() != null)
+			fase = (Fase) faseManager.findById(fase.getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -37,8 +37,8 @@ public class FasePcmatEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			fasePcmat.setEmpresa(getEmpresaSistema());
-			fasePcmatManager.save(fasePcmat);
+			fase.setEmpresa(getEmpresaSistema());
+			faseManager.save(fase);
 			
 			addActionSuccess("Fase cadastrada com sucesso.");
 			
@@ -55,7 +55,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			fasePcmatManager.update(fasePcmat);
+			faseManager.update(fase);
 			addActionSuccess("Fase atualizada com sucesso.");
 			
 		} catch (Exception e) {
@@ -70,7 +70,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		fasePcmats = fasePcmatManager.findAllSelect(descricao, getEmpresaSistema().getId());
+		fases = faseManager.findAllSelect(descricao, getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
@@ -78,7 +78,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	{
 		try
 		{
-			fasePcmatManager.remove(fasePcmat.getId());
+			faseManager.remove(fase.getId());
 			addActionSuccess("Fase excluída com sucesso.");
 		}
 		catch (Exception e)
@@ -90,26 +90,9 @@ public class FasePcmatEditAction extends MyActionSupportList
 		return list();
 	}
 	
-	public FasePcmat getFasePcmat()
+	public void setFaseManager(FaseManager faseManager)
 	{
-		if(fasePcmat == null)
-			fasePcmat = new FasePcmat();
-		return fasePcmat;
-	}
-
-	public void setFasePcmat(FasePcmat fasePcmat)
-	{
-		this.fasePcmat = fasePcmat;
-	}
-
-	public void setFasePcmatManager(FasePcmatManager fasePcmatManager)
-	{
-		this.fasePcmatManager = fasePcmatManager;
-	}
-	
-	public Collection<FasePcmat> getFasePcmats()
-	{
-		return fasePcmats;
+		this.faseManager = faseManager;
 	}
 
 	public String getDescricao() {
@@ -118,5 +101,24 @@ public class FasePcmatEditAction extends MyActionSupportList
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Fase getFase()
+	{
+		if(fase == null)
+			fase = new Fase();
+		return fase;
+	}
+
+	public void setFase(Fase fase) {
+		this.fase = fase;
+	}
+
+	public Collection<Fase> getFases() {
+		return fases;
+	}
+
+	public void setFases(Collection<Fase> fases) {
+		this.fases = fases;
 	}
 }

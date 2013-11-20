@@ -6,7 +6,7 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 605);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (606, 'ROLE_CAD_OBRA', 'Obras', '/sesmt/obra/list.action', 1, true, 605);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 606);--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (607, 'ROLE_CAD_FASEPCMAT', 'Fases', '/sesmt/fasepcmat/list.action', 2, true, 605);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (607, 'ROLE_CAD_FASE', 'Fases', '/sesmt/fase/list.action', 2, true, 605);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 607);--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (608, 'ROLE_CAD_MEDIDASEGURANCA', 'Medidas de Segurança', '/sesmt/medidaSeguranca/list.action', 3, true, 605);--.go

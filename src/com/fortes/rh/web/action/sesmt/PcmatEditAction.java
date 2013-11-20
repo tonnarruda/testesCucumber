@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.business.sesmt.PcmatManager;
+import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -22,6 +23,9 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	private Collection<Pcmat> pcmats;
 	private Collection<Obra> obras;
+	private Collection<Fase> fases;
+	
+	private String nomeObra;
 
 	private void prepare() throws Exception
 	{
@@ -57,7 +61,7 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		obras = obraManager.findAllSelect(null, getEmpresaSistema().getId());
+		obras = obraManager.findAllSelect(nomeObra, getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 	
@@ -80,6 +84,12 @@ public class PcmatEditAction extends MyActionSupportList
 			addActionError("Não foi possível excluir este PCMAT.");
 		}
 
+		return Action.SUCCESS;
+	}
+	
+	public String prepareFases()
+	{
+		
 		return Action.SUCCESS;
 	}
 	
@@ -119,5 +129,21 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public void setObra(Obra obra) {
 		this.obra = obra;
+	}
+
+	public String getNomeObra() {
+		return nomeObra;
+	}
+
+	public void setNomeObra(String nomeObra) {
+		this.nomeObra = nomeObra;
+	}
+
+	public Collection<Fase> getFases() {
+		return fases;
+	}
+
+	public void setFases(Collection<Fase> fases) {
+		this.fases = fases;
 	}
 }

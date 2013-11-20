@@ -216,7 +216,7 @@ import com.fortes.rh.model.sesmt.ExtintorInspecao;
 import com.fortes.rh.model.sesmt.ExtintorInspecaoItem;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
 import com.fortes.rh.model.sesmt.ExtintorManutencaoServico;
-import com.fortes.rh.model.sesmt.FasePcmat;
+import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -955,7 +955,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new GerenciadorComunicacao());
 		cobreGetSet(new SolicitacaoEpiItemEntrega());
 		cobreGetSet(new Obra());
-		cobreGetSet(new FasePcmat());
+		cobreGetSet(new Fase());
 		cobreGetSet(new MedidaSeguranca());
 	}
 	

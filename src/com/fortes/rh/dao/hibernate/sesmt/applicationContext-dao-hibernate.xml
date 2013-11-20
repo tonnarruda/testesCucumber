@@ -260,7 +260,7 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
-  <bean id="fasePcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.FasePcmatDaoHibernate">
+  <bean id="faseDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.FaseDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>

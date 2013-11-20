@@ -24,10 +24,10 @@
 	
 	<br />
 	
-	<@display.table name="fasePcmats" id="fasePcmat" class="dados">
+	<@display.table name="fases" id="fase" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?fasePcmat.id=${fasePcmat.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?fasePcmat.id=${fasePcmat.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<a href="prepareUpdate.action?fase.id=${fase.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?fase.id=${fase.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column title="Descrição" property="descricao"/>
 	</@display.table>

@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<#if fasePcmat.id?exists>
+		<#if fase.id?exists>
 			<title>Editar Fase</title>
 			<#assign formAction="update.action"/>
 		<#else>
@@ -14,11 +14,11 @@
 	<body>
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
-			<@ww.hidden name="fasePcmat.id" />
-			<@ww.hidden name="fasePcmat.empresa.id" />
+			<@ww.hidden name="fase.id" />
+			<@ww.hidden name="fase.empresa.id" />
 			<@ww.token/>
 			
-			<@ww.textfield label="Descrição" name="fasePcmat.descricao" id="descricao" required="true" cssClass="inputNome" maxLength="200" cssStyle="width:606px;"/>
+			<@ww.textfield label="Descrição" name="fase.descricao" id="descricao" required="true" cssClass="inputNome" maxLength="200" cssStyle="width:606px;"/>
 			
 		</@ww.form>
 	
