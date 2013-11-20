@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.sesmt.FaseManager;
 import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.business.sesmt.PcmatManager;
 import com.fortes.rh.model.sesmt.Fase;
@@ -17,6 +18,7 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	private PcmatManager pcmatManager;
 	private ObraManager obraManager;
+	private FaseManager faseManager;
 	
 	private Pcmat pcmat;
 	private Obra obra;
@@ -89,6 +91,7 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	public String prepareFases()
 	{
+		pcmat = pcmatManager.findById(pcmat.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -145,5 +148,9 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public void setFases(Collection<Fase> fases) {
 		this.fases = fases;
+	}
+
+	public void setFaseManager(FaseManager faseManager) {
+		this.faseManager = faseManager;
 	}
 }

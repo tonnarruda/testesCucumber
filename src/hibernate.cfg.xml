@@ -179,6 +179,9 @@
       <mapping class="com.fortes.rh.model.sesmt.Pcmat" />
       <mapping class="com.fortes.rh.model.sesmt.Fase" />
       <mapping class="com.fortes.rh.model.sesmt.MedidaSeguranca" />
+      <mapping class="com.fortes.rh.model.sesmt.FasePcmat" />
+      <mapping class="com.fortes.rh.model.sesmt.RiscoFasePcmat" />
+      <mapping class="com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat" />
   </session-factory>
 
 

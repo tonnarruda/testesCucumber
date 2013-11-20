@@ -12,11 +12,12 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<@display.table name="obras" id="obra" class="dados">
-		<@display.column title="Ações" class="acao">
-			<a href="listPcmats.action?obra.id=${obra.id}"><img border="0" title="Listar PCMATs" src="<@ww.url value="/imgs/form2.gif"/>"></a>
-		</@display.column>
-		<@display.column title="Obra" property="nome"/>
+	<#include "pcmatLinks.ftl"/>
+	
+	<@display.table name="fases" id="fase" class="dados">
+		<@display.column title="Fases" property="descricao" style="width:34%"/>
+		<@display.column title="Riscos" style="width:33%"/>
+		<@display.column title="Medidas de Segurança" style="width:33%"/>
 	</@display.table>
 </body>
 </html>

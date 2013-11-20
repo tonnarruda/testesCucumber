@@ -1,10 +1,12 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,9 @@ public class Pcmat extends AbstractModel implements Serializable
 	private Date dataFimObra;
 	@ManyToOne
 	private Obra obra;
+	
+	@OneToMany(mappedBy="pcmat")
+	private Collection<FasePcmat> fasesPcmat;
 	
 	public void setProjectionIdObra(Long idObra){
 		inicializaObra();
@@ -70,5 +75,13 @@ public class Pcmat extends AbstractModel implements Serializable
 	
 	public void setObra(Obra obra) {
 		this.obra = obra;
+	}
+
+	public Collection<FasePcmat> getFasesPcmat() {
+		return fasesPcmat;
+	}
+
+	public void setFasesPcmat(Collection<FasePcmat> fasesPcmat) {
+		this.fasesPcmat = fasesPcmat;
 	}
 }
