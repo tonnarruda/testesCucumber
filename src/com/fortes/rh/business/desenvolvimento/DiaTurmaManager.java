@@ -9,7 +9,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 
 public interface DiaTurmaManager extends GenericManager<DiaTurma>
 {
-	Collection<DiaTurma> montaListaDias(Date dataPrevIni, Date dataPrevFim);
+	Collection<DiaTurma> montaListaDias(Date dataPrevIni, Date dataPrevFim, Boolean aplicarPorTurno);
 	void saveDiasTurma(Turma turma, String[] diasCheck) throws Exception;
 	void deleteDiasTurma(Long turmaId);
 	Collection<DiaTurma> findByTurma(Long turmaId);

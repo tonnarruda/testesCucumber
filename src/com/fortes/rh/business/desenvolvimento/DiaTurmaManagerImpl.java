@@ -13,6 +13,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoTurno;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("deprecation")
@@ -20,7 +21,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 {
 	private PlatformTransactionManager transactionManager;
 
-	public Collection<DiaTurma> montaListaDias(Date dataPrevIni, Date dataPrevFim)
+	public Collection<DiaTurma> montaListaDias(Date dataPrevIni, Date dataPrevFim, Boolean aplicarPorTurno)
 	{
 		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
 
@@ -28,9 +29,12 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 		{
 			Long dif = dataPrevFim.getTime() - dataPrevIni.getTime();
 			dif = 1 +(dif / (24*60*60*1000));
-
+			
+			int countTurnos = TipoTurno.getQtdTurnos();
+			if(aplicarPorTurno)
+				dif = dif*countTurnos;
+			
 			DiaTurma diaTurma;
-
 			for(Long cont = 1L;cont <= dif; cont++)
 			{
 				diaTurma = new DiaTurma();
@@ -39,9 +43,21 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 				Date data = (Date) dataPrevIni.clone();
 				diaTurma.setDia(data);
 
-				diaTurmas.add(diaTurma);
+				if(!aplicarPorTurno)
+					dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
+				else
+				{
+					diaTurma.setTurno(TipoTurno.getTipoTurnoByInt(countTurnos));
+					countTurnos--;
 
-				dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
+					if(countTurnos == 0)
+					{
+						countTurnos = TipoTurno.getQtdTurnos();
+						dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
+					}
+				}
+
+				diaTurmas.add(diaTurma);
 			}
 		}
 
@@ -68,6 +84,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 					diaTurmaTmp = new DiaTurma();
 					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataStr));
 					diaTurmaTmp.setTurma(turma);
+					diaTurmaTmp.setTurno(TipoTurno.getTipoTurnoByStringConteins(valueDias));
 
 					save(diaTurmaTmp);
 				}

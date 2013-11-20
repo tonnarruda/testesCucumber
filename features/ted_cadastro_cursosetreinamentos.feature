@@ -6,7 +6,6 @@ Funcionalidade: Cadastrar Curso
     Dado que exista uma avaliacao de curso "Avaliacao"
     Dado que exista um tipo de despesa "_apostilas"
     Dado que exista um tipo de despesa "_alimentacao"
-
     Dado que eu esteja logado
 
     Quando eu acesso o menu "T&D > Cadastros > Cursos/Treinamentos"
@@ -81,11 +80,33 @@ Funcionalidade: Cadastrar Curso
 
     Então eu clico na linha "_testes auto" da imagem "Lista de Frequência"
     E eu devo ver "Período: 13/06/2012 a 17/06/2012"
+    E eu não devo ver "manhã"
+    E eu não devo ver "tarde"
+    E eu não devo ver "noite"
+    E eu clico no botão "Voltar"
+    E eu devo ver o título "Turmas do curso _testes"
+
+    Então eu clico em editar "_testes auto"
+    E eu seleciono "Turno" de "Realizar turma por"
+    E eu marco "13/06/2012 - quarta-feira - manhã"
+    E eu marco "13/06/2012 - quarta-feira - tarde"
+    E eu marco "14/06/2012 - quinta-feira - manhã"
+    E eu marco "15/06/2012 - sexta-feira - noite"
+    E eu clico no botão "Gravar"
+    E eu devo ver o título "Turmas do curso _testes"
+    E eu não devo ver "_testes automatizados"
+
+    Então eu clico na linha "_testes auto" da imagem "Lista de Frequência"
+    E eu devo ver "Período: 13/06/2012 a 17/06/2012"
+    E eu devo ver "14/06"
+    E eu devo ver "manhã"
+    E eu devo ver "tarde"
+    E eu devo ver "noite"
     E eu clico no botão "Voltar"
     E eu devo ver o título "Turmas do curso _testes"
     E eu clico no botão "Voltar"
     E eu devo ver o título "Cursos"
-    
+
     Então eu clico em excluir "_testes"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     E eu devo ver "possui dependências em"

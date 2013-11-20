@@ -8,17 +8,15 @@ import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.web.tags.CheckBox;
 
 public class DiaTurmaDWR
 {
 	private DiaTurmaManager diaTurmaManager;
 	private TurmaManager turmaManager;
 
-	public Map getDias(String dataIniStr, String dataFimStr) throws Exception
+	public Map getDias(String dataIniStr, String dataFimStr, Boolean aplicarPorTurno) throws Exception
 	{
 		Date dataIni = DateUtil.montaDataByString(dataIniStr);
 		Date dataFim = DateUtil.montaDataByString(dataFimStr);
@@ -26,7 +24,7 @@ public class DiaTurmaDWR
 		if (dataIni.after(dataFim)) // verifica se dataIni maior q dataFim
 			return null;
 
-		Collection<DiaTurma> diasTurmas = diaTurmaManager.montaListaDias(dataIni, dataFim);
+		Collection<DiaTurma> diasTurmas = diaTurmaManager.montaListaDias(dataIni, dataFim, aplicarPorTurno);
 
 		return new CollectionUtil<DiaTurma>().convertCollectionToMap(diasTurmas,"getDescricao","getDescricao");
 	}
@@ -38,37 +36,37 @@ public class DiaTurmaDWR
 		String[] key = new String[] {"id"};;
 		Object[] value = new Long[] {turmaId};
 
+		StringBuilder result = new StringBuilder();
 		Collection<Turma> turmas = turmaManager.findToList(properties, sets, key, value);
 
-		Turma turma = (Turma) turmas.toArray()[0];
-
-		Date dataIni = turma.getDataPrevIni();
-		Date dataFim = turma.getDataPrevFim();
-
-		Collection<CheckBox> diasCheckList = null;
-		StringBuilder result = new StringBuilder();
-		try
+		if(turmas != null && turmas.size() > 0)
 		{
-			diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date)dataIni.clone(), dataFim),"getId", "getDescricao");
-			Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turmaId });
-			diasCheckList = CheckListBoxUtil.marcaCheckListBoxString(diasCheckList, diasTurmaMarcados, "getDescricao");
+			Turma turma = (Turma) turmas.toArray()[0];
+			Date dataIni = turma.getDataPrevIni();
+			Date dataFim = turma.getDataPrevFim();
 
-			for (CheckBox checkBox : diasCheckList)
+			if (dataIni.after(dataFim)) // verifica se dataIni maior q dataFim
+				return null;
+
+			try
 			{
-				String check = (checkBox.isSelecionado() ? "checked" : "");
+				String diasTurmaMarcadoDescricao;
+				Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turmaId });
+				for (DiaTurma diasTurmaMarcado : diasTurmaMarcados)
+				{
+					diasTurmaMarcadoDescricao = diasTurmaMarcado.getDescricao();
 
-				result.append("<label for=\"checkGroup"+ divName + checkBox.getNome() +"\" >");
-				result.append("<input name=\""+ divName +"\" value=\""+ checkBox.getNome() +"\" type=\"checkbox\" id=\"checkGroup"+ divName + checkBox.getNome() + "\" " + check + "\">" + checkBox.getNome());
-		    	result.append("</label>");
+					result.append("<label for=\"checkGroup"+ divName + diasTurmaMarcadoDescricao +"\" >");
+					result.append("<input name=\""+ divName +"\" value=\""+ diasTurmaMarcadoDescricao +"\" type=\"checkbox\" id=\"checkGroup"+ divName + diasTurmaMarcadoDescricao + "\">" + diasTurmaMarcadoDescricao);
+					result.append("</label>");
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return null;
 			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		if (dataIni.after(dataFim)) // verifica se dataIni maior q dataFim
-			return null;
 
 		return result.toString();
 	}

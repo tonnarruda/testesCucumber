@@ -18,7 +18,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
@@ -48,6 +47,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	@ManyToOne
 	private Curso curso;
 	private boolean realizada = false;
+	private boolean porTurno;
 	private Integer qtdParticipantesPrevistos;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<DiaTurma> diasTurma;
@@ -445,5 +445,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setDiasTurma(Collection<DiaTurma> diasTurma) {
 		this.diasTurma = diasTurma;
+	}
+
+	public boolean isPorTurno() {
+		return porTurno;
+	}
+
+	public void setPorTurno(boolean porTurno) {
+		this.porTurno = porTurno;
 	}
 }

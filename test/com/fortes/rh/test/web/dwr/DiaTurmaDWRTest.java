@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
@@ -43,12 +45,12 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
 		diaTurmas.add(diaTurma);
 
-		diaTurmaManager.expects(once()).method("montaListaDias").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
+		diaTurmaManager.expects(once()).method("montaListaDias").with(ANYTHING, ANYTHING, eq(false)).will(returnValue(diaTurmas));
 
 		String dataIniStr = "01/12/2000";
 		String dataFimStr = "20/12/2000";
 
-		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr);
+		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
 
 		assertEquals(1, retorno.size());
 	}
@@ -58,7 +60,7 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		String dataIniStr = "22/12/2000";
 		String dataFimStr = "20/12/2000";
 
-		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr);
+		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
 
 		assertNull(retorno);
 	}
@@ -83,8 +85,6 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
 		diaTurmas.add(diaTurma);
 
-		diaTurmaManager.expects(once()).method("montaListaDias").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(diaTurmas));
-
 		diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
 
 		String retorno = diaTurmaDWR.getDiasPorTurma(turma.getId(), "teste");
@@ -108,15 +108,8 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		turmas.add(turma);
 
 		turmaManager.expects(once()).method("findToList").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(turmas));
-
-		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
-		diaTurmas.add(diaTurma);
-
-		diaTurmaManager.expects(once()).method("montaListaDias").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(diaTurmas));
-
-		diaTurmaManager.expects(once()).method("find").with(ANYTHING, ANYTHING).will(returnValue(diaTurmas));
-
-		String retorno = diaTurmaDWR.getDiasPorTurma(turma.getId(), "teste");
+		
+		assertNull(diaTurmaDWR.getDiasPorTurma(turma.getId(), "teste"));
 	}
 
 	public void testGetDiasPorTurmaComExcecao()
@@ -133,13 +126,9 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		turmas.add(turma);
 
 		turmaManager.expects(once()).method("findToList").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(turmas));
+		diaTurmaManager.expects(once()).method("find").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 
-		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
-		diaTurmas.add(diaTurma);
-
-		diaTurmaManager.expects(once()).method("montaListaDias").with(new Constraint[] {ANYTHING, ANYTHING}).will(returnValue(diaTurmas));
-
-		String retorno = diaTurmaDWR.getDiasPorTurma(turma.getId(), "teste");
+		assertNull(diaTurmaDWR.getDiasPorTurma(turma.getId(), "teste"));
 	}
 
 }

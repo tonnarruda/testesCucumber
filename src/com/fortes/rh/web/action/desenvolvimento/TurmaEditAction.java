@@ -237,7 +237,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if(!avaliacaoRespondida)
 			avaliacaoRespondida = turmaAvaliacaoTurmaManager.verificaAvaliacaoliberada(turma.getId());
 
-		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim()), "getId", "getDescricao");
+		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim(), turma.isPorTurno()), "getId", "getDescricao");
 		Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
 		diasCheckList = CheckListBoxUtil.marcaCheckListBoxString(diasCheckList, diasTurmaMarcados, "getDescricao");
 

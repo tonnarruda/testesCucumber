@@ -10,10 +10,10 @@
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	
 		#formDialog { display: none; }
-		.tabela_colabs { float: right; width: 400px; height: 592px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #7E9DB9; }
+		.tabela_colabs { float: right; width: 400px; height: 689px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #7E9DB9; }
 		.tabela_colabs .dados { width: 385px; border: none; }
 		fieldset { padding: 10px; margin-bottom: 20px; }
-		legend { font-weight: bold; }
+		.legend { font-weight: bold; }
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -69,12 +69,13 @@
 			$("#inst" + i).val(turma.instrutor);
 			$("#instituicao" + i).val(turma.instituicao);
 			$("#custo" + i).val(turma.custoFormatado);
+			$("#porTurno" + i).val('' + turma.porTurno).attr('disabled', 'disabled').css('background','#ececec');
 			
 			var datas = turma.periodoFormatado.split(' a ');
 			$("#prevIni" + i).val(datas[0]);
 			$("#prevFim" + i).val(datas[1]);
 			
-			populaDiasTurma(turma.dataPrevIni, turma.dataPrevFim, i);
+			populaDiasTurma(turma.dataPrevIni, turma.dataPrevFim, turma.porTurno, i);
 			
 			$(turma.diasTurma).each(function(k, diaTurma) {
 				$("input[name='diasTurmasCheck[" + i + "]'][value='" + diaTurma.descricao + "']").attr("checked","checked");
@@ -88,7 +89,7 @@
 			fset.find('#prevIni' + i + '_button > img, #prevFim' + i + '_button > img, #detalharCusto' + i + ' img').hide();
 		}
 		
-		function populaDiasTurma(dataIni, dataFim, i)
+		function populaDiasTurma(dataIni, dataFim, diasPorTurno, i)
 		{
 			var atual = dataIni;
 			var atualDesc;
@@ -96,7 +97,15 @@
 			
 			while (atual <= dataFim) 
 			{
-				datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual));
+				if(!diasPorTurno)
+					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual));
+				else
+				{
+					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - manhã');
+					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - tarde');
+					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - noite');
+				}
+				
 				atual.setDate(atual.getDate() + 1);
 			}
 			
@@ -187,7 +196,8 @@
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
 				DiaTurmaDWR.getDias(dIni.value, 
-									dFim.value, 
+									dFim.value,
+									$('#porTurno'+ indice).val(), 
 									function(dados) 
 									{
 										if(dados != null)
@@ -241,7 +251,7 @@
 		
 		<#list cursosColaboradores?keys as curso>
 			<fieldset id="fset_${i}" class="fset_${curso.id}" indice="${i}">
-				<legend>
+				<legend class="legend">
 					<a href="javascript:;" onclick="newConfirm('Deseja realmente cancelar a criação da turma para o curso<br /> ${curso.nome}?', function(){ $('#fset_${i}').remove(); });"><img border="0" title="Cancelar criação de turma para este curso" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					Curso: ${curso.nome}
 				</legend>
@@ -305,12 +315,16 @@
 							<a href="javascript:;" id="detalharCusto${i}"  onclick="abrirPopupDespesas(${i});" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
 						</div> 
 					</li>
-					
-					Período:* <br />
-					<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
-					<@ww.label value="a" liClass="liLeft" />
-					<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
-					<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" label="Dias Previstos *" list="diasTurmasCheckList"/>
+					<br />
+					<fieldset style="padding: 5px 0px 5px 5px; width: 490px;">
+						<legend>Dias Previstos</legend>
+						<@ww.select label="Realizar turma por" name="turmas[${i}].porTurno" id="porTurno${i}" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(${i});"/>
+						Período:* <br />
+						<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
+						<@ww.label value="a" liClass="liLeft" />
+						<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
+						<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" list="diasTurmasCheckList" width="486"/>
+					</fieldset>
 					
 					<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList"/>
 				</div>

@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.TipoTurno;
 import com.fortes.rh.util.DateUtil;
 
 @Entity
@@ -24,6 +25,7 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 
     @ManyToOne
     private Turma turma;
+    private char turno = 'D';
 
 	public Date getDia()
 	{
@@ -43,11 +45,31 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 	}
 	public String getDescricao()
 	{
-		return DateUtil.formataDiaMesAno(this.dia) + " - " + DateUtil.getDiaSemanaDescritivo(this.dia);
+		String descricao = DateUtil.formataDiaMesAno(this.dia) + " - " + DateUtil.getDiaSemanaDescritivo(this.dia);
+		
+		if(turno != TipoTurno.DIA)
+			descricao += " - " + TipoTurno.getDescricao(turno);
+		
+		return descricao;
 	}
 
 	public void setDescricao(String descricao)
 	{
 		this.descricao = descricao;
+	}
+	
+	public String getTurnoDescricao() 
+	{
+		return TipoTurno.getDescricao(turno);
+	}
+	
+	public char getTurno() 
+	{
+		return turno;
+	}
+	
+	public void setTurno(char turno) 
+	{
+		this.turno = turno;
 	}
 }

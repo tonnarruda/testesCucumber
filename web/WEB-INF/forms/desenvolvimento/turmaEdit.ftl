@@ -56,7 +56,7 @@
 				{
 					diasIds = getArrayCheckeds(frm, "diasCheck");
 					DWRUtil.useLoadingMessage('Carregando...');
-					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value);
+					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value, $('#porTurno').val());
 				}
 			}
 		}
@@ -214,7 +214,7 @@
 			<strong>Curso: ${turma.curso.nome}</strong>
 			<img id="tooltipCurso" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -3px; margin-top: -9px;" />
 			<@ww.hidden name="turma.curso.id" id="curso" value="${turma.curso.id}" />
-			</br></br>
+			<br /><br />
 		</#if>
 
 		<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" cssStyle="width: 637px;" maxLength="100"/>
@@ -240,35 +240,44 @@
 		<@ww.textfield label="Qtd. Prevista de Participantes" name="turma.qtdParticipantesPrevistos" id="qtdParticipantesPrevistos" cssStyle="width:30px; text-align:right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 		<@ww.select label="Realizada" name="turma.realizada" list=r"#{true:'Sim',false:'Não'}"/>
 
-		<#assign dataIni=""/>
-		<#if turma?exists && turma.dataPrevIni?exists>
-			<#assign dataIni=turma.dataPrevIni/>
-		</#if>
-		<#assign dataFim=""/>
-		<#if turma?exists && turma.dataPrevFim?exists>
-			<#assign dataFim=turma.dataPrevFim/>
-		</#if>
-
-		Período:*<br>
-
 		<#if turma.temPresenca?exists && turma.temPresenca>
-			<@ww.textfield name="turma.dataPrevIni" value="${dataIni}" id="prevIni" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft" />
-			<@ww.label value="a" liClass="liLeft"/>
-			<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/></br>
-			<img id="tooltipDias" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -90px; margin-bottom:-18px" />
-			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=true valueString=true/>
-		<#else>
-			<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
-			<@ww.label value="a" liClass="liLeft" />
-			<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" />
-			<@frt.checkListBox name="diasCheck" label="Dias Previstos" list="diasCheckList" readonly=false valueString=true/>
+			<img id="tooltipDias" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 103px; margin-bottom:-18px" />
 		</#if>
+		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
+			<legend>Dias Previstos</legend>
+
+			<#assign dataIni=""/>
+			<#if turma?exists && turma.dataPrevIni?exists>
+				<#assign dataIni=turma.dataPrevIni/>
+			</#if>
+			<#assign dataFim=""/>
+			<#if turma?exists && turma.dataPrevFim?exists>
+				<#assign dataFim=turma.dataPrevFim/>
+			</#if>
+	
+			<#if turma.temPresenca?exists && turma.temPresenca>
+				<@ww.select label="Realizar turma por" name="turma.porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);" disabled=true/>
+				<@ww.hidden name="turma.porTurno" />
+				Período:*<br />
+				<@ww.textfield name="turma.dataPrevIni" value="${dataIni}" id="prevIni" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft" />
+				<@ww.label value="a" liClass="liLeft"/>
+				<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/><br /><br />
+				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true/>
+			<#else>
+				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);"/>
+				Período:*<br>
+				<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
+				<@ww.label value="a" liClass="liLeft" />
+				<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" /><br />
+				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=false valueString=true filtro="true"/>
+			</#if>
+		</fieldset><br />
 
 		<#if turmaPertenceAEmpresaLogada>
-			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList"/>
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" width="514"/>
 		<#else>
 			<img id="tooltipAvaliacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 250px; margin-bottom:-18px" />
-			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true/>
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true  width="514"/>
 		</#if>
 
 		<@ww.hidden name="turma.id" id="turmaId" />

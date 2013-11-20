@@ -39,23 +39,46 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		Date dataPrevIni = new Date("2007/12/10");
     	Date dataPrevFim = new Date("2007/12/05");
 
-    	Collection<DiaTurma> diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim);
+    	Collection<DiaTurma> diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, false);
     	assertEquals(0, diaTurmas.size());
 
     	dataPrevIni = new Date("2007/12/01");
 
-    	diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim);
+    	diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, false);
 
     	assertEquals(5, diaTurmas.size());
 
     	dataPrevIni = new Date("2007/12/01");
     	dataPrevFim = new Date("2007/12/01");
 
-    	diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim);
+    	diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, false);
 
     	assertEquals(1, diaTurmas.size());
 
     }
+
+	public void testMontaListaDiasComTurnos()
+	{
+		Date dataPrevIni = new Date("2007/12/10");
+		Date dataPrevFim = new Date("2007/12/05");
+		
+		Collection<DiaTurma> diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, true);
+		assertEquals(0, diaTurmas.size());
+		
+		dataPrevIni = new Date("2007/12/01");
+		
+		diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, true);
+		
+		assertEquals(15, diaTurmas.size());
+		
+		dataPrevIni = new Date("2007/12/01");
+		dataPrevFim = new Date("2007/12/01");
+		
+		diaTurmas = diaTurmaManager.montaListaDias(dataPrevIni, dataPrevFim, true);
+		
+		assertEquals(3, diaTurmas.size());
+		
+	}
 	
 	public void testDeleteDiasTurma()
 	{

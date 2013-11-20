@@ -6,15 +6,11 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 
-		.matriz td
+		.matriz th, .matriz td
 		{
 			border-bottom: 1px solid #7E7E7E;
 			border-right: 1px solid #7E7E7E;
-		}
-		.matriz th
-		{
-			border-bottom: 1px solid #7E7E7E;
-			border-right: 1px solid #7E7E7E;
+			text-align: center;
 		}
 	</style>
 
@@ -142,53 +138,59 @@
 		Turma: ${turma.descricao}<br>
 		Período: ${turma.dataPrevIni?string("dd'/'MM'/'yyyy")} a ${turma.dataPrevFim?string("dd'/'MM'/'yyyy")}<br><br>
 
-<div id="espaco">
-		<table width="100%" cellspacing="0" cellpadding="0" class="matriz">
-			<thead>
-				<th align="left"><b>Colaboradores</b></th>
-				<#list diaTurmas as diaTurma>
-					<th align="left">
-						<img border="0" style="cursor: pointer;" id="marcar" title="${marcarTodos}" onclick="marcarTodos(${diaTurma.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>">
-						${diaTurma.dia?string("dd'/'MM")}
-					</th>
-				</#list>
-				<th width="45px"><b>%</b></th>
-			</thead>
-			<tbody>
-				<#list colaboradorTurmasLista as lista>
-					<script type="text/javascript">
-						colaboradorTurmaIds[${rowCount}] = ${lista.id};
-					</script>
-
+		<div id="espaco">
+			<table class="matriz" cellpadding="5">
+				<thead>
 					<tr>
-						<td>
-							${lista.colaborador.nome}
-						</td>
+						<th align="left"><b>Colaboradores</b></th>
 						<#list diaTurmas as diaTurma>
-						<td>
-							<#assign checked = false>
-							<#list colaboradorPresencas as cp>
-								<#if cp.diaTurma.id == diaTurma.id && cp.colaboradorTurma.id == lista.id>
-									<#assign checked = true>
+							<th align="left">
+								${diaTurma.dia?string("dd'/'MM")}<br />
+								<#if diaTurma.turnoDescricao?exists>
+									${diaTurma.turnoDescricao} <br />
 								</#if>
-							</#list>
-
-							<#if checked>
-								<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${presente}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/check.gif"/>">
-							<#else>
-								<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${faltou}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>">
-							</#if>
-						</td>
+								
+								<img border="0" style="cursor: pointer;" id="marcar" title="${marcarTodos}" onclick="marcarTodos(${diaTurma.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>" align="absbottom">
+							</th>
 						</#list>
-						<td align="right">
-							<div id="${lista.id}_"></div>
-						</td>
+						<th width="45px"><b>%</b></th>
 					</tr>
-					<#assign rowCount = rowCount + 1/>
-				</#list>
-			</tbody>
-		</table>
-		<@ww.hidden name="turma.id" />
+				</thead>
+				<tbody>
+					<#list colaboradorTurmasLista as lista>
+						<tr>
+							<td>
+								<script type="text/javascript">
+									colaboradorTurmaIds[${rowCount}] = ${lista.id};
+								</script>
+								${lista.colaborador.nome}
+							</td>
+							<#list diaTurmas as diaTurma>
+							<td>
+								<#assign checked = false>
+								<#list colaboradorPresencas as cp>
+									<#if cp.diaTurma.id == diaTurma.id && cp.colaboradorTurma.id == lista.id>
+										<#assign checked = true>
+									</#if>
+								</#list>
+	
+								<#if checked>
+									<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${presente}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/check.gif"/>">
+								<#else>
+									<img border="0" style="cursor: pointer;" id="${diaTurma.id}_${rowCount}" title="${faltou}" onclick="setFrequencia(${diaTurma.id}, ${lista.id}, this);"  src="<@ww.url includeParams="none" value="/imgs/no_check.gif"/>">
+								</#if>
+							</td>
+							</#list>
+							<td align="right">
+								<div id="${lista.id}_"></div>
+							</td>
+						</tr>
+						<#assign rowCount = rowCount + 1/>
+					</#list>
+				</tbody>
+			</table>
+			<@ww.hidden name="turma.id" />
+		</div>
 	</@ww.form>
 
 	<div class="buttonGroup">
@@ -198,6 +200,5 @@
 	<script type="text/javascript">
 		calculaFrequenciaOnLoad();
 	</script>
-</div>
 </body>
 </html>
