@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
 
-import org.apache.commons.digester.WithDefaultsRulesWrapper;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;

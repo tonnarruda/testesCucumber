@@ -59,8 +59,14 @@ public class ObraEditAction extends MyActionSupportList
 		try {
 			obra.setEmpresa(getEmpresaSistema());
 			obraManager.save(obra);
+			
+			addActionSuccess("Obra cadastrada com sucesso.");
+			
 		} catch (Exception e) {
 			prepare();
+			e.printStackTrace();
+			addActionError("Não foi possível cadastrar a obra.");
+			
 			return Action.INPUT;
 		}
 		return Action.SUCCESS;
@@ -70,8 +76,13 @@ public class ObraEditAction extends MyActionSupportList
 	{
 		try {
 			obraManager.update(obra);
+			addActionSuccess("Obra atualizada com sucesso.");
+			
 		} catch (Exception e) {
 			prepare();
+			e.printStackTrace();
+			addActionError("Não foi possível atualizar a obra.");
+			
 			return Action.INPUT;
 		}
 		return Action.SUCCESS;

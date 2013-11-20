@@ -18,7 +18,7 @@
 			<@ww.hidden name="medidaSeguranca.empresa.id" />
 			<@ww.token/>
 			
-			<@ww.textarea label="Descrição" name="medidaSeguranca.descricao"/>
+			<@ww.textarea label="Descrição" id="descricao" name="medidaSeguranca.descricao"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">

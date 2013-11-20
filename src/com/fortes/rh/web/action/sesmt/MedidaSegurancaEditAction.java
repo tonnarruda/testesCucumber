@@ -22,7 +22,6 @@ public class MedidaSegurancaEditAction extends MyActionSupportList
 	{
 		if(medidaSeguranca != null && medidaSeguranca.getId() != null)
 			medidaSeguranca = (MedidaSeguranca) medidaSegurancaManager.findById(medidaSeguranca.getId());
-
 	}
 
 	public String prepareInsert() throws Exception
@@ -39,13 +38,36 @@ public class MedidaSegurancaEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		medidaSegurancaManager.save(medidaSeguranca);
+		try {
+			medidaSeguranca.setEmpresa(getEmpresaSistema());
+			medidaSegurancaManager.save(medidaSeguranca);
+			
+			addActionSuccess("Medida de segurança cadastrada com sucesso.");
+		}
+		catch (Exception e) {
+			prepare();
+			e.printStackTrace();
+			addActionError("Não foi possível cadastrar a medida de segurança.");
+			
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		medidaSegurancaManager.update(medidaSeguranca);
+		try {
+			medidaSegurancaManager.update(medidaSeguranca);
+			addActionSuccess("Medida de segurança atualizada com sucesso.");
+		}
+		catch (Exception e) {
+			prepare();
+			e.printStackTrace();
+			addActionError("Não foi possível atualizar a medida de segurança.");
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -60,7 +82,7 @@ public class MedidaSegurancaEditAction extends MyActionSupportList
 		try
 		{
 			medidaSegurancaManager.remove(medidaSeguranca.getId());
-			addActionMessage("Medida de segurança excluída com sucesso.");
+			addActionSuccess("Medida de segurança excluída com sucesso.");
 		}
 		catch (Exception e)
 		{

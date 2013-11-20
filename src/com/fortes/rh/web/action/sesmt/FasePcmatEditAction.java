@@ -39,9 +39,14 @@ public class FasePcmatEditAction extends MyActionSupportList
 		try {
 			fasePcmat.setEmpresa(getEmpresaSistema());
 			fasePcmatManager.save(fasePcmat);
+			
+			addActionSuccess("Fase cadastrada com sucesso.");
+			
 		} catch (Exception e) {
 			prepare();
 			e.printStackTrace();
+			addActionError("Não foi possível cadastrar a fase.");
+			
 			return Action.INPUT;
 		}
 		return Action.SUCCESS;
@@ -51,9 +56,13 @@ public class FasePcmatEditAction extends MyActionSupportList
 	{
 		try {
 			fasePcmatManager.update(fasePcmat);
+			addActionSuccess("Fase atualizada com sucesso.");
+			
 		} catch (Exception e) {
 			prepare();
 			e.printStackTrace();
+			addActionError("Não foi possível atualizar a fase.");
+			
 			return Action.INPUT;
 		}
 		return Action.SUCCESS;
