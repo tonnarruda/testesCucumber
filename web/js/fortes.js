@@ -74,16 +74,9 @@ BrowserDetect.init( function ( informacaoesDesteBrowser ){
 
 function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
 {
-	with(frm)
-	{
-		for(i = 0; i < elements.length; i++)
-		{
-			if(elements[i].name == nameCheck && elements[i].type == 'checkbox' && !elements[i].disabled)
-			{
-				elements[i].checked = vMarcar;
- 			}
-		}
-	}
+	$(frm).find("input[name='" + nameCheck + "']:visible").each(function(i, item) {
+		$(item).attr('checked',vMarcar);
+	});
 }
 
 function marcarListCheckBox(frm, nameCheck, marcados)
