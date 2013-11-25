@@ -200,9 +200,9 @@
 				DWRUtil.useLoadingMessage('Carregando...');
 				var empresaIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
 				if(empresaIds.length > 0)
-					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds);
+					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds, null);
 				else
-					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresasPermitidasIds);
+					AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresasPermitidasIds, null);
 					
 				populaCargosByAreaVinculados();
 			}

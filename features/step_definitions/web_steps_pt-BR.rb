@@ -293,7 +293,7 @@ Então /^eu devo ver o alert do confirmar e clico no ok/ do
   When %{I press "OK"}
 end
 
-Quando /^eu espero (\d+) segundos$/ do |segundos|
+Quando /^eu espero (\d+) segundo[s]?$/ do |segundos|
   sleep segundos.to_i
 end
 

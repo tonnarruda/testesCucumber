@@ -30,6 +30,7 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -110,6 +111,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Long[] empresaIds;//repassado para o DWR
 	private Empresa empresa;
 	private Boolean compartilharColaboradores;
+	private char ativa;
 
 	private void prepare() throws Exception
 	{
@@ -221,7 +223,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			if (empresa.getId() != null)
 				empresa = empresaManager.findByIdProjection(empresa.getId());
 			
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(empresa.getId(), dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, gruposCheck, vinculo);
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(empresa.getId(), dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, BooleanUtil.getValueCombo(ativa), gruposCheck, vinculo);
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
 			
 			return Action.SUCCESS;
@@ -874,6 +876,14 @@ public class CargoEditAction extends MyActionSupportEdit
 	public void setExibirValorFaixaSalarial(boolean exibirValorFaixaSalarial)
 	{
 		this.exibirValorFaixaSalarial = exibirValorFaixaSalarial;
+	}
+
+	public char getAtiva() {
+		return ativa;
+	}
+
+	public void setAtiva(char ativa) {
+		this.ativa = ativa;
 	}
 
 }

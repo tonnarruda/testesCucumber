@@ -150,7 +150,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 
-	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, String[] gruposCheck, String vinculo) throws Exception;
+	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo) throws Exception;
 	
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
 

@@ -1409,9 +1409,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().removeCandidatoSolicitacao(candidatoSolicitacaoId);		
 	}
 	
-	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, String[] gruposCheck, String vinculo) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo) throws Exception
 	{
-		Collection<HistoricoColaborador> historicos = getDao().findByAreaGrupoCargo(empresaId, dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck), LongUtil.arrayStringToArrayLong(gruposCheck), vinculo);
+		Collection<HistoricoColaborador> historicos = getDao().findByAreaGrupoCargo(empresaId, dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck), areasAtivas, LongUtil.arrayStringToArrayLong(gruposCheck), vinculo);
 		if (historicos.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 		

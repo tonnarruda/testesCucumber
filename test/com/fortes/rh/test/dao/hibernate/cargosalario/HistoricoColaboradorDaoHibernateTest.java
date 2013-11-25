@@ -1582,6 +1582,10 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		// dado uma area organizacional
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(areaOrganizacional);
+
+		AreaOrganizacional areaOrganizacionalInativa = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalInativa.setAtivo(false);
+		areaOrganizacionalDao.save(areaOrganizacionalInativa);
 		
 		// dado um colaborador
 		Colaborador maria = ColaboradorFactory.getEntity();
@@ -1607,6 +1611,14 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		pedro.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
 		pedro.setDesligado(false);
 		colaboradorDao.save(pedro);
+		
+		Colaborador josue = ColaboradorFactory.getEntity();
+		josue.setNome("Josue");
+		josue.setEmpresa(empresa);
+		josue.setVinculo(Vinculo.EMPREGO);
+		josue.setDataAtualizacao(DateUtil.criarDataMesAno(1, 6, 2010));
+		josue.setDesligado(false);
+		colaboradorDao.save(josue);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setData(DateUtil.criarDataMesAno(1, 2, 2010));
@@ -1643,25 +1655,42 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador3.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
+		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador4.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historicoColaborador4.setColaborador(josue);
+		historicoColaborador4.setFaixaSalarial(faixaSalarial);
+		historicoColaborador4.setEstabelecimento(estabelecimento);
+		historicoColaborador4.setAreaOrganizacional(areaOrganizacionalInativa);
+		historicoColaborador4.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador4);
+		
 		// quando
 		Long[] cargoIds = new Long[]{cargo.getId()};
 		Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
-		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId()};
+		Long[] areaOrganizacionalIds = new Long[]{areaOrganizacional.getId(), areaOrganizacionalInativa.getId()};
 		Long[] grupoOcupacionalIds = new Long[]{gerentes.getId()};
 		String vinculo = Vinculo.EMPREGO;
 		
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, grupoOcupacionalIds, vinculo);
-				
-		assertEquals(2, historicoColaboradors.size());
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, null, grupoOcupacionalIds, vinculo);
+		assertEquals(3, historicoColaboradors.size());
+		
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
-		assertEquals("Maria", resultado1.getColaborador().getNome());
+		assertEquals("Josue", resultado1.getColaborador().getNome());
 		assertEquals("Desenvolvedor A", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado1.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
-
+		
 		HistoricoColaborador resultado2 = (HistoricoColaborador) historicoColaboradors.toArray()[1];
-		assertEquals("Joao", resultado2.getColaborador().getNome());
-		assertEquals("Desenvolvedor B", resultado2.getFaixaSalarial().getDescricao());
+		assertEquals("Maria", resultado2.getColaborador().getNome());
+		assertEquals("Desenvolvedor A", resultado2.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado2.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
+
+		HistoricoColaborador resultado3 = (HistoricoColaborador) historicoColaboradors.toArray()[2];
+		assertEquals("Joao", resultado3.getColaborador().getNome());
+		assertEquals("Desenvolvedor B", resultado3.getFaixaSalarial().getDescricao());
+		assertEquals("Gerentes", resultado3.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
+		
+		historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, true, grupoOcupacionalIds, vinculo);
+		assertEquals("Somente áreas ativas", 2, historicoColaboradors.size());
 	}
 	
 	public void testDeleteHistoricosAguardandoConfirmacaoByColaborador()

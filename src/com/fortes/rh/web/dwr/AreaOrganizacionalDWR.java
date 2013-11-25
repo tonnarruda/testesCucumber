@@ -40,13 +40,13 @@ public class AreaOrganizacionalDWR
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
+	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds, Boolean ativa) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 		if(empresaId == null || empresaId == 0 || empresaId == -1 )
-			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
+			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, ativa);
 		else
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, ativa, null);
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

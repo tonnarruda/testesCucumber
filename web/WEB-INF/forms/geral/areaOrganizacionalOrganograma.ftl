@@ -145,7 +145,7 @@
 </head>
 
 <body>
-	<label for="areaOrganizacional">Listar áreas organizacionais </label>
+	<label for="ativa">Listar áreas organizacionais </label>
 	<@ww.select theme="simple" id="ativa" name="ativa" list=r"#{true:'ativas'}" cssStyle="width: 315px;" headerKey="" headerValue="ativas e inativas"/><br />
 	<label for="areaOrganizacional">Área Organizacional:</label><br />
 	<@ww.select theme="simple" id="areaOrganizacional" name="areaOrganizacional" list="areaOrganizacionals" listKey="id" listValue="descricao" headerKey="" headerValue="Todas" multiple="false" size="10" cssStyle="width: 500px;"/>

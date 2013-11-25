@@ -1208,7 +1208,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 	}
 
-	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] grupoOcupacionalIds, String vinculo)
+	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo)
 	{
 
 		StringBuilder hql = new StringBuilder();
@@ -1231,6 +1231,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append("and e.id in ( :estabelecimentoIds ) ");
 
+		if(areasAtivas != null)
+			hql.append(" and ao.ativo = :areasAtivas ");
+		
 		if(areaIds != null && areaIds.length>0)
 			hql.append(" and ao.id in (:areaOrganizacionalIds) ");
 
@@ -1258,6 +1261,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+		
+		if(areasAtivas != null)
+			query.setBoolean("areasAtivas", areasAtivas);
 
 		if(areaIds != null && areaIds.length>0)
 			query.setParameterList("areaOrganizacionalIds", areaIds, Hibernate.LONG);

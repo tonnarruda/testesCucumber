@@ -141,12 +141,12 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findByEmpresasIds").will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		
-		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}).size());
+		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, null).size());
 		
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		empresaId = 1L;
-		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}).size());
+		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, null).size());
 	}
 	
 	public void testFindAllListAndInativas() throws Exception

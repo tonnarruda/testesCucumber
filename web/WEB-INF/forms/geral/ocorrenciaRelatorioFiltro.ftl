@@ -82,8 +82,7 @@
 		function populaArea(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(function(data){createListArea(data, empresaId);
-												}, empresaId, empresaIds);
+			AreaOrganizacionalDWR.getByEmpresas(function(data){createListArea(data, empresaId);}, empresaId, empresaIds, null);
 		}
 
 		function createListArea(data, empresaId)
