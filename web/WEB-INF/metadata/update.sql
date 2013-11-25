@@ -22036,3 +22036,11 @@ alter sequence papel_sequence restart with 605;--.go
 insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 604 from perfil_papel where papeis_id = 480;--.go
 insert into migrations values('20131104141310');--.go
 update parametrosdosistema set appversao = '1.1.119.136';--.go
+-- versao 1.1.120.137
+
+alter table parametrosdosistema add column suporteVeica boolean default false;--.go
+insert into migrations values('20131111163234');--.go
+alter table diaturma add column turno character(1) not null default 'D';--.go
+alter table turma add column porTurno boolean default false;--.go
+insert into migrations values('20131119100305');--.go
+update parametrosdosistema set appversao = '1.1.120.137';--.go

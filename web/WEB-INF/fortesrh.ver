@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.120.137" data="25/11/2013">
+		<Modulo nome=" "><![CDATA[
+			:: T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova opção para especificar se a turma será realizada por dia ou turno.
+			:: T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova pesquisa em "Dias Previstos" para auxiliar na escolha dos dias a serem marcados.
+			:: T&D > Relatórios > Lista de Presença: Nova opção de seleção para exibir a situação atual do colaborador ou a situação do colaborador na data de início da turma.
+			:: SESMT > Relatórios > EPIs Entregues: Impressão do total geral de entregas no relatório.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.119.136" data="11/11/2013">
 		<Modulo nome=" "><![CDATA[
 			:: T&D > Movimentações > Plano de Desenvolvimento Individual (PDI): Nova opção de seleção de turmas pré-existentes não realizadas para inclusão dos colaboradores.
