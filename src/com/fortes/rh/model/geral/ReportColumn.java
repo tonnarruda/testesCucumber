@@ -39,6 +39,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Estabelecimento", "estabelecimentoNome", "es.nome", 120, false));
 		columns.add(new ReportColumn("Área Organizacional", "areaOrganizacional.nome", "ao.nome", 120, false));
 		columns.add(new ReportColumn("Data Admissão", "dataAdmissaoFormatada", "co.dataAdmissao", 50, false));
+		columns.add(new ReportColumn("Data Desligamento", "dataDesligamentoFormatada", "co.dataDesligamento", 50, false));
 		columns.add(new ReportColumn("Cargo Atual", "faixaSalarial.cargo.nome", "cg.nome", 120, true));
 		columns.add(new ReportColumn("Faixa Salarial Atual", "faixaSalarial.nome", "fs.nome", 60, false));
 		columns.add(new ReportColumn("Estado Civil", "pessoal.estadoCivilDic", "co.pessoal.estadoCivil", 120, false));
@@ -62,8 +63,6 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Categoria da Habilit.", "habilitacao.categoria", "co.habilitacao.categoria", 60, false));
 		columns.add(new ReportColumn("CTPS/Série-DV", "pessoal.ctps.numeroCompleto", "co.pessoal.ctps.numeroCompleto", 15, true));
 		columns.add(new ReportColumn("Logradouro", "endereco.enderecoFormatado", "co.endereco.enderecoFormatado", 200, true));
-//		columns.add(new ReportColumn("Comp. do Logradouro", "endereco.complemento", "co.endereco.complemento", 120, true));
-//		columns.add(new ReportColumn("Número do Logradouro", "endereco.numero", "co.endereco.numero", 60, false));
 		columns.add(new ReportColumn("Bairro", "endereco.bairro", "co.endereco.bairro", 100, false));
 		columns.add(new ReportColumn("Cidade/Estado", "endereco.cidadeEstado", "co.endereco.cidadeEstado", 80, false));
 		columns.add(new ReportColumn("Cep", "endereco.cepFormatado", "co.endereco.cep", 60, false));
