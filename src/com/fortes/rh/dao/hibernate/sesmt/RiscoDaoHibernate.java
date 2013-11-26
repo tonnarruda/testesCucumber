@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoDao;
@@ -29,6 +30,7 @@ public class RiscoDaoHibernate extends GenericDaoHibernate<Risco> implements Ris
 		
 		criteria.add(Expression.eq("risco.empresa.id", empresaId));
 		
+		criteria.addOrder(Order.asc("risco.descricao"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		return criteria.list();
