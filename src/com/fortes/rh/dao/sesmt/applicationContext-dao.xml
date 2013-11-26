@@ -418,6 +418,7 @@
       <ref bean="fasePcmatDaoTarget" />
     </property>
   </bean>
+<<<<<<< HEAD
   <bean id="riscoFasePcmatDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.sesmt.RiscoFasePcmatDao</value>
@@ -429,3 +430,7 @@
 </beans>
 
 
+=======
+</beans>
+
+>>>>>>> e5cb06e17736bc427ac859389d5f88a6301eb00d
