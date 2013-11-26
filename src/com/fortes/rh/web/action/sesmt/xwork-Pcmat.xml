@@ -37,8 +37,5 @@
 			<result name="success" type="redirect">listPcmats.action?obra.id=${pcmat.obra.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
-		<action name="prepareFases" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareFases">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatFases.ftl</result>
-		</action>
 	</package>
 </xwork>

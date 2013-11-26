@@ -3,10 +3,10 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
-import com.fortes.rh.business.sesmt.FaseManager;
 import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.business.sesmt.PcmatManager;
 import com.fortes.rh.model.sesmt.Fase;
+import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -18,7 +18,6 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	private PcmatManager pcmatManager;
 	private ObraManager obraManager;
-	private FaseManager faseManager;
 	
 	private Pcmat pcmat;
 	private Obra obra;
@@ -26,6 +25,7 @@ public class PcmatEditAction extends MyActionSupportList
 	private Collection<Pcmat> pcmats;
 	private Collection<Obra> obras;
 	private Collection<Fase> fases;
+	private Collection<FasePcmat> fasesPcmat;
 	
 	private String nomeObra;
 
@@ -89,13 +89,6 @@ public class PcmatEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareFases()
-	{
-		pcmat = pcmatManager.findById(pcmat.getId());
-		
-		return Action.SUCCESS;
-	}
-	
 	public Pcmat getPcmat()
 	{
 		if(pcmat == null)
@@ -150,7 +143,11 @@ public class PcmatEditAction extends MyActionSupportList
 		this.fases = fases;
 	}
 
-	public void setFaseManager(FaseManager faseManager) {
-		this.faseManager = faseManager;
+	public Collection<FasePcmat> getFasesPcmat() {
+		return fasesPcmat;
+	}
+
+	public void setFasesPcmat(Collection<FasePcmat> fasesPcmat) {
+		this.fasesPcmat = fasesPcmat;
 	}
 }

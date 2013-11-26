@@ -1,7 +1,8 @@
 CREATE TABLE fasepcmat (
 	id bigint NOT NULL,
 	fase_id bigint,
-	pcmat_id bigint
+	pcmat_id bigint,
+	ordem smallint NOT NULL DEFAULT 0
 );--.go
 
 ALTER TABLE fasepcmat ADD CONSTRAINT fasepcmat_pkey PRIMARY KEY(id);--.go

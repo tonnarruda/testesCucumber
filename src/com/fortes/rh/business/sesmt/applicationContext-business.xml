@@ -936,4 +936,18 @@
       <ref bean="medidaSegurancaManagerTarget" />
     </property>
   </bean>
+  <bean id="fasePcmatManagerTarget" class="com.fortes.rh.business.sesmt.FasePcmatManagerImpl">
+    <property name="dao">
+      <ref bean="fasePcmatDao" />
+    </property>
+  </bean>
+  <bean id="fasePcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.FasePcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="fasePcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

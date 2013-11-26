@@ -20,6 +20,8 @@ public class FasePcmat extends AbstractModel implements Serializable
 	@ManyToOne
 	private Pcmat pcmat;
 	
+	private Integer ordem;
+	
 	@OneToMany(mappedBy="fasePcmat")
 	private Collection<RiscoFasePcmat> riscosFasePcmat;
 	
@@ -39,11 +41,27 @@ public class FasePcmat extends AbstractModel implements Serializable
 		this.pcmat = pcmat;
 	}
 
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
+	}
+	
 	public Collection<RiscoFasePcmat> getRiscosFasePcmat() {
 		return riscosFasePcmat;
 	}
 
 	public void setRiscosFasePcmat(Collection<RiscoFasePcmat> riscosFasePcmat) {
 		this.riscosFasePcmat = riscosFasePcmat;
+	}
+	
+	public void setFaseDescricao(String descricao)
+	{
+		if (this.fase == null)
+			this.fase = new Fase();
+		
+		this.fase.setDescricao(descricao);
 	}
 }
