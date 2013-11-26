@@ -8,4 +8,5 @@ import com.fortes.rh.model.sesmt.FasePcmat;
 public interface FasePcmatManager extends GenericManager<FasePcmat>
 {
 	Collection<FasePcmat> findByPcmat(Long pcmatId);
+	void saveFasePcmatRiscos(FasePcmat fasePcmat, Long[] riscosIds);
 }

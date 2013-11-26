@@ -6,11 +6,13 @@ import java.util.Collection;
 
 import com.fortes.rh.business.sesmt.FaseManager;
 import com.fortes.rh.business.sesmt.FasePcmatManager;
+import com.fortes.rh.business.sesmt.RiscoFasePcmatManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -22,6 +24,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	private FasePcmatManager fasePcmatManager;
 	private FaseManager faseManager;
 	private RiscoManager riscoManager;
+	private RiscoFasePcmatManager riscoFasePcmatManager;
 	
 	private FasePcmat fasePcmat;
 	private Pcmat pcmat;
@@ -43,6 +46,9 @@ public class FasePcmatEditAction extends MyActionSupportList
 		if (fasePcmat != null && fasePcmat.getId() != null)
 		{
 			fasePcmat = (FasePcmat) fasePcmatManager.findById(fasePcmat.getId());
+			
+			Collection<RiscoFasePcmat> riscosFasePcmat = riscoFasePcmatManager.findByFasePcmat(fasePcmat.getId());
+			riscosCheckList = CheckListBoxUtil.marcaCheckListBox(riscosCheckList, riscosFasePcmat, "getId");
 		}
 	}
 
@@ -61,7 +67,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			fasePcmatManager.save(fasePcmat);
+			fasePcmatManager.saveFasePcmatRiscos(fasePcmat, riscosCheck);
 			addActionSuccess("Fase cadastrada com sucesso.");
 			
 		} catch (Exception e) {
@@ -162,5 +168,9 @@ public class FasePcmatEditAction extends MyActionSupportList
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
+	}
+
+	public void setRiscoFasePcmatManager(RiscoFasePcmatManager riscoFasePcmatManager) {
+		this.riscoFasePcmatManager = riscoFasePcmatManager;
 	}
 }

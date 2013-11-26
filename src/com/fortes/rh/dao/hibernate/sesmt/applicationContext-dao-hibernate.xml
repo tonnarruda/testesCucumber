@@ -275,7 +275,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="riscoFasePcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.RiscoFasePcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

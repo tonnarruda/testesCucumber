@@ -43,8 +43,21 @@ public class RiscoFasePcmat extends AbstractModel implements Serializable
 		return medidasRiscoFasePcmat;
 	}
 
-	public void setMedidasRiscoFasePcmat(
-			Collection<MedidaRiscoFasePcmat> medidasRiscoFasePcmat) {
+	public void setMedidasRiscoFasePcmat(Collection<MedidaRiscoFasePcmat> medidasRiscoFasePcmat) {
 		this.medidasRiscoFasePcmat = medidasRiscoFasePcmat;
+	}
+
+	public void setRiscoId(Long riscoId) {
+		if (this.risco == null)
+			this.risco = new Risco();
+		
+		this.risco.setId(riscoId);
+	}
+	
+	public void setFasePcmatId(Long fasePcmatId) {
+		if (this.fasePcmat == null)
+			this.fasePcmat = new FasePcmat();
+		
+		this.fasePcmat.setId(fasePcmatId);
 	}
 }
