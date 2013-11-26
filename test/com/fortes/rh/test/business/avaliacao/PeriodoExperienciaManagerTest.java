@@ -59,12 +59,12 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		
 		FaixaPerformanceAvaliacaoDesempenho faixa_31_50 = (FaixaPerformanceAvaliacaoDesempenho)faixas.toArray()[1];
 		assertEquals("De 31.0% à 50.0%", faixa_31_50.getFaixa());
-		assertEquals(2, faixa_31_50.getQuantidade());
-		assertEquals("33.33", faixa_31_50.getPercentual());
+		assertEquals(1, faixa_31_50.getQuantidade());
+		assertEquals("16.67", faixa_31_50.getPercentual());
 		
 		FaixaPerformanceAvaliacaoDesempenho faixa_51_100 = (FaixaPerformanceAvaliacaoDesempenho)faixas.toArray()[2];
 		assertEquals("De 51.0% à 100.0%", faixa_51_100.getFaixa());
-		assertEquals(3, faixa_51_100.getQuantidade());
-		assertEquals("50.0", faixa_51_100.getPercentual());
+		assertEquals(2, faixa_51_100.getQuantidade());
+		assertEquals("33.33", faixa_51_100.getPercentual());
 	}
 }
