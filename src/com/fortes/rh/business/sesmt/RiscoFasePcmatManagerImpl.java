@@ -13,4 +13,9 @@ public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat
 	{
 		return getDao().findByFasePcmat(fasePcmatId);
 	}
+
+	public void removeByFasePcmatRisco(Long fasePcmatId, Collection<Long> riscosIds) 
+	{
+		getDao().removeByFasePcmatRisco(fasePcmatId, riscosIds);
+	}
 }

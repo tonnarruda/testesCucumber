@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -31,5 +32,13 @@ public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcm
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public void removeByFasePcmatRisco(Long fasePcmatId, Collection<Long> riscosIds) 
+	{
+		Query query = getSession().createQuery("delete from RiscoFasePcmat where fasePcmat.id = :fasePcmatId and risco.id in (:riscosIds)");
+		query.setLong("fasePcmatId", fasePcmatId);
+		query.setParameterList("riscosIds", riscosIds);
+		query.executeUpdate();
 	}
 }

@@ -6,5 +6,5 @@ CREATE TABLE riscofasepcmat (
 
 ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_pkey PRIMARY KEY(id);--.go
 ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);--.go
-ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_fasepcmat_fk FOREIGN KEY (fasepcmat_id) REFERENCES fasepcmat(id);--.go
+ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_fasepcmat_fk FOREIGN KEY (fasepcmat_id) REFERENCES fasepcmat(id) ON DELETE CASCADE;--.go
 CREATE SEQUENCE riscofasepcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

@@ -48,7 +48,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 			fasePcmat = (FasePcmat) fasePcmatManager.findById(fasePcmat.getId());
 			
 			Collection<RiscoFasePcmat> riscosFasePcmat = riscoFasePcmatManager.findByFasePcmat(fasePcmat.getId());
-			riscosCheckList = CheckListBoxUtil.marcaCheckListBox(riscosCheckList, riscosFasePcmat, "getId");
+			riscosCheckList = CheckListBoxUtil.marcaCheckListBox(riscosCheckList, riscosFasePcmat, "getRiscoId");
 		}
 	}
 
@@ -83,7 +83,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			fasePcmatManager.update(fasePcmat);
+			fasePcmatManager.saveFasePcmatRiscos(fasePcmat, riscosCheck);
 			addActionSuccess("Fase atualizada com sucesso.");
 			
 		} catch (Exception e) {

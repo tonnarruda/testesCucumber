@@ -8,4 +8,5 @@ import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 public interface RiscoFasePcmatDao extends GenericDao<RiscoFasePcmat> 
 {
 	Collection<RiscoFasePcmat> findByFasePcmat(Long fasePcmatId);
+	void removeByFasePcmatRisco(Long fasePcmatId, Collection<Long> riscosIds);
 }

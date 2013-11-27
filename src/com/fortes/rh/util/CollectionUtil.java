@@ -80,6 +80,11 @@ public final class CollectionUtil<T>
 	/** Responsável por converter um Collection informado em array de Longs com os id's*/
 	public Long[] convertCollectionToArrayIds(Collection<T> coll)
 	{
+		return convertCollectionToArrayIds(coll, "getId");
+	}
+	
+	public Long[] convertCollectionToArrayIds(Collection<T> coll, String metodoGet)
+	{
 		if(coll != null)
 		{
 			try
@@ -90,7 +95,7 @@ public final class CollectionUtil<T>
 				int count = 0;
 				for(T clazz: coll)
 				{
-					mKey   = clazz.getClass().getMethod("getId");
+					mKey   = clazz.getClass().getMethod(metodoGet);
 					ids[count] = (Long) mKey.invoke(clazz,new Object[]{});
 					count++;
 				}

@@ -10,7 +10,7 @@
 			<#assign formAction="insert.action"/>
 		</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('fase','ordem','@riscosCheck'))"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('fase','ordem','@riscosCheck'))"/>
 	</head>
 	<body>
 		<@ww.actionerror />
