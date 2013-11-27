@@ -199,7 +199,7 @@
 				<@ww.textfield label="Palavras chave no currículo escaneado" name="palavrasChaveCurriculoEscaneado" id="palavrasChaveCurriculoEscaneado" cssStyle="width: 475px;" />
 				<div>
 					Palavras chave em outros campos: <img id="tooltipPalavraChave" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -4px" />
-				<@ww.textfield name="palavrasChaveOutrosCampos" id="palavrasChaveOutrosCampos" cssStyle="width: 475px;" />
+					<@ww.textfield name="palavrasChaveOutrosCampos" id="palavrasChaveOutrosCampos" cssStyle="width: 475px;" />
 				</div>
 				<@ww.select name="formas" id="formas" list=r'#{
 			       "2":"Qualquer Palavra",

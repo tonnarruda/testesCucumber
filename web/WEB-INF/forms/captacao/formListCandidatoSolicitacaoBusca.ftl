@@ -31,6 +31,15 @@
 					<img border="0" src="<@ww.url includeParams='none' value='/imgs/favourites.gif'/>">						
 				</span>
 			</#if>
+			<#if candidato.contratado>
+				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato é colaborador');return false">
+					<img border="0" src="<@ww.url includeParams="none" value="/imgs/colaborador.png"/>">
+				</span>
+			<#elseif candidato.jaFoiColaborador>
+				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato já foi colaborador ou existe um colaborador com o mesmo CPF em uma das empresas.');return false">
+					<img border="0" src="<@ww.url includeParams="none" value="/imgs/jaFoiColaborador.png"/>">
+				</span>
+			</#if>
 		</@display.column>
 		<@display.column property="pessoal.escolaridadeDescricao" title="Escolaridade" style="width: 200px;" class="${classe}"/>
 		<@display.column title="Cidade/UF" class="${classe}">

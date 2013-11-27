@@ -325,46 +325,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
 			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
 		
-		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
-
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-		p.add(Projections.property("c.dataAtualizacao"), "dataAtualizacao");
-		p.add(Projections.property("c.origem"), "origem");
-		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
-		p.add(Projections.property("cd.nome"), "candidatoCidade");
-		p.add(Projections.property("c.pessoal.escolaridade"), "pessoalEscolaridade");
-		p.add(Projections.property("uf.sigla"), "sigla");
-		p.add(Projections.property("c.experiencias"), "experiencias");
-		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
-		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id and cs2.triagem = false)) as inscritoSolicitacao", 
-        		new String []  {"inscritoSolicitacao"}, 
-        		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
-
-		/**
-		 * Toda propriedade informada na projection deve ser fornecida também no groupProperty.
-		 *
-		 * groupProperty usado para filrar apenas um resultado por nome do candidato, mesmo que ele tenha mais de um interesse em um cargo
-		 * so aparecerá uma única vez no filtro
-		 */
-		p.add(Projections.groupProperty("c.id"));
-		p.add(Projections.groupProperty("c.nome"));
-		p.add(Projections.groupProperty("c.pessoal.cpf"));
-		p.add(Projections.groupProperty("c.dataAtualizacao"));
-		p.add(Projections.groupProperty("c.dataCadastro"), "dataCadastro");
-		p.add(Projections.groupProperty("c.pessoal.escolaridade"));
-		p.add(Projections.groupProperty("c.origem"));
-		p.add(Projections.groupProperty("c.pessoal.indicadoPor"));
-		p.add(Projections.groupProperty("cd.nome"));
-		p.add(Projections.groupProperty("uf.sigla"));
-		p.add(Projections.groupProperty("e.nome"));
-
-		criteria.setProjection(p);
+		criteria = montaProjectionGroup(criteria, p);
 
 		montaCriteriaFiltros(parametros, empresaId, criteria);
 
@@ -1098,36 +1060,28 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 	private Criteria montaProjectionGroup(Criteria criteria, ProjectionList p)
 	{
-		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
-		criteria = criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-		p.add(Projections.property("c.dataAtualizacao"), "dataAtualizacao");
-		p.add(Projections.property("c.origem"), "origem");
-		p.add(Projections.property("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
-		p.add(Projections.property("cd.nome"), "candidatoCidade");
-		p.add(Projections.property("c.pessoal.escolaridade"), "pessoalEscolaridade");
-		p.add(Projections.property("uf.sigla"), "sigla");
+		p.add(Projections.groupProperty("c.id"), "id");
+		p.add(Projections.groupProperty("c.nome"), "nome");
+		p.add(Projections.groupProperty("c.pessoal.cpf"), "pessoalCpf");
+		p.add(Projections.groupProperty("c.dataAtualizacao"), "dataAtualizacao");
+		p.add(Projections.groupProperty("c.origem"), "origem");
+		p.add(Projections.groupProperty("c.pessoal.indicadoPor"),"pessoalIndicadoPor");
+		p.add(Projections.groupProperty("cd.nome"), "candidatoCidade");
+		p.add(Projections.groupProperty("c.pessoal.escolaridade"), "pessoalEscolaridade");
+		p.add(Projections.groupProperty("uf.sigla"), "sigla");
+		p.add(Projections.groupProperty("e.nome"), "projectionEmpresaNome");
 		p.add(Projections.property("c.experiencias"), "experiencias");
-		p.add(Projections.property("e.nome"), "projectionEmpresaNome");
-		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id)) as inscritoSolicitacao", 
+		p.add(Projections.sqlProjection("(exists (select cs2.id from CandidatoSolicitacao cs2 where cs2.candidato_id=this_.id and cs2.triagem = false)) as inscritoSolicitacao",
         		new String []  {"inscritoSolicitacao"}, 
         		new Type[] {Hibernate.BOOLEAN}), "inscritoSolicitacao");
-
-		p.add(Projections.groupProperty("c.id"));
-		p.add(Projections.groupProperty("c.nome"));
-		p.add(Projections.groupProperty("c.pessoal.cpf"));
-		p.add(Projections.groupProperty("c.dataAtualizacao"));
-		p.add(Projections.groupProperty("c.pessoal.escolaridade"));
-		p.add(Projections.groupProperty("c.origem"));
-		p.add(Projections.groupProperty("c.pessoal.indicadoPor"));
-		p.add(Projections.groupProperty("cd.nome"));
-		p.add(Projections.groupProperty("uf.sigla"));
-		p.add(Projections.groupProperty("e.nome"));
+		p.add(Projections.sqlProjection("(exists(select col.cpf from Colaborador col where col.cpf=this_.cpf and this_.cpf is not null and this_.cpf <> '')) as jaFoiColaborador ", 
+				new String []  {"jaFoiColaborador"}, 
+				new Type[] {Hibernate.BOOLEAN}), "jaFoiColaborador");
 
 		criteria.setProjection(p);
 		return criteria;
