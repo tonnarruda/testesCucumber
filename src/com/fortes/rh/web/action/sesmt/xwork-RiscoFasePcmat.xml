@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="riscoFasePcmat" extends="default" namespace="/sesmt/riscoFasePcmat">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
+		<action name="list" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="list">
+			<interceptor-ref name="defaultListStack" />
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}</result>
+			<result name="success" type="redirect">list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.RiscoFasePcmatEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}</result>
+			<result name="success" type="redirect">list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoFasePcmatEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

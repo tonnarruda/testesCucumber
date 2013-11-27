@@ -19,10 +19,12 @@ public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcm
 	public Collection<RiscoFasePcmat> findByFasePcmat(Long fasePcmatId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "rfp");
+		criteria.createCriteria("rfp.risco", "r");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("rfp.id"), "id");
 		p.add(Projections.property("rfp.risco.id"), "riscoId");
+		p.add(Projections.property("r.descricao"), "riscoDescricao");
 		p.add(Projections.property("rfp.fasePcmat.id"), "fasePcmatId");
 		criteria.setProjection(p);
 

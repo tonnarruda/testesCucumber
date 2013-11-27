@@ -373,6 +373,7 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Pcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Fase.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-FasePcmat.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-RiscoFasePcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-MedidaSeguranca.xml" />
 </xwork>
 

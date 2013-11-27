@@ -54,6 +54,13 @@ public class RiscoFasePcmat extends AbstractModel implements Serializable
 		this.risco.setId(riscoId);
 	}
 	
+	public void setRiscoDescricao(String riscoDescricao) {
+		if (this.risco == null)
+			this.risco = new Risco();
+		
+		this.risco.setDescricao(riscoDescricao);
+	}
+	
 	public Long getRiscoId() {
 		if (this.risco == null)
 			return null;
