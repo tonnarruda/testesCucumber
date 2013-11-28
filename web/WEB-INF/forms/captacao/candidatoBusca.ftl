@@ -31,7 +31,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<style type="text/css">
-		.fieldsetPalavraChave{
+		.fieldsetClass {
 			background-color: #EEEEEE;
 			width: 430px;
 		}
@@ -186,15 +186,18 @@
 					${solicitacao.experiencia}
 				<br />
 			</#if>
-			<li>
-				<span>Experiência de:<br /></span>
-			</li>
-			<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-			<li>meses</li>
-			<li>&nbsp;</li>
-			<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" />
+			<fieldset class="fieldsetClass">
+				<legend>Experiência de Trabalho</legend>
+				<li>
+					<span>Experiência de:<br /></span>
+				</li>
+				<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
+				<li>meses</li>
+				<li>&nbsp;</li>
+				<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" width="475px;" />
+			</fieldset>
 			
-			<fieldset class="fieldsetPalavraChave">
+			<fieldset class="fieldsetClass">
 				<legend>Palavras Chave</legend>
 				<@ww.textfield label="Palavras chave no currículo escaneado" name="palavrasChaveCurriculoEscaneado" id="palavrasChaveCurriculoEscaneado" cssStyle="width: 475px;" />
 				<div>

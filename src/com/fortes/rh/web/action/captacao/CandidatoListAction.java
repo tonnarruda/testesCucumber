@@ -582,10 +582,7 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("bairrosIds", bairrosCheckLong);
 		parametros.put("cidadesIds", cidadesCheck);
 		
-		if (!tempoExperiencia.equals("") || !tempoExperiencia.equals("0")){
-			if (experienciasCheckLong.length > 0)
-				parametros.put("experiencias", experienciasCheckLong);
-		}else
+		if (experienciasCheckLong.length > 0)
 			parametros.put("experiencias", experienciasCheckLong);
 
 		if (BDS)
