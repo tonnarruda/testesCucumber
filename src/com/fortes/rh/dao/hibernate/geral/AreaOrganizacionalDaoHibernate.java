@@ -91,6 +91,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
+		// existem criterias criados no método montaConsulta
+		criteria.createCriteria("am.empresa", "eMae", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ao.id"), "id");
@@ -108,6 +110,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("cor.contato.email"), "emailCoResponsavel");
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
+		p.add(Projections.property("eMae.id"), "empresaAreaMaeId");
+		p.add(Projections.property("eMae.nome"), "empresaAreaMaeNome");
 
 		criteria.setProjection(p);
 

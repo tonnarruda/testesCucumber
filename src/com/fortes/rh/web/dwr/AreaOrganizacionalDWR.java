@@ -7,11 +7,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -40,13 +39,15 @@ public class AreaOrganizacionalDWR
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds, Boolean ativa) throws Exception
+	public Map<Object, Object> getByEmpresas(Long empresaId, Long[] empresaIds, Character ativa) throws Exception
 	{
+		Boolean areaAtiva = ativa != null ? BooleanUtil.getValueCombo(ativa) : null;
+		
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 		if(empresaId == null || empresaId == 0 || empresaId == -1 )
-			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, ativa);
+			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, areaAtiva);
 		else
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, ativa, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, areaAtiva, null);
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

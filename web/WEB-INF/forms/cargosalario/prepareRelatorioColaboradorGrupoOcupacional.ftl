@@ -30,8 +30,6 @@
 			populaEstabelecimento(empresa);
 			
 			$("input[name='areaOrganizacionalsCheck'], input[name='gruposCheck']").live('click', populaCargoByAreaGrupo);
-			
-			
 		});
 		
 		function populaEstabelecimento(empresaId)
@@ -51,13 +49,12 @@
 		
 		function createListCargo(data)
 		{
-			console.log(data);
 			addChecks('cargosCheck',data);
 		}
 		
 		function populaArea()
 		{
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, $('#empresa').val(), empresaIds, ($('#ativa').val() == "S" ? true : null));
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, $('#empresa').val(), empresaIds, $('#ativa').val());
 		}
 
 		function createListArea(data)
@@ -117,7 +114,7 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
 		<fieldset style="width:482px">
 			<legend>Áreas Organizacionais</legend>
-			<@ww.select id="ativa" name="ativa" list=r"#{'S':'ativas'}" headerKey="T" headerValue="ativas e inativas" onchange="populaArea();" cssStyle="width:475px"/>
+			<@ww.select id="ativa" name="ativa" list=r"#{'S':'Ativas','N':'Inativas'}" headerKey="T" headerValue="Ativas e inativas" onchange="populaArea();" cssStyle="width:475px"/>
 			<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" onClick="populaCargoByAreaGrupo()" list="areaOrganizacionalsCheckList" width="475"/>
 		</fieldset>
 		<@frt.checkListBox name="gruposCheck" id="gruposCheck" onClick="populaCargoByAreaGrupo()" label="Grupos Ocupacionais" list="gruposCheckList" width="500" />
