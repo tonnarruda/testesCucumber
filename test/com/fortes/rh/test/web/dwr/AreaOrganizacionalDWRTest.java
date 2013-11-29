@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -14,6 +16,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.util.mockObjects.MockBooleanUtil;
+import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.web.dwr.AreaOrganizacionalDWR;
 
 public class AreaOrganizacionalDWRTest extends MockObjectTestCase
@@ -29,6 +33,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		areaOrganizacionalDWR.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		
+		Mockit.redefineMethods(BooleanUtil.class, MockBooleanUtil.class);
 	}
 
 	public void testeGetEmailsResponsaveis()
@@ -141,12 +146,12 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findByEmpresasIds").will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		
-		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, null).size());
+		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, 'T').size());
 		
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		empresaId = 1L;
-		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, null).size());
+		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, 'T').size());
 	}
 	
 	public void testFindAllListAndInativas() throws Exception

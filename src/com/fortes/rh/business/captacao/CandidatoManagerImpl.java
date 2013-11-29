@@ -139,9 +139,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 		Collection<Long> idsCandidatos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
 
-		if(candidatos != null && candidatos.size() == 0)
-			retorno = null;
-		else
+		if(candidatos == null || candidatos.size() > 0)
 		{
 			if (empresaId != null && empresaId != -1)
 				retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);

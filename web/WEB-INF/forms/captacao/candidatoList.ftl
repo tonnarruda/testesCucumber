@@ -161,7 +161,7 @@
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/colaborador.png"/>">
 				</span>
 			<#elseif candidato.jaFoiColaborador>
-				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato já foi colaborador ou existe um colaborador com o mesmo CPF.');return false">
+				<span href=# style="cursor: hand;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'Este candidato já foi colaborador ou existe um colaborador com o mesmo CPF em uma das empresas.');return false">
 					<img border="0" src="<@ww.url includeParams="none" value="/imgs/jaFoiColaborador.png"/>">
 				</span>
 			</#if>

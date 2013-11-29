@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
@@ -28,10 +30,14 @@ public class ExtintorInspecaoManagerImpl extends GenericManagerImpl<ExtintorInsp
 
 			if (extintorInspecao.getItens()!=null)
 			{
-			Collection<ExtintorInspecaoItem> extintorInspecaoItems = extintorInspecao.getItens();
-			
-				for (ExtintorInspecaoItem extintorInspecaoItem : extintorInspecaoItems) 
-					extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + ", ";
+				Collection<ExtintorInspecaoItem> extintorInspecaoItems = extintorInspecao.getItens();
+
+				for (ExtintorInspecaoItem extintorInspecaoItem : extintorInspecaoItems) {
+					if("Outro".equals(extintorInspecaoItem.getDescricao()))
+						extintorInspecaoItemsString += StringUtils.defaultString(extintorInspecao.getOutroMotivo()) + ", ";
+					else
+						extintorInspecaoItemsString += extintorInspecaoItem.getDescricao() + ", ";
+				}
 
 			}
 			extintorInspecao.setItensRelatorio(StringUtil.isBlank(extintorInspecaoItemsString) ? "" : extintorInspecaoItemsString.substring(0, extintorInspecaoItemsString.length()-2));
