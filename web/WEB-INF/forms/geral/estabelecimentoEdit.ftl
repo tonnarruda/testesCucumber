@@ -113,7 +113,7 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="return verificaCnpj();" validate="true" method="POST">
 		<@ww.textfield label="Nome" name="estabelecimento.nome" id="nome"  required="true" cssStyle="width:525px;" maxLength="30" liClass="liLeft" disabled="${desabilita}"/>
 		<@ww.textfield label="CNPJ" name="estabelecimento.empresa.cnpj" id="cnpj" size="8" liClass="liLeft" maxLength="8" disabled="true" after="/" />
-		<@ww.textfield label="" name="estabelecimento.complementoCnpj" id="complementoCnpj" maxlength="4" cssStyle="width:32px;" disabled="${desabilita}" after="-" liClass="liLeft" onkeyup="javascript: calcularDV(this.value);" onkeypress="return(somenteNumeros(event,''));" />
+		<@ww.textfield label="" name="estabelecimento.complementoCnpj" id="complementoCnpj" maxlength="4" cssStyle="width:34px;" disabled="${desabilita}" after="-" liClass="liLeft" onkeyup="javascript: calcularDV(this.value);" onkeypress="return(somenteNumeros(event,''));" />
 		<@ww.textfield label="" name="digitoVerificador" id="dv" cssStyle="width:18px;" disabled="${desabilita}" disabled="true"/>
 
 		<br>

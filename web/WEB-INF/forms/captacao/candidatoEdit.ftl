@@ -569,7 +569,7 @@
 			
 			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="candidatosHomonimos();${capitalizar}"/>
 			
-			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft , campo" cssClass="mascaraData" value="${dataNas}"/>
+			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft campo" cssClass="mascaraData" value="${dataNas}"/>
 			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<@ww.select label="Sexo" id="sexo" name="candidato.pessoal.sexo" list="sexos" liClass="liLeft , campo" />
 																																																							
@@ -598,7 +598,7 @@
 				<@ww.div id="wwgrp_fone"  cssClass="campo">
 					<ul>
 						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
-						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 60px;" maxLength="8"  liClass="liLeft" />
+						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 70px;" maxLength="9"  liClass="liLeft" />
 					</ul>
 				</@ww.div>
 			</li>			

@@ -463,7 +463,7 @@
 			</#if>
 			
 			<@ww.textfield label="DDD" name="colaborador.contato.ddd" required="true" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
-			<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="8" liClass="liLeft" cssStyle="width:60px;"/>
+			<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft" cssStyle="width:70px;"/>
 			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:70px;"/>
 			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft" required="true" headerKey="" headerValue="Selecione..." />
 			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft"/>
@@ -480,7 +480,7 @@
 
 			<#if somenteLeituraIntegraAC=="true" && edicao=="true">
 				<label for="dt_admissao">Admissão:</label><br />
-				<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="width: 71px;"/>
+				<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" class="mascaraData"/>
 				<img id="dataAdmissaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 
 				<br clear="all"/>
@@ -499,7 +499,7 @@
 					<@ww.datepicker label="Admissão" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" cssClass="mascaraData" required="true" onblur="${funcaoDataAdmissao}" onchange="${funcaoDataAdmissao}"/>
 				<#else>
 					<label for="dt_admissao">Admissão:</label><br />
-					<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="width: 71px;background:#F6F6F6;"/>
+					<input type="text" theme="simple" disabled="true" name="colaborador.dataAdmissao" value="${dataAdm}" id="dt_admissao" style="background:#F6F6F6;" class="mascaraData"/>
 					<@ww.hidden  name="colaborador.dataAdmissao" value="${dataAdm}" />
 					<br clear="all"/>
 				</#if>
@@ -521,7 +521,7 @@
 						</#if>
 
 						<h2>Dados da ${msgHistorico} Situação</h2>
-						<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssStyle="width:71px;background:#F6F6F6;" disabled="true"/>
+						<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssClass="mascaraData" cssStyle="background:#F6F6F6;" disabled="true"/>
 						<@ww.hidden  id="dt_hist_hidden" name="historicoColaborador.data" value="${dataHist}" />
 
 						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
@@ -617,7 +617,7 @@
 			<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
 	    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctpsNumero" cssStyle="width: 58px;" maxLength="8" liClass="liLeft"/>
 	    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft"/>
-	    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 9px;" maxLength="1" liClass="liLeft"/>
+	    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft"/>
 	       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 	      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" cssClass="mascaraData" value="${ctpsDataExpedicao}"/>
 	        <li><hr /></li>
