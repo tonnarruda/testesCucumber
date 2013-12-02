@@ -17,12 +17,12 @@ Funcionalidade: Relatório de Colaboradores por Grupo Ocupacional
     Então eu marco "Matriz"
     E eu marco "Financeiro"
     
-    Então eu seleciono "ativas" de "ativa"
+    Então eu seleciono "Ativas" de "ativa"
     E eu espero 1 segundo
     E eu devo ver "Financeiro"
     E eu não devo ver "Almoxarifado"
     
-    Então eu seleciono "ativas e inativas" de "ativa"
+    Então eu seleciono "Ativas e inativas" de "ativa"
     E eu espero 1 segundo
     E eu devo ver "Financeiro"
     E eu devo ver "Almoxarifado"

@@ -22044,3 +22044,6 @@ alter table diaturma add column turno character(1) not null default 'D';--.go
 alter table turma add column porTurno boolean default false;--.go
 insert into migrations values('20131119100305');--.go
 update parametrosdosistema set appversao = '1.1.120.137';--.go
+-- versao 1.1.120.138
+
+update parametrosdosistema set appversao = '1.1.120.138';--.go

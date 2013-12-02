@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.120.138" data="02/12/2013">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Novo ícone indicando se o candidato já foi colaborador em alguma das empresas.
+			:: C&S > Relatórios > Colaboradores por grupo ocupacional: Novo filtro para áreas organizacionais ativas e inativas ou somente ativas.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção "Data de Desligamento" entre os campos disponíveis para impressão.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.120.137" data="25/11/2013">
 		<Modulo nome=" "><![CDATA[
 			:: T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova opção para especificar se a turma será realizada por dia ou turno.
