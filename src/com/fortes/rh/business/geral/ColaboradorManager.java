@@ -65,7 +65,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Colaborador findColaboradorUsuarioByCpf(String cpf,Long empresaId);
 	public void enviaEmailEsqueciMinhaSenha(Colaborador colaborador, Empresa empresa);
 	public String recuperaSenha(String cpf,Empresa empresa);
-	public Collection<Colaborador> findBycandidato(Long candidatoId,Long empresaId);
+	public Colaborador findByCandidato(Long candidatoId,Long empresaId);
 	public boolean candidatoEhColaborador(Long id,Long empresaId);
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
@@ -198,4 +198,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor);
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
 	public Collection<Colaborador> findByEmpresa(Long empresaId);
+	public void desvinculaCandidato(Long candidatoId);
 }

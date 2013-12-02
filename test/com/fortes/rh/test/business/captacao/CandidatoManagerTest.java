@@ -19,6 +19,7 @@ import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.f2rh.Curriculo;
@@ -279,10 +280,13 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	Candidato candidato = new Candidato();
     	candidato.setId(2L);
     	candidato.setCpf("cpf");
+    	
+    	Collection<Candidato> candidatos = new ArrayList<Candidato>();
+    	candidatos.add(candidato);
 
-    	candidatoDao.expects(once()).method("findByCPF").with(new Constraint[] { eq("cpf"), ANYTHING, ANYTHING, ANYTHING, eq(false) } ).will(returnValue(candidato));
+    	candidatoDao.expects(once()).method("findByCPF").with(new Constraint[] { eq("cpf"), ANYTHING, ANYTHING, ANYTHING } ).will(returnValue(candidatos));
 
-    	Candidato retorno = candidatoManager.findByCPF("cpf", null, false);
+    	Candidato retorno = candidatoManager.findByCPF("cpf", null);
 
     	assertEquals(candidato.getId(), retorno.getId());
     }
@@ -1608,7 +1612,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
-		candidatoDao.expects(once()).method("findByCPF").with(new Constraint[] { ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false) }).will(returnValue(null));
+		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(null));
 		candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(new Candidato()));
 		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
 		assertEquals(1, candidatos.size());
@@ -1622,9 +1626,12 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		Mockit.redefineMethods(HttpClient.class, MockHttpClient.class);
 		Mockit.redefineMethods(HttpMethodBase.class, MockHttpMethod.class);
 		
-		candidatoDao.expects(once()).method("findByCPF").with(new Constraint[] { ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(false) }).will(returnValue(new Candidato()));
-		Collection<Candidato> candidatos = candidatoManager.getCurriculosF2rh(curriculoIds, null);
-		assertEquals(1, candidatos.size());
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		candidatos.add(new Candidato());
+		
+		candidatoDao.expects(once()).method("findByCPF").withAnyArguments().will(returnValue(candidatos));
+		Collection<Candidato> candidatosRetorno = candidatoManager.getCurriculosF2rh(curriculoIds, null);
+		assertEquals(1, candidatosRetorno.size());
 	}
 	
 	public void testCountComoFicouSabendoVagas(){

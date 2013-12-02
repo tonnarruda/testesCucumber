@@ -725,10 +725,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public boolean candidatoEhColaborador(Long candidatoId, Long empresaId)
 	{
-		return findBycandidato(candidatoId, empresaId).size() > 0;
+		return findByCandidato(candidatoId, empresaId) != null;
 	}
 
-	public Collection<Colaborador> findBycandidato(Long candidatoId, Long empresaId)
+	public Colaborador findByCandidato(Long candidatoId, Long empresaId)
 	{
 		return getDao().findbyCandidato(candidatoId, empresaId);
 	}
@@ -2493,6 +2493,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> findByEmpresa(Long empresaId)
 	{
 		return getDao().findByEmpresa(empresaId);
+	}
+
+	public void desvinculaCandidato(Long candidatoId) 
+	{
+		getDao().desvinculaCandidato(candidatoId);
 	}
 
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

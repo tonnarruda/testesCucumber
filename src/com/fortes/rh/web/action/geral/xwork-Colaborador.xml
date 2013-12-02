@@ -188,7 +188,8 @@
 		</action>
 		<action name="prepareColaboradorSolicitacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareColaboradorSolicitacao">
 			<result name="success" type="redirect"><![CDATA[/captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=${statusCandSol}&voltarPara=${voltarPara}]]></result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/vincularCandidatoColaborador.ftl</result>
+			<result name="input" type="redirect">list.action</result>
+			<result name="mesmo_cpf" type="freemarker">/WEB-INF/forms/geral/vincularCandidatoColaborador.ftl</result>
 		</action>
 		<action name="preparePerformanceFuncional" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="preparePerformanceFuncional">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>

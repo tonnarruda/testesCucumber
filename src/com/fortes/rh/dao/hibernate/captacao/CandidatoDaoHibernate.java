@@ -57,48 +57,6 @@ import com.fortes.rh.util.ArquivoUtil;
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
 {
-    public Candidato findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado, boolean verificaColaborador)
-    {
-    	Criteria criteria = getSession().createCriteria(Candidato.class, "c");
-        
-        ProjectionList p = Projections.projectionList().create();
-        p.add(Projections.property("c.id"), "id");
-        p.add(Projections.property("c.nome"), "nome");
-        p.add(Projections.property("c.senha"),"senha");
-        p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
-        
-        criteria.setProjection(p);
-		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
-
-		if (candidatoId != null)
-			criteria.add(Expression.not((Expression.eq("c.id", candidatoId))));
-		
-		if (empresaId != null )
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
-		
-		if (contratado != null )
-			criteria.add(Expression.eq("c.contratado", contratado));
-
-		if (verificaColaborador)
-		{
-			DetachedCriteria subQuery = DetachedCriteria.forClass(Colaborador.class, "col");
-			
-			ProjectionList pSub = Projections.projectionList().create();
-			pSub.add(Projections.property("col.candidato.id"), "id");
-			
-			subQuery.setProjection(pSub);
-			subQuery.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-			criteria.add(Subqueries.propertyNotIn("c.id", subQuery));
-		}
-		
-		criteria.addOrder(Order.desc("c.id"));
-		criteria.setMaxResults(1);
-        
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
-
-		return (Candidato) criteria.uniqueResult();
-    }
-    
     public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
 	{
     	Criteria criteria = getSession().createCriteria(Candidato.class, "c");
@@ -108,6 +66,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         p.add(Projections.property("c.id"), "id");
         p.add(Projections.property("c.nome"), "nome");
         p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
+        p.add(Projections.property("c.senha"),"senha");
         p.add(Projections.property("e.nome"),"empresaNome");
         
         criteria.setProjection(p);

@@ -29,7 +29,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	@Audita(operacao="Remoção", auditor=CandidatoAuditorCallbackImpl.class)
 	public void removeCandidato(Candidato candidato) throws Exception;
 
-	public Candidato findByCPF(String cpf, Long empresaId, boolean verificaColaborador);
+	public Candidato findByCPF(String cpf, Long empresaId);
     //public void importa(File xmlFile);
 	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
 	public Integer getCount(String nomeBusca, String cpfBusca, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);

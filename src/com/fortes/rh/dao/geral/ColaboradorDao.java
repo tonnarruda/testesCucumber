@@ -28,7 +28,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public Colaborador findByUsuario(Usuario usuario,Long empresaId);
 	public Colaborador findColaboradorUsuarioByCpf(String cpf, Long empresaId);
-	public Collection<Colaborador> findbyCandidato(Long candidatoId,Long empresaId);
+	public Colaborador findbyCandidato(Long candidatoId,Long empresaId);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
 	public boolean setCodigoColaboradorAC(String codigo, Long id);
 	public Colaborador findByCodigoAC(String codigo, Empresa empresa);
@@ -132,4 +132,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<TurnOver> countDemitidosTempoServico(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findByEmpresa(Long empresaId);
+	public void desvinculaCandidato(Long candidatoId);
 }

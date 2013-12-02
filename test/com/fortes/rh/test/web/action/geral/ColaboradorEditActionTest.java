@@ -7,8 +7,10 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -23,11 +25,11 @@ import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EstadoManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -50,6 +52,7 @@ import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
@@ -84,8 +87,9 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock comissaoManager;
 	private Mock configuracaoCampoExtraManager;
 	private Mock camposExtrasManager;
-	private Mock parametrosDoSistemaManager;
 	private Mock configuracaoPerformanceManager;
+	private Mock transactionManager;
+	private Mock candidatoManager;
 	
 
 	protected void setUp () throws Exception
@@ -111,8 +115,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		comissaoManager = mock(ComissaoManager.class);
 		configuracaoCampoExtraManager = mock(ConfiguracaoCampoExtraManager.class);
 		camposExtrasManager = new Mock(CamposExtrasManager.class);
-		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-		
+		transactionManager = new Mock(PlatformTransactionManager.class);
+		candidatoManager = new Mock(CandidatoManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -133,6 +137,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
 		action.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
 		action.setConfiguracaoPerformanceManager((ConfiguracaoPerformanceManager) configuracaoPerformanceManager.proxy());
+		action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -338,5 +344,91 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 
 		assertNull(excep);
 		assertEquals(retorno, "input");
+	}
+	
+	public void testPrepareColaboradorSolicitacaoTendoOutroColaboradorComMesmoCpf() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		action.setColaborador(colaborador);
+		
+		Colaborador colaboradorMesmoCpf = ColaboradorFactory.getEntity(2L);
+		colaboradorMesmoCpf.setCandidato(candidato);
+		colaboradorMesmoCpf.setEmpresa(empresa);
+		colaboradorMesmoCpf.setDesligado(true);
+		
+		colaboradorManager.expects(once()).method("findByIdComHistoricoConfirmados").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		candidatoManager.expects(once()).method("findByCPF").with(eq(colaborador.getPessoal().getCpf()), eq(colaborador.getEmpresa().getId())).will(returnValue(candidato));
+		colaboradorManager.expects(once()).method("findByCandidato").with(eq(candidato.getId()), eq(colaborador.getEmpresa().getId())).will(returnValue(colaboradorMesmoCpf));
+		transactionManager.expects(once()).method("rollback").withAnyArguments().isVoid();
+		
+		assertEquals("mesmo_cpf", action.prepareColaboradorSolicitacao());
+	}
+
+	public void testPrepareColaboradorSolicitacaoVincularComCandidato() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		action.setColaborador(colaborador);
+		
+		colaboradorManager.expects(once()).method("findByIdComHistoricoConfirmados").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		candidatoManager.expects(once()).method("findByCPF").with(eq(colaborador.getPessoal().getCpf()), eq(colaborador.getEmpresa().getId())).will(returnValue(candidato));
+		colaboradorManager.expects(once()).method("findByCandidato").with(eq(candidato.getId()), eq(colaborador.getEmpresa().getId())).will(returnValue(null));
+		transactionManager.expects(once()).method("rollback").withAnyArguments().isVoid();
+		
+		assertEquals("mesmo_cpf", action.prepareColaboradorSolicitacao());
+	}
+	
+	public void testPrepareColaboradorSolicitacaoCriandoNovoCandidato() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		action.setColaborador(colaborador);
+		
+		colaboradorManager.expects(once()).method("findByIdComHistoricoConfirmados").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		candidatoManager.expects(once()).method("findByCPF").with(eq(colaborador.getPessoal().getCpf()), eq(colaborador.getEmpresa().getId())).will(returnValue(null));
+		colaboradorIdiomaManager.expects(once()).method("find").will(returnValue(null));	
+		experienciaManager.expects(once()).method("findByColaborador").will(returnValue(null));	
+		formacaoManager.expects(once()).method("findByColaborador").will(returnValue(null));	
+		candidatoManager.expects(once()).method("saveOrUpdateCandidatoByColaborador").with(eq(colaborador)).will(returnValue(candidato));
+		colaboradorManager.expects(once()).method("update").with(eq(colaborador)).isVoid();
+		candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(false), eq(!colaborador.isDesligado()), eq(new Long[]{colaborador.getId()})).isVoid();
+		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+		
+		assertEquals("success", action.prepareColaboradorSolicitacao());
+	}
+	
+	public void testPrepareColaboradorSolicitacaoColaboradorComCandidato() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCandidato(candidato);
+		colaborador.setEmpresa(empresa);
+		action.setColaborador(colaborador);
+		
+		colaboradorManager.expects(once()).method("findByIdComHistoricoConfirmados").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		candidatoManager.expects(once()).method("update").with(eq(colaborador.getCandidato())).isVoid();
+		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+		
+		assertEquals("success", action.prepareColaboradorSolicitacao());
 	}
 }

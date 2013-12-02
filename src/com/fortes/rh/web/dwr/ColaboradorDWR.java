@@ -281,13 +281,12 @@ public class ColaboradorDWR
     	dados.put("desligado", true);
     	dados.put("empresa", "");
     	
-    	Collection<Colaborador> colaboradores = colaboradorManager.findBycandidato(candidatoId, null);
+    	Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, null);
     	
-    	if(!colaboradores.isEmpty())
+    	if(colaborador != null)
     	{
-    		Colaborador colab = (Colaborador) colaboradores.toArray()[0];
-    		dados.put("desligado", colab.isDesligado());
-    		dados.put("empresa", colab.getEmpresaNome());
+    		dados.put("desligado", colaborador.isDesligado());
+    		dados.put("empresa", colaborador.getEmpresaNome());
     	}
     	
     	return dados;

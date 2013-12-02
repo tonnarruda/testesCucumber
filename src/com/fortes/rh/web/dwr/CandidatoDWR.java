@@ -107,13 +107,11 @@ public class CandidatoDWR
 				retorno.append("<br /> - " + solicitacao.getDescricao());
 		}
 		
-		Collection<Colaborador> colaboradores = colaboradorManager.findBycandidato(candidatoId, empresaId);
-		if (!colaboradores.isEmpty()) 
+		Colaborador colaborador = colaboradorManager.findByCandidato(candidatoId, empresaId);
+		if (colaborador != null) 
 		{
-			retorno.append("<br /><br />O candidato está vinculado aos seguintes colaboradores:");
-			
-			for (Colaborador colaborador : colaboradores) 
-				retorno.append("<br /> - " + colaborador.getNomeComercialDesligado());
+			retorno.append("<br /><br />O candidato está vinculado ao seguinte colaborador:");
+			retorno.append("<br /> - " + colaborador.getNomeComercialDesligado());
 		}
 		
 		if (retorno.length() > 0)

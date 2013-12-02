@@ -697,7 +697,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	public Collection<Colaborador> findbyCandidato(Long candidatoId, Long empresaId)
+	public Colaborador findbyCandidato(Long candidatoId, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
@@ -718,7 +718,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
-		return criteria.list();
+		return (Colaborador) criteria.uniqueResult();
 	}
 
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId)
@@ -4635,5 +4635,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();	
+	}
+
+	public void desvinculaCandidato(Long candidatoId) 
+	{
+		String hql = "update Colaborador set candidato.id = null where candidato.id = :candidatoId";
+		Query query = getSession().createQuery(hql);
+		query.setLong("candidatoId", candidatoId);
+		
+		query.executeUpdate();
 	}
 }

@@ -960,9 +960,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setCandidato(candidato2);
 		colaborador2 = colaboradorDao.save(colaborador2);
 
-		Collection<Colaborador> colaboradors = colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId());
+		Colaborador colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId());
 
-		assertEquals(colaborador.getId(), ((Colaborador) colaboradors.toArray()[0]).getId());
+		assertEquals(colaborador.getId(), colaboradorRetorno.getId());
 	}
 
 	public void testSetCandidatoNull() {
@@ -981,7 +981,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		colaboradorDao.setCandidatoNull(candidato.getId());
 
-		assertEquals(0, colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId()).size());
+		assertNull(colaboradorDao.findbyCandidato(candidato.getId(), empresa.getId()));
 	}
 
 	private Candidato getCandidato() 
@@ -6057,6 +6057,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradores.size());
 		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
 		assertEquals("Bruna", ((Colaborador)colaboradores.toArray()[1]).getNome());
+	}
+	
+	public void testDesvinculaCandidato() 
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), null);
+		assertNotNull(colaboradorRetorno);
+
+		colaboradorDao.desvinculaCandidato(candidato.getId());
+		colaboradorRetorno = colaboradorDao.findbyCandidato(candidato.getId(), null);
+		assertNull(colaboradorRetorno);
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

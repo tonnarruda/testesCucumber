@@ -1099,12 +1099,24 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(cpfSemMascara.equals(""))
 			return null;
 		else
-			return getDao().findByCPF(cpfSemMascara, empresaId, candidatoId, contratado, false);
+		{
+			Collection<Candidato> candidatos =  findByCPF(cpfSemMascara, empresaId, candidatoId, contratado);
+			
+			if(candidatos == null || candidatos.isEmpty())
+				return null;
+			else
+				return (Candidato) candidatos.toArray()[0];
+		}
 	}
 	
-	public Candidato findByCPF(String cpf, Long empresaId, boolean verificaColaborador)
+	public Candidato findByCPF(String cpf, Long empresaId)
     {
-		return getDao().findByCPF(cpf, empresaId, null, null, false);
+		Collection<Candidato> candidatos =  findByCPF(cpf, empresaId, null, null);
+		
+		if(candidatos == null || candidatos.isEmpty())
+			return null;
+		else
+			return (Candidato) candidatos.toArray()[0];
     }
 	
 	public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
@@ -1221,7 +1233,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 			candidato.setEmpresa(empresa);
 			bind(candidato, curriculo);
 			
-			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null, false);
+			Candidato candidatoJaGravado = findByCPF(candidato.getPessoal().getCpf(), null);
 			if(candidatoJaGravado == null)
 				candidatos.add(getDao().save(candidato));
 			else

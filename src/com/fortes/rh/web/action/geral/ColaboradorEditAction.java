@@ -820,16 +820,26 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		try {
 			if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
 			{
-				candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId(), true);
+				candidato = candidatoManager.findByCPF(colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getId());
+				
 				if (candidato != null && checarCandidatoMesmoCpf)
-					return Action.INPUT;
-
+				{
+					Colaborador colabcomMesmoCpf = colaboradorManager.findByCandidato(candidato.getId(), colaborador.getEmpresa().getId());
+					if(colabcomMesmoCpf == null || colabcomMesmoCpf.isDesligado())
+					{
+						transactionManager.rollback(status);
+						return "mesmo_cpf";
+					}
+				}
+				
 				colaborador.setColaboradorIdiomas(colaboradorIdiomaManager.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()}));
 				colaborador.setExperiencias(experienciaManager.findByColaborador(colaborador.getId()));
 				colaborador.setFormacao(formacaoManager.findByColaborador(colaborador.getId()));
 
 				if (!vincularCandidatoMesmoCpf)
 					candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
+				else if(candidato != null)
+					colaboradorManager.desvinculaCandidato(candidato.getId());
 
 				colaborador.setCandidato(candidato);
 				colaboradorManager.update(colaborador);
