@@ -940,9 +940,6 @@
     <property name="dao">
       <ref bean="fasePcmatDao" />
     </property>
-    <property name="riscoFasePcmatManager">
-      <ref bean="riscoFasePcmatManager" />
-    </property>
   </bean>
   <bean id="fasePcmatManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -956,6 +953,9 @@
     <property name="dao">
       <ref bean="riscoFasePcmatDao" />
     </property>
+    <property name="medidaRiscoFasePcmatManager">
+      <ref bean="medidaRiscoFasePcmatManager" />
+    </property>
   </bean>
   <bean id="riscoFasePcmatManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -965,4 +965,18 @@
       <ref bean="riscoFasePcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="medidaRiscoFasePcmatManagerTarget" class="com.fortes.rh.business.sesmt.MedidaRiscoFasePcmatManagerImpl">
+    <property name="dao">
+      <ref bean="medidaRiscoFasePcmatDao" />
+    </property>
+  </bean>
+  <bean id="medidaRiscoFasePcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.MedidaRiscoFasePcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="medidaRiscoFasePcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

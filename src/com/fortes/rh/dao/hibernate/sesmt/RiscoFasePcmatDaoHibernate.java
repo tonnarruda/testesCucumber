@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -29,7 +30,8 @@ public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcm
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("rfp.fasePcmat.id", fasePcmatId));
-
+		criteria.addOrder(Order.asc("r.descricao"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

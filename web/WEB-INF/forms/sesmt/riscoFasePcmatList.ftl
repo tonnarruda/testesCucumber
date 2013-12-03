@@ -6,7 +6,7 @@
 			@import url('<@ww.url value="/css/displaytag.css"/>');
 		</style>
 		
-		<title>Riscos e Medidas de Segurança</title>
+		<title>Riscos e Medidas de Segurança - Fase ${fasePcmat.fase.descricao}</title>
 	</head>
 	<body>
 		<@ww.actionmessage />
@@ -24,6 +24,7 @@
 		
 		<div class="buttonGroup">
 			<button class="btnInserir" onclick="window.location='prepareInsert.action?riscoFasePcmat.fasePcmat.id=${fasePcmat.id}'"></button>
+			<button class="btnVoltar" onclick="window.location='../fasePcmat/list.action?pcmat.id=${fasePcmat.pcmat.id}'"></button>
 		</div>
 	</body>
 </html>

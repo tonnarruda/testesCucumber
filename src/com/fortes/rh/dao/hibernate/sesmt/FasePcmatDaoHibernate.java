@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -34,5 +35,31 @@ public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implem
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public FasePcmat findByIdProjection(Long id) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fp");
+		criteria.createCriteria("fp.fase", "f");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("fp.id"), "id");
+		p.add(Projections.property("fp.ordem"), "ordem");
+		p.add(Projections.property("fp.pcmat.id"), "pcmatId");
+		p.add(Projections.property("f.descricao"), "faseDescricao");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fp.id", id));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return (FasePcmat) criteria.uniqueResult();
+	}
+
+	public void updateOrdem(Long fasePcmatId, int ordem) 
+	{
+		Query query = getSession().createQuery("update FasePcmat set ordem = :ordem where id = :id");
+		query.setLong("id", fasePcmatId);
+		query.setInteger("ordem", ordem);
+		query.executeUpdate();
 	}
 }

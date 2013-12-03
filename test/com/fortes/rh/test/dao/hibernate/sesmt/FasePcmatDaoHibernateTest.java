@@ -1,5 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import java.util.Collection;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.FaseDao;
 import com.fortes.rh.dao.sesmt.FasePcmatDao;
@@ -61,6 +63,64 @@ public class FasePcmatDaoHibernateTest extends GenericDaoHibernateTest<FasePcmat
 		
 		assertEquals("Pcmat 1", 2, fasePcmatDao.findByPcmat(pcmat1.getId()).size());
 		assertEquals("Pcmat 2", 1, fasePcmatDao.findByPcmat(pcmat2.getId()).size());
+	}
+	
+	public void testFindByIdProjection()
+	{
+		Fase aterramento = FaseFactory.getEntity();
+		aterramento.setDescricao("Aterramento");
+		faseDao.save(aterramento);
+		
+		Pcmat pcmat = PcmatFactory.getEntity();
+		pcmatDao.save(pcmat);
+
+		FasePcmat fasePcmat = FasePcmatFactory.getEntity();
+		fasePcmat.setFase(aterramento);
+		fasePcmat.setPcmat(pcmat);
+		fasePcmatDao.save(fasePcmat);
+		
+		assertEquals("Aterramento", fasePcmatDao.findByIdProjection(fasePcmat.getId()).getFase().getDescricao());
+	}
+	
+	public void testUpdateOrdem()
+	{
+		Fase aterramento = FaseFactory.getEntity();
+		aterramento.setDescricao("Aterramento");
+		faseDao.save(aterramento);
+
+		Fase pintura = FaseFactory.getEntity();
+		pintura.setDescricao("Pintura");
+		faseDao.save(pintura);
+		
+		Pcmat pcmat = PcmatFactory.getEntity();
+		pcmatDao.save(pcmat);
+
+		FasePcmat fasePcmat1 = FasePcmatFactory.getEntity();
+		fasePcmat1.setFase(aterramento);
+		fasePcmat1.setPcmat(pcmat);
+		fasePcmat1.setOrdem(1);
+		fasePcmatDao.save(fasePcmat1);
+
+		FasePcmat fasePcmat2 = FasePcmatFactory.getEntity();
+		fasePcmat2.setFase(aterramento);
+		fasePcmat2.setPcmat(pcmat);
+		fasePcmat2.setOrdem(2);
+		fasePcmatDao.save(fasePcmat2);
+
+		Collection<FasePcmat> fasesPcmat = fasePcmatDao.findByPcmat(pcmat.getId());
+		FasePcmat[] retorno = fasesPcmat.toArray(new FasePcmat[2]);
+		
+		assertEquals(fasePcmat1.getId(), retorno[0].getId());
+		assertEquals(fasePcmat2.getId(), retorno[1].getId());
+		
+		fasePcmatDao.updateOrdem(fasePcmat1.getId(), 2);
+		fasePcmatDao.updateOrdem(fasePcmat2.getId(), 1);
+		
+		fasesPcmat = fasePcmatDao.findByPcmat(pcmat.getId());
+		retorno = fasesPcmat.toArray(new FasePcmat[2]);
+		
+		assertEquals(fasePcmat2.getId(), retorno[0].getId());
+		assertEquals(fasePcmat1.getId(), retorno[1].getId());
 	}
 	
 	public void setFasePcmatDao(FasePcmatDao fasePcmatDao)

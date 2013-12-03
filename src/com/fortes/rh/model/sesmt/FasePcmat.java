@@ -64,4 +64,12 @@ public class FasePcmat extends AbstractModel implements Serializable
 		
 		this.fase.setDescricao(descricao);
 	}
+	
+	public void setPcmatId(Long id)
+	{
+		if (this.pcmat == null)
+			this.pcmat = new Pcmat();
+		
+		this.pcmat.setId(id);
+	}
 }

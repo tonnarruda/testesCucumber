@@ -4,6 +4,8 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.sesmt.FasePcmatManager;
+import com.fortes.rh.business.sesmt.MedidaRiscoFasePcmatManager;
 import com.fortes.rh.business.sesmt.MedidaSegurancaManager;
 import com.fortes.rh.business.sesmt.RiscoFasePcmatManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
@@ -13,7 +15,6 @@ import com.fortes.rh.model.sesmt.MedidaSeguranca;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -21,9 +22,11 @@ import com.opensymphony.xwork.Action;
 public class RiscoFasePcmatEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private RiscoFasePcmatManager riscoFasePcmatManager;
 	private RiscoManager riscoManager;
+	private FasePcmatManager fasePcmatManager;
+	private RiscoFasePcmatManager riscoFasePcmatManager;
 	private MedidaSegurancaManager medidaSegurancaManager;
+	private MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager;
 	
 	private FasePcmat fasePcmat;
 	private RiscoFasePcmat riscoFasePcmat;
@@ -45,7 +48,9 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 		if (riscoFasePcmat != null && riscoFasePcmat.getId() != null)
 		{
 			riscoFasePcmat = (RiscoFasePcmat) riscoFasePcmatManager.findById(riscoFasePcmat.getId());
-			medidasCheckList = CheckListBoxUtil.marcaCheckListBox(medidasCheckList, new CollectionUtil<MedidaRiscoFasePcmat>().convertCollectionToArrayString(riscoFasePcmat.getMedidasRiscoFasePcmat()));
+			
+			Collection<MedidaRiscoFasePcmat> medidasRiscoFasePcmat = medidaRiscoFasePcmatManager.findByRiscoFasePcmat(riscoFasePcmat.getId());
+			medidasCheckList = CheckListBoxUtil.marcaCheckListBox(medidasCheckList, medidasRiscoFasePcmat, "getMedidaSegurancaId");
 		}
 	}
 
@@ -64,7 +69,7 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			riscoFasePcmatManager.save(riscoFasePcmat);
+			riscoFasePcmatManager.saveRiscosMedidas(riscoFasePcmat, medidasCheck);
 			addActionSuccess("Risco cadastrado com sucesso.");
 			
 		} catch (Exception e) {
@@ -80,7 +85,7 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			riscoFasePcmatManager.update(riscoFasePcmat);
+			riscoFasePcmatManager.saveRiscosMedidas(riscoFasePcmat, medidasCheck);
 			addActionSuccess("Risco atualizado com sucesso.");
 			
 		} catch (Exception e) {
@@ -95,7 +100,9 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		fasePcmat = fasePcmatManager.findByIdProjection(fasePcmat.getId());
 		riscosFasePcmat = riscoFasePcmatManager.findByFasePcmat(fasePcmat.getId());
+		
 		return Action.SUCCESS;
 	}
 
@@ -170,5 +177,14 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
+	}
+
+	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {
+		this.fasePcmatManager = fasePcmatManager;
+	}
+
+	public void setMedidaRiscoFasePcmatManager(
+			MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager) {
+		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
 	}
 }

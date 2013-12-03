@@ -10,7 +10,7 @@
 			<#assign formAction="insert.action"/>
 		</#if>
 	
-		<#assign validarCampos="return validaFormulario('form', new Array('fase','ordem','@riscosCheck'))"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('fase','ordem'))"/>
 	</head>
 	<body>
 		<@ww.actionerror />
@@ -21,7 +21,6 @@
 
 			<@ww.textfield label="Ordem" name="fasePcmat.ordem" id="ordem" maxLength="3" cssStyle="width:30px;" required="true"/>
 			<@ww.select label="Fase" name="fasePcmat.fase.id" id="fase" list="fases" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true"/>
-			<@frt.checkListBox label="Riscos" name="riscosCheck" list="riscosCheckList"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">
