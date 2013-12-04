@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -15,7 +16,8 @@ import com.fortes.rh.util.CollectionUtil;
 public class SolicitacaoDWR {
 
 	private SolicitacaoManager solicitacaoManager;
-	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager; 
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	private AnuncioManager anuncioManager;
 
 	public Map<Long, String> getSolicitacoes(Long empresaId) 
 	{
@@ -46,6 +48,18 @@ public class SolicitacaoDWR {
 		return solicitacaoAvaliacaoManager.findAvaliacaoesNaoRespondidas(solicitacaoId, candidatoId);
 	}
 	
+	public String enviarAnuncioEmail(Long anuncioId, Long empresaId, String nomeFrom, String emailFrom, String nomeTo, String emailTo)
+	{
+		try {
+			anuncioManager.enviarAnuncioEmail(anuncioId, empresaId, nomeFrom, emailFrom, nomeTo, emailTo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Não foi possível enviar o email. Tente novamente mais tarde.";
+		}
+		
+		return "Anúncio de vaga enviado com sucesso";
+	}
+	
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
 	{
 		this.solicitacaoManager = solicitacaoManager;
@@ -54,5 +68,10 @@ public class SolicitacaoDWR {
 	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) 
 	{
 		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
+	}
+
+	public void setAnuncioManager(AnuncioManager anuncioManager) 
+	{
+		this.anuncioManager = anuncioManager;
 	}
 }

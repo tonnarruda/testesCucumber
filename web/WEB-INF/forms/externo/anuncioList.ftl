@@ -8,16 +8,19 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
-		a { color: blue; }
+		table a { color: blue; }
+		table.dados a { margin-right: 10px; }
 		#popup ul li { margin: 5px 0px; list-style: disc; }
+		#popupEnvioAmigo li { margin: 5px 0px; list-style: none; }
+		h5 { margin: 2px 0px; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
-	<#if SESSION_CANDIDATO_ID?exists>
-		<script type='text/javascript'>
+	<script type='text/javascript'>
+		<#if SESSION_CANDIDATO_ID?exists>
 			function menuAvaliacoesSolicitacao(anuncioId, anuncioTitulo, solicitacaoId) 
 			{
 				$('#popup h5').text(anuncioTitulo);
@@ -36,8 +39,34 @@
 																});
 															});	
 		    }
-		</script>
-	</#if>
+		</#if>
+		    
+		function exibirFormAnuncioEmail(anuncioId, anuncioTitulo) 
+		{
+			$('#popupEnvioAmigo h5').text(anuncioTitulo);
+		
+			$('#popupEnvioAmigo').dialog({
+				modal: true,
+				width: 350,
+				buttons: [ 
+					{ text: "Cancelar", click: function() { $(this).dialog("close"); } }, 
+					{ text: "Enviar", click: function() { enviarAnuncioEmail(anuncioId); } }
+				]
+			});
+	    }
+	    
+	    function enviarAnuncioEmail(anuncioId)
+	    {
+	    	var empresaId 	= ${empresaId};
+			var nomeFrom 	= $('#nomeFrom').val();
+			var emailFrom 	= $('#emailFrom').val();
+			var nomeTo 		= $('#nomeTo').val();
+			var emailTo 	= $('#emailTo').val();
+			
+			if (validaFormulario(document.formEnvioAmigo, ['nomeFrom','emailFrom','nomeTo','emailTo'], ['emailFrom','emailTo'], true))
+		     	SolicitacaoDWR.enviarAnuncioEmail(anuncioId, empresaId, nomeFrom, emailFrom, nomeTo, emailTo, function(retorno) { jAlert(retorno); $('#popupEnvioAmigo').dialog('close'); });
+	    }
+	</script>
 </head>
 <body>
 
@@ -64,12 +93,14 @@
 							(Você já está concorrendo a esta vaga) <br />
 							
 							<#if (anuncio.qtdAvaliacoes > 0) && (anuncio.qtdAvaliacoes > anuncio.qtdAvaliacoesRespondidas)>
-								<a href="javascript:;" onclick="menuAvaliacoesSolicitacao(${anuncio.id}, '${anuncio.titulo}', ${anuncio.solicitacao.id});">Responder as avaliações</a><br />
+								<a href="javascript:;" onclick="menuAvaliacoesSolicitacao(${anuncio.id}, '${anuncio.titulo}', ${anuncio.solicitacao.id});">Responder às avaliações</a>
 							</#if>
 						<#else>
 							<strong>${anuncio.titulo}</strong> <br />
 							<a href="verAnuncio.action?anuncio.id=${anuncio.id}">Visualizar</a>
 						</#if>
+						
+						<a href="javascript:;" onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');">Enviar para um amigo</a>
 					</@display.column>
 					
 					<@display.column property="solicitacao.quantidade" title="Vagas" style="text-align:center; width: 40px;"/>
@@ -91,6 +122,26 @@
 	<div id="popup" title="Responder Avaliações da Vaga" style="display:none;">
 		<h5></h5>
 		<ul></ul>
+	</div>
+
+	<div id="popupEnvioAmigo" title="Enviar anúncio de vaga para um amigo" style="display:none;">
+		<h5></h5>
+		<#assign nome=""/>
+		<#if SESSION_CANDIDATO_NOME?exists>
+			<#assign nome=SESSION_CANDIDATO_NOME/>
+		</#if>
+
+		<#assign email=""/>
+		<#if SESSION_CANDIDATO_EMAIL?exists>
+			<#assign email=SESSION_CANDIDATO_EMAIL/>
+		</#if>
+		
+		<@ww.form name="formEnvioAmigo">
+			<@ww.textfield label="Seu nome" name="nomeFrom" id="nomeFrom" cssStyle="width:320px;" maxLength="100" value="${nome}"/>
+			<@ww.textfield label="Seu email" name="emailFrom" id="emailFrom" cssStyle="width:320px;" cssClass="mascaraEmail" maxLength="100" value="${email}"/>
+			<@ww.textfield label="Nome do amigo" name="nomeTo" id="nomeTo" cssStyle="width:320px;" maxLength="100"/>
+			<@ww.textfield label="Email do amigo" name="emailTo" id="emailTo" cssStyle="width:320px;" cssClass="mascaraEmail" maxLength="100"/>
+		</@ww.form>
 	</div>
 
 	<script language='javascript'>

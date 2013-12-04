@@ -236,8 +236,17 @@
     <property name="dao">
       <ref bean="anuncioDao" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
     <property name="empresaBdsManager">
       <ref bean="empresaBdsManager" />
+    </property>
+    <property name="mail">
+      <ref bean="mail" />
     </property>
   </bean>
   <bean id="anuncioManager" parent="parentManager">

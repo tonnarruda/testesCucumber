@@ -849,7 +849,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.GERAR_BACKUP.getId(), null);
     		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
     			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_TECNICO.getId())){
-    				mail.send(null, subject, corpo, null, email);
+    				mail.send(null, subject, corpo, email);
     				break;
     			} 
     		}

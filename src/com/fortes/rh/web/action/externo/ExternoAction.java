@@ -136,6 +136,7 @@ public class ExternoAction extends MyActionSupport
 		session.put("SESSION_CANDIDATO_SENHA", candidato.getSenha());
 		session.put("SESSION_CANDIDATO_NOME", candidato.getNome());
 		session.put("SESSION_CANDIDATO_NOME_RESUMIDO", StringUtil.subStr(candidato.getNome(), 40, "..."));
+		session.put("SESSION_CANDIDATO_EMAIL", candidato.getContato().getEmail());
 		session.put("SESSION_CANDIDATO_CPF", candidato.getPessoal().getCpfFormatado());
 		session.put("SESSION_EMPRESA", empresaId);
 

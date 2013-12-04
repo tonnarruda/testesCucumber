@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>" media="screen" type="text/css">
 
 	<style type="text/css">
-		a { color: blue !important; }
 		<#if moduloExterno?exists && moduloExterno>
 			.btnEnviar { background-image:url(../imgs/btnEnviarExterno.gif) !important; width: 81px !important; }
 			.btnVoltar { background-image:url(../imgs/btnVoltarExterno.gif) !important; width: 69px !important; }

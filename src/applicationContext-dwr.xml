@@ -90,6 +90,7 @@
 	<bean id="solicitacaoDWR" class="com.fortes.rh.web.dwr.SolicitacaoDWR">
 		<property name="solicitacaoManager" ref="solicitacaoManager"/>
 		<property name="solicitacaoAvaliacaoManager" ref="solicitacaoAvaliacaoManager"/>
+		<property name="anuncioManager" ref="anuncioManager"/>
 	</bean>
 	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>

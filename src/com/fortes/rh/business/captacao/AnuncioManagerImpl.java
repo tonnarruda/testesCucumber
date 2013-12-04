@@ -2,27 +2,33 @@ package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.AnuncioDao;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.EmpresaBds;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.web.tags.CheckBox;
 
 public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> implements AnuncioManager
 {
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EmpresaBdsManager empresaBdsManager;
+	private Mail mail;
 
 	public Collection<CheckBox> getEmpresasCheck(Long empresaId) throws Exception
 	{
 		return CheckListBoxUtil.populaCheckListBox( empresaBdsManager.findToList(new String[]{"id", "nome"},new String[]{"id", "nome"},new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"}), "getId", "getNome");
-	}
-
-	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)
-	{
-		this.empresaBdsManager = empresaBdsManager;
 	}
 
 	public String[] montaEmails(String emailAvulso, String[] empresasCheck)
@@ -85,5 +91,44 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 	public Collection<Anuncio> findAnunciosSolicitacaoAberta(Long empresaId) 
 	{
 		return getDao().findAnunciosSolicitacaoAberta(empresaId);
+	}
+
+	public void enviarAnuncioEmail(Long anuncioId, Long empresaId, String nomeFrom, String emailFrom, String nomeTo, String emailTo) throws AddressException, MessagingException 
+	{
+		String subject = "Oportunidade de emprego";
+		StringBuffer body = new StringBuffer();
+		
+		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		Anuncio anuncio = getDao().findByIdProjection(anuncioId);
+		
+		body.append("<br />");
+		body.append("Caro(a) " + nomeTo + ",<br /><br />");
+		body.append(nomeFrom + " está lhe recomendando a seguinte oportunidade de emprego na empresa " + empresa.getNome() + ":<br /><br />");
+		body.append("<strong>" + anuncio.getTitulo() + "</strong><br /><br />");
+		body.append(anuncio.getCabecalho() + "<br /><br />");
+		body.append("<a href='" + parametros.getAppUrl() + "/externo/prepareListAnuncio.action?empresaId=" + empresaId + "'>Clique aqui para candidatar-se</a><br /><br />");
+		
+		mail.send(emailFrom, subject, body.toString(), emailTo);
+	}
+	
+	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)
+	{
+		this.empresaBdsManager = empresaBdsManager;
+	}
+
+	public void setMail(Mail mail) 
+	{
+		this.mail = mail;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) 
+	{
+		this.empresaManager = empresaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
+	{
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

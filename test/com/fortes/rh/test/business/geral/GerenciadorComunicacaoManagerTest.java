@@ -709,7 +709,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.GERAR_BACKUP.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
 		 Exception exception = null;
 		 try {

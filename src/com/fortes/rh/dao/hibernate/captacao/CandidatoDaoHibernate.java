@@ -66,6 +66,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         p.add(Projections.property("c.id"), "id");
         p.add(Projections.property("c.nome"), "nome");
         p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
+        p.add(Projections.property("c.contato.email"),"contatoEmail");
         p.add(Projections.property("c.senha"),"senha");
         p.add(Projections.property("e.nome"),"empresaNome");
         

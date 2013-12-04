@@ -77,8 +77,34 @@ public class Mail
     {
     	procSend(empresa, parametros, subject, body, null, to);
     }
+    
+    public void send(String from, String subject, String body, String... to) throws AddressException, MessagingException
+    {
+    	ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+    	procSend(parametros, from, subject, body, null, to);
+    }
 
     private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
+    {
+    	String from;
+    	
+    	if(empresa != null && empresa.getEmailRemetente() != null)
+		{
+			from = empresa.getEmailRemetente();
+		}
+		else if(parametros.getEmailRemetente() != null && !StringUtil.isBlank(parametros.getEmailRemetente()))
+		{
+			from = parametros.getEmailRemetente();
+		} 
+		else 
+		{
+			from = "fortesrh@grupofortes.com.br";
+		}
+    	
+    	procSend(parametros, from, subject, body, attachedFiles, to);
+    }
+    
+    private void procSend(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
     {
     	if(parametros.isEnvioDeEmailHabilitado())
     	{
@@ -87,7 +113,7 @@ public class Mail
 			
 			try
 			{
-				Message msg = prepareMessage(empresa, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), parametros.isTls());
+				Message msg = prepareMessage(from, parametros, subject, body, attachedFiles,  parametros.isAutenticacao(), parametros.isTls());
 	
 				List<String> emails = new ArrayList<String>();
 	
@@ -112,24 +138,13 @@ public class Mail
     	}
     }
 
-	private Message prepareMessage(Empresa empresa, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException
+	private Message prepareMessage(String from, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException
 	{
 		Session session;
 
 		BodyMessage bodyMessage = new BodyMessage(body);
 
-		if(empresa != null && empresa.getEmailRemetente() != null)
-		{
-			message.setFrom(empresa.getEmailRemetente());
-		}
-		else if(params.getEmailRemetente() != null && !StringUtil.isBlank(params.getEmailRemetente()))
-		{
-			message.setFrom(params.getEmailRemetente());
-		} 
-		else 
-		{
-			message.setFrom("fortesrh@grupofortes.com.br");
-		}
+		message.setFrom(from);
 
         mailSender.setHost(params.getEmailSmtp());
         mailSender.setPort(params.getEmailPort());
