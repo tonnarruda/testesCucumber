@@ -114,6 +114,9 @@
     <property name="indiceManager">
       <ref bean="indiceManager" />
     </property>
+        <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
   </bean>
   <bean id="reajusteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

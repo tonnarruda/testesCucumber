@@ -17,7 +17,7 @@ public interface ReajusteColaboradorManager extends GenericManager<ReajusteColab
 	Collection<ReajusteColaborador> findByGruposAreas(HashMap<Object, Object> parametros);
 	Collection<ReajusteColaborador> findByIdEstabelecimentoAreaGrupo(Long tabelaReajusteColaboradorId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, int filtraPor);
 	@Audita(operacao="Inserção", auditor=ReajusteColaboradorAuditorCallbackImpl.class)
-	void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador) throws Exception;
+	void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador, Long empresaId, String nomeColaborador) throws Exception;
 	Collection<ReajusteColaborador> aplicarDissidio(Collection<HistoricoColaborador> historicoColaboradores, TabelaReajusteColaborador tabelaReajusteColaborador, char dissidioPor, Double valorDissidio) throws Exception;
 	void deleteByColaboradoresTabelaReajuste(Long[] colaboradorIds, Long tabelaReajusteColaboradorId);
 	ReajusteColaborador getSituacaoReajusteColaborador(Long reajusteColaboradorId);

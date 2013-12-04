@@ -45,7 +45,6 @@ import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
-@SuppressWarnings("unchecked")
 public class ReajusteColaboradorEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;
@@ -134,6 +133,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
@@ -217,7 +217,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			setDadosSolicitacaoReajuste();
 			reajusteColaboradorManager.validaSolicitacaoReajuste(reajusteColaborador);
 			
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador);
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, getEmpresaSistema().getId(), colaborador.getNome());
 			
 			addActionSuccess("Solicitação de realinhamento incluída com sucesso");
 		} 

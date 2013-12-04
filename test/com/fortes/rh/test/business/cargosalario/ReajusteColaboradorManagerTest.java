@@ -19,6 +19,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManagerImpl;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -73,7 +74,8 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 	Mock faixaSalarialManager;
 	Mock tabelaReajusteColaboradorManager;
 	Mock historicoColaboradorManager;
-
+	Mock gerenciadorComunicacaoManager;
+	
 	protected void setUp() throws Exception
 	{
 		reajusteColaboradorDao = new Mock(ReajusteColaboradorDao.class);
@@ -93,6 +95,9 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
 		reajusteColaboradorManager.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+		
+		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+		reajusteColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 		
 		tabelaReajusteColaboradorManager = mock(TabelaReajusteColaboradorManager.class);
 		historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
@@ -134,12 +139,18 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 	
 	public void testInsertSolicitacaoReajuste()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador 1");
+		
 		reajusteColaboradorDao.expects(once()).method("save");
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador").with(eq(empresa.getId()), eq(colaborador.getNome()));
 		
 		Exception exception = null;
 		
 		try {
-			reajusteColaboradorManager.insertSolicitacaoReajuste(getReajusteColaborador());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(getReajusteColaborador(), empresa.getId(), colaborador.getNome());
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -205,6 +216,11 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 	
 	public void testInsertSolicitacaoReajusteComSalarioTipoValorSemInformarSalarioProposto()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador 1");
+		
 		ReajusteColaborador reajusteColaborador = getReajusteColaborador();
 		
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(1L);
@@ -213,12 +229,11 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteColaborador.setTipoSalarioProposto(TipoAplicacaoIndice.VALOR);
 		reajusteColaborador.setSalarioProposto(null);
 
-
 		Exception exception = null;
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador);
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
 		}
 		catch (Exception e) {
 			exception = e;
@@ -230,6 +245,11 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 	public void testInsertSolicitacaoReajusteComSalarioTipoIndiceSemIndiceInformado()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador 1");
+		
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(1L);
 
 		ReajusteColaborador reajusteColaborador = getReajusteColaborador();
@@ -243,7 +263,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador);
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
 		}
 		catch (Exception e) {
 			exception = e;
@@ -254,6 +274,11 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 	public void testInsertSolicitacaoReajusteSemTipoSalario()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador 1");
+		
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(1L);
 
 		ReajusteColaborador reajusteColaborador = getReajusteColaborador();
@@ -265,7 +290,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador);
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
 		}
 		catch (Exception e) {
 			exception = e;

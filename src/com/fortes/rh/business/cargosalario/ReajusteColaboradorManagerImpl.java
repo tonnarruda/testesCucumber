@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -29,14 +30,14 @@ import com.fortes.rh.util.SpringUtil;
 @SuppressWarnings("unchecked")
 public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteColaborador, ReajusteColaboradorDao> implements ReajusteColaboradorManager
 {
+	private IndiceManager indiceManager;
+	private FaixaSalarialManager faixaSalarialManager;
 	private PlatformTransactionManager transactionManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private FaixaSalarialManager faixaSalarialManager;
-	private IndiceManager indiceManager;
-	
-	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
-
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	
 	public Collection<ReajusteColaborador> findByGruposAreas(HashMap<Object, Object> parametros)
 	{
 		int filtrarPor = Integer.parseInt(parametros.get("filtrarPor").toString());
@@ -68,12 +69,14 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		
 	}
 	
-	public void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador) throws Exception
+	public void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador, Long empresaId, String nomeColaborador) throws Exception
 	{
 		try
 		{
 			ajustaTipoSalario(reajusteColaborador);
 			save(reajusteColaborador);
+			
+			gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresaId, nomeColaborador);
 		}
 		catch(Exception e)
 		{
@@ -316,5 +319,11 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
+	}
+
+	
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager)
+	{
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

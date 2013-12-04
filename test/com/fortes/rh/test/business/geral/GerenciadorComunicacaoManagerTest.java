@@ -7,6 +7,7 @@ import java.util.Date;
 
 import mockit.Mockit;
 
+import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
@@ -1623,12 +1624,39 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
 		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
-		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.INSERIR_SOLICITACAO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SOLICITACAO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
 		usuarioManager.expects(once()).method("findEmailsByPerfil").with(eq("ROLE_LIBERA_SOLICITACAO"),eq(empresa.getId())).will(returnValue(emailsByUsuario));
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
 			
 		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
+	}
+	
+	public void testEnviaComunicadoAoCadastrarSolicitacaoRealinhamentoColaborador() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Colaborador");
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
+		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
+		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		String subject = "[RH] - Cadastro de solicitação de realinhamento para colaborador";
+		String body = "Foi realizado um cadastro de solicitação de realinhamento para o colaborador " + colaborador.getNome() + ".";
+		String[] emails = StringUtils.split(empresa.getEmailRespRH(), ";");
+		
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SOLICITACAO_REALINHAMENTO_COLABORADOR.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa), eq(subject), eq(body), eq(null), eq(emails)});
+		
+		gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresa.getId(), colaborador.getNome());
 	}
 	
 }

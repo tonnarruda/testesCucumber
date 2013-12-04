@@ -28,6 +28,7 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -106,11 +107,15 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 	
 	public void testInsertSolicitacaoReajuste() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
 		FaixaSalarial faixaSalarialAtual = FaixaSalarialFactory.getEntity(1L);
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(2L);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Colaboraor 1");
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 01, 2012));
+		
 		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
 		tabelaReajusteColaborador.setData(new Date());
 		
@@ -128,11 +133,13 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		reajusteColaborador.setFaixaSalarialProposta(faixaSalarialProposta);
 		
 		action.setReajusteColaborador(reajusteColaborador);
+		action.setColaborador(colaborador);
+		action.setEmpresaSistema(empresa);
 		
 		tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		manager.expects(once()).method("validaSolicitacaoReajuste").isVoid();
-		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador)).isVoid();
+		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador.getNome())).isVoid();
 		
 		mocksPrepareSolicitacaoReajuste();
 		
@@ -148,8 +155,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas")
-		.with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		

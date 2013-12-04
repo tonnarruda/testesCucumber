@@ -45,7 +45,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	INSERIR_SOLICITACAO(30, "Inserir solicitação de pessoal", "R&S"){
+	CADASTRAR_SOLICITACAO(30, "Cadastrar solicitação de pessoal", "R&S"){
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -81,6 +81,15 @@ public enum Operacao
 			
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
+	},
+	CADASTRAR_SOLICITACAO_REALINHAMENTO_COLABORADOR(31, "Cadastrar solicitação de realinhamento para colaborador", "C&S"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			
 			return this.getListMeioComunicacao();
 		}
