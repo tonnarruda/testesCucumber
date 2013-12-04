@@ -42,7 +42,7 @@ Funcionalidade: Cadastrar Curso
     E eu seleciono "_testes" de "Curso"
     E eu preencho "Descrição" com "_testes automatizados"
     E eu preencho "Horário" com "08:00"
-    E eu preencho "Instrutor" com "_jose"
+    E eu preencho "Nome" com "_jose"
     E eu preencho "Custo (R$)" com "50"
     E eu saio do campo "Custo (R$)"
 

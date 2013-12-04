@@ -4,12 +4,15 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="280"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="LOGO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="PATH_IMG" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="NOMEINSTRUTOR" class="java.lang.String"/>
+	<parameter name="ASS" class="java.lang.String"/>
+	<parameter name="EXIBIRASSINSTRUTOR" class="java.lang.Boolean"/>
 	<field name="titulo" class="java.lang.String"/>
 	<field name="data" class="java.lang.String"/>
 	<field name="conteudo" class="java.lang.String"/>
@@ -46,12 +49,12 @@
 			</image>
 			<line>
 				<reportElement uuid="f0387852-5e1b-46b2-9067-e4361c996645" key="line-1" x="11" y="684" width="249" height="1">
-					<printWhenExpression><![CDATA[new Boolean($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals("")) || $P{EXIBIRASSINSTRUTOR}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
 				<reportElement uuid="48d9c309-c3ca-42cf-ba4b-ccf17c8aae38" key="line-2" x="330" y="684" width="249" height="1">
-					<printWhenExpression><![CDATA[new Boolean($F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean(($F{ass2} != null && !$F{ass2}.equals("")) || $P{EXIBIRASSINSTRUTOR}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -95,7 +98,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="afb10fef-559a-482d-b2a6-2cbe5d68c167" key="textField" x="11" y="689" width="250" height="36">
-					<printWhenExpression><![CDATA[new Boolean($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals(""))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null && !$F{ass1}.equals("") && $F{ass2} != null && !$F{ass2}.equals("")) || $P{EXIBIRASSINSTRUTOR}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -109,7 +112,9 @@
 				<textFieldExpression><![CDATA[$F{ass1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="cec0d2ab-2ce7-47d1-9f03-a4e659d7d75d" key="textField" x="330" y="689" width="249" height="36"/>
+				<reportElement uuid="cec0d2ab-2ce7-47d1-9f03-a4e659d7d75d" key="textField" x="330" y="689" width="249" height="36">
+					<printWhenExpression><![CDATA[!$P{EXIBIRASSINSTRUTOR}.booleanValue()]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -161,12 +166,39 @@
 			</staticText>
 			<line>
 				<reportElement uuid="0df97fe5-dd1a-40b4-8e7c-2827b0ab841d" key="line-3" x="170" y="684" width="249" height="1">
-					<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals("")))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean((($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals(""))) && !($P{EXIBIRASSINSTRUTOR}.booleanValue()))]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<textField isBlankWhenNull="true">
+				<reportElement uuid="19ab0df4-3b09-4d97-a0d5-a9be2fa63ebc" key="textField" x="330" y="689" width="249" height="36">
+					<printWhenExpression><![CDATA[$P{EXIBIRASSINSTRUTOR}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="14" pdfFontName="Times-Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOMEINSTRUTOR}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Bottom">
+				<reportElement uuid="0b6e12f3-51f5-4843-b803-cec7e67fa60a" key="image-9" x="330" y="623" width="249" height="61">
+					<printWhenExpression><![CDATA[$P{EXIBIRASSINSTRUTOR}.booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression><![CDATA[$P{ASS}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="6e0709cc-ea12-4a35-a491-956a47a8544e" key="textField-1" x="169" y="689" width="250" height="36">
-					<printWhenExpression><![CDATA[new Boolean(($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals("")))]]></printWhenExpression>
+					<printWhenExpression><![CDATA[new Boolean((($F{ass1} != null || !$F{ass1}.equals("")) && ($F{ass2} == null || $F{ass2}.equals(""))) && !($P{EXIBIRASSINSTRUTOR}.booleanValue()))]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

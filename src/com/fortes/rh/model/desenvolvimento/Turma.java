@@ -57,6 +57,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="turma")
 	private Collection<TurmaTipoDespesa> turmaTipoDespesas;
+	private String assinaturaDigitalUrl;
 
 	// Utilizado na Matriz de Qualificação
 	@Transient
@@ -78,6 +79,8 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private char status;
 	@Transient
 	private Collection<AvaliacaoTurma> avaliacaoTurmas;
+	
+	
 
 	public Turma()
 	{
@@ -453,5 +456,13 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 	public void setPorTurno(boolean porTurno) {
 		this.porTurno = porTurno;
+	}
+
+	public String getAssinaturaDigitalUrl() {
+		return assinaturaDigitalUrl;
+	}
+
+	public void setAssinaturaDigitalUrl(String assinaturaDigitalUrl) {
+		this.assinaturaDigitalUrl = assinaturaDigitalUrl;
 	}
 }

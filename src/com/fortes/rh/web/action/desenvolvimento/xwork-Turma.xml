@@ -56,11 +56,13 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/aproveitamentoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[../colaboradorTurma/prepareInsert.action?turma.id=${turma.id}&turma.curso.id=${curso.id}&planoTreinamento=${planoTreinamento}]]></result>
 			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect"><![CDATA[list.action?curso.id=${turma.curso.id}]]></result>
 			<result name="successFiltroPlanoTreinamento" type="redirect">filtroPlanoTreinamento.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/turmaEdit.ftl</result>
@@ -225,5 +227,6 @@
 		<action name="aplicarPdi" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="aplicarPdi">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
 		</action>
+		<action name="showAssinatura" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="showAssinatura" />
 	</package>
 </xwork>

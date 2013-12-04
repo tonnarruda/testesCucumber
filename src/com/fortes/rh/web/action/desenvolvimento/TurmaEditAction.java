@@ -1,6 +1,6 @@
 package com.fortes.rh.web.action.desenvolvimento;
 
-import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.fortes.model.type.File;
+import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -174,8 +178,11 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private String custos;
 	private boolean contemCustosDetalhados = false;
 	private boolean turmaPertenceAEmpresaLogada = true;
+	private boolean exibirAssinaturaDigital;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
+	
+	private File assinaturaDigital;
 	
 	public AvaliacaoTurma getAvaliacaoTurma()
 	{
@@ -263,6 +270,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma.setEmpresa(getEmpresaSistema());
 
+		turma = turmaManager.setAssinaturaDigital(turma, assinaturaDigital, "assinaturas");
+		
 		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
@@ -270,11 +279,47 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String update() throws Exception
 	{
+		turma = turmaManager.setAssinaturaDigital(turma, assinaturaDigital, "assinaturas");
+		
 		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
+	
+	public String showAssinatura() throws Exception
+	{
+		if (turma.getAssinaturaDigitalUrl() != null && !turma.getAssinaturaDigitalUrl().equals(""))
+		{
+			java.io.File file = ArquivoUtil.getArquivo(turma.getAssinaturaDigitalUrl(),"assinaturas");
+			showFile(file);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	private void showFile(java.io.File file) throws IOException 
+	{
+		com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
+		arquivo.setBytes(FileUtil.getFileBytes(file));
+		arquivo.setName(file.getName());
+		arquivo.setSize(file.length());
+		int pos = arquivo.getName().indexOf(".");
+		if(pos > 0){
+			arquivo.setContentType(arquivo.getName().substring(pos));
+		}
+		if (arquivo != null && arquivo.getBytes() != null)
+		{
+			HttpServletResponse response = ServletActionContext.getResponse();
 
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.addHeader("Content-type", arquivo.getContentType());
+			response.addHeader("Content-Transfer-Encoding", "binary");
+
+			response.getOutputStream().write(arquivo.getBytes());
+		}
+	}
+	
 	public String prepareImprimirTurma() throws Exception
 	{
 
@@ -356,6 +401,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		}
 		else
 		{
+			turma = null;
 			cursos = cursoManager.findByCertificacao(certificacao.getId());
 			colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(certificacao, cursos == null?0:cursos.size());
 			certificacao = certificacaoManager.findByIdProjection(certificacao.getId());
@@ -387,10 +433,18 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		
 		String EscolhaDeLogo = getEmpresaSistema().getLogoCertificadoUrl() == null ? getEmpresaSistema().getLogoUrl():  getEmpresaSistema().getLogoCertificadoUrl();
 		String logo = ArquivoUtil.getPathLogoEmpresa() + EscolhaDeLogo;
-		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + File.separator;
+		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separator;
 		parametros.put("LOGO", logo);
 		parametros.put("PATH_IMG", path);
-
+		parametros.put("EXIBIRASSINSTRUTOR", exibirAssinaturaDigital);
+		
+		if(exibirAssinaturaDigital)
+		{
+			String assinaturaDigitalUrl = ArquivoUtil.getPathAssinaturas() + turma.getAssinaturaDigitalUrl();
+			parametros.put("ASS", assinaturaDigitalUrl);
+			parametros.put("NOMEINSTRUTOR", turma.getInstrutor() != null && !"".equals(turma.getInstrutor()) ? turma.getInstrutor() + "\nInstrutor" : "");
+		}
+		
 		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), false);
 		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado, getEmpresaSistema().getId());
 
@@ -410,7 +464,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			return Action.INPUT;
 		}
 
-		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + File.separator;
+		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separator;
 		parametros.put("PATH_IMG", path);
 		parametros.put("CONTEUDO_PROGRAMATICO", cursoManager.getConteudoProgramatico(curso.getId()));
 
@@ -432,7 +486,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		}
 
 		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator;
-		String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + File.separator;
+		String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separator;
 
 		certificacao = certificacaoManager.findByIdProjection(certificacao.getId());
 
@@ -581,6 +635,30 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatorio de Investimento por Colaborador", getEmpresaSistema(), "Colaborador: " + colaborador.getNome() + "\nTurma iniciada entre: " + DateUtil.formataDiaMesAno(dataIni) + " e " + DateUtil.formataDiaMesAno(dataFim));
 		
 		return Action.SUCCESS;
+	}
+	
+	private boolean assinaturaValida(com.fortes.model.type.File assinatura)
+	{
+		boolean fotoValida =  true;
+		if(assinatura != null)
+		{
+			if(assinatura.getContentType().length() >= 5)
+			{
+				if(!assinatura.getContentType().substring(0, 5).equals("image"))
+				{
+					addActionError("Tipo de arquivo não suportado");
+					fotoValida = false;
+				}
+
+				else if(assinatura.getSize() > 524288)
+				{
+					addActionError("Tamanho do arquivo maior que o suportado");
+					fotoValida = false;
+				}
+			}
+		}
+
+		return fotoValida;
 	}
 	
 	public Turma getTurma()
@@ -1207,5 +1285,21 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	public boolean isTurmaPertenceAEmpresaLogada()
 	{
 		return turmaPertenceAEmpresaLogada;
+	}
+
+	public File getAssinaturaDigital() {
+		return assinaturaDigital;
+	}
+
+	public void setAssinaturaDigital(File assinaturaDigital) {
+		this.assinaturaDigital = assinaturaDigital;
+	}
+
+	public boolean isExibirAssinaturaDigital() {
+		return exibirAssinaturaDigital;
+	}
+
+	public void setExibirAssinaturaDigital(boolean exibirAssinaturaDigital) {
+		this.exibirAssinaturaDigital = exibirAssinaturaDigital;
 	}
 }

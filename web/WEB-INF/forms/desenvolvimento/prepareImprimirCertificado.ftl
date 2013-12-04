@@ -60,22 +60,54 @@
 				<@ww.textarea label="Conteúdo" name="certificado.conteudo" cssStyle="width:600px;"/>
 			</span>
 
-			<@ww.textarea label="Assinatura 1" name="certificado.ass1" cssStyle="width: 296px;height: 30px;" liClass="liLeft"/>
-			<@ww.textarea label="Assinatura 2" name="certificado.ass2" cssStyle="width: 296px;height: 30px;"/>
+			<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
+				<legend>Assinaturas</legend>
+				<@ww.textarea label="Assinatura 1" name="certificado.ass1" cssStyle="width: 296px;height: 30px;"/>
+				Assinatura 2:
+				<@ww.div id="divAssinaturaInstrutor">
+					<@ww.checkbox label="Usar assinatura do instrutor inserido na turma" name="exibirAssinaturaDigital" id = "exibirAssinaturaDigital" labelPosition="left" onclick="abiltaOuDesabilitaCampoAssinatura2()"/>
+				</@ww.div>
+				<@ww.textarea name="certificado.ass2" id = "assinatura2" cssStyle="width: 296px;height: 30px;"/>
+			</fieldset><br />
+			
  			<@ww.textfield label="Data Completa" name="certificado.data" cssStyle="width: 296px;" />
 			<@ww.select label="Tamanho do Certificado" id="certificadoTamanho" name="certificado.tamanho" list=r"#{'1':'1 por página','2':'2 por página','declaracao':'Declaração'}" />
 			<@ww.checkbox label="Imprimir Moldura" name="certificado.imprimirMoldura" labelPosition="left"/>
 			<@ww.checkbox label="Imprimir Logotipo" name="certificado.imprimirLogo" labelPosition="left"/>
 
+			<@ww.hidden name="turma.assinaturaDigitalUrl" />
+			<@ww.hidden name="turma.instrutor" />
+
 			<div class="buttonGroup">
 				<button onclick="return enviaForm(2)" class="btnImprimirPdf"></button>
 				<button onclick="return enviaForm(3)" class="btnImprimirVersoPdf"></button>
 			</div>
+			
 		</#if>
 	</@ww.form>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type='text/javascript'>
+		function mostrarCheckAssInstrutor()
+		{
+			if($('#certificadoDe').val() == 'T')
+			{
+				<#if turma?exists && turma.assinaturaDigitalUrl?exists && turma.assinaturaDigitalUrl != "">
+					$('#divAssinaturaInstrutor').css('display','');
+				<#else>
+					$('#divAssinaturaInstrutor').css('display','none');
+				</#if>
+			}else
+				$('#divAssinaturaInstrutor').css('display','none');
+		}
+		
+		function abiltaOuDesabilitaCampoAssinatura2()
+		{
+			if ($('#exibirAssinaturaDigital').is(":checked"))
+				$('#assinatura2').val('').attr('disabled', true).css('background', '#F6F6F6');
+			else
+				$('#assinatura2').removeAttr('disabled').css('background', '#FFFFFF')
+		} 
 
 		function enviaForm(button) {
 			if(button == 1)	{
@@ -111,6 +143,8 @@
 				document.getElementById('divTreinamento').style.display = "none";
 				document.getElementById('divCertificacao').style.display = "";
 			}
+			
+			mostrarCheckAssInstrutor();
 		}
 
 		$(document).ready(function() {
@@ -133,11 +167,14 @@
 					DWRUtil.addOptions("turma", data);
 				}, $(this).val());
 			});
-		
+
 			$('#help_conteudo').qtip({
 				content: 'Utilize a expressão #NOMECOLABORADOR# <br/>no local onde deve aparecer o nome do colaborador.'
 				, style: { width: '100px' }
 			});
+			
+			mostrarCheckAssInstrutor();
+			abiltaOuDesabilitaCampoAssinatura2();
 		});
 	
 	</script>

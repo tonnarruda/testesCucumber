@@ -122,9 +122,12 @@ public class ArquivoUtil
 
 		if (renomear)
 			nomeArquivo = new Date().getTime() + arquivo.getName().substring(arquivo.getName().lastIndexOf("."));
-
+		
 		try
 		{
+			 if (!new java.io.File(path).exists()) // Verifica se o diretório existe.   
+		          (new java.io.File(path)).mkdir();   // Cria o diretório
+			
 			arquivoSalvo = FileUtil.bytesToFile(arquivo.getBytes(), path + java.io.File.separatorChar + nomeArquivo);
 		}
 		catch (Exception e)
@@ -264,6 +267,18 @@ public class ArquivoUtil
 		path.append("logoEmpresas");
 		path.append(java.io.File.separatorChar);
 
+		return path.toString();
+	}
+
+	public static String getPathAssinaturas()
+	{
+		StringBuilder path = new StringBuilder(getRhHome());
+		path.append(java.io.File.separatorChar);
+		path.append("anexos");
+		path.append(java.io.File.separatorChar);
+		path.append("assinaturas");
+		path.append(java.io.File.separatorChar);
+		
 		return path.toString();
 	}
 

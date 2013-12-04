@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.type.File;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -21,6 +22,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -328,6 +330,31 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return percentual;
 	}
 
+	public Turma setAssinaturaDigital(Turma turma, File assinaturaDigital, String local)
+	{
+		String assinatura = saveLogo(assinaturaDigital, local);
+
+		if(!assinatura.equals(""))
+			turma.setAssinaturaDigitalUrl(assinatura);
+		
+		return turma;
+	}
+	
+	private String saveLogo(File assinaturaDigital, String local)
+	{
+		String url = "";
+
+		if(assinaturaDigital != null && !assinaturaDigital.getName().equals(""))
+		{
+			java.io.File logoSalva = ArquivoUtil.salvaArquivo(local, assinaturaDigital, true);
+
+			if(logoSalva != null)
+				url = logoSalva.getName();
+		}
+
+		return url;
+	}
+	
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 
 	{
 		this.colaboradorTurmaManager = colaboradorTurmaManager;

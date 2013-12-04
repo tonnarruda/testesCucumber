@@ -199,7 +199,8 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoTurmasCheck(new String[] { "234" });
     	action.setTurma(turma);
 
-    	turmaManager.expects(once()).method("inserir").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).isVoid();;
+    	turmaManager.expects(once()).method("inserir").withAnyArguments().isVoid();;
+    	turmaManager.expects(once()).method("setAssinaturaDigital").withAnyArguments().isVoid();;
     	
     	assertEquals("success", action.insert());
     }
@@ -214,6 +215,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setTurma(turma);
     	
     	turmaManager.expects(once()).method("atualizar").withAnyArguments().isVoid();
+    	turmaManager.expects(once()).method("setAssinaturaDigital").will(returnValue(turma));
     	
     	assertEquals("success", action.update());
     }

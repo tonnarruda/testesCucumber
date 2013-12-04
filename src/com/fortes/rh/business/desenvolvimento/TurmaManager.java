@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.model.type.File;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Empresa;
@@ -44,4 +45,5 @@ public interface TurmaManager extends GenericManager<Turma>
 	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck) throws Exception;
 	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds) throws Exception;
 	public void atualizar(Turma turma, String[] dias, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception;
+	public Turma setAssinaturaDigital(Turma turma, File assinaturaDigital, String local);
 }

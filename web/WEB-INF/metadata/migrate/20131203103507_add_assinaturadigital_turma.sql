@@ -1,0 +1,1 @@
+alter table turma add column assinaturaDigitalUrl character varying(200); --.go

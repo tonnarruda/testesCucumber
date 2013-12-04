@@ -27,7 +27,7 @@ Funcionalidade: Cadastrar Plano de Treinamento
     E o campo "Descrição" deve conter "a1"
     E eu preencho "Descrição" com "turma1"
     E eu preencho "Horário" com "08:00"
-    E eu preencho "Instrutor" com "joao"
+    E eu preencho "Nome" com "joao"
     E eu preencho "Custo (R$)" com "100,00"
     E eu preencho "Instituição" com "fortes"
     E eu preencho "Qtd. Prevista de Participantes" com "25"
