@@ -244,7 +244,11 @@ function addChecksByMap(divName, data, onClick)
 		i++;
 	}
 	
-	dados.sort();
+	dados.sort(function(a,b) {
+		if (a[0].toLowerCase() < b[0].toLowerCase()) return -1;
+	    if (a[0].toLowerCase() > b[0].toLowerCase()) return 1;
+	    return 0;
+	});
 	
 	var result = "";
 	var addOnClick = "";
@@ -367,6 +371,13 @@ function compararData(dataInicio, dataFinal)
 		jAlert("Datas inválidas, data Inicial deve ser menor que Final.");
 		return false;
 	}
+}
+
+function compararStrings(a, b) 
+{
+    if (a.toLowerCase() < b.toLowerCase()) return -1;
+    if (a.toLowerCase() > b.toLowerCase()) return 1;
+    return 0;
 }
 
 function paging(pg, formulario)

@@ -53,7 +53,7 @@
 
 		function createListcolaborador(data)
 		{
-			addChecks('colaboradorCheck',data)
+			addChecksByMap('colaboradorCheck',data)
 		}
 		
 		function populaEstabelecimento(empresaId)
@@ -65,7 +65,7 @@
 
 		function createListEstabelecimento(data, empresaId)
 		{
-			addChecks('estabelecimentoCheck',data, 'populaColaboradores()');
+			addChecksByMap('estabelecimentoCheck',data, 'populaColaboradores()');
 		}
 		
 		function populaOcorrencia(empresaId)
@@ -76,7 +76,7 @@
 
 		function createListOcorrencia(data)
 		{
-			addChecks('ocorrenciaCheck',data);
+			addChecksByMap('ocorrenciaCheck',data);
 		}
 		
 		function populaArea(empresaId)
@@ -87,7 +87,7 @@
 
 		function createListArea(data, empresaId)
 		{
-			addChecks('areaCheck', data, 'populaColaboradores()');
+			addChecksByMap('areaCheck', data, 'populaColaboradores()');
 		}
 		
 		function populaChecks()
@@ -170,7 +170,7 @@
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 			<legend>Colaboradores</legend>
 			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores($('#empresa').val());"/>
-			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180"/>
+			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180" filtro="true"/>
 		</fieldset>
 		<br />
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>
