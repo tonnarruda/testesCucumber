@@ -117,6 +117,8 @@ public class TipoQuestionario extends LinkedHashMap<Object, Object>
 					retorno = "Título: " + questionario.getTitulo() + "\n";
 				break;
 			case ENTREVISTA:
+				if(questionario.getTitulo() != null && !questionario.getTitulo().equals(""))
+					retorno = "Título: " + questionario.getTitulo() + "\n";
 				break;
 			case PESQUISA:
 				if(questionario.getTitulo() != null && !questionario.getTitulo().equals(""))
