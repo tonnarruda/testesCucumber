@@ -13,6 +13,8 @@
 		</#if>
 	</style>
 	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type="text/javascript" src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type="text/javascript">
 		function abrirMenuCandidatarse() {
@@ -27,6 +29,8 @@
 			});
 		}
 	</script>
+	
+	<#assign empresaId=anuncio.solicitacao.empresa.id/>
 </head>
 <body>
 	<@ww.actionerror />
@@ -45,11 +49,14 @@
 		<#else>
 			<button onclick="abrirMenuCandidatarse();" class="btnQueroMeCandidatar" accesskey="E"></button>
 		</#if>
+		<button onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');" class="btnEnviarParaAmigo" accesskey="A"></button>
 		<button onclick="window.location='prepareListAnuncio.action?empresaId=${anuncio.solicitacao.empresa.id}'" class="btnVoltar" accesskey="V"></button>
 	</div>
 	
 	<div id="loginCadastro" style="display:none">
 		<p>Crie seu cadastro ou efetue o login no nosso sistema para efetivar a sua candidatura à essa vaga.</p>
 	</div>
+	
+	<#include "enviarAnuncioEmailIncludes.ftl"/>
 </body>
 </html>

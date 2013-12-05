@@ -618,6 +618,12 @@
 	width: 169px !important;
 }
 
+.btnEnviarParaAmigo
+{
+	background-image:url(../imgs/btnEnviarParaAmigo.gif);
+	width: 170px !important;
+}
+
 .btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
@@ -743,7 +749,8 @@
 .btnDownload,
 .btnOrganograma,
 .btnCriarTurmas,
-.btnTrocaExtintores
+.btnTrocaExtintores,
+.btnEnviarParaAmigo
 {
 	border: 0;
 	background-repeat: no-repeat;
