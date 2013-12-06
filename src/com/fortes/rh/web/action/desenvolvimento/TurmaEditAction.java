@@ -179,6 +179,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean contemCustosDetalhados = false;
 	private boolean turmaPertenceAEmpresaLogada = true;
 	private boolean exibirAssinaturaDigital;
+	private boolean manterAssinatura;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	
@@ -270,7 +271,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma.setEmpresa(getEmpresaSistema());
 
-		turma = turmaManager.setAssinaturaDigital(turma, assinaturaDigital, "assinaturas");
+		turma = turmaManager.setAssinaturaDigital(false, turma, assinaturaDigital, "assinaturas");
 		
 		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
 		
@@ -279,7 +280,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String update() throws Exception
 	{
-		turma = turmaManager.setAssinaturaDigital(turma, assinaturaDigital, "assinaturas");
+		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
 		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
 		
@@ -1301,5 +1302,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setExibirAssinaturaDigital(boolean exibirAssinaturaDigital) {
 		this.exibirAssinaturaDigital = exibirAssinaturaDigital;
+	}
+
+	public void setManterAssinatura(boolean manterAssinatura) {
+		this.manterAssinatura = manterAssinatura;
 	}
 }

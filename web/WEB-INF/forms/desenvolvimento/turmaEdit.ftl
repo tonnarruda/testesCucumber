@@ -316,6 +316,7 @@
 
 		<@ww.hidden name="turma.id" id="turmaId" />
 		<@ww.hidden name="turma.empresa.id" />
+		<@ww.hidden name="turma.assinaturaDigitalUrl" />
 		<@ww.hidden name="planoTreinamento" />
 		<@ww.hidden name="avaliacaoRespondida" />
 		<@ww.hidden name="custos" id="custos"/>
