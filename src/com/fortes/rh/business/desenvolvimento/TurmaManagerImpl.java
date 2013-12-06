@@ -330,12 +330,17 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return percentual;
 	}
 
-	public Turma setAssinaturaDigital(Turma turma, File assinaturaDigital, String local)
+	public Turma setAssinaturaDigital(boolean manterAssinaturaDigital, Turma turma, File assinaturaDigital, String local)
 	{
-		String assinatura = saveLogo(assinaturaDigital, local);
-
-		if(!assinatura.equals(""))
-			turma.setAssinaturaDigitalUrl(assinatura);
+		if(!manterAssinaturaDigital)
+		{
+			String assinatura = saveLogo(assinaturaDigital, local);
+	
+			if(assinaturaDigital != null && !assinatura.equals(""))
+				turma.setAssinaturaDigitalUrl(assinatura);
+			else
+				turma.setAssinaturaDigitalUrl(null);
+		}
 		
 		return turma;
 	}
