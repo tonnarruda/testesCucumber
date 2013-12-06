@@ -171,7 +171,7 @@
 				</reportElement>
 			</line>
 			<image hAlign="Center" vAlign="Bottom">
-				<reportElement uuid="0b6e12f3-51f5-4843-b803-cec7e67fa60a" key="image-9" x="310" y="298" width="249" height="61">
+				<reportElement uuid="0b6e12f3-51f5-4843-b803-cec7e67fa60a" key="image-9" x="310" y="297" width="249" height="61">
 					<printWhenExpression><![CDATA[$P{EXIBIRASSINSTRUTOR}.booleanValue()]]></printWhenExpression>
 				</reportElement>
 				<box>
