@@ -303,7 +303,7 @@
 				<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" /><br />
-				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=false valueString=true filtro="true" width="593"/>
+				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=false valueString=true filtro=true width="593"/>
 			</#if>
 		</fieldset><br />
 
