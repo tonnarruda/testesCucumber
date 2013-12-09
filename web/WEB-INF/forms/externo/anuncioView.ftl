@@ -57,6 +57,6 @@
 		<p>Crie seu cadastro ou efetue o login no nosso sistema para efetivar a sua candidatura à essa vaga.</p>
 	</div>
 	
-	<#include "enviarAnuncioEmailIncludes.ftl"/>
+	<#-- <#include "enviarAnuncioEmailIncludes.ftl"/> -->
 </body>
 </html>

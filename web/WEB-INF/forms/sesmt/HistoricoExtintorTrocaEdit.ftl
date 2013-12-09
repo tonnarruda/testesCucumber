@@ -38,7 +38,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="troca.action" onsubmit="validarCampos();" validate="true" method="POST">
 		
-		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" filtro="true"/>
+		<@frt.checkListBox label="Extintor / Localização Atual" name="extintorsCheck" id="extintorsCheck" list="extintorsCheckList"  width="600" filtro=true/>
 		
 		<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
 		<legend>Nova Localização</legend>

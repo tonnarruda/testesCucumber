@@ -170,7 +170,7 @@
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 			<legend>Colaboradores</legend>
 			<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores($('#empresa').val());"/>
-			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180" filtro="true"/>
+			<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador" list="colaboradorCheckList" width="487" height="180" filtro=true/>
 		</fieldset>
 		<br />
 		<@ww.checkbox label="Detalhado" id="detalhe" labelPosition="left" name="detalhamento"/>

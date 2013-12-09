@@ -22047,3 +22047,8 @@ update parametrosdosistema set appversao = '1.1.120.137';--.go
 -- versao 1.1.120.138
 
 update parametrosdosistema set appversao = '1.1.120.138';--.go
+-- versao 1.1.121.139
+
+alter table turma add column assinaturaDigitalUrl character varying(200); --.go
+insert into migrations values('20131203103507');--.go
+update parametrosdosistema set appversao = '1.1.121.139';--.go

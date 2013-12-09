@@ -98,7 +98,7 @@
 		<ul></ul>
 	</div>
 
-	<#include "enviarAnuncioEmailIncludes.ftl"/>
+	<#-- <#include "enviarAnuncioEmailIncludes.ftl"/> -->
 
 	<script language='javascript'>
 		<#if sucessoEnvioCurriculo>
