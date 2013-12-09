@@ -74,7 +74,7 @@
 							<a href="verAnuncio.action?anuncio.id=${anuncio.id}">Visualizar</a>
 						</#if>
 						
-						<a href="javascript:;" onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');">Enviar para um amigo</a>
+						<#-- <a href="javascript:;" onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');">Enviar para um amigo</a> -->
 					</@display.column>
 					
 					<@display.column property="solicitacao.quantidade" title="Vagas" style="text-align:center; width: 40px;"/>

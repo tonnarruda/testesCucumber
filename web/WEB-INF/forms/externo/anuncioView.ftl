@@ -49,7 +49,7 @@
 		<#else>
 			<button onclick="abrirMenuCandidatarse();" class="btnQueroMeCandidatar" accesskey="E"></button>
 		</#if>
-		<button onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');" class="btnEnviarParaAmigo" accesskey="A"></button>
+		<#-- <button onclick="exibirFormAnuncioEmail(${anuncio.id}, '${anuncio.titulo}');" class="btnEnviarParaAmigo" accesskey="A"></button> -->
 		<button onclick="window.location='prepareListAnuncio.action?empresaId=${anuncio.solicitacao.empresa.id}'" class="btnVoltar" accesskey="V"></button>
 	</div>
 	
