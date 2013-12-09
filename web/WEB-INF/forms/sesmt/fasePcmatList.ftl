@@ -66,8 +66,5 @@
 			<@display.column title="Fase" property="fase.descricao"/>
 		</@display.table>
 		
-		<div class="buttonGroup">
-			<button class="btnInserir" onclick="window.location='prepareInsert.action?fasePcmat.pcmat.id=${pcmat.id}'"></button>
-		</div>
 	</body>
 </html>

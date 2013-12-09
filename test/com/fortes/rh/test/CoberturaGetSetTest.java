@@ -191,6 +191,7 @@ import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Anexo;
+import com.fortes.rh.model.sesmt.AreaVivencia;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
@@ -957,6 +958,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new Obra());
 		cobreGetSet(new Fase());
 		cobreGetSet(new MedidaSeguranca());
+		cobreGetSet(new AreaVivencia());
 	}
 	
 	private void cobreGetSet(Object obj)

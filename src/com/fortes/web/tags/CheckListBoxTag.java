@@ -23,6 +23,7 @@ public class CheckListBoxTag extends TagSupport
 	private boolean valueString = false;
 	private boolean readonly = false;
 	private boolean filtro = false;
+	private boolean showTitle = false;
 
 	public CheckListBoxTag()
 	{
@@ -105,7 +106,22 @@ public class CheckListBoxTag extends TagSupport
 					disabled = "onclick=\"return false;\"";
 
 				checkGroup.append("<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+"");
-				checkGroup.append(" id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\" >" + cb.getNome() + "</label>\n");
+				checkGroup.append(" id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\">"); 
+				
+				if(showTitle)
+				{
+					String conteudo = cb.getNome().length() >= 130 ? cb.getNome().substring(0, 130)+"..." : cb.getNome(); 					
+					
+					checkGroup.append("<span href=# style=\"cursor:help;\" " );
+					checkGroup.append("				onmouseout=\"hideTooltip()\" " );
+					checkGroup.append(" 			onmouseover=\"showTooltip(event,'" + cb.getNome() + "', 600);return false\" > ");
+					checkGroup.append(				conteudo);
+					checkGroup.append("</span>");
+				}
+				else
+					checkGroup.append(cb.getNome());
+				
+				checkGroup.append(" </label>\n");
 			}
 
 			checkGroup.append("</div></div></li>");
@@ -202,5 +218,15 @@ public class CheckListBoxTag extends TagSupport
 
 	public void setLiClass(String liClass) {
 		this.liClass = liClass;
+	}
+	
+	public boolean isShowTitle()
+	{
+		return showTitle;
+	}
+	
+	public void setShowTitle(boolean showTitle)
+	{
+		this.showTitle = showTitle;
 	}
 }

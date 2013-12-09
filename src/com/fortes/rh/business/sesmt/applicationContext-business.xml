@@ -978,5 +978,20 @@
       <ref bean="medidaRiscoFasePcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="areaVivenciaManagerTarget" class="com.fortes.rh.business.sesmt.AreaVivenciaManagerImpl">
+    <property name="dao">
+      <ref bean="areaVivenciaDao" />
+    </property>
+  </bean>
+  <bean id="areaVivenciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.AreaVivenciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="areaVivenciaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
+
 

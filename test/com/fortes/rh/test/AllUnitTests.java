@@ -120,6 +120,7 @@ import com.fortes.rh.test.business.sesmt.AfastamentoManagerTest;
 import com.fortes.rh.test.business.sesmt.AgendaManagerTest;
 import com.fortes.rh.test.business.sesmt.AmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.AnexoManagerTest;
+import com.fortes.rh.test.business.sesmt.AreaVivenciaManagerTest;
 import com.fortes.rh.test.business.sesmt.CandidatoEleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.CatManagerTest;
 import com.fortes.rh.test.business.sesmt.ClinicaAutorizadaManagerTest;
@@ -272,6 +273,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.AfastamentoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AgendaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AmbienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AnexoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.AreaVivenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.CandidatoEleicaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.CatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ClinicaAutorizadaDaoHibernateTest;
@@ -518,6 +520,7 @@ import com.fortes.rh.test.web.action.sesmt.AmbienteEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnexoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnexoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnuncioEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.AreaVivenciaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.CatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CertificacaoEditActionTest;
@@ -1184,6 +1187,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(MedidaSegurancaDaoHibernateTest.class);
         suite.addTestSuite(MedidaSegurancaManagerTest.class);
         suite.addTestSuite(MedidaSegurancaEditActionTest.class);
+        
+        suite.addTestSuite(AreaVivenciaDaoHibernateTest.class);
+        suite.addTestSuite(AreaVivenciaManagerTest.class);
+        suite.addTestSuite(AreaVivenciaEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

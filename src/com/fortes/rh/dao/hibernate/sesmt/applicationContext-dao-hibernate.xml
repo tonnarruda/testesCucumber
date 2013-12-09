@@ -285,5 +285,12 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="areaVivenciaDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.AreaVivenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
+
 

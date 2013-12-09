@@ -20,7 +20,7 @@
 			<@ww.token/>
 
 			<@ww.select label="Risco" name="riscoFasePcmat.risco.id" id="risco" list="riscos" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true"/>
-			<@frt.checkListBox label="Medidas de Segurança" name="medidasCheck" list="medidasCheckList" width="960"/>
+			<@frt.checkListBox label="Medidas de Segurança" name="medidasCheck" list="medidasCheckList" width="960" showTitle=true />
 		</@ww.form>
 	
 		<div class="buttonGroup">

@@ -45,9 +45,8 @@ var dhtmlgoodies_tooltipMinWidth = 100;
 var dhtmlgoodies_iframe = false;
 var tooltip_is_msie = (navigator.userAgent.indexOf('MSIE')>=0 && navigator.userAgent.indexOf('opera')==-1 && document.all)?true:false;
 
-function showTooltip(e,tooltipTxt)
+function showTooltip(e,tooltipTxt, size)
 {
-
 	var bodyWidth = Math.max(document.body.clientWidth,document.documentElement.clientWidth) - 20;
 
 	if(!dhtmlgoodies_tooltip)
@@ -100,8 +99,10 @@ function showTooltip(e,tooltipTxt)
 	var tooltipWidth = dhtmlgoodies_tooltip.offsetWidth;
 	if(tooltipWidth<dhtmlgoodies_tooltipMinWidth)
 		tooltipWidth = dhtmlgoodies_tooltipMinWidth;
+	if(size == undefined)
+		size = 0;
 
-	dhtmlgoodies_tooltip.style.width = tooltipWidth + 'px';
+	dhtmlgoodies_tooltip.style.width = tooltipWidth + size + 'px';
 	dhtmlgoodies_tooltipShadow.style.width = dhtmlgoodies_tooltip.offsetWidth + 'px';
 	dhtmlgoodies_tooltipShadow.style.height = dhtmlgoodies_tooltip.offsetHeight + 'px';
 
