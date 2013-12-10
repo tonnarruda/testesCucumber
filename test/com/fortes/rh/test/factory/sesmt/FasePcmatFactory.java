@@ -11,7 +11,6 @@ public class FasePcmatFactory
 	{
 		FasePcmat fasePcmat = new FasePcmat();
 		fasePcmat.setId(null);
-		fasePcmat.setOrdem(0);
 		return fasePcmat;
 	}
 

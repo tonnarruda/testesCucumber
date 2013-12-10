@@ -46,7 +46,7 @@ public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
-			areaVivenciaPcmatManager.save(areaVivenciaPcmat);
+			areaVivenciaPcmatManager.save(areaVivenciaPcmat); 
 			addActionSuccess("Área de vivência cadastrada com sucesso.");
 			
 		} catch (Exception e) {

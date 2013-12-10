@@ -10,7 +10,20 @@
 			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>
 		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatEdit.ftl</result>
+		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?pcmat.id=${fasePcmat.pcmat.id}</result>
+			<result name="success" type="redirect">list.action?pcmat.id=${fasePcmat.pcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/fasePcmatList.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">list.action?pcmat.id=${fasePcmat.pcmat.id}</result>

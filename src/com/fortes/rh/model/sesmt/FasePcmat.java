@@ -20,8 +20,10 @@ public class FasePcmat extends AbstractModel implements Serializable
 	@ManyToOne
 	private Pcmat pcmat;
 	
-	private Integer ordem;
+	private Integer mesIni;
 	
+	private Integer mesFim;
+
 	@OneToMany(mappedBy="fasePcmat")
 	private Collection<RiscoFasePcmat> riscosFasePcmat;
 	
@@ -40,13 +42,21 @@ public class FasePcmat extends AbstractModel implements Serializable
 	public void setPcmat(Pcmat pcmat) {
 		this.pcmat = pcmat;
 	}
-
-	public Integer getOrdem() {
-		return ordem;
+	
+	public Integer getMesIni() {
+		return mesIni;
 	}
 
-	public void setOrdem(Integer ordem) {
-		this.ordem = ordem;
+	public void setMesIni(Integer mesIni) {
+		this.mesIni = mesIni;
+	}
+
+	public Integer getMesFim() {
+		return mesFim;
+	}
+
+	public void setMesFim(Integer mesFim) {
+		this.mesFim = mesFim;
 	}
 	
 	public Collection<RiscoFasePcmat> getRiscosFasePcmat() {

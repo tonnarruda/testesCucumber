@@ -47,6 +47,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	{
 		try {
 			fasePcmatManager.save(fasePcmat);
+			addActionSuccess("Fase cadastrada com sucesso.");
 			
 		} catch (Exception e) {
 			prepare();

@@ -17,12 +17,4 @@ public class FasePcmatManagerImpl extends GenericManagerImpl<FasePcmat, FasePcma
 	{
 		return getDao().findByIdProjection(id);
 	}
-
-	public void reordenar(Long[] fasesPcmatIds) 
-	{
-		int ordem = 1;
-		
-		for (Long fasePcmatId : fasesPcmatIds) 
-			getDao().updateOrdem(fasePcmatId, ordem++);
-	}
 }

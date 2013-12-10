@@ -40,7 +40,7 @@ public class AreaVivenciaDaoHibernateTest extends GenericDaoHibernateTest<AreaVi
 		areaVivenciaDao.save(areaVivencia1);
 		
 		AreaVivencia areaVivencia2 = AreaVivenciaFactory.getEntity();
-		areaVivencia2.setNome("Área de Alimentação");
+		areaVivencia2.setNome("Area de Alimentação");
 		areaVivencia2.setEmpresa(empresa1);
 		areaVivenciaDao.save(areaVivencia2);
 		

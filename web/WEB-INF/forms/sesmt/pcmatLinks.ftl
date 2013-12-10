@@ -7,8 +7,11 @@
 <#if pcmatId?exists>
 	<ul>
 		<li><a href="../pcmat/prepareUpdate.action?pcmat.id=${pcmatId}">Geral</a></li>
+		<li><a href="#">Cronograma</a></li>
 		<li><a href="../fasePcmat/list.action?pcmat.id=${pcmatId}">Fases</a></li>
 		<li><a href="../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}">Área de Vivência</a></li>
+		<li><a href="#">Calend. das Ativ. Segurança</a></li>
+		<li><a href="#">Medidas de Controle Coletivo</a></li>
 	</ul>
 
 	<br />

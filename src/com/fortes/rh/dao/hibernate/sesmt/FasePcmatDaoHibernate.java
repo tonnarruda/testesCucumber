@@ -3,7 +3,6 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -24,13 +23,16 @@ public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implem
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("fp.id"), "id");
-		p.add(Projections.property("fp.ordem"), "ordem");
+		p.add(Projections.property("fp.mesIni"), "mesIni");
+		p.add(Projections.property("fp.mesFim"), "mesFim");
 		p.add(Projections.property("f.descricao"), "faseDescricao");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("fp.pcmat.id", pcmatId));
 
-		criteria.addOrder(Order.asc("fp.ordem"));
+		criteria.addOrder(Order.asc("fp.mesIni"));
+		criteria.addOrder(Order.asc("fp.mesFim"));
+		criteria.addOrder(Order.asc("f.descricao"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
@@ -44,7 +46,8 @@ public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implem
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("fp.id"), "id");
-		p.add(Projections.property("fp.ordem"), "ordem");
+		p.add(Projections.property("fp.mesIni"), "mesIni");
+		p.add(Projections.property("fp.mesFim"), "mesFim");
 		p.add(Projections.property("fp.pcmat.id"), "pcmatId");
 		p.add(Projections.property("f.descricao"), "faseDescricao");
 		criteria.setProjection(p);
@@ -53,13 +56,5 @@ public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implem
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return (FasePcmat) criteria.uniqueResult();
-	}
-
-	public void updateOrdem(Long fasePcmatId, int ordem) 
-	{
-		Query query = getSession().createQuery("update FasePcmat set ordem = :ordem where id = :id");
-		query.setLong("id", fasePcmatId);
-		query.setInteger("ordem", ordem);
-		query.executeUpdate();
 	}
 }

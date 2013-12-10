@@ -12,7 +12,7 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('areaVivencia','descricao'))"/>
 	</head>
 	<body>
-		<@ww.actionerror />
+		<@ww.actionerror /> 
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="areaVivenciaPcmat.id" />
 			<@ww.hidden name="areaVivenciaPcmat.pcmat.id" />

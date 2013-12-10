@@ -12,7 +12,7 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<#include "pcmatLinks.ftl"/>
+	<#include "pcmatLinks.ftl"/> 
 	
 	<@display.table name="areasVivenciaPcmat" id="areaVivenciaPcmat" class="dados">
 		<@display.column title="Ações" class="acao">
