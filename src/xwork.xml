@@ -376,6 +376,8 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-RiscoFasePcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-MedidaSeguranca.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivencia.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivenciaPcmat.xml" />
 </xwork>
+
 
 

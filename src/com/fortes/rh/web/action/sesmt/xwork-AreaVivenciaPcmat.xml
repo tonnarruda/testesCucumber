@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="areaVivenciaPcmat" extends="default" namespace="/sesmt/areaVivenciaPcmat">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="list">
+			<interceptor-ref name="defaultListStack" />
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}</result>
+			<result name="success" type="redirect">list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}</result>
+			<result name="success" type="redirect">list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaPcmatEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

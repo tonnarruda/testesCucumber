@@ -991,7 +991,21 @@
       <ref bean="areaVivenciaManagerTarget" />
     </property>
   </bean>
+  <bean id="areaVivenciaPcmatManagerTarget" class="com.fortes.rh.business.sesmt.AreaVivenciaPcmatManagerImpl">
+    <property name="dao">
+      <ref bean="areaVivenciaPcmatDao" />
+    </property>
+  </bean>
+  <bean id="areaVivenciaPcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.AreaVivenciaPcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="areaVivenciaPcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -290,7 +290,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="areaVivenciaPcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.AreaVivenciaPcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
