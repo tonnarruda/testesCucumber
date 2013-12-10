@@ -40,6 +40,7 @@ public class AreaVivenciaEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		try {
+			areaVivencia.setEmpresa(getEmpresaSistema());
 			areaVivenciaManager.save(areaVivencia);
 			addActionSuccess("Área de vivência cadastrada com sucesso.");
 			
@@ -80,7 +81,7 @@ public class AreaVivenciaEditAction extends MyActionSupportList
 		try
 		{
 			areaVivenciaManager.remove(areaVivencia.getId());
-			addActionMessage("Área de vivência excluída com sucesso.");
+			addActionSuccess("Área de vivência excluída com sucesso.");
 		}
 		catch (Exception e)
 		{

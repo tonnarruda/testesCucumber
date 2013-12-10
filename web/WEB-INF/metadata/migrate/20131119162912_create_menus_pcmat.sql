@@ -15,7 +15,7 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 608);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (609, 'ROLE_MOV_PCMAT', 'PCMAT', '/sesmt/pcmat/list.action', 10, true, 386);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 609);--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areavivencia/list.action', 4, true, 605);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areaVivencia/list.action', 4, true, 605);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 610);--.go
 
 alter sequence papel_sequence restart with 611;--.go

@@ -153,7 +153,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		} catch (Exception e) {
 			addActionMessage("Não foi possível inserir as configurações do gerenciador de comunicação. Entre em contato com o suporte.");
 			e.printStackTrace();
-			return INPUT;
 		}
 		
 		//criacao da pasta para o modulo externo

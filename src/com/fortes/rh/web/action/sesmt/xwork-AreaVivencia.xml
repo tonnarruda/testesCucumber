@@ -3,7 +3,11 @@
 
 <xwork>
 	<package name="areaVivencia" extends="default" namespace="/sesmt/areaVivencia">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.FasePcmatEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.AreaVivenciaEditAction" method="list">
+			<interceptor-ref name="defaultListStack" />	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.AreaVivenciaEditAction" method="delete">
@@ -17,12 +21,14 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.AreaVivenciaEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.AreaVivenciaEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/areaVivenciaEdit.ftl</result>
