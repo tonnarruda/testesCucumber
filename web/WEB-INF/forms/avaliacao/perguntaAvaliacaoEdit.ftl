@@ -76,21 +76,26 @@
 		{
 			if($("#tipo").val() == ${tipoPerguntas.getObjetiva()})
 			{
-				var i = 1;
-				alertar = ($('#maisRespostas > div').size() == 0);
-
-				$('#maisRespostas > div').each(function(){
-					var id = 'ro_' + i++; 
-					alertar = ($('#' + id).val() == '');
+				var countRespostaObjetiva = 0;
+	
+				$("input[name='respostaObjetiva']").each(function(){
+					if($(this).val() != "")
+						countRespostaObjetiva++;
 				});
 				
-				if(alertar)
+				if ($('#sugerir').is(":checked"))
+				{
+					$("input[name='respostaObjetivaSugerida']").each(function(){
+						if($(this).val() != "")
+							countRespostaObjetiva++;
+					});
+				}
+				
+				if(countRespostaObjetiva < 2)
 				{
 					jAlert('Perguntas objetivas têm que possuir no mínimo 2 alternativas.');
 					return false;
 				}
-				
-				return true;
 			}
 			
 			return true;
@@ -177,6 +182,14 @@
 				$("#respostaInsert").css('display','none');
 				$("#respostasSugeridas").css('display','block');
 				$("#respostaSugerida").val(1);
+				
+				if($("input[name='respostaObjetiva']").size())
+				{ 
+					$("input[name='respostaObjetiva']").each(function(){
+						if($(this).val() == "")
+							$(this).parent('div').remove();
+					});
+				}
 			}
 			else 
 			{
@@ -194,15 +207,15 @@
 		function addRespostas()
 		{
 		 	pesoSugerido++;
+			var str = "d" + idInputObjetiva;
 		 	
-	       	var d = $("<div>").attr("id", "d" + idInputObjetiva);
+	       	var d = $("<div>").attr("id", str);
 			$("<input type='input' id='ro_"+idInputObjetiva+"' name='respostaObjetiva' style='width: 355px'>").appendTo(d);
 			$(document.createTextNode(" Peso: ")).appendTo(d);
 			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'>").appendTo(d);
 
-			var str = "d" + idInputObjetiva;
 			$("<span> </span> ").appendTo(d); // espaco em branco
-			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
+			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
 	
 		 	$("#maisRespostas").append(d);
 		 	$('#ro_'+idInputObjetiva).focus();
@@ -211,14 +224,15 @@
 		
 		function addMultiplaRespostas()
 		{
-		 	var d = $("<div>").attr("id", "d" + idInputObjetivaMultipla);
+		 	var str = "d" + idInputObjetivaMultipla;
+
+		 	var d = $("<div>").attr("id", str);
 		 	$("<input type='input' id='multiplaResposta_"+idInputObjetivaMultipla+"' name='multiplaResposta' style='width: 355px'>").appendTo(d);
 		 	$(document.createTextNode(" Peso: ")).appendTo(d);
 		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'> ").appendTo(d);
 		 	
-		 	var str = "d" + idInputObjetivaMultipla;
 		 	$("<span> </span> ").appendTo(d); // espaco em branco
-		 	$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=remMultiplaResposta('"+ str +"'); style='cursor: pointer'>").appendTo(d);
+		 	$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
 		 	
 		 	$("#maisMultiplasRespostas").append(d);
 		 	$('#multiplaResposta_'+idInputObjetivaMultipla).focus();
@@ -226,33 +240,6 @@
 		 	idInputObjetivaMultipla++;
 		}
 		
-		function remResposta(elemento)
-		{
-			var resp = document.getElementById("maisRespostas");
-			var elem = document.getElementById(elemento);
-	   	 	resp.removeChild(elem);
-		}
-		
-		function remResposta3(elemento)
-		{
-			var resp = document.getElementById("respostasEdicao");
-			var elem = document.getElementById(elemento);
-	   	 	resp.removeChild(elem);
-		}
-		
-		function remResposta4(elemento)
-		{
-			var resp = document.getElementById("respostaInsert");
-			var elem = document.getElementById(elemento);
-	   	 	resp.removeChild(elem);
-		}
-		
-		function remMultiplaResposta(elemento)
-		{
-			var resp = document.getElementById("maisMultiplasRespostas");
-			var elem = document.getElementById(elemento);
-	   	 	resp.removeChild(elem);
-		}
 	</script>
 	<#assign validarCampos="return validaForm();"/>
 	<#assign pesoSugerido=1/>
@@ -290,13 +277,13 @@
 						<#if respostaLista.peso?exists>
 							<#assign pesoSugerido=respostaLista.peso/>
 						<#else>
-							<#assign pesoSugerido="1"/>
+							<#assign pesoSugerido="0"/>
 						</#if>
 						
 						<@ww.div id="respostaObjetiva${respostaLista.ordem}">
-							<input name="respostaObjetiva" id="respostaObjetiva" value="${respostaLista.texto}" style="width: 355px;"/>
+							<input name="respostaObjetiva" id="ro_${respostaLista.ordem}" value="${respostaLista.texto}" style="width: 355px;"/>
 							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta3('respostaObjetiva${respostaLista.ordem}');"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>
 				</@ww.div>
@@ -312,33 +299,32 @@
 						<#list respostasSugeridas as respostaSugerida>
 						
 							<#if respostaSugerida.peso?exists>
-								<#assign pesoSugerido=respostaSugerida.peso/>
 								<#assign pesoSugeridoEdit=respostaSugerida.peso/>
 							<#else>
-								<#assign pesoSugerido="1"/>
 								<#assign pesoSugeridoEdit=""/>
 							</#if>
 						
 							<@ww.div id="respostaObjetiva${respostaSugerida.ordem}">
-								<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida" value="${respostaSugerida.texto}" style="width: 355px;"/>
+								<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida${respostaSugerida.ordem}" value="${respostaSugerida.texto}" style="width: 355px;"/>
 								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta2('respostaObjetiva${respostaSugerida.ordem}');"/>
+								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaSugerida.ordem}).remove();"/>
 								<br>
 							</@ww.div>
 						</#list>
 					</#if>
 				</@ww.div>
-				<@ww.div id="respostaInsert">
-					Opções de Resposta:
-					<br>
-					<@ww.div id="respostaObjetivaInsert">
-						<input name="respostaObjetiva" id="respostaObjetiva" style="width: 355px;"/>
-						Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta4('respostaObjetivaInsert');"/>
+				<@ww.div id="maisRespostas">
+					<@ww.div id="respostaInsert">
+						Opções de Resposta:
+						<br>
+					</@ww.div>
+						<@ww.div id="d0">
+							<input name="respostaObjetiva" id="ro_0" style="width: 355px;"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#d0').remove();"/>
 					</@ww.div>
 				</@ww.div>
 			</#if>
-			<@ww.div id="maisRespostas"/>
 			<div id="maisRespostasLink"><a href="javascript:addRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">   Mais uma opção de resposta</a></div>
 		</@ww.div>
 		<#-- Fim Perguntas Objetivas -->
@@ -354,13 +340,13 @@
 						<#if respostaLista.peso?exists>
 							<#assign pesoSugerido=respostaLista.peso/>
 						<#else>
-							<#assign pesoSugerido="1"/>
+							<#assign pesoSugerido="0"/>
 						</#if>
 					
 						<@ww.div id="multiplaResposta${respostaLista.ordem}">
 							<input name="multiplaResposta" id="multiplaResposta" value="${respostaLista.texto}" style="width: 355px;"/>
 							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta6('multiplaResposta${respostaLista.ordem}');"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#multiplaResposta' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>
 				</@ww.div>
@@ -371,7 +357,7 @@
 					<@ww.div id="respostaMultiplaEscolhaInsert">
 						<input name="multiplaResposta" id="multiplaResposta" style="width: 355px;"/>
 						Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
-						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="remResposta5('respostaMultiplaEscolhaInsert');"/>
+						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaMultiplaEscolhaInsert').remove();"/>
 					</@ww.div>
 				</@ww.div>
 			</#if>
