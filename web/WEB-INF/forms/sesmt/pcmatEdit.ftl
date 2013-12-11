@@ -37,10 +37,10 @@
 		<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('aPartirDe','dataIniObra','dataFimObra'), new Array('aPartirDe','dataIniObra','dataFimObra'))"/>
 	</head>
 	<body>
+		<#include "pcmatLinks.ftl"/>
+		
 		<@ww.actionmessage />
 		<@ww.actionerror />
-		
-		<#include "pcmatLinks.ftl"/>
 		
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="pcmat.id" />

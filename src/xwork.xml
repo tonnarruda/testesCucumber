@@ -378,7 +378,9 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivencia.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivenciaPcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivenciaPcmat.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-AtividadeSegurancaPcmat.xml" />
 </xwork>
+
 
 
 

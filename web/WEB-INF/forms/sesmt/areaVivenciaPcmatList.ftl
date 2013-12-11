@@ -10,10 +10,10 @@
 	<title>PCMAT</title>
 </head>
 <body>
+	<#include "pcmatLinks.ftl"/> 
+	
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	
-	<#include "pcmatLinks.ftl"/> 
 	
 	<@display.table name="areasVivenciaPcmat" id="areaVivenciaPcmat" class="dados">
 		<@display.column title="Ações" class="acao">

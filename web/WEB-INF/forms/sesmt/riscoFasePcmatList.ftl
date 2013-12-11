@@ -10,10 +10,10 @@
 		<title>PCMAT - Fase ${fasePcmat.fase.descricao} - Riscos e Medidas de Segurança</title>
 	</head>
 	<body>
+		<#include "pcmatLinks.ftl"/>
+		
 		<@ww.actionmessage />
 		<@ww.actionerror />
-		
-		<#include "pcmatLinks.ftl"/>
 		
 		<@display.table name="riscosFasePcmat" id="riscoFasePcmat" class="dados">
 			<@display.column title="Ações" class="acao">

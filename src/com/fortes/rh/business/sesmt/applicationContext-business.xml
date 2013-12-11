@@ -1004,7 +1004,21 @@
       <ref bean="areaVivenciaPcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="atividadeSegurancaPcmatManagerTarget" class="com.fortes.rh.business.sesmt.AtividadeSegurancaPcmatManagerImpl">
+    <property name="dao">
+      <ref bean="atividadeSegurancaPcmatDao" />
+    </property>
+  </bean>
+  <bean id="atividadeSegurancaPcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.AtividadeSegurancaPcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="atividadeSegurancaPcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

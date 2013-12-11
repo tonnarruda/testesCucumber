@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="atividadeSegurancaPcmat" extends="default" namespace="/sesmt/atividadeSegurancaPcmat">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="list">
+			<interceptor-ref name="defaultListStack" />
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="insert">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="success" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="update">
+			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="invalid.token" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="success" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

@@ -121,6 +121,8 @@ import com.fortes.rh.test.business.sesmt.AgendaManagerTest;
 import com.fortes.rh.test.business.sesmt.AmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.AnexoManagerTest;
 import com.fortes.rh.test.business.sesmt.AreaVivenciaManagerTest;
+import com.fortes.rh.test.business.sesmt.AreaVivenciaPcmatManagerTest;
+import com.fortes.rh.test.business.sesmt.AtividadeSegurancaPcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.CandidatoEleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.CatManagerTest;
 import com.fortes.rh.test.business.sesmt.ClinicaAutorizadaManagerTest;
@@ -274,6 +276,8 @@ import com.fortes.rh.test.dao.hibernate.sesmt.AgendaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AmbienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AnexoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.AreaVivenciaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.AreaVivenciaPcmatDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.AtividadeSegurancaPcmatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.CandidatoEleicaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.CatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ClinicaAutorizadaDaoHibernateTest;
@@ -521,6 +525,8 @@ import com.fortes.rh.test.web.action.sesmt.AnexoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnexoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.AnuncioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AreaVivenciaEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.AreaVivenciaPcmatEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.AtividadeSegurancaPcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.CatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CertificacaoEditActionTest;
@@ -1191,6 +1197,14 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AreaVivenciaDaoHibernateTest.class);
         suite.addTestSuite(AreaVivenciaManagerTest.class);
         suite.addTestSuite(AreaVivenciaEditActionTest.class);
+        
+        suite.addTestSuite(AreaVivenciaPcmatDaoHibernateTest.class);
+        suite.addTestSuite(AreaVivenciaPcmatManagerTest.class);
+        suite.addTestSuite(AreaVivenciaPcmatEditActionTest.class);
+        
+        suite.addTestSuite(AtividadeSegurancaPcmatDaoHibernateTest.class);
+        suite.addTestSuite(AtividadeSegurancaPcmatManagerTest.class);
+        suite.addTestSuite(AtividadeSegurancaPcmatEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

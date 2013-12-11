@@ -295,7 +295,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="atividadeSegurancaPcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.AtividadeSegurancaPcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

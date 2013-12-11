@@ -184,5 +184,7 @@
       <mapping class="com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat" />
       <mapping class="com.fortes.rh.model.sesmt.AreaVivencia" />
       <mapping class="com.fortes.rh.model.sesmt.AreaVivenciaPcmat" />
+      <mapping class="com.fortes.rh.model.sesmt.AtividadeSegurancaPcmat" />
   </session-factory>
+
 </hibernate-configuration>
