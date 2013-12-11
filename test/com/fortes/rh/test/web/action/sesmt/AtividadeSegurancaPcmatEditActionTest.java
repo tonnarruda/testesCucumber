@@ -9,7 +9,9 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.sesmt.AtividadeSegurancaPcmatManager;
 import com.fortes.rh.model.sesmt.AtividadeSegurancaPcmat;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.AtividadeSegurancaPcmatFactory;
+import com.fortes.rh.test.factory.sesmt.PcmatFactory;
 import com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction;
 
 public class AtividadeSegurancaPcmatEditActionTest extends MockObjectTestCase
@@ -25,6 +27,7 @@ public class AtividadeSegurancaPcmatEditActionTest extends MockObjectTestCase
 		action.setAtividadeSegurancaPcmatManager((AtividadeSegurancaPcmatManager) manager.proxy());
 
 		action.setAtividadeSegurancaPcmat(new AtividadeSegurancaPcmat());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
 	protected void tearDown() throws Exception
@@ -36,27 +39,32 @@ public class AtividadeSegurancaPcmatEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AtividadeSegurancaPcmat>()));
+		action.setPcmat(PcmatFactory.getEntity(1L));
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AtividadeSegurancaPcmat>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getAtividadesSegurancaPcmat());
 	}
 
 	public void testDelete() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
 		AtividadeSegurancaPcmat atividadeSegurancaPcmat = AtividadeSegurancaPcmatFactory.getEntity(1L);
 		action.setAtividadeSegurancaPcmat(atividadeSegurancaPcmat);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AtividadeSegurancaPcmat>()));
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AtividadeSegurancaPcmat>()));
 		assertEquals("success", action.delete());
 	}
 	
 	public void testDeleteException() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
 		AtividadeSegurancaPcmat atividadeSegurancaPcmat = AtividadeSegurancaPcmatFactory.getEntity(1L);
 		action.setAtividadeSegurancaPcmat(atividadeSegurancaPcmat);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AtividadeSegurancaPcmat>()));
+		
 		assertEquals("success", action.delete());
 	}
 

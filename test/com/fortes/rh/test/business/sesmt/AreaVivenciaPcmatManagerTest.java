@@ -28,7 +28,7 @@ public class AreaVivenciaPcmatManagerTest extends MockObjectTestCase
 		
 		Collection<AreaVivenciaPcmat> areaVivenciaPcmats = AreaVivenciaPcmatFactory.getCollection(1L);
 
-		areaVivenciaPcmatDao.expects(once()).method("findByPcmatId").with(eq(pcmatId)).will(returnValue(areaVivenciaPcmats));
+		areaVivenciaPcmatDao.expects(once()).method("findByPcmat").with(eq(pcmatId)).will(returnValue(areaVivenciaPcmats));
 		assertEquals(areaVivenciaPcmats, areaVivenciaPcmatManager.findByPcmat(pcmatId));
 	}
 }

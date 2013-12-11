@@ -7,24 +7,34 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.sesmt.AreaVivenciaManager;
 import com.fortes.rh.business.sesmt.AreaVivenciaPcmatManager;
+import com.fortes.rh.model.sesmt.AreaVivencia;
 import com.fortes.rh.model.sesmt.AreaVivenciaPcmat;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.AreaVivenciaPcmatFactory;
+import com.fortes.rh.test.factory.sesmt.PcmatFactory;
 import com.fortes.rh.web.action.sesmt.AreaVivenciaPcmatEditAction;
 
 public class AreaVivenciaPcmatEditActionTest extends MockObjectTestCase
 {
 	private AreaVivenciaPcmatEditAction action;
 	private Mock manager;
+	private Mock areaVivenciaManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 		manager = new Mock(AreaVivenciaPcmatManager.class);
+		areaVivenciaManager = new Mock(AreaVivenciaManager.class);
+		
 		action = new AreaVivenciaPcmatEditAction();
+		
 		action.setAreaVivenciaPcmatManager((AreaVivenciaPcmatManager) manager.proxy());
-
+		action.setAreaVivenciaManager((AreaVivenciaManager) areaVivenciaManager.proxy());
+		
 		action.setAreaVivenciaPcmat(new AreaVivenciaPcmat());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
 	protected void tearDown() throws Exception
@@ -36,25 +46,29 @@ public class AreaVivenciaPcmatEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AreaVivenciaPcmat>()));
+		action.setPcmat(PcmatFactory.getEntity(1L));
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AreaVivenciaPcmat>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getAreasVivenciaPcmat());
 	}
 
 	public void testDelete() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
 		AreaVivenciaPcmat areaVivenciaPcmat = AreaVivenciaPcmatFactory.getEntity(1L);
 		action.setAreaVivenciaPcmat(areaVivenciaPcmat);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AreaVivenciaPcmat>()));
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AreaVivenciaPcmat>()));
 		assertEquals("success", action.delete());
 	}
 	
 	public void testDeleteException() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
 		AreaVivenciaPcmat areaVivenciaPcmat = AreaVivenciaPcmatFactory.getEntity(1L);
 		action.setAreaVivenciaPcmat(areaVivenciaPcmat);
+		manager.expects(once()).method("findByPcmat").will(returnValue(new ArrayList<AreaVivenciaPcmat>()));
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		assertEquals("success", action.delete());
@@ -72,7 +86,11 @@ public class AreaVivenciaPcmatEditActionTest extends MockObjectTestCase
 
 	public void testInsertException() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
+		
+		areaVivenciaManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaVivencia>()));
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		
 		assertEquals("input", action.insert());
 	}
 
@@ -88,9 +106,11 @@ public class AreaVivenciaPcmatEditActionTest extends MockObjectTestCase
 
 	public void testUpdateException() throws Exception
 	{
+		action.setPcmat(PcmatFactory.getEntity(1L));
 		AreaVivenciaPcmat areaVivenciaPcmat = AreaVivenciaPcmatFactory.getEntity(1L);
 		action.setAreaVivenciaPcmat(areaVivenciaPcmat);
 
+		areaVivenciaManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<AreaVivencia>()));
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		manager.expects(once()).method("findById").with(eq(areaVivenciaPcmat.getId())).will(returnValue(areaVivenciaPcmat));
 

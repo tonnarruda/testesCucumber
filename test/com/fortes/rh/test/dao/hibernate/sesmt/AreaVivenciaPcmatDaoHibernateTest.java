@@ -53,6 +53,7 @@ public class AreaVivenciaPcmatDaoHibernateTest extends GenericDaoHibernateTest<A
 		areaVivenciaPcmatDao.save(avp2);
 		
 		AreaVivenciaPcmat avp3 = AreaVivenciaPcmatFactory.getEntity();
+		avp3.setAreaVivencia(av2);
 		avp3.setPcmat(pcmat2);
 		areaVivenciaPcmatDao.save(avp3);
 		
