@@ -9,7 +9,7 @@
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-	<title>Obra</title>
+	<title>Obras</title>
 </head>
 <body>
 	<@ww.actionmessage />

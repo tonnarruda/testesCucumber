@@ -77,8 +77,9 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
+		<@ww.select label="Categoria de EPI" name="epi.tipoEPI.id" id="tipoEpi" listKey="id" listValue="nome" list="tipos" required="true" headerKey="" headerValue="Selecione..." />
 		<@ww.textfield label="Nome" name="epi.nome" id="nome" cssClass="inputNome" maxLength="100" required="true" />
-		<@ww.select label="Categorias de EPI" name="epi.tipoEPI.id" id="tipoEpi" listKey="id" listValue="nome" list="tipos" required="true" headerKey="" headerValue="Selecione..." />
+		<@ww.textarea label="Descrição" name="epi.descricao" id="descricao" />
 		<@ww.textfield label="Nome do Fabricante" id="fabricante" name="epi.fabricante" cssClass="inputNome" maxLength="100"  required="true"/>
 
 		<@ww.select label="Status" name="epi.ativo" id="ativo" list=r"#{true:'Ativo',false:'Inativo'}"/>

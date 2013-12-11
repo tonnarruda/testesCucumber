@@ -41,7 +41,8 @@
 		<a href="../fasePcmat/list.action?pcmat.id=${pcmatId}" id="menuFases">Fases</a>
 		<a href="../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}" id="menuAreasVivencia">Áreas de Vivência</a>
 		<a href="../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}" id="menuAtividadesSeguranca">Atividades de Segurança</a>
-		<a href="#" id="menuControleColetivo">Medidas de Controle Coletivo</a>
+		<a href="#" id="menuEPIs">EPIs</a>
+		<a href="#" id="menuEPCs">EPCs</a>
 		<a class="last">&nbsp;</a>
 		<div style="clear: both"></div>
 	</div>

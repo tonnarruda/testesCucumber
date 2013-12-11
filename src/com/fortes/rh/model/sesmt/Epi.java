@@ -22,6 +22,7 @@ public class Epi extends AbstractModel implements Serializable
 {
     @Column(length=100)
     private String nome;
+    private String descricao;
     @Column(length=100)
     private String fabricante;
     @ManyToOne
@@ -176,5 +177,13 @@ public class Epi extends AbstractModel implements Serializable
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }
