@@ -4,9 +4,10 @@
 		<@ww.head/>
 		<style type="text/css">
 			@import url('<@ww.url value="/css/displaytag.css"/>');
+			#menuPcmat a#menuFases { color: #FFCB03; }
 		</style>
 		
-		<title>Riscos e Medidas de Segurança - Fase ${fasePcmat.fase.descricao}</title>
+		<title>PCMAT - Fase ${fasePcmat.fase.descricao} - Riscos e Medidas de Segurança</title>
 	</head>
 	<body>
 		<@ww.actionmessage />

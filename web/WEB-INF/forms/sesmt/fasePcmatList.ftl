@@ -4,10 +4,11 @@
 		<@ww.head/>
 		<style type="text/css">
 			@import url('<@ww.url value="/css/displaytag.css"/>');
+			#menuPcmat a#menuFases{ color: #FFCB03; }
 			.crono { width: 120px; text-align: center; }
 		</style>
 		
-		<title>Fases</title>
+		<title>PCMAT</title>
 	</head>
 	<body>
 		<@ww.actionmessage />

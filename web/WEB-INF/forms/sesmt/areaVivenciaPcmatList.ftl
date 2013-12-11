@@ -4,9 +4,10 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
+		#menuPcmat a#menuAreasVivencia { color: #FFCB03; }
 	</style>
 
-	<title>Áreas de Vivência</title>
+	<title>PCMAT</title>
 </head>
 <body>
 	<@ww.actionmessage />

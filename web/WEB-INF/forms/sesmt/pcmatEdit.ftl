@@ -1,12 +1,18 @@
 <html>
 	<head>
+		<title>PCMAT</title>
+
+		<style type="text/css">
+			#menuPcmat a#menuGeral{ color: #FFCB03; }
+		</style>
+	
 		<#include "../ftl/mascarasImports.ftl" />
+
 		<@ww.head/>
+
 		<#if pcmat.id?exists>
-			<title>Editar PCMAT</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir PCMAT</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
