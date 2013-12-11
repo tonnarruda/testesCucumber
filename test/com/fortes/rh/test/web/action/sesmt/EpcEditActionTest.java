@@ -115,7 +115,7 @@ public class EpcEditActionTest extends MockObjectTestCase
 		Epc epc = new Epc();
 		epc.setCodigo("codigo");
 		epc.setEmpresa(new Empresa());
-		epc.setDescricao("descricao");
+		epc.setNome("nome");
 		action.setEpc(epc);
 
 		epcManager.expects(once()).method("save");
@@ -139,14 +139,14 @@ public class EpcEditActionTest extends MockObjectTestCase
 		Empresa empresa = new Empresa();
 		empresa.setId(1L);
 		epc.setEmpresa(empresa);
-		epc.setDescricao("descricao");
+		epc.setNome("nome");
 		action.setEpc(epc);
 
 		Epc epcTmp = new Epc();
 		epcTmp.setId(1l);
 		epcTmp.setCodigo("codigo");
 		epcTmp.setEmpresa(empresa);
-		epcTmp.setDescricao("descricao");
+		epcTmp.setNome("nome");
 
 		// chamado em validaEmpresa()
 		epcManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(epcTmp));
@@ -161,7 +161,7 @@ public class EpcEditActionTest extends MockObjectTestCase
 		epc.setId(1L);
 		epc.setCodigo("codigo");
 		epc.setEmpresa(new Empresa());
-		epc.setDescricao("descricao");
+		epc.setNome("nome");
 		action.setEpc(epc);
 
 		Empresa empresaErrada = new Empresa();
@@ -170,7 +170,7 @@ public class EpcEditActionTest extends MockObjectTestCase
 		epcEmpresaErrada.setId(2L);
 		epcEmpresaErrada.setCodigo("codigo");
 		epcEmpresaErrada.setEmpresa(empresaErrada);
-		epcEmpresaErrada.setDescricao("descricao");
+		epcEmpresaErrada.setNome("nome");
 
 		// validaEmpresa()
 		epcManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(epcEmpresaErrada));

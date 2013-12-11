@@ -19,7 +19,7 @@ public class Epc extends AbstractModel implements Serializable
     @Column(length=30)
     private String codigo;
     @Column(length=100)
-    private String descricao;
+    private String nome;
     
     @ManyToOne(fetch=FetchType.LAZY)
     private Empresa empresa;
@@ -27,10 +27,10 @@ public class Epc extends AbstractModel implements Serializable
     public Epc() {
 	}
     
-    public Epc(Long id, String codigo, String descricao) {
+    public Epc(Long id, String codigo, String nome) {
 		setId(id);
 		this.codigo = codigo;
-		this.descricao = descricao;
+		this.nome = nome;
 	}
 
 	public void setEmpresaIdProjection(Long empresaIdProjection)
@@ -48,13 +48,13 @@ public class Epc extends AbstractModel implements Serializable
 	{
 		this.codigo = codigo;
 	}
-	public String getDescricao()
+	public String getNome()
 	{
-		return descricao;
+		return nome;
 	}
-	public void setDescricao(String descricao)
+	public void setNome(String nome)
 	{
-		this.descricao = descricao;
+		this.nome = nome;
 	}
 	public Empresa getEmpresa()
 	{

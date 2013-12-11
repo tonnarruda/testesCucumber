@@ -25,7 +25,7 @@ public class EpcDaoHibernate extends GenericDaoHibernate<Epc> implements EpcDao
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.codigo"), "codigo");
-		p.add(Projections.property("e.descricao"), "descricao");
+		p.add(Projections.property("e.nome"), "nome");
 		p.add(Projections.property("emp.id"), "empresaIdProjection");
 
 		criteria.setProjection(p);
@@ -45,7 +45,7 @@ public class EpcDaoHibernate extends GenericDaoHibernate<Epc> implements EpcDao
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.codigo"), "codigo");
-		p.add(Projections.property("e.descricao"), "descricao");
+		p.add(Projections.property("e.nome"), "nome");
 		p.add(Projections.property("emp.id"), "empresaIdProjection");
 		
 		criteria.setProjection(p);
@@ -65,7 +65,7 @@ public class EpcDaoHibernate extends GenericDaoHibernate<Epc> implements EpcDao
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
 		p.add(Projections.property("e.codigo"), "codigo");
-		p.add(Projections.property("e.descricao"), "descricao");
+		p.add(Projections.property("e.nome"), "nome");
 		
 		criteria.setProjection(p);
 		
@@ -80,7 +80,7 @@ public class EpcDaoHibernate extends GenericDaoHibernate<Epc> implements EpcDao
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new Epc(e.id, e.codigo, e.descricao) ");
+		hql.append("select new Epc(e.id, e.codigo, e.nome) ");
 		hql.append("from HistoricoAmbiente ha ");
 		hql.append("join ha.epcs e ");
 		hql.append("where ha.ambiente.id = :ambienteId ");

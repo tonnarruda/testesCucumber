@@ -88,8 +88,8 @@ public class EpcEditAction extends MyActionSupportEdit implements ModelDriven
 
 	private void valida()
 	{
-		if(epc.getDescricao() == null || "".equals(epc.getDescricao().trim()))
-				addActionError("Campo \"Descrição\" em branco.");
+		if (epc.getNome() == null || "".equals(epc.getNome().trim()))
+				addActionError("Campo \"Nome\" em branco.");
 
 		// Se é update
 		if(epc.getId() != null)

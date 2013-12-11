@@ -17,7 +17,7 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?epc.id=${epc.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="codigo" title="Código"/>
-		<@display.column property="descricao" title="Descrição"/>
+		<@display.column property="nome" title="Nome"/>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

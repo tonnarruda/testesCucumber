@@ -1,0 +1,1 @@
+alter table epc rename column descricao to nome;--.go

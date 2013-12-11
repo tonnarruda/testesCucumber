@@ -22,11 +22,11 @@ public class EpcListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		String[] properties = new String[]{"id","codigo","descricao"};
-		String[] sets = new String[]{"id","codigo","descricao"};
+		String[] properties = new String[]{"id","codigo","nome"};
+		String[] sets = new String[]{"id","codigo","nome"};
 		String[] keys = new String[]{"empresa.id"};
 		Object[] values = new Object[]{getEmpresaSistema().getId()};
-		String[] orders = new String[]{"descricao"};
+		String[] orders = new String[]{"nome"};
 
 		setTotalSize(epcManager.getCount(keys, values));
 		epcs = epcManager.findToList(properties, sets, keys, values, getPage(), getPagingSize(), orders);

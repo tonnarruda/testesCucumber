@@ -135,7 +135,7 @@ public class PpraLtcatRelatorio
 			if (epcs.length() > 0)
 				epcs.append("  -  ");
 			
-			epcs.append(epc.getDescricao());
+			epcs.append(epc.getNome());
 		}
 		
 		ppra.setEpcs(epcs.toString());
