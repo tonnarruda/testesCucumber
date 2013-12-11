@@ -226,6 +226,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 
 		// se for inserir mais  um defalt terá de aterar no importador o método insereGerenciadorComunicacaoDefault(empresa) em empresaJDBC.
 		Exception exception = null;
@@ -243,9 +246,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setMailNaoAptos("Envio de email");
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.CANDIDATO_NAO_APTO.getId());
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.CANDIDATO_NAO_APTO);
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		
@@ -306,10 +307,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
 		solicitacao.setData(new Date());
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setEmpresa(empresa);
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.SOLICITANTE_SOLICITACAO.getId());
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.SOLICITANTE_SOLICITACAO);
 
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -345,10 +343,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador2.setEmpresa(empresa);
 		 colaborador2.setEmailColaborador("teste2@fortesinformatica.com.br");
 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -395,10 +390,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaboradorQuestionarios.add(colaboradorQuestionario1);
 		 colaboradorQuestionarios.add(colaboradorQuestionario2);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -433,10 +425,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<Questionario> questionarios = Arrays.asList(questionario);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		 gerenciadorComunicacao.setQtdDiasLembrete("1");
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
@@ -461,10 +450,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 empresa.setNome("Empresa I");
 		 empresa.setEmailRespRH("email@email.com");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -496,11 +482,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Candidato pedro = new Candidato(empresa.getNome(), 'C', 10);
 		 Collection<Candidato> candidatos = Arrays.asList(pedro);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
-		 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.QTD_CURRICULOS_CADASTRADOS.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
@@ -556,10 +538,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<ColaboradorPeriodoExperienciaAvaliacao > colaboradores = Arrays.asList(teoPeriodoExperiencia, leoPeriodoExperiencia);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR_AVALIADO.getId()); 
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR_AVALIADO);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -588,16 +567,11 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<Empresa> empresas = Arrays.asList(empresa);
 		 
-		 Collection<String> emails = Arrays.asList("email@email.com");
-		 
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 Collection<Usuario> usuarios = Arrays.asList(usuario);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao.setUsuarios(usuarios);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -652,24 +626,15 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 Collection<Usuario> usuarios = Arrays.asList(usuario);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao1.setEmpresa(empresa);
-		 gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
 		 gerenciadorComunicacao1.setQtdDiasLembrete("1");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao2.setEmpresa(empresa);
+		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao2.setUsuarios(usuarios);
-		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 gerenciadorComunicacao2.setQtdDiasLembrete("1");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao3.setEmpresa(empresa);
+		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
 		 gerenciadorComunicacao3.setUsuarios(usuarios);
-		 gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao3.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
 		 gerenciadorComunicacao3.setQtdDiasLembrete("1");
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
@@ -700,9 +665,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 parametroSistema.setAppUrl("url");
 		 parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_TECNICO.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(null, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_TECNICO);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -732,10 +695,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 teo.setNome("Teo");
 		 teo.setEmpresa(empresa);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_SETOR_PESSOAL.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_SETOR_PESSOAL);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -781,11 +741,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 Collection<Usuario> usuarios = Arrays.asList(usuario);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao.setUsuarios(usuarios);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -824,10 +781,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 situacao.setEmpresaCodigoAC("0010");
 		 situacao.setGrupoAC("005");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -858,35 +812,43 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertTrue(gerenciadorComunicacaoManager.existeConfiguracaoParaCandidatosModuloExterno(empresa.getId()));
 	 }
 
-	 public void testEnviaMensagemDesligamentoColaboradorAC() throws Exception
+	 public void testEnviaAvisoDesligamentoColaboradorAC() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		 empresa.setNome("Empresa I");
 		 empresa.setEmailRespRH("email@email.com");
 		 
+		 AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		 
 		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		 colaborador.setNome("Teo");
 		 colaborador.setEmpresa(empresa);
+		 colaborador.setAreaOrganizacional(areaOrganizacional);
 		 
 		 TSituacao situacao = new TSituacao();
 		 situacao.setEmpresaCodigoAC("0010");
 		 situacao.setGrupoAC("005");
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 String[] emails = new String[] {"email1@teste.com"};
 		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		 GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
+		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
+		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		 GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4);
 		 
 		 colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, eq(empresa)).will(returnValue(colaborador));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.DESLIGAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
+		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
+			 gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
 		 } catch (Exception e) {
 			 exception = e;
 		 }
@@ -913,10 +875,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setEmpresa(empresa);
 		 colaborador.setHistoricoColaborador(historico);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
 
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_CONTRATACAO_AC.getId()),ANYTHING).will(returnValue(Arrays.asList(gerenciadorComunicacao)));
@@ -950,10 +909,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setEmpresa(empresa);
 		 colaborador.setHistoricoColaborador(historico);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
 		 
 		 colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaborador.getCodigoAC()), eq(empresa)).will(returnValue(colaborador));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
@@ -994,16 +950,10 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao.setUsuarios(Arrays.asList(usuario));
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao2.setEmpresa(empresa);
-		 gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao2.setEnviarPara(EnviarPara.USUARIOS.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao2.setUsuarios(Arrays.asList(usuario));
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacoes = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2); 
@@ -1044,10 +994,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos = new ArrayList<QuantidadeLimiteColaboradoresPorCargo>();
 		 quantidadeLimiteColaboradoresPorCargos.add(quantidadeLimiteColaboradoresPorCargo);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_LIMITE_CONTRATO.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_LIMITE_CONTRATO);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -1132,10 +1079,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		 colaboradorTurma.setColaborador(colaborador);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.COLABORADOR.getId());
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		 
@@ -1173,11 +1117,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 Collection<Usuario> usuarios = Arrays.asList(usuario);
 		 
-		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		 gerenciadorComunicacao.setEmpresa(empresa);
+		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		 gerenciadorComunicacao.setUsuarios(usuarios);
-		 gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		 gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
@@ -1220,11 +1161,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaboradorOocorrencia.setProvidencia(providencia);
 		colaboradorOocorrencia.setDataIni(new Date());		
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setEmpresa(empresa);
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		gerenciadorComunicacao.setUsuarios(usuarios);
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		
@@ -1262,11 +1200,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Usuario usuario = UsuarioFactory.getEntity();
 		Collection<Usuario> usuarios = Arrays.asList(usuario);
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setEmpresa(empresa);
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		gerenciadorComunicacao.setUsuarios(usuarios);
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.USUARIOS.getId());
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		
@@ -1301,10 +1236,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaborador2.setNomeComercial("Leo");
 		colaborador2.setEmpresa(empresa);
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setEmpresa(empresa);
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		gerenciadorComunicacao.setQtdDiasLembrete("1");
 
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
@@ -1340,52 +1272,23 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		situacao.setLotacaoCodigoAC("003");
 		situacao.setData("05/02/2013");
 		
-		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao1.setEmpresa(empresa);
-		gerenciadorComunicacao1.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
-		
-		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao2.setEmpresa(empresa);
-		gerenciadorComunicacao2.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao2.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		
 		Usuario usuario = UsuarioFactory.getEntity();
 		Collection<Usuario> usuarios = Arrays.asList(usuario);
 
-		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
+		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
 		gerenciadorComunicacao3.setUsuarios(usuarios);
-		gerenciadorComunicacao3.setEmpresa(empresa);
-		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao3.setEnviarPara(EnviarPara.USUARIOS.getId());
 		
-		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao4.setEmpresa(empresa);
-		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao4.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao4.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
 		
-		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity();
+		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		gerenciadorComunicacao5.setUsuarios(usuarios);
-		gerenciadorComunicacao5.setEmpresa(empresa);
-		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao5.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao5.setEnviarPara(EnviarPara.USUARIOS.getId());
 		
-		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao6.setEmpresa(empresa);
-		gerenciadorComunicacao6.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao6.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao6.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
 		
-		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao7.setEmpresa(empresa);
-		gerenciadorComunicacao3.setOperacao(Operacao.CADASTRAR_SITUACAO_AC.getId());
-		gerenciadorComunicacao7.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao7.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.CADASTRAR_SITUACAO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
 		
 		String[] emails = new String[] {"email1@teste.com"};
 		
@@ -1441,7 +1344,6 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional3 = AreaOrganizacionalFactory.getEntity(3L);
 		
 		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacional1, areaOrganizacional2, areaOrganizacional3);
-		Collection<AreaOrganizacional> ColecaoComArea1 = Arrays.asList(areaOrganizacional1);
 		
 		Habilitacao habilitacaoComVencimento1DiaDepois = new Habilitacao();
 		habilitacaoComVencimento1DiaDepois.setVencimento(DateUtil.incrementaDias(new Date(), 1));
@@ -1468,25 +1370,13 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaborador4.setHabilitacao(habilitacaoComVencimento3DiasDepois);
 		colaborador4.setAreaOrganizacional(areaOrganizacional3);
 		
-		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao1.setEmpresa(empresa);
-		gerenciadorComunicacao1.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao1.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao1.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao1 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
 		gerenciadorComunicacao1.setQtdDiasLembrete("1&2");
 		
-		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao2.setEmpresa(empresa);
-		gerenciadorComunicacao2.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao2.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
 		gerenciadorComunicacao2.setQtdDiasLembrete("1&2");
 		
-		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao3.setEmpresa(empresa);
-		gerenciadorComunicacao3.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao3.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao3.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		gerenciadorComunicacao3.setQtdDiasLembrete("1&2");
 		
 		Collection<Integer> diasLembrete = Arrays.asList(1, 2);
@@ -1495,39 +1385,22 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Usuario usuario = UsuarioFactory.getEntity();
 		Collection<Usuario> usuarios = Arrays.asList(usuario);
 		
-		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity();
+		GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
 		gerenciadorComunicacao4.setUsuarios(usuarios);
-		gerenciadorComunicacao4.setEmpresa(empresa);
-		gerenciadorComunicacao4.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao4.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao4.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao4.setQtdDiasLembrete("1&2");
 		
 		CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
 		Long[] usuariosIds = collUtil.convertCollectionToArrayIds(gerenciadorComunicacao4.getUsuarios());
 		
-		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao5.setEmpresa(empresa);
-		gerenciadorComunicacao5.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao5.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao5.setEnviarPara(EnviarPara.GESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.GESTOR_AREA);
 		gerenciadorComunicacao5.setQtdDiasLembrete("1&2");
 		
-		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao6.setEmpresa(empresa);
-		gerenciadorComunicacao6.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao6.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao6.setEnviarPara(EnviarPara.COGESTOR_AREA.getId());
+		GerenciadorComunicacao gerenciadorComunicacao6 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
 		gerenciadorComunicacao6.setQtdDiasLembrete("1&2");
 		
-		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity();
+		GerenciadorComunicacao gerenciadorComunicacao7 = GerenciadorComunicacaoFactory.getEntity(empresa, Operacao.HABILITACAO_A_VENCER, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
 		gerenciadorComunicacao7.setUsuarios(usuarios);
-		gerenciadorComunicacao7.setEmpresa(empresa);
-		gerenciadorComunicacao7.setOperacao(Operacao.HABILITACAO_A_VENCER.getId());
-		gerenciadorComunicacao7.setMeioComunicacao(MeioComunicacao.CAIXA_MENSAGEM.getId());
-		gerenciadorComunicacao7.setEnviarPara(EnviarPara.USUARIOS.getId());
 		gerenciadorComunicacao7.setQtdDiasLembrete("1&2");
-
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = new ArrayList<GerenciadorComunicacao>();
 		gerenciadorComunicacaos.add(gerenciadorComunicacao1);
@@ -1606,13 +1479,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		solicitacao.setEstabelecimento(estabelecimento);
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		
-		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao2.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao2.setEnviarPara(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId());
+		GerenciadorComunicacao gerenciadorComunicacao2 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL);
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao, gerenciadorComunicacao2);
 		
@@ -1642,9 +1511,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNome("Colaborador");
 		
-		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity();
-		gerenciadorComunicacao.setMeioComunicacao(MeioComunicacao.EMAIL.getId());
-		gerenciadorComunicacao.setEnviarPara(EnviarPara.RESPONSAVEL_RH.getId());
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH);
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 		

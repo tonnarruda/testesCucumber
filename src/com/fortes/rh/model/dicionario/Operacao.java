@@ -231,8 +231,12 @@ public enum Operacao
 	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
-			
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
+			
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 
 			return this.getListMeioComunicacao();
 		}

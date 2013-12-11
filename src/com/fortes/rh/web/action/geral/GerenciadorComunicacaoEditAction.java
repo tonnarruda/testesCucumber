@@ -77,6 +77,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		
 		carregaChecksUsuarios();
 		gerenciadorComunicacaoManager.save(gerenciadorComunicacao);
+		addActionSuccess("Configuração cadastrada com sucesso.");
+
 		return Action.SUCCESS;
 	}
 
@@ -99,13 +101,15 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		if (gerenciadorComunicacaoManager.verifyExists(gerenciadorComunicacao)){
-			addActionMessage("Já existe uma configuração cadastrada com os dados informados.");
+			addActionWarning("Já existe uma configuração cadastrada com os dados informados.");
 			prepareUpdate();
 			return Action.INPUT;
 		}
 
 		carregaChecksUsuarios();
 		gerenciadorComunicacaoManager.update(gerenciadorComunicacao);
+		addActionSuccess("Configuração atualizada com sucesso.");
+		
 		return Action.SUCCESS;
 	}
 

@@ -60,9 +60,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	private static final int AREA_ORGANIZACIONAL = 1;
 	private static final int GRUPO_OCUPACIONAL = 2;
 	private static final int CARGO = 3;
-	private static final int NO_MES = 0;
-	private static final int ADMITIDOS = 1;
-	private static final int DEMITIDOS = 2;
+	
 	private static final int MOTIVODEMISSAO = 1;
 	private static final int MOTIVODEMISSAOQUANTIDADE = 2;
 
@@ -801,11 +799,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return result == 1;
 	}
-
+	
 	public Colaborador findByCodigoAC(String codigo, Empresa empresa)
 	{
-		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
-		criteria.createCriteria("empresa", "e");
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.empresa", "e");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -820,11 +825,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("e.id"), "empresaId");
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("e.codigoAC"), "empresaCodigoAC");
+		p.add(Projections.property("hc.areaOrganizacional.id"), "areaOrganizacionalId");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.empresa", empresa));//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 		criteria.add(Expression.eq("c.codigoAC", codigo));
 
+		criteria.add(Expression.or(Expression.isNull("hc.data"), Subqueries.propertyEq("hc.data", subQueryHc)));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 

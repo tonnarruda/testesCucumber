@@ -84,7 +84,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 11
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 12
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 13
-		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 14
+		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 14
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 15
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 16
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 17
@@ -273,9 +273,11 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.DESLIGAR_COLABORADOR_AC;
-		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(3, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.CAIXA_MENSAGEM.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[2]);
 		assertEquals(2,(MeioComunicacao.CAIXA_MENSAGEM.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testSolicitacaoCandidatoModuloExterno()

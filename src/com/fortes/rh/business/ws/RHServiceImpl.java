@@ -286,7 +286,7 @@ public class RHServiceImpl implements RHService
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
 			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
 			{				
-				gerenciadorComunicacaoManager.enviaMensagemDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
+				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
 				return new FeedbackWebService(true);
 			}
 			else

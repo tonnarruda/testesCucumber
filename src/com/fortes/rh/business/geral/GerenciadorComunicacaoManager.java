@@ -42,7 +42,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception;
 	void enviaMensagemCancelamentoSituacao(TSituacao situacao, String mensagem, HistoricoColaborador historicoColaborador);
 	boolean existeConfiguracaoParaCandidatosModuloExterno(Long emrpesaId);
-	void enviaMensagemDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa);
+	void enviaAvisoDesligamentoColaboradorAC(String codigo, String empCodigo, String grupoAC, Empresa empresa);
 	void enviaEmailConfiguracaoLimiteColaborador(ConfiguracaoLimiteColaborador configuracaoLimiteColaborador, Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, Empresa empresa);
 	void enviarAvisoEmailLiberacao(Turma turma, AvaliacaoTurma avaliacaoTurma, Long empresaId);
 	void enviarAvisoEmail(Turma turma, Long empresaId);
