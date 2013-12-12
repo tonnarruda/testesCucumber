@@ -9,7 +9,7 @@
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-	<title>Área de Vivência</title>
+	<title>Áreas de Vivência</title>
 </head>
 <body>
 	<@ww.actionmessage />
