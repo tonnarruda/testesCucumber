@@ -1,0 +1,1 @@
+alter table epi add column descricao text;--.go
