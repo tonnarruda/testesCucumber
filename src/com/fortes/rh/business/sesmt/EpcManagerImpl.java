@@ -28,7 +28,7 @@ public class EpcManagerImpl extends GenericManagerImpl<Epc, EpcDao> implements E
 		try
 		{
 			Collection<Epc> epcs = getDao().findAllSelect(empresaId);
-			return CheckListBoxUtil.populaCheckListBox(epcs, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(epcs, "getId", "getDescricao");
 		}
 		catch (Exception e)
 		{

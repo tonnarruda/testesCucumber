@@ -11,13 +11,13 @@
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 </#if>
-<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
+<#assign validarCampos="return validaFormulario('form', new Array('descricao'), null)"/>
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" validate="true" method="POST">
 		<@ww.textfield label="Código" id="codigo" name="epc.codigo" maxLength="30"/>
-		<@ww.textfield label="Nome" id="nome" name="epc.nome"  cssClass="inputNome" maxLength="100" required="true"/>
+		<@ww.textfield label="Descrição" id="descricao" name="epc.descricao"  cssClass="inputNome" maxLength="100" required="true"/>
 		
 		<@ww.hidden label="Id" name="epc.id" />
 		<@ww.token/>
