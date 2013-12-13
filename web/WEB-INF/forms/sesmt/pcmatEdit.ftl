@@ -48,8 +48,10 @@
 			<@ww.token/>
 
 			<@ww.datepicker label="Data do PCMAT" name="pcmat.aPartirDe" id="aPartirDe" required="true" value="${aPartirDe}" cssClass="mascaraData"/>
-			<@ww.datepicker label="Data do início da obra" name="pcmat.dataIniObra" id="dataIniObra" required="true" value="${dataIniObra}" cssClass="mascaraData validaDataIni"/>
-			<@ww.datepicker label="Data do fim da obra" name="pcmat.dataFimObra" id="dataFimObra" required="true" value="${dataFimObra}" cssClass="mascaraData validaDataFim"/>
+			Período da obra:*<br>
+			<@ww.datepicker name="pcmat.dataIniObra" id="dataIniObra" required="true" value="${dataIniObra}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+			<@ww.label value="a" liClass="liLeft"/>
+			<@ww.datepicker name="pcmat.dataFimObra" id="dataFimObra" required="true" value="${dataFimObra}" cssClass="mascaraData validaDataFim"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">

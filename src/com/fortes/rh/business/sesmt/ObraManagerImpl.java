@@ -13,4 +13,9 @@ public class ObraManagerImpl extends GenericManagerImpl<Obra, ObraDao> implement
 	{
 		return getDao().findAllSelect(nome, empresaId);
 	}
+
+	public Obra findByIdProjecion(Long id) 
+	{
+		return getDao().findByIdProjecion(id);
+	}
 }

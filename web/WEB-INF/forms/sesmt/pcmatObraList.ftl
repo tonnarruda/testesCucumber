@@ -10,7 +10,7 @@
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-	<title>PCMATs da Obra</title>
+	<title>PCMATs da Obra - ${nomeObra}</title>
 </head>
 <body>
 	<@ww.actionmessage />

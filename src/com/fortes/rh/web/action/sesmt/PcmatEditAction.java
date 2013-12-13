@@ -69,7 +69,11 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	public String listPcmats() throws Exception
 	{
-		pcmats = pcmatManager.findByObra(obra.getId());
+		pcmats = pcmatManager.findByObra(this.obra.getId());
+		
+		Obra obra = obraManager.findByIdProjecion(this.obra.getId());
+		nomeObra = obra.getNome(); 
+		
 		return Action.SUCCESS;
 	}
 

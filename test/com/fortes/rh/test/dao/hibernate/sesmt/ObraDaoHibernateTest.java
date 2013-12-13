@@ -54,6 +54,28 @@ public class ObraDaoHibernateTest extends GenericDaoHibernateTest<Obra>
 		retorno = obraDao.findAllSelect("rá B", empresa1.getId());
 		assertEquals("nome", obra2.getId(), retorno.toArray(new Obra[]{})[0].getId());
 	}
+	
+	public void testFindByIdProjection()
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Obra obra1 = ObraFactory.getEntity();
+		obra1.setNome("Obra A");
+		obra1.setEmpresa(empresa1);
+		obraDao.save(obra1);
+		
+		Obra obra2 = ObraFactory.getEntity();
+		obra2.setNome("Obra B");
+		obra2.setEmpresa(empresa1);
+		obraDao.save(obra2);
+		
+		Obra obraRetorno1 = obraDao.findByIdProjecion(obra1.getId());
+		assertEquals(obra1.getNome(), obraRetorno1.getNome());
+
+		Obra obraRetorno2 = obraDao.findByIdProjecion(obra2.getId());
+		assertEquals(obra2.getNome(), obraRetorno2.getNome());
+	}
 
 	@Override
 	public GenericDao<Obra> getGenericDao()

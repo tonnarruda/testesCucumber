@@ -21,13 +21,14 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareUpdate">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">listPcmats.action?obra.id=${pcmat.obra.id}</result>
+			<result name="invalid.token" type="redirect">prepareInsert.action</result>
+			<result name="success" type="redirect">prepareUpdate.action?pcmat.id=${pcmat.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="update">
