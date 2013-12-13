@@ -634,20 +634,28 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacao2.setQtdDiasLembrete("1");
 		 
 		 GerenciadorComunicacao gerenciadorComunicacao3 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.COGESTOR_AREA);
-		 gerenciadorComunicacao3.setUsuarios(usuarios);
 		 gerenciadorComunicacao3.setQtdDiasLembrete("1");
 		 
-		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3);
+		 GerenciadorComunicacao gerenciadorComunicacao4 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.GESTOR_AREA);
+		 gerenciadorComunicacao4.setQtdDiasLembrete("1");
+		 
+		 GerenciadorComunicacao gerenciadorComunicacao5 = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COGESTOR_AREA);
+		 gerenciadorComunicacao5.setQtdDiasLembrete("1");
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4, gerenciadorComunicacao5);
+		 
+		 String[] emails = new String[] {"email1@teste.com"};
 		 
 		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
-		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
-		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
-		 colaboradorManager.expects(once()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
+		 colaboradorManager.expects(atLeastOnce()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemRespAreaOrganizacional").withAnyArguments().isVoid();
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional").withAnyArguments().isVoid();
+		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(teo.getAreaOrganizacional().getId()), eq(teo.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
+		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(teo.getAreaOrganizacional().getId()), eq(teo.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
+		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 		 
 		 Exception exception = null;
 		 try {
