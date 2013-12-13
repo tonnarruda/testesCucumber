@@ -30,7 +30,7 @@
 	
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="window.location='list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

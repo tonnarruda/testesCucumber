@@ -1017,7 +1017,21 @@
       <ref bean="atividadeSegurancaPcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="epiPcmatManagerTarget" class="com.fortes.rh.business.sesmt.EpiPcmatManagerImpl">
+    <property name="dao">
+      <ref bean="epiPcmatDao" />
+    </property>
+  </bean>
+  <bean id="epiPcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.EpiPcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="epiPcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

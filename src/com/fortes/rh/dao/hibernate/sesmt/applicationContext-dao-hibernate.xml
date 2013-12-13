@@ -300,7 +300,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="epiPcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.EpiPcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

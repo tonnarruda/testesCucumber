@@ -577,6 +577,11 @@
 				/sesmt/fase/*/**=ROLE_CAD_FASE
 				/sesmt/medidaSeguranca/*/**=ROLE_CAD_MEDIDASEGURANCA
 				/sesmt/areaVivencia/*/**=ROLE_CAD_AREAVIVENCIA
+				/sesmt/fasePcmat/*/**=ROLE_MOV_PCMAT
+				/sesmt/riscoFasePcmat/*/**=ROLE_MOV_PCMAT
+				/sesmt/areaVivenciaPcmat/*/**=ROLE_MOV_PCMAT
+				/sesmt/atividadeSegurancaPcmat/*/**=ROLE_MOV_PCMAT
+				/sesmt/epiPcmat/*/**=ROLE_MOV_PCMAT
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA

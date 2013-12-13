@@ -458,7 +458,16 @@
       <ref bean="atividadeSegurancaPcmatDaoTarget" />
     </property>
   </bean>
+  <bean id="epiPcmatDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.EpiPcmatDao</value>
+    </property>
+    <property name="target">
+      <ref bean="epiPcmatDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
