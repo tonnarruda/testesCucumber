@@ -137,6 +137,7 @@ import com.fortes.rh.test.business.sesmt.ComissaoReuniaoPresencaManagerTest;
 import com.fortes.rh.test.business.sesmt.EleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.EngenheiroResponsavelManagerTest;
 import com.fortes.rh.test.business.sesmt.EpcManagerTest;
+import com.fortes.rh.test.business.sesmt.EpcPcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.EpiHistoricoManagerTest;
 import com.fortes.rh.test.business.sesmt.EpiManagerTest;
 import com.fortes.rh.test.business.sesmt.EpiPcmatManagerTest;
@@ -293,6 +294,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.ComissaoReuniaoPresencaDaoHibernat
 import com.fortes.rh.test.dao.hibernate.sesmt.EleicaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.EngenheiroResponsavelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.EpcDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.EpcPcmatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.EpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.EpiHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.EpiPcmatDaoHibernateTest;
@@ -547,6 +549,7 @@ import com.fortes.rh.test.web.action.sesmt.EngenheiroResponsavelEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EngenheiroResponsavelListActionTest;
 import com.fortes.rh.test.web.action.sesmt.EpcEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EpcListActionTest;
+import com.fortes.rh.test.web.action.sesmt.EpcPcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EpiHistoricoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.EpiListActionTest;
@@ -1212,6 +1215,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EpiPcmatDaoHibernateTest.class);
         suite.addTestSuite(EpiPcmatManagerTest.class);
         suite.addTestSuite(EpiPcmatEditActionTest.class);
+        
+        suite.addTestSuite(EpcPcmatDaoHibernateTest.class);
+        suite.addTestSuite(EpcPcmatManagerTest.class);
+        suite.addTestSuite(EpcPcmatEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

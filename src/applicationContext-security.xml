@@ -582,6 +582,7 @@
 				/sesmt/areaVivenciaPcmat/*/**=ROLE_MOV_PCMAT
 				/sesmt/atividadeSegurancaPcmat/*/**=ROLE_MOV_PCMAT
 				/sesmt/epiPcmat/*/**=ROLE_MOV_PCMAT
+				/sesmt/epcPcmat/*/**=ROLE_MOV_PCMAT
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA

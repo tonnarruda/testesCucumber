@@ -1030,7 +1030,21 @@
       <ref bean="epiPcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="epcPcmatManagerTarget" class="com.fortes.rh.business.sesmt.EpcPcmatManagerImpl">
+    <property name="dao">
+      <ref bean="epcPcmatDao" />
+    </property>
+  </bean>
+  <bean id="epcPcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.EpcPcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="epcPcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

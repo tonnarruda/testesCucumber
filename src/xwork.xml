@@ -380,7 +380,9 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AreaVivenciaPcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-AtividadeSegurancaPcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-EpiPcmat.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-EpcPcmat.xml" />
 </xwork>
+
 
 
 

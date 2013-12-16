@@ -466,7 +466,16 @@
       <ref bean="epiPcmatDaoTarget" />
     </property>
   </bean>
+  <bean id="epcPcmatDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.EpcPcmatDao</value>
+    </property>
+    <property name="target">
+      <ref bean="epcPcmatDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

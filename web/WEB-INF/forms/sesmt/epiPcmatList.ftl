@@ -4,7 +4,7 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		#menuPcmat a#epi { color: #FFCB03; }
+		#menuPcmat a#menuEPIs { color: #FFCB03; }
 	</style>
 
 	<title>PCMAT</title>

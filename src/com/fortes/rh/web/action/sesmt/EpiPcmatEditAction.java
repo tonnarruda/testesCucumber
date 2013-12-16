@@ -29,7 +29,6 @@ public class EpiPcmatEditAction extends MyActionSupportList
 		
 		if(epiPcmat != null && epiPcmat.getId() != null)
 			epiPcmat = (EpiPcmat) epiPcmatManager.findById(epiPcmat.getId());
-
 	}
 
 	public String prepareInsert() throws Exception

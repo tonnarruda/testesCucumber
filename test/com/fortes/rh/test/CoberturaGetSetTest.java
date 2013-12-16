@@ -208,6 +208,7 @@ import com.fortes.rh.model.sesmt.ComissaoReuniaoPresenca;
 import com.fortes.rh.model.sesmt.Eleicao;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.model.sesmt.Epc;
+import com.fortes.rh.model.sesmt.EpcPcmat;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.EpiPcmat;
@@ -965,6 +966,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new AreaVivenciaPcmat());
 		cobreGetSet(new AtividadeSegurancaPcmat());
 		cobreGetSet(new EpiPcmat());
+		cobreGetSet(new EpcPcmat());
 	}
 	
 	private void cobreGetSet(Object obj)

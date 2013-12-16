@@ -7,33 +7,34 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.sesmt.EpiManager;
-import com.fortes.rh.business.sesmt.EpiPcmatManager;
-import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.business.sesmt.EpcManager;
+import com.fortes.rh.business.sesmt.EpcPcmatManager;
+import com.fortes.rh.model.sesmt.Epc;
+import com.fortes.rh.model.sesmt.EpcPcmat;
 import com.fortes.rh.model.sesmt.EpiPcmat;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.sesmt.EpiPcmatFactory;
+import com.fortes.rh.test.factory.sesmt.EpcPcmatFactory;
 import com.fortes.rh.test.factory.sesmt.PcmatFactory;
-import com.fortes.rh.web.action.sesmt.EpiPcmatEditAction;
+import com.fortes.rh.web.action.sesmt.EpcPcmatEditAction;
 
-public class EpiPcmatEditActionTest extends MockObjectTestCase
+public class EpcPcmatEditActionTest extends MockObjectTestCase
 {
-	private EpiPcmatEditAction action;
+	private EpcPcmatEditAction action;
 	private Mock manager;
-	private Mock epiManager;
+	private Mock epcManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		manager = new Mock(EpiPcmatManager.class);
-		action = new EpiPcmatEditAction();
-		action.setEpiPcmatManager((EpiPcmatManager) manager.proxy());
+		manager = new Mock(EpcPcmatManager.class);
+		action = new EpcPcmatEditAction();
+		action.setEpcPcmatManager((EpcPcmatManager) manager.proxy());
 
-		epiManager = new Mock(EpiManager.class);
-		action.setEpiManager((EpiManager) epiManager.proxy());
-
-		action.setEpiPcmat(new EpiPcmat());
+		epcManager = new Mock(EpcManager.class);
+		action.setEpcManager((EpcManager) epcManager.proxy());
+		
+		action.setEpcPcmat(new EpcPcmat());
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
@@ -51,13 +52,13 @@ public class EpiPcmatEditActionTest extends MockObjectTestCase
 		
 		manager.expects(once()).method("findByPcmat").with(eq(pcmat.getId())).will(returnValue(new ArrayList<EpiPcmat>()));
 		assertEquals("success", action.list());
-		assertNotNull(action.getEpiPcmats());
+		assertNotNull(action.getEpcPcmats());
 	}
 
 	public void testDelete() throws Exception
 	{
-		EpiPcmat epiPcmat = EpiPcmatFactory.getEntity(1L);
-		action.setEpiPcmat(epiPcmat);
+		EpcPcmat epcPcmat = EpcPcmatFactory.getEntity(1L);
+		action.setEpcPcmat(epcPcmat);
 		
 		Pcmat pcmat = PcmatFactory.getEntity(1L);
 		action.setPcmat(pcmat);
@@ -69,8 +70,8 @@ public class EpiPcmatEditActionTest extends MockObjectTestCase
 	
 	public void testDeleteException() throws Exception
 	{
-		EpiPcmat epiPcmat = EpiPcmatFactory.getEntity(1L);
-		action.setEpiPcmat(epiPcmat);
+		EpcPcmat epcPcmat = EpcPcmatFactory.getEntity(1L);
+		action.setEpcPcmat(epcPcmat);
 		
 		Pcmat pcmat = PcmatFactory.getEntity(1L);
 		action.setPcmat(pcmat);
@@ -82,10 +83,10 @@ public class EpiPcmatEditActionTest extends MockObjectTestCase
 
 	public void testInsert() throws Exception
 	{
-		EpiPcmat epiPcmat = EpiPcmatFactory.getEntity(1L);
-		action.setEpiPcmat(epiPcmat);
+		EpcPcmat epcPcmat = EpcPcmatFactory.getEntity(1L);
+		action.setEpcPcmat(epcPcmat);
 
-		manager.expects(once()).method("save").with(eq(epiPcmat)).will(returnValue(epiPcmat));
+		manager.expects(once()).method("save").with(eq(epcPcmat)).will(returnValue(epcPcmat));
 
 		assertEquals("success", action.insert());
 	}
@@ -93,37 +94,37 @@ public class EpiPcmatEditActionTest extends MockObjectTestCase
 	public void testInsertException() throws Exception
 	{
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		epiManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Epi>()));
+		epcManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Epc>()));
 		assertEquals("input", action.insert());
 	}
 
 	public void testUpdate() throws Exception
 	{
-		EpiPcmat epiPcmat = EpiPcmatFactory.getEntity(1L);
-		action.setEpiPcmat(epiPcmat);
+		EpcPcmat epcPcmat = EpcPcmatFactory.getEntity(1L);
+		action.setEpcPcmat(epcPcmat);
 
-		manager.expects(once()).method("update").with(eq(epiPcmat)).isVoid();
+		manager.expects(once()).method("update").with(eq(epcPcmat)).isVoid();
 
 		assertEquals("success", action.update());
 	}
 
 	public void testUpdateException() throws Exception
 	{
-		EpiPcmat epiPcmat = EpiPcmatFactory.getEntity(1L);
-		action.setEpiPcmat(epiPcmat);
+		EpcPcmat epcPcmat = EpcPcmatFactory.getEntity(1L);
+		action.setEpcPcmat(epcPcmat);
 
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findById").with(eq(epiPcmat.getId())).will(returnValue(epiPcmat));
-		epiManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Epi>()));
-
+		manager.expects(once()).method("findById").with(eq(epcPcmat.getId())).will(returnValue(epcPcmat));
+		epcManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Epc>()));
+		
 		assertEquals("input", action.update());
 	}
 
 	public void testGetSet() throws Exception
 	{
-		action.setEpiPcmat(null);
+		action.setEpcPcmat(null);
 
-		assertNotNull(action.getEpiPcmat());
-		assertTrue(action.getEpiPcmat() instanceof EpiPcmat);
+		assertNotNull(action.getEpcPcmat());
+		assertTrue(action.getEpcPcmat() instanceof EpcPcmat);
 	}
 }
