@@ -16,6 +16,7 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="areaVivenciaPcmat.id" />
 			<@ww.hidden name="areaVivenciaPcmat.pcmat.id" />
+			<@ww.hidden name="ultimoPcmatId" />
 			
 			<@ww.select label="Área de Vivência" name="areaVivenciaPcmat.areaVivencia.id" id="areaVivencia" list="areasVivencia" listKey="id" listValue="nome" headerValue="" headerKey="-1" required="true"/>
 			<@ww.textarea label="Descrição" name="areaVivenciaPcmat.descricao" id="descricao"/>
@@ -24,8 +25,10 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}'" class="btnVoltar"></button>
+			<#if ultimoPcmatId == areaVivenciaPcmat.pcmat.id>
+				<button onclick="${validarCampos};" class="btnGravar"></button>
+			</#if>
+			<button onclick="window.location='list.action?pcmat.id=${areaVivenciaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

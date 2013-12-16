@@ -37,12 +37,12 @@
 
 <#if pcmatId?exists>
 	<div id="menuPcmat">
-		<a href="../pcmat/prepareUpdate.action?pcmat.id=${pcmatId}" id="menuGeral">Geral</a>
-		<a href="../fasePcmat/list.action?pcmat.id=${pcmatId}" id="menuFases">Fases</a>
-		<a href="../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}" id="menuAreasVivencia">Áreas de Vivência</a>
-		<a href="../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}" id="menuAtividadesSeguranca">Atividades de Segurança</a>
-		<a href="../epiPcmat/list.action?pcmat.id=${pcmatId}" id="menuEPIs">EPIs</a>
-		<a href="../epcPcmat/list.action?pcmat.id=${pcmatId}" id="menuEPCs">EPCs</a>
+		<a href="../pcmat/prepareUpdate.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuGeral">Geral</a>
+		<a href="../fasePcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuFases">Fases</a>
+		<a href="../areaVivenciaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuAreasVivencia">Áreas de Vivência</a>
+		<a href="../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuAtividadesSeguranca">Atividades de Segurança</a>
+		<a href="../epiPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPIs">EPIs</a>
+		<a href="../epcPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPCs">EPCs</a>
 		<a class="last">&nbsp;</a>
 		<div style="clear: both"></div>
 	</div>

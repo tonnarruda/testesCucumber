@@ -19,6 +19,7 @@ public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 	
 	private AreaVivenciaPcmat areaVivenciaPcmat;
 	private Pcmat pcmat;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<AreaVivenciaPcmat> areasVivenciaPcmat;
 	private Collection<AreaVivencia> areasVivencia;
@@ -143,5 +144,13 @@ public class AreaVivenciaPcmatEditAction extends MyActionSupportList
 
 	public void setAreaVivenciaManager(AreaVivenciaManager areaVivenciaManager) {
 		this.areaVivenciaManager = areaVivenciaManager;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
 	}
 }

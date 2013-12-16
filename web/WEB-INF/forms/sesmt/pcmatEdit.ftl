@@ -12,8 +12,10 @@
 
 		<#if pcmat.id?exists>
 			<#assign formAction="update.action"/>
+			<#assign mostraBtnGravar = ultimoPcmatId == pcmat.id/>
 		<#else>
-			<#assign formAction="insert.action"/>
+			<#assign mostraBtnGravar = true/>
+			<#assign formAction = "insert.action"/>
 		</#if>
 	
 		<#if pcmat?exists && pcmat.APartirDe?exists>
@@ -55,7 +57,10 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
+			<#if mostraBtnGravar>
+				<button onclick="${validarCampos};" class="btnGravar"></button>
+			</#if>
+			
 			<button onclick="window.location='listPcmats.action?obra.id=${pcmat.obra.id}'" class="btnVoltar"></button>
 		</div>
 	</body>

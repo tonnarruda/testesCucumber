@@ -18,6 +18,7 @@
 			<result name="success" type="redirect">listPcmats.action?obra.id=${obra.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareInsert">
+			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="prepareUpdate">
@@ -29,7 +30,7 @@
 			<interceptor-ref name="defaultUpdateStack" />
 			<result name="invalid.token" type="redirect">prepareInsert.action</result>
 			<result name="success" type="redirect">prepareUpdate.action?pcmat.id=${pcmat.id}</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/pcmatEdit.ftl</result>
+			<result name="input" type="redirect">prepareInsert.action?pcmat.obra.id=${pcmat.obra.id}</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />

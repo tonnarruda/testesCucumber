@@ -3,12 +3,16 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.Collection;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.business.sesmt.PcmatManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Fase;
 import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -20,6 +24,8 @@ public class PcmatEditAction extends MyActionSupportList
 	private ObraManager obraManager;
 	
 	private Pcmat pcmat;
+	private Pcmat ultimoPcmat;
+	private Long ultimoPcmatId = 0L;
 	private Obra obra;
 	
 	private Collection<Pcmat> pcmats;
@@ -29,35 +35,69 @@ public class PcmatEditAction extends MyActionSupportList
 	
 	private String nomeObra;
 
-	private void prepare() throws Exception
-	{
-		if(pcmat != null && pcmat.getId() != null)
-			pcmat = (Pcmat) pcmatManager.findById(pcmat.getId());
-	}
-
 	public String prepareInsert() throws Exception
 	{
-		prepare();
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
-		prepare();
+		pcmat = (Pcmat) pcmatManager.findById(pcmat.getId());
+		ultimoPcmat = pcmatManager.findUltimoHistorico(null, pcmat.getObra().getId());
+		
+		if(ultimoPcmat != null)
+			ultimoPcmatId = ultimoPcmat.getId();
+		
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		pcmatManager.save(pcmat);
-		addActionSuccess("PCMAT cadastrado com sucesso.");
+		try {
+			pcmatManager.validaDataMaiorQueUltimoHistorico(null, pcmat.getObra().getId(), pcmat.getAPartirDe());
+			pcmatManager.save(pcmat);
+			
+		} catch (DataIntegrityViolationException de) {
+			addActionWarning("Já existe um PCMAT cadastrado na data " + DateUtil.formataDiaMesAno(pcmat.getAPartirDe()) + ".");
+			de.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (FortesException fe) {
+			addActionWarning(fe.getMessage());
+			fe.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao cadastrar o PCMAT.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		pcmatManager.update(pcmat);
-		addActionSuccess("PCMAT atualizado com sucesso.");
+		try {
+			pcmatManager.validaDataMaiorQueUltimoHistorico(pcmat.getId(), pcmat.getObra().getId(), pcmat.getAPartirDe());
+			pcmatManager.update(pcmat);
+			addActionSuccess("PCMAT atualizado com sucesso.");
+			
+		} catch (DataIntegrityViolationException de) {
+			addActionWarning("Já existe um PCMAT cadastrado na data " + DateUtil.formataDiaMesAno(pcmat.getAPartirDe()) + ".");
+			de.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (FortesException fe) {
+			addActionWarning(fe.getMessage());
+			fe.printStackTrace();
+			return Action.INPUT;
+			
+		} catch (Exception e) {
+			addActionError("Ocorreu um erro ao atualizar o PCMAT.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -70,6 +110,10 @@ public class PcmatEditAction extends MyActionSupportList
 	public String listPcmats() throws Exception
 	{
 		pcmats = pcmatManager.findByObra(this.obra.getId());
+		ultimoPcmat = pcmatManager.findUltimoHistorico(null, obra.getId());
+		
+		if(ultimoPcmat != null)
+			ultimoPcmatId = ultimoPcmat.getId();
 		
 		Obra obra = obraManager.findByIdProjecion(this.obra.getId());
 		nomeObra = obra.getNome(); 
@@ -153,5 +197,13 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public void setFasesPcmat(Collection<FasePcmat> fasesPcmat) {
 		this.fasesPcmat = fasesPcmat;
+	}
+
+	public Pcmat getUltimoPcmat() {
+		return ultimoPcmat;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
 	}
 }

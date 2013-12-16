@@ -19,6 +19,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	
 	private FasePcmat fasePcmat;
 	private Pcmat pcmat;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<FasePcmat> fasesPcmat;
 	private Collection<Fase> fases;
@@ -26,9 +27,6 @@ public class FasePcmatEditAction extends MyActionSupportList
 	private void prepare() throws Exception
 	{
 		fases = faseManager.findAllSelect(null, getEmpresaSistema().getId());
-		
-		if (fasePcmat != null && fasePcmat.getId() != null)
-			fasePcmat = (FasePcmat) fasePcmatManager.findById(fasePcmat.getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -40,6 +38,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		fasePcmat = (FasePcmat) fasePcmatManager.findById(fasePcmat.getId());
 		return Action.SUCCESS;
 	}
 
@@ -77,9 +76,7 @@ public class FasePcmatEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		fases = faseManager.findAllSelect(null, getEmpresaSistema().getId());
 		fasesPcmat = fasePcmatManager.findByPcmat(pcmat.getId());
-		
 		return Action.SUCCESS;
 	}
 
@@ -137,5 +134,13 @@ public class FasePcmatEditAction extends MyActionSupportList
 
 	public void setFaseManager(FaseManager faseManager) {
 		this.faseManager = faseManager;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
 	}
 }
