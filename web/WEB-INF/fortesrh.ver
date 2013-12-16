@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.121.140" data="16/12/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Desligar colaborador no AC Pessoal", através de email para o responsável do RH, gestor e cogestor da área organizacional.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.121.139" data="09/12/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Relatórios > Ocorrências: Opção de filtragem no campo de seleção de colaboradores.
 			:: T&D > Cadastros > Cursos/Treinamentos > Turma: Nova opção de inserir assinatura do instrutor para impressão nos certificados.
-			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "cadastrar solicitação de realinhamento para colaborador", enviando email para o responsável do RH.
+			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar solicitação de realinhamento para colaborador", através de email para o responsável do RH.
     	]]></Modulo>
     </Versao>
 	<Versao id="1.1.120.138" data="02/12/2013">

@@ -255,7 +255,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
-		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemDesligamentoColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
 
 		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}

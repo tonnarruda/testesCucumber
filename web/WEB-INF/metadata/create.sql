@@ -3998,7 +3998,7 @@ ALTER TABLE public.gerenciadorcomunicacao_sequence OWNER TO postgres;
 -- Name: gerenciadorcomunicacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 21, true);
+SELECT pg_catalog.setval('gerenciadorcomunicacao_sequence', 22, true);
 
 
 --
@@ -29423,7 +29423,6 @@ INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, d
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (10, 9, 1, 2, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (11, 12, 2, 8, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (12, 13, 1, 13, NULL, 1, NULL, false);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (13, 14, 1, 13, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (14, 16, 2, 12, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (15, 15, 2, 15, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (16, 11, 2, 6, NULL, 1, NULL, false);
@@ -29432,6 +29431,7 @@ INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, d
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (19, 25, 2, 7, NULL, 1, '7', false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (20, 26, 1, 1, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (21, 30, 2, 7, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (22, 14, 1, 13, NULL, 1, NULL, false);
 
 
 --
@@ -29865,6 +29865,7 @@ INSERT INTO migrations (name) VALUES ('20131104141310');
 INSERT INTO migrations (name) VALUES ('20131111163234');
 INSERT INTO migrations (name) VALUES ('20131119100305');
 INSERT INTO migrations (name) VALUES ('20131203103507');
+INSERT INTO migrations (name) VALUES ('20131212082622');
 
 
 --
@@ -30194,7 +30195,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.121.139', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.121.140', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --

@@ -22052,3 +22052,26 @@ update parametrosdosistema set appversao = '1.1.120.138';--.go
 alter table turma add column assinaturaDigitalUrl character varying(200); --.go
 insert into migrations values('20131203103507');--.go
 update parametrosdosistema set appversao = '1.1.121.139';--.go
+-- versao 1.1.121.140
+
+delete from gerenciadorcomunicacao where operacao = 14 and gerenciadorcomunicacao.meiocomunicacao = 1 and gerenciadorcomunicacao.enviarpara = 13; --.go 
+delete from gerenciadorcomunicacao where operacao = 14 and gerenciadorcomunicacao.meiocomunicacao = 1 and gerenciadorcomunicacao.enviarpara = 14; --.go
+
+CREATE FUNCTION atualiza_gerenciador_comunicao() RETURNS integer AS '
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select e.id as empresaId from empresa e
+		LOOP
+			EXECUTE	''INSERT INTO gerenciadorcomunicacao (id, empresa_id, operacao, meiocomunicacao, enviarpara) VALUES (nextval('' || quote_literal(''gerenciadorComunicacao_sequence'') || ''), ''|| quote_literal(mviews.empresaId) ||'', 14, 1, 13)'';
+		END LOOP;
+
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select atualiza_gerenciador_comunicao();--.go
+drop function atualiza_gerenciador_comunicao();--.go
+
+insert into migrations values('20131212082622');--.go
+update parametrosdosistema set appversao = '1.1.121.140';--.go
