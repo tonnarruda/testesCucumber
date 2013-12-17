@@ -16,6 +16,7 @@ public class AtividadeSegurancaPcmatEditAction extends MyActionSupportList
 	
 	private AtividadeSegurancaPcmat atividadeSegurancaPcmat;
 	private Pcmat pcmat;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<AtividadeSegurancaPcmat> atividadesSegurancaPcmat;
 
@@ -123,5 +124,13 @@ public class AtividadeSegurancaPcmatEditAction extends MyActionSupportList
 	public void setPcmat(Pcmat pcmat) 
 	{
 		this.pcmat = pcmat;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
 	}
 }

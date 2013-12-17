@@ -30,6 +30,8 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 	
 	private FasePcmat fasePcmat;
 	private RiscoFasePcmat riscoFasePcmat;
+	private Long pcmatId;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<RiscoFasePcmat> riscosFasePcmat;
 	private Collection<Risco> riscos;
@@ -186,5 +188,21 @@ public class RiscoFasePcmatEditAction extends MyActionSupportList
 	public void setMedidaRiscoFasePcmatManager(
 			MedidaRiscoFasePcmatManager medidaRiscoFasePcmatManager) {
 		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
+	}
+
+	public Long getPcmatId() {
+		return pcmatId;
+	}
+
+	public void setPcmatId(Long pcmatId) {
+		this.pcmatId = pcmatId;
 	}
 }

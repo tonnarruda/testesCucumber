@@ -19,15 +19,15 @@
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
-			<result name="success" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.AtividadeSegurancaPcmatEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
 			<interceptor-ref name="defaultUpdateStack" />
-			<result name="invalid.token" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
-			<result name="success" type="redirect">list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}</result>
+			<result name="invalid.token" type="redirect"><![CDATA[list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
+			<result name="success" type="redirect"><![CDATA[list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/atividadeSegurancaPcmatEdit.ftl</result>
 		</action>
 	</package>

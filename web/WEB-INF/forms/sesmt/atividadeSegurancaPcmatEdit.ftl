@@ -21,6 +21,7 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="atividadeSegurancaPcmat.id" />
 			<@ww.hidden name="atividadeSegurancaPcmat.pcmat.id" />
+			<@ww.hidden name="ultimoPcmatId" />
 			<@ww.token/>
 			
 			<@ww.textfield label="Nome" name="atividadeSegurancaPcmat.nome" id="nome" required="true" size="50" maxLenght="200"/>
@@ -29,8 +30,10 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}'" class="btnVoltar"></button>
+			<#if ultimoPcmatId == atividadeSegurancaPcmat.pcmat.id>
+				<button onclick="${validarCampos};" class="btnGravar"></button>
+			</#if>
+			<button onclick="window.location='list.action?pcmat.id=${atividadeSegurancaPcmat.pcmat.id}&ultimoPcmatId=${ultimoPcmatId}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

@@ -17,6 +17,8 @@
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.hidden name="riscoFasePcmat.id" />
 			<@ww.hidden name="riscoFasePcmat.fasePcmat.id" />
+			<@ww.hidden name="pcmatId" />
+			<@ww.hidden name="ultimoPcmatId" />
 			<@ww.token/>
 
 			<@ww.select label="Risco" name="riscoFasePcmat.risco.id" id="risco" list="riscos" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true"/>
@@ -24,8 +26,10 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnGravar"></button>
-			<button onclick="window.location='list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}'" class="btnVoltar"></button>
+			<#if ultimoPcmatId == pcmatId>
+				<button onclick="${validarCampos};" class="btnGravar"></button>
+			</#if>
+			<button onclick="window.location='list.action?fasePcmat.id=${riscoFasePcmat.fasePcmat.id}&pcmatId=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}'" class="btnVoltar"></button>
 		</div>
 	</body>
 </html>

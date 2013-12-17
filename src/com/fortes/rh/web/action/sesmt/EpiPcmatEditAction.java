@@ -19,6 +19,7 @@ public class EpiPcmatEditAction extends MyActionSupportList
 	
 	private EpiPcmat epiPcmat;
 	private Pcmat pcmat;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<EpiPcmat> epiPcmats;
 	private Collection<Epi> epis;
@@ -133,5 +134,13 @@ public class EpiPcmatEditAction extends MyActionSupportList
 
 	public void setEpiManager(EpiManager epiManager) {
 		this.epiManager = epiManager;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
 	}
 }

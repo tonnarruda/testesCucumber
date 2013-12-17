@@ -19,10 +19,10 @@ public class EpcPcmatEditAction extends MyActionSupportList
 	
 	private EpcPcmat epcPcmat;
 	private Pcmat pcmat;
+	private Long ultimoPcmatId = 0L;
 	
 	private Collection<EpcPcmat> epcPcmats;
 	private Collection<Epc> epcs;
-	
 
 	private void prepare() throws Exception
 	{
@@ -141,5 +141,13 @@ public class EpcPcmatEditAction extends MyActionSupportList
 
 	public void setPcmat(Pcmat pcmat) {
 		this.pcmat = pcmat;
+	}
+
+	public Long getUltimoPcmatId() {
+		return ultimoPcmatId;
+	}
+
+	public void setUltimoPcmatId(Long ultimoPcmatId) {
+		this.ultimoPcmatId = ultimoPcmatId;
 	}
 }
