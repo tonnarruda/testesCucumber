@@ -9,4 +9,5 @@ public interface MedidaRiscoFasePcmatManager extends GenericManager<MedidaRiscoF
 {
 	void deleteByRiscoFasePcmat(Long riscoFasePcmatId);
 	Collection<MedidaRiscoFasePcmat> findByRiscoFasePcmat(Long riscoFasePcmatId);
+	void clone(Long riscoFasePcmatOrigemId, Long riscoFasePcmatDestinoId);
 }

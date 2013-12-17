@@ -16,7 +16,7 @@ import com.fortes.model.AbstractModel;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="pcmat_sequence", allocationSize=1)
-public class Pcmat extends AbstractModel implements Serializable
+public class Pcmat extends AbstractModel implements Serializable, Cloneable
 {
 	@Temporal(TemporalType.DATE)
 	private Date aPartirDe;
@@ -29,6 +29,19 @@ public class Pcmat extends AbstractModel implements Serializable
 	
 	@OneToMany(mappedBy="pcmat")
 	private Collection<FasePcmat> fasesPcmat;
+	
+	@Override
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o PCMAT.");
+	   }
+	}
 	
 	public void setProjectionIdObra(Long idObra){
 		inicializaObra();

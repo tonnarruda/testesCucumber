@@ -137,6 +137,16 @@ public class PcmatEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String clonar() throws Exception
+	{
+		try {
+			pcmatManager.clonar(pcmat.getId());
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			return Action.INPUT;
+		}
+	}
+	
 	public Pcmat getPcmat()
 	{
 		if(pcmat == null)

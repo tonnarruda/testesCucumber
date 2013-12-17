@@ -12,4 +12,5 @@ public interface PcmatManager extends GenericManager<Pcmat>
 	Collection<Pcmat> findByObra(Long obraId);
 	void validaDataMaiorQueUltimoHistorico(Long pcmatId, Long obraId, Date aPartirDe) throws FortesException;
 	public Pcmat findUltimoHistorico(Long pcmatId, Long obraId);
+	void clonar(Long id);
 }

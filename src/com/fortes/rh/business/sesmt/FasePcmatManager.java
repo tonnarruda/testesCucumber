@@ -9,4 +9,5 @@ public interface FasePcmatManager extends GenericManager<FasePcmat>
 {
 	Collection<FasePcmat> findByPcmat(Long pcmatId);
 	FasePcmat findByIdProjection(Long id);
+	void clonar(Long pcamtOrigemId, Long pcmatDestinoId);
 }
