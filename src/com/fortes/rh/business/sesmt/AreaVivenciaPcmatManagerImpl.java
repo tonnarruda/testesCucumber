@@ -12,4 +12,15 @@ public class AreaVivenciaPcmatManagerImpl extends GenericManagerImpl<AreaVivenci
 	{
 		return getDao().findByPcmat(pcmatId);
 	}
+
+	public void clonar(Long pcmatOrigemId, Long pcmatDestinoId) 
+	{
+		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = getDao().findByPcmat(pcmatOrigemId);
+		for (AreaVivenciaPcmat areaVivenciaPcmat : areasVivenciaPcmat) 
+		{
+			areaVivenciaPcmat.setId(null);
+			areaVivenciaPcmat.setPcmatId(pcmatDestinoId);
+			save(areaVivenciaPcmat);
+		}
+	}
 }

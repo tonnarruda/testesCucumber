@@ -15,7 +15,7 @@ import com.fortes.rh.dao.sesmt.EpcPcmatDao;
 
 public class EpcPcmatDaoHibernate extends GenericDaoHibernate<EpcPcmat> implements EpcPcmatDao
 {
-
+	@SuppressWarnings("unchecked")
 	public Collection<EpcPcmat> findByPcmat(Long pcmatId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ep");
@@ -24,6 +24,7 @@ public class EpcPcmatDaoHibernate extends GenericDaoHibernate<EpcPcmat> implemen
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ep.id"), "id");
 		p.add(Projections.property("ep.descricao"), "descricao");
+		p.add(Projections.property("e.id"), "epcId");
 		p.add(Projections.property("e.descricao"), "epcDescricao");
 		criteria.setProjection(p);
 

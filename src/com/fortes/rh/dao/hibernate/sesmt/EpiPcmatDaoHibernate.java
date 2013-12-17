@@ -25,6 +25,7 @@ public class EpiPcmatDaoHibernate extends GenericDaoHibernate<EpiPcmat> implemen
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ep.id"), "id");
 		p.add(Projections.property("ep.atividades"), "atividades");
+		p.add(Projections.property("e.id"), "epiId");
 		p.add(Projections.property("e.nome"), "epiNome");
 		criteria.setProjection(p);
 

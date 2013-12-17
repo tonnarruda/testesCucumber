@@ -46,11 +46,27 @@ public class EpiPcmat extends AbstractModel implements Serializable
 		this.atividades = atividades;
 	}
 	
+	public void setEpiId(Long epiId) 
+	{
+		if(epi == null)
+			epi = new Epi();
+		
+		epi.setId(epiId);
+	}
+	
 	public void setEpiNome(String epiNome) 
 	{
 		if(epi == null)
 			epi = new Epi();
 		
 		epi.setNome(epiNome);
+	}
+
+	public void setPcmatId(Long pcmatId) 
+	{
+		if (this.pcmat == null)
+			this.pcmat = new Pcmat();
+		
+		this.pcmat.setId(pcmatId);
 	}
 }

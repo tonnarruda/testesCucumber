@@ -3,16 +3,19 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
-import com.fortes.rh.model.sesmt.Pcmat;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.PcmatManager;
 import com.fortes.rh.dao.sesmt.PcmatDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.util.DateUtil;
 
 public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implements PcmatManager
 {
 	private FasePcmatManager fasePcmatManager;
+	private AreaVivenciaPcmatManager areaVivenciaPcmatManager;
+	private AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager;
+	private EpiPcmatManager epiPcmatManager;
+	private EpcPcmatManager epcPcmatManager;
 	
 	public Collection<Pcmat> findByObra(Long obraId) 
 	{
@@ -41,9 +44,29 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		save(pcmatDestino);
 		
 		fasePcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
+		areaVivenciaPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
+		atividadeSegurancaPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
+		epiPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
+		epcPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
 	}
 
 	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {
 		this.fasePcmatManager = fasePcmatManager;
+	}
+
+	public void setAtividadeSegurancaPcmatManager(AtividadeSegurancaPcmatManager atividadeSegurancaPcmatManager) {
+		this.atividadeSegurancaPcmatManager = atividadeSegurancaPcmatManager;
+	}
+
+	public void setEpiPcmatManager(EpiPcmatManager epiPcmatManager) {
+		this.epiPcmatManager = epiPcmatManager;
+	}
+
+	public void setEpcPcmatManager(EpcPcmatManager epcPcmatManager) {
+		this.epcPcmatManager = epcPcmatManager;
+	}
+
+	public void setAreaVivenciaPcmatManager(AreaVivenciaPcmatManager areaVivenciaPcmatManager) {
+		this.areaVivenciaPcmatManager = areaVivenciaPcmatManager;
 	}
 }

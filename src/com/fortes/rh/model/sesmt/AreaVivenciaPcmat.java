@@ -45,10 +45,24 @@ public class AreaVivenciaPcmat extends AbstractModel implements Serializable
 		this.descricao = descricao;
 	}
 	
+	public void setAreaVivenciaId(Long areaVivenciaId) {
+		if (this.areaVivencia == null)
+			this.areaVivencia = new AreaVivencia();
+		
+		this.areaVivencia.setId(areaVivenciaId);
+	}
+	
 	public void setAreaVivenciaNome(String areaVivenciaNome) {
 		if (this.areaVivencia == null)
 			this.areaVivencia = new AreaVivencia();
 		
 		this.areaVivencia.setNome(areaVivenciaNome);
+	}
+
+	public void setPcmatId(Long pcmatId) {
+		if (this.pcmat == null)
+			this.pcmat = new Pcmat();
+		
+		this.pcmat.setId(pcmatId);
 	}
 }

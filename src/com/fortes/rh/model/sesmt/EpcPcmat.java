@@ -45,11 +45,27 @@ public class EpcPcmat extends AbstractModel implements Serializable
 		this.descricao = descricao;
 	}
 	
+	public void setEpcId(Long epcId) 
+	{
+		if(epc == null)
+			epc = new Epc();
+		
+		epc.setId(epcId);
+	}
+	
 	public void setEpcDescricao(String epcDescricao) 
 	{
 		if(epc == null)
 			epc = new Epc();
 		
 		epc.setDescricao(epcDescricao);
+	}
+
+	public void setPcmatId(Long pcmatId) 
+	{
+		if(this.pcmat == null)
+			this.pcmat = new Pcmat();
+		
+		this.pcmat.setId(pcmatId);
 	}
 }

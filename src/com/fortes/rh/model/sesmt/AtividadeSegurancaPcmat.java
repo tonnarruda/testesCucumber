@@ -100,4 +100,12 @@ public class AtividadeSegurancaPcmat extends AbstractModel implements Serializab
 		
 		return "";
 	}
+
+	public void setPcmatId(Long pcmatId) 
+	{
+		if (this.pcmat == null)
+			this.pcmat = new Pcmat();
+		
+		this.pcmat.setId(pcmatId);
+	}
 }

@@ -14,4 +14,15 @@ public class EpiPcmatManagerImpl extends GenericManagerImpl<EpiPcmat, EpiPcmatDa
 	{
 		return getDao().findByPcmat(pcmatId);
 	}
+
+	public void clonar(Long pcmatOrigemId, Long pcmatDestinoId) 
+	{
+		Collection<EpiPcmat> episPcmat = getDao().findByPcmat(pcmatOrigemId);
+		for (EpiPcmat epiPcmat : episPcmat) 
+		{
+			epiPcmat.setId(null);
+			epiPcmat.setPcmatId(pcmatDestinoId);
+			save(epiPcmat);
+		}
+	}
 }

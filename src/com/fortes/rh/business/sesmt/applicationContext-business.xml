@@ -904,6 +904,18 @@
     <property name="fasePcmatManager">
       <ref bean="fasePcmatManager" />
     </property>
+    <property name="areaVivenciaPcmatManager">
+      <ref bean="areaVivenciaPcmatManager" />
+    </property>
+    <property name="atividadeSegurancaPcmatManager">
+      <ref bean="atividadeSegurancaPcmatManager" />
+    </property>
+    <property name="epiPcmatManager">
+      <ref bean="epiPcmatManager" />
+    </property>
+    <property name="epcPcmatManager">
+      <ref bean="epcPcmatManager" />
+    </property>
   </bean>
   <bean id="pcmatManager" parent="parentManager">
     <property name="proxyInterfaces">

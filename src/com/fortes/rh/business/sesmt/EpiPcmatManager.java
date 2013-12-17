@@ -8,4 +8,5 @@ import com.fortes.rh.model.sesmt.EpiPcmat;
 public interface EpiPcmatManager extends GenericManager<EpiPcmat>
 {
 	Collection<EpiPcmat> findByPcmat(Long pcmatId);
+	void clonar(Long pcmatOrigemId, Long pcmatDestinoId);
 }

@@ -24,6 +24,7 @@ public class AreaVivenciaPcmatDaoHibernate extends GenericDaoHibernate<AreaViven
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("avp.id"), "id");
 		p.add(Projections.property("avp.descricao"), "descricao");
+		p.add(Projections.property("av.id"), "areaVivenciaId");
 		p.add(Projections.property("av.nome"), "areaVivenciaNome");
 		criteria.setProjection(p);
 
