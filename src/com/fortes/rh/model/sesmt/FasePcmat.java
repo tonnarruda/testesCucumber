@@ -67,19 +67,27 @@ public class FasePcmat extends AbstractModel implements Serializable
 		this.riscosFasePcmat = riscosFasePcmat;
 	}
 	
-	public void setFaseDescricao(String descricao)
+	public void setFaseId(Long faseId)
 	{
 		if (this.fase == null)
 			this.fase = new Fase();
 		
-		this.fase.setDescricao(descricao);
+		this.fase.setId(faseId);
 	}
 	
-	public void setPcmatId(Long id)
+	public void setFaseDescricao(String faseDescricao)
+	{
+		if (this.fase == null)
+			this.fase = new Fase();
+		
+		this.fase.setDescricao(faseDescricao);
+	}
+	
+	public void setPcmatId(Long pcmatId)
 	{
 		if (this.pcmat == null)
 			this.pcmat = new Pcmat();
 		
-		this.pcmat.setId(id);
+		this.pcmat.setId(pcmatId);
 	}
 }

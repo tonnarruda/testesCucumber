@@ -24,9 +24,9 @@ public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcm
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("rfp.id"), "id");
-		p.add(Projections.property("rfp.risco.id"), "riscoId");
-		p.add(Projections.property("r.descricao"), "riscoDescricao");
 		p.add(Projections.property("rfp.fasePcmat.id"), "fasePcmatId");
+		p.add(Projections.property("r.id"), "riscoId");
+		p.add(Projections.property("r.descricao"), "riscoDescricao");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("rfp.fasePcmat.id", fasePcmatId));

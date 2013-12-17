@@ -10,5 +10,5 @@ public interface RiscoFasePcmatManager extends GenericManager<RiscoFasePcmat>
 	Collection<RiscoFasePcmat> findByFasePcmat(Long fasePcmatId);
 	void removeByFasePcmatRisco(Long fasePcmatId, Collection<Long> riscosIds);
 	void saveRiscosMedidas(RiscoFasePcmat riscoFasePcmat, Long[] medidasSegurancaIds);
-	void clone(Long fasePcmatOrigemId, Long fasePcmatDestinoId);
+	void clonar(Long fasePcmatOrigemId, Long fasePcmatDestinoId);
 }

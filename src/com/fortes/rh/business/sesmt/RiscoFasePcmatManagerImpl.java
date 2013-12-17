@@ -45,7 +45,7 @@ public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat
 		this.medidaRiscoFasePcmatManager = medidaRiscoFasePcmatManager;
 	}
 
-	public void clone(Long fasePcmatOrigemId, Long fasePcmatDestinoId) 
+	public void clonar(Long fasePcmatOrigemId, Long fasePcmatDestinoId) 
 	{
 		Collection<RiscoFasePcmat> riscoFasePcmats = getDao().findByFasePcmat(fasePcmatOrigemId);
 		
@@ -56,10 +56,9 @@ public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat
 			
 			riscoFasePcmatDestino.setId(null);
 			riscoFasePcmatDestino.setFasePcmatId(fasePcmatDestinoId);
-			getDao().save(riscoFasePcmatDestino);
+			save(riscoFasePcmatDestino);
 			
-			medidaRiscoFasePcmatManager.clone(riscoFasePcmatOrigemId, riscoFasePcmatDestino.getId());
+			medidaRiscoFasePcmatManager.clonar(riscoFasePcmatOrigemId, riscoFasePcmatDestino.getId());
 		}
-		
 	}
 }

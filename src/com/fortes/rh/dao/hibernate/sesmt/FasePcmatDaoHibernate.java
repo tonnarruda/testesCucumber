@@ -25,6 +25,7 @@ public class FasePcmatDaoHibernate extends GenericDaoHibernate<FasePcmat> implem
 		p.add(Projections.property("fp.id"), "id");
 		p.add(Projections.property("fp.mesIni"), "mesIni");
 		p.add(Projections.property("fp.mesFim"), "mesFim");
+		p.add(Projections.property("f.id"), "faseId");
 		p.add(Projections.property("f.descricao"), "faseDescricao");
 		criteria.setProjection(p);
 

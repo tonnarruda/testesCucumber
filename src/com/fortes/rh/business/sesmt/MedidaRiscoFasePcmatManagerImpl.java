@@ -20,7 +20,7 @@ public class MedidaRiscoFasePcmatManagerImpl extends GenericManagerImpl<MedidaRi
 		return getDao().findByRiscoFasePcmat(riscoFasePcmatId);
 	}
 
-	public void clone(Long riscoFasePcmatOrigemId, Long riscoFasePcmatDestinoId) 
+	public void clonar(Long riscoFasePcmatOrigemId, Long riscoFasePcmatDestinoId) 
 	{
 		Collection<MedidaRiscoFasePcmat> medidaRiscoFasePcmats = getDao().findByRiscoFasePcmat(riscoFasePcmatOrigemId);
 		

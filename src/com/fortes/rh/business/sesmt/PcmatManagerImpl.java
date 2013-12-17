@@ -32,13 +32,15 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		return getDao().findUltimoHistorico(pcmatId, obraId);
 	}
 
-	public void clonar(Long id) 
+	public void clonar(Long pcmatOrigemId, Date aPartirDe, Long obraId) 
 	{
-		Pcmat pcmatDestino = (Pcmat) getDao().findById(id).clone();
+		Pcmat pcmatDestino = (Pcmat) getDao().findEntidadeComAtributosSimplesById(pcmatOrigemId).clone();
 		pcmatDestino.setId(null);
-		getDao().save(pcmatDestino);
+		pcmatDestino.setProjectionIdObra(obraId);
+		pcmatDestino.setAPartirDe(aPartirDe);
+		save(pcmatDestino);
 		
-		fasePcmatManager.clonar(id, pcmatDestino.getId());
+		fasePcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
 	}
 
 	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {

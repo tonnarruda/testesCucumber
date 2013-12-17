@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -34,6 +35,7 @@ public class PcmatEditAction extends MyActionSupportList
 	private Collection<FasePcmat> fasesPcmat;
 	
 	private String nomeObra;
+	private Date aPartirDe;
 
 	public String prepareInsert() throws Exception
 	{
@@ -140,11 +142,24 @@ public class PcmatEditAction extends MyActionSupportList
 	public String clonar() throws Exception
 	{
 		try {
-			pcmatManager.clonar(pcmat.getId());
-			return Action.SUCCESS;
+			pcmatManager.validaDataMaiorQueUltimoHistorico(null, obra.getId(), aPartirDe);
+			pcmatManager.clonar(pcmat.getId(), aPartirDe, obra.getId());
+			addActionSuccess("PCMAT clonado com sucesso.");
+		
+		} catch (DataIntegrityViolationException de) {
+			addActionWarning("Já existe um PCMAT cadastrado na data " + DateUtil.formataDiaMesAno(aPartirDe) + ".");
+			de.printStackTrace();
+			
+		} catch (FortesException fe) {
+			addActionWarning(fe.getMessage());
+			fe.printStackTrace();
+			
 		} catch (Exception e) {
-			return Action.INPUT;
+			e.printStackTrace();
+			addActionError("Não foi possível clonar o PCMAT.");
 		}
+		
+		return listPcmats();
 	}
 	
 	public Pcmat getPcmat()
@@ -215,5 +230,13 @@ public class PcmatEditAction extends MyActionSupportList
 
 	public Long getUltimoPcmatId() {
 		return ultimoPcmatId;
+	}
+
+	public Date getaPartirDe() {
+		return aPartirDe;
+	}
+
+	public void setaPartirDe(Date aPartirDe) {
+		this.aPartirDe = aPartirDe;
 	}
 }
