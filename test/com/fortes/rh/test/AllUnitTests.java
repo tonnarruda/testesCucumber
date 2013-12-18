@@ -157,6 +157,7 @@ import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
 import com.fortes.rh.test.business.sesmt.MedidaSegurancaManagerTest;
 import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ObraManagerTest;
+import com.fortes.rh.test.business.sesmt.PcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmsoManagerTest;
 import com.fortes.rh.test.business.sesmt.ProntuarioManagerTest;
 import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
@@ -315,6 +316,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.MedicoCoordenadorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedidaSegurancaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.NaturezaLesaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ObraDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.PcmatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ProntuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RealizacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoAmbienteDaoHibernateTest;
@@ -575,6 +577,7 @@ import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorListActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedidaSegurancaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.NaturezaLesaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ObraEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.PcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PcmsoListActionTest;
 import com.fortes.rh.test.web.action.sesmt.PppEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PpraEditActionTest;
@@ -1204,6 +1207,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AreaVivenciaManagerTest.class);
         suite.addTestSuite(AreaVivenciaEditActionTest.class);
         
+        suite.addTestSuite(PcmatDaoHibernateTest.class);
+        suite.addTestSuite(PcmatManagerTest.class);
+        suite.addTestSuite(PcmatEditActionTest.class);
+
         suite.addTestSuite(AreaVivenciaPcmatDaoHibernateTest.class);
         suite.addTestSuite(AreaVivenciaPcmatManagerTest.class);
         suite.addTestSuite(AreaVivenciaPcmatEditActionTest.class);

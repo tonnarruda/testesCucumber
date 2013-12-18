@@ -7,8 +7,13 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.sesmt.ObraManager;
 import com.fortes.rh.business.sesmt.PcmatManager;
+import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.ObraFactory;
 import com.fortes.rh.test.factory.sesmt.PcmatFactory;
 import com.fortes.rh.web.action.sesmt.PcmatEditAction;
 
@@ -16,15 +21,21 @@ public class PcmatEditActionTest extends MockObjectTestCase
 {
 	private PcmatEditAction action;
 	private Mock manager;
+	private Mock obraManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		manager = new Mock(PcmatManager.class);
 		action = new PcmatEditAction();
+		
+		manager = new Mock(PcmatManager.class);
 		action.setPcmatManager((PcmatManager) manager.proxy());
 
+		obraManager = new Mock(ObraManager.class);
+		action.setObraManager((ObraManager) obraManager.proxy());
+
 		action.setPcmat(new Pcmat());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa());
 	}
 
 	protected void tearDown() throws Exception
@@ -36,9 +47,9 @@ public class PcmatEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Pcmat>()));
+		obraManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Obra>()));
 		assertEquals("success", action.list());
-		assertNotNull(action.getPcmats());
+		assertNotNull(action.getObras());
 	}
 
 	public void testDelete() throws Exception
@@ -47,7 +58,6 @@ public class PcmatEditActionTest extends MockObjectTestCase
 		action.setPcmat(pcmat);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<Pcmat>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -60,11 +70,49 @@ public class PcmatEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.delete());
 	}
 
-	public void testInsert() throws Exception
+	public void testClonar() throws Exception
 	{
+		Obra obra =  ObraFactory.getEntity(1L);
+		obra.setNome("Fortes");
+		action.setObra(obra);
+		
 		Pcmat pcmat = PcmatFactory.getEntity(1L);
 		action.setPcmat(pcmat);
+		
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").withAnyArguments().isVoid();
+		manager.expects(once()).method("clonar").withAnyArguments().isVoid();
+		manager.expects(once()).method("findByObra").with(eq(obra.getId())).will(returnValue(new ArrayList<Pcmat>()));
+		manager.expects(once()).method("findUltimoHistorico").with(eq(null), eq(obra.getId())).will(returnValue(pcmat));
+		obraManager.expects(once()).method("findByIdProjecion").with(eq(obra.getId())).will(returnValue(obra));
+		
+		assertEquals("success", action.clonar());
+	}
+	
+	public void testClonarException() throws Exception
+	{
+		Obra obra =  ObraFactory.getEntity(1L);
+		obra.setNome("Fortes");
+		action.setObra(obra);
+		
+		Pcmat pcmat = PcmatFactory.getEntity(1L);
+		action.setPcmat(pcmat);
+		
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").will(throwException(new FortesException("")));
+		manager.expects(once()).method("findByObra").with(eq(obra.getId())).will(returnValue(new ArrayList<Pcmat>()));
+		manager.expects(once()).method("findUltimoHistorico").with(eq(null), eq(obra.getId())).will(returnValue(pcmat));
+		obraManager.expects(once()).method("findByIdProjecion").with(eq(obra.getId())).will(returnValue(obra));
+		
+		assertEquals("success", action.clonar());
+	}
 
+	public void testInsert() throws Exception
+	{
+		Obra obra =  ObraFactory.getEntity(1L);
+		Pcmat pcmat = PcmatFactory.getEntity(1L);
+		pcmat.setObra(obra);
+		action.setPcmat(pcmat);
+
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").withAnyArguments().isVoid();
 		manager.expects(once()).method("save").with(eq(pcmat)).will(returnValue(pcmat));
 
 		assertEquals("success", action.insert());
@@ -72,15 +120,24 @@ public class PcmatEditActionTest extends MockObjectTestCase
 
 	public void testInsertException() throws Exception
 	{
+		Obra obra =  ObraFactory.getEntity(1L);
+		Pcmat pcmat = PcmatFactory.getEntity(1L);
+		pcmat.setObra(obra);
+		action.setPcmat(pcmat);
+
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").withAnyArguments().isVoid();
 		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		assertEquals("input", action.insert());
 	}
 
 	public void testUpdate() throws Exception
 	{
+		Obra obra =  ObraFactory.getEntity(1L);
 		Pcmat pcmat = PcmatFactory.getEntity(1L);
+		pcmat.setObra(obra);
 		action.setPcmat(pcmat);
 
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").withAnyArguments().isVoid();
 		manager.expects(once()).method("update").with(eq(pcmat)).isVoid();
 
 		assertEquals("success", action.update());
@@ -88,11 +145,13 @@ public class PcmatEditActionTest extends MockObjectTestCase
 
 	public void testUpdateException() throws Exception
 	{
+		Obra obra =  ObraFactory.getEntity(1L);
 		Pcmat pcmat = PcmatFactory.getEntity(1L);
+		pcmat.setObra(obra);
 		action.setPcmat(pcmat);
 
+		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").withAnyArguments().isVoid();
 		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findById").with(eq(pcmat.getId())).will(returnValue(pcmat));
 
 		assertEquals("input", action.update());
 	}

@@ -41,7 +41,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		pcmatDestino.setId(null);
 		pcmatDestino.setProjectionIdObra(obraId);
 		pcmatDestino.setAPartirDe(aPartirDe);
-		save(pcmatDestino);
+		getDao().save(pcmatDestino);
 		
 		fasePcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
 		areaVivenciaPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
