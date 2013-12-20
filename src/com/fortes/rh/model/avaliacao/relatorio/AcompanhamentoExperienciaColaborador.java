@@ -33,8 +33,10 @@ public class AcompanhamentoExperienciaColaborador implements Comparable<Acompanh
 	{
 		if(respondidaEm != null)
 			this.periodoExperiencias.add(DateUtil.formataDiaMesAno(respondidaEm) + " (" + performance + ")");
-		else
+		else if(dataPeridoExperienciaPrevista!= null)
 			this.periodoExperiencias.add("Previsto: " + dataPeridoExperienciaPrevista);
+		else
+			this.periodoExperiencias.add(null);
 	}
 
 	public Long getAreaOrganizacionalId() {

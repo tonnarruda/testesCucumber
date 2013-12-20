@@ -1764,10 +1764,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Collection<Colaborador> colaboradoresRespostas = getDao().findComAvaliacoesExperiencias(null, null, empresa, areasCheck, estabelecimentoCheck);
 
 		Date data;
-		String performance;
+	 	String performance;
+	 	boolean temPeriodoExperiencia;
 
 		for (Colaborador colab : colaboradores)
 		{
+			temPeriodoExperiencia = false;
 			AcompanhamentoExperienciaColaborador experienciaColaborador = new AcompanhamentoExperienciaColaborador(colab.getMatricula(), colab.getNome(), colab.getCargoFaixa(), colab.getAreaOrganizacional(), colab.getDataAdmissao());
 			for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 			{
@@ -1788,11 +1790,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				{
 					String DataPeriodoExperienciaPrevista = DateUtil.formataDiaMesAno(DateUtil.incrementaDias(colab.getDataAdmissao(), periodoExperiencia.getDias()-1));
 					experienciaColaborador.addPeriodo(data, performance, DataPeriodoExperienciaPrevista);
-				}
+					temPeriodoExperiencia = true;
+				}else
+					experienciaColaborador.addPeriodo(null, null, null);
 
 			}
 
-			if(experienciaColaborador.getPeriodoExperiencias().size() > 0)
+			if (temPeriodoExperiencia)
 				acompanhamentos.add(experienciaColaborador);
 		}
 
