@@ -1,11 +1,21 @@
 package com.fortes.rh.business.sesmt;
 
+import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Date;
+
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPTab;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.PcmatDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.sesmt.AreaVivenciaPcmat;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.util.DateUtil;
 
@@ -48,6 +58,39 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		atividadeSegurancaPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
 		epiPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
 		epcPcmatManager.clonar(pcmatOrigemId, pcmatDestino.getId());
+	}
+	
+	public XWPFDocument gerarDocumento(Long pcmatId) throws Exception 
+	{
+		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = areaVivenciaPcmatManager.findByPcmat(pcmatId);
+		
+		XWPFDocument document;
+		XWPFParagraph para;
+		XWPFRun run;
+		
+		document = new XWPFDocument(new FileInputStream("/Users/rubensgadelha/Downloads/PCMAT.docx"));
+		
+		// ÁREAS DE VIVÊNCIA
+		
+		para = document.createParagraph();
+        para.setStyle("Heading1");
+        run = para.createRun();
+        run.setText("DIMENSIONAMENTO DA ÁREA DE VIVÊNCIA");
+        
+        for (AreaVivenciaPcmat areaVivenciaPcmat : areasVivenciaPcmat) 
+        {
+        	para = document.createParagraph();
+        	para.setStyle("Heading2");
+        	run = para.createRun();
+        	run.setText(areaVivenciaPcmat.getAreaVivencia().getNome());
+
+        	para = document.createParagraph();
+        	para.setAlignment(ParagraphAlignment.THAI_DISTRIBUTE);
+        	run = para.createRun();
+        	run.setText(areaVivenciaPcmat.getDescricao());
+		}
+        
+        return document;
 	}
 
 	public void setFasePcmatManager(FasePcmatManager fasePcmatManager) {

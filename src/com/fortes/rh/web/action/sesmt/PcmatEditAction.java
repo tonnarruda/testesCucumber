@@ -1,9 +1,16 @@
 package com.fortes.rh.web.action.sesmt;
 
 
+import java.io.FileInputStream;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.ObraManager;
@@ -15,6 +22,7 @@ import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 
 public class PcmatEditAction extends MyActionSupportList
@@ -119,6 +127,23 @@ public class PcmatEditAction extends MyActionSupportList
 		
 		Obra obra = obraManager.findByIdProjecion(this.obra.getId());
 		nomeObra = obra.getNome(); 
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimir() throws Exception
+	{
+		XWPFDocument document = pcmatManager.gerarDocumento(pcmat.getId());
+		
+        HttpServletResponse response = ServletActionContext.getResponse();
+
+		response.addHeader("Expires", "0");
+		response.addHeader("Pragma", "no-cache");
+		response.setContentType("application/force-download");
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Disposition","attachment; filename=\"PCMAT.docx\"");
+
+		document.write(response.getOutputStream());
 		
 		return Action.SUCCESS;
 	}
