@@ -3,20 +3,20 @@ package com.fortes.rh.business.sesmt;
 import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPTab;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.PcmatDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.AreaVivenciaPcmat;
+import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.Pcmat;
+import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 import com.fortes.rh.util.DateUtil;
 
 public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implements PcmatManager
@@ -63,6 +63,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	public XWPFDocument gerarDocumento(Long pcmatId) throws Exception 
 	{
 		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = areaVivenciaPcmatManager.findByPcmat(pcmatId);
+		Map<FasePcmat, Collection<RiscoFasePcmat>> riscosFasesPcmat = fasePcmatManager.findByPcmatRiscos(pcmatId);
 		
 		XWPFDocument document;
 		XWPFParagraph para;
@@ -86,9 +87,24 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 
         	para = document.createParagraph();
         	para.setAlignment(ParagraphAlignment.THAI_DISTRIBUTE);
+        	para.setIndentationFirstLine(700);
         	run = para.createRun();
         	run.setText(areaVivenciaPcmat.getDescricao());
 		}
+        
+        // RISCOS
+		
+		para = document.createParagraph();
+		para.setStyle("Heading1");
+		run = para.createRun();
+		run.setText("MEMORIAL SOBRE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO");
+		
+		para = document.createParagraph();
+		para.setStyle("Heading2");
+		run = para.createRun();
+		run.setText("DESCRIÇÃO GERAL DE RISCOS");
+		
+		
         
         return document;
 	}

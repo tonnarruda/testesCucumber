@@ -9,4 +9,5 @@ public interface RiscoFasePcmatDao extends GenericDao<RiscoFasePcmat>
 {
 	Collection<RiscoFasePcmat> findByFasePcmat(Long fasePcmatId);
 	void removeByFasePcmatRisco(Long fasePcmatId, Collection<Long> riscosIds);
+	Collection<RiscoFasePcmat> findByPcmat(Long pcmatId);
 }

@@ -61,4 +61,9 @@ public class RiscoFasePcmatManagerImpl extends GenericManagerImpl<RiscoFasePcmat
 			medidaRiscoFasePcmatManager.clonar(riscoFasePcmatOrigemId, riscoFasePcmatDestino.getId());
 		}
 	}
+
+	public Collection<RiscoFasePcmat> findByPcmat(Long pcmatId) 
+	{
+		return getDao().findByPcmat(pcmatId);
+	}
 }
