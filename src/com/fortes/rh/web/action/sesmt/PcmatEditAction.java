@@ -1,16 +1,12 @@
 package com.fortes.rh.web.action.sesmt;
 
 
-import java.io.FileInputStream;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.ObraManager;

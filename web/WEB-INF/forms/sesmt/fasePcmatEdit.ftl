@@ -24,8 +24,7 @@
 			<@ww.hidden name="ultimoPcmatId" />
 			<@ww.token/>
 
-			<@ww.select label="Fase" name="fasePcmat.fase.id" id="fase" list="fases" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true"/>
-			
+			<@ww.select label="Fase" name="fasePcmat.fase.id" id="fase" list="fases" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true" cssStyle="width:500px"/>
 			<li id="wwgrp_mesIni" class="wwgrp">	
 				<div id="wwlbl_mesIni" class="wwlbl">
 					<label for="mesIni" class="desc"> Cronograma:<span class="req">* </span></label>
@@ -37,6 +36,7 @@
 					&ordm; mês
 				</div> 
 			</li>
+			<@ww.textarea label="Descrição" name="fasePcmat.descricao" cssStyle="width:500px"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">

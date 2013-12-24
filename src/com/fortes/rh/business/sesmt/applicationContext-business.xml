@@ -904,6 +904,9 @@
     <property name="fasePcmatManager">
       <ref bean="fasePcmatManager" />
     </property>
+    <property name="medidaRiscoFasePcmatManager">
+      <ref bean="medidaRiscoFasePcmatManager" />
+    </property>
     <property name="areaVivenciaPcmatManager">
       <ref bean="areaVivenciaPcmatManager" />
     </property>

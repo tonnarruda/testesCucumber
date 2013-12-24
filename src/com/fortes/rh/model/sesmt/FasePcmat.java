@@ -20,8 +20,8 @@ public class FasePcmat extends AbstractModel implements Serializable
 	@ManyToOne
 	private Pcmat pcmat;
 	
+	private String descricao;
 	private Integer mesIni;
-	
 	private Integer mesFim;
 
 	@OneToMany(mappedBy="fasePcmat")
@@ -41,6 +41,14 @@ public class FasePcmat extends AbstractModel implements Serializable
 	
 	public void setPcmat(Pcmat pcmat) {
 		this.pcmat = pcmat;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 	public Integer getMesIni() {

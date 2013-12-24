@@ -48,18 +48,20 @@ public class EpiPcmat extends AbstractModel implements Serializable
 	
 	public void setEpiId(Long epiId) 
 	{
-		if(epi == null)
-			epi = new Epi();
-		
+		newEpi();
 		epi.setId(epiId);
 	}
 	
 	public void setEpiNome(String epiNome) 
 	{
-		if(epi == null)
-			epi = new Epi();
-		
+		newEpi();
 		epi.setNome(epiNome);
+	}
+	
+	public void setEpiDescricao(String epiDescricao) 
+	{
+		newEpi();
+		epi.setDescricao(epiDescricao);
 	}
 
 	public void setPcmatId(Long pcmatId) 
@@ -68,5 +70,10 @@ public class EpiPcmat extends AbstractModel implements Serializable
 			this.pcmat = new Pcmat();
 		
 		this.pcmat.setId(pcmatId);
+	}
+	
+	private void newEpi() {
+		if(epi == null)
+			epi = new Epi();
 	}
 }

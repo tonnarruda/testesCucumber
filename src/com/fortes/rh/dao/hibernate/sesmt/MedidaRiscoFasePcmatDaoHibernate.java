@@ -40,4 +40,27 @@ public class MedidaRiscoFasePcmatDaoHibernate extends GenericDaoHibernate<Medida
 		query.setLong("riscoFasePcmatId", riscoFasePcmatId);
 		query.executeUpdate();
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<MedidaRiscoFasePcmat> findByPcmat(Long pcmatId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "mrfp");
+		criteria.createCriteria("mrfp.medidaSeguranca", "ms", Criteria.LEFT_JOIN);
+		criteria.createCriteria("mrfp.riscoFasePcmat", "rfp");
+		criteria.createCriteria("rfp.fasePcmat", "fp");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("mrfp.id"), "id");
+		p.add(Projections.property("rfp.id"), "riscoFasePcmatId");
+		p.add(Projections.property("ms.id"), "medidaSegurancaId");
+		p.add(Projections.property("ms.descricao"), "medidaSegurancaDescricao");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("fp.pcmat.id", pcmatId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 }

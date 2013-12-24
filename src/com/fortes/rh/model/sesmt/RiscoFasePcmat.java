@@ -57,6 +57,11 @@ public class RiscoFasePcmat extends AbstractModel implements Serializable
 		this.risco.setDescricao(riscoDescricao);
 	}
 	
+	public void setRiscoGrupoRisco(String riscoGrupoRisco) {
+		newRisco();
+		this.risco.setGrupoRisco(riscoGrupoRisco);
+	}
+	
 	public Long getRiscoId() {
 		if (this.risco == null)
 			return null;
@@ -67,6 +72,11 @@ public class RiscoFasePcmat extends AbstractModel implements Serializable
 	public void setFasePcmatId(Long fasePcmatId) {
 		newFasePcmat();
 		this.fasePcmat.setId(fasePcmatId);
+	}
+	
+	public void setFasePcmatDescricao(String fasePcmatDescricao) {
+		newFasePcmat();
+		this.fasePcmat.setDescricao(fasePcmatDescricao);
 	}
 	
 	public void setFaseId(Long faseId) {

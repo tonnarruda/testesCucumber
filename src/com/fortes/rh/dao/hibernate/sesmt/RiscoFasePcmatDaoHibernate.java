@@ -12,6 +12,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoFasePcmatDao;
+import com.fortes.rh.model.sesmt.FasePcmat;
 import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 
 public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcmat> implements RiscoFasePcmatDao
@@ -49,21 +50,24 @@ public class RiscoFasePcmatDaoHibernate extends GenericDaoHibernate<RiscoFasePcm
 	@SuppressWarnings("unchecked")
 	public Collection<RiscoFasePcmat> findByPcmat(Long pcmatId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "rfp");
+		Criteria criteria = getSession().createCriteria(FasePcmat.class, "fp");
+		criteria.createCriteria("fp.riscosFasePcmat", "rfp", Criteria.LEFT_JOIN);
 		criteria.createCriteria("rfp.risco", "r", Criteria.LEFT_JOIN);
-		criteria.createCriteria("rfp.fasePcmat", "fp", Criteria.LEFT_JOIN);
-		criteria.createCriteria("fp.fase", "f", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fp.fase", "f");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("rfp.id"), "id");
 		p.add(Projections.property("fp.id"), "fasePcmatId");
+		p.add(Projections.property("fp.descricao"), "fasePcmatDescricao");
 		p.add(Projections.property("r.id"), "riscoId");
 		p.add(Projections.property("r.descricao"), "riscoDescricao");
+		p.add(Projections.property("r.grupoRisco"), "riscoGrupoRisco");
 		p.add(Projections.property("f.id"), "faseId");
 		p.add(Projections.property("f.descricao"), "faseDescricao");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("fp.pcmat.id", pcmatId));
+		
 		criteria.addOrder(Order.asc("f.descricao"));
 		criteria.addOrder(Order.asc("r.descricao"));
 		

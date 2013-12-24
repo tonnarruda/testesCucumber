@@ -214,12 +214,19 @@ public class ArquivoUtil
 	    return contents.toString();
 	  }
 	
-	public static String getReportSource(String report)
+	public static String getWebInfPath()
 	{
-		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator + report;
+		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/");
 		path = path.replace("\\", "/").replace("%20", " ");
 		path = path.replace('/', java.io.File.separatorChar);
-    	java.io.File file = new java.io.File(path);
+		
+		return path + java.io.File.separator;
+	}
+	
+	public static String getReportSource(String report)
+	{
+		String reportPath = getWebInfPath() + "report" + java.io.File.separator + report;
+    	java.io.File file = new java.io.File(reportPath);
 
 		return getContents(file);
 	}

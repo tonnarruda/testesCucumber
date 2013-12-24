@@ -35,12 +35,15 @@ public class MedidaRiscoFasePcmat extends AbstractModel implements Serializable
 	}
 
 	public void setMedidaSegurancaId(Long medidaSegurancaId) {
-		if (this.medidaSeguranca == null)
-			this.medidaSeguranca = new MedidaSeguranca();
-		
+		newMedidaSeguranca();
 		this.medidaSeguranca.setId(medidaSegurancaId);
 	}
 	
+	public void setMedidaSegurancaDescricao(String medidaSegurancaDescricao) {
+		newMedidaSeguranca();
+		this.medidaSeguranca.setDescricao(medidaSegurancaDescricao);
+	}
+
 	public Long getMedidaSegurancaId() {
 		if (this.medidaSeguranca == null)
 			return null;
@@ -53,5 +56,10 @@ public class MedidaRiscoFasePcmat extends AbstractModel implements Serializable
 			this.riscoFasePcmat = new RiscoFasePcmat();
 		
 		this.riscoFasePcmat.setId(riscoFasePcmatId);
+	}
+	
+	private void newMedidaSeguranca() {
+		if (this.medidaSeguranca == null)
+			this.medidaSeguranca = new MedidaSeguranca();
 	}
 }

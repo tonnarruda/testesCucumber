@@ -1,12 +1,13 @@
 package com.fortes.rh.business.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat;
-import com.fortes.rh.model.sesmt.RiscoFasePcmat;
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.sesmt.MedidaRiscoFasePcmatManager;
 import com.fortes.rh.dao.sesmt.MedidaRiscoFasePcmatDao;
+import com.fortes.rh.model.sesmt.MedidaRiscoFasePcmat;
 
 public class MedidaRiscoFasePcmatManagerImpl extends GenericManagerImpl<MedidaRiscoFasePcmat, MedidaRiscoFasePcmatDao> implements MedidaRiscoFasePcmatManager
 {
@@ -31,6 +32,21 @@ public class MedidaRiscoFasePcmatManagerImpl extends GenericManagerImpl<MedidaRi
 			
 			getDao().save(medidaRiscoFasePcmatDestino);
 		}
+	}
+
+	public Map<Long, Collection<MedidaRiscoFasePcmat>> findByPcmatRiscos(Long pcmatId) 
+	{
+		Map<Long, Collection<MedidaRiscoFasePcmat>> riscosMedidas = new LinkedHashMap<Long, Collection<MedidaRiscoFasePcmat>>();
+		Collection<MedidaRiscoFasePcmat> medidasRiscoFasePcmat = getDao().findByPcmat(pcmatId);
 		
+		for (MedidaRiscoFasePcmat medidaRiscoFasePcmat : medidasRiscoFasePcmat) 
+		{
+			if (!riscosMedidas.containsKey(medidaRiscoFasePcmat.getRiscoFasePcmat().getId()))
+				riscosMedidas.put(medidaRiscoFasePcmat.getRiscoFasePcmat().getId(), new ArrayList<MedidaRiscoFasePcmat>());
+			
+			riscosMedidas.get(medidaRiscoFasePcmat.getRiscoFasePcmat().getId()).add(medidaRiscoFasePcmat);
+		}
+		
+		return riscosMedidas;
 	}
 }

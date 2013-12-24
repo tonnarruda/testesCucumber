@@ -2,7 +2,7 @@ package com.fortes.rh.business.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
@@ -44,14 +44,15 @@ public class FasePcmatManagerImpl extends GenericManagerImpl<FasePcmat, FasePcma
 	public Map<FasePcmat, Collection<RiscoFasePcmat>> findByPcmatRiscos(Long pcmatId) 
 	{
 		Collection<RiscoFasePcmat> riscosFasePcmat = riscoFasePcmatManager.findByPcmat(pcmatId);
-		Map<FasePcmat, Collection<RiscoFasePcmat>> fasesRiscos = new HashMap<FasePcmat, Collection<RiscoFasePcmat>>();
+		Map<FasePcmat, Collection<RiscoFasePcmat>> fasesRiscos = new LinkedHashMap<FasePcmat, Collection<RiscoFasePcmat>>();
 		
 		for (RiscoFasePcmat riscoFasePcmat : riscosFasePcmat) 
 		{
 			if (!fasesRiscos.containsKey(riscoFasePcmat.getFasePcmat()))
 				fasesRiscos.put(riscoFasePcmat.getFasePcmat(), new ArrayList<RiscoFasePcmat>());
 			
-			fasesRiscos.get(riscoFasePcmat.getFasePcmat()).add(riscoFasePcmat);
+			if (riscoFasePcmat.getId() != null)
+				fasesRiscos.get(riscoFasePcmat.getFasePcmat()).add(riscoFasePcmat);
 		}
 		
 		return fasesRiscos;

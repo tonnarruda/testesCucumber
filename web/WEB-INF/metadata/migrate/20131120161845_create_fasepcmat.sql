@@ -2,6 +2,7 @@ CREATE TABLE fasepcmat (
 	id bigint NOT NULL,
 	fase_id bigint,
 	pcmat_id bigint,
+	descricao text,
 	mesIni smallint NOT NULL DEFAULT 0,
 	mesFim smallint NOT NULL DEFAULT 0
 );--.go
