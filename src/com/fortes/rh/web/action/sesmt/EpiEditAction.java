@@ -9,12 +9,18 @@ import java.util.Map;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -28,14 +34,18 @@ public class EpiEditAction extends MyActionSupportEdit
 	private TipoEPIManager tipoEPIManager;
 	private EpiHistoricoManager epiHistoricoManager;
 	private ColaboradorManager colaboradorManager;
+	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
+	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 
 	private Epi epi;
 	private EpiHistorico epiHistorico;
+	private SolicitacaoEpi solicitacaoEpi;
 
 	private String msgAlert;
 
 	private Collection<TipoEPI> tipos;
 	private Collection<EpiHistorico> epiHistoricos;
+	private Collection<SolicitacaoEpiItemEntrega> dataSourceFichaEpi;
 	private String fabricantes = "";
 	
 	//Impressão de ficha de EPI
@@ -44,7 +54,6 @@ public class EpiEditAction extends MyActionSupportEdit
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private FichaEpiRelatorio fichaEpiRelatorio;
 	private boolean imprimirVerso;
-	private Collection<FichaEpiRelatorio> dataSourceFichaEpi;
 
 	public Date getDataHoje()
 	{
@@ -148,10 +157,34 @@ public class EpiEditAction extends MyActionSupportEdit
 		fichaEpiRelatorio =  epiManager.findImprimirFicha(getEmpresaSistema(), colaborador);
 		fichaEpiRelatorio.setImprimirVerso(imprimirVerso);
 		
-		dataSourceFichaEpi = new ArrayList<FichaEpiRelatorio>();
+		montaRelatorioFichaEpi();
 		parametros.put("FICHA", fichaEpiRelatorio);
 		
 		return SUCCESS;
+	}
+
+	private void montaRelatorioFichaEpi() 
+	{
+		int baseNumDeLinhas = 10;
+
+		if(imprimirVerso)
+			baseNumDeLinhas = 34;
+		
+		dataSourceFichaEpi = new ArrayList<SolicitacaoEpiItemEntrega>();
+		int numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas;
+		
+		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
+		{
+			Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId()); 
+			
+			for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
+				dataSourceFichaEpi.addAll(solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId()));
+
+			numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas - dataSourceFichaEpi.size()%baseNumDeLinhas;
+		}
+		
+		for(int i=1; i <= numLinhasAdicionaisParaRelatorio; i++)
+			dataSourceFichaEpi.add(new SolicitacaoEpiItemEntrega());
 	}
 
 	public Epi getEpi()
@@ -244,11 +277,23 @@ public class EpiEditAction extends MyActionSupportEdit
 		this.imprimirVerso = imprimirVerso;
 	}
 
-	public Collection<FichaEpiRelatorio> getDataSourceFichaEpi() {
+	public String getFabricantes() {
+		return fabricantes;
+	}
+
+	public Collection<SolicitacaoEpiItemEntrega> getDataSourceFichaEpi() {
 		return dataSourceFichaEpi;
 	}
 
-	public String getFabricantes() {
-		return fabricantes;
+	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager) {
+		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
+	}
+
+	public void setSolicitacaoEpi(SolicitacaoEpi solicitacaoEpi) {
+		this.solicitacaoEpi = solicitacaoEpi;
+	}
+
+	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
+		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
 }

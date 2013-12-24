@@ -14,6 +14,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -382,5 +383,24 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		}
 		
 		return lista;
+	}
+
+	public Collection<SolicitacaoEpi> findByColaboradorId(Long colaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpi.class, "se");
+		criteria.createCriteria("se.colaborador", "c", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("se.id"), "id");
+		p.add(Projections.property("se.data"), "data");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.id", colaboradorId));
+
+		criteria.addOrder(Order.desc("se.data"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SolicitacaoEpi.class));
+
+		return criteria.list();
 	}
 }

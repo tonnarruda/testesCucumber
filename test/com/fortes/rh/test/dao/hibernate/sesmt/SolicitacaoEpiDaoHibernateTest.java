@@ -602,6 +602,41 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 //		assertEquals(new Integer(3), vo3.getQtdSolicitadoTotal());
 	}
 
+	
+	public void testFindByColaboradorId()
+	{
+		Date data1=DateUtil.criarDataMesAno(01, 02, 2010);
+		Date data2=DateUtil.criarDataMesAno(13, 03, 2010);
+
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setNome("João");
+		colaboradorDao.save(colaborador1);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setNome("Chico");
+		colaboradorDao.save(colaborador2);
+
+    	SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setData(data1);
+		solicitacaoEpi.setColaborador(colaborador1);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi2.setData(data2);
+		solicitacaoEpi2.setColaborador(colaborador1);
+		solicitacaoEpiDao.save(solicitacaoEpi2);
+		
+		SolicitacaoEpi solicitacaoEpi3 = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi3.setData(data1);
+		solicitacaoEpi3.setColaborador(colaborador2);
+		solicitacaoEpiDao.save(solicitacaoEpi3);
+		
+		Collection<SolicitacaoEpi> solicitacaoEpis = solicitacaoEpiDao.findByColaboradorId(colaborador1.getId());
+		assertEquals(2, solicitacaoEpis.size());
+	}
+	
+	
+	
 	public void setEpiDao(EpiDao epiDao)
 	{
 		this.epiDao = epiDao;

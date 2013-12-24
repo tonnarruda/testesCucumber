@@ -20,12 +20,15 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"seie");
 		criteria.createCriteria("seie.solicitacaoEpiItem", "sei", Criteria.LEFT_JOIN);
+		criteria.createCriteria("seie.epiHistorico", "eh", Criteria.LEFT_JOIN);
 		criteria.createCriteria("sei.epi", "e", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("seie.id"), "id");
 		p.add(Projections.property("seie.qtdEntregue"), "qtdEntregue");
 		p.add(Projections.property("seie.dataEntrega"), "dataEntrega");
+		p.add(Projections.property("e.nome"), "epiNome");
+		p.add(Projections.property("eh.CA"), "CA");
 
 		criteria.setProjection(p);
 

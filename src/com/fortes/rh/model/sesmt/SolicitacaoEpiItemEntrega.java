@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -92,12 +93,23 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		return qtdEntregue;
 	}
 
+	public Integer getQtdEntregueRelatorioFichaEpi() {
+		if(qtdEntregue != null && qtdEntregue == 0)
+			qtdEntregue = null;
+		
+		return qtdEntregue;
+	}
+
 	public void setQtdEntregue(Integer qtdEntregue) {
 		this.qtdEntregue = qtdEntregue;
 	}
 
 	public Date getDataEntrega() {
 		return dataEntrega;
+	}
+	
+	public String getDataEntregaFormatada() {
+		return DateUtil.formataDiaMesAno(dataEntrega);
 	}
 
 	public void setDataEntrega(Date dataEntrega) {
@@ -119,4 +131,15 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	public void setEpiHistorico(EpiHistorico epiHistorico) {
 		this.epiHistorico = epiHistorico;
 	}
+	
+    public void setEpiNome(String epiNome)
+    {
+    	if(solicitacaoEpiItem == null)
+    		solicitacaoEpiItem = new SolicitacaoEpiItem();
+    	
+    	if(solicitacaoEpiItem.getEpi() == null)
+    		solicitacaoEpiItem.setEpi(new Epi());
+    	
+    	solicitacaoEpiItem.getEpi().setNome(epiNome);
+    }
 }

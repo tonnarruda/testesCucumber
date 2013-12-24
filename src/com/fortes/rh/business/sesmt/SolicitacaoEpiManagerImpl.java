@@ -143,6 +143,10 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador) {
 		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador);
 	}
+	
+	public Collection<SolicitacaoEpi> findByColaboradorId(Long colaboradorId) {
+		return getDao().findByColaboradorId(colaboradorId);
+	}
 
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
 	{

@@ -112,6 +112,15 @@ public class Epi extends AbstractModel implements Serializable
 			return getNome();
 	}
 
+	public String getNomeFichaEpi()
+	{
+		if(nome == null)
+			return "";
+		if(nome.length() > 45)
+			return nome.substring(0, 44) + "...";
+		
+		return nome;
+	}
 	public String getNome()
 	{
 		return nome;

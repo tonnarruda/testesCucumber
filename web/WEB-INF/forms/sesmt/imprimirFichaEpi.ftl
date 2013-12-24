@@ -15,16 +15,25 @@
 	<#else>
 		<#assign headerValue="Utilize o Filtro acima."/>
 	</#if>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoEpiDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type='text/javascript'>
-		function mudaAction(opcao)
+		function busaSolicitacao(colaboradorId)
 		{
-			if (opcao == 'imprimir')
-				document.formRelatorio.action = "${formAction}";
+			DWRUtil.useLoadingMessage('Carregando...');
+			SolicitacaoEpiDWR.getByColaboradorId(listSoliictacoes, colaboradorId);
+		}
+		
+		function listSoliictacoes(data)
+		{
+			$('#solicitacaoEpi').find('option').remove().end();
+			if(data != "")
+				addOptionsByCollection('solicitacaoEpi', data, 'Selecione...');
 			else
-				document.formRelatorio.action = "imprimirFichaVerso.action";
-
-			return validaFormulario('formRelatorio',new Array('colaborador'),null);
+				$('#solicitacaoEpi').append('<option value="" selected="selected">Não existe solicitação de EPI para esse colaborador</option>');
 		}
 	</script>
 
@@ -38,7 +47,7 @@
 <@ww.form name="form" action="filtroImprimirFicha.action" method="POST" >
 
 		<li>
-			<@ww.div cssClass="divInfo" cssStyle="width: 500px;">
+			<@ww.div cssClass="divInfo" cssStyle="width: 592px;">
 				<ul>
 					<span id="divColaborador">
 						<@ww.textfield label="Nome" name="colaborador.nome" id="nomeColaborador" cssStyle="width: 300px;"/>
@@ -55,11 +64,12 @@
 
 	<@ww.form name="formRelatorio" action="${formAction}" method="post">
 		<br/>
-		<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" required="true" listKey="id" listValue="nomeCpf" headerKey="" headerValue="${headerValue}" />
+		<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" required="true" listKey="id" listValue="nomeCpf" headerKey="" headerValue="${headerValue}" onchange="busaSolicitacao(this.value);" cssStyle="width: 605px;"/>
+		<@ww.select label="Solicitação de Epi (Selecione um ítem para inserir os EPIs entregues no relatório)" name="solicitacaoEpi.id" id="solicitacaoEpi" list="solicitacaoEpis" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione um colaborador." cssStyle="width: 605px;"/>
 		<@ww.checkbox label="Imprimir verso" id="imprimirVerso" name="imprimirVerso" labelPosition="left"/>
 		
 		<div class="buttonGroup">
-			<button class="btnImprimirPdf" onclick="return mudaAction('imprimir');"></button>
+			<button class="btnImprimirPdf" onclick="return validaFormulario('formRelatorio',new Array('colaborador'),null);"></button>
 		</div>
 
 		<@ww.hidden name="colaborador.nome" />

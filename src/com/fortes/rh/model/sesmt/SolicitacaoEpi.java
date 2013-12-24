@@ -19,6 +19,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -166,6 +167,11 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	public Date getData()
 	{
 		return data;
+	}
+	
+	public String getDataFormatada()
+	{
+		return DateUtil.formataDiaMesAno(data);
 	}
 
 	public void setData(Date data)
