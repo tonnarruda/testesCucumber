@@ -36,7 +36,7 @@
 	
 	<@display.table name="pcmats" id="pcmat" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="imprimir.action?pcmat.id=${pcmat.id}&obra.id=${obra.id}"><img border="0" title="Imprimir" src="<@ww.url value="/imgs/printer.gif"/>"></a>
+			<a href="gerar.action?pcmat.id=${pcmat.id}&obra.id=${obra.id}"><img border="0" title="Gerar Documento" src="<@ww.url value="/imgs/ico_file_word.png"/>"></a>
 			<a href="prepareUpdate.action?pcmat.id=${pcmat.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<#if ultimoPcmat?exists && ultimoPcmat.id ==  pcmat.id>
 				<a href="javascript:;" onclick="javascript:clonar(${pcmat.id});"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>

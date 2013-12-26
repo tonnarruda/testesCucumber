@@ -13,7 +13,7 @@
 			<interceptor-ref name="defaultListStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/pcmatObraList.ftl</result>
 		</action>
-		<action name="imprimir" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="imprimir">
+		<action name="gerar" class="com.fortes.rh.web.action.sesmt.PcmatEditAction" method="gerar">
 			<interceptor-ref name="defaultUpdateStack" />
 			<result name="success" type="redirect">listPcmats.action?obra.id=${obra.id}</result>
 		</action>

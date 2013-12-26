@@ -72,31 +72,31 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	
 	public XWPFDocument gerarDocumento(Long pcmatId) throws Exception 
 	{
-		DocX document = new DocX(new FileInputStream(ArquivoUtil.getWebInfPath() + "PCMAT.docx"));
+		DocX docx = new DocX(new FileInputStream(ArquivoUtil.getWebInfPath() + "PCMAT.docx"));
 		
-		montaAreasVivencia(document, pcmatId);
-		montaRiscos(document, pcmatId);
-	    montaMedidasControleIndividualColetivas(document, pcmatId);
+		montarAreasVivencia(docx, pcmatId);
+		montarRiscos(docx, pcmatId);
+	    montarMedidasControleIndividualColetivas(docx, pcmatId);
 		
-        return document;
+        return docx;
 	}
 	
-	private void montaAreasVivencia(DocX document, Long pcmatId) 
+	private void montarAreasVivencia(DocX docx, Long pcmatId) 
 	{
 		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = areaVivenciaPcmatManager.findByPcmat(pcmatId);
 		
-        document.addParagraph("DIMENSIONAMENTO DA ÁREA DE VIVÊNCIA", "Heading1");
+        docx.addParagraph("DIMENSIONAMENTO DA ÁREA DE VIVÊNCIA", "Heading1");
         
         for (AreaVivenciaPcmat areaVivenciaPcmat : areasVivenciaPcmat) 
         {
-        	document.addParagraph(areaVivenciaPcmat.getAreaVivencia().getNome(), "Heading2");
-        	document.addParagraph(areaVivenciaPcmat.getDescricao(), null, 700, false)
+        	docx.addParagraph(areaVivenciaPcmat.getAreaVivencia().getNome(), "Heading2");
+        	docx.addParagraph(areaVivenciaPcmat.getDescricao(), null, 700, false)
 					.getParagraph()
 					.setAlignment(ParagraphAlignment.THAI_DISTRIBUTE);
 		}
 	}
 
-	private void montaRiscos(DocX document, Long pcmatId) 
+	private void montarRiscos(DocX docx, Long pcmatId) 
 	{
 		XWPFParagraph para;
 		XWPFRun run;
@@ -106,26 +106,26 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		Map<FasePcmat, Collection<RiscoFasePcmat>> riscosFasesPcmat = fasePcmatManager.findByPcmatRiscos(pcmatId);
 		Map<Long, Collection<MedidaRiscoFasePcmat>> medidasRiscosFasesPcmat = medidaRiscoFasePcmatManager.findByPcmatRiscos(pcmatId);
 		
-		document.addParagraph("MEMORIAL SOBRE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO", "Heading1");
-		document.addParagraph("DESCRIÇÃO GERAL DE RISCOS", "Heading2");
+		docx.addParagraph("MEMORIAL SOBRE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO", "Heading1");
+		docx.addParagraph("DESCRIÇÃO GERAL DE RISCOS", "Heading2");
 		
 		Iterator<Entry<FasePcmat, Collection<RiscoFasePcmat>>> faseIterator = riscosFasesPcmat.entrySet().iterator();
 	    while (faseIterator.hasNext()) 
 	    {
 	    	Map.Entry<FasePcmat, Collection<RiscoFasePcmat>> pares = (Map.Entry<FasePcmat, Collection<RiscoFasePcmat>>) faseIterator.next();
 	    	
-	    	document.addParagraph(pares.getKey().getFase().getDescricao(), "Heading3");
-	    	document.addParagraph(pares.getKey().getDescricao(), null, 700, true);
+	    	docx.addParagraph(pares.getKey().getFase().getDescricao(), "Heading3");
+	    	docx.addParagraph(pares.getKey().getDescricao(), null, 700, true);
 			
 			if (!pares.getValue().isEmpty())
 			{
-				table = document.createTable();
+				table = docx.createTable();
 		        
-				document.addTableHeader(table, new String[] { "GRUPO DE RISCOS", "TIPO DE RISCO", "MEDIDAS PREVENTIVAS" }, new Integer[] { 2200, 3000, 3000 });
+				docx.addTableHeader(table, new String[] { "GRUPO DE RISCOS", "TIPO DE RISCO", "MEDIDAS PREVENTIVAS" }, new Integer[] { 2200, 3000, 3000 });
 				
 		        for (RiscoFasePcmat riscoFasePcmat : pares.getValue())
 		        {
-			        row = document.addTableRow(table, riscoFasePcmat.getRisco().getDescricaoGrupoRisco(), riscoFasePcmat.getRisco().getDescricao());
+			        row = docx.addTableRow(table, riscoFasePcmat.getRisco().getDescricaoGrupoRisco(), riscoFasePcmat.getRisco().getDescricao());
 			        
 			        para = row.getCell(2).getParagraphs().get(0);
 			        
@@ -147,28 +147,28 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	    }
 	}
 	
-	private void montaMedidasControleIndividualColetivas(DocX document, Long pcmatId) 
+	private void montarMedidasControleIndividualColetivas(DocX docx, Long pcmatId) 
 	{
 		Collection<EpiPcmat> episPcmat = epiPcmatManager.findByPcmat(pcmatId);
 		
-		document.addParagraph("MEDIDAS DE CONTROLE INDIVIDUAL E COLETIVA", "Heading1");
-		document.addParagraph("MEDIDA DE CONTROLE INDIVIDUAL: EPI - EQUIPAMENTOS DE PROTECÃO INDIVIDUAL", "Heading2", null, true);
+		docx.addParagraph("MEDIDAS DE CONTROLE INDIVIDUAL E COLETIVA", "Heading1");
+		docx.addParagraph("MEDIDA DE CONTROLE INDIVIDUAL: EPI - EQUIPAMENTOS DE PROTECÃO INDIVIDUAL", "Heading2", null, true);
 		
-		XWPFTable table = document.createTable();
+		XWPFTable table = docx.createTable();
 		
-		document.addTableHeader(table, new String[] { "EPI", "CARACTERÍSTICAS", "ATIVIDADES" }, new Integer[] { 2200, 3000, 3000 });
+		docx.addTableHeader(table, new String[] { "EPI", "CARACTERÍSTICAS", "ATIVIDADES" }, new Integer[] { 2200, 3000, 3000 });
 		
         for (EpiPcmat epiPcmat : episPcmat) 
-        	document.addTableRow(table, epiPcmat.getEpi().getNome(), epiPcmat.getEpi().getDescricao(), epiPcmat.getAtividades());
+        	docx.addTableRow(table, epiPcmat.getEpi().getNome(), epiPcmat.getEpi().getDescricao(), epiPcmat.getAtividades());
         
-        document.addParagraph("MEDIDAS DE CONTROLE COLETIVO: EPC - EQUIPAMENTOS DE PROTEÇÃO COLETIVA", "Heading2");
+        docx.addParagraph("MEDIDAS DE CONTROLE COLETIVO: EPC - EQUIPAMENTOS DE PROTEÇÃO COLETIVA", "Heading2");
 		
 		Collection<EpcPcmat> epcsPcmat = epcPcmatManager.findByPcmat(pcmatId);
 		
 		for (EpcPcmat epcPcmat : epcsPcmat) 
 		{
-			document.addParagraph(epcPcmat.getEpc().getDescricao(), "Heading3");
-			document.addParagraph(epcPcmat.getDescricao(), null, 700, false);
+			docx.addParagraph(epcPcmat.getEpc().getDescricao(), "Heading3");
+			docx.addParagraph(epcPcmat.getDescricao(), null, 700, false);
 		}
 	}
 

@@ -186,7 +186,4 @@
 	<bean id="solicitacaoEpiDWR" class="com.fortes.rh.web.dwr.SolicitacaoEpiDWR">
 		<property name="solicitacaoEpiManager" ref="solicitacaoEpiManager"/>
 	</bean>
-	<bean id="fasePcmatDWR" class="com.fortes.rh.web.dwr.FasePcmatDWR">
-		<property name="fasePcmatManager" ref="fasePcmatManager"/>
-	</bean>
 </beans>

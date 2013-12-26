@@ -127,19 +127,25 @@ public class PcmatEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String imprimir() throws Exception
+	public String gerar() throws Exception
 	{
-		XWPFDocument document = pcmatManager.gerarDocumento(pcmat.getId());
+		try {
+			XWPFDocument document = pcmatManager.gerarDocumento(pcmat.getId());
+			
+			HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"PCMAT.docx\"");
+
+			document.write(response.getOutputStream());
 		
-        HttpServletResponse response = ServletActionContext.getResponse();
-
-		response.addHeader("Expires", "0");
-		response.addHeader("Pragma", "no-cache");
-		response.setContentType("application/force-download");
-		response.setHeader("Content-Transfer-Encoding", "binary");
-		response.setHeader("Content-Disposition","attachment; filename=\"PCMAT.docx\"");
-
-		document.write(response.getOutputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível gerar esse documento.");
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -154,7 +160,7 @@ public class PcmatEditAction extends MyActionSupportList
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este PCMAT.");
+			addActionError("Não foi possível excluir esse PCMAT.");
 		}
 
 		return Action.SUCCESS;
