@@ -3,6 +3,8 @@ CREATE TABLE pcmat (
 	apartirde date NOT NULL,
 	datainiobra date NOT NULL,
 	datafimobra date NOT NULL,
+	objetivo text,
+	qtdfuncionarios integer,
 	obra_id bigint
 );--.go
 

@@ -27,6 +27,9 @@ public class Pcmat extends AbstractModel implements Serializable, Cloneable
 	@ManyToOne
 	private Obra obra;
 	
+	private String objetivo;
+	private Integer qtdFuncionarios;
+	
 	@OneToMany(mappedBy="pcmat")
 	private Collection<FasePcmat> fasesPcmat;
 	
@@ -96,5 +99,21 @@ public class Pcmat extends AbstractModel implements Serializable, Cloneable
 
 	public void setFasesPcmat(Collection<FasePcmat> fasesPcmat) {
 		this.fasesPcmat = fasesPcmat;
+	}
+
+	public String getObjetivo() {
+		return objetivo;
+	}
+
+	public void setObjetivo(String objetivo) {
+		this.objetivo = objetivo;
+	}
+
+	public Integer getQtdFuncionarios() {
+		return qtdFuncionarios;
+	}
+
+	public void setQtdFuncionarios(Integer qtdFuncionarios) {
+		this.qtdFuncionarios = qtdFuncionarios;
 	}
 }

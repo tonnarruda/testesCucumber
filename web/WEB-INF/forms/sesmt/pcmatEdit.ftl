@@ -36,7 +36,7 @@
 			<#assign dataFimObra=""/>
 		</#if>
 	
-		<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('aPartirDe','dataIniObra','dataFimObra'), new Array('aPartirDe','dataIniObra','dataFimObra'))"/>
+		<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('aPartirDe','dataIniObra','dataFimObra','qtdFuncionarios'), new Array('aPartirDe','dataIniObra','dataFimObra'))"/>
 	</head>
 	<body>
 		<#include "pcmatLinks.ftl"/>
@@ -54,6 +54,8 @@
 			<@ww.datepicker name="pcmat.dataIniObra" id="dataIniObra" required="true" value="${dataIniObra}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft"/>
 			<@ww.datepicker name="pcmat.dataFimObra" id="dataFimObra" required="true" value="${dataFimObra}" cssClass="mascaraData validaDataFim"/>
+			<@ww.textfield label="Nº máximo de funcionários" name="pcmat.qtdFuncionarios" id="qtdFuncionarios" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress="return somenteNumeros(event,',');" required="true"/>
+			<@ww.textarea label="Objetivo" name="pcmat.objetivo" id="objetivo"/>
 		</@ww.form>
 	
 		<div class="buttonGroup">
