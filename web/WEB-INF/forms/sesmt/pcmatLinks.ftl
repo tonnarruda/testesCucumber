@@ -43,6 +43,7 @@
 		<a href="../atividadeSegurancaPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuAtividadesSeguranca">Atividades de Segurança</a>
 		<a href="../epiPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPIs">EPIs</a>
 		<a href="../epcPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuEPCs">EPCs</a>
+		<a href="../sinalizacaoPcmat/list.action?pcmat.id=${pcmatId}&ultimoPcmatId=${ultimoPcmatId}" id="menuSinalizacao">Sinalização</a>
 		<a class="last">&nbsp;</a>
 		<div style="clear: both"></div>
 	</div>

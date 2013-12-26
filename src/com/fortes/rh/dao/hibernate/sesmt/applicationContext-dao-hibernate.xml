@@ -310,7 +310,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="sinalizacaoPcmatDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.SinalizacaoPcmatDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -1064,7 +1064,21 @@
       <ref bean="epcPcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="sinalizacaoPcmatManagerTarget" class="com.fortes.rh.business.sesmt.SinalizacaoPcmatManagerImpl">
+    <property name="dao">
+      <ref bean="sinalizacaoPcmatDao" />
+    </property>
+  </bean>
+  <bean id="sinalizacaoPcmatManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.SinalizacaoPcmatManager</value>
+    </property>
+    <property name="target">
+      <ref bean="sinalizacaoPcmatManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

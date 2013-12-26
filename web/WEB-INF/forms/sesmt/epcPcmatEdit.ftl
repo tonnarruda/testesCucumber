@@ -20,7 +20,7 @@
 			<@ww.token/>
 			
 			<@ww.select label="EPC" name="epcPcmat.epc.id" id="epc" list="Epcs" listKey="id" listValue="descricao" headerValue="" headerKey="-1" required="true"/>
-			<@ww.textarea label="Descricao" name="epcPcmat.descricao" id="descricao" required="true"/>
+			<@ww.textarea label="Descrição" name="epcPcmat.descricao" id="descricao" required="true"/>
 			
 		</@ww.form>
 	
