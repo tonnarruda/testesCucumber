@@ -99,6 +99,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 	public Empresa findByIdProjection(Long id) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"e");
+		criteria.createCriteria("e.cidade", "cid", Criteria.LEFT_JOIN);
+		criteria.createCriteria("e.uf", "uf", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "id");
@@ -124,6 +126,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
 		p.add(Projections.property("e.emailRespRH"),"emailRespRH");
 		p.add(Projections.property("e.formulaTurnover"), "formulaTurnover");
+		p.add(Projections.property("e.formulaTurnover"), "formulaTurnover");
+		p.add(Projections.property("cid.nome"), "projectionCidadeNome");
+		p.add(Projections.property("uf.sigla"), "projectionUfSigla");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("e.id", id));

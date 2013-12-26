@@ -1,10 +1,10 @@
 package com.fortes.rh.util;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -15,16 +15,9 @@ public class DocX extends XWPFDocument
 {
 	public static final String TABLE_HEADER_BG_COLOR = "DDDDDD";
 	
-	public DocX() {
-		super();
-	}
-
-	public DocX(InputStream is) throws IOException {
-		super(is);
-	}
-
-	public DocX(OPCPackage pkg) throws IOException {
-		super(pkg);
+	public DocX() throws FileNotFoundException, IOException 
+	{
+		super(new FileInputStream(ArquivoUtil.getWebInfPath() + "template.docx"));
 	}
 
 	public XWPFRun addParagraph(String text, String style, Integer firstLineIndentation, boolean addBreak)
@@ -52,6 +45,11 @@ public class DocX extends XWPFDocument
 	public XWPFRun addParagraph(String text, String style)
 	{
 		return this.addParagraph(text, style, null, false);
+	}
+	
+	public XWPFRun addParagraph(String text) 
+	{
+		return this.addParagraph(text, null, null, false);
 	}
 	
 	public XWPFTableRow addTableHeader(XWPFTable table, String[] titles, Integer[] widths)

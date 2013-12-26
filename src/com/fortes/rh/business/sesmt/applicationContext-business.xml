@@ -901,6 +901,12 @@
     <property name="dao">
       <ref bean="pcmatDao" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
+    <property name="obraManager">
+      <ref bean="obraManager" />
+    </property>
     <property name="fasePcmatManager">
       <ref bean="fasePcmatManager" />
     </property>
@@ -918,6 +924,9 @@
     </property>
     <property name="epcPcmatManager">
       <ref bean="epcPcmatManager" />
+    </property>
+    <property name="sinalizacaoPcmatManager">
+      <ref bean="sinalizacaoPcmatManager" />
     </property>
   </bean>
   <bean id="pcmatManager" parent="parentManager">
@@ -1078,12 +1087,3 @@
     </property>
   </bean>
 </beans>
-
-
-
-
-
-
-
-
-

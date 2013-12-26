@@ -107,10 +107,18 @@ public class Empresa extends AbstractModel implements Serializable
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
 	{
-		if(cidade == null)
+		if (cidade == null)
 			cidade = new Cidade();
 
 		cidade.setNome(cidadeNome);
+	}
+
+	public void setProjectionUfSigla(String ufSigla)
+	{
+		if (uf == null)
+			uf = new Estado();
+		
+		uf.setSigla(ufSigla);
 	}
 
 	public boolean isAcIntegra()

@@ -15,5 +15,5 @@ public interface PcmatManager extends GenericManager<Pcmat>
 	void validaDataMaiorQueUltimoHistorico(Long pcmatId, Long obraId, Date aPartirDe) throws FortesException;
 	public Pcmat findUltimoHistorico(Long pcmatId, Long obraId);
 	void clonar(Long pcmatOrigemId, Date aPartirDe, Long obraId);
-	XWPFDocument gerarDocumento(Long pcmatId) throws Exception;
+	XWPFDocument gerarDocumento(Long empresaId, Long obraId, Long pcmatId) throws Exception;
 }

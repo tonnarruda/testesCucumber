@@ -121,7 +121,7 @@ public class PcmatEditAction extends MyActionSupportList
 		if(ultimoPcmat != null)
 			ultimoPcmatId = ultimoPcmat.getId();
 		
-		Obra obra = obraManager.findByIdProjecion(this.obra.getId());
+		Obra obra = obraManager.findByIdProjection(this.obra.getId());
 		nomeObra = obra.getNome(); 
 		
 		return Action.SUCCESS;
@@ -130,7 +130,7 @@ public class PcmatEditAction extends MyActionSupportList
 	public String gerar() throws Exception
 	{
 		try {
-			XWPFDocument document = pcmatManager.gerarDocumento(pcmat.getId());
+			XWPFDocument document = pcmatManager.gerarDocumento(getEmpresaSistema().getId(), obra.getId(), pcmat.getId());
 			
 			HttpServletResponse response = ServletActionContext.getResponse();
 

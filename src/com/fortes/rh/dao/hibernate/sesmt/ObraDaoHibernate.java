@@ -59,6 +59,7 @@ public class ObraDaoHibernate extends GenericDaoHibernate<Obra> implements ObraD
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("o.id"), "id");
 		p.add(Projections.property("o.nome"), "nome");
+		p.add(Projections.property("o.tipoObra"), "tipoObra");
 		p.add(Projections.property("o.endereco.logradouro"), "enderecoLogradouro");
 		p.add(Projections.property("o.endereco.numero"), "enderecoNumero");
 		p.add(Projections.property("o.endereco.bairro"), "enderecoBairro");
