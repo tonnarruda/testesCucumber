@@ -1,5 +1,6 @@
 package com.fortes.rh.business.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -168,8 +169,47 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		docx.addParagraph("CRONOGRAMA GERAL DA OBRA", "Heading2")
 			.addBreak();
 		
-		XWPFTable table = docx.createTable();
-		docx.addTableHeader(table, new String[] { "ITEM", "DESCRIÇÃO" }, new Integer[] { 200, 3000 });
+		XWPFTable table;
+		XWPFTableRow row;
+		
+		Collection<FasePcmat> fasesPcmat = fasePcmatManager.findByPcmat(pcmat.getId());
+		if (!fasesPcmat.isEmpty())
+		{
+			FasePcmat[] fases = fasesPcmat.toArray(new FasePcmat[fasesPcmat.size()]);
+			int qtdMaxMeses = fases[fasesPcmat.size()-1].getMesFim();
+			double qtdAnos = Math.ceil(qtdMaxMeses / 12.0);
+			
+			for (int nAno = 0; nAno < qtdAnos; nAno++)
+			{
+				table = docx.createTable();
+				
+				Collection<String> titulos = new ArrayList<String>();
+				Collection<Integer> largs = new ArrayList<Integer>();
+				
+				titulos.add("FASE / MÊS");
+				largs.add(100);
+				
+				int primeiroMes = (nAno * 12) + 1;
+				int ultimoMes   = 12 * (nAno + 1);
+				
+				for (int nMes = primeiroMes; nMes <= ultimoMes; nMes++)
+				{
+					titulos.add(String.valueOf(nMes));
+					largs.add(160);
+				}
+				
+				docx.addTableHeader(table, titulos.toArray(new String[13]), largs.toArray(new Integer[13]));
+				
+				for (FasePcmat fasePcmat : fasesPcmat)
+				{
+					row = docx.addTableRow(table, fasePcmat.getFase().getDescricao());
+					
+					for (int mesFase = fasePcmat.getMesIni(); mesFase <= fasePcmat.getMesFim(); mesFase++)
+						if (mesFase >= primeiroMes && mesFase <= ultimoMes)
+							row.getCell( mesFase - primeiroMes + 1 ).setColor("999999");
+				}
+			}
+		}
 	}
 	
 	private void montarLayoutCanteiroObra(DocX docx) 
