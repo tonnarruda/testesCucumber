@@ -239,7 +239,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().verifyExistsNomeByCargo(cargoId, faixaNome);
 	}
 
-	public void removeFaixaAndHistoricos(Long[] faixaSalarialIds)
+	public void removeFaixaAndHistoricos(Long[] faixaSalarialIds) throws Exception
 	{
 		configuracaoNivelCompetenciaManager.removeByFaixas(faixaSalarialIds);
 		faixaSalarialHistoricoManager.removeByFaixas(faixaSalarialIds);

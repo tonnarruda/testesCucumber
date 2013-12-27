@@ -637,7 +637,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(faixaSalarial.getId(), retorno.getId());
 	}
 
-	public void testRemoveFaixaAndHistoricos()
+	public void testRemoveFaixaAndHistoricos() throws Exception
 	{
 		Long[] faixaSalarialIds = new Long[] {1L};
 

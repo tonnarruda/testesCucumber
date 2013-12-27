@@ -10,6 +10,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -64,7 +65,8 @@ public class CargoListAction extends MyActionSupportList
 			cargoManager.remove(cargo.getId(), getEmpresaSistema());
 			addActionMessage("Cargo excluído com sucesso.");
 		}catch (InvocationTargetException ive){
-			addActionMessage("O Cargo não pode ser excluído, pois possui dependência com o Historico do Colaborador e/ou Função.<br/>");
+			ive.printStackTrace();
+			ExceptionUtil.traduzirMensagem(this, ive);
 		} catch (Exception e) {
 			String message = "Erro ao excluir Cargo.<br/>";
 			

@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.BatchUpdateException;
 import java.util.Vector;
 
@@ -22,6 +23,10 @@ public class ExceptionUtil
 				action.addActionWarning(verificaEntidades(constraintViolationException.getSQLException().getMessage().trim())); 
 			} else if (exception instanceof DataIntegrityViolationException) {
 				BatchUpdateException batchUpdateException = (BatchUpdateException) exception.getCause();
+				action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
+			} else if (exception instanceof InvocationTargetException) {
+				DataIntegrityViolationException dataIntegrityViolationException = (DataIntegrityViolationException) exception.getCause();
+				BatchUpdateException batchUpdateException = (BatchUpdateException) dataIntegrityViolationException.getCause();
 				action.addActionWarning(verificaEntidades(batchUpdateException.getNextException().getMessage().trim())); 
 			}
 			
