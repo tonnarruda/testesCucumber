@@ -3,9 +3,15 @@ CREATE TABLE pcmat (
 	apartirde date NOT NULL,
 	datainiobra date NOT NULL,
 	datafimobra date NOT NULL,
-	objetivo text,
 	qtdfuncionarios integer,
-	obra_id bigint
+	obra_id bigint,
+	objetivo text,
+	textocondicoestrabalho text,
+	textoareasvivencia text,
+	textoatividadesseguranca text,
+	textoepis text,
+	textoepcs text,
+	textosinalizacao text
 );--.go
 
 ALTER TABLE pcmat ADD CONSTRAINT pcmat_pkey PRIMARY KEY(id);--.go

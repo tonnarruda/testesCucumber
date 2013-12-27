@@ -27,8 +27,15 @@ public class Pcmat extends AbstractModel implements Serializable, Cloneable
 	@ManyToOne
 	private Obra obra;
 	
-	private String objetivo;
 	private Integer qtdFuncionarios;
+	private String objetivo;
+	
+	private String textoCondicoesTrabalho;
+	private String textoAreasVivencia;
+	private String textoAtividadesSeguranca;
+	private String textoEpis;
+	private String textoEpcs;
+	private String textoSinalizacao;
 	
 	@OneToMany(mappedBy="pcmat")
 	private Collection<FasePcmat> fasesPcmat;
@@ -115,5 +122,53 @@ public class Pcmat extends AbstractModel implements Serializable, Cloneable
 
 	public void setQtdFuncionarios(Integer qtdFuncionarios) {
 		this.qtdFuncionarios = qtdFuncionarios;
+	}
+
+	public String getTextoCondicoesTrabalho() {
+		return textoCondicoesTrabalho;
+	}
+
+	public void setTextoCondicoesTrabalho(String textoCondicoesTrabalho) {
+		this.textoCondicoesTrabalho = textoCondicoesTrabalho;
+	}
+
+	public String getTextoAreasVivencia() {
+		return textoAreasVivencia;
+	}
+
+	public void setTextoAreasVivencia(String textoAreasVivencia) {
+		this.textoAreasVivencia = textoAreasVivencia;
+	}
+
+	public String getTextoAtividadesSeguranca() {
+		return textoAtividadesSeguranca;
+	}
+
+	public void setTextoAtividadesSeguranca(String textoAtividadesSeguranca) {
+		this.textoAtividadesSeguranca = textoAtividadesSeguranca;
+	}
+
+	public String getTextoEpis() {
+		return textoEpis;
+	}
+
+	public void setTextoEpis(String textoEpis) {
+		this.textoEpis = textoEpis;
+	}
+
+	public String getTextoEpcs() {
+		return textoEpcs;
+	}
+
+	public void setTextoEpcs(String textoEpcs) {
+		this.textoEpcs = textoEpcs;
+	}
+
+	public String getTextoSinalizacao() {
+		return textoSinalizacao;
+	}
+
+	public void setTextoSinalizacao(String textoSinalizacao) {
+		this.textoSinalizacao = textoSinalizacao;
 	}
 }

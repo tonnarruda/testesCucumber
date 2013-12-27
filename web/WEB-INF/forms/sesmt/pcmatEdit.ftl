@@ -49,6 +49,7 @@
 			<@ww.hidden name="pcmat.obra.id" />
 			<@ww.token/>
 
+			
 			<@ww.datepicker label="Data do PCMAT" name="pcmat.aPartirDe" id="aPartirDe" required="true" value="${aPartirDe}" cssClass="mascaraData"/>
 			Período da obra:*<br>
 			<@ww.datepicker name="pcmat.dataIniObra" id="dataIniObra" required="true" value="${dataIniObra}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
@@ -56,6 +57,16 @@
 			<@ww.datepicker name="pcmat.dataFimObra" id="dataFimObra" required="true" value="${dataFimObra}" cssClass="mascaraData validaDataFim"/>
 			<@ww.textfield label="Nº máximo de funcionários" name="pcmat.qtdFuncionarios" id="qtdFuncionarios" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress="return somenteNumeros(event,',');" required="true"/>
 			<@ww.textarea label="Objetivo" name="pcmat.objetivo" id="objetivo"/>
+			
+			<fieldset>
+				<legend>Textos introdutórios</legend>
+				<@ww.textarea label="Condições de Trabalho" name="pcmat.textoCondicoesTrabalho" id="textoCondicoesTrabalho" liClass="liLeft"/>
+				<@ww.textarea label="Áreas de Vivência" name="pcmat.textoAreasVivencia" id="textoAreasVivencia"/>
+				<@ww.textarea label="Atividades de Segurança" name="pcmat.textoAtividadesSeguranca" id="textoAtividadesSeguranca" liClass="liLeft"/>
+				<@ww.textarea label="EPIs" name="pcmat.textoEpis" id="textoEpis"/>
+				<@ww.textarea label="EPCs" name="pcmat.textoEpcs" id="textoEpcs" liClass="liLeft"/>
+				<@ww.textarea label="Sinalização" name="pcmat.textoSinalizacao" id="textoSinalizacao"/>
+			</fieldset>
 		</@ww.form>
 	
 		<div class="buttonGroup">

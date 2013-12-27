@@ -93,11 +93,11 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		montarObjetivo(docx, pcmat);
 		montarIdentificacao(docx, empresa, obra, pcmat);
 		montarLayoutCanteiroObra(docx);
-		montarAreasVivencia(docx, pcmatId);
-		montarRiscos(docx, pcmatId);
-	    montarMedidasControleIndividualColetivas(docx, pcmatId);
-	    montarSinalizacao(docx, pcmatId);
-	    montarProgramaEducativo(docx, pcmatId);
+		montarAreasVivencia(docx, pcmat);
+		montarRiscos(docx, pcmat);
+	    montarMedidasControleIndividualColetivas(docx, pcmat);
+	    montarSinalizacao(docx, pcmat);
+	    montarAtividadesSeguranca(docx, pcmat);
 		
         return docx;
 	}
@@ -217,11 +217,16 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		docx.addParagraph("LAYOUT DO CANTEIRO DE OBRA", "Heading1");
 	}
 
-	private void montarAreasVivencia(DocX docx, Long pcmatId) 
+	private void montarAreasVivencia(DocX docx, Pcmat pcmat) 
 	{
-		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = areaVivenciaPcmatManager.findByPcmat(pcmatId);
+		Collection<AreaVivenciaPcmat> areasVivenciaPcmat = areaVivenciaPcmatManager.findByPcmat(pcmat.getId());
 		
         docx.addParagraph("DIMENSIONAMENTO DA ÁREA DE VIVÊNCIA", "Heading1");
+        
+        if (!StringUtil.isBlank(pcmat.getTextoAreasVivencia()))
+			docx.addParagraph(pcmat.getTextoAreasVivencia(), null, 700, true)
+					    		.getParagraph()
+								.setAlignment(ParagraphAlignment.BOTH);
         
         for (AreaVivenciaPcmat areaVivenciaPcmat : areasVivenciaPcmat) 
         {
@@ -232,17 +237,23 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		}
 	}
 
-	private void montarRiscos(DocX docx, Long pcmatId) 
+	private void montarRiscos(DocX docx, Pcmat pcmat) 
 	{
 		XWPFParagraph para;
 		XWPFRun run;
 		XWPFTable table;
 		XWPFTableRow row;
 		
-		Map<FasePcmat, Collection<RiscoFasePcmat>> riscosFasesPcmat = fasePcmatManager.findByPcmatRiscos(pcmatId);
-		Map<Long, Collection<MedidaRiscoFasePcmat>> medidasRiscosFasesPcmat = medidaRiscoFasePcmatManager.findByPcmatRiscos(pcmatId);
+		Map<FasePcmat, Collection<RiscoFasePcmat>> riscosFasesPcmat = fasePcmatManager.findByPcmatRiscos(pcmat.getId());
+		Map<Long, Collection<MedidaRiscoFasePcmat>> medidasRiscosFasesPcmat = medidaRiscoFasePcmatManager.findByPcmatRiscos(pcmat.getId());
 		
 		docx.addParagraph("MEMORIAL SOBRE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO", "Heading1");
+		
+		if (!StringUtil.isBlank(pcmat.getTextoCondicoesTrabalho()))
+			docx.addParagraph(pcmat.getTextoCondicoesTrabalho(), null, 700, true)
+					    		.getParagraph()
+								.setAlignment(ParagraphAlignment.BOTH);
+		
 		docx.addParagraph("DESCRIÇÃO GERAL DE RISCOS", "Heading2");
 		
 		Iterator<Entry<FasePcmat, Collection<RiscoFasePcmat>>> faseIterator = riscosFasesPcmat.entrySet().iterator();
@@ -285,12 +296,17 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	    }
 	}
 	
-	private void montarMedidasControleIndividualColetivas(DocX docx, Long pcmatId) 
+	private void montarMedidasControleIndividualColetivas(DocX docx, Pcmat pcmat) 
 	{
-		Collection<EpiPcmat> episPcmat = epiPcmatManager.findByPcmat(pcmatId);
+		Collection<EpiPcmat> episPcmat = epiPcmatManager.findByPcmat(pcmat.getId());
 		
 		docx.addParagraph("MEDIDAS DE CONTROLE INDIVIDUAL E COLETIVA", "Heading1");
 		docx.addParagraph("MEDIDA DE CONTROLE INDIVIDUAL: EPI - EQUIPAMENTOS DE PROTECÃO INDIVIDUAL", "Heading2", null, true);
+		
+		if (!StringUtil.isBlank(pcmat.getTextoEpis()))
+			docx.addParagraph(pcmat.getTextoEpis(), null, 700, true)
+					    		.getParagraph()
+								.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "EPI", "CARACTERÍSTICAS", "ATIVIDADES" }, new Integer[] { 2200, 3000, 3000 });
@@ -299,8 +315,13 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
         	docx.addTableRow(table, epiPcmat.getEpi().getNome(), epiPcmat.getEpi().getDescricao(), epiPcmat.getAtividades());
         
         docx.addParagraph("MEDIDAS DE CONTROLE COLETIVO: EPC - EQUIPAMENTOS DE PROTEÇÃO COLETIVA", "Heading2");
+        
+        if (!StringUtil.isBlank(pcmat.getTextoEpcs()))
+			docx.addParagraph(pcmat.getTextoEpcs(), null, 700, true)
+					    		.getParagraph()
+								.setAlignment(ParagraphAlignment.BOTH);
 		
-		Collection<EpcPcmat> epcsPcmat = epcPcmatManager.findByPcmat(pcmatId);
+		Collection<EpcPcmat> epcsPcmat = epcPcmatManager.findByPcmat(pcmat.getId());
 		
 		for (EpcPcmat epcPcmat : epcsPcmat) 
 		{
@@ -311,12 +332,16 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		}
 	}
 
-	private void montarSinalizacao(DocX docx, Long pcmatId) 
+	private void montarSinalizacao(DocX docx, Pcmat pcmat) 
 	{
-		Collection<SinalizacaoPcmat> sinalizacaoPcmats = sinalizacaoPcmatManager.findByPcmat(pcmatId);
+		Collection<SinalizacaoPcmat> sinalizacaoPcmats = sinalizacaoPcmatManager.findByPcmat(pcmat.getId());
 		
 		docx.addParagraph("SINALIZAÇÃO", "Heading1");
-		docx.addParagraph("Toda a obra será sinalizada com cartazes, informando sobre riscos, atenções e avisos. Segue abaixo alguns textos para confecção dos modelos a serem utilizados:", null, 700, true);
+
+		if (!StringUtil.isBlank(pcmat.getTextoSinalizacao()))
+			docx.addParagraph(pcmat.getTextoSinalizacao(), null, 700, true)
+						    		.getParagraph()
+									.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "TIPO DE CARTAZ" }, new Integer[] { 8000 });
@@ -325,11 +350,16 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 			docx.addTableRow(table, sinalizacaoPcmat.getDescricao());
 	}
 	
-	private void montarProgramaEducativo(DocX docx, Long pcmatId) 
+	private void montarAtividadesSeguranca(DocX docx, Pcmat pcmat) 
 	{
-		Collection<AtividadeSegurancaPcmat> atividadesSegurancaPcmat = atividadeSegurancaPcmatManager.findByPcmat(pcmatId);
+		Collection<AtividadeSegurancaPcmat> atividadesSegurancaPcmat = atividadeSegurancaPcmatManager.findByPcmat(pcmat.getId());
 		
 		docx.addParagraph("PROGRAMA EDUCATIVO", "Heading1");
+		
+		if (!StringUtil.isBlank(pcmat.getTextoAtividadesSeguranca()))
+			docx.addParagraph(pcmat.getTextoAtividadesSeguranca(), null, 700, true)
+					    		.getParagraph()
+								.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "PALESTRA", "PROGRAMAÇÃO", "CARGA HORÁRIA" }, new Integer[] { 3500, 3500, 1000 });
