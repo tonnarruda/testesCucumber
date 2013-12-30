@@ -20,7 +20,7 @@ public class DocX extends XWPFDocument
 		super(new FileInputStream(ArquivoUtil.getWebInfPath() + "template.docx"));
 	}
 
-	public XWPFRun addParagraph(String text, String style, Integer firstLineIndentation, boolean addBreak)
+	public XWPFParagraph addParagraph(String text, String style, Integer firstLineIndentation, boolean addBreak)
 	{
 		XWPFParagraph para;
 		XWPFRun run;
@@ -39,15 +39,15 @@ public class DocX extends XWPFDocument
 		if (addBreak)
 			run.addBreak();
         
-        return run;
+        return para;
 	}
 
-	public XWPFRun addParagraph(String text, String style)
+	public XWPFParagraph addParagraph(String text, String style)
 	{
 		return this.addParagraph(text, style, null, false);
 	}
 	
-	public XWPFRun addParagraph(String text) 
+	public XWPFParagraph addParagraph(String text) 
 	{
 		return this.addParagraph(text, null, null, false);
 	}

@@ -104,28 +104,36 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 
 	private void montarCapa(DocX docx, Obra obra) 
 	{
+		XWPFParagraph para;
 		XWPFRun run;
 		
-		run = docx.addParagraph(obra.getNome());
-		run.getParagraph().setAlignment(ParagraphAlignment.CENTER);
+		para = docx.addParagraph(obra.getNome());
+		para.setAlignment(ParagraphAlignment.CENTER);
+		
+		run = para.getRuns().get(0);
 		run.setFontSize(28);
 		run.setBold(true);
-		run.addBreak();
 		
 		run.addBreak();
 		run.addBreak();
 		run.addBreak();
 		run.addBreak();
+		run.addBreak();
 		
-		run = docx.addParagraph("PCMAT");
-		run.getParagraph().setAlignment(ParagraphAlignment.CENTER);
+		para = docx.addParagraph("PCMAT");
+		para.setAlignment(ParagraphAlignment.CENTER);
+		
+		run = para.getRuns().get(0);
 		run.setFontSize(24);
 		run.setBold(true);
 		run.setUnderline(UnderlinePatterns.SINGLE);
+		
 		run.addBreak();
 		
-		run = docx.addParagraph("PROGRAMA DE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO NA INDÚSTRIA DA CONSTRUÇÃO");
-		run.getParagraph().setAlignment(ParagraphAlignment.CENTER);
+		para = docx.addParagraph("PROGRAMA DE CONDIÇÕES E MEIO AMBIENTE DE TRABALHO NA INDÚSTRIA DA CONSTRUÇÃO");
+		para.setAlignment(ParagraphAlignment.CENTER);
+		
+		run = para.getRuns().get(0);
 		run.setFontSize(16);
 		run.setBold(true);
 		run.addBreak(BreakType.PAGE);
@@ -137,7 +145,6 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		{
 			docx.addParagraph("OBJETIVO DO PCMAT", "Heading1");
 			docx.addParagraph(pcmat.getObjetivo(), null, 700, false)
-				.getParagraph()
 				.setAlignment(ParagraphAlignment.BOTH);
 		}
 	}
@@ -149,7 +156,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		docx.addParagraph("EMPRESA: " + empresa.getRazaoSocial(), "Heading2");
 		docx.addParagraph("Endereço: " + StringUtils.defaultString(empresa.getEndereco()));
 		docx.addParagraph("Cidade: " + empresa.getCidade().getNome() + "/" + empresa.getUf().getSigla());
-		docx.addParagraph("CNPJ: " + empresa.getCnpj());
+		docx.addParagraph("CNPJ: " + empresa.getCnpj() + "   # INSERIR COMPLEMENTO DO CNPJ #").getRuns().get(0).setColor("FF0000");
 		docx.addParagraph("CNAE: " + empresa.getCnae());
 		
 		docx.addParagraph("OBRA: " + obra.getNome(), "Heading2");
@@ -167,7 +174,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		docx.addParagraph("Conclusão: " + DateUtil.formataMesExtensoAno(pcmat.getDataFimObra()));
 		
 		docx.addParagraph("CRONOGRAMA GERAL DA OBRA", "Heading2")
-			.addBreak();
+			.getRuns().get(0).addBreak();
 		
 		XWPFTable table;
 		XWPFTableRow row;
@@ -214,7 +221,15 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	
 	private void montarLayoutCanteiroObra(DocX docx) 
 	{
-		docx.addParagraph("LAYOUT DO CANTEIRO DE OBRA", "Heading1");
+		XWPFParagraph para;
+		XWPFRun run;
+		
+		docx.addParagraph("LAYOUT DO CANTEIRO DE OBRA", "Heading1", null, true);
+		
+		para = docx.addParagraph("# INSERIR IMAGEM DO LAYOUT #");
+		run = para.getRuns().get(0);
+		run.setColor("FF0000");
+		run.addBreak(BreakType.PAGE);
 	}
 
 	private void montarAreasVivencia(DocX docx, Pcmat pcmat) 
@@ -225,15 +240,13 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
         
         if (!StringUtil.isBlank(pcmat.getTextoAreasVivencia()))
 			docx.addParagraph(pcmat.getTextoAreasVivencia(), null, 700, true)
-					    		.getParagraph()
-								.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
         
         for (AreaVivenciaPcmat areaVivenciaPcmat : areasVivenciaPcmat) 
         {
         	docx.addParagraph(areaVivenciaPcmat.getAreaVivencia().getNome(), "Heading2");
         	docx.addParagraph(areaVivenciaPcmat.getDescricao(), null, 700, false)
-					.getParagraph()
-					.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		}
 	}
 
@@ -251,8 +264,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		
 		if (!StringUtil.isBlank(pcmat.getTextoCondicoesTrabalho()))
 			docx.addParagraph(pcmat.getTextoCondicoesTrabalho(), null, 700, true)
-					    		.getParagraph()
-								.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		
 		docx.addParagraph("DESCRIÇÃO GERAL DE RISCOS", "Heading2");
 		
@@ -263,7 +275,6 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 	    	
 	    	docx.addParagraph(pares.getKey().getFase().getDescricao(), "Heading3");
 	    	docx.addParagraph(pares.getKey().getDescricao(), null, 700, true)
-	    		.getParagraph()
 				.setAlignment(ParagraphAlignment.BOTH);
 			
 			if (!pares.getValue().isEmpty())
@@ -305,8 +316,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		
 		if (!StringUtil.isBlank(pcmat.getTextoEpis()))
 			docx.addParagraph(pcmat.getTextoEpis(), null, 700, true)
-					    		.getParagraph()
-								.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "EPI", "CARACTERÍSTICAS", "ATIVIDADES" }, new Integer[] { 2200, 3000, 3000 });
@@ -318,8 +328,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
         
         if (!StringUtil.isBlank(pcmat.getTextoEpcs()))
 			docx.addParagraph(pcmat.getTextoEpcs(), null, 700, true)
-					    		.getParagraph()
-								.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		
 		Collection<EpcPcmat> epcsPcmat = epcPcmatManager.findByPcmat(pcmat.getId());
 		
@@ -327,7 +336,6 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		{
 			docx.addParagraph(epcPcmat.getEpc().getDescricao(), "Heading3");
 			docx.addParagraph(epcPcmat.getDescricao(), null, 700, false)
-				.getParagraph()
 				.setAlignment(ParagraphAlignment.BOTH);
 		}
 	}
@@ -340,8 +348,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 
 		if (!StringUtil.isBlank(pcmat.getTextoSinalizacao()))
 			docx.addParagraph(pcmat.getTextoSinalizacao(), null, 700, true)
-						    		.getParagraph()
-									.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "TIPO DE CARTAZ" }, new Integer[] { 8000 });
@@ -358,8 +365,7 @@ public class PcmatManagerImpl extends GenericManagerImpl<Pcmat, PcmatDao> implem
 		
 		if (!StringUtil.isBlank(pcmat.getTextoAtividadesSeguranca()))
 			docx.addParagraph(pcmat.getTextoAtividadesSeguranca(), null, 700, true)
-					    		.getParagraph()
-								.setAlignment(ParagraphAlignment.BOTH);
+				.setAlignment(ParagraphAlignment.BOTH);
 		
 		XWPFTable table = docx.createTable();
 		docx.addTableHeader(table, new String[] { "PALESTRA", "PROGRAMAÇÃO", "CARGA HORÁRIA" }, new Integer[] { 3500, 3500, 1000 });

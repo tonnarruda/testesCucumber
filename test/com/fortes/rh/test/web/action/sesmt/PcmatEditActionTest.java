@@ -83,7 +83,7 @@ public class PcmatEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("clonar").withAnyArguments().isVoid();
 		manager.expects(once()).method("findByObra").with(eq(obra.getId())).will(returnValue(new ArrayList<Pcmat>()));
 		manager.expects(once()).method("findUltimoHistorico").with(eq(null), eq(obra.getId())).will(returnValue(pcmat));
-		obraManager.expects(once()).method("findByIdProjecion").with(eq(obra.getId())).will(returnValue(obra));
+		obraManager.expects(once()).method("findByIdProjection").with(eq(obra.getId())).will(returnValue(obra));
 		
 		assertEquals("success", action.clonar());
 	}
@@ -100,7 +100,7 @@ public class PcmatEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("validaDataMaiorQueUltimoHistorico").will(throwException(new FortesException("")));
 		manager.expects(once()).method("findByObra").with(eq(obra.getId())).will(returnValue(new ArrayList<Pcmat>()));
 		manager.expects(once()).method("findUltimoHistorico").with(eq(null), eq(obra.getId())).will(returnValue(pcmat));
-		obraManager.expects(once()).method("findByIdProjecion").with(eq(obra.getId())).will(returnValue(obra));
+		obraManager.expects(once()).method("findByIdProjection").with(eq(obra.getId())).will(returnValue(obra));
 		
 		assertEquals("success", action.clonar());
 	}
