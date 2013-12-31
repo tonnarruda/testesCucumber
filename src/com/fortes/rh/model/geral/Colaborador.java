@@ -596,7 +596,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
-						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim,  
+						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor, 
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
@@ -681,6 +681,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getContato().setFoneCelular(foneCelular);
 		this.getContato().setFoneFixo(foneFixo);
 		
+		if (candidato == null)
+			this.candidato = new Candidato();
+		if(candidato.getPessoal() == null)
+			candidato.setPessoal(new Pessoal());
+		
+		candidato.getPessoal().setIndicadoPor(candIndicadoPor);
+
+		
 		if (this.camposExtras == null)
 			this.camposExtras = new CamposExtras();
 		
@@ -711,7 +719,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
-			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim) 
+			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor) 
 	{
 		this.setEstabelecimentoNomeProjection(esNome);
 		this.setEstabelecimentoIdProjection(esId);
@@ -800,6 +808,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getContato().setEmail(email);
 		this.getContato().setFoneCelular(foneCelular);
 		this.getContato().setFoneFixo(foneFixo);
+		
+		if (candidato == null)
+			this.candidato = new Candidato();
+		if(candidato.getPessoal() == null)
+			candidato.setPessoal(new Pessoal());
+		
+		candidato.getPessoal().setIndicadoPor(candIndicadoPor);
 	}
 
 	private boolean isAfastado(Date afastamentoInicio, Date afastamentoFim) 

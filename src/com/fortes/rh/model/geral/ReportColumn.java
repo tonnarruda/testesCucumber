@@ -57,6 +57,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Data de Nascimento", "pessoal.dataNascimentoFormatada", "co.pessoal.dataNascimento", 50, false));
 		columns.add(new ReportColumn("Conjugue", "pessoal.conjuge", "co.pessoal.conjuge", 150, true));
 		columns.add(new ReportColumn("Qtd de Filhos", "pessoal.qtdFilhosString", "co.pessoal.qtdFilhos", 30, false));
+		columns.add(new ReportColumn("Indicado Por", "candidato.pessoal.indicadoPor", "cand.pessoal.indicadoPor", 110, false));
 		columns.add(new ReportColumn("Número da Habilitação", "habilitacao.numeroHab", "co.habilitacao.numeroHab", 50, false));
 		columns.add(new ReportColumn("Emissão da Habilitação", "habilitacao.emissaoFormatada", "co.habilitacao.emissao", 50, false));
 		columns.add(new ReportColumn("Vencimento da Habilit.", "habilitacao.vencimentoFormatada", "co.habilitacao.vencimento", 50, false));
