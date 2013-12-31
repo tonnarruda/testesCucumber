@@ -237,21 +237,14 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="noticiaDaoTarget" class="com.fortes.rh.dao.hibernate.geral.NoticiaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="usuarioNoticiaDaoTarget" class="com.fortes.rh.dao.hibernate.geral.UsuarioNoticiaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

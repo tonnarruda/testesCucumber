@@ -7,7 +7,6 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		.label { padding: 3px 4px 3px 12px; cursor: pointer; border-radius: 3px; border: 1px solid transparent; }
 		.label:hover, .marcado { 
 			border-color: #BBB;

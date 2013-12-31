@@ -7,7 +7,6 @@
 	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	
 		#formDialog { display: none; }
 		.tabela_colabs { float: right; width: 400px; height: 689px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #7E9DB9; }
@@ -21,7 +20,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 	

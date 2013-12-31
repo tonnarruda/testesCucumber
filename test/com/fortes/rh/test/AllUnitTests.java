@@ -245,6 +245,7 @@ import com.fortes.rh.test.dao.hibernate.geral.HistoricoBeneficioDaoHibernateTest
 import com.fortes.rh.test.dao.hibernate.geral.HistoricoColaboradorBeneficioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.MensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.MotivoDemissaoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.NoticiaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.OcorrenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ParametrosDoSistemaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.ProvidenciaDaoHibernateTest;
@@ -1184,6 +1185,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ZipTest.class);
         suite.addTestSuite(ArquivoUtilTest.class);
         suite.addTestSuite(ImportacaoCSVUtilTest.class);
+        suite.addTestSuite(NoticiaDaoHibernateTest.class);
 
         // Avaliacao
         suite.addTestSuite(AvaliacaoDaoHibernateTest.class);

@@ -957,5 +957,31 @@
       <ref bean="issueManagerTarget" />
     </property>
   </bean>
+  <bean id="noticiaManagerTarget" class="com.fortes.rh.business.geral.NoticiaManagerImpl">
+  	<property name="dao">
+      <ref bean="noticiaDao" />
+    </property>
+  </bean>
+  <bean id="noticiaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.NoticiaManager</value>
+    </property>
+	<property name="target">
+      <ref bean="noticiaManagerTarget" />
+    </property>
+  </bean>
+  <bean id="usuarioNoticiaManagerTarget" class="com.fortes.rh.business.geral.UsuarioNoticiaManagerImpl">
+  	<property name="dao">
+      <ref bean="usuarioNoticiaDao" />
+    </property>
+  </bean>
+  <bean id="usuarioNoticiaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.UsuarioNoticiaManager</value>
+    </property>
+	<property name="target">
+      <ref bean="usuarioNoticiaManagerTarget" />
+    </property>
+  </bean>
 </beans>
 

@@ -1,23 +1,46 @@
 package com.fortes.rh.model.geral;
 
+import java.util.Collection;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
-public class Noticia
+import com.fortes.model.AbstractModel;
+
+@Entity
+@SequenceGenerator(name="sequence", sequenceName="noticia_sequence", allocationSize=1)
+public class Noticia extends AbstractModel
 {
+	public static final String ULTIMAS_NOTICIAS = "ULTIMAS_NOTICIAS";
+	
 	private String texto;
 	private String link;
 	private Integer criticidade;
-	private Integer[] produtos;
+	
+	@OneToMany(mappedBy="noticia")
+	private Collection<UsuarioNoticia> usuarioNoticias;
+	
+	@Transient
+	private Long usuarioNoticiaId;
 	
 	public Noticia() {
-	
+		
 	}
 	
-	public Noticia(String texto, String link, Integer criticidade, Integer[] produtos) {
+	public Noticia(String texto, String link, Integer criticidade) {
 		this.texto = texto;
 		this.link = link;
 		this.criticidade = criticidade;
-		this.produtos = produtos;
+	}
+
+	public Noticia(Long id, String texto, String link, Integer criticidade, Long usuarioNoticiaId) {
+		this.setId(id);
+		this.texto = texto;
+		this.link = link;
+		this.criticidade = criticidade;
+		this.usuarioNoticiaId = usuarioNoticiaId;
 	}
 
 	public String getTexto() {
@@ -43,12 +66,20 @@ public class Noticia
 	public void setCriticidade(Integer criticidade) {
 		this.criticidade = criticidade;
 	}
-	
-	public Integer[] getProdutos() {
-		return produtos;
+
+	public Collection<UsuarioNoticia> getUsuarioNoticias() {
+		return usuarioNoticias;
+	}
+
+	public void setUsuarioNoticias(Collection<UsuarioNoticia> usuarioNoticias) {
+		this.usuarioNoticias = usuarioNoticias;
 	}
 	
-	public void setProdutos(Integer[] produtos) {
-		this.produtos = produtos;
+	public Long getUsuarioNoticiaId() {
+		return usuarioNoticiaId;
+	}
+
+	public void setUsuarioNoticiaId(Long usuarioNoticiaId) {
+		this.usuarioNoticiaId = usuarioNoticiaId;
 	}
 }

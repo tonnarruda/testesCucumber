@@ -12,8 +12,8 @@ import com.fortes.rh.exception.NotRegistredException;
 
 public class Autenticador
 {
+	public static final int appId = 47;
 	private static int qtdCadastrosVersaoDemo = 10;
-	private static int appId = 47;
 	private static String appNome = "RH";
 	private static final Logger logger = Logger.getLogger(Autenticador.class);
 	private static RPClient clientRemprot = null;

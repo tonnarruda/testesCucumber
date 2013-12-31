@@ -51,12 +51,10 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
-		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 	
 		#parentesDialog { display: none; }
 		#parentesDialog li { margin: 5px 0px; }

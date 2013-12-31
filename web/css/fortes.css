@@ -183,17 +183,55 @@ span.botao
 }
 
 #conteudoExibeEsconde h4 {
-		margin: 0;
-		margin-top: 10px;
-		padding: 6px 20px;
-		background: #cad2dd url(../imgs/menosModelo2.gif) 3px center no-repeat;
-		cursor: pointer
-		}
-	
-#conteudoExibeEsconde h4.fechado { 
-		background:#cad2dd url(../imgs/maisModelo2.gif) 3px center no-repeat;
-	}
+	margin: 0;
+	margin-top: 10px;
+	padding: 6px 20px;
+	background: #cad2dd url(../imgs/menosModelo2.gif) 3px center no-repeat;
+	cursor: pointer
+}
+
+#conteudoExibeEsconde h4.fechado {
+	background: #cad2dd url(../imgs/maisModelo2.gif) 3px center no-repeat;
+}
+
 #conteudoExibeEsconde table {
 	background: #cad2dd;
 	border-collapse: collapse;
+}
+
+#news {
+	float: right;
+	margin-top: 12px; 
+	position:relative;
+    width:16px;
+    height:16px; 
+}
+
+#newsIcon, #newsCount, #newsList, #newsDetails { display: none; }
+
+#newsList li { 
+	cursor: pointer; 
+	padding:3px 5px; 
+	margin: 0 0 5px 0; 
+	list-style: none;
+	font-size: 11px;
+	background-color: #eee; 
+}
+#newsList li.criticidade-0 { color: red; }
+#newsList li.unread { font-weight: bold; }
+
+#newsDetails iframe { border: none; text-align: center; }
+
+#newsCount {
+    position:absolute;
+    top: -6px;
+    right: -6px;
+    padding:1px 2px 1px 2px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: 0.55em;
+
+    border-radius: 30px;
+    box-shadow: 1px 1px 1px gray;
 }

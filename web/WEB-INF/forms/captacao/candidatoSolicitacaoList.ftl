@@ -8,7 +8,6 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-				@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		
 		#legendas { float: right; margin-bottom: 10px; }
 		.naoApto { color: #F00 !important; }
@@ -23,7 +22,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	
 	<script type="text/javascript">
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)

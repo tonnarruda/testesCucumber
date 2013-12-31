@@ -4,10 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
+import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -22,6 +26,7 @@ public abstract class MyActionSupport extends ActionSupport
 	private Long videoAjuda = null;
 	private String actionErr = null;
 	private String actionMsg = null;
+	
 	public static final String MESSAGE = "message";
 	
 	private Collection<String> actionWarnings = new ArrayList<String>();
@@ -133,5 +138,19 @@ public abstract class MyActionSupport extends ActionSupport
 	public void addActionSuccess(String actionSuccess) 
 	{
 		this.actionSuccess.add(actionSuccess);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public String getUltimasNoticias()
+	{
+		Map session = ActionContext.getContext().getSession();
+		
+		if (session.get(Noticia.ULTIMAS_NOTICIAS) == null)
+		{
+			NoticiaManager noticiaManager = (NoticiaManager) SpringUtil.getBean("noticiaManager");
+			noticiaManager.carregarUltimasNoticias(getUsuarioLogado().getId());
+		}
+			
+		return (String) session.get(Noticia.ULTIMAS_NOTICIAS);
 	}
 }

@@ -24,8 +24,10 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
+import com.fortes.rh.business.geral.UsuarioNoticiaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -35,6 +37,7 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
+import com.fortes.rh.model.geral.Noticia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.Video;
@@ -62,6 +65,8 @@ public class Index extends MyActionSupport
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AvaliacaoManager avaliacaoManager;
 	private EmpresaManager empresaManager;
+	private NoticiaManager noticiaManager;
+	private UsuarioNoticiaManager usuarioNoticiaManager;
 
 	private Collection<Pesquisa> pesquisasAtrasadas;
 
@@ -96,6 +101,8 @@ public class Index extends MyActionSupport
 	
 	private String modulo;
 	private String contexto;
+	
+	private Noticia noticia;
 	
 	public String index()
 	{
@@ -295,11 +302,21 @@ public class Index extends MyActionSupport
 		}
 	}
 	
-	
-	
-	
 	public String browsersCompativeis()
 	{
+		return Action.SUCCESS;
+	}
+	
+	public String detalheNoticia()
+	{
+		try {
+			usuarioNoticiaManager.marcarLida(getUsuarioLogado().getId(), noticia.getId());
+			noticiaManager.carregarUltimasNoticias(getUsuarioLogado().getId());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return Action.SUCCESS;
 	}
 	
@@ -511,5 +528,21 @@ public class Index extends MyActionSupport
 
 	public String getContexto() {
 		return contexto;
+	}
+	
+	public Noticia getNoticia() {
+		return noticia;
+	}
+
+	public void setNoticia(Noticia noticia) {
+		this.noticia = noticia;
+	}
+	
+	public void setNoticiaManager(NoticiaManager noticiaManager) {
+		this.noticiaManager = noticiaManager;
+	}
+
+	public void setUsuarioNoticiaManager(UsuarioNoticiaManager usuarioNoticiaManager) {
+		this.usuarioNoticiaManager = usuarioNoticiaManager;
 	}
 }

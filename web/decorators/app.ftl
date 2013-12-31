@@ -14,9 +14,20 @@
 	<script>
 		var baseUrl = '<@ww.url includeParams="none" value="/"/>';
 		var sessionMaxInactiveInterval = ${session.maxInactiveInterval * 1000};
+		
+		var ultimasNoticias = null;
+		<#if ultimasNoticias?exists>
+			ultimasNoticias = ${ultimasNoticias};
+		</#if>
+		
+		var pgInicial = false;
+		<#if pgInicial?exists && pgInicial>
+			pgInicial = true;
+		</#if>
 	</script>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
@@ -29,6 +40,7 @@
 			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		</#if>
 
+		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.alerts.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
@@ -61,10 +73,24 @@
 		</div>
 		<div id="logoDiv"><a href="<@ww.url value='/'/>"><img src='<@ww.url includeParams="none" value="/imgs/topo_ico.jpg"/>' border='0'/></a></div>
 		
+		<div id="news">
+			<a id="newsIcon" href="javascript:;" title="Últimas notícias">
+				<img src='<@ww.url includeParams="none" value="/imgs/news.png"/>' border='0'/>
+			</a>
+			<div id="newsCount"></div>
+			
+			<div id="newsList">
+				<ul></ul>
+			</div>
+			
+			<div id="newsDetails">
+				<iframe width="960" height="480"></iframe>
+			</div>
+		</div>
+		
 		<#if REG_MSG?exists && REG_MSG != "">
 			<span id="msgAutenticacao">&nbsp &nbsp &nbsp ${REG_MSG}</span>
 		</#if>
-		
 	</div>
 	
 	<@authz.authentication operation="menuFormatado"/>

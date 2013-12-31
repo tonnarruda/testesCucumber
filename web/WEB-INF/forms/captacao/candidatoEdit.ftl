@@ -12,7 +12,6 @@
 			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		</#if>
  		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
@@ -61,7 +60,6 @@
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
 
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
   <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
 
 	<#if moduloExterno?exists && moduloExterno>

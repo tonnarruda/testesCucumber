@@ -152,6 +152,9 @@
       <result name="success" type="freemarker">/WEB-INF/pages/mensagens.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>
+    <action name="detalheNoticia" class="com.fortes.rh.web.action.Index" method="detalheNoticia">
+      <result name="success" type="redirect">${noticia.link}</result>
+    </action>
     <action name="contatos" class="com.fortes.rh.web.action.Index" method="contatos">
       <result name="success" type="freemarker">/WEB-INF/pages/contatos.ftl</result>
     </action>

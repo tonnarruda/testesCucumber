@@ -5,11 +5,8 @@
 <@ww.head/>
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
-	@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
-	
 	#formDialog { display: none; width: 600px; }
 </style>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 
 <title>Perfis</title>
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

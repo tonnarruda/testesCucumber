@@ -6,7 +6,6 @@
 <#assign urlImg><@ww.url includeParams="none" value="/imgs"/></#assign>
 
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	.grade
 	{
 		border:1px solid #7E9DB9;
@@ -94,7 +93,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/configuracaoPerformance.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-ui-1.8.6.custom.min.js"/>'></script>
 	<script type="text/javascript">
 		var configPerformanceBoxes = ${configPerformanceBoxes};		
 	</script>

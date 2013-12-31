@@ -378,4 +378,20 @@
       <ref bean="gerenciadorComunicacaoDaoTarget" />
     </property>
   </bean>
+  <bean id="noticiaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.NoticiaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="noticiaDaoTarget" />
+    </property>
+  </bean>
+  <bean id="usuarioNoticiaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.UsuarioNoticiaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="usuarioNoticiaDaoTarget" />
+    </property>
+  </bean>
 </beans>
