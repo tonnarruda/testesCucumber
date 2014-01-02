@@ -6,7 +6,7 @@
 
 	<style>
 		ul.sobre { margin-bottom: 25px; }
-		ul.sobre li { margin: 10px 0px; }
+		ul.sobre li { margin: 10px; }
 	</style>
 </head>
 <body>
