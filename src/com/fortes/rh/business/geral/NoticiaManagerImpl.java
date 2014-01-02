@@ -32,7 +32,6 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 	public void carregarUltimasNoticias(Long usuarioId)
 	{
 		Collection<Noticia> noticias = getDao().findByUsuario(usuarioId);
-		
 		ActionContext.getContext().getSession().put(Noticia.ULTIMAS_NOTICIAS, StringUtil.toJSON(noticias, null));
 	}
 	

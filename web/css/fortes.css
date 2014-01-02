@@ -215,8 +215,8 @@ span.botao
 	margin: 0 0 5px 0; 
 	list-style: none;
 	font-size: 11px;
-	background-color: #eee; 
 }
+#newsList li.even { background-color: #e4f0fe; }
 #newsList li.criticidade-0 { color: red; }
 #newsList li.unread { font-weight: bold; }
 

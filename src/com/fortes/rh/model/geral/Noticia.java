@@ -23,7 +23,7 @@ public class Noticia extends AbstractModel
 	private Collection<UsuarioNoticia> usuarioNoticias;
 	
 	@Transient
-	private Long usuarioNoticiaId;
+	private Boolean lida;
 	
 	public Noticia() {
 		
@@ -35,12 +35,12 @@ public class Noticia extends AbstractModel
 		this.criticidade = criticidade;
 	}
 
-	public Noticia(Long id, String texto, String link, Integer criticidade, Long usuarioNoticiaId) {
+	public Noticia(Long id, String texto, String link, Integer criticidade, Boolean lida) {
 		this.setId(id);
 		this.texto = texto;
 		this.link = link;
 		this.criticidade = criticidade;
-		this.usuarioNoticiaId = usuarioNoticiaId;
+		this.lida = lida;
 	}
 
 	public String getTexto() {
@@ -75,11 +75,11 @@ public class Noticia extends AbstractModel
 		this.usuarioNoticias = usuarioNoticias;
 	}
 	
-	public Long getUsuarioNoticiaId() {
-		return usuarioNoticiaId;
+	public Boolean getLida() {
+		return lida;
 	}
 
-	public void setUsuarioNoticiaId(Long usuarioNoticiaId) {
-		this.usuarioNoticiaId = usuarioNoticiaId;
+	public void setLida(Boolean lida) {
+		this.lida = lida;
 	}
 }
