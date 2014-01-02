@@ -596,12 +596,12 @@
 				<@ww.div id="wwgrp_fone"  cssClass="campo">
 					<ul>
 						<@ww.textfield label="DDD" name="candidato.contato.ddd" id="ddd" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
-						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 70px;" maxLength="9"  liClass="liLeft" />
+						<@ww.textfield label="Telefone" name="candidato.contato.foneFixo" id="fone" onkeypress="return(somenteNumeros(event,''));"  cssStyle="width: 80px;" maxLength="9"  liClass="liLeft" />
 					</ul>
 				</@ww.div>
 			</li>			
 			
-			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 70px;" maxLength="9" liClass="liLeft , campo"/>
+			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 80px;" maxLength="9" liClass="liLeft , campo"/>
 			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" onblur="${capitalizar}"/>
 
 			<@ww.textfield label="Parentes/Amigos na empresa" name="candidato.pessoal.parentesAmigos" id="parentes" cssStyle="width: 300px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>

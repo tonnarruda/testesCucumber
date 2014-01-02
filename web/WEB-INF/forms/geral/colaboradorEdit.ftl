@@ -461,8 +461,8 @@
 			</#if>
 			
 			<@ww.textfield label="DDD" name="colaborador.contato.ddd" required="true" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" maxLength="2" cssStyle="width:25px;"/>
-			<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft" cssStyle="width:70px;"/>
-			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:70px;"/>
+			<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" required="true" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft" cssStyle="width:80px;"/>
+			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
 			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft" required="true" headerKey="" headerValue="Selecione..." />
 			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft"/>
 			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" list="deficiencias" cssStyle="width: 160px;"/>
