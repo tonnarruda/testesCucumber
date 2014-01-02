@@ -76,7 +76,8 @@ $(function(){
 				
 				$(ultimasNoticias).each(function(i, noticia) {
 					clss = 'criticidade-' + noticia.criticidade;
-					if (!noticia.usuarioNoticiaId)
+					console.log(noticia.lida);
+					if (!noticia.lida)
 						clss += ' unread';
 					
 					$('#newsList').append('<li class="' + clss + '" id="noticia-' + noticia.id + '" link="' + noticia.link + '">' + noticia.texto + '</li>');
@@ -87,7 +88,7 @@ $(function(){
 				$('#newsIcon').show()
 								.click(function(event) {
 									event.preventDefault();
-									$('#newsList').dialog({ width: 480, height: 200, title: 'Últimas Notícias' });
+									$('#newsList').dialog({ width: 400, height: 200, title: 'Últimas Notícias', position: { my: "right top", at: "right bottom", of: "#newsIcon" } });
 								});
 				
 				$('#newsList li').click(function(event) {

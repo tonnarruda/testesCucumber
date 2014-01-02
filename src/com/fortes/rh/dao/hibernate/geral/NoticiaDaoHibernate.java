@@ -13,13 +13,15 @@ public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements
 	@SuppressWarnings("unchecked")
 	public Collection<Noticia> findByUsuario(Long usuarioId) 
 	{
-		StringBuilder hql = new StringBuilder("select new Noticia(n.id, n.texto, n.link, n.criticidade, un.id) ");
+		StringBuilder hql = new StringBuilder("select new Noticia(n.id, n.texto, n.link, n.criticidade, (case when un.id is not null then true else false end)) ");
 		hql.append("from Noticia n ");
 		hql.append("left join n.usuarioNoticias un with un.usuario.id = :usuarioId ");
-		hql.append("order by n.criticidade, n.id");
+		hql.append("order by (case when un.id is not null then true else false end), n.criticidade, n.id desc ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("usuarioId", usuarioId);
+		
+		query.setMaxResults(10);
 		
 		return query.list();
 	}
