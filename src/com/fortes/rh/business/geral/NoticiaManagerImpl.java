@@ -3,6 +3,7 @@ package com.fortes.rh.business.geral;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Noticia;
+import com.fortes.rh.model.geral.NoticiaComparator;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.IntegerUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -32,6 +34,8 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 	public void carregarUltimasNoticias(Long usuarioId)
 	{
 		Collection<Noticia> noticias = getDao().findByUsuario(usuarioId);
+		Collections.sort((List<Noticia>) noticias, new NoticiaComparator());
+		
 		ActionContext.getContext().getSession().put(Noticia.ULTIMAS_NOTICIAS, StringUtil.toJSON(noticias, null));
 	}
 	

@@ -74,16 +74,16 @@
 		<div id="logoDiv"><a href="<@ww.url value='/'/>"><img src='<@ww.url includeParams="none" value="/imgs/topo_ico.jpg"/>' border='0'/></a></div>
 		
 		<div id="news">
-			<a id="newsIcon" href="javascript:;" title="Últimas notícias">
+			<a id="newsIcon" href="javascript:;" title="Últimas notícias" style="display:none">
 				<img src='<@ww.url includeParams="none" value="/imgs/news.png"/>' border='0'/>
 			</a>
-			<div id="newsCount"></div>
+			<div id="newsCount" style="display:none"></div>
 			
-			<div id="newsList">
+			<div id="newsList" style="display:none">
 				<ul></ul>
 			</div>
 			
-			<div id="newsDetails">
+			<div id="newsDetails" style="display:none">
 				<iframe width="960" height="480"></iframe>
 			</div>
 		</div>

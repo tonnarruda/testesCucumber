@@ -207,8 +207,6 @@ span.botao
     height:16px; 
 }
 
-#newsIcon, #newsCount, #newsList, #newsDetails { display: none; }
-
 #newsList li { 
 	cursor: pointer; 
 	padding:3px 5px; 

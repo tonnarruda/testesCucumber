@@ -16,7 +16,7 @@ public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements
 		StringBuilder hql = new StringBuilder("select new Noticia(n.id, n.texto, n.link, n.criticidade, (case when un.id is not null then true else false end)) ");
 		hql.append("from Noticia n ");
 		hql.append("left join n.usuarioNoticias un with un.usuario.id = :usuarioId ");
-		hql.append("order by (case when un.id is not null then true else false end), n.criticidade, n.id desc ");
+		hql.append("order by n.id desc ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("usuarioId", usuarioId);
