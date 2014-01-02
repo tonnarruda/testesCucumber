@@ -34,6 +34,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
@@ -71,6 +72,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<Colaborador> colaboradores;
+	private String ano;
 	
 	public String execute() throws Exception
 	{
@@ -110,6 +112,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	public String sobre() throws Exception
 	{
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		ano = DateUtil.getAno();
 		return Action.SUCCESS;
 	}
 	
@@ -445,5 +448,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	public Set<Entry<Integer, String>> getOpcoesFormulaTurnover() {
 		return new FormulaTurnover().entrySet();
+	}
+
+	public String getAno() {
+		return ano;
 	}
 }

@@ -1,31 +1,19 @@
 <html>
 <head>
-<@ww.head/>
+	<@ww.head/>
 
 	<title>Sobre o RH</title>
 
-<style>
-	.sobre
-	{
-		padding: 1em;
-	}
-</style>
+	<style>
+		ul.sobre { margin-bottom: 25px; }
+		ul.sobre li { margin: 10px 0px; }
+	</style>
 </head>
 <body>
-	<div class="sobre" >
-		<br>
-		
-		Versão: ${parametrosDoSistema.appVersao}
-		<br>
-		Copyright © Fortes Informática
-		<br>
-		<a href="http://www.fortesinformatica.com.br/v3/" target="_blank">http://www.fortesinformatica.com.br</a>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-	</div>
+	<ul class="sobre">
+		<li>Versão: ${parametrosDoSistema.appVersao}</li>
+		<li>Copyright ©${ano} Ente Tecnologia</li>
+		<li><a href="http://www.entetecnologia.com.br" target="_blank">www.entetecnologia.com.br</a></li>
+	</ul>
 </body>
 </html>
