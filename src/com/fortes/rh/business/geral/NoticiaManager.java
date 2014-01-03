@@ -10,6 +10,6 @@ public interface NoticiaManager extends GenericManager<Noticia>
 	Collection<Noticia> findByUsuario(Long usuarioId);
 	void carregarUltimasNoticias(Long usuarioId);
 	void importarUltimasNoticias();
-	Noticia findByTexto(String texto);
+	Noticia find(String texto, String link, Integer criticidade);
 	void despublicarTodas();
 }

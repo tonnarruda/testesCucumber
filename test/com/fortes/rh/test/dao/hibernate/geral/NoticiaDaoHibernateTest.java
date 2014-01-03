@@ -54,7 +54,7 @@ public class NoticiaDaoHibernateTest extends GenericDaoHibernateTest<Noticia>
 		assertTrue("Usuario 2", noticiaDao.findByUsuario(usuario2.getId()).size() >= 3);
 	}
 	
-	public void testFindByTexto()
+	public void testFind()
 	{
 		Noticia noticia1 = getEntity();
 		noticia1.setTexto("noticia 1");
@@ -68,7 +68,7 @@ public class NoticiaDaoHibernateTest extends GenericDaoHibernateTest<Noticia>
 		noticia3.setTexto("noticia 1");
 		noticiaDao.save(noticia3);
 		
-		assertEquals(noticia3.getId(), noticiaDao.findByTexto("noticia 1").getId());
+		assertEquals(noticia3.getId(), noticiaDao.find("noticia 1", null, null).getId());
 	}
 
 	public void setNoticiaDao(NoticiaDao noticiaDao) {

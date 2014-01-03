@@ -75,6 +75,7 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 				Element noticiaElement;
 				
 				Noticia noticia, noticiaBD;
+				
 				noticiaManager.despublicarTodas();
 				
 				while (noticiasElementsIterator.hasNext())
@@ -88,7 +89,7 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 												noticiaElement.getChild("link").getValue(), 
 												Integer.parseInt(noticiaElement.getChild("criticidade").getValue()) );
 						
-						noticiaBD = noticiaManager.findByTexto(noticia.getTexto());
+						noticiaBD = noticiaManager.find(noticia.getTexto(), noticia.getLink(), noticia.getCriticidade());
 						
 						if (noticiaBD == null)
 						{
@@ -109,9 +110,9 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 		}
     }
 
-	public Noticia findByTexto(String texto) 
+	public Noticia find(String texto, String link, Integer criticidade) 
 	{
-		return getDao().findByTexto(texto);
+		return getDao().find(texto, link, criticidade);
 	}
 
 	public void despublicarTodas() 
