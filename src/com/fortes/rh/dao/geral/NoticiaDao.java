@@ -8,6 +8,6 @@ import com.fortes.rh.model.geral.Noticia;
 public interface NoticiaDao extends GenericDao<Noticia> 
 {
 	Collection<Noticia> findByUsuario(Long usuarioId);
-	Noticia findByTexto(String texto);
+	Noticia find(String texto, String link, Integer criticidade);
 	void despublicarTodas();
 }

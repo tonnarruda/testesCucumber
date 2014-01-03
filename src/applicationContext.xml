@@ -294,7 +294,7 @@
   </bean>
   <bean id="cronTriggerImportarUltimasNoticias" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="importarUltimasNoticias" />
-	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
+	<property name="cronExpression" value="0 0/2 * * * ?" /> <!-- A cada 1 hora -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">

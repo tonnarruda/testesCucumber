@@ -14,6 +14,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.NoticiaDao;
 import com.fortes.rh.model.geral.Noticia;
+import com.fortes.rh.util.StringUtil;
 
 public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements NoticiaDao
 {
@@ -33,7 +34,7 @@ public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements
 	}
 
 	@SuppressWarnings("unchecked")
-	public Noticia findByTexto(String texto) 
+	public Noticia find(String texto, String link, Integer criticidade) 
 	{
 		Criteria criteria = getSession().createCriteria(Noticia.class, "n");
 
@@ -46,7 +47,14 @@ public class NoticiaDaoHibernate extends GenericDaoHibernate<Noticia> implements
 
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.like("n.texto", texto));
+		if (!StringUtil.isBlank(texto))
+			criteria.add(Expression.like("n.texto", texto));
+		
+		if (!StringUtil.isBlank(link))
+			criteria.add(Expression.like("n.link", link));
+		
+		if (criticidade != null)
+			criteria.add(Expression.eq("n.criticidade", criticidade));
 
 		criteria.addOrder(Order.desc("n.id"));
 		
