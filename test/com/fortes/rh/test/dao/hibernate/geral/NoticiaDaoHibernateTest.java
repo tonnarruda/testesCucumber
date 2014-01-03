@@ -22,6 +22,7 @@ public class NoticiaDaoHibernateTest extends GenericDaoHibernateTest<Noticia>
 		noticia.setTexto("Conheça a Fortes");
 		noticia.setLink("http://www.fortesinformatica.com.br");
 		noticia.setCriticidade(2);
+		noticia.setPublicada(true);
 
 		return noticia;
 	}
@@ -51,6 +52,23 @@ public class NoticiaDaoHibernateTest extends GenericDaoHibernateTest<Noticia>
 		
 		assertTrue("Usuario 1", noticiaDao.findByUsuario(usuario1.getId()).size() >= 3);
 		assertTrue("Usuario 2", noticiaDao.findByUsuario(usuario2.getId()).size() >= 3);
+	}
+	
+	public void testFindByTexto()
+	{
+		Noticia noticia1 = getEntity();
+		noticia1.setTexto("noticia 1");
+		noticiaDao.save(noticia1);
+
+		Noticia noticia2 = getEntity();
+		noticia2.setTexto("noticia 2");
+		noticiaDao.save(noticia2);
+		
+		Noticia noticia3 = getEntity();
+		noticia3.setTexto("noticia 1");
+		noticiaDao.save(noticia3);
+		
+		assertEquals(noticia3.getId(), noticiaDao.findByTexto("noticia 1").getId());
 	}
 
 	public void setNoticiaDao(NoticiaDao noticiaDao) {

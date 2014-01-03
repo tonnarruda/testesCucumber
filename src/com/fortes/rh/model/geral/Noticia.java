@@ -18,6 +18,7 @@ public class Noticia extends AbstractModel
 	private String texto;
 	private String link;
 	private Integer criticidade;
+	private Boolean publicada;
 	
 	@OneToMany(mappedBy="noticia")
 	private Collection<UsuarioNoticia> usuarioNoticias;
@@ -81,5 +82,13 @@ public class Noticia extends AbstractModel
 
 	public void setLida(Boolean lida) {
 		this.lida = lida;
+	}
+
+	public Boolean getPublicada() {
+		return publicada;
+	}
+
+	public void setPublicada(Boolean publicada) {
+		this.publicada = publicada;
 	}
 }

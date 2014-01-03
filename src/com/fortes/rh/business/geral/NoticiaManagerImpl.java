@@ -73,7 +73,9 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 				List<Element> noticiasElements = publicidadeElement.getChildren();
 				Iterator<Element> noticiasElementsIterator = noticiasElements.iterator();
 				Element noticiaElement;
-				Noticia noticia;
+				
+				Noticia noticia, noticiaBD;
+				noticiaManager.despublicarTodas();
 				
 				while (noticiasElementsIterator.hasNext())
 				{
@@ -86,8 +88,18 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 												noticiaElement.getChild("link").getValue(), 
 												Integer.parseInt(noticiaElement.getChild("criticidade").getValue()) );
 						
-						if (!noticiaManager.verifyExists(new String[] { "texto", "link" }, new Object[] { noticia.getTexto(), noticia.getLink() }))
+						noticiaBD = noticiaManager.findByTexto(noticia.getTexto());
+						
+						if (noticiaBD == null)
+						{
+							noticia.setPublicada(true);
 							noticiaManager.save(noticia);
+						}
+						else
+						{
+							noticiaBD.setPublicada(true);
+							noticiaManager.update(noticiaBD);
+						}
 					} 
 				}
 			}
@@ -96,4 +108,14 @@ public class NoticiaManagerImpl extends GenericManagerImpl<Noticia, NoticiaDao> 
 			e.printStackTrace();
 		}
     }
+
+	public Noticia findByTexto(String texto) 
+	{
+		return getDao().findByTexto(texto);
+	}
+
+	public void despublicarTodas() 
+	{
+		getDao().despublicarTodas();
+	}
 }

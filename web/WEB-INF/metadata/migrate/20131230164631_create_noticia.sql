@@ -2,7 +2,8 @@ CREATE TABLE noticia (
 	id bigint NOT NULL,
 	texto text NOT NULL,
 	criticidade int NOT NULL,
-	link character varying(255) NOT NULL
+	link character varying(255) NOT NULL,
+	publicada boolean NOT NULL
 );--.go
 
 ALTER TABLE noticia ADD CONSTRAINT noticia_pkey PRIMARY KEY(id);--.go
