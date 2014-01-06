@@ -8,7 +8,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado$/ do
-  exec_sql "update  parametrosdosistema  set servidorremprot = '10.1.254.2';"
+  exec_sql "update  parametrosdosistema  set proximaversao = '2015-01-01';"
   unless page.has_selector?('.saudacao') && page.has_selector?('.nomeUsuario')
     # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")

@@ -13,6 +13,7 @@ Funcionalidade: Cadastrar Curso
     Então eu devo ver o título "Editar Configurações do Sistema"
     E eu preencho "Atualizador" com "Samuel Pinheiro"
     E eu preencho "E-mail do suporte técnico" com "samuelpinheiro@entetenologia.com.br"
+    E eu preencho "Configuração do autenticador" com "samuel"
     E eu preencho "Usuário" com "samuelpinheiro@entetenologia.com.br"
     E eu preencho "Senha" com "123456"
     E eu marco "Compartilhar cursos entre empresas."

@@ -75,6 +75,20 @@ SELECT pg_catalog.setval('areaorganizacional_sequence', 1, false);
 
 
 --
+-- Name: areavivencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivencia_sequence', 1, false);
+
+
+--
+-- Name: areavivenciapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivenciapcmat_sequence', 1, false);
+
+
+--
 -- Name: aspecto_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -86,6 +100,13 @@ SELECT pg_catalog.setval('aspecto_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('atitude_sequence', 1, false);
+
+
+--
+-- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('atividadesegurancapcmat_sequence', 1, false);
 
 
 --
@@ -474,6 +495,13 @@ SELECT pg_catalog.setval('epc_sequence', 1, false);
 
 
 --
+-- Name: epcpcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epcpcmat_sequence', 1, false);
+
+
+--
 -- Name: epi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -485,6 +513,13 @@ SELECT pg_catalog.setval('epi_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('epihistorico_sequence', 1, false);
+
+
+--
+-- Name: epipcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epipcmat_sequence', 1, false);
 
 
 --
@@ -590,6 +625,20 @@ SELECT pg_catalog.setval('faixasalarial_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('faixasalarialhistorico_sequence', 1, false);
+
+
+--
+-- Name: fase_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fase_sequence', 1, false);
+
+
+--
+-- Name: fasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fasepcmat_sequence', 1, false);
 
 
 --
@@ -761,6 +810,20 @@ SELECT pg_catalog.setval('medicocoordenador_sequence', 1, false);
 
 
 --
+-- Name: medidariscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidariscofasepcmat_sequence', 1, false);
+
+
+--
+-- Name: medidaseguranca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidaseguranca_sequence', 1, false);
+
+
+--
 -- Name: mensagem_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -796,6 +859,20 @@ SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
 
 
 --
+-- Name: noticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('noticia_sequence', 1, false);
+
+
+--
+-- Name: obra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('obra_sequence', 1, false);
+
+
+--
 -- Name: ocorrencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -806,7 +883,7 @@ SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 605, false);
+SELECT pg_catalog.setval('papel_sequence', 611, false);
 
 
 --
@@ -814,6 +891,13 @@ SELECT pg_catalog.setval('papel_sequence', 605, false);
 --
 
 SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
+
+
+--
+-- Name: pcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pcmat_sequence', 1, false);
 
 
 --
@@ -929,6 +1013,13 @@ SELECT pg_catalog.setval('riscoambiente_sequence', 1, false);
 
 
 --
+-- Name: riscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscofasepcmat_sequence', 1, false);
+
+
+--
 -- Name: riscofuncao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -940,6 +1031,13 @@ SELECT pg_catalog.setval('riscofuncao_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('riscomedicaorisco_sequence', 1, false);
+
+
+--
+-- Name: sinalizacaopcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sinalizacaopcmat_sequence', 1, false);
 
 
 --
@@ -1059,6 +1157,13 @@ SELECT pg_catalog.setval('usuarioempresa_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('usuariomensagem_sequence', 1, false);
+
+
+--
+-- Name: usuarionoticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
 
 
 --
@@ -7037,6 +7142,46 @@ ALTER TABLE areainteresse_areaorganizacional DISABLE TRIGGER ALL;
 ALTER TABLE areainteresse_areaorganizacional ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: areavivencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE areavivencia DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE areavivencia ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: obra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE obra DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE obra ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: pcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE pcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE pcmat ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: areavivenciapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE areavivenciapcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE areavivenciapcmat ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: questionario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -7085,6 +7230,16 @@ ALTER TABLE atitude_curso DISABLE TRIGGER ALL;
 
 
 ALTER TABLE atitude_curso ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: atividadesegurancapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE atividadesegurancapcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE atividadesegurancapcmat ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: auditoria; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -24535,6 +24690,16 @@ ALTER TABLE epc DISABLE TRIGGER ALL;
 ALTER TABLE epc ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: epcpcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE epcpcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE epcpcmat ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: epihistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -24543,6 +24708,16 @@ ALTER TABLE epihistorico DISABLE TRIGGER ALL;
 
 
 ALTER TABLE epihistorico ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: epipcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE epipcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE epipcmat ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: etapaprocessoeleitoral; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -24744,6 +24919,26 @@ ALTER TABLE faixasalarialhistorico DISABLE TRIGGER ALL;
 
 
 ALTER TABLE faixasalarialhistorico ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: fase; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE fase DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE fase ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: fasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE fasepcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE fasepcmat ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: faturamentomensal; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -25025,6 +25220,46 @@ ALTER TABLE medicaorisco DISABLE TRIGGER ALL;
 
 
 ALTER TABLE medicaorisco ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: medidaseguranca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE medidaseguranca DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE medidaseguranca ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: risco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE risco DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE risco ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: riscofasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE riscofasepcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE riscofasepcmat ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: medidariscofasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE medidariscofasepcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE medidariscofasepcmat ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: mensagem; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -25320,9 +25555,36 @@ INSERT INTO migrations (name) VALUES ('20131111163234');
 INSERT INTO migrations (name) VALUES ('20131119100305');
 INSERT INTO migrations (name) VALUES ('20131203103507');
 INSERT INTO migrations (name) VALUES ('20131212082622');
+INSERT INTO migrations (name) VALUES ('20131212082624');
+INSERT INTO migrations (name) VALUES ('20131212082625');
+INSERT INTO migrations (name) VALUES ('20131212082626');
+INSERT INTO migrations (name) VALUES ('20131212082627');
+INSERT INTO migrations (name) VALUES ('20131212082725');
+INSERT INTO migrations (name) VALUES ('20131212082726');
+INSERT INTO migrations (name) VALUES ('20131212082727');
+INSERT INTO migrations (name) VALUES ('20131212082728');
+INSERT INTO migrations (name) VALUES ('20131212082729');
+INSERT INTO migrations (name) VALUES ('20131212082730');
+INSERT INTO migrations (name) VALUES ('20131212082731');
+INSERT INTO migrations (name) VALUES ('20131212082732');
+INSERT INTO migrations (name) VALUES ('20131213153742');
+INSERT INTO migrations (name) VALUES ('20131216103525');
+INSERT INTO migrations (name) VALUES ('20131216135942');
+INSERT INTO migrations (name) VALUES ('20131226103138');
+INSERT INTO migrations (name) VALUES ('20131230164631');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: noticia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE noticia DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE noticia ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: papel; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -25454,14 +25716,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 8, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (437, 'ROLE_CAD_ETAPAPROCESSOELEITORAL', 'Etapas do Processo Eleitoral', '/sesmt/etapaProcessoEleitoral/list.action', 1, true, NULL, 455, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (439, 'ROLE_CAD_ELEICAO', 'Comissões', '/sesmt/comissao/list.action', 3, true, NULL, 455, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 10, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 11, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 12, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 13, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 14, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 14, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 15, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 16, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 3, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '/sesmt/medicaoRisco/list.action', 1, true, NULL, 386, NULL);
@@ -25617,6 +25871,20 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (603, 'ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO', 'Triagem Módulo Externo', '#', 14, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (480, 'ROLE_MOV_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 1, true, NULL, 469, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (604, 'ROLE_MOV_PROVIDENCIA', 'Providências', '/geral/ocorrenciaProvidencia/list.action', 2, true, NULL, 469, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 11, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 12, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 13, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 14, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 15, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 15, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 16, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 17, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (605, 'ROLE_CAD_PCMAT', 'PCMAT', '#', 10, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (606, 'ROLE_CAD_OBRA', 'Obras', '/sesmt/obra/list.action', 1, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (607, 'ROLE_CAD_FASE', 'Fases', '/sesmt/fase/list.action', 2, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (608, 'ROLE_CAD_MEDIDASEGURANCA', 'Medidas de Segurança', '/sesmt/medidaSeguranca/list.action', 3, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (609, 'ROLE_MOV_PCMAT', 'PCMAT', '/sesmt/pcmat/list.action', 10, true, NULL, 386, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areaVivencia/list.action', 4, true, NULL, 605, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -25639,7 +25907,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.121.140', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.122.141', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -25886,6 +26154,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 601);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 602);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 603);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 604);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 605);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 606);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 607);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 608);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 609);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 610);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;
@@ -25919,16 +26193,6 @@ ALTER TABLE quantidadelimitecolaboradoresporcargo DISABLE TRIGGER ALL;
 
 
 ALTER TABLE quantidadelimitecolaboradoresporcargo ENABLE TRIGGER ALL;
-
---
--- Data for Name: risco; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-ALTER TABLE risco DISABLE TRIGGER ALL;
-
-
-
-ALTER TABLE risco ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: risco_epi; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -25969,6 +26233,16 @@ ALTER TABLE riscomedicaorisco DISABLE TRIGGER ALL;
 
 
 ALTER TABLE riscomedicaorisco ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: sinalizacaopcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE sinalizacaopcmat DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE sinalizacaopcmat ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: solicitacao_bairro; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -26089,6 +26363,16 @@ ALTER TABLE usuariomensagem DISABLE TRIGGER ALL;
 
 
 ALTER TABLE usuariomensagem ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: usuarionoticia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE usuarionoticia DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE usuarionoticia ENABLE TRIGGER ALL;
 
 --
 -- PostgreSQL database dump complete

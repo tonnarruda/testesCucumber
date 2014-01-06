@@ -7,6 +7,7 @@
 			<result name="erro">/error.jsp</result>
 		</action>
 		<action name="carregarAfastamentos" class="com.fortes.rh.web.action.importacao.ImportacaoAction" method="carregarAfastamentos">
+			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/importacao/carregarAfastamentos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/importacao/afastamentos.ftl</result>
 		</action>

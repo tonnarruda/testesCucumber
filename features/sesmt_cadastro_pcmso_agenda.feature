@@ -23,6 +23,9 @@ Funcionalidade: Agenda
     E eu clico no botão "Gravar"
 
     Então eu devo ver o título "Agenda"
+    Então eu clico "Exibir Filtro"
+    E eu preencho "dataMesAnoIni" com "01/2013"
+    E eu clico no botão "Pesquisar"
     E eu devo ver "Semana da Saude"
     E eu devo ver "01/2013"
 

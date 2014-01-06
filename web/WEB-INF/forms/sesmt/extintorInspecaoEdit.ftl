@@ -79,13 +79,13 @@
 		$(function() {
 			$("#empresaResponsavel").autocomplete( {source: empresasResponsaveis} );
 			
-			$( "#extintor" ).combobox();
-			
 			$("#check11").change(function() {
 				$('#outroMotivo').toggle($(this).is(':checked'));
 			});
 			
 			$('#outroMotivo').toggle($('#check11').is(':checked'));
+			
+			//$('#extintor').combobox();
 		});
 
 		function populaExtintores()
@@ -98,7 +98,7 @@
 
 	    function createListExtintores(data)
 	    {
-	    	$('.ui-autocomplete-input').eq(0).val($(data).data('-1'));
+	    	$('.ui-autocomplete-input').eq(0).val($(data).data('-2'));
 	    	
 			DWRUtil.removeAllOptions("extintor");
 			DWRUtil.addOptions("extintor", data);

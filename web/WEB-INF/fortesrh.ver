@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.122.141" data="06/01/2014">
+		<Modulo nome=" "><![CDATA[
+			:: Melhorias no sistema de notícias do sistema.
+			:: Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova coluna para impressão "Indicado Por".
+			:: SESMT > Cadastros > PCMAT > Obras: Novo Cadastro.
+			:: SESMT > Cadastros > PCMAT > Fases: Novo Cadastro.
+			:: SESMT > Cadastros > PCMAT > Medidas de Segurança: Novo Cadastro.
+			:: SESMT > Cadastros > PCMAT > Áreas de Vivência: Novo Cadastro.
+			:: SESMT > Movimentações > PCMAT: Nova funcionalidade para gerar o relatório de PCMAT.
+			:: SESMT > Relatórios > Ficha de EPI: Nova possibilidade de inserir EPIs entregues no relatório ao selecionar uma solicitação de EPI.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.121.140" data="16/12/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Desligar colaborador no AC Pessoal", através de email para o responsável do RH, gestor e cogestor da área organizacional.

@@ -13,6 +13,7 @@ Funcionalidade: Cadastrar Plano de Treinamento
     E eu clico "Exibir Filtro"
     E eu seleciono "tdd" de "Curso"
     E eu seleciono "Não" de "Realizada"
+    E eu preencho "dataIni" com "01/01/2013"
     E eu clico no botão "Pesquisar"
     E eu devo ver "tdd"
     

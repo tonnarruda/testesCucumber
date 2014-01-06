@@ -22075,3 +22075,219 @@ drop function atualiza_gerenciador_comunicao();--.go
 
 insert into migrations values('20131212082622');--.go
 update parametrosdosistema set appversao = '1.1.121.140';--.go
+-- versao 1.1.122.141
+
+UPDATE papel SET ordem = ordem + 1 WHERE papelmae_id = 385 AND ordem > 9;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (605, 'ROLE_CAD_PCMAT', 'PCMAT', '#', 10, true, 385);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 605);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (606, 'ROLE_CAD_OBRA', 'Obras', '/sesmt/obra/list.action', 1, true, 605);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 606);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (607, 'ROLE_CAD_FASE', 'Fases', '/sesmt/fase/list.action', 2, true, 605);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 607);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (608, 'ROLE_CAD_MEDIDASEGURANCA', 'Medidas de Segurança', '/sesmt/medidaSeguranca/list.action', 3, true, 605);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 608);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (609, 'ROLE_MOV_PCMAT', 'PCMAT', '/sesmt/pcmat/list.action', 10, true, 386);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 609);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areaVivencia/list.action', 4, true, 605);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 610);--.go
+
+alter sequence papel_sequence restart with 611;--.go
+insert into migrations values('20131212082624');--.go
+CREATE TABLE obra (
+	id bigint NOT NULL,
+	nome character varying(100) NOT NULL,
+	tipoobra character varying(100) NOT NULL,
+	logradouro character varying(200),
+	numero character varying(10),
+	complemento character varying(200),
+	bairro character varying(100),
+	cep character varying(8),
+	cidade_id bigint,
+	uf_id bigint,
+	empresa_id bigint
+);--.go
+
+ALTER TABLE obra ADD CONSTRAINT obra_pkey PRIMARY KEY(id);--.go
+ALTER TABLE obra ADD CONSTRAINT obra_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+ALTER TABLE obra ADD CONSTRAINT obra_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);--.go
+ALTER TABLE obra ADD CONSTRAINT obra_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);--.go
+CREATE SEQUENCE obra_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082625');--.go
+CREATE TABLE pcmat (
+	id bigint NOT NULL,
+	apartirde date NOT NULL,
+	datainiobra date NOT NULL,
+	datafimobra date NOT NULL,
+	qtdfuncionarios integer,
+	obra_id bigint,
+	objetivo text,
+	textocondicoestrabalho text,
+	textoareasvivencia text,
+	textoatividadesseguranca text,
+	textoepis text,
+	textoepcs text,
+	textosinalizacao text
+);--.go
+
+ALTER TABLE pcmat ADD CONSTRAINT pcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE pcmat ADD CONSTRAINT pcmat_obra_fk FOREIGN KEY (obra_id) REFERENCES obra(id);--.go
+CREATE SEQUENCE pcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082626');--.go
+CREATE TABLE fase (
+	id bigint NOT NULL,
+	descricao character varying(200) NOT NULL,
+	empresa_id bigint
+);--.go
+
+ALTER TABLE fase ADD CONSTRAINT fase_pkey PRIMARY KEY(id);--.go
+ALTER TABLE fase ADD CONSTRAINT fase_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE fase_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082627');--.go
+CREATE TABLE medidaseguranca (
+	id bigint NOT NULL,
+	descricao text NOT NULL,
+	empresa_id bigint
+);--.go
+
+ALTER TABLE medidaseguranca ADD CONSTRAINT medidaseguranca_pkey PRIMARY KEY(id);--.go
+ALTER TABLE medidaseguranca ADD CONSTRAINT medidaseguranca_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE medidaseguranca_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082725');--.go
+CREATE TABLE fasepcmat (
+	id bigint NOT NULL,
+	fase_id bigint,
+	pcmat_id bigint,
+	descricao text,
+	mesIni smallint NOT NULL DEFAULT 0,
+	mesFim smallint NOT NULL DEFAULT 0
+);--.go
+
+ALTER TABLE fasepcmat ADD CONSTRAINT fasepcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE fasepcmat ADD CONSTRAINT fasepcmat_fase_fk FOREIGN KEY (fase_id) REFERENCES fase(id);--.go
+ALTER TABLE fasepcmat ADD CONSTRAINT fasepcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE fasepcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082726');--.go
+CREATE TABLE riscofasepcmat (
+	id bigint NOT NULL,
+	risco_id bigint,
+	fasepcmat_id bigint
+);--.go
+
+ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);--.go
+ALTER TABLE riscofasepcmat ADD CONSTRAINT riscofasepcmat_fasepcmat_fk FOREIGN KEY (fasepcmat_id) REFERENCES fasepcmat(id) ON DELETE CASCADE;--.go
+CREATE SEQUENCE riscofasepcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082727');--.go
+CREATE TABLE medidariscofasepcmat (
+	id bigint NOT NULL,
+	medidaseguranca_id bigint,
+	riscofasepcmat_id bigint
+);--.go
+
+ALTER TABLE medidariscofasepcmat ADD CONSTRAINT medidariscofasepcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE medidariscofasepcmat ADD CONSTRAINT medidariscofasepcmat_medidaseguranca_fk FOREIGN KEY (medidaseguranca_id) REFERENCES medidaseguranca(id);--.go
+ALTER TABLE medidariscofasepcmat ADD CONSTRAINT medidariscofasepcmat_riscofasepcmat_fk FOREIGN KEY (riscofasepcmat_id) REFERENCES riscofasepcmat(id) ON DELETE CASCADE;--.go
+CREATE SEQUENCE medidariscofasepcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082728');--.go
+CREATE TABLE areavivencia (
+	id bigint NOT NULL,
+	nome character varying(150) NOT NULL,
+	empresa_id bigint
+);--.go
+
+ALTER TABLE areavivencia ADD CONSTRAINT areavivencia_pkey PRIMARY KEY(id);--.go
+ALTER TABLE areavivencia ADD CONSTRAINT areavivencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
+CREATE SEQUENCE areavivencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082729');--.go
+CREATE TABLE areaVivenciaPcmat (
+	id bigint NOT NULL,
+	areaVivencia_id bigint,
+	pcmat_id bigint,
+	descricao text
+);--.go
+
+ALTER TABLE areaVivenciaPcmat ADD CONSTRAINT areaVivenciaPcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE areaVivenciaPcmat ADD CONSTRAINT areaVivenciaPcmat_areaVivencia_fk FOREIGN KEY (areaVivencia_id) REFERENCES areaVivencia(id);--.go
+ALTER TABLE areaVivenciaPcmat ADD CONSTRAINT areaVivenciaPcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE areaVivenciaPcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082730');--.go
+CREATE TABLE atividadeSegurancaPcmat (
+	id bigint NOT NULL,
+	nome character varying(200),
+	data date,
+	cargaHoraria integer,
+	pcmat_id bigint
+);--.go
+
+ALTER TABLE atividadeSegurancaPcmat ADD CONSTRAINT atividadeSegurancaPcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE atividadeSegurancaPcmat ADD CONSTRAINT atividadeSegurancaPcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE atividadeSegurancaPcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131212082731');--.go
+alter table epi add column descricao text;--.go
+insert into migrations values('20131212082732');--.go
+CREATE TABLE epipcmat (
+	id bigint NOT NULL,
+	epi_id bigint,
+	pcmat_id bigint,
+	atividades text
+);--.go
+
+ALTER TABLE epipcmat ADD CONSTRAINT epipcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE epipcmat ADD CONSTRAINT epipcmat_epi_fk FOREIGN KEY (epi_id) REFERENCES epi(id);--.go
+ALTER TABLE epipcmat ADD CONSTRAINT epipcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE epipcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131213153742');--.go
+CREATE TABLE epcpcmat (
+	id bigint NOT NULL,
+	epc_id bigint,
+	pcmat_id bigint,
+	descricao text
+);--.go
+
+ALTER TABLE epcpcmat ADD CONSTRAINT epcpcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE epcpcmat ADD CONSTRAINT epcpcmat_epc_fk FOREIGN KEY (epc_id) REFERENCES epc(id);--.go
+ALTER TABLE epcpcmat ADD CONSTRAINT epcpcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE epcpcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131216103525');--.go
+ALTER TABLE pcmat ADD CONSTRAINT unique_obra_apartirde_pcmat UNIQUE (obra_id, apartirde);--.go
+insert into migrations values('20131216135942');--.go
+CREATE TABLE sinalizacaopcmat (
+	id bigint NOT NULL,
+	pcmat_id bigint,
+	descricao character varying(200)
+);--.go
+
+ALTER TABLE sinalizacaopcmat ADD CONSTRAINT sinalizacaopcmat_pkey PRIMARY KEY(id);--.go
+ALTER TABLE sinalizacaopcmat ADD CONSTRAINT sinalizacaopcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);--.go
+CREATE SEQUENCE sinalizacaopcmat_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131226103138');--.go
+CREATE TABLE noticia (
+	id bigint NOT NULL,
+	texto text NOT NULL,
+	criticidade int NOT NULL,
+	link character varying(255) NOT NULL,
+	publicada boolean NOT NULL
+);--.go
+
+ALTER TABLE noticia ADD CONSTRAINT noticia_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE noticia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+
+CREATE TABLE usuarionoticia (
+	id bigint NOT NULL,
+	usuario_id bigint NOT NULL,
+	noticia_id bigint NOT NULL
+);--.go
+
+ALTER TABLE usuarionoticia ADD CONSTRAINT usuarionoticia_pkey PRIMARY KEY(id);--.go
+ALTER TABLE ONLY usuarionoticia ADD CONSTRAINT usuarionoticia_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);--go
+ALTER TABLE ONLY usuarionoticia ADD CONSTRAINT usuarionoticia_noticia_fk FOREIGN KEY (noticia_id) REFERENCES noticia(id);--go
+CREATE SEQUENCE usuarionoticia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20131230164631');--.go
+update parametrosdosistema set appversao = '1.1.122.141';--.go

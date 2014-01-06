@@ -405,6 +405,75 @@ SELECT pg_catalog.setval('areaorganizacional_sequence', 1, false);
 
 
 --
+-- Name: areavivencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE areavivencia (
+    id bigint NOT NULL,
+    nome character varying(150) NOT NULL,
+    empresa_id bigint
+);
+
+
+ALTER TABLE public.areavivencia OWNER TO postgres;
+
+--
+-- Name: areavivencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE areavivencia_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.areavivencia_sequence OWNER TO postgres;
+
+--
+-- Name: areavivencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivencia_sequence', 1, false);
+
+
+--
+-- Name: areavivenciapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE areavivenciapcmat (
+    id bigint NOT NULL,
+    areavivencia_id bigint,
+    pcmat_id bigint,
+    descricao text
+);
+
+
+ALTER TABLE public.areavivenciapcmat OWNER TO postgres;
+
+--
+-- Name: areavivenciapcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE areavivenciapcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.areavivenciapcmat_sequence OWNER TO postgres;
+
+--
+-- Name: areavivenciapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('areavivenciapcmat_sequence', 1, false);
+
+
+--
 -- Name: aspecto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -496,6 +565,42 @@ ALTER TABLE public.atitude_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('atitude_sequence', 1, false);
+
+
+--
+-- Name: atividadesegurancapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE atividadesegurancapcmat (
+    id bigint NOT NULL,
+    nome character varying(200),
+    data date,
+    cargahoraria integer,
+    pcmat_id bigint
+);
+
+
+ALTER TABLE public.atividadesegurancapcmat OWNER TO postgres;
+
+--
+-- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE atividadesegurancapcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.atividadesegurancapcmat_sequence OWNER TO postgres;
+
+--
+-- Name: atividadesegurancapcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('atividadesegurancapcmat_sequence', 1, false);
 
 
 --
@@ -3042,6 +3147,41 @@ SELECT pg_catalog.setval('epc_sequence', 1, false);
 
 
 --
+-- Name: epcpcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE epcpcmat (
+    id bigint NOT NULL,
+    epc_id bigint,
+    pcmat_id bigint,
+    descricao text
+);
+
+
+ALTER TABLE public.epcpcmat OWNER TO postgres;
+
+--
+-- Name: epcpcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE epcpcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.epcpcmat_sequence OWNER TO postgres;
+
+--
+-- Name: epcpcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epcpcmat_sequence', 1, false);
+
+
+--
 -- Name: epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -3052,7 +3192,8 @@ CREATE TABLE epi (
     empresa_id bigint,
     tipoepi_id bigint,
     fardamento boolean NOT NULL,
-    ativo boolean DEFAULT true
+    ativo boolean DEFAULT true,
+    descricao text
 );
 
 
@@ -3115,6 +3256,41 @@ ALTER TABLE public.epihistorico_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('epihistorico_sequence', 1, false);
+
+
+--
+-- Name: epipcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE epipcmat (
+    id bigint NOT NULL,
+    epi_id bigint,
+    pcmat_id bigint,
+    atividades text
+);
+
+
+ALTER TABLE public.epipcmat OWNER TO postgres;
+
+--
+-- Name: epipcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE epipcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.epipcmat_sequence OWNER TO postgres;
+
+--
+-- Name: epipcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('epipcmat_sequence', 1, false);
 
 
 --
@@ -3709,6 +3885,77 @@ ALTER TABLE public.faixasalarialhistorico_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('faixasalarialhistorico_sequence', 1, false);
+
+
+--
+-- Name: fase; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE fase (
+    id bigint NOT NULL,
+    descricao character varying(200) NOT NULL,
+    empresa_id bigint
+);
+
+
+ALTER TABLE public.fase OWNER TO postgres;
+
+--
+-- Name: fase_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE fase_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fase_sequence OWNER TO postgres;
+
+--
+-- Name: fase_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fase_sequence', 1, false);
+
+
+--
+-- Name: fasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE fasepcmat (
+    id bigint NOT NULL,
+    fase_id bigint,
+    pcmat_id bigint,
+    descricao text,
+    mesini smallint DEFAULT 0 NOT NULL,
+    mesfim smallint DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.fasepcmat OWNER TO postgres;
+
+--
+-- Name: fasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE fasepcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fasepcmat_sequence OWNER TO postgres;
+
+--
+-- Name: fasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fasepcmat_sequence', 1, false);
 
 
 --
@@ -4669,6 +4916,74 @@ SELECT pg_catalog.setval('medicocoordenador_sequence', 1, false);
 
 
 --
+-- Name: medidariscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE medidariscofasepcmat (
+    id bigint NOT NULL,
+    medidaseguranca_id bigint,
+    riscofasepcmat_id bigint
+);
+
+
+ALTER TABLE public.medidariscofasepcmat OWNER TO postgres;
+
+--
+-- Name: medidariscofasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE medidariscofasepcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.medidariscofasepcmat_sequence OWNER TO postgres;
+
+--
+-- Name: medidariscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidariscofasepcmat_sequence', 1, false);
+
+
+--
+-- Name: medidaseguranca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE medidaseguranca (
+    id bigint NOT NULL,
+    descricao text NOT NULL,
+    empresa_id bigint
+);
+
+
+ALTER TABLE public.medidaseguranca OWNER TO postgres;
+
+--
+-- Name: medidaseguranca_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE medidaseguranca_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.medidaseguranca_sequence OWNER TO postgres;
+
+--
+-- Name: medidaseguranca_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('medidaseguranca_sequence', 1, false);
+
+
+--
 -- Name: mensagem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -4855,6 +5170,84 @@ SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
 
 
 --
+-- Name: noticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE noticia (
+    id bigint NOT NULL,
+    texto text NOT NULL,
+    criticidade integer NOT NULL,
+    link character varying(255) NOT NULL,
+    publicada boolean NOT NULL
+);
+
+
+ALTER TABLE public.noticia OWNER TO postgres;
+
+--
+-- Name: noticia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE noticia_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.noticia_sequence OWNER TO postgres;
+
+--
+-- Name: noticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('noticia_sequence', 1, false);
+
+
+--
+-- Name: obra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE obra (
+    id bigint NOT NULL,
+    nome character varying(100) NOT NULL,
+    tipoobra character varying(100) NOT NULL,
+    logradouro character varying(200),
+    numero character varying(10),
+    complemento character varying(200),
+    bairro character varying(100),
+    cep character varying(8),
+    cidade_id bigint,
+    uf_id bigint,
+    empresa_id bigint
+);
+
+
+ALTER TABLE public.obra OWNER TO postgres;
+
+--
+-- Name: obra_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE obra_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.obra_sequence OWNER TO postgres;
+
+--
+-- Name: obra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('obra_sequence', 1, false);
+
+
+--
 -- Name: ocorrencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -4930,7 +5323,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 605, false);
+SELECT pg_catalog.setval('papel_sequence', 611, false);
 
 
 --
@@ -4994,6 +5387,50 @@ ALTER TABLE public.parametrosdosistema_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
+
+
+--
+-- Name: pcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pcmat (
+    id bigint NOT NULL,
+    apartirde date NOT NULL,
+    datainiobra date NOT NULL,
+    datafimobra date NOT NULL,
+    qtdfuncionarios integer,
+    obra_id bigint,
+    objetivo text,
+    textocondicoestrabalho text,
+    textoareasvivencia text,
+    textoatividadesseguranca text,
+    textoepis text,
+    textoepcs text,
+    textosinalizacao text
+);
+
+
+ALTER TABLE public.pcmat OWNER TO postgres;
+
+--
+-- Name: pcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pcmat_sequence OWNER TO postgres;
+
+--
+-- Name: pcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pcmat_sequence', 1, false);
 
 
 --
@@ -5615,6 +6052,40 @@ SELECT pg_catalog.setval('riscoambiente_sequence', 1, false);
 
 
 --
+-- Name: riscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE riscofasepcmat (
+    id bigint NOT NULL,
+    risco_id bigint,
+    fasepcmat_id bigint
+);
+
+
+ALTER TABLE public.riscofasepcmat OWNER TO postgres;
+
+--
+-- Name: riscofasepcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE riscofasepcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.riscofasepcmat_sequence OWNER TO postgres;
+
+--
+-- Name: riscofasepcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('riscofasepcmat_sequence', 1, false);
+
+
+--
 -- Name: riscofuncao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -5687,6 +6158,40 @@ ALTER TABLE public.riscomedicaorisco_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('riscomedicaorisco_sequence', 1, false);
+
+
+--
+-- Name: sinalizacaopcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE sinalizacaopcmat (
+    id bigint NOT NULL,
+    pcmat_id bigint,
+    descricao character varying(200)
+);
+
+
+ALTER TABLE public.sinalizacaopcmat OWNER TO postgres;
+
+--
+-- Name: sinalizacaopcmat_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE sinalizacaopcmat_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sinalizacaopcmat_sequence OWNER TO postgres;
+
+--
+-- Name: sinalizacaopcmat_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sinalizacaopcmat_sequence', 1, false);
 
 
 --
@@ -6393,6 +6898,40 @@ SELECT pg_catalog.setval('usuariomensagem_sequence', 1, false);
 
 
 --
+-- Name: usuarionoticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usuarionoticia (
+    id bigint NOT NULL,
+    usuario_id bigint NOT NULL,
+    noticia_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.usuarionoticia OWNER TO postgres;
+
+--
+-- Name: usuarionoticia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE usuarionoticia_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.usuarionoticia_sequence OWNER TO postgres;
+
+--
+-- Name: usuarionoticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
+
+
+--
 -- Data for Name: afastamento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6527,6 +7066,18 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Data for Name: areavivencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: areavivenciapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: aspecto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6546,6 +7097,12 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 --
 -- Data for Name: atitude_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: atividadesegurancapcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29195,6 +29752,12 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 
 --
+-- Data for Name: epcpcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: epi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -29202,6 +29765,12 @@ INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emai
 
 --
 -- Data for Name: epihistorico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: epipcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29361,6 +29930,18 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 
 --
 -- Data for Name: faixasalarialhistorico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: fase; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: fasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29574,6 +30155,18 @@ INSERT INTO idioma (id, nome) VALUES (5, 'Italiano');
 
 --
 -- Data for Name: medicocoordenador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: medidariscofasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: medidaseguranca; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29866,6 +30459,23 @@ INSERT INTO migrations (name) VALUES ('20131111163234');
 INSERT INTO migrations (name) VALUES ('20131119100305');
 INSERT INTO migrations (name) VALUES ('20131203103507');
 INSERT INTO migrations (name) VALUES ('20131212082622');
+INSERT INTO migrations (name) VALUES ('20131212082624');
+INSERT INTO migrations (name) VALUES ('20131212082625');
+INSERT INTO migrations (name) VALUES ('20131212082626');
+INSERT INTO migrations (name) VALUES ('20131212082627');
+INSERT INTO migrations (name) VALUES ('20131212082725');
+INSERT INTO migrations (name) VALUES ('20131212082726');
+INSERT INTO migrations (name) VALUES ('20131212082727');
+INSERT INTO migrations (name) VALUES ('20131212082728');
+INSERT INTO migrations (name) VALUES ('20131212082729');
+INSERT INTO migrations (name) VALUES ('20131212082730');
+INSERT INTO migrations (name) VALUES ('20131212082731');
+INSERT INTO migrations (name) VALUES ('20131212082732');
+INSERT INTO migrations (name) VALUES ('20131213153742');
+INSERT INTO migrations (name) VALUES ('20131216103525');
+INSERT INTO migrations (name) VALUES ('20131216135942');
+INSERT INTO migrations (name) VALUES ('20131226103138');
+INSERT INTO migrations (name) VALUES ('20131230164631');
 
 
 --
@@ -29888,6 +30498,18 @@ INSERT INTO migrations (name) VALUES ('20131212082622');
 
 --
 -- Data for Name: nivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: noticia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: obra; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -30026,14 +30648,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 8, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (437, 'ROLE_CAD_ETAPAPROCESSOELEITORAL', 'Etapas do Processo Eleitoral', '/sesmt/etapaProcessoEleitoral/list.action', 1, true, NULL, 455, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (439, 'ROLE_CAD_ELEICAO', 'Comissões', '/sesmt/comissao/list.action', 3, true, NULL, 455, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 10, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 11, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 12, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 13, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 14, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 14, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 15, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 16, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 3, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '/sesmt/medicaoRisco/list.action', 1, true, NULL, 386, NULL);
@@ -30189,13 +30803,33 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (603, 'ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO', 'Triagem Módulo Externo', '#', 14, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (480, 'ROLE_MOV_OCORRENCIA', 'Ocorrências', '/geral/colaboradorOcorrencia/list.action', 1, true, NULL, 469, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (604, 'ROLE_MOV_PROVIDENCIA', 'Providências', '/geral/ocorrenciaProvidencia/list.action', 2, true, NULL, 469, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 11, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 12, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 13, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 14, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 15, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 15, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 16, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 17, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (605, 'ROLE_CAD_PCMAT', 'PCMAT', '#', 10, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (606, 'ROLE_CAD_OBRA', 'Obras', '/sesmt/obra/list.action', 1, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (607, 'ROLE_CAD_FASE', 'Fases', '/sesmt/fase/list.action', 2, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (608, 'ROLE_CAD_MEDIDASEGURANCA', 'Medidas de Segurança', '/sesmt/medidaSeguranca/list.action', 3, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (609, 'ROLE_MOV_PCMAT', 'PCMAT', '/sesmt/pcmat/list.action', 10, true, NULL, 386, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areaVivencia/list.action', 4, true, NULL, 605, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.121.140', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.122.141', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.53.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+
+
+--
+-- Data for Name: pcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 
 
 --
@@ -30446,6 +31080,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 601);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 602);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 603);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 604);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 605);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 606);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 607);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 608);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 609);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 610);
 
 
 --
@@ -30545,6 +31185,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 604);
 
 
 --
+-- Data for Name: riscofasepcmat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: riscofuncao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -30552,6 +31198,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 604);
 
 --
 -- Data for Name: riscomedicaorisco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: sinalizacaopcmat; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -30672,6 +31324,12 @@ INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superad
 
 
 --
+-- Data for Name: usuarionoticia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Name: afastamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -30752,6 +31410,22 @@ ALTER TABLE ONLY areaorganizacional
 
 
 --
+-- Name: areavivencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY areavivencia
+    ADD CONSTRAINT areavivencia_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: areavivenciapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY areavivenciapcmat
+    ADD CONSTRAINT areavivenciapcmat_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: aspecto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -30765,6 +31439,14 @@ ALTER TABLE ONLY aspecto
 
 ALTER TABLE ONLY atitude
     ADD CONSTRAINT atitude_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: atividadesegurancapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY atividadesegurancapcmat
+    ADD CONSTRAINT atividadesegurancapcmat_pkey PRIMARY KEY (id);
 
 
 --
@@ -31248,6 +31930,14 @@ ALTER TABLE ONLY epc
 
 
 --
+-- Name: epcpcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY epcpcmat
+    ADD CONSTRAINT epcpcmat_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: epi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31261,6 +31951,14 @@ ALTER TABLE ONLY epi
 
 ALTER TABLE ONLY epihistorico
     ADD CONSTRAINT epihistorico_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: epipcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY epipcmat
+    ADD CONSTRAINT epipcmat_pkey PRIMARY KEY (id);
 
 
 --
@@ -31381,6 +32079,22 @@ ALTER TABLE ONLY faixasalarial
 
 ALTER TABLE ONLY faixasalarialhistorico
     ADD CONSTRAINT faixasalarialhistorico_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fase_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY fase
+    ADD CONSTRAINT fase_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY fasepcmat
+    ADD CONSTRAINT fasepcmat_pkey PRIMARY KEY (id);
 
 
 --
@@ -31592,6 +32306,22 @@ ALTER TABLE ONLY medicocoordenador
 
 
 --
+-- Name: medidariscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY medidariscofasepcmat
+    ADD CONSTRAINT medidariscofasepcmat_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medidaseguranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY medidaseguranca
+    ADD CONSTRAINT medidaseguranca_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: mensagem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31632,6 +32362,22 @@ ALTER TABLE ONLY nivelcompetencia
 
 
 --
+-- Name: noticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY noticia
+    ADD CONSTRAINT noticia_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: obra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY obra
+    ADD CONSTRAINT obra_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ocorrencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31653,6 +32399,14 @@ ALTER TABLE ONLY papel
 
 ALTER TABLE ONLY parametrosdosistema
     ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pcmat
+    ADD CONSTRAINT pcmat_pkey PRIMARY KEY (id);
 
 
 --
@@ -31792,6 +32546,14 @@ ALTER TABLE ONLY riscoambiente
 
 
 --
+-- Name: riscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY riscofasepcmat
+    ADD CONSTRAINT riscofasepcmat_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: riscofuncao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31805,6 +32567,14 @@ ALTER TABLE ONLY riscofuncao
 
 ALTER TABLE ONLY riscomedicaorisco
     ADD CONSTRAINT riscomedicaorisco_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sinalizacaopcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY sinalizacaopcmat
+    ADD CONSTRAINT sinalizacaopcmat_pkey PRIMARY KEY (id);
 
 
 --
@@ -31944,6 +32714,14 @@ ALTER TABLE ONLY indice
 
 
 --
+-- Name: unique_obra_apartirde_pcmat; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pcmat
+    ADD CONSTRAINT unique_obra_apartirde_pcmat UNIQUE (obra_id, apartirde);
+
+
+--
 -- Name: usuario_login_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -31973,6 +32751,14 @@ ALTER TABLE ONLY usuarioempresa
 
 ALTER TABLE ONLY usuariomensagem
     ADD CONSTRAINT usuariomensagem_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: usuarionoticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usuarionoticia
+    ADD CONSTRAINT usuarionoticia_pkey PRIMARY KEY (id);
 
 
 --
@@ -32116,6 +32902,30 @@ ALTER TABLE ONLY areaorganizacional
 
 
 --
+-- Name: areavivencia_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY areavivencia
+    ADD CONSTRAINT areavivencia_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: areavivenciapcmat_areavivencia_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY areavivenciapcmat
+    ADD CONSTRAINT areavivenciapcmat_areavivencia_fk FOREIGN KEY (areavivencia_id) REFERENCES areavivencia(id);
+
+
+--
+-- Name: areavivenciapcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY areavivenciapcmat
+    ADD CONSTRAINT areavivenciapcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
+
+
+--
 -- Name: aspecto_avaliacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -32169,6 +32979,14 @@ ALTER TABLE ONLY atitude_curso
 
 ALTER TABLE ONLY atitude
     ADD CONSTRAINT atitude_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: atividadesegurancapcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY atividadesegurancapcmat
+    ADD CONSTRAINT atividadesegurancapcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
 
 
 --
@@ -33308,6 +34126,22 @@ ALTER TABLE ONLY epc
 
 
 --
+-- Name: epcpcmat_epc_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY epcpcmat
+    ADD CONSTRAINT epcpcmat_epc_fk FOREIGN KEY (epc_id) REFERENCES epc(id);
+
+
+--
+-- Name: epcpcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY epcpcmat
+    ADD CONSTRAINT epcpcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
+
+
+--
 -- Name: epi_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -33329,6 +34163,22 @@ ALTER TABLE ONLY epi
 
 ALTER TABLE ONLY epihistorico
     ADD CONSTRAINT epihistorico_epi_fk FOREIGN KEY (epi_id) REFERENCES epi(id);
+
+
+--
+-- Name: epipcmat_epi_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY epipcmat
+    ADD CONSTRAINT epipcmat_epi_fk FOREIGN KEY (epi_id) REFERENCES epi(id);
+
+
+--
+-- Name: epipcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY epipcmat
+    ADD CONSTRAINT epipcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
 
 
 --
@@ -33545,6 +34395,30 @@ ALTER TABLE ONLY faixasalarialhistorico
 
 ALTER TABLE ONLY faixasalarialhistorico
     ADD CONSTRAINT faixasalarialhistorico_reajustefaixasalarial_fk FOREIGN KEY (reajustefaixasalarial_id) REFERENCES reajustefaixasalarial(id);
+
+
+--
+-- Name: fase_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fase
+    ADD CONSTRAINT fase_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: fasepcmat_fase_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fasepcmat
+    ADD CONSTRAINT fasepcmat_fase_fk FOREIGN KEY (fase_id) REFERENCES fase(id);
+
+
+--
+-- Name: fasepcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fasepcmat
+    ADD CONSTRAINT fasepcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
 
 
 --
@@ -33988,6 +34862,30 @@ ALTER TABLE ONLY medicocoordenador
 
 
 --
+-- Name: medidariscofasepcmat_medidaseguranca_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY medidariscofasepcmat
+    ADD CONSTRAINT medidariscofasepcmat_medidaseguranca_fk FOREIGN KEY (medidaseguranca_id) REFERENCES medidaseguranca(id);
+
+
+--
+-- Name: medidariscofasepcmat_riscofasepcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY medidariscofasepcmat
+    ADD CONSTRAINT medidariscofasepcmat_riscofasepcmat_fk FOREIGN KEY (riscofasepcmat_id) REFERENCES riscofasepcmat(id) ON DELETE CASCADE;
+
+
+--
+-- Name: medidaseguranca_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY medidaseguranca
+    ADD CONSTRAINT medidaseguranca_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
 -- Name: mensagem_colaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34020,6 +34918,30 @@ ALTER TABLE ONLY nivelcompetencia
 
 
 --
+-- Name: obra_cidade_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY obra
+    ADD CONSTRAINT obra_cidade_fk FOREIGN KEY (cidade_id) REFERENCES cidade(id);
+
+
+--
+-- Name: obra_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY obra
+    ADD CONSTRAINT obra_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: obra_estado_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY obra
+    ADD CONSTRAINT obra_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);
+
+
+--
 -- Name: ocorrencia_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34041,6 +34963,14 @@ ALTER TABLE ONLY papel
 
 ALTER TABLE ONLY parametrosdosistema
     ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
+
+
+--
+-- Name: pcmat_obra_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pcmat
+    ADD CONSTRAINT pcmat_obra_fk FOREIGN KEY (obra_id) REFERENCES obra(id);
 
 
 --
@@ -34340,6 +35270,22 @@ ALTER TABLE ONLY riscoambiente
 
 
 --
+-- Name: riscofasepcmat_fasepcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY riscofasepcmat
+    ADD CONSTRAINT riscofasepcmat_fasepcmat_fk FOREIGN KEY (fasepcmat_id) REFERENCES fasepcmat(id) ON DELETE CASCADE;
+
+
+--
+-- Name: riscofasepcmat_risco_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY riscofasepcmat
+    ADD CONSTRAINT riscofasepcmat_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);
+
+
+--
 -- Name: riscofuncao_historicofuncao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34369,6 +35315,14 @@ ALTER TABLE ONLY riscomedicaorisco
 
 ALTER TABLE ONLY riscomedicaorisco
     ADD CONSTRAINT riscomedicaorisco_risco_fk FOREIGN KEY (risco_id) REFERENCES risco(id);
+
+
+--
+-- Name: sinalizacaopcmat_pcmat_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sinalizacaopcmat
+    ADD CONSTRAINT sinalizacaopcmat_pcmat_fk FOREIGN KEY (pcmat_id) REFERENCES pcmat(id);
 
 
 --
@@ -34713,6 +35667,22 @@ ALTER TABLE ONLY usuariomensagem
 
 ALTER TABLE ONLY usuariomensagem
     ADD CONSTRAINT usuariomensagem_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
+
+
+--
+-- Name: usuarionoticia_noticia_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuarionoticia
+    ADD CONSTRAINT usuarionoticia_noticia_fk FOREIGN KEY (noticia_id) REFERENCES noticia(id);
+
+
+--
+-- Name: usuarionoticia_usuario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuarionoticia
+    ADD CONSTRAINT usuarionoticia_usuario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
 
 
 --
