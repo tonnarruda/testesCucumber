@@ -37,6 +37,7 @@ import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
@@ -130,6 +131,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock configuracaoNivelCompetenciaColaboradorManager;
     private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
     private Mock solicitacaoManager;
+    private Mock mensagemManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -199,6 +201,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
 		solicitacaoManager = new Mock(SolicitacaoManager.class);
 		colaboradorManager.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
+		
+		mensagemManager = new Mock(MensagemManager.class);
+		colaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 		
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -960,6 +965,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	configuracaoNivelCompetenciaManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
     	colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("removeConfiguracaoAvaliacaoPeriodoExperiencia").with(eq(colaborador)).isVoid();
+    	mensagemManager.expects(once()).method("removeMensagensColaborador").with(eq(colaborador.getId()),eq(null)).isVoid();
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));

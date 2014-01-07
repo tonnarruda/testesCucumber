@@ -39,7 +39,8 @@ public class MensagemDaoHibernateTest extends GenericDaoHibernateTest
 		this.mensagemDao = mensagemDao;
 	}
 	
-	public void testRemoveMensagemDesligamento(){
+	public void testRemoveMensagensColaborador()
+	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("nome");
 		colaboradorDao.save(colaborador);
@@ -52,7 +53,7 @@ public class MensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Collection<Mensagem> msgs = mensagemDao.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()});
 		assertEquals(1, msgs.size());
 		
-		mensagemDao.removeMensagemDesligamento(colaborador.getId());
+		mensagemDao.removeMensagensColaborador(colaborador.getId(), TipoMensagem.INFO_FUNCIONAIS);
 		
 		msgs = mensagemDao.find(new String[]{"colaborador.id"}, new Object[]{colaborador.getId()});
 		assertEquals(0, msgs.size());

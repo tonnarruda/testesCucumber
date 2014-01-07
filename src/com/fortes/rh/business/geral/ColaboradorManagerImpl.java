@@ -71,6 +71,7 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -991,7 +992,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		Long colaboradorId = getDao().findByCodigoAC(codigoAC, empresaCodigo, grupoAC).getId();
 
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
-		mensagemManager.removeMensagemDesligamento(colaboradorId);
+		mensagemManager.removeMensagensColaborador(colaboradorId, TipoMensagem.INFO_FUNCIONAIS);
 		getDao().religaColaborador(colaboradorId);
 
 		return colaboradorId;
@@ -1459,6 +1460,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		configuracaoNivelCompetenciaManager.removeColaborador(colaborador);
 		configuracaoNivelCompetenciaColaboradorManager.removeColaborador(colaborador);
 		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
+		mensagemManager.removeMensagensColaborador(colaborador.getId(), null);
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 
