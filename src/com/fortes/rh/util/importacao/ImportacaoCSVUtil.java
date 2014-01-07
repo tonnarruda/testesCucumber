@@ -38,7 +38,7 @@ public class ImportacaoCSVUtil
 			
 			if (valida(linha)) 
 			{
-				campos = linha.split(delimitador);
+				campos = linha.split(delimitador, -1);
 				setCampos(campos, opcao);
 				naoAchouLinhaComAfastamento = false;
 			}
