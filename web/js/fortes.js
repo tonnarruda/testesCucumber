@@ -275,6 +275,13 @@ function addOptionsByCollection(selectId, dados, prompt, label)
 	var titulo = '';
 	var label = label ? label : 'nome';
 
+	dados.sort(function(a,b) {
+		console.log(a);
+		if (a[label].toLowerCase() < b[label].toLowerCase()) return -1;
+	    if (a[label].toLowerCase() > b[label].toLowerCase()) return 1;
+	    return 0;
+	});
+	
 	for (var prop in dados)
 	{
 		selecionado = dados[prop]['selecionado'] ? 'selected=\"selected\"' : '';
