@@ -1533,13 +1533,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
 
 			RPClient remprot = Autenticador.getRemprot();
-			if(Autenticador.isRegistrado())
+			if (Autenticador.isRegistrado())
 			{
-				if(qtdColaboradorNoBanco >= remprot.getUserCount())
+				if (remprot.getUserCount() > 0 && qtdColaboradorNoBanco >= remprot.getUserCount())
 					throw new FortesException("Sua licença só permite manter " + remprot.getUserCount() + " colaboradores ativos.<br>Atualmente o sistema possui " + qtdColaboradorNoBanco +" colaboradores ativos.");			
 			}	
 			else
-				if(qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
+				if (qtdColaboradorNoBanco >= Autenticador.getQtdCadastrosVersaoDemo())
 					throw new FortesException("Versão demonstração, só é permitido cadastrar " + Autenticador.getQtdCadastrosVersaoDemo() + " Colaboradores");
 		}
 	}
@@ -1552,7 +1552,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		RPClient remprot = Autenticador.getRemprot();
 		if(Autenticador.isRegistrado())
 		{
-			if((remprot.getUserCount() - (remprot.getUserCount() * 0.05 )) <= qtdColaboradorNoBanco )
+			if (remprot.getUserCount() > 0 && (remprot.getUserCount() - (remprot.getUserCount() * 0.05)) <= qtdColaboradorNoBanco)
 				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
 		}	
 		
