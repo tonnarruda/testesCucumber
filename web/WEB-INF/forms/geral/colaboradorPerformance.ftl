@@ -6,6 +6,7 @@
 <#assign urlImg><@ww.url includeParams="none" value="/imgs"/></#assign>
 
 <style type="text/css">
+	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	.grade
 	{
 		border:1px solid #7E9DB9;
@@ -127,12 +128,18 @@
 <span id="exibir">
 	<strong>
 		Identificação do Colaborador
-		(Empresa ${colaborador.empresa.nome})
+		<#if colaborador.empresa.nome?exists>
+			(Empresa ${colaborador.empresa.nome})
+		</#if>
 	</strong>
 </span>
 <div class='grade'>
-	<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
-	<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
+	<#if colaborador.nome?exists>
+		<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
+	</#if>
+	<#if colaborador.dataAdmissao?exists>
+		<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
+	</#if>
 		
 	<#if colaborador.foto?exists>
 		<div class='grade_field_foto'>
@@ -140,7 +147,7 @@
 		</div>
 	</#if>
 			
-	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
+	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists && historicoColaborador.faixaSalarial.cargo.nome?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
 	
 	<div class='grade_field'>
 		<strong>Email:</strong>
@@ -149,14 +156,24 @@
 		</#if>
 	</div>
 	
-	<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
-	<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>
-	<div class='grade_field'><strong>Bairro:</strong> ${colaborador.endereco.bairro}</div>
-	<div class='grade_field'><strong>Endereço:</strong> ${colaborador.endereco.enderecoFormatado}</div>
+	<#if colaborador.pessoal?exists && colaborador.pessoal.getEstadoCivilDic()?exists>
+		<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
+	</#if>
+	<#if colaborador.pessoal?exists && colaborador.pessoal.getEscolaridadeDic()?exists>
+		<div class='grade_field'><strong>Escolaridade:</strong> ${colaborador.pessoal.getEscolaridadeDic()}</div>
+	</#if>
+	<#if colaborador.endereco?exists && colaborador.endereco.bairro?exists>
+		<div class='grade_field'><strong>Bairro:</strong> ${colaborador.endereco.bairro}</div>
+	</#if>
+	<#if colaborador.endereco?exists && colaborador.endereco.enderecoFormatado?exists>
+		<div class='grade_field'><strong>Endereço:</strong> ${colaborador.endereco.enderecoFormatado}</div>
+	</#if>
 	<#if colaborador.endereco?exists && colaborador.endereco.cidade?exists && colaborador.endereco.cidade.nome?exists>
 		<div class='grade_field'><strong>Cidade/Estado:</strong> ${colaborador.endereco.cidade.nome} / ${colaborador.endereco.uf.sigla}</div>
 	</#if>
-	<div class='grade_field'><strong>CEP:</strong> ${colaborador.endereco.cepFormatado}</div>
+	<#if colaborador.endereco?exists && colaborador.endereco.cepFormatado?exists>
+		<div class='grade_field'><strong>CEP:</strong> ${colaborador.endereco.cepFormatado}</div>
+	</#if>
 	<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists && colaborador.contato.ddd?exists>
 		<div class='grade_field'><strong>Telefone:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneFixoFormatado}</div>
 	</#if>
@@ -167,83 +184,84 @@
 		<div class='grade_field'><strong>Cônjuge:</strong> ${colaborador.pessoal.conjuge}</div>
 		<div class='grade_field'><strong>Cônjuge Trabalha:</strong> <#if colaborador.pessoal.conjugeTrabalha>Sim<#else>Não</#if></div>
 	</#if>
-	
-	<div class='grade_field'><strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}</div>
-	
+	<#if colaborador.pessoal?exists && colaborador.pessoal.deficienciaDescricao?exists>
+		<div class='grade_field'><strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}</div>
+	</#if>
 	<#if colaborador.vinculoDescricao?exists>
 		<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
 	</#if>
-	
 	<#assign i = 0/>
-	<#list configuracaoCampoExtras as configuracaoCampoExtra>
-	<div class='grade_field'><strong>${configuracaoCampoExtras[i].titulo}: </strong>  
+	<#if configuracaoCampoExtras?exists>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>
+			<div class='grade_field'><strong>${configuracaoCampoExtras[i].titulo}: </strong>  
+						
+				<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
+					${colaborador.camposExtras.texto1}<br>
+				</#if>
 				
-		<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
-			${colaborador.camposExtras.texto1}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
-			${colaborador.camposExtras.texto2}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
-			${colaborador.camposExtras.texto3}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
-			${colaborador.camposExtras.texto4}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
-			${colaborador.camposExtras.texto5}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
-			${colaborador.camposExtras.texto6}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
-			${colaborador.camposExtras.texto7}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
-			${colaborador.camposExtras.texto8}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
-			${colaborador.camposExtras.texto9}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
-			${colaborador.camposExtras.texto10}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
-			${colaborador.camposExtras.data1}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
-			${colaborador.camposExtras.data2}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
-			${colaborador.camposExtras.data3}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
-			${colaborador.camposExtras.valor1}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
-			${colaborador.camposExtras.valor2}<br>
-		</#if>
-		
-		<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
-			${colaborador.camposExtras.numero1}<br>
-		</#if>
-	</div>
-	<#assign i = i + 1/>
-	</#list>
+				<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
+					${colaborador.camposExtras.texto2}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
+					${colaborador.camposExtras.texto3}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
+					${colaborador.camposExtras.texto4}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
+					${colaborador.camposExtras.texto5}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
+					${colaborador.camposExtras.texto6}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
+					${colaborador.camposExtras.texto7}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
+					${colaborador.camposExtras.texto8}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
+					${colaborador.camposExtras.texto9}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
+					${colaborador.camposExtras.texto10}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
+					${colaborador.camposExtras.data1}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
+					${colaborador.camposExtras.data2}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
+					${colaborador.camposExtras.data3}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
+					${colaborador.camposExtras.valor1}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
+					${colaborador.camposExtras.valor2}<br>
+				</#if>
+				
+				<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
+					${colaborador.camposExtras.numero1}<br>
+				</#if>
+			</div>
+			<#assign i = i + 1/>
+		</#list>
+	</#if>
 	
 	<br style='clear: both'>
 </div>
@@ -295,12 +313,16 @@
 						<#if avaliacaoDesempenho?exists && avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional?exists && avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
 							<@display.column title="Avaliação" >					
 								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
-									${avaliacaoDesempenho.avaliacao.titulo}
+									<#if avaliacaoDesempenho.avaliacao.titulo?exists>
+										${avaliacaoDesempenho.avaliacao.titulo}
+									</#if>
 								</a>
 							</@display.column>
 						<#else>
 							<@display.column title="Avaliação" >					
-								${avaliacaoDesempenho.avaliacao.titulo}
+								<#if avaliacaoDesempenho.avaliacao.titulo?exists>
+									${avaliacaoDesempenho.avaliacao.titulo}
+								</#if>
 							</@display.column>
 						</#if>
 					
@@ -327,7 +349,9 @@
 					<@display.column property="questionario.periodoFormatado" title="Período" style="width: 90px;"/>
 					<@display.column title="Título" style="width: 500px">
 						<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasPorColaboradorPerformanceProfissional.action?questionario.id=${pesquisa.questionario.id}&colaboradorId=${colaborador.id}&ocultarBotaoVoltar=true', 600, 1000)">
-							${pesquisa.questionario.titulo}
+							<#if pesquisa.questionario.titulo?exists>
+								${pesquisa.questionario.titulo}
+							</#if>
 						</a>
 					</@display.column>
 				</@display.table>
@@ -347,7 +371,9 @@
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
 						<@display.column title="Avaliação" >					
 							<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoExperiencia.id}', 600, 1100)">
-								${avaliacaoExperiencia.avaliacao.titulo}
+								<#if avaliacaoExperiencia.avaliacao.titulo?exists>
+									${avaliacaoExperiencia.avaliacao.titulo}
+								</#if>
 							</a>
 						</@display.column>
 						<@display.column property="performanceFormatada" title="Performance" />
@@ -372,7 +398,7 @@
 					<@display.table name="cursosColaborador" id="cursoColaborador" class="dados" style="width:100%">
 						<@display.column property="curso.nome" title="Curso" />
 						<@display.column title="Período" style="width:140px">
-							<#if cursoColaborador.turma.dataPrevIni?exists && cursoColaborador.turma.dataPrevFim?exists>
+							<#if cursoColaborador.turma?exists && cursoColaborador.turma.dataPrevIni?exists && cursoColaborador.turma.dataPrevFim?exists>
 								${cursoColaborador.turma.dataPrevIni} a ${cursoColaborador.turma.dataPrevFim}
 							</#if>
 						</@display.column>
@@ -400,7 +426,9 @@
 						</@authz.authorize>
 						
 						<@display.column title="Cargo" >
-						  ${historicoColaboradors.faixaSalarial.cargo.nome} ${historicoColaboradors.faixaSalarial.nome}
+						  <#if historicoColaboradors.faixaSalarial?exists && historicoColaboradors.faixaSalarial.cargo?exists && historicoColaboradors.faixaSalarial?exists && historicoColaboradors.faixaSalarial.cargo.nome?exists && historicoColaboradors.faixaSalarial.nome?exists>
+						  	${historicoColaboradors.faixaSalarial.cargo.nome} ${historicoColaboradors.faixaSalarial.nome}
+						  </#if>
 						</@display.column>
 						<@display.column property="estabelecimento.nome" title="Estabelecimento" />
 						<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" />
@@ -528,7 +556,9 @@
 				<td><strong>Documentos do Colaborador</strong><br>
 					<@display.table name="documentoAnexosColaborador" id="documentoAnexo" class="dados" defaultsort=1 style="width:100%" >
 						<@display.column title="Descrição" style="width:340px">
-							<a href="../../geral/documentoAnexo/showDocumento.action?documentoAnexo.id=${documentoAnexo.id}" title="Visualizar documento" target="_blank">${documentoAnexo.descricao}</a>
+							<#if documentoAnexo.descricao?exists>
+								<a href="../../geral/documentoAnexo/showDocumento.action?documentoAnexo.id=${documentoAnexo.id}" title="Visualizar documento" target="_blank">${documentoAnexo.descricao}</a>
+							</#if>
 						</@display.column>
 						<@display.column property="tipoDocumento.descricao" title="Tipo do Documento" style="width:150px;"/>
 						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px; text-align: center;"/>
@@ -545,7 +575,9 @@
 				<td><strong>Documentos do Candidato</strong></br>
 					<@display.table name="documentoAnexosCandidato" id="documentoAnexo" class="dados" defaultsort=1 style="width:100%" >
 						<@display.column title="Descrição" style="width:540px">
-							<a href="../../geral/documentoAnexo/showDocumento.action?documentoAnexo.id=${documentoAnexo.id}" title="Visualizar documento" target="_blank">${documentoAnexo.descricao}</a>
+							<#if documentoAnexo.descricao?exists>
+								<a href="../../geral/documentoAnexo/showDocumento.action?documentoAnexo.id=${documentoAnexo.id}" title="Visualizar documento" target="_blank">${documentoAnexo.descricao}</a>
+							</#if>
 						</@display.column>
 						<@display.column title="Fase" property="etapaSeletiva.nome" style="width:540px"  />
 						<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:100px;"/>
@@ -571,7 +603,7 @@
 						<strong>Motivo:</strong> <#if colaborador.motivoDemissao?exists && colaborador.motivoDemissao.motivo?exists>${colaborador.motivoDemissao.motivo}</#if>
 					</td>
 					<td style="width:160px">
-						<strong>Data:</strong> ${colaborador.dataDesligamento}
+						<strong>Data:</strong> <#if colaborador.dataDesligamento?exists>${colaborador.dataDesligamento}</#if>
 					</td>
 				</tr>
 				<tr>
@@ -612,7 +644,9 @@
 				<table class="grade">
 					<tr>
 						<td>
+						<#if colaborador?exists && colaborador.observacao?exists>
 							${colaborador.observacao}
+						</#if>
 						</td>
 					</tr>
 				</table>
