@@ -30,7 +30,7 @@
 		</fileset>
    	</path>
 
-   	<path id="project.classpath.selenium">
+   	<path id="project.classpath.cobertura">
 		<fileset dir="./extras">
 			<include name="*.jar" />
 		</fileset>
@@ -92,7 +92,7 @@
 		</javac>
 		<javac debug="true" debuglevel="vars,lines,source" nowarn="true" encoding="UTF-8" srcdir="${srcTeste.dir}" destdir="${build.dir}" failonerror="true">
 			<classpath refid="project.classpath" />
-			<classpath refid="project.classpath.selenium" />
+			<classpath refid="project.classpath.cobertura" />
 		</javac>
 
 		<antcall target="resources"></antcall>
