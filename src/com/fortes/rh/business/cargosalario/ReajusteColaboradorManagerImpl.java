@@ -53,7 +53,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	
 	public void validaSolicitacaoReajuste(ReajusteColaborador reajusteColaborador) throws Exception 
 	{
-		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId()))
+		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId(), null))
 			throw new FortesException("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
 		
 		tabelaReajusteColaboradorManager = (TabelaReajusteColaboradorManager) SpringUtil.getBean("tabelaReajusteColaboradorManager");

@@ -26,10 +26,11 @@
 
 <#assign validarCampos="validarCampos();"/>
 
-<script type="text/javascript">
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
-	
-	
+<script type="text/javascript">
 	function validarCampos()
 	{
 		if (validaFormulario('form', new Array('nome'), null, true))
@@ -64,6 +65,22 @@
 		$("#coResponsavel").attr('disabled', !slecionado);
 	}
 	
+	function habilataCampoAtivo()
+	{
+		<#if areaOrganizacional.id?exists>
+			areaMaeId = null;
+			<#if areaOrganizacional.areaMae.id?exists>
+				areaMaeId = ${areaOrganizacional.areaMae.id};
+			</#if>
+		
+			AreaOrganizacionalDWR.verificaAlteracaoStatusAtivo(${areaOrganizacional.id}, areaMaeId, function(retorno) {  
+				if(retorno)
+					$('#ativo').attr('disabled', true);
+			});
+			
+		</#if>
+	}
+	
 	$(function() 
 	{
 		<#if areaOrganizacional.emailsNotificacoes?exists>
@@ -74,6 +91,8 @@
 		
 		if ($('.emailsNotificacoes').size() == 0)
 			adicionarCampoEmail();
+			
+		habilataCampoAtivo();
 	});
 </script>
 
@@ -99,7 +118,7 @@
 		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" onchange="habilitaCoResponsavel(this.value);"/>
 		
 		<@ww.select label="Corresponsável" name="areaOrganizacional.coResponsavel.id" id="coResponsavel" list="coResponsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" disabled = "${desabilitado}"/>
-		<@ww.select label="Ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
+		<@ww.select label="Ativo" id="ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
 		<label>E-mails extras para notificações:</label>
 		<ul id="camposEmails"></ul>

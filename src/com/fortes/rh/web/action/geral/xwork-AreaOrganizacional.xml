@@ -34,6 +34,7 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.geral.AreaOrganizacionalEditAction" method="update">
+		    <interceptor-ref name="defaultUpdateStack"/>
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalEdit.ftl</result>

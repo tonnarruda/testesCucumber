@@ -173,8 +173,8 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		areaOrganizacional.setAreaMae(areaOrganizacionalMae);
 		areaOrganizacionalDao.save(areaOrganizacional);
 
-		assertEquals(true, areaOrganizacionalDao.verificaMaternidade(areaOrganizacionalMae.getId()));
-		assertEquals(false, areaOrganizacionalDao.verificaMaternidade(areaOrganizacional.getId()));
+		assertEquals(true, areaOrganizacionalDao.verificaMaternidade(areaOrganizacionalMae.getId(), null));
+		assertEquals(false, areaOrganizacionalDao.verificaMaternidade(areaOrganizacional.getId(), null));
 	}
 
 	public void testFindByIdProjection()

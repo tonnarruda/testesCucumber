@@ -270,7 +270,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	public String update() throws Exception
 	{
-		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId()))
+		if(areaOrganizacionalManager.verificaMaternidade(reajusteColaborador.getAreaOrganizacionalProposta().getId(), null))
 		{
 			addActionError("Não é possível fazer solicitações para áreas que possuem sub-áreas.");
 			prepareUpdate();

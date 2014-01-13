@@ -20,8 +20,13 @@ public class AreaOrganizacionalDWR
 
 	public void verificaMaternidade(Long areaId) throws Exception
 	{
-		if(areaOrganizacionalManager.verificaMaternidade(areaId))
+		if(areaOrganizacionalManager.verificaMaternidade(areaId, null))
 			throw new Exception("Não é possível alocar colaboradores em áreas que possuem sub-áreas.\nSelecione uma das sub-áreas desta área.");
+	}
+
+	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId) throws Exception
+	{
+		return areaOrganizacionalManager.verificaAlteracaoStatusAtivo(areaId, areaMaeId);
 	}
 	
 	@SuppressWarnings("unchecked")

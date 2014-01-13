@@ -169,9 +169,9 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     public void testVerificaMaternidade()
     {
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
-    	areaOrganizacionalDao.expects(atLeastOnce()).method("verificaMaternidade").with(eq(areaOrganizacional.getId())).will(returnValue(true));
+    	areaOrganizacionalDao.expects(atLeastOnce()).method("verificaMaternidade").with(eq(areaOrganizacional.getId()), ANYTHING).will(returnValue(true));
 
-    	assertTrue(areaOrganizacionalManager.verificaMaternidade(areaOrganizacional.getId()));
+    	assertTrue(areaOrganizacionalManager.verificaMaternidade(areaOrganizacional.getId(), null));
     }
 
     public void testGetCount()

@@ -190,7 +190,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return query.list();
 	}
 
-	public boolean verificaMaternidade(Long areaOrganizacionalId)
+	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
 		criteria.createCriteria("ao.areaMae", "areaMae", Criteria.LEFT_JOIN);
@@ -202,6 +202,9 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("areaMae.id", areaOrganizacionalId));
+		
+		if(ativa != null)
+			criteria.add(Expression.eq("ao.ativo", ativa));
 
 		criteria.addOrder(Order.asc("ao.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

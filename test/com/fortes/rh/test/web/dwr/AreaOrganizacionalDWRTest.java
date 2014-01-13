@@ -78,7 +78,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacional.setAreaMaeId(1L);
 
-		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(ANYTHING).will(returnValue(false));
+		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").withAnyArguments().will(returnValue(false));
 		Exception exc = null;
 		try
 		{
@@ -97,7 +97,7 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacional.setAreaMaeId(null);
 
-		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(ANYTHING).will(returnValue(true));
+		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").withAnyArguments().will(returnValue(true));
 
 		Exception exc = null;
 		try

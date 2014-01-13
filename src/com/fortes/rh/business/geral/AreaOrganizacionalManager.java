@@ -32,7 +32,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	
 	@SuppressWarnings("unchecked")
 	public Collection getNaoFamilia(Collection areas, Long id);
-	public boolean verificaMaternidade(Long areaOrganizacionalId);
+	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa);
 	public Integer getCount(String nome, Long empresaId);
 	public Collection<AreaOrganizacional> findAllListAndInativas(Long empresaId, Boolean ativo, Collection<Long> areaInativaIds);
 	public Collection<AreaOrganizacional> findAllList(Long usuarioId, Long empresaId, Boolean ativo, Long areaInativaId);
@@ -77,4 +77,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public String[] getEmailsResponsaveis(Long areaId, Long empresaId, int tipoResponsavel) throws Exception;
 	public String[] getEmailsResponsaveis(Long areaId, Collection<AreaOrganizacional> todasAreas, int tipoResponsavel) throws Exception;
 	public void desvinculaResponsaveis(Long colaboradorId);
+	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId);
 }

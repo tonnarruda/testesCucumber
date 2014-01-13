@@ -224,9 +224,18 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			acPessoalClientLotacao.deleteLotacao(areaTmp, empresa);
 	}
 
-	public boolean verificaMaternidade(Long areaOrganizacionalId)
+	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa)
 	{
-		return getDao().verificaMaternidade(areaOrganizacionalId);
+		return getDao().verificaMaternidade(areaOrganizacionalId, ativa);
+	}
+
+	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId)
+	{
+		boolean retorno = verificaMaternidade(areaId, true);
+		if(!retorno && areaMaeId != null && !areaMaeId.equals(-1L))
+			retorno = !findByIdProjection(areaMaeId).isAtivo();
+		
+		return retorno;
 	}
 
 	public Collection<AreaOrganizacional> findAllListAndInativas(Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)

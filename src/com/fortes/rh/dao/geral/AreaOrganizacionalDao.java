@@ -16,7 +16,7 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long usuarioId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds);
 	public AreaOrganizacional findIdMaeById(long idArea);
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId);
-	public boolean verificaMaternidade(Long areaOrganizacionalId);
+	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa);
 	public Collection<AreaOrganizacional> findAreaIdsByAreaInteresse(Long areaInteresseId);
 	public AreaOrganizacional findByIdProjection(Long areaId);
 	public AreaOrganizacional findAreaOrganizacionalByCodigoAc(String areaCodigoAC, String empresaCodigoAC, String grupoAC);

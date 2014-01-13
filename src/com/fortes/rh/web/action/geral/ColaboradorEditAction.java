@@ -553,7 +553,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(colaborador.getDataAdmissao().after(historicoColaborador.getData()))
 				throw new FortesException("Data do primeiro histórico não pode ser anterior à data de admissão.");
 
-			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
+			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId(), null))
 				throw new FortesException("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
 			
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
@@ -691,7 +691,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId()))
+			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId(), null))
 			{
 				addActionError("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
 				prepareUpdate();
