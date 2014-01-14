@@ -594,6 +594,16 @@ public class DateUtil
 		return (mes2-mes1==1);
 	}
 
+	public static boolean mesmoMes(Date data1, Date data2)
+	{
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(data1);
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(data2);
+
+		return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+	}
+
 	public static int anosEntreDatas(Date dataIni, Date dataFim)
 	{
 		GregorianCalendar gc1 = new GregorianCalendar();

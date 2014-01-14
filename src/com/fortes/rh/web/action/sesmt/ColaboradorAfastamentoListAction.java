@@ -50,6 +50,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private char afastadoPeloINSS = 'T';
 	private char agruparPor;
 	private char ordenarPor;
+	private char totalizarDiasPor;
 	
 	public String list() throws Exception
 	{
@@ -152,14 +153,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 				return Action.INPUT;
 			}
 			
-			if(DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12)//imundo, tem que ser maior igual
+			if (DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12)//imundo, tem que ser maior igual
 			{
 				prepareRelatorioResumoAfastamentos();
 				addActionWarning("Não é permitido um período maior que 12 meses para a geração deste relatório");
 				return Action.INPUT;
 			}
 			
-			colaboradorAfastamentoMatrizes = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento, ordenarPor, agruparPorArea);
+			colaboradorAfastamentoMatrizes = colaboradorAfastamentoManager.montaMatrizResumo(getEmpresaSistema().getId(), estabelecimentosCheck, areasCheck, motivosCheck, colaboradorAfastamento, ordenarPor, totalizarDiasPor, agruparPorArea);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 			parametros.put("AGRUPAR_POR_AREA", agruparPorArea);
@@ -324,5 +325,11 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		return colaboradorAfastamentoMatrizes;
 	}
 
+	public char getTotalizarDiasPor() {
+		return totalizarDiasPor;
+	}
 
+	public void setTotalizarDiasPor(char totalizarDiasPor) {
+		this.totalizarDiasPor = totalizarDiasPor;
+	}
 }

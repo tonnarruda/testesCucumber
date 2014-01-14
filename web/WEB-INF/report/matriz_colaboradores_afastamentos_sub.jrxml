@@ -17,6 +17,7 @@
 	<field name="qtdAfastamentos" class="java.lang.Integer"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
 	<field name="colaborador.dataAdmissaoFormatada" class="java.lang.String"/>
+	<field name="mesAno" class="java.lang.String"/>
 	<variable name="qtdTotalDias" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtdDias}]]></variableExpression>
 	</variable>
@@ -177,9 +178,9 @@
 						<cellContents/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="inicio" height="28" totalPosition="End" headerPosition="Center">
-					<bucket class="java.util.Date">
-						<bucketExpression><![CDATA[$F{inicio}]]></bucketExpression>
+				<columnGroup name="mesAno" height="28" totalPosition="End" headerPosition="Center">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{mesAno}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
 						<cellContents mode="Transparent">
@@ -200,7 +201,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{inicio}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{mesAno}]]></textFieldExpression>
 							</textField>
 							<staticText>
 								<reportElement uuid="c05f5232-8392-4172-8b12-7888f0470fe7" key="staticText-1" x="0" y="16" width="25" height="12"/>
@@ -322,7 +323,7 @@
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="54" height="32" columnTotalGroup="inicio">
+				<crosstabCell width="54" height="32" columnTotalGroup="mesAno">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -394,7 +395,7 @@
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="54" height="30" rowTotalGroup="colaborador.nomeMatricula" columnTotalGroup="inicio">
+				<crosstabCell width="54" height="30" rowTotalGroup="colaborador.nomeMatricula" columnTotalGroup="mesAno">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -440,7 +441,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="54" height="0" rowTotalGroup="colaborador.dataAdmissaoFormatada" columnTotalGroup="inicio">
+				<crosstabCell width="54" height="0" rowTotalGroup="colaborador.dataAdmissaoFormatada" columnTotalGroup="mesAno">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

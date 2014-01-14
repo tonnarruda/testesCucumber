@@ -19,7 +19,6 @@
 	<#else>
 		<#assign fim = ""/>
 	</#if>
-
 </head>
 <body>
 	<@ww.actionmessage />
@@ -35,7 +34,8 @@
 		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
 		<@frt.checkListBox name="motivosCheck" label="Motivo de Afastamento" list="motivosCheckList"/>
 		
-		<@ww.select label="Ordenar Por" name="ordenarPor" id="ordenarPor" list=r"#{'N':'Nome do colaborador','D':'Qtde de dias de afastamento (decrescente)'}"/>
+		<@ww.select label="Ordenar por" name="ordenarPor" id="ordenarPor" list=r"#{'N':'Nome do colaborador','D':'Qtde de dias de afastamento (decrescente)'}" cssStyle="width:500px"/>
+		<@ww.select label="Caso um período de afastamento passe de um mês a outro, os dias deverão ser totalizados" name="totalizarDiasPor" id="totalizarDiasPor" list=r"#{'I':'No mês de início do período','D':'Distribuídos nos meses correspondentes'}" cssStyle="width:500px"/>
 		<@ww.checkbox label="Agrupar por área organizacional" id="agruparPorArea" name="agruparPorArea" labelPosition="left"/>
 		
 		<div class="buttonGroup">

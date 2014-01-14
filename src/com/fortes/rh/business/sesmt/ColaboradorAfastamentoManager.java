@@ -28,7 +28,7 @@ public interface ColaboradorAfastamentoManager extends GenericManager<Colaborado
 	Collection<ColaboradorAfastamento> findByColaborador(Long colaboradorId);
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim);
 	Integer findQtdAfastamentosInss(Long empresaId, Date dataIni, Date dataFim, boolean inss);
-	Collection<ColaboradorAfastamentoMatriz> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento, char ordenarPor, boolean agruparPorArea) throws Exception;
+	Collection<ColaboradorAfastamentoMatriz> montaMatrizResumo(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento, char ordenarPor, char totalizarDiasPor, boolean agruparPorArea) throws Exception;
 	Collection<Absenteismo> countAfastamentosByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> afastamentosIds);
 	ColaboradorAfastamento findByColaboradorAfastamentoId(Long colaboradorAfastamentoId);
 	boolean possuiAfastamentoNestePeriodo(ColaboradorAfastamento colaboradorAfastamento, boolean isUpdate);

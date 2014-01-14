@@ -415,11 +415,11 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
 		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(30, 12, 2011));
 				
-		assertEquals(2, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());
+		assertEquals(5, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());
 
 		ColaboradorAfastamento colaboradorAfastamentoResult = (ColaboradorAfastamento) colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).toArray()[0];
-		assertEquals(new Integer(4), colaboradorAfastamentoResult.getQtdDias());
-		assertEquals(new Integer(3), colaboradorAfastamentoResult.getQtdAfastamentos());
+		assertEquals(new Integer(2), colaboradorAfastamentoResult.getQtdDias());
+		assertEquals(new Integer(1), colaboradorAfastamentoResult.getQtdAfastamentos());
 	}
 
 	public void testCountAfastamentosByPeriodo() 

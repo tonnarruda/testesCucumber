@@ -115,7 +115,7 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(01, 01, 2000));
 		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(01, 05, 2000));
 
-		Collection<ColaboradorAfastamentoMatriz> retorno = colaboradorAfastamentoManager.montaMatrizResumo(null, null, null, null, colaboradorAfastamento, 'N', false);
+		Collection<ColaboradorAfastamentoMatriz> retorno = colaboradorAfastamentoManager.montaMatrizResumo(null, null, null, null, colaboradorAfastamento, 'N', 'I', false);
 		Collection<ColaboradorAfastamento> retornoAfastamentos = ((ColaboradorAfastamentoMatriz) retorno.toArray()[0]).getColaboradorAfastamentos();
 		
 		assertEquals(5, retornoAfastamentos.size());

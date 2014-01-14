@@ -21,7 +21,7 @@ import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="colaboradorafastamento_sequence", allocationSize=1)
-public class ColaboradorAfastamento extends AbstractModel implements Serializable
+public class ColaboradorAfastamento extends AbstractModel implements Serializable, Cloneable
 {
 	@Temporal(TemporalType.DATE)
 	private Date inicio;
@@ -76,9 +76,10 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	}
 	
 	// usado em findRelatorioResumoAfastamentos
-	public ColaboradorAfastamento(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Long areaId, Date inicio, Integer qtdDias, Integer qtdAfastamentos)
+	public ColaboradorAfastamento(Long colaboradorId, String colaboradorMatricula, String colaboradorNome, Date dataAdmissao, Long areaId, Date inicio, Date fim, Integer qtdDias, Integer qtdAfastamentos)
 	{
 		this.inicio = inicio;
+		this.fim = fim;
 		this.qtdDias = qtdDias;
 		this.qtdAfastamentos = qtdAfastamentos;
 		
@@ -272,5 +273,17 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 
 	public void setQtdTotalDias(Integer qtdTotalDias) {
 		this.qtdTotalDias = qtdTotalDias;
+	}
+	
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+	   }
 	}
 }
