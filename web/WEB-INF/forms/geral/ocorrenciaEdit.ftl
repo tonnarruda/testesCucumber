@@ -32,6 +32,7 @@
 		</#if>
 		
 		<@ww.checkbox label="Considerar como absenteísmo" name="ocorrencia.absenteismo"  labelPosition="left"/>
+		<@ww.checkbox label="Exibir em performance profissional" name="ocorrencia.performance"  labelPosition="left"/>
 
 		<@ww.hidden label="Id" name="ocorrencia.id" />
 		<@ww.hidden name="ocorrencia.codigoAC" />

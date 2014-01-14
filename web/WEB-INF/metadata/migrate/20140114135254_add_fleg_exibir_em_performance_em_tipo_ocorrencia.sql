@@ -1,0 +1,1 @@
+alter table ocorrencia add column performance boolean not null default true;--.go
