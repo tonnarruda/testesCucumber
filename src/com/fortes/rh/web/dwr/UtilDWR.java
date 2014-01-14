@@ -7,10 +7,14 @@ import java.util.regex.Pattern;
 
 import javax.mail.AuthenticationFailedException;
 
+import uk.ltd.getahead.dwr.WebContextFactory;
+
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClient;
@@ -51,7 +55,8 @@ public class UtilDWR
 	public String enviaEmail(String email, boolean autenticacao, boolean tls) throws Exception
 	{
 		try {
-			mail.testEnvio("Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, autenticacao, tls);
+			Empresa empresa = SecurityUtil.getEmpresaByDWR(WebContextFactory.get().getHttpServletRequest().getSession());
+			mail.testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, autenticacao, tls);
 		} catch (AuthenticationFailedException e) {
 			e.printStackTrace();
 			if(e.getMessage() == null)

@@ -1,6 +1,7 @@
 package com.fortes.rh.util;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -86,7 +87,12 @@ public class Mail
 
     private void procSend(Empresa empresa, ParametrosDoSistema parametros, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
     {
-    	String from;
+    	procSend(parametros, getRemetente(empresa, parametros), subject, body, attachedFiles, to);
+    }
+
+	private String getRemetente(Empresa empresa, ParametrosDoSistema parametros) 
+	{
+		String from;
     	
     	if(empresa != null && empresa.getEmailRemetente() != null)
 		{
@@ -101,8 +107,8 @@ public class Mail
 			from = "fortesrh@grupofortes.com.br";
 		}
     	
-    	procSend(parametros, from, subject, body, attachedFiles, to);
-    }
+		return from;
+	}
     
     private void procSend(ParametrosDoSistema parametros, String from, String subject, String body, DataSource[] attachedFiles, String... to) throws AddressException, MessagingException
     {
@@ -138,7 +144,7 @@ public class Mail
     	}
     }
 
-	private Message prepareMessage(String from, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException
+	private Message prepareMessage(String from, ParametrosDoSistema params, String subject, String body, DataSource[] attachedFiles, Boolean autenticacao, Boolean tls) throws MessagingException, AddressException, UnsupportedEncodingException
 	{
 		Session session;
 
@@ -175,7 +181,7 @@ public class Mail
         text.setHeader("Content-Type", "text/html; charset=UTF-8");
         
 
-        msg.setFrom(new InternetAddress(message.getFrom()));
+        msg.setFrom(new InternetAddress(message.getFrom(), "RH"));
         msg.setSubject(subject);
 
         			//Original (10:48 2/1/2008) msg.setText(body);
@@ -226,19 +232,19 @@ public class Mail
 					header.append("text-decoration: none;");
 				header.append("}");
 				header.append("a img{ border: 0; }");
-				header.append("body,td,th { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #666666; background-color: #DDDEE6; }");
+				header.append("body,td,th { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #666666; }");
 				header.append(".corpo{ padding: 40px 20px; height: 100px; background:#FFF; }");
 				header.append(".table{ border: 0px solid #FFF; width: 570px; background-color: #FFF; }");
 				header.append("table{ background-color: #FFF; }");
 				header.append("-->");
 				header.append("</style>");
 			header.append("</head><body>");
-			header.append("<table cellpadding='0' cellspacing='0' border=0 style='width: 100%;'>");
+			header.append("<table cellpadding='0' cellspacing='0' border=0 style='width: 100%; background-color: #DDDEE6;'>");
 				header.append("<tr>");
 				header.append("<td align='center'>");
 					header.append("<table cellpadding='0' cellspacing='0' align='center' class='table'>");
 					header.append("<thead><tr>");
-					header.append("<td colspan='2'><a href='http://www.fortesinformatica.com.br'><img src='http://www.fortesinformatica.com.br/fortesrh/images/topo.gif' /></a></td></tr></thead>");
+					header.append("<td colspan='2' bgcolor='#FFFFFF'><a href='http://www.fortesinformatica.com.br'><img src='http://www.fortesinformatica.com.br/fortesrh/images/topo.gif' /></a></td></tr></thead>");
 
 			return header.toString();
 		}
@@ -246,14 +252,14 @@ public class Mail
 		{
 			StringBuilder body = new StringBuilder();
 			body.append("<tbody>");
-			body.append("<tr><td class='corpo'>");
+			body.append("<tr><td class='corpo' bgcolor='#FFFFFF'><div style='width:550px; margin:0px 10px'>");
 
 			return body.toString();
 		}
 		private String initFooter()
 		{
 			StringBuilder footer = new StringBuilder();
-							footer.append("</td></tr>");
+							footer.append("</div></td></tr>");
 						footer.append("</tbody>");
 							footer.append("<tfoot>");
 								footer.append("<tr>");
@@ -280,14 +286,14 @@ public class Mail
 	}
 
 	//utilizado pelo DWR, teste do email em configurações
-	public void testEnvio(String subject, String body, String email, boolean autenticacao, boolean tls) throws Exception 
+	public void testEnvio(Empresa empresa, String subject, String body, String email, boolean autenticacao, boolean tls) throws Exception 
 	{
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		if(!parametros.isEnvioDeEmailHabilitado())
 			throw new Exception("Envio de Email desabilitado, entre em contato com o suporte.");
 		
-		Message msg = prepareMessage(null, parametros, subject, body, null,  autenticacao, tls);
+		Message msg = prepareMessage(getRemetente(empresa, parametros), parametros, subject, body, null,  autenticacao, tls);
 		List<String> emails = new ArrayList<String>();
 
 		emails.add(email);

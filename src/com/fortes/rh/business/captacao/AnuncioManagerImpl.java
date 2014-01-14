@@ -17,6 +17,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> implements AnuncioManager
@@ -95,7 +96,7 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 
 	public void enviarAnuncioEmail(Long anuncioId, Long empresaId, String nomeFrom, String emailFrom, String nomeTo, String emailTo) throws AddressException, MessagingException 
 	{
-		String subject = "Oportunidade de emprego";
+		String subject = nomeFrom + " lhe recomendou uma oportunidade de emprego";
 		StringBuffer body = new StringBuffer();
 		
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findByIdProjection(1L);
@@ -107,9 +108,9 @@ public class AnuncioManagerImpl extends GenericManagerImpl<Anuncio, AnuncioDao> 
 		body.append(nomeFrom + " está lhe recomendando a seguinte oportunidade de emprego na empresa " + empresa.getNome() + ":<br /><br />");
 		body.append("<strong>" + anuncio.getTitulo() + "</strong><br /><br />");
 		body.append(anuncio.getCabecalho() + "<br /><br />");
-		body.append("<a href='" + parametros.getAppUrl() + "/externo/prepareListAnuncio.action?empresaId=" + empresaId + "'>Clique aqui para candidatar-se</a><br /><br />");
+		body.append("<a href='" + parametros.getAppUrl() + "/externo/verAnuncio.action?anuncio.id=" + anuncioId + "' title='Mais informações'>Mais informações</a><br /><br />");
 		
-		mail.send(emailFrom, subject, body.toString(), emailTo);
+		mail.send(emailFrom, StringUtil.retiraAcento(subject), body.toString(), emailTo);
 	}
 	
 	public void setEmpresaBdsManager(EmpresaBdsManager empresaBdsManager)

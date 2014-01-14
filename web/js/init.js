@@ -73,6 +73,7 @@ $(function(){
 		}
 	} catch(e) {}
 	
+	
 	// Últimas notícias
 	try {
 		if (ultimasNoticias != null && ultimasNoticias.length > 0) {
