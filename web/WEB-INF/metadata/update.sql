@@ -22291,3 +22291,8 @@ ALTER TABLE ONLY usuarionoticia ADD CONSTRAINT usuarionoticia_noticia_fk FOREIGN
 CREATE SEQUENCE usuarionoticia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 insert into migrations values('20131230164631');--.go
 update parametrosdosistema set appversao = '1.1.122.141';--.go
+-- versao 1.1.122.142
+
+update areaorganizacional set ativo = true where id in (select distinct(areamae_id) from areaorganizacional ao where exists(select id from areaorganizacional ao2 where ao.areamae_id = ao2.id) and ao.ativo = true);--.go
+insert into migrations values('20140113103730');--.go
+update parametrosdosistema set appversao = '1.1.122.142';--.go
