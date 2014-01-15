@@ -13,7 +13,7 @@ public class TFeedbackPessoalWebService implements Serializable
 	private String exception;
 	private String codigoretorno;
 	private String retorno;
-	private String codigoerro;
+	private String codigoerro = "";
 	
 	public TFeedbackPessoalWebService(Boolean sucesso, String mensagem, String exception, String codigoretorno, String retorno, String codigoerro) {
 		super();
