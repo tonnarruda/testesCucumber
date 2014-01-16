@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -24,7 +25,7 @@ import com.fortes.web.tags.CheckBox;
 public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizacional>
 {
 	@Audita(operacao="Inserção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
-	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
+	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception, AreaColaboradorException;
 	@Audita(operacao="Atualização", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void editarLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
 	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)

@@ -3,6 +3,7 @@
  * Requisito: RFA004 */
 package com.fortes.rh.web.action.geral;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,6 +15,7 @@ import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -91,39 +93,21 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 	public String insert() throws Exception
 	{
-		try
-		{
+		try {
 			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
 			areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, getEmpresaSistema());
-			
 			return Action.SUCCESS;
-		}
-		catch (AreaColaboradorException e)
-		{
+		} catch (Exception e) {
 			prepareInsert();
 			e.printStackTrace();
-			addActionError(e.getMessage());
-			return Action.INPUT;
-		}
-		catch (IntegraACException e)//TODO msg ACPessoal 13/11/2007
-		{
-			prepareInsert();
-			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
-			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
-			prepareInsert();
-			e.printStackTrace();
-			String message = "Cadastro não pôde ser realizado.";
-			
-			if(e.getMessage() != null)
-				message = e.getMessage();
-			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
-				message = e.getCause().getLocalizedMessage();
-			
-			addActionError(message);
+
+			if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof IntegraACException) 
+				addActionError(ExceptionUtil.getMensagem(e, "Cadastro não pôde ser realizado no AC Pessoal."));
+			else if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof AreaColaboradorException)
+				addActionWarning(((InvocationTargetException)e).getTargetException().getLocalizedMessage());
+			else 
+				addActionError(ExceptionUtil.getMensagem(e, "Cadastro não pôde ser realizado."));
+				
 			return Action.INPUT;
 		}
 	}

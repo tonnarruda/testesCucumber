@@ -110,10 +110,10 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 			if(getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
 			{
 				areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
-				addActionMessage("Área Organizacional excluída com sucesso.");
+				addActionSuccess("Área organizacional excluída com sucesso.");
 			}
 			else
-				addActionError("A Área Organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
+				addActionWarning("A área organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 		
 		} catch (IntegraACException e) {
 			addActionError(e.getMessage());

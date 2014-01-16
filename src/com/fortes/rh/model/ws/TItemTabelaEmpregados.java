@@ -18,7 +18,7 @@ public class TItemTabelaEmpregados
 	private String obs = "";//Fobs : String;
 	private String dataRescisao;//FdataRescisao: TXSDateTime;
 	
-	private String expAgenteNocivo;//GFIP
+	private String expAgenteNocivo = "";//GFIP
 
 	public String getCargo()
 	{
