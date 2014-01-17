@@ -88,26 +88,4 @@ public class UtilDWRTest extends MockObjectTestCase
 
 		assertNotNull(retorno);
 	}
-
-	public void testEnviaEmail() throws Exception
-	{
-		String email="teste@teste.com";
-
-		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
-
-		String retorno = utilDWR.enviaEmail(email, true, false);
-
-		assertNotNull(retorno);
-	}
-
-	public void testEnviaEmailComExceptionSemMensagem() throws Exception
-	{
-		String email="teste@teste.com";
-
-		mail.expects(once()).method("testEnvio").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new AddressException(null)));
-
-		String retorno = utilDWR.enviaEmail(email, true, false);
-
-		assertNotNull(retorno);
-	}
 }

@@ -381,8 +381,8 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		afastamentoDao.save(virose);
 
 		ColaboradorAfastamento colabAfast1 = ColaboradorAfastamentoFactory.getEntity();
-		colabAfast1.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
-		colabAfast1.setFim(DateUtil.criarDataMesAno(6, 11, 2011));
+		colabAfast1.setInicio(DateUtil.criarDataMesAno(5, 10, 2011));
+		colabAfast1.setFim(DateUtil.criarDataMesAno(6, 10, 2011));
 		colabAfast1.setColaborador(ana);
 		colabAfast1.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colabAfast1);
@@ -412,7 +412,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamentoDao.save(colabAfast5);
 		
 		ColaboradorAfastamento colaboradorAfastamento = ColaboradorAfastamentoFactory.getEntity();
-		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento.setInicio(DateUtil.criarDataMesAno(5, 10, 2011));
 		colaboradorAfastamento.setFim(DateUtil.criarDataMesAno(30, 12, 2011));
 				
 		assertEquals(5, colaboradorAfastamentoDao.findRelatorioResumoAfastamentos(empresa.getId(), new Long[] {}, new Long[] {}, new Long[] {pessoais.getId(), virose.getId()}, colaboradorAfastamento).size());

@@ -399,16 +399,16 @@ public class DateUtilTest extends TestCase
 	
 	public void testBetween()
 	{
-		Date data1 = DateUtil.montaDataByString("28/03/2009");
-		Date dataInicio = DateUtil.montaDataByString("28/03/2009");
-		Date dataFim = DateUtil.montaDataByString("01/12/2009");
+		Date data1 = DateUtil.criarDataMesAno(28, 3, 2009);
+		Date dataInicio = DateUtil.criarDataMesAno(28, 3, 2009);
+		Date dataFim = DateUtil.criarDataMesAno(1, 12, 2009);
 		
 		assertTrue(DateUtil.between(data1, dataInicio, dataFim));
 		
-		dataInicio = DateUtil.montaDataByString("01/05/2005"); 
+		dataInicio = DateUtil.criarDataMesAno(1, 5, 2005); 
 		assertTrue(DateUtil.between(data1, dataInicio, dataFim));
 		
-		data1 = DateUtil.montaDataByString("01/04/2005");
+		data1 = DateUtil.criarDataMesAno(1, 04, 2005);
 		assertFalse(DateUtil.between(data1, dataInicio, dataFim));
 	}
 
