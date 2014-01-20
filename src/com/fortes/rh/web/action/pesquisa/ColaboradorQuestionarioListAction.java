@@ -94,6 +94,10 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private String totalNaoRespondidas;
 	private Boolean compartilharColaboradores;
 	
+	private String reportFilter;
+	private String reportTitle;
+	private String msgFinalRelatorioXls;
+
 	public String list() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
@@ -135,7 +139,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		if(colaboradorQuestionarios.isEmpty())
 			return Action.INPUT;
 
-		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores da " + TipoQuestionario.getDescricao(questionario.getTipo()), getEmpresaSistema(), questionario.getTitulo());
+		calcularTotalRespondidas();
+		msgFinalRelatorioXls = colaboradorQuestionarios.size() + " colaboradores/registros. Respondeu Pesquisa: " +  totalRespondidas + ". Não Respondeu: " + totalNaoRespondidas;
+
+		reportFilter = questionario.getTitulo();
+		reportTitle = "Colaboradores da " + TipoQuestionario.getDescricao(questionario.getTipo()); 
+		
+		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 		
 		return Action.SUCCESS;
 	}
@@ -503,5 +513,16 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
-	
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public String getMsgFinalRelatorioXls() {
+		return msgFinalRelatorioXls;
+	}
 }

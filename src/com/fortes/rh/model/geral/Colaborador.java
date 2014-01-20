@@ -1879,6 +1879,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 			return retorno;
 	}
+	@NaoAudita
+	public String getNomeEOuNomeComercial()
+	{
+		String retorno = this.nome;
+		if(StringUtils.isNotEmpty(this.nomeComercial) && !retorno.equalsIgnoreCase(this.nomeComercial))
+			retorno += " (" + this.nomeComercial + ")";
+		
+		return retorno;
+	}
 
 	public void setNome(String nome)
 	{

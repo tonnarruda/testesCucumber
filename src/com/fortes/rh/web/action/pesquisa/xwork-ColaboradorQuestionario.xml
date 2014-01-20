@@ -22,7 +22,20 @@
 			</result>
 			<result name="input" type="redirect">list.action?questionario.id=${questionario.id}</result>
 		</action>
-
+		<action name="imprimirColaboradoresXls" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="imprimirColaboradores">
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradorQuestionarios</param>
+				<param name="documentName">colaboradoresQuestionario.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa,Nome(Nome Comercial),Área Organizacional,Estabelecimento,Cargo,Resp.</param>
+				<param name="propertiesGroup">colaborador.empresa.nome</param>
+				<param name="properties">colaborador.empresa.nome,colaborador.nomeEOuNomeComercial,colaborador.areaOrganizacional.nome,colaborador.estabelecimento.nome,colaborador.faixaSalarial.cargo.nome,respondidaString</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+				<param name="msgFinalRelatorioXls">msgFinalRelatorioXls</param>
+			</result>	
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioPeriodoDeExperiencia.ftl</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="delete">
 			<result name="success" type="redirect">list.action?questionario.id=${questionario.id}</result>
 		</action>

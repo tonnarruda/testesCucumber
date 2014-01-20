@@ -41,6 +41,7 @@ public class XlsResult extends WebWorkResultSupport {
     protected String sheetName;
     protected String dinamicColumns;
     protected String dinamicProperties;
+    protected String msgFinalRelatorioXls;
     protected int[] rowNumIni, rowNumFim;
     protected String[] nomeAgruoadorAnterior;
     Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
@@ -165,6 +166,18 @@ public class XlsResult extends WebWorkResultSupport {
 	    for (int i = 0; i < propertiesArray.length; i++) 
 	    	sheet.autoSizeColumn(i);		    	
 	    
+	    //mensagem final
+	    msgFinalRelatorioXls = (String)stack.findValue(msgFinalRelatorioXls);
+	    if(msgFinalRelatorioXls != null && !"".equals(msgFinalRelatorioXls))
+	    {
+		    row = sheet.createRow(++rowIndex);
+		    cell = row.createCell(0);
+		    cell.setCellStyle(boldStyle);
+		    cell.setCellValue(msgFinalRelatorioXls);
+		    
+		    sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex, 0, columnsArray.length - 1));
+	    }
+	    
 		HttpServletResponse response = (HttpServletResponse) invocation.getInvocationContext().get(ServletActionContext.HTTP_RESPONSE);
 		
 		response.addHeader("Expires", "0");
@@ -239,5 +252,9 @@ public class XlsResult extends WebWorkResultSupport {
 
 	public void setColumnsNameDinamic(String columnsNameDinamic) {
 		this.columnsNameDinamic = columnsNameDinamic;
+	}
+
+	public void setMsgFinalRelatorioXls(String msgFinalRelatorioXls) {
+		this.msgFinalRelatorioXls = msgFinalRelatorioXls;
 	}
 }

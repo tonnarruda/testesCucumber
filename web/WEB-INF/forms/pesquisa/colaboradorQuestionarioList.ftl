@@ -121,7 +121,7 @@
 				<@display.column property="colaborador.empresa.nome" title="Empresa" style="width:200px;"/>
 			</@display.table>
 		</@ww.form>
-
+		
 		<span style="float:right;">${colaboradorQuestionarios?size} colaboradores/registros. Respondeu Pesquisa: ${totalRespondidas}. Não Respondeu: ${totalNaoRespondidas}</span>
 		<div style="clear:both;"></div>
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -131,7 +131,9 @@
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?questionario.id=${questionario.id}'" id="btnInserir" class="btnInserir" ></button>
 		<button onclick="javascript: newConfirm('Confirma exclusão dos colaboradores selecionados?', function(){document.form.submit();});" class="btnExcluir"></button>
+		
 		<button onclick="window.location='imprimirColaboradores.action?questionario.id=${questionario.id}&empresaId=' + $('#empresaId').val() + '&respondida=' + $('#respondida').val()" class="btnImprimirPdf" ></button>
+		<button onclick="window.location='imprimirColaboradoresXls.action?questionario.id=${questionario.id}&empresaId=' + $('#empresaId').val() + '&respondida=' + $('#respondida').val()" class="btnRelatorioExportar"></button>
 
 		<#-- Monta o botão de acordo com o destino pesquisa, avaliação, entrevista-->
 		<#if urlVoltar?exists && !exibirBotaoConcluir>

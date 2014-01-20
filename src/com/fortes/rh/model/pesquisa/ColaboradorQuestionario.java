@@ -530,6 +530,11 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		return respondida;
 	}
 
+	public String getRespondidaString()
+	{
+		return respondida ? "Sim" : "Não";
+	}
+
 	public void setRespondida(Boolean respondida)
 	{
 		this.respondida = respondida;
