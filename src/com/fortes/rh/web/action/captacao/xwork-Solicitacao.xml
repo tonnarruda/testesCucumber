@@ -49,7 +49,6 @@
 		</action>
 		<action name="encerrarSolicitacao" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="encerrarSolicitacao">
 			<result name="success" type="redirect">list.action</result>
-			<!--  result name="input" type="redirect">list.action</result -->
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/solicitacaoList.ftl</result>
 		</action>
 		<action name="suspenderSolicitacao" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="suspenderSolicitacao">
@@ -81,16 +80,6 @@
 		<action name="updateRecebida" class="com.fortes.rh.web.action.captacao.SolicitacaoEditAction" method="update">
 			<result name="success" type="redirect">listRecebidas.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/solicitacaoRecebidasEdit.ftl</result>
-		</action>
-
-		<!-- SOLICITACAO BDS -->
-		<action name="solicitaBDS" class="com.fortes.rh.web.action.captacao.SolicitacaoBDSEditAction" method="prepareInsert">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/solicitacaoBDSEdit.ftl</result>
-			<result name="input"   type="freemarker">error</result>
-		</action>
-		<action name="insertBDS" class="com.fortes.rh.web.action.captacao.SolicitacaoBDSEditAction" method="insert">
-			<result name="success" type="redirect">listRecebidas.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/captacao/solicitacaoBDSEdit.ftl</result>
 		</action>
 
 		<!-- RELATÓRIO -->

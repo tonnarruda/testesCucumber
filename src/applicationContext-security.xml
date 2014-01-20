@@ -375,8 +375,22 @@
 				/captacao/candidato/visualizarCandidato*/**=ROLE_INFORM_CANDIDATO_COMPETENCIA
 				/captacao/candidato/*/**=ROLE_CAD_CANDIDATO
 				/captacao/empresaBds/*/**=ROLE_CAD_BDS_EMPRESA
+				
+				/captacao/solicitacao/updateStatusSolicitacao*/**=ROLE_LIBERA_SOLICITACAO
 				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
-				/captacao/solicitacao/*/**=ROLE_MOV_SOLICITACAO
+				/captacao/solicitacao/imprimirSolicitacaoPessoal*/**=ROLE_MOV_SOLICITACAO_IMPRIMIR
+				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/prepareUpdate*/**=ROLE_MOV_SOLICITACAO_EDITAR
+				/captacao/solicitacao/update*/**=ROLE_MOV_SOLICITACAO_EDITAR
+				/captacao/solicitacao/delete*/**=ROLE_MOV_SOLICITACAO_EXCLUIR
+				/captacao/solicitacao/anuncio/*/**=ROLE_MOV_SOLICITACAO_ANUNCIAR
+				/captacao/solicitacao/encerrarSolicitacao*/**=ROLE_MOV_SOLICITACAO_ENCERRAR
+				/captacao/solicitacao/reabrirSolicitacao*/**=ROLE_MOV_SOLICITACAO_ENCERRAR
+				/captacao/solicitacao/suspenderSolicitacao*/**=ROLE_MOV_SOLICITACAO_SUSPENDER
+				/captacao/solicitacao/liberarSolicitacao*/**=ROLE_MOV_SOLICITACAO_SUSPENDER
+				/captacao/solicitacao/prepareClonar*/**=ROLE_MOV_SOLICITACAO_CLONAR
+				
 				/captacao/conhecimento/*/**=ROLE_CAD_CONHECIMENTO
 				/captacao/etapaSeletiva/*/**=ROLE_CAD_ETAPA
 				/captacao/nivelCompetencia/prepareRelatorioCompetenciasColaborador*/** = ROLE_REL_COLAB_NIVEL_COMPETENCIA
