@@ -390,6 +390,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoSolicitacaoManager.expects(once()).method("getCandidatosBySolicitacao").with(ANYTHING).will(returnValue(idsCandidatos));
     	bairroManager.expects(once()).method("getBairrosByIds").with(ANYTHING).will(returnValue(new ArrayList<Bairro>()));
     	candidatoDao.expects(once()).method("getCandidatosByExperiencia").with(ANYTHING,ANYTHING).will(returnValue(candidatos));
+    	candidatoDao.expects(once()).method("findBusca").withAnyArguments();
 
     	parametros.put("experiencias", new Long[]{876587L});
 

@@ -346,7 +346,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private void populaEmpresas() {
 		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
-        empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+        empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 	}
 
 	public String prepareBusca() throws Exception

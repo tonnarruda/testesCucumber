@@ -477,7 +477,7 @@ public class EntrevistaManagerTest extends MockObjectTestCase
 
     	try
 		{
-    		entrevistaManager.clonarEntrevista(entrevista.getId(), null);
+    		entrevistaManager.clonarEntrevista(entrevista.getId(), new Long[] { null });
 		}
 		catch (Exception e)
 		{

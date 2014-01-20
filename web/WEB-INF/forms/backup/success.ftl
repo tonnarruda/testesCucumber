@@ -13,7 +13,7 @@
 		<@ww.actionerror />
 		<@ww.actionmessage />
 		<div>
-			Backups armazenados na pasta > ${backupPath} <br /><br />
+			Backups armazenados no diretório: ${backupPath} <br /><br />
 		
 			<#if arquivos?exists && 0 < arquivos?size>
 				<@display.table name="arquivos" id="arquivo" class="dados">

@@ -144,7 +144,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		empresaId = getEmpresaSistema().getId();
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados, null, null, null);
@@ -193,7 +193,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try {
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 			
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
@@ -429,7 +429,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String avaliacaoDesempenhoQuestionarioList()
 	{
 		empresaId = getEmpresaSistema().getId();
-		empresas = empresaManager.findEmpresasPermitidas(true, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), null);
+		empresas = empresaManager.findEmpresasPermitidas(true, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 
 		if(avaliador == null)
 			avaliador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());

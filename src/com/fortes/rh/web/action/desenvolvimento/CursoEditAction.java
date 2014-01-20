@@ -54,7 +54,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
 		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo");
 		
-		empresas = empresaManager.findEmpresasPermitidas(true, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
+		empresas = empresaManager.findEmpresasPermitidas(true, getEmpresaSistema().getId(), getUsuarioLogado().getId());
 		empresas.remove(getEmpresaSistema());
 		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId","getNome");
 		

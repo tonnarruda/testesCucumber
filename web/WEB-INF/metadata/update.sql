@@ -22296,3 +22296,10 @@ update parametrosdosistema set appversao = '1.1.122.141';--.go
 update areaorganizacional set ativo = true where id in (select distinct(areamae_id) from areaorganizacional ao where exists(select id from areaorganizacional ao2 where ao.areamae_id = ao2.id) and ao.ativo = true);--.go
 insert into migrations values('20140113103730');--.go
 update parametrosdosistema set appversao = '1.1.122.142';--.go
+-- versao 1.1.123.143
+
+alter table ocorrencia add column performance boolean not null default true;--.go
+insert into migrations values('20140114135254');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.54.1';--.go
+insert into migrations values('20140115105814');--.go
+update parametrosdosistema set appversao = '1.1.123.143';--.go

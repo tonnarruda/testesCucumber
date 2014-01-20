@@ -174,7 +174,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		empresa = getEmpresaSistema();
 		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId(), null);
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId());
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(empresa.getId());
@@ -192,7 +192,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	public String prepareRelatorioPerformanceAvaliacaoDesempenho() throws Exception
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId(), null);
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), getUsuarioLogado().getId());
 
 		avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
 		

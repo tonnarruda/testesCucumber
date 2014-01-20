@@ -31,5 +31,5 @@ Funcionalidade: Cadastrar Áreas Organizacionais
 
     Então eu clico em excluir "Área Mãe 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Área Organizacional excluída com sucesso."
+    Então eu devo ver "Área organizacional excluída com sucesso."
     E eu não devo ver "Área Mãe 2"

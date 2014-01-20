@@ -231,6 +231,8 @@ public class ExternoAction extends MyActionSupport
 			Long sessionEmpresaId = (Long) session.get("SESSION_EMPRESA");
 			Long sessionCandidatoId = (Long) session.get("SESSION_CANDIDATO_ID");
 			
+			empresaId = sessionEmpresaId;
+			
 			anuncios = anuncioManager.findAnunciosModuloExterno(sessionEmpresaId, sessionCandidatoId);
 		}
 		else
