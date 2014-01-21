@@ -262,6 +262,8 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
    		
    		if(etapaSeletivaId != null)
         	criteria.add(Expression.eq("e.id", etapaSeletivaId));
+
+   		criteria.add(Expression.eq("cs.triagem", false));
     	
 		Disjunction disjunction = Expression.disjunction();
 		disjunction.add(Expression.ne("h.apto", Apto.NAO));
@@ -270,7 +272,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
 		Disjunction disjunction2 = Expression.disjunction();
 		disjunction2.add(Expression.eq("c.contratado", false));
-		disjunction2.add(Expression.eq("cs.status", StatusCandidatoSolicitacao.APROMOVER));
+		disjunction2.add(Expression.not(Expression.eq("cs.status", StatusCandidatoSolicitacao.CONTRATADO)));
 		criteria.add(disjunction2);
     	
     	Disjunction any = Expression.disjunction();
