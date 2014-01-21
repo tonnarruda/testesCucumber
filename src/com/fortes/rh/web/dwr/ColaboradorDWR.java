@@ -52,13 +52,21 @@ public class ColaboradorDWR
         return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
     
-    public Map<Long, String> getColaboradoresByAreaNome(String[] areaOrganizacionalIds, String nome, Long empresaId)
+    public Map<Long, String> getColaboradoresByAreaNome(String[] areaOrganizacionalIds, String nome, String matricula, Long empresaId)
     {
     	Collection<Colaborador> colaboradores;
-    	
     	Colaborador colaborador = null;
-    	if(StringUtils.isNotBlank(nome))
-    		colaborador = new Colaborador(nome, "", null, null, null);
+    	
+    	if (StringUtils.isNotBlank(nome) || StringUtils.isNotBlank(matricula))
+    	{
+    		colaborador = new Colaborador();
+    		
+    		if (StringUtils.isNotBlank(nome))
+    			colaborador.setNome(nome);
+    		
+    		if (StringUtils.isNotBlank(matricula))
+    			colaborador.setMatricula(matricula);
+    	}
     	
     	if (areaOrganizacionalIds != null && areaOrganizacionalIds.length > 0)
     	{
@@ -70,7 +78,7 @@ public class ColaboradorDWR
     		colaboradores = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, true);
     	}
     	
-    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
+    	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getMatriculaNomeMaisNomeComercial", Colaborador.class);
     }
     
     public Map<Long, String> getColaboradoresByAvaliacoes(Long[] avaliacaoIds)

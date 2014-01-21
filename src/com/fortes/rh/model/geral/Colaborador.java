@@ -2292,6 +2292,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		return descricao.toString();
 	}
+	
 	@NaoAudita
 	public String getNomeMaisNomeComercial()
 	{
@@ -2306,6 +2307,17 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			nomeMaisNomeComercial += " (Sem Nome Comercial)";
 			
 		return nomeMaisNomeComercial;
+	}
+
+	@NaoAudita
+	public String getMatriculaNomeMaisNomeComercial()
+	{
+		String nome  = ""; 
+		
+		if (StringUtils.isNotBlank(this.matricula))
+			nome = this.matricula + " - ";
+		
+		return nome + getNomeMaisNomeComercial();
 	}
 	
 	public boolean isRespondeuEntrevista()

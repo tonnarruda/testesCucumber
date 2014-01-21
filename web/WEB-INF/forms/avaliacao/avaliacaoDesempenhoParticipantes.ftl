@@ -12,6 +12,8 @@
 			<#else>
 		    	#menuParticipantes a.ativaAvaliador{color: #FFCB03;}
 		    </#if>
+		    
+		    #box { height: 500px; }
 	  	</style>
 	  	
 		<@ww.head/>
@@ -49,12 +51,13 @@
 		
 		function pesquisar()
 		{
+			var matricula = $("#matriculaBusca").val();
 			var nome = $("#nomeBusca").val();
 			var empresaId = $("#empresa").val();
 			var areasIds = getArrayCheckeds(document.getElementById('formPesquisa'), 'areasCheck');
 
 			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, empresaId);
+			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, matricula, empresaId);
 
 			return false;
 		}
@@ -157,8 +160,8 @@
 			Empresa: <@ww.select theme="simple" label="Empresa" onchange="populaAreas(this.value);" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" disabled="!compartilharColaboradores" />
 			<br>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formPesquisa')"/>
-			Colaborador: <@ww.textfield theme="simple" label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;"/>
-			<br>
+			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width:80px;"/>
+			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;"/>
 			<button onclick="pesquisar();return false;" class="btnPesquisar"></button>
 			<br><br>
 		</@ww.form>

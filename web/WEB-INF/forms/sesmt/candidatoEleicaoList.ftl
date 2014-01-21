@@ -18,12 +18,13 @@
 	<script type='text/javascript'>
 		function pesquisar()
 		{
+			var matricula = document.getElementById("matriculaBusca").value;
 			var nome = document.getElementById("nomeBusca").value;
 			var empresaId = <@authz.authentication operation="empresaId"/>;
 			var areasIds = getArrayCheckeds(document.getElementById('formPesquisa'), 'areasCheck');
 
 			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, empresaId);
+			ColaboradorDWR.getColaboradoresByAreaNome(createListColaborador, areasIds, nome, matricula, empresaId);
 
 			return false;
 		}
@@ -85,7 +86,8 @@
 
 		<@ww.form name="formPesquisa" id="formPesquisa" action="" onsubmit="pesquisar();return false;" method="POST">
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList"/>
-			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:250px;" />
+			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width:80px;" liClass="liLeft"/>
+			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;" />
 
 			<button onclick="pesquisar();return false;" class="btnPesquisar"></button>
 		</@ww.form>
