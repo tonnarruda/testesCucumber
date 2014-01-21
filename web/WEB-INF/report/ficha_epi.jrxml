@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.3579476910000223"/>
-	<property name="ireport.x" value="87"/>
-	<property name="ireport.y" value="415"/>
+	<property name="ireport.x" value="607"/>
+	<property name="ireport.y" value="284"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -137,7 +137,7 @@
 				<textElement textAlignment="Justified">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Declaro para os devidos fins que os Equipamentos de Proteção Individual e Uniformes, registrados nesta ficha, encontram-se sob minha responsabilidade, para utilização durante minhas atividades laborais. Portanto, utilizarei e conservarei o material abaixo relacionado, de acordo com a NR 06, Portaria Nº 108, bem como estou ciente da devolução do material no ato de troca/substituição ou rescisão de meu contrato de trabalho, e ressarcimento do respectivo valor em caso de perda ou dano. ]]></text>
+				<text><![CDATA[Declaro para os devidos fins que os Equipamentos de Proteção Individual e Uniformes, registrados nesta ficha, encontram-se sob minha responsabilidade, para utilização durante minhas atividades laborais. Portanto, utilizarei e conservarei o material abaixo relacionado, de acordo com a NR 06, Portaria Nº 3.214, bem como estou ciente da devolução do material no ato de troca/substituição ou rescisão de meu contrato de trabalho, e ressarcimento do respectivo valor em caso de perda ou dano. ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="48606115-dd9e-4d7b-becb-415cf185e8f7" key="staticText-51" x="730" y="118" width="52" height="16"/>
@@ -603,7 +603,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[Lei 6.514, DE 22/12/1977 - Portaria SIT Nº. 108 - 30/11/2004 NR 06]]></text>
+				<text><![CDATA[Lei 6.514, DE 22/12/1977 - Portaria SIT Nº 3.214 - 08/06/1978 NR 06]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="21b624e1-daa6-4cfb-8eee-9b7bd67704e2" key="staticText-135" mode="Opaque" x="0" y="2" width="782" height="13" backcolor="#CCCCCC"/>
