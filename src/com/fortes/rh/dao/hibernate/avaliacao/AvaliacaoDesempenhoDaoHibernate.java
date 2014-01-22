@@ -1,9 +1,11 @@
 package com.fortes.rh.dao.hibernate.avaliacao;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -123,8 +125,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		query.executeUpdate();
 	}
 	
-	public Integer findCountTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
-		Criteria criteria = geraCriteria(page, pagingSize, empresaId, tituloBusca, avaliacaoId, liberada);
+	public Integer findCountTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
+		Criteria criteria = geraCriteria(page, pagingSize, periodoInicial, periodoFinal, empresaId, tituloBusca, avaliacaoId, liberada);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.rowCount());
@@ -134,8 +136,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
-		Criteria criteria = geraCriteria(page, pagingSize, empresaId, tituloBusca, avaliacaoId, liberada);
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
+		Criteria criteria = geraCriteria(page, pagingSize, periodoInicial, periodoFinal, empresaId, tituloBusca, avaliacaoId, liberada);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("a.id"), "id");
@@ -153,7 +155,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		return criteria.list();
 	}
 	
-	private Criteria geraCriteria(Integer page, Integer pagingSize, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
+	private Criteria geraCriteria(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
 		criteria.createCriteria("avaliacao.empresa", "emp");
@@ -170,6 +172,22 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		if(liberada != null)
 			criteria.add(Expression.eq("a.liberada", liberada));
 
+		if(periodoInicial != null && periodoFinal != null)
+		{
+			Disjunction disjunction = Expression.disjunction();
+			disjunction.add(Expression.or(
+								Expression.and(Expression.ge("a.inicio", periodoInicial), Expression.le("a.inicio", periodoFinal)),
+								Expression.and(Expression.ge("a.fim", periodoInicial), Expression.le("a.fim", periodoFinal))
+								)
+							);
+			disjunction.add(Expression.or(
+								Expression.and(Expression.le("a.inicio", periodoInicial), Expression.ge("a.fim", periodoFinal)),
+								Expression.and(Expression.le("a.inicio", periodoInicial), Expression.ge("a.fim", periodoFinal))
+								)
+							);
+			criteria.add(disjunction);
+		}
+		
 		if (pagingSize != null)
 		{
 			criteria.setFirstResult(((page - 1) * pagingSize));

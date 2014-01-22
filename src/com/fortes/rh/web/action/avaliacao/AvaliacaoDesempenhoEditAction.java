@@ -5,6 +5,7 @@ import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -77,6 +78,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private boolean isAvaliados;
 	private boolean temParticipantesAssociados;
+
+	private Date periodoInicial;
+	private Date periodoFinal;
 	
 	private String msgDelete;
 	private char respondida = '2';
@@ -333,8 +337,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		avaliacaos = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
 		
-		setTotalSize(avaliacaoDesempenhoManager.findCountTituloModeloAvaliacao(null, null, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null));
-		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
+		setTotalSize(avaliacaoDesempenhoManager.findCountTituloModeloAvaliacao(null, null, periodoInicial, periodoFinal, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null));
+		avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(getPage(), getPagingSize(), periodoInicial, periodoFinal, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null);
 		
 		Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
@@ -755,5 +759,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
 		this.exibirObsAvaliadores = exibirObsAvaliadores;
+	}
+
+	public Date getPeriodoInicial() {
+		return periodoInicial;
+	}
+
+	public void setPeriodoInicial(Date periodoInicial) {
+		this.periodoInicial = periodoInicial;
+	}
+
+	public Date getPeriodoFinal() {
+		return periodoFinal;
+	}
+
+	public void setPeriodoFinal(Date periodoFinal) {
+		this.periodoFinal = periodoFinal;
 	}
 }

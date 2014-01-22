@@ -36,7 +36,7 @@ public class AvaliacaoDesempenhoDWRTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		String titulo = "teste";
-		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(new Constraint[]{eq(null), eq(null), eq(empresaId), eq(titulo), eq(null), eq(false)}).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(new Constraint[]{eq(null), eq(null), eq(null), eq(null), eq(empresaId), eq(titulo), eq(null), eq(false)}).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 		
 		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(empresaId, titulo).size());
 	}

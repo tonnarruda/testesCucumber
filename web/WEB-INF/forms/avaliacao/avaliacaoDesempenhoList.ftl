@@ -16,6 +16,7 @@
 	<title>Avaliações de Desempenho</title>
 	
 	<#include "../ftl/showFilterImports.ftl" />
+	<#include "../ftl/mascarasImports.ftl" />
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -44,6 +45,19 @@
 		}
 	</script>
 	
+	<#if periodoInicial?exists>
+		<#assign valueDataIni = periodoInicial?date/>
+	<#else>
+		<#assign valueDataIni = ""/>
+	</#if>
+
+	<#if periodoFinal?exists>
+		<#assign valueDataFim = periodoFinal?date/>
+	<#else>
+		<#assign valueDataFim = ""/>
+	</#if>
+	
+	<#assign validarCampos="return validaFormularioEPeriodo('formBusca', new Array(), new Array('periodoInicial','periodoFinal'), true)"/>
 	<#assign validarFormModalLiberar="return validaFormulario('formModalLiberar', new Array('@avaliacoesCheck'), null)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 </head>
@@ -52,10 +66,16 @@
 	<@ww.actionerror />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
+		<@ww.form name="formBusca" action="list.action" validate="true" onsubmit="${validarCampos}" method="POST" id="formBusca">
+			<div>Período:</div>
+			<@ww.datepicker name="periodoInicial" id="periodoInicial" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
+			<@ww.label value="a" liClass="liLeft"/>
+			<@ww.datepicker name="periodoFinal" id="periodoFinal"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+			
 			<@ww.textfield label="Título" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
 			<@ww.select label="Modelo." name="avaliacaoId" list="avaliacaos" listKey="id" listValue="titulo" headerValue="selecione..." headerKey="" cssStyle="width: 500px;"/>
 			<@ww.hidden id="pagina" name="page"/>
+			<@ww.hidden id="showFilter" name="showFilter"/>
 			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="$('#pagina').val(1);">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

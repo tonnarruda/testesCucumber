@@ -2,6 +2,7 @@ package com.fortes.rh.business.avaliacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -188,13 +189,14 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findIdsAvaliacaoDesempenho(avaliacaoId);
 	}
 	
-	public Integer findCountTituloModeloAvaliacao(Integer page,Integer pagingSize, Long empresaId, String nomeBusca,Long avaliacaoId, Boolean liberada) {
-		return getDao().findCountTituloModeloAvaliacao(page, pagingSize, empresaId, nomeBusca, avaliacaoId, liberada);
+	public Integer findCountTituloModeloAvaliacao(Integer page,Integer pagingSize, Date periodoInicial, Date periodoFinal,Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
+	{
+		return getDao().findCountTituloModeloAvaliacao(page, pagingSize, periodoInicial, periodoFinal, empresaId, nomeBusca, avaliacaoId, liberada);
 	}
 
-	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
+	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada) 
 	{
-		return getDao().findTituloModeloAvaliacao(page, pagingSize, empresaId, nomeBusca, avaliacaoId, liberada);
+		return getDao().findTituloModeloAvaliacao(page, pagingSize, periodoInicial, periodoFinal, empresaId, nomeBusca, avaliacaoId, liberada);
 	}
 
 	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao) {

@@ -55,7 +55,7 @@ public class AvaliacaoDesempenhoDWR
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliacoesNaoLiberadasByTitulo(Long empresaId, String titulo)
 	{
-		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, empresaId, titulo, null, false);
+		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, empresaId, titulo, null, false);
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
 
