@@ -48,6 +48,15 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 		this.enviarPara = enviarPara.getId();
 		this.empresa = empresa;
 	}
+
+	public GerenciadorComunicacao (Operacao operacao, MeioComunicacao meioComunicacao, EnviarPara enviarPara, Empresa empresa, String qtdDiasLembrete)
+	{
+		this.operacao = operacao.getId();
+		this.meioComunicacao = meioComunicacao.getId();
+		this.enviarPara = enviarPara.getId();
+		this.empresa = empresa;
+		this.qtdDiasLembrete = qtdDiasLembrete;
+	}
 	
 	public Integer getMeioComunicacao() {
 		return meioComunicacao;

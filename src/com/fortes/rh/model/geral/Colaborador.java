@@ -2696,7 +2696,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	public String getMediaPerformanceFormatada()
 	{
-		Double result = (mediaPerformance * 100);
+		Double result = 0.0;
+		if(mediaPerformance != null)
+			result = (mediaPerformance * 100);
 		
 		NumberFormat formata = new DecimalFormat("#0.00");
 		return formata.format(result).toString() + " %";
