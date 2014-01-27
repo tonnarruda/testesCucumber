@@ -10,6 +10,7 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionInvocation;
@@ -47,29 +48,16 @@ public class ValidationExceptionInterceptor implements Interceptor
 		catch (DataIntegrityViolationException e)
 		{
 			BatchUpdateException b = (BatchUpdateException) e.getCause();
-			//^ERROR:.*\"(.*)\".*\"(.*)\".*\"(.*)\".*\"(.*)\".*$
-			//Pattern p = Pattern.compile("^ERROR:.*\"(.*)\".*\"(.*)\".*\"(.*)\"(.*|\\s)");
-			//Matcher m = p.matcher(b.getNextException().getMessage().trim());
-			//m.find();
-			//String entity = m.group(1);
-			//String dep = m.group(3);
-
-			Object[] erros = getPalavrasEntreAspas(b.getNextException().getMessage().trim());
+			String warnMessage = montaMensagemDependencias(b.getNextException().getMessage().trim());
 			
-			String entity = "atual";//erros[1];
-			String dep = "outra entidade";//erros[3];
-
-			if(erros.length > 2){
-				entity = erros[0].toString().replace("\"","").toUpperCase();
-				dep = erros[2].toString().replace("\"","").toUpperCase();
+			if (actionSuport != null) 
+			{
+				actionSuport.addActionWarning(warnMessage);
+				logger.error(warnMessage);
 			}
 			
-			if (actionSuport != null) {
-				String errorMessage = "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
-				actionSuport.addActionWarning(errorMessage);
-				logger.error(errorMessage);
-			}
 			this.logaErros(e);
+			
 			return Action.ERROR;
 		}		
 		catch (InvalidStateException e)
@@ -87,34 +75,30 @@ public class ValidationExceptionInterceptor implements Interceptor
 		}
 		catch (ConstraintViolationException e)
 		{
-			if (actionSuport != null) {
-				actionSuport.addActionWarning("Violação de integridade no banco de dados.");
-				logger.error("Violação de integridade no banco de dados.");
+			String warnMessage = montaMensagemDependencias(e.getMessage());
+			if (actionSuport != null) 
+			{
+				actionSuport.addActionWarning(warnMessage);
+				logger.error(warnMessage);
 			}
+
 			this.logaErros(e);
+			
 			return Action.ERROR;			
 		}
 		catch (Exception e)
 		{
 			if (e.getCause() instanceof ConstraintViolationException) {
 				
-				ConstraintViolationException esception = (ConstraintViolationException) e.getCause();
-
-				Object[] erros = getPalavrasEntreAspas(esception.getSQLException().getMessage().trim());
+				ConstraintViolationException cvException = (ConstraintViolationException) e.getCause();
+				String warnMessage = montaMensagemDependencias(cvException.getSQLException().getMessage().trim());
 				
-				String entity = "atual";//erros[1];
-				String dep = "outra entidade";//erros[3];
-
-				if(erros.length > 2){
-					entity = erros[0].toString().replace("\"","").toUpperCase();
-					dep = erros[2].toString().replace("\"","").toUpperCase();
-				} 
-				
-				if (actionSuport != null) {
-					String errorMessage = "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
-					actionSuport.addActionWarning(errorMessage);
-					logger.error(errorMessage);
+				if (actionSuport != null) 
+				{
+					actionSuport.addActionWarning(warnMessage);
+					logger.error(warnMessage);
 				}
+
 			} else if (actionSuport != null){
 				actionSuport.addActionError(e.getMessage());
 				e.printStackTrace();
@@ -132,6 +116,21 @@ public class ValidationExceptionInterceptor implements Interceptor
 		logger.error(e.getMessage());
 		String stacktrace = ExceptionUtils.getFullStackTrace(e);
 		logger.error(stacktrace);
+	}
+	
+	private String montaMensagemDependencias(String errorMessage)
+	{
+		Object[] erros = getPalavrasEntreAspas(errorMessage);
+		
+		if (erros.length > 2)
+		{
+			String entity = erros[0].toString().replace("\"","");
+			String dep = erros[2].toString().replace("\"","");
+			
+			return "Entidade <strong>" + Entidade.getDescricao(entity) + "</strong> possui dependências em <strong>" + Entidade.getDescricao(dep) + "</strong>.";
+		}
+		else
+			return "Violação de integridade no banco de dados";
 	}
 
 	private Object[] getPalavrasEntreAspas(String frase) {
