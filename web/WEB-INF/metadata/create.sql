@@ -5324,7 +5324,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 611, false);
+SELECT pg_catalog.setval('papel_sequence', 618, false);
 
 
 --
@@ -29996,24 +29996,24 @@ INSERT INTO extintormanutencaoservico (id, descricao) VALUES (10, 'Válvula Cili
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (1, 5, 2, 4, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (2, 6, 2, 5, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (3, 7, 2, 6, NULL, 1, NULL, false);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (4, 8, 2, 7, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (5, 1, 2, 7, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (6, 2, 2, 7, NULL, 1, NULL, false);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (7, 9, 2, 17, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (8, 10, 2, 1, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (9, 9, 1, 1, NULL, 1, NULL, false);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (10, 9, 1, 2, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (11, 12, 2, 8, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (12, 13, 1, 13, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (14, 16, 2, 12, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (15, 15, 2, 15, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (16, 11, 2, 6, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (17, 3, 1, 14, NULL, 1, NULL, false);
-INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (18, 9, 2, 7, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (19, 25, 2, 7, NULL, 1, '7', false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (20, 26, 1, 1, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (21, 30, 2, 7, NULL, 1, NULL, false);
 INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (22, 14, 1, 13, NULL, 1, NULL, false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (4, 8, 2, 7, NULL, 1, '2', false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (18, 9, 2, 7, NULL, 1, '2', false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (7, 9, 2, 17, NULL, 1, '2', false);
+INSERT INTO gerenciadorcomunicacao (id, operacao, meiocomunicacao, enviarpara, destinatario, empresa_id, qtddiaslembrete, permitirresponderavaliacao) VALUES (10, 9, 1, 2, NULL, 1, '2', false);
 
 
 --
@@ -30480,6 +30480,8 @@ INSERT INTO migrations (name) VALUES ('20131230164631');
 INSERT INTO migrations (name) VALUES ('20140113103730');
 INSERT INTO migrations (name) VALUES ('20140114135254');
 INSERT INTO migrations (name) VALUES ('20140115105814');
+INSERT INTO migrations (name) VALUES ('20140120093631');
+INSERT INTO migrations (name) VALUES ('20140122153122');
 
 
 --
@@ -30788,7 +30790,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (534, 'ROLE_TIPO_DESPESA', 'Tipo de Despesa', '/geral/tipoDespesa/list.action', 7, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (589, 'ROLE_CAD_MOD_AVALIACAO_ALUNO', 'Modelos de Avaliação de Aluno', '/avaliacao/modelo/list.action?modeloAvaliacao=L', 4, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (590, 'ROLE_REL_RANKING_AVALIACAO_ALUNO', 'Ranking de Performance das Avaliações dos Alunos', '/desenvolvimento/avaliacaoCurso/prepareRelatorioRankingAvaliacaoAluno.action', 14, true, NULL, 368, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (22, 'ROLE_MOV_SOLICITACAO_CANDIDATO', 'Candidatos da Seleção', '#', 5, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (544, 'ROLE_CAND_SOLICITACAO_COMPETENCIAS', 'Competências', '#', 3, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (591, 'ROLE_CAND_SOLICITACAO_LISTA', 'Ver Listagem dos Candidatos', '#', 1, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (592, 'ROLE_CAND_SOLICITACAO_HISTORICO', 'Histórico', '#', 2, false, NULL, 22, NULL);
@@ -30797,7 +30798,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (595, 'ROLE_CAND_SOLICITACAO_EXCLUIR', 'Excluir', '#', 6, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (596, 'ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO', 'Documentos Anexos', '#', 7, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (597, 'ROLE_CAND_SOLICITACAO_AVALIACOES', 'Avaliações da Solicitação', '#', 8, false, NULL, 22, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Alterar status', '#', 2, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (454, 'ROLE_TED_PAINEL_IND', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, NULL, 365, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (598, 'ROLE_CAND_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 9, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (599, 'ROLE_CAND_SOLICITACAO_TRIAGEM', 'Triagem', '#', 10, false, NULL, 22, NULL);
@@ -30821,13 +30821,22 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (608, 'ROLE_CAD_MEDIDASEGURANCA', 'Medidas de Segurança', '/sesmt/medidaSeguranca/list.action', 3, true, NULL, 605, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (609, 'ROLE_MOV_PCMAT', 'PCMAT', '/sesmt/pcmat/list.action', 10, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (610, 'ROLE_CAD_AREAVIVENCIA', 'Áreas de Vivência', '/sesmt/areaVivencia/list.action', 4, true, NULL, 605, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (56, 'ROLE_LIBERA_SOLICITACAO', 'Alterar status', '#', 10, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (22, 'ROLE_MOV_SOLICITACAO_CANDIDATO', 'Candidatos da Seleção', '#', 9, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (611, 'ROLE_MOV_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 2, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (612, 'ROLE_MOV_SOLICITACAO_EDITAR', 'Inserir/Editar', '#', 3, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (613, 'ROLE_MOV_SOLICITACAO_EXCLUIR', 'Excluir', '#', 4, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (614, 'ROLE_MOV_SOLICITACAO_ANUNCIAR', 'Anunciar', '#', 5, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (615, 'ROLE_MOV_SOLICITACAO_ENCERRAR', 'Encerrar', '#', 6, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (616, 'ROLE_MOV_SOLICITACAO_SUSPENDER', 'Suspender', '#', 7, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (617, 'ROLE_MOV_SOLICITACAO_CLONAR', 'Clonar', '#', 8, false, NULL, 21, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.123.143', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.123.144', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -31090,6 +31099,13 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 607);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 608);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 609);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 610);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 611);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 612);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 613);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 614);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 615);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 616);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 617);
 
 
 --

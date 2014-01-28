@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.123.144" data="27/01/2013">
+		<Modulo nome=" "><![CDATA[
+			:: Pesquisas > Movimentações > Pesquisas > Colaboradores: Novo relatório no formato xls.
+			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho: Novo filtro por período.
+			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Novo filtro pela matrícula do colaborador.
+			:: Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de acessos aos botões em "Solicitação de Pessoal".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.123.143" data="20/01/2013">
 		<Modulo nome=" "><![CDATA[
 			:: Módulo externo: Possibilidade de envio de vaga para um amigo.
