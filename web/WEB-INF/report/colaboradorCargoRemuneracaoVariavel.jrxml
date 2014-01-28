@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="colaboradorCargoRemuneracaoVariavel" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="5e749497-0420-4731-8fe9-47859a61fefd">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="102"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -26,6 +26,18 @@
 	</variable>
 	<variable name="contadorColaboradorNome" class="java.lang.Long" calculation="Count">
 		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="salarioSubTotal" class="java.lang.Double" resetType="Group" resetGroup="grpCargo" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{salarioVariavel}.doubleValue() + $F{salarioCalculado}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="remuneracaoVariavelSubTotal" class="java.lang.Double" resetType="Group" resetGroup="grpCargo" calculation="Sum">
+		<variableExpression><![CDATA[$F{salarioVariavel}]]></variableExpression>
+	</variable>
+	<variable name="salarioTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{salarioVariavel}.doubleValue() + $F{salarioCalculado}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="remuneracaoVariavelTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{salarioVariavel}]]></variableExpression>
 	</variable>
 	<group name="grpCargo">
 		<groupExpression><![CDATA[$F{faixaSalarial.descricao}]]></groupExpression>
@@ -60,6 +72,24 @@
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Total: " + $V{grpCargo_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField pattern=",##0.00" isBlankWhenNull="true">
+					<reportElement uuid="03584ce4-c458-4b14-96cd-6703b613f58d" x="493" y="1" width="41" height="12">
+						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{salarioSubTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern=",##0.00" isBlankWhenNull="true">
+					<reportElement uuid="1a267b60-998a-4b3d-83a0-55f08c28f280" x="437" y="1" width="55" height="12">
+						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{remuneracaoVariavelSubTotal}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -163,7 +193,7 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="52" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<subreport isUsingCache="true">
 				<reportElement uuid="058093b6-bc34-4c58-94e3-9b5ce3c8deae" key="subreport-1" isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="537" height="50"/>
 				<subreportParameter name="CABECALHO">
@@ -174,7 +204,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="32" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="cfbbb73c-4e75-4378-bfae-5d6da9cf18d8" key="staticText-4" x="12" y="15" width="167" height="12"/>
 				<box>
@@ -370,7 +400,7 @@
 				</textField>
 			</elementGroup>
 			<elementGroup>
-				<textField pattern="##0.00" isBlankWhenNull="true">
+				<textField pattern=",##0.00" isBlankWhenNull="true">
 					<reportElement uuid="38c01e71-d370-4cc4-86c6-0089f87ce2dc" key="textField" x="436" y="1" width="56" height="11">
 						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 					</reportElement>
@@ -385,7 +415,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{salarioVariavel}]]></textFieldExpression>
 				</textField>
-				<textField pattern="##0.00" isBlankWhenNull="true">
+				<textField pattern=",##0.00" isBlankWhenNull="true">
 					<reportElement uuid="622a4322-f48a-4438-8e47-a9045b9679f6" key="textField-18" x="493" y="1" width="41" height="11">
 						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 					</reportElement>
@@ -572,6 +602,24 @@
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{contadorColaboradorNome}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement uuid="8cc71429-d7c3-435b-8159-46faa0f993de" x="493" y="2" width="41" height="11">
+					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{salarioTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement uuid="5c3ef161-9cbb-4ee7-809f-437dcaa4f7b6" x="437" y="2" width="55" height="11">
+					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && $P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{remuneracaoVariavelTotal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
