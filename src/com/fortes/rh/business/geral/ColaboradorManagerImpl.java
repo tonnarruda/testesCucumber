@@ -2141,7 +2141,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			Collection<Object[]>  graficoEvolucaoTurnover = new ArrayList<Object[]>();
 			for (TurnOver turnOver : turnOverCollection.getTurnOvers()) 
-				graficoEvolucaoTurnover.add(new Object[]{DateUtil.getUltimoDiaMes(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
+				graficoEvolucaoTurnover.add(new Object[]{DateUtil.getInicioMesData(turnOver.getMesAno()).getTime(), turnOver.getTurnOver()});
 			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("label", empresasMap.get(turnOverCollection.getEmpresaId()));

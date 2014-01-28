@@ -95,8 +95,8 @@
 				
 				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
 				
-				montaGraficoLinha([absenteismo], "#evolucaoAbsenteismo", "Absenteismo");
-				montaGraficoLinha(turnover, "#evolucaoTurnover", "Turnover");
+				montaGraficoLinha([{data: absenteismo}], "#evolucaoAbsenteismo", "Absenteismo", 4);
+				montaGraficoLinha(turnover, "#evolucaoTurnover", "Turnover", 2);
 				
 				populaAreas();
 
@@ -123,9 +123,9 @@
 			
 			var popup;
 			
-			function montaGraficoLinha(dados, obj, titulo)
+			function montaGraficoLinha(dados, obj, titulo, precisao)
 			{
-				montaLine(dados, obj);
+				montaLine(dados, obj, precisao);
 				$(obj + "Imprimir")
 						.unbind()
 						.bind('click', 
