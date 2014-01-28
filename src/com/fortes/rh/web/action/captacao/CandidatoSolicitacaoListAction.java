@@ -157,7 +157,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(null, null, solicitacao.getId(), null, null, null, false, true, observacaoRH, null, null);
 		
 		if(candidatoSolicitacaos.size() == 0)
-			setActionMsg("Não existem candidatos a serem transferido.");
+			setActionMsg("Não existem candidatos a serem transferidos.");
 
 		solicitacaos = solicitacaoManager.findSolicitacaoList(null, false, null, false);
 		solicitacaos.remove(solicitacao);
