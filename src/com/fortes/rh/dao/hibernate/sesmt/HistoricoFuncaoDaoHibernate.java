@@ -140,6 +140,9 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 
 	public Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data)
 	{
+		if(funcaoIds == null || funcaoIds.isEmpty())
+			return null;
+		
 		StringBuilder hql = new StringBuilder("select new HistoricoFuncao(f.id, f.nome, e.id, e.nome) ");
 		hql.append("from HistoricoFuncao hf ");
 		hql.append("left join hf.funcao f ");

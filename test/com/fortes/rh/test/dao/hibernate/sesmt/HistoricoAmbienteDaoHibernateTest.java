@@ -199,8 +199,10 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		ambientesIds.add(a2.getId());
 		
 		Collection<HistoricoAmbiente> historicoAmbientes = historicoAmbienteDao.findRiscosAmbientes(ambientesIds, new Date("2008/01/01"));
+		Collection<HistoricoAmbiente> historicosVazios = historicoAmbienteDao.findRiscosAmbientes(null, new Date("2008/01/01"));
 		
 		assertEquals("Test 1", 1, historicoAmbientes.size());
+		assertNull("Test 2", historicosVazios);
 	}
 	
 	public void testFindByData() throws Exception

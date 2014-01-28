@@ -163,8 +163,10 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		funcaoIds.add(f2.getId());
 		
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoDao.findEpis(funcaoIds, new Date("2008/01/01"));
+		Collection<HistoricoFuncao> historicosVazios = historicoFuncaoDao.findEpis(null, new Date("2008/01/01"));
 		
 		assertEquals("Test 1", 1, historicoFuncaos.size());
+		assertNull("Test 2", historicosVazios);
 	}
 	
 	public void testFindByData() throws Exception

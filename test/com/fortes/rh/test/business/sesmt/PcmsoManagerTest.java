@@ -104,7 +104,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	}
     	
     	assertNotNull(excep);
-    	assertEquals("Não existem Funções para os Colaboradores: Joao,Maria<br>", excep.getMessage());
+    	assertEquals("Não existem funções para os colaboradores: Joao,Maria<br>", excep.getMessage());
     }
     
     public void testMontaRelatorioSemEpis()
@@ -130,7 +130,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	}
     	
     	assertNotNull(excep);
-    	assertEquals("Não existem dados de EPIs para o período informado.<br>", excep.getMessage());
+    	assertEquals("Não existem históricos de funções para o período informado.<br>", excep.getMessage());
     }
 
     public void testMontaRelatorioEpis()
@@ -187,7 +187,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
     	
 		agendaManager.expects(once()).method("findByPeriodo").with(eq(dataIni), eq(dataFim), eq(null), eq(estabelecimento)).will(returnValue(agendas));
-		assertEquals("Não existem dados da Agenda para o período informado.<br>", pcmsoManager.montaAgenda(null, dataIni, dataFim, estabelecimento, true));
+		assertEquals("Não existem dados da agenda para o período informado.<br>", pcmsoManager.montaAgenda(null, dataIni, dataFim, estabelecimento, true));
 	
     }
     

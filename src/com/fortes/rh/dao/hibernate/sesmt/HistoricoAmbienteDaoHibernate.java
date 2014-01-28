@@ -104,6 +104,9 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 	
 	public Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data)
 	{
+		if(ambienteIds == null || ambienteIds.isEmpty())
+			return null;
+		
 		StringBuilder hql = new StringBuilder("select new HistoricoAmbiente(a.id, a.nome, r.id, r.descricao) ");
 		hql.append("from HistoricoAmbiente h ");
 		hql.append("left join h.riscoAmbientes ra ");
