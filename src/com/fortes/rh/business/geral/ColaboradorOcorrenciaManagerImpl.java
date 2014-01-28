@@ -23,10 +23,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
-import com.opensymphony.xwork.ActionContext;
 
 public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<ColaboradorOcorrencia, ColaboradorOcorrenciaDao> implements ColaboradorOcorrenciaManager
 {
@@ -290,7 +288,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 			for (Absenteismo absenteismo : absenteismos) 
 			{
 				Date ultimoDiaMes = DateUtil.getInicioMesData(DateUtil.criarDataMesAno(absenteismo.getMes() + "/" + absenteismo.getAno()));
-				graficoEvolucaoAbsenteismo.add(new Object[]{ultimoDiaMes.getTime(), absenteismo.getAbsenteismo()});	
+				graficoEvolucaoAbsenteismo.add(new Object[]{ultimoDiaMes.getTime(), absenteismo.getAbsenteismo() });	
 			}
 		} catch (Exception e) 
 		{

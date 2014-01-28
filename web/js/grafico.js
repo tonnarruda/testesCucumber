@@ -1,20 +1,21 @@
-function montaLine(data, idGrafico, options) {
+function montaLine(data, idGrafico, precisao, options) {
     var config = {
 	    series: {
            lines: { show: true },
            points: { show: true }
         },
         grid: { hoverable: true },
-        xaxis: { 
+        xaxis: {
+        	tickSize: [1, "month"],
         	mode: 'time',
         	timeformat: '%b/%y ',
         	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
         },
-        yaxis: { 
-        	 tickFormatter: function (v) { return formataNumero(v); }
+        yaxis: {
+        	tickFormatter: function (v) { return formataNumero(v, precisao); }
         }
     };			
-    
+
     if (options){$.extend(config, options);}
     
     var plot = $.plot($(idGrafico), data, config);
@@ -27,7 +28,7 @@ function montaLine(data, idGrafico, options) {
         	{
         		previousPoint = item.dataIndex;
                 $("#tooltip").remove();
-                var y = formataNumero(item.datapoint[1]);		                    
+                var y = formataNumero(item.datapoint[1], precisao);		                    
                 showTooltip(item.pageX, item.pageY, y);
             }
         }
