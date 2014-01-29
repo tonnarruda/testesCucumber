@@ -15,7 +15,7 @@
 		function enviaTicket() {
 			if (validaFormulario('form', new Array('cnpj', 'nome'), null, true)) {
 				var nome = removerAcento($('#nome').val());
-				window.location='geraTicket.action?cnpj='+$('#cnpj').val()+'&nome='+ nome;
+				window.location='geraTicket.action?cnpj='+$('#cnpj').val()+'&nome='+ escape(nome);
 			} else {
 				return false;
 			}

@@ -17,7 +17,7 @@
 </head>
 <body>
 <@ww.actionerror />
-<@ww.form name="form" validate="true" method="POST">
+<@ww.form name="form" action="validaTicket.action" validate="true" method="POST">
 	<br><br><br>
 	
 	<table width="344px" align="center" cellspacing="0" cellpadding="0" border="0">
@@ -28,13 +28,16 @@
 		<tr>
 			<td class="corpo" colspan="2" style="padding:10px" height="71px" align="center">
 				Aguarde a confirmação de liberação do técnico.<br />
-				Ticket n&ordm; <span style="font-size:16px;color:#ff0;">${ticket}
+				Ticket n&ordm; <span style="font-size:16px;color:#ff0;">${ticket}</span>
 			</td>
 		</tr>
 		<tr>
 			<td width="109px" height="79px" class="logo"></td>
 			<td class="rodape" valign="top" align="right">
-				<button type="button" onclick="window.location='validaTicket.action?ticket=${ticket}&nome=${nome}&cnpj=${cnpj}'" class="btnOK" style="background-color:transparent"></button>
+				<@ww.hidden name="ticket" value="${ticket}"/>
+				<@ww.hidden name="nome" value="${nome}"/>
+				<@ww.hidden name="cnpj" value="${cnpj}"/>
+				<button type="submit" class="btnOK" style="background-color:transparent"></button>
 			</td>
 		</tr>
 	</table>
