@@ -3813,7 +3813,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		subSelectHistoricoAtual(hql, areasIds, cargosIds);
 		
-		hql.append("group by m.motivo order by count(m.motivo) desc");
+		hql.append("group by m.motivo order by count(m.motivo) desc, m.motivo asc");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setMaxResults(qtdItens);

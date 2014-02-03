@@ -22334,3 +22334,8 @@ update gerenciadorcomunicacao set qtddiaslembrete = '2' where qtddiaslembrete is
 update gerenciadorcomunicacao set qtddiaslembrete = '2' where qtddiaslembrete is null and operacao = 25 and meiocomunicacao = 2 and enviarpara = 7;--.go
 insert into migrations values('20140122153122');--.go
 update parametrosdosistema set appversao = '1.1.123.144';--.go
+-- versao 1.1.123.145
+
+update papel set help = 'Caso essa opção seja desmarcada, o usuário visualizará somente as solicitações para as áreas organizacionais das quais ele seja um dos responsáveis' where id=45;--.go
+insert into migrations values('20140203110947');--.go
+update parametrosdosistema set appversao = '1.1.123.145';--.go

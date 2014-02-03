@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.123.144" data="27/01/2013">
+	<Versao id="1.1.123.145" data="03/02/2014">
+		<Modulo nome=" "><![CDATA[
+			:: C&S > Relatórios > Colaboradores por Cargo: Novos totalizadores nos valores de salário.
+    	]]></Modulo>
+    </Versao>
+	<Versao id="1.1.123.144" data="27/01/2014">
 		<Modulo nome=" "><![CDATA[
 			:: Pesquisas > Movimentações > Pesquisas > Colaboradores: Novo relatório no formato xls.
 			:: Aval. Desempenho > Movimentações > Avaliações de Desempenho: Novo filtro por período.
@@ -8,14 +13,14 @@
 			:: Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de acessos aos botões em "Solicitação de Pessoal".
     	]]></Modulo>
     </Versao>
-	<Versao id="1.1.123.143" data="20/01/2013">
+	<Versao id="1.1.123.143" data="20/01/2014">
 		<Modulo nome=" "><![CDATA[
 			:: Módulo externo: Possibilidade de envio de vaga para um amigo.
 			:: Info. Funcionais > Cadastros > Tipos de Ocorrência: Nova opção de exibir em performance profissional.
 			:: SESMT > Relatórios > Resumo de Afastamentos: Novas opções de totalização de dias para períodos de afastamento que passem de um mês a outro.
     	]]></Modulo>
     </Versao>
-	<Versao id="1.1.122.142" data="14/01/2013">
+	<Versao id="1.1.122.142" data="14/01/2014">
 		<Modulo nome=" "><![CDATA[
 			:: Melhorias internas.
     	]]></Modulo>
