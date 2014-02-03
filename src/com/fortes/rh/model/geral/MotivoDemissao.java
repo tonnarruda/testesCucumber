@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
+@SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="motivodemissao_sequence", allocationSize=1)
 public class MotivoDemissao extends AbstractModel implements Serializable
@@ -20,26 +21,42 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 
+	private boolean turnover;
+	
 	@ChaveDaAuditoria
     public String getMotivo()
 	{
 		return motivo;
 	}
+	
 	public String getMotivoFormatado()
 	{
 		return motivo == null ? "[não informado]" : motivo;
 	}
+	
 	public void setMotivo(String motivo)
 	{
 		this.motivo = motivo;
 	}
+	
 	public Empresa getEmpresa()
 	{
 		return empresa;
 	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
+	}
+
+	public boolean isTurnover() 
+	{
+		return turnover;
+	}
+	
+	public void setTurnover(boolean turnover) 
+	{
+		this.turnover = turnover;
 	}
 	
 	public void setEmpresaId(Long empresaId)

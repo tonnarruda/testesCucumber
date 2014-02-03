@@ -1,0 +1,1 @@
+alter table motivodemissao add column turnover boolean NOT NULL DEFAULT false;--.go

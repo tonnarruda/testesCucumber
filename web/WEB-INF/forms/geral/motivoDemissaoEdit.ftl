@@ -15,8 +15,13 @@
 <body>
 <@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" maxLength="50" required="true"/>
 		<@ww.hidden name="motivoDemissao.id" />
+		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" maxLength="50" required="true"/>
+		<#if turnorver>
+			<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoDemissao.turnover" labelPosition="left"/>
+		<#else>
+			<@ww.hidden name="motivoDemissao.turnover" />
+		</#if>
 	</@ww.form>
 
 
