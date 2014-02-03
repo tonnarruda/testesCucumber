@@ -29,6 +29,7 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 <script type="text/javascript">
 	function validarCampos()
@@ -83,6 +84,10 @@
 	
 	$(function() 
 	{
+		$('#tooltipEmailsExtras').qtip({
+			content: 'Esses emails receberão todas as notificações inerentes à esta área organizacional.'
+		});
+	
 		<#if areaOrganizacional.emailsNotificacoes?exists>
 			<#list areaOrganizacional.emailsNotificacoes?split(";") as email>
 				adicionarCampoEmail("${email}");
@@ -121,7 +126,7 @@
 		<@ww.select label="Corresponsável" name="areaOrganizacional.coResponsavel.id" id="coResponsavel" list="coResponsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" disabled = "${desabilitado}"/>
 		<@ww.select label="Ativo" id="ativo" name="areaOrganizacional.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
-		<label>E-mails extras para notificações:</label>
+		<label>Emails extras para notificações: <img id="tooltipEmailsExtras" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -4px" /></label>
 		<ul id="camposEmails"></ul>
 		<a href="javascript:;" onclick="javascript:adicionarCampoEmail();" style="text-decoration: none;">
 			<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 
