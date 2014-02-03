@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 
@@ -28,7 +29,9 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 	private String descricao;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Empresa empresa;
-
+	@Transient
+	private String conteudo;
+	
 	@Override
 	public Object clone()
 	{
@@ -128,6 +131,18 @@ public class ConfiguracaoCampoExtra extends AbstractModel implements Serializabl
 
 	public void setAtivoCandidato(Boolean ativoCandidato) {
 		this.ativoCandidato = ativoCandidato;
+	}
+
+	
+	public String getConteudo()
+	{
+		return conteudo;
+	}
+
+	
+	public void setConteudo(String conteudo)
+	{
+		this.conteudo = conteudo;
 	}
 
 }

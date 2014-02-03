@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.ConverterUtil;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -133,7 +134,7 @@ public class CamposExtras extends AbstractModel implements Serializable
 	}
 	public String getValor1String()
 	{
-		return (valor1 == null)?"":String.valueOf(valor1);
+		return (valor1 == null)?"":ConverterUtil.convertDoubleToString(valor1);
 	}
 	public void setValor1(Double valor1)
 	{
@@ -145,7 +146,7 @@ public class CamposExtras extends AbstractModel implements Serializable
 	}
 	public String getValor2String()
 	{
-		return (valor2 == null)?"":String.valueOf(valor2);
+		return (valor2 == null)?"":ConverterUtil.convertDoubleToString(valor2);
 	}
 	public void setValor2(Double valor2)
 	{

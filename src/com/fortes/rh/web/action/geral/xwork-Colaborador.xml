@@ -242,7 +242,7 @@
 				<param name="location">WEB-INF/report/performanceFuncional.jasper</param>
 				<param name="dataSource">relatorioPerformanceFuncional</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">listagemPerformanceFuncional.pdf</param>
+				<param name="documentName">performanceFuncional.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorPerformance.ftl</result>
 		</action>

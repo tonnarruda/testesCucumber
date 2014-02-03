@@ -19,7 +19,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	private EmpresaManager empresaManager;
 	
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras;
-	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,16};
+	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 	private boolean habilitaCampoExtraColaborador;
 	private boolean habilitaCampoExtraCandidato;
 	private Collection<Empresa> empresas;
@@ -82,7 +82,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
 			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(getEmpresaSistema().getId()));
 
-			addActionMessage("Configurações gravadas com sucesso!");
+			addActionSuccess("Configurações gravadas com sucesso.");
 			prepareUpdate();
 			return Action.SUCCESS;
 		} catch (Exception e) {

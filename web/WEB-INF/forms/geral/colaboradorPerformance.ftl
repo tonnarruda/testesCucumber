@@ -248,11 +248,11 @@
 				</#if>
 				
 				<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
-					${colaborador.camposExtras.valor1}<br>
+					${colaborador.camposExtras.valor1?string('###,###,###.00')}
 				</#if>
 				
 				<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
-					${colaborador.camposExtras.valor2}<br>
+					${colaborador.camposExtras.valor2?string('###,###,###.00')}<br>
 				</#if>
 				
 				<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
