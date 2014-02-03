@@ -1425,9 +1425,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if (empresa.isTurnoverPorSolicitacao())
 		{
-			sql.append("inner join candidatosolicitacao cs on c.candidato_id = cs.candidato_id ");
-			sql.append("inner join solicitacao s on cs.solicitacao_id = s.id ");
-			sql.append("inner join motivosolicitacao ms on s.motivosolicitacao_id = ms.id ");
+			if (isAdmitidos)
+			{
+				sql.append("inner join candidatosolicitacao cs on c.candidato_id = cs.candidato_id ");
+				sql.append("inner join solicitacao s on cs.solicitacao_id = s.id ");
+				sql.append("inner join motivosolicitacao ms on s.motivosolicitacao_id = ms.id ");
+			}
+			else
+				sql.append("inner join motivodemissao md on c.motivodemissao_id = md.id ");
 		}
 		
 		sql.append("where " + coluna + " between :dataIni and :dataFim "); 
@@ -1448,7 +1453,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("and c.id=hc2.colaborador_id and hc2.status = :status ) ");
 		
 		if (empresa.isTurnoverPorSolicitacao())
-			sql.append("and ms.turnover = true ");
+		{
+			if (isAdmitidos)
+				sql.append("and ms.turnover = true ");
+			else
+				sql.append("and md.turnover = true ");
+		}
 		
 		sql.append("group by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 		sql.append("order by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
@@ -1552,10 +1562,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	inner join hc.faixaSalarial fs ");
 		if (empresa.isTurnoverPorSolicitacao())
 		{
-			hql.append("	inner join co.candidato ca ");
-			hql.append("	inner join ca.candidatoSolicitacaos cs ");
-			hql.append("	inner join cs.solicitacao s ");
-			hql.append("	inner join s.motivoSolicitacao ms ");
+			hql.append("	inner join co.motivoDemissao md ");
 		}
 		hql.append("	where co.empresa.id = :empresaId ");
 		hql.append("	and (co.dataDesligamento between :dataIni and :dataFim)  ");
@@ -1579,7 +1586,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("and co.vinculo in (:vinculos) ");
 
 		if (empresa.isTurnoverPorSolicitacao())
-			hql.append("and ms.turnover = true ");
+			hql.append("and md.turnover = true ");
 		
 		if (tempoServicoIni != null && tempoServicoFim != null && tempoServicoIni.length == tempoServicoFim.length)
 		{
@@ -2366,12 +2373,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.colaborador as c ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		
-		if (empresa.isTurnoverPorSolicitacao() && isAdmitidos)
+		if (empresa.isTurnoverPorSolicitacao())
 		{
-			hql.append("inner join c.candidato ca ");
-			hql.append("inner join ca.candidatoSolicitacaos cs ");
-			hql.append("inner join cs.solicitacao s ");
-			hql.append("inner join s.motivoSolicitacao ms ");
+			if (isAdmitidos)
+			{
+				hql.append("inner join c.candidato ca ");
+				hql.append("inner join ca.candidatoSolicitacaos cs ");
+				hql.append("inner join cs.solicitacao s ");
+				hql.append("inner join s.motivoSolicitacao ms ");
+			}
+			else
+				hql.append("inner join c.motivoDemissao md ");
 		}
 		
 		hql.append("where c.empresa.id = :empresaId ");
@@ -2380,8 +2392,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		hql.append("and " + campo + " between :dataIni and :dataFim ");
 		
-		if (empresa.isTurnoverPorSolicitacao() && isAdmitidos)
-			hql.append("and ms.turnover = true ");
+		if (empresa.isTurnoverPorSolicitacao())
+		{
+			if (isAdmitidos)
+				hql.append("and ms.turnover = true ");
+			else
+				hql.append("and md.turnover = true ");
+		}
 
 		Query query = getSession().createQuery(hql.toString());
 		

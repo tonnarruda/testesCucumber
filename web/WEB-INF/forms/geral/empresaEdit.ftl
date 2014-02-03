@@ -182,7 +182,7 @@
 			<@ww.div cssClass="divInfo">
 				<h2>Cálculo de Turnover</h2>
 				<ul>
-					<@ww.checkbox label="Considerar para cálculo de Turnover apenas os colaboradores contratados através de uma solicitação cujo motivo esteja com a opção \"Considerar para cálculo de turnover\" marcada." id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Considerar para cálculo de Turnover apenas as admissões feitas através de solicitações com motivo marcado como \"Considerar para cálculo de turnover\" e apenas as demissões com motivo marcado como \"Considerar para cálculo de turnover\"." id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/>
 					<li>&nbsp;</li>
 					<@ww.select label="Fórmula" name="empresa.formulaTurnover" id="formulaTurnover" list="opcoesFormulaTurnover" listKey="key" listValue="value" headerKey="" headerValue="Selecione"/>
 				</ul>

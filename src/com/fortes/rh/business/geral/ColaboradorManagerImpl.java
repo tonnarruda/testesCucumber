@@ -2014,16 +2014,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				totalDemitidos += qtdDemitidos;
 			}
 
-			if (empresa.isTurnoverPorSolicitacao())
-			{
-				qtdAtivosInicioMes = getDao().countAtivosTurnover(DateUtil.getUltimoDiaMesAnterior(dataTmp), empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-				qtdAtivosFinalMes = getDao().countAtivosTurnover(DateUtil.getUltimoDiaMes(dataTmp), empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-			}
-			else
-			{
-				qtdAtivosInicioMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
-				qtdAtivosFinalMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
-			}
+			qtdAtivosInicioMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
+			qtdAtivosFinalMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 			
 			TurnOver turnOverTmp = new TurnOver();
 			turnOverTmp.setMesAno(dataTmp);
