@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -21,4 +22,5 @@ public interface CatManager extends GenericManager<Cat>
 	Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataDe, Date dataAte);
 	Collection<DataGrafico> findQtdCatsPorHorario(Long empresaId, Date dataDe, Date dataAte);
 	Cat findByIdProjection(Long catId);
+	void setFoto(Cat cat, boolean manterFoto, File foto, String local);
 }

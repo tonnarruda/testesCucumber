@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.sesmt.CatDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -16,6 +17,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
@@ -150,8 +152,22 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		return graficoCatsPorHorario;
 	}
 	
-	public Cat findByIdProjection(Long catId) {
+	public Cat findByIdProjection(Long catId) 
+	{
 		return getDao().findByIdProjection(catId);
+	}
+
+	public void setFoto(Cat cat, boolean manterFoto, File foto, String local) 
+	{
+		if(!manterFoto)
+		{
+			String fotoUrl = ArquivoUtil.salvaArquivo(foto, local);
+	
+			if(foto != null && !fotoUrl.equals(""))
+				cat.setFotoUrl(fotoUrl);
+			else
+				cat.setFotoUrl(null);
+		}
 	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {

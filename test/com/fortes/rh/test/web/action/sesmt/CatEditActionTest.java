@@ -128,6 +128,7 @@ public class CatEditActionTest extends MockObjectTestCase
     	action.setColaborador(colaborador);
     	action.setCat(cat);
 
+    	manager.expects(once()).method("setFoto").withAnyArguments();
     	manager.expects(once()).method("save").with(eq(cat));
 
     	assertEquals(action.insert(), "success");
@@ -146,6 +147,7 @@ public class CatEditActionTest extends MockObjectTestCase
     	action.setColaborador(colaborador);
     	action.setCat(cat);
 
+    	manager.expects(once()).method("setFoto").withAnyArguments();
     	manager.expects(once()).method("update").with(eq(cat));
 
     	assertEquals(action.update(), "success");

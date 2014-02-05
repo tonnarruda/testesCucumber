@@ -63,7 +63,7 @@
 			});
 		});
 	</script>
-	<title>Ficha de Investigação de Acidente(CAT)</title>
+	<title>Ficha de Investigação de Acidente (CAT)</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -122,7 +122,7 @@
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
 		<@display.column property="numeroCat" title="Número" style="width:85px;"/>
-		<@display.column property="observacao" title="Observação" style="width:280px;"/>
+		<@display.column property="observacao" title="Descrição do Acidente" style="width:280px;"/>
 	</@display.table>
 
 	<div id="box" title="Configurar Assinaturas para Impressão">

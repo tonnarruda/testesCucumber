@@ -334,7 +334,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	{
 		if(!manterAssinaturaDigital)
 		{
-			String assinatura = saveLogo(assinaturaDigital, local);
+			String assinatura = ArquivoUtil.salvaArquivo(assinaturaDigital, local);
 	
 			if(assinaturaDigital != null && !assinatura.equals(""))
 				turma.setAssinaturaDigitalUrl(assinatura);
@@ -343,21 +343,6 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 		
 		return turma;
-	}
-	
-	private String saveLogo(File assinaturaDigital, String local)
-	{
-		String url = "";
-
-		if(assinaturaDigital != null && !assinaturaDigital.getName().equals(""))
-		{
-			java.io.File logoSalva = ArquivoUtil.salvaArquivo(local, assinaturaDigital, true);
-
-			if(logoSalva != null)
-				url = logoSalva.getName();
-		}
-
-		return url;
 	}
 	
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) 

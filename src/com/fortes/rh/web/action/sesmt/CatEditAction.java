@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -23,6 +26,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -31,6 +35,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.Action;
 
 public class CatEditAction extends MyActionSupportList
 {
@@ -73,6 +78,9 @@ public class CatEditAction extends MyActionSupportList
 	private String assinatura3;
 	private boolean exibirAssinatura4;
 	private String assinatura4;
+	
+	private boolean manterFoto;
+	private File fotoAcidente;
 	
 	public String list() throws Exception
 	{
@@ -133,7 +141,16 @@ public class CatEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		catManager.remove(cat.getId());
+		try {
+			catManager.remove(cat.getId());
+			addActionSuccess("Ficha de investigação de acidente excluída com sucesso.");
+		
+		} catch (Exception e) {
+			addActionError("Não foi possível excluir essa ficha de investigação de acidente.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
 
 		return SUCCESS;
 	}
@@ -162,6 +179,8 @@ public class CatEditAction extends MyActionSupportList
 
 	private void beforeInsertUpdate() throws Exception
 	{
+		catManager.setFoto(cat, manterFoto, fotoAcidente, "sesmt");
+		
 		CollectionUtil<Epi> cUtil = new CollectionUtil<Epi>();
 		Collection<Epi> epis = cUtil.convertArrayStringToCollection(Epi.class, episChecked);
 		
@@ -187,20 +206,49 @@ public class CatEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		beforeInsertUpdate();
+		try {
+			beforeInsertUpdate();
+			catManager.save(cat);
+			
+			addActionSuccess("Ficha de investigação de acidente cadastrada com sucesso.");
 		
-		catManager.save(cat);
+		} catch (Exception e) {
+			addActionError("Não foi possível cadastrar a ficha de investigação de acidente.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 		
 		return SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		beforeInsertUpdate();
+		try {
+			beforeInsertUpdate();
+			catManager.update(cat);
+			
+			addActionSuccess("Ficha de investigação de acidente atualizada com sucesso.");
 		
-		catManager.update(cat);
+		} catch (Exception e) {
+			addActionError("Não foi possível atualizar a ficha de investigação de acidente.");
+			e.printStackTrace();
+			return Action.INPUT;
+		}
 		
-		return SUCCESS;
+		return Action.SUCCESS;
+	}
+	
+	public String showFoto() throws Exception
+	{
+		if (cat.getFotoUrl() != null && !cat.getFotoUrl().equals(""))
+		{
+			java.io.File file = ArquivoUtil.getArquivo(cat.getFotoUrl(),"sesmt");
+			HttpServletResponse response = ServletActionContext.getResponse();
+			
+			ArquivoUtil.showFile(file, response);
+		}
+		
+		return Action.SUCCESS;
 	}
 
 	public String filtrarColaboradores() throws Exception
@@ -246,6 +294,7 @@ public class CatEditAction extends MyActionSupportList
 			
 			String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
 			parametros.put("IMG_DIR", pathImg);
+			parametros.put("FOTO_URL", ArquivoUtil.getPathAnexo("sesmt") + java.io.File.separatorChar + cat.getFotoUrl());
 			configuraAssinaturas();
 			
 			return SUCCESS;
@@ -507,5 +556,21 @@ public class CatEditAction extends MyActionSupportList
 
 	public void setAssinatura4(String assinatura4) {
 		this.assinatura4 = assinatura4;
+	}
+
+	public boolean isManterFoto() {
+		return manterFoto;
+	}
+
+	public void setManterFoto(boolean manterFoto) {
+		this.manterFoto = manterFoto;
+	}
+
+	public File getFotoAcidente() {
+		return fotoAcidente;
+	}
+
+	public void setFotoAcidente(File fotoAcidente) {
+		this.fotoAcidente = fotoAcidente;
 	}
 }
