@@ -460,7 +460,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);
-		faixaSalarial.setCodigoAC("");
+		faixaSalarial.setCodigoAC(null);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
 		faixaSalarialDao.updateCodigoAC("0123", faixaSalarial.getId());
@@ -479,7 +479,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargoOrigem);
 		faixaSalarial.setNome("I");
-		faixaSalarial.setCodigoAC("");
+		faixaSalarial.setCodigoAC(null);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
 		faixaSalarialDao.updateNomeECargo(faixaSalarial.getId(), cargoDestino.getId(), "II");
@@ -509,7 +509,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		faixaSalarialDao.save(faixaSalarial1);
 		
 		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
-		faixaSalarial2.setCodigoAC("");
+		faixaSalarial2.setCodigoAC(null);
 		faixaSalarial2.setCargo(cargo1);
 		faixaSalarialDao.save(faixaSalarial2);
 		
